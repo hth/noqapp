@@ -1,0 +1,887 @@
+import com.eriwen.gradle.css.tasks.MinifyCssTask
+import com.eriwen.gradle.js.tasks.MinifyJsTask
+
+if (!hasProperty('env')) {
+    ext.env = System.env['GRADLE_ENV']
+}
+
+println "Building for environment: $env"
+
+ext {
+    webInf = file('/WEB-INF')
+    freemarker = file("$webInf/freemarker")
+    lib = file("$webInf/lib")
+    javaClasses = file("$webInf/classes")
+    cert = file("$javaClasses/cert")
+    conf = file("$javaClasses/conf")
+    dkim = file("$javaClasses/dkim")
+    images = file("$javaClasses/images")
+
+    warDir = file("$buildDir/explodedWar/$env")
+    warWebInfDir = file("$warDir$webInf")
+    warLibDir = file("$warDir$lib")
+    warClassesDir = file("$warDir$javaClasses")
+    warCertDir = file("$warDir$cert")
+    warConfDir = file("$warDir$conf")
+    warDkimDir = file("$warDir$dkim")
+    warWebInfClassesImagesDir = file("$warDir$images")
+
+    activeProfilewarDir = file("$buildDir/activeProfile/$env")
+    activeProfilewarWebInfDir = file("$activeProfilewarDir$webInf")
+    activeProfilewarClassesDir = file("$activeProfilewarDir$javaClasses")
+    activeProfilewarConfDir = file("$activeProfilewarDir$conf")
+    activeProfilewarFreemarkerDir = file("$activeProfilewarDir$freemarker")
+
+    unzipDir = file("${buildDir}/unpacked/dist")
+    unzipLibDir = file("$unzipDir$lib")
+
+    passFileLocal = file('web/resources/conf/pass.properties')
+    passFileTest = file(passwordTestFileLocation)
+    passFileProd = file(passwordProdFileLocation)
+
+    apnsCertLocal = file('web/resources/cert/aps_sandbox_credentials.p12')
+    apnsCertTest = file(apnsCertificateTestFileLocation)
+    apnsCertProd = file(apnsCertificateProdFileLocation)
+
+    dkimCertLocal = file('web/resources/dkim/dkim.der')
+    dkimCertTest = file(dkimCertificateTestFileLocation)
+    dkimCertProd = file(dkimCertificateProdFileLocation)
+
+    baseName = "receiptofi"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'com.eriwen:gradle-js-plugin:2.14.1'
+        classpath 'com.eriwen:gradle-css-plugin:2.14.0'
+    }
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'com.eriwen.gradle.js'
+apply plugin: 'css'
+
+allprojects {
+    group = 'com.receiptofi'
+    apply from: "$rootDir/versioning.gradle"
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    apply plugin: 'checkstyle'  //for java code conventions, you can use sonar instead but it need DB
+    apply plugin: 'findbugs'    //for static code analysis
+    apply plugin: 'pmd'
+    apply plugin: 'jacoco'      //for code coverage
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    sourceSets {
+        test {
+            resources.srcDirs = ['src/test/resources']
+            java.srcDirs = ['src/test/java']
+        }
+
+        //Make files under integration compiled
+        integration {
+            resources.srcDirs = ['src/integration/resources']
+            java.srcDirs = ['src/integration/java']
+
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+    }
+
+    checkstyle {
+        ignoreFailures = true
+    }
+
+    findbugs {
+        toolVersion = "3.0.1"
+        ignoreFailures = true
+        reportsDir = file("$project.buildDir/reports/findbugs")
+        effort = "max"
+        reportLevel = "medium"
+        visitors = ["FindSqlInjection", "SwitchFallthrough"]
+        omitVisitors = ["FindNonShortCircuit"]
+//        includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
+//        excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
+    }
+
+    pmd {
+        ignoreFailures = true
+        toolVersion = '5.5.0'
+
+        ruleSets = [
+                "java-basic",
+                "java-braces",
+                "java-naming",
+                "java-android",
+                "java-clone",
+                "java-codesize",
+                "java-controversial",
+                "java-design",
+                "java-finalizers",
+                "java-imports",
+                "java-j2ee",
+                "java-javabeans",
+                "java-junit",
+                "java-migrating",
+                "java-optimizations",
+                "java-strictexception",
+                "java-strings",
+                "java-sunsecure",
+                "java-typeresolution",
+                "java-unusedcode"
+        ]
+    }
+
+    jar {
+        manifest {
+            attributes(
+                    'Implementation-Vendor': 'Receiptofi Inc',
+                    'Implementation-Title': rootProject.name,
+                    'Implementation-Version': allprojects.version + " $env",
+                    'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
+                    'Copyright': '2012-2016, Receiptofi Inc'
+            )
+        }
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+            //and some extra integration test source and resources dirs
+            testSourceDirs += file('/src/integration/java')
+            testSourceDirs += file('/src/integration/resources')
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.7.7.201606060606"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination "${buildDir}/reports/jacocoHtml"
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-milestone" }
+        maven { url "http://repo1.maven.org/maven2/" }
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+    }
+
+    dependencies {
+        compile 'org.springframework.social:spring-social-core:1.1.4.RELEASE'
+        compile 'org.springframework.social:spring-social-google:1.0.0.RELEASE'
+        compile 'org.springframework.social:spring-social-web:1.1.4.RELEASE'
+        compile 'org.springframework.social:spring-social-security:1.1.4.RELEASE'
+        compile 'org.springframework.social:spring-social-facebook:2.0.3.RELEASE'
+        compile files('../lib/user-agent-detector.jar')
+
+        compile 'org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1'
+        compile 'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1'
+
+        compile 'io.dropwizard.metrics:metrics-core:3.1.2'
+        compile 'io.dropwizard.metrics:metrics-annotation:3.1.2'
+        compile 'io.dropwizard.metrics:metrics-graphite:3.1.2'
+
+        compile "$springGroup:spring-aop:$springVersion"
+        compile "$springGroup:spring-aspects:$springVersion"
+        compile "$springGroup:spring-beans:$springVersion"
+        compile "$springGroup:spring-context:$springVersion"
+        compile "$springGroup:spring-context-support:$springVersion"
+        compile "$springGroup:spring-core:$springVersion"
+        compile "$springGroup:spring-expression:$springVersion"
+        compile "$springGroup:spring-instrument:$springVersion"
+        compile "$springGroup:spring-instrument-tomcat:$springVersion"
+        compile "$springGroup:spring-jms:$springVersion"
+        compile "$springGroup:spring-oxm:$springVersion"
+        compile "$springGroup:spring-test:$springVersion"
+        compile "$springGroup:spring-tx:$springVersion"
+        compile "$springGroup:spring-web:$springVersion"
+        compile "$springGroup:spring-webmvc:$springVersion"
+
+        compile "$springSecurityGroup:spring-security-aspects:$springSecurityVersion"
+        compile "$springSecurityGroup:spring-security-config:$springSecurityVersion"
+        compile "$springSecurityGroup:spring-security-core:$springSecurityVersion"
+        compile "$springSecurityGroup:spring-security-crypto:$springSecurityVersion"
+        compile "$springSecurityGroup:spring-security-taglibs:$springSecurityVersion"
+        compile "$springSecurityGroup:spring-security-web:$springSecurityVersion"
+
+        compile "$springDataGroup:spring-data-mongodb:$springDataMongo"
+        compile "$springDataGroup:spring-data-commons:$springDataCommon"
+        compile "org.mongodb:mongo-java-driver:$mongoJavaDriver"
+
+        compile "$springDataGroup:spring-data-redis:$redis"
+        compile "redis.clients:jedis:$jedis"
+
+        /** --- Specific to Receipt Web Application ---- */
+        compile "com.amazonaws:aws-java-sdk-s3:$amazonaws"
+        compile "org.quartz-scheduler:quartz:$quartz"
+        compile "com.notnoop.apns:apns:$apns"
+        compile "org.springframework.webflow:spring-webflow:$webflow"
+        compile 'net.markenwerk:utils-mail-dkim:1.1.7'
+        /** ------- */
+
+        compile 'aopalliance:aopalliance:1.0'
+        compile "org.apache.commons:commons-vfs2:$vfs2"
+        compile "com.jcraft:jsch:$jsch"
+
+        compile "org.aspectj:aspectjrt:$aspectjrt"
+        compile "org.slf4j:slf4j-api:$slf4japi"
+        compile 'org.hibernate:hibernate-validator:5.3.0.Final'
+        compile "joda-time:joda-time:$joda"
+        compile 'org.freemarker:freemarker:2.3.23'
+
+        compile "com.google.guava:guava:$guava"
+        compile "com.google.code.gson:gson:$gson"
+        compile "com.google.maps:google-maps-services:$googleMap"
+        compile "com.googlecode.libphonenumber:libphonenumber:$libphonenumber"
+        compile 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239'
+
+        compile 'com.fasterxml:classmate:1.3.1'
+        compile "com.fasterxml.jackson.core:jackson-annotations:$jackson"
+        compile "com.fasterxml.jackson.core:jackson-core:$jackson"
+        compile "com.fasterxml.jackson.core:jackson-databind:$jackson"
+
+        compile 'org.json:json:20160212'
+
+        compile "commons-fileupload:commons-fileupload:$commonsfileupload"
+        compile "commons-io:commons-io:$commonsio"
+        compile "commons-validator:commons-validator:$commonsvalidator"
+        compile 'commons-codec:commons-codec:1.10'
+        compile 'commons-logging:commons-logging:1.2'
+
+        compile 'javax.mail:mail:1.4.7'
+        compile 'javax.validation:validation-api:1.1.0.Final'
+        compile 'javax.inject:javax.inject:1'
+
+        compile "org.apache.activemq:activemq-client:$activemq"
+        compile "org.apache.commons:commons-lang3:$commonslang3"
+        compile "org.apache.poi:poi:$poi"
+        compile "org.apache.tika:tika-parsers:$tika"
+        compile "org.apache.tika:tika-core:$tika"
+        compile 'org.apache.httpcomponents:httpclient:4.5.2'
+        compile 'org.apache.commons:commons-collections4:4.1'
+        compile 'org.apache.commons:commons-lang3:3.4'
+
+        compile 'ch.qos.logback:logback-core:1.1.7'
+        compile 'ch.qos.logback:logback-classic:1.1.7'
+        compile "net.logstash.logback:logstash-logback-encoder:$logstashlogbackencoder"
+        compile 'net.bull.javamelody:javamelody-core:1.+'
+        /** Because using org.junit.Assert in code. */
+        compile group: 'junit', name: 'junit', version: '4.+'
+
+        testCompile group: 'junit', name: 'junit', version: '4.+'
+        testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+        testCompile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "$flapdoodle"
+        testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
+    }
+
+    test {
+        systemProperty "spring.profiles.active", "$env"
+
+        // set heap size for the test JVM(s)
+        minHeapSize = "128m"
+        maxHeapSize = "512m"
+
+        // set JVM arguments for the test JVM(s)
+        jvmArgs '-XX:MaxPermSize=256m'
+
+        // listen to events in the test execution lifecycle
+        beforeTest { descriptor ->
+            logger.lifecycle("Running test: $descriptor")
+        }
+
+        // listen to standard out and standard error of the test JVM(s)
+        onOutput { descriptor, event ->
+            logger.lifecycle("Test: $descriptor produced standard out/err: $event.message")
+        }
+
+        testLogging {
+            // false when hiding system.out logs
+            showStandardStreams = false
+
+            // set options for log level LIFECYCLE
+            events "failed"
+            exceptionFormat "short"
+
+            // set options for log level DEBUG
+            debug {
+                events "started", "skipped", "failed"
+                exceptionFormat "full"
+            }
+
+            // remove standard output/error logging from --info builds
+            // by assigning only 'failed' and 'skipped' events
+            info.events = ["failed", "skipped"]
+
+            // Disable the test report for the individual test task
+            reports.html.enabled = false
+        }
+    }
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = true
+            html.enabled = false
+        }
+    }
+
+    tasks.withType(Pmd) {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+
+    //Integration
+    configurations {
+        integrationCompile.extendsFrom testCompile
+        integrationRuntime.extendsFrom testRuntime
+    }
+
+    task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+        testClassesDir = sourceSets.integration.output.classesDir
+        classpath = sourceSets.integration.runtimeClasspath
+    }
+}
+
+project(':common') {
+    jar.baseName = baseName + '-common'
+}
+
+project(':loader') {
+    apply plugin: 'war'
+    jar.baseName = baseName + '-loader'
+
+    dependencies {
+        compile project(':common'), project(':service')
+
+        providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
+    }
+}
+
+project(':domain') {
+    jar.baseName = baseName + '-domain'
+
+    dependencies {
+        compile project(':common')
+    }
+}
+
+project(':service') {
+    jar.baseName = baseName + '-service'
+
+    dependencies {
+        compile project(':common'), project(':domain')
+    }
+}
+
+project(':view') {
+    apply plugin: 'war'
+    jar.baseName = baseName + '-view'
+    war.baseName = baseName + '-view'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile project(':common'), project(':domain'), project(':service'), project(':loader')
+
+        providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
+        runtime 'javax.servlet:jstl:1.+'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+}
+
+task copyJars(type: Copy) {
+    from 'common/build/libs'
+    from 'domain/build/libs'
+    from 'security/build/libs'
+    from 'service/build/libs'
+    from 'view/build/libs'
+    into warLibDir
+    include '**/*.jar'
+}
+
+task unzip(type: Copy, dependsOn: [':web:war']) {
+    def zipFile = file("web/build/libs/$baseName" + '-web-' + version + '.war')
+
+    from zipTree(zipFile)
+    into unzipDir
+}
+
+task setUpProfileForJunit(dependsOn: [':clean']) << {
+    activeProfilewarClassesDir.mkdirs()
+    activeProfilewarConfDir.mkdirs()
+    activeProfilewarFreemarkerDir.mkdirs();
+
+    copy {
+        from file("web/environment/$env/$env" + ".properties")
+        into activeProfilewarConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/redis.properties'
+
+        if (env == 'prod') {
+            if (passFileProd.exists()) {
+                from passwordProdFileLocation
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'sandbox') {
+            if (passFileTest.exists()) {
+                from passwordTestFileLocation
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+            if (passFileLocal.exists()) {
+                from 'web/resources/conf/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+            }
+        }
+
+        into activeProfilewarConfDir
+    }
+
+    copy {
+        from "web/environment/$env/logback.xml"
+        from 'web/resources/conf/messages.properties'
+        into activeProfilewarClassesDir
+    }
+
+    copy {
+        from "web/environment/$env/receipt-servlet.xml"
+        into activeProfilewarWebInfDir
+    }
+
+    copy {
+        from "web/environment/$env/mongo-config.xml"
+        into activeProfilewarWebInfDir
+    }
+
+    copy {
+        from "web/web$freemarker"
+        into activeProfilewarFreemarkerDir
+    }
+}
+
+css.source {
+    custom {
+        css {
+            srcDir "web/web/static/css"
+            include "*.css"
+            exclude "*.min.css"
+        }
+    }
+}
+
+javascript.source {
+    custom {
+        js {
+            srcDir "web/web/static/js"
+            include "colpick.js", "mainpop.js"
+            exclude "*.min.js"
+        }
+    }
+}
+
+css.source.custom.css.files.eachWithIndex { cssFile, idx ->
+    tasks.create(name: "dominifyCss${idx}", type: MinifyCssTask) {
+        if (cssFile.getParentFile().getName() != "css") {
+            source = cssFile
+            dest = "${buildDir}/tmp/css/${cssFile.getParentFile().getName()}/${cssFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        } else {
+            source = cssFile
+            dest = "${buildDir}/tmp/css/${cssFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        }
+        println("CSS files minifying: $cssFile")
+    }
+}
+
+javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
+    tasks.create(name: "dominifyJs${idx}", type: MinifyJsTask) {
+        if (jsFile.getParentFile().getName() != "js") {
+            source = jsFile
+            dest = "${buildDir}/tmp/js/${jsFile.getParentFile().getName()}/${jsFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        } else {
+            source = jsFile
+            dest = "${buildDir}/tmp/js/${jsFile.name}"
+            closure {
+                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+            }
+        }
+        println("JS files minifying: $jsFile")
+    }
+}
+
+task individualCssMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyCss") })
+task individualJsMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyJs") })
+task createBuildInfoFile << {
+    buildDir.mkdirs()
+    def buildInfoFile = new File("$buildDir/build-info.properties")
+    Properties props = new Properties();
+    props.setProperty('owner', 'Receiptofi Inc');
+    props.setProperty('copyright', 'All rights reserved');
+    props.setProperty('build.version', project.version.toString());
+    props.setProperty('build.env', "$env");
+
+    props.store(buildInfoFile.newWriter(), null);
+}
+
+task prepWar(dependsOn: [
+        createBuildInfoFile,
+        unzip,
+        copyJars,
+        individualCssMinify,
+        individualJsMinify
+]) << {
+    warClassesDir.mkdirs()
+    warConfDir.mkdirs()
+    warDkimDir.mkdirs()
+
+    copy {
+        from 'web/web'
+        into warDir
+        exclude '**/*.classes'
+        exclude '**/static/css/*.css'
+        exclude 'web/web/static/js/mainpop.js', 'web/web/static/js/colpick.js'
+    }
+
+    copy {
+        from("${buildDir}/tmp/css") {
+            include "**/*.css"
+        }
+        into "${warDir}/static/css"
+    }
+
+    copy {
+        from("${buildDir}/tmp/js") {
+            include "**/*.js"
+        }
+        into "${warDir}/static/js"
+    }
+
+    copy {
+        from file("web/environment/$env/$env" + ".properties")
+        into warConfDir
+    }
+
+    copy {
+        from 'web/resources/conf/application-messages.properties'
+        from 'web/resources/conf/config.properties'
+        from 'web/resources/conf/redis.properties'
+
+        if (env == 'prod') {
+            if (passFileProd.exists()) {
+                from passwordProdFileLocation
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'sandbox') {
+            if (passFileTest.exists()) {
+                from passwordTestFileLocation
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+            if (passFileLocal.exists()) {
+                from 'web/resources/conf/pass.properties'
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+            }
+        }
+
+        into warConfDir
+    }
+
+    copy {
+        if (env == 'prod') {
+            if (apnsCertProd.exists()) {
+                from apnsCertificateProdFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $apnsCertProd.canonicalPath")
+            }
+        }
+
+        if (env == 'sandbox') {
+            if (apnsCertTest.exists()) {
+                from apnsCertificateTestFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $apnsCertTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
+            if (apnsCertLocal.exists()) {
+                from 'web/resources/conf/aps_sandbox_credentials.p12'
+            } else {
+                throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
+            }
+        }
+
+        into warCertDir
+    }
+
+    copy {
+        if (env == 'prod') {
+            if (dkimCertProd.exists()) {
+                from dkimCertificateProdFileLocation
+            } else {
+                throw new Exception("Required dkim file does not exists: $dkimCertProd.canonicalPath")
+            }
+        }
+
+        if (env == 'sandbox') {
+            if (dkimCertTest.exists()) {
+                from dkimCertificateTestFileLocation
+            } else {
+                throw new Exception("Required dkim file does not exists: $dkimCertTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local dkim file $dkimCertLocal.canonicalPath"
+            if (dkimCertLocal.exists()) {
+                from dkimCertLocal
+            } else {
+                throw new Exception("Required dkim file does not exists: $dkimCertLocal.canonicalPath")
+            }
+        }
+
+        into warDkimDir
+    }
+
+    copy {
+        from "web/environment/$env/logback.xml"
+        from 'web/resources/conf/messages.properties'
+        into warClassesDir
+    }
+
+    copy {
+        from "web/environment/$env/receipt-servlet.xml"
+        into warWebInfDir
+    }
+
+    copy {
+        from "web/environment/$env/mongo-config.xml"
+        into warWebInfDir
+    }
+
+    copy {
+        from 'web/web/static/images'
+        into warWebInfClassesImagesDir
+    }
+
+    copy {
+        from unzipLibDir
+        into warLibDir
+    }
+
+    copy {
+        from "${buildDir}/build-info.properties"
+        into warClassesDir
+    }
+}
+
+task clean(type: Delete) {
+    delete buildDir
+}
+
+//import org.apache.tools.ant.filters.ReplaceTokens
+task war(type: War, dependsOn: prepWar) {
+    doFirst {
+        exclude('**/receiptofi-loader-*.jar')
+        if (env == 'sandbox' || env == 'prod') {
+            baseName = "ROOT-$env." + project.version.toString()
+        }
+
+        if (env == 'dev') {
+            baseName = "ROOT-$env"
+        }
+
+//        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
+//        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
+    }
+
+    from warDir
+    version ""
+    destinationDir = file("$buildDir/war/$env")
+}
+
+task loaderWar(type: War, dependsOn: prepWar) {
+    doFirst {
+        if (env == 'sandbox' || env == 'prod') {
+            baseName = "ROOT-loader-$env." + project.version.toString()
+        }
+
+        if (env == 'dev') {
+            baseName = "ROOT-loader-$env"
+        }
+
+//        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
+//        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
+    }
+
+    from warDir
+    version ""
+    destinationDir = file("$buildDir/war/$env-loader")
+}
+
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Include the results from the `test` task in all subprojects
+    reportOn subprojects*.test
+
+    doLast {
+        println "Test reports for all test complete $env"
+    }
+}
+
+publishing {
+    publications {
+        common(MavenPublication) {
+            artifactId 'common'
+            artifact "common/build/libs/$baseName" + '-common-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2016. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'Receiptofi private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        domain(MavenPublication) {
+            artifactId 'domain'
+            artifact "domain/build/libs/$baseName" + '-domain-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2016. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'Receiptofi private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        service(MavenPublication) {
+            artifactId 'service'
+            artifact "service/build/libs/$baseName" + '-service-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2016. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'Receiptofi private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+
+        social(MavenPublication) {
+            artifactId 'social'
+            artifact "social/build/libs/$baseName" + '-social-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'Receiptofi Web')
+                root.appendNode('description', 'Receiptofi Inc applications jar')
+                root.appendNode('inceptionYear', '2013')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2012-2016. All rights reserved.')
+                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
+                license.appendNode('distribution', 'Receiptofi private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'Receiptofi')
+                developer.appendNode('name', 'Receiptofi Inc')
+                developer.appendNode('email', 'info@receiptofi.com')
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+        }
+    }
+}
+
+//Line below is not required because defaultTasks order is followed
+//testReport.mustRunAfter war
+//publishToMavenLocal for local
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'

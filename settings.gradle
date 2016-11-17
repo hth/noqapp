@@ -1,0 +1,2 @@
+include "common", "domain", "service", "view", "loader"
+rootProject.name = 'token'
