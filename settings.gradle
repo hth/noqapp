@@ -1,2 +1,2 @@
-include "common", "domain", "service", "view", "loader"
+include "common", "domain", "security", "service", "social", "view", "loader"
 rootProject.name = 'token'

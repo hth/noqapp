@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+        version="3.1">
+    <display-name>receipt</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/security/secure.xml
+            /WEB-INF/mongo-config.xml
+            /WEB-INF/token-servlet.xml
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/logback.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>config.properties</param-name>
+        <param-value>/WEB-INF/classes/conf/config.properties</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.token.view.listener.TokenServletContextListener</listener-class>
+    </listener>
+
+    <!-- Ensure UTF-8 character encoding is used -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Java Melody Start -->
+    <filter>
+        <filter-name>monitoring</filter-name>
+        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        <async-supported>true</async-supported>
+        <!--<init-param>-->
+        <!-- removed for because of spring security; only requires in one place -->
+        <!--<param-name>allowed-addr-pattern</param-name>-->
+        <!--&lt;!&ndash; Allows 192.168.1.* with mask 255.255.255.255, other wise add |123\.123\.123\.123 &ndash;&gt;-->
+        <!--<param-value>192\.168\.1\..*</param-value>-->
+        <!--</init-param>-->
+    </filter>
+    <filter-mapping>
+        <filter-name>monitoring</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>net.bull.javamelody.SessionListener</listener-class>
+    </listener>
+    <!-- Java Melody Ends -->
+
+    <filter>
+        <filter-name>MultipartFilter</filter-name>
+        <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MultipartFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>logContextFilter</filter-name>
+        <filter-class>com.token.view.filter.LogContextFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logContextFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html-->
+    <!--16.3.3.11 Working with "application/x-www-form-urlencoded" data-->
+    <filter>
+        <filter-name>httpPutFormFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpPutFormFilter</filter-name>
+        <servlet-name>receipt</servlet-name>
+    </filter-mapping>
+
+    <!-- not being used -->
+    <!-- Enables support for DELETE and PUT request methods with web browser clients -->
+    <!--<filter>-->
+    <!--<filter-name>hiddenHttpMethodFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>-->
+    <!--</filter>-->
+
+    <!--<filter-mapping>-->
+    <!--<filter-name>hiddenHttpMethodFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <servlet>
+        <servlet-name>receipt</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/root-context.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>receipt</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+        <url-pattern>*.xml</url-pattern>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+    <!--Do no include html servlet mapping here as this would result in not throwing the right error codes listed below -->
+
+    <welcome-file-list>
+        <!-- maps to LoginController index -->
+        <welcome-file>open/login.htm</welcome-file>
+    </welcome-file-list>
+
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/400.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>405</error-code>
+        <location>/405.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>410</error-code>
+        <location>/410.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>414</error-code>
+        <location>/414.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.html</location>
+    </error-page>
+
+    <!-- for all other errors -->
+    <error-page>
+        <location>/404.html</location>
+    </error-page>
+</web-app>
