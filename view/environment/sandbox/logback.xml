@@ -1,7 +1,7 @@
 <configuration>
 
     <property name="log_home" value="/var/log/tomcat" />
-    <property name="log_name" value="receiptofi" />
+    <property name="log_name" value="token" />
     <property name="log_ext" value="log" />
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -28,8 +28,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
 
-    <logger name="com.receiptofi" level="DEBUG" />
-    <logger name="com.receiptofi.web.filter.LogContextFilter" level="ON" />
+    <logger name="com.token" level="DEBUG" />
+    <logger name="com.token.web.filter.LogContextFilter" level="ON" />
     <logger name="org.springframework" level="WARN" />
     <logger name="org.springframework.social" level="WARN" />
     <logger name="org.springframework.data.mongodb" level="WARN" />
