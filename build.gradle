@@ -235,9 +235,9 @@ subprojects {
         compile "com.notnoop.apns:apns:$apns"
         compile "org.springframework.webflow:spring-webflow:$webflow"
         compile 'net.markenwerk:utils-mail-dkim:1.1.7'
-        compile 'com.google.zxing:core:3.3.0'
         /** ------- */
 
+        compile 'com.google.zxing:core:3.3.0'
         compile 'aopalliance:aopalliance:1.0'
         compile "org.apache.commons:commons-vfs2:$vfs2"
         compile "com.jcraft:jsch:$jsch"
