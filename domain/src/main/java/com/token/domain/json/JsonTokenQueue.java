@@ -26,21 +26,31 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonTokenMessage {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonTokenMessage.class);
+public class JsonTokenQueue {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonTokenQueue.class);
 
-    @JsonProperty ("tc")
-    private String tokenCode;
+    @JsonProperty ("c")
+    private String code;
 
     @JsonProperty ("t")
     private String token;
 
-    public JsonTokenMessage(String tokenCode) {
-        this.tokenCode = tokenCode;
+    private JsonTokenState jsonTokenState;
+
+    public JsonTokenQueue(String code) {
+        this.code = code;
     }
 
-    public JsonTokenMessage setToken(String token) {
+    public JsonTokenQueue setToken(String token) {
         this.token = token;
         return this;
+    }
+
+    public void setJsonTokenState(JsonTokenState jsonTokenState) {
+        this.jsonTokenState = jsonTokenState;
+    }
+
+    public JsonTokenState getJsonTokenState() {
+        return jsonTokenState;
     }
 }
