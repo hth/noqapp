@@ -516,7 +516,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
         }
 
         copy {
-            from "view/environment/$env/receipt-servlet.xml"
+            from "view/environment/$env/token-servlet.xml"
             into activeProfilewarWebInfDir
         }
 
@@ -743,7 +743,7 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from "view/environment/$env/receipt-servlet.xml"
+            from "view/environment/$env/token-servlet.xml"
             into warWebInfDir
         }
 
