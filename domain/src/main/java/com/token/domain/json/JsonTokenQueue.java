@@ -35,7 +35,8 @@ public class JsonTokenQueue {
     @JsonProperty ("t")
     private String token;
 
-    private JsonTokenState jsonTokenState;
+    @JsonProperty ("s")
+    private String servingNumber;
 
     public JsonTokenQueue(String code) {
         this.code = code;
@@ -46,11 +47,8 @@ public class JsonTokenQueue {
         return this;
     }
 
-    public void setJsonTokenState(JsonTokenState jsonTokenState) {
-        this.jsonTokenState = jsonTokenState;
-    }
-
-    public JsonTokenState getJsonTokenState() {
-        return jsonTokenState;
+    public JsonTokenQueue setServingNumber(String servingNumber) {
+        this.servingNumber = servingNumber;
+        return this;
     }
 }
