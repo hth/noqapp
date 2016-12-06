@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping (value = "/access/signoff")
 @Qualifier ("signOff")
-public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
+public class SignOffController extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(SignOffController.class);
 
     @Override
     public void onLogoutSuccess(

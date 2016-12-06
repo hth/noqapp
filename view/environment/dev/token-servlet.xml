@@ -3,7 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:cache="http://www.springframework.org/schema/cache"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:task="http://www.springframework.org/schema/task"
@@ -18,9 +17,7 @@
             http://www.springframework.org/schema/task
             http://www.springframework.org/schema/task/spring-task.xsd
             http://www.springframework.org/schema/util
-            http://www.springframework.org/schema/util/spring-util.xsd
-            http://www.springframework.org/schema/jms
-            http://www.springframework.org/schema/jms/spring-jms.xsd">
+            http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="com.token" />
