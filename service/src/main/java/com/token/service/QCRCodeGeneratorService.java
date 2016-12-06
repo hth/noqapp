@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
 @Service
 public class QCRCodeGeneratorService {
 
-    @Value("${size:40}")
+    @Value("${size:300}")
     private int size;
 
     public void createQRImage(String qrCodeText) throws WriterException, IOException {
@@ -41,8 +41,7 @@ public class QCRCodeGeneratorService {
         BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
         // Make the BufferedImage that are to hold the QRCode
         int matrixWidth = byteMatrix.getWidth();
-        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth,
-                BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
         image.createGraphics();
 
         Graphics2D graphics = (Graphics2D) image.getGraphics();
