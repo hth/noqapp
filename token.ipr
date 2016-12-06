@@ -244,6 +244,9 @@
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/freemarker" />
           </element>
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/view/web/404.html" />
+        <element id="file-copy" path="$PROJECT_DIR$/view/web/favicon.ico" />
+        <element id="file-copy" path="$PROJECT_DIR$/view/web/robots.txt" />
       </root>
     </artifact>
     <artifact type="war" name="Gradle : com.token : security-1.0.war">
@@ -1206,6 +1209,11 @@
   <component name="CopyrightManager" default="" />
   <component name="Encoding">
     <file url="PROJECT" charset="UTF-8" />
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
+    </list>
   </component>
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
