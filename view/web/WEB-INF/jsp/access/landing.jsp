@@ -68,136 +68,14 @@
 <header>
 </header>
 <div class="main clearfix">
-    <div class="sidebar">
-        <div class="sidebar-top-summary">
-            <div class="sidebar-top-summary-upper clearfix">
-                <h1 id="pendingCountInitial">
-                    <a href='${pageContext. request. contextPath}/access/document/pending.htm' class="big-view">
-                        ${documentStatsForm.pendingCount}
-                    </a>
-                </h1>
-                <h1 id="pendingCountId"></h1>
-
-                <div class="sts-upper-right">
-                <span class="top-summary-textb">
-                <c:choose>
-                    <c:when test="${documentStatsForm.pendingCount le 1}">Receipt pending</c:when>
-                    <c:otherwise>Receipts pending</c:otherwise>
-                </c:choose>
-                </span>
-                    <span class="general-text">
-                    Last sync: <span class="timestamp" id="pendingCountSyncedId"></span>
-                </span>
-                </div>
-            </div>
-            <div class="sidebar-top-summary-lower clearfix">
-                <h1 id="rejectedCountInitial">
-                    <a href='${pageContext. request. contextPath}/access/document/rejected.htm' class="big-view-lower">
-                        ${documentStatsForm.rejectedCount}
-                    </a>
-                </h1>
-                <h1 id="rejectedCountId"></h1>
-
-                <div class="sts-upper-right">
-				<span class="top-summary-textb">
-                    <c:choose>
-                        <c:when test="${documentStatsForm.rejectedCount le 1}">Receipt rejected</c:when>
-                        <c:otherwise>Receipts rejected</c:otherwise>
-                    </c:choose>
-                </span>
-                    <span class="general-text">
-                    Last sync: <span class="timestamp" id="rejectedCountSyncedId"></span>
-                </span>
-                </div>
-            </div>
-        </div>
-        <div class="sidebar-git-datum">
-            <div class="gd-title">
-                <h1 class="widget-title-text">Upload new receipt</h1>
-            </div>
-            <div id="fine-uploader-validation" class="upload-text"></div>
-        </div>
-        <div class="sidebar-indication">
-            <div class="si-title">
-                <h1 class="widget-title-text">Notifications (${notificationForm.count})</h1>
-            </div>
-            <div class="si-list-holder" when-scrolled="loadMore()">
-                <c:choose>
-                    <c:when test="${!empty notificationForm.notifications}">
-                        <ul>
-                            <c:forEach var="notification" items="${notificationForm.notifications}" varStatus="status">
-                                <li class="si-list">
-                                    <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
-                                    <span class="si-general-text">${notification.notificationMessageForDisplay}</span>
-                                    <span class="si-date-text"><fmt:formatDate value="${notification.created}" pattern="MMM. dd" /></span>
-                                </li>
-                            </c:forEach>
-                            <li class="si-list" ng-repeat="i in items">
-                                <img class="si-notification-icon" alt="Notification icon" src="${pageContext.request.contextPath}/static/img/notification-icon.png">
-                                <span class="si-general-text"><a class='rightside-li-middle-text full-li-middle-text' href="{{i.href}}">{{i.message}}</a></span>
-                                <span class="si-date-text">{{i.created}}</span>
-                            </li>
-                        </ul>
-                        <p class="si-list-footer si-list-footer-success" ng-show="loading">
-                                <%--<img src="${pageContext.request.contextPath}/static/img/notification-loading.gif"/>--%>
-                            <em>Loading ...</em>
-                        </p>
-                        <p class="si-list-footer si-list-footer-error" ng-show="failed">
-                            <em>Failed to retrieve data</em>
-                        </p>
-                    </c:when>
-                    <c:otherwise>
-                        <p class="si-general-text">There are no Notifications &nbsp;</p>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-            <div class="si-footer">
-                <c:if test="${!empty notificationForm.notifications}">
-                    <p class="view-more-text">
-                        <a class="view-more-text" ng-href="${pageContext.request.contextPath}/access/notification.htm">View All Notifications</a>
-                    </p>
-                </c:if>
-            </div>
-        </div>
-        <div class="sidebar-invite">
-            <div class="gd-title">
-                <h1 class="widget-title-text">Friend Invite</h1>
-            </div>
-            <div id="inviteTextMessage"></div>
-            <form>
-                <input type="text" placeholder="Email address of friend here ..." size="20"
-                        onfocus="changeInviteText(this, 'focus')"
-                        onblur="changeInviteText(this, 'blur')"
-                        id="inviteEmailId"/>
-            </form>
-            <div class="gd-button-holder">
-                <button class="gd-button" style="background: #808080;" onclick="submitInvitationForm()" id="sendInvite_bt" disabled="disabled">SEND INVITE</button>
-            </div>
-            <div id="inviteText" class="si-general-text invite-general-text">Invitation is sent with your name and email address</div>
-        </div>
-    </div>
-
-    <div id="off_screen">
-        <div id="map-canvas"></div>
-    </div>
-
     <div class="rightside-content">
         <div id="tabs" class="nav-list">
             <ul class="nav-block">
-                <li><a href="#tab1">OVERVIEW</a></li>
+                <li><a href="#tab1"></a></li>
             </ul>
             <div id="tab1" class="ajx-content">
                 <div class="rightside-title">
-                    <h1 class="rightside-title-text left" id="monthShownId"></h1>
-                    <span class="right right_view" style="width: 24%;">
-					<input type="button" value="List" class="overview_view toggle_button_left toggle_selected" id="btnList" onclick="toggleListCalendarView(this)">
-					<span style="width:1px;background:white;float:left;">&nbsp;</span>
-					<input type="button" value="Calendar" class="overview_view toggle_button_right" id="btnCalendar" onclick="toggleListCalendarView(this)">
-				</span>
-                </div>
-
-                <div id="onLoadReceiptForMonthId">
-                    Hello
+                    Welcome
                 </div>
             </div>
         </div>
