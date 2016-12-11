@@ -25,6 +25,9 @@
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/build-info.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/logback.xml" />
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/messages.properties" />
+            <element id="directory" name="dkim">
+              <element id="dir-copy" path="$PROJECT_DIR$/view/resources/dkim" />
+            </element>
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
@@ -1211,8 +1214,9 @@
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
+      <item index="1" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
     </list>
   </component>
   <component name="GradleLocalSettings">

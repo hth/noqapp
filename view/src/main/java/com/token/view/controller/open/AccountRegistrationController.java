@@ -199,7 +199,7 @@ public class AccountRegistrationController {
     @RequestMapping (method = RequestMethod.POST, params = {"recover"})
     public String recover(
             @ModelAttribute ("userRegistrationForm")
-                    UserRegistrationForm userRegistrationForm,
+            UserRegistrationForm userRegistrationForm,
 
             RedirectAttributes redirectAttrs
     ) {

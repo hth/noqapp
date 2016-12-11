@@ -4,11 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
         version="3.1">
-    <display-name>receipt</display-name>
+    <display-name>token</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            /WEB-INF/flow/flow.xml
             /WEB-INF/security/secure.xml
             /WEB-INF/mongo-config.xml
             /WEB-INF/token-servlet.xml
@@ -113,7 +114,7 @@
     </filter>
     <filter-mapping>
         <filter-name>httpPutFormFilter</filter-name>
-        <servlet-name>receipt</servlet-name>
+        <servlet-name>token</servlet-name>
     </filter-mapping>
 
     <!-- not being used -->
@@ -129,7 +130,7 @@
     <!--</filter-mapping>-->
 
     <servlet>
-        <servlet-name>receipt</servlet-name>
+        <servlet-name>token</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -139,7 +140,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>receipt</servlet-name>
+        <servlet-name>token</servlet-name>
         <url-pattern>*.htm</url-pattern>
         <url-pattern>*.xml</url-pattern>
         <url-pattern>*.json</url-pattern>
