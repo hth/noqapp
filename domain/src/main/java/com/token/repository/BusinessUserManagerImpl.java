@@ -2,18 +2,23 @@ package com.token.repository;
 
 import static com.token.repository.util.AppendAdditionalFields.isActive;
 import static com.token.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.bson.types.ObjectId;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.BusinessUserEntity;
+import com.token.domain.types.BusinessUserRegistrationStatusEnum;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -85,5 +90,32 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     public void deleteHard(BusinessUserEntity object) {
         /** Do not implement this method. No hard delete for business user. */
         throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public List<BusinessUserEntity> awaitingApprovals() {
+        return mongoTemplate.find(
+                query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).limit(10).with(new Sort(ASC, "U")),
+                BusinessUserEntity.class,
+                TABLE);
+    }
+
+    @Override
+    public long awaitingApprovalCount() {
+        return mongoTemplate.count(
+                query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                BusinessUserEntity.class,
+                TABLE
+        );
     }
 }

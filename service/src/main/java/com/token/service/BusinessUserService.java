@@ -10,6 +10,8 @@ import com.token.domain.BusinessUserEntity;
 import com.token.domain.types.UserLevelEnum;
 import com.token.repository.BusinessUserManager;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 11/23/16 5:09 PM
@@ -76,5 +78,13 @@ public class BusinessUserService {
 
     public void save(BusinessUserEntity businessUser) {
         businessUserManager.save(businessUser);
+    }
+
+    public long awaitingApprovalCount() {
+        return businessUserManager.awaitingApprovalCount();
+    }
+
+    public List<BusinessUserEntity> awaitingApprovals() {
+        return businessUserManager.awaitingApprovals();
     }
 }
