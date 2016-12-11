@@ -10,11 +10,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.token.domain.EmailValidateEntity;
 import com.token.domain.UserAccountEntity;
 import com.token.domain.UserAuthenticationEntity;
 import com.token.domain.UserPreferenceEntity;
 import com.token.domain.UserProfileEntity;
 import com.token.domain.annotation.Mobile;
+import com.token.domain.types.AccountInactiveReasonEnum;
 import com.token.domain.types.NotificationGroupEnum;
 import com.token.domain.types.NotificationTypeEnum;
 import com.token.domain.types.ProviderEnum;
@@ -45,6 +47,7 @@ public class AccountService {
     private UserProfileManager userProfileManager;
     private GenerateUserIdService generateUserIdService;
     private NotificationService notificationService;
+    private EmailValidateService emailValidateService;
 
     @Autowired
     public AccountService(
@@ -53,13 +56,15 @@ public class AccountService {
             UserPreferenceManager userPreferenceManager,
             UserProfileManager userProfileManager,
             GenerateUserIdService generateUserIdService,
-            NotificationService notificationService) {
+            NotificationService notificationService,
+            EmailValidateService emailValidateService) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
         this.userProfileManager = userProfileManager;
         this.generateUserIdService = generateUserIdService;
         this.notificationService = notificationService;
+        this.emailValidateService = emailValidateService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -274,5 +279,46 @@ public class AccountService {
 
     public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
         return userProfileManager.findByReceiptUserId(receiptUserId);
+    }
+
+    public void updateName(String firstName, String lastName, String rid) {
+        UserAccountEntity userAccount = findByReceiptUserId(rid);
+        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(rid);
+
+        userAccount.setFirstName(firstName);
+        userAccount.setLastName(lastName);
+
+        userProfile.setFirstName(firstName);
+        userProfile.setLastName(lastName);
+
+        userProfileManager.save(userProfile);
+        userAccountManager.save(userAccount);
+    }
+
+    public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
+        markAccountValidated(userAccount);
+
+        emailValidate.inActive();
+        emailValidateService.saveEmailValidateEntity(emailValidate);
+    }
+
+    private void markAccountValidated(UserAccountEntity userAccount) {
+        if (null != userAccount.getAccountInactiveReason()) {
+            switch (userAccount.getAccountInactiveReason()) {
+                case ANV:
+                    updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition, rid={}", userAccount.getReceiptUserId());
+                    throw new RuntimeException("Reached unreachable condition " + userAccount.getReceiptUserId());
+            }
+        } else {
+            userAccount.setAccountValidated(true);
+            saveUserAccount(userAccount);
+        }
+    }
+
+    private void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
+        userAccountManager.updateAccountToValidated(id, accountInactiveReason);
     }
 }

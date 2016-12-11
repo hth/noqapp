@@ -4,17 +4,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/webflow
        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_ANONYMOUS" match="all" />
-    
+    <secured attributes="ROLE_USER" match="any" />
+
     <on-start>
-        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'authenticationKey')" result="conversationScope.authenticationKey" />
-        <evaluate expression="businessRegistrationFlowActions.findInvite(authenticationKey)"
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.createBusinessRegistration()"
                   result="flowScope.register" />
     </on-start>
 
     <decision-state id="profileComplete">
-        <!-- registrationComplete will always be false as invite is inactive after completion -->
-        <if test="businessRegistrationFlowActions.isRegistrationComplete(register)"
+        <if test="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(register)"
             then="registrationComplete"
             else="profileCompletion" />
     </decision-state>
@@ -26,51 +24,51 @@
                       expression="T(com.token.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="validateUserProfile" />
-        <transition on="cancel" to="home" />
     </view-state>
 
     <action-state id="validateUserProfile">
-        <evaluate expression="userFlowValidator.validateUserProfileSignupDetails(register, messageContext)" />
+        <evaluate expression="userFlowValidator.validateUserProfileDetails(register, messageContext)" />
         <transition on="success" to="registrationStart">
-            <evaluate expression="businessRegistrationFlowActions.updateProfile(register)" />
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.updateProfile(register)" />
         </transition>
         <transition on="failure" to="profileCompletion" />
     </action-state>
 
     <view-state id="registrationStart" model="register">
         <transition on="submit" to="validateBusinessProfile" />
-        <transition on="cancel" to="home" />
+        <transition on="cancel" to="logout" />
     </view-state>
 
     <action-state id="validateBusinessProfile">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)" />
         <transition on="success" to="registrationReview">
-            <evaluate expression="businessRegistrationFlowActions.updateBusiness(register)" />
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.updateBusiness(register)" />
         </transition>
         <transition on="failure" to="registrationStart" />
     </action-state>
 
     <view-state id="registrationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
-        <transition on="confirm" to="completeRegistrationInformation" history="invalidate" />
+        <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
         <transition on="revise" to="profileCompletion" />
-        <transition on="cancel" to="home" />
+        <transition on="cancel" to="logout" />
     </view-state>
 
     <action-state id="completeRegistrationInformation">
         <!-- Need the result to show correct message on JSP -->
-        <evaluate result="flowScope.redirectTo"
-                  expression="businessRegistrationFlowActions.completeRegistrationInformation(register, authenticationKey)"/>
+        <evaluate result="register"
+                  expression="migrateToBusinessRegistrationFlowActions.completeRegistrationInformation(register)"/>
 
-        <transition on-exception="com.token.view.flow.exception.BusinessRegistrationException"
+        <transition on-exception="com.token.view.flow.exception.MigrateToBusinessRegistrationException"
                     to="profileCompletion" />
+
         <transition to="registrationComplete"/>
     </action-state>
-
-    <view-state id="registrationComplete" view="externalRedirect:#{redirectTo}"/>
-    <view-state id="home" view="externalRedirect:#{'/open/login.htm'}" />
     
+    <view-state id="registrationComplete" />
+    <end-state id="logout" />
+
     <global-transitions>
-        <transition on="cancel" to="home" />
+        <transition on="cancel" to="logout" />
     </global-transitions>
 </flow>

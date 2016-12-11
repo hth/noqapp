@@ -471,7 +471,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
         activeProfilewarFreemarkerDir.mkdirs();
 
         copy {
-            from file("web/environment/$env/$env" + ".properties")
+            from file("view/environment/$env/$env" + ".properties")
             into activeProfilewarConfDir
         }
 
@@ -622,7 +622,7 @@ task prepWar(dependsOn: [
             into warDir
             exclude '**/*.classes'
             exclude '**/static/css/*.css'
-            exclude 'view/web/static/js/mainpop.js', 'web/web/static/js/colpick.js'
+            exclude 'view/web/static/js/mainpop.js', 'view/web/static/js/colpick.js'
         }
 
         copy {

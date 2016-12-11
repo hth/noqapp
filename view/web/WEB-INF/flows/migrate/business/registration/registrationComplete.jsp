@@ -1,6 +1,6 @@
-<%@ include file="../include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp"%>
 <!DOCTYPE html>
-<html lang="en" ng-app="scroll" ng-controller="Main">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="description" content=""/>
@@ -11,20 +11,14 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel='stylesheet' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.print.css' media='print'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.0/highcharts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 </head>
 <body>
 <div class="header_main">
@@ -32,7 +26,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><a href="/access/landing.htm"><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/>Receiptofi</a></h1>
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/business/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -44,8 +38,6 @@
                 </a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">
@@ -64,41 +56,35 @@
         </div>
     </div>
 </div>
-
 <header>
 </header>
 <div class="main clearfix">
+    <div class="sidebar_no_use">
+    </div>
     <div class="rightside-content">
-        <div id="tabs" class="nav-list">
-            <ul class="nav-block">
-                <li><a href="#tab1"></a></li>
-            </ul>
-            <div id="tab1" class="ajx-content">
-                <div class="rightside-title">
-                    Welcome
-                </div>
-                <sec:authorize access="hasRole('ROLE_USER')">
+        <sec:authorize access="hasRole('ROLE_USER')">
+        <div class="business_reg">
+            <div class="down_form" style="width: 90%">
                 <c:choose>
-                    <c:when test="${!empty landingForm.businessUserRegistrationStatus}">
-                        <c:if test="${landingForm.businessUserRegistrationStatus eq 'C'}">
-                            Awaiting approval for business account. <br/>
-                            Since: ${landingForm.businessAccountSignedUp}
-                        </c:if>
+                    <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
+                        <h1 class="h1">Registration complete</h1>
+                        <hr>
+                        Your details are being verified. Would notify you once verification is complete.
                     </c:when>
                     <c:otherwise>
-                    <div class="rightside-title">
-                        <a href="/access/landing/business/migrate.htm">Do you have a business to register?</a>
-                    </div>
+                        <h1 class="h1">Registration not complete</h1>
+                        <hr>
+                        We could not verify your details. Please contact us or update profile.
                     </c:otherwise>
                 </c:choose>
-                </sec:authorize>
             </div>
         </div>
+        </sec:authorize>
     </div>
-    <div class="footer-tooth clearfix">
-        <div class="footer-tooth-middle"></div>
-        <div class="footer-tooth-right"></div>
-    </div>
+</div>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
 </div>
 <div class="big_footer">
     <div class="mfooter_up">
@@ -108,4 +94,5 @@
     </div>
 </div>
 </body>
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
