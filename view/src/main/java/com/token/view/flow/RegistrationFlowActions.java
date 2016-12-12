@@ -48,7 +48,7 @@ class RegistrationFlowActions {
         }
     }
 
-    BizNameEntity registerBusinessDetails(Register register) {
+    BizStoreEntity registerBusinessDetails(Register register) {
         BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
@@ -68,6 +68,6 @@ class RegistrationFlowActions {
             validateAddress(bizStore);
             bizService.saveStore(bizStore);
         }
-        return bizName;
+        return bizStore;
     }
 }

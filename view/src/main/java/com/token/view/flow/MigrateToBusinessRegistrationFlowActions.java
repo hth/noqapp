@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.token.domain.BizNameEntity;
+import com.token.domain.BizStoreEntity;
 import com.token.domain.BusinessUserEntity;
 import com.token.domain.UserProfileEntity;
 import com.token.domain.flow.MigrateToBusinessRegistration;
@@ -107,14 +107,15 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             throws MigrateToBusinessRegistrationException {
         try {
             updateUserProfile(register);
-            BizNameEntity bizName = registerBusinessDetails(register);
+            BizStoreEntity bizStore = registerBusinessDetails(register);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
             if(businessUser == null) {
                 businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.BUSINESS);
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
             }
             businessUser
-                    .setBizName(bizName)
+                    .setBizName(bizStore.getBizName())
+                    .setBizStore(bizStore)
                     .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
             businessUserService.save(businessUser);

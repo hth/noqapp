@@ -2,6 +2,8 @@ package com.token.repository;
 
 import com.token.domain.BusinessUserEntity;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 11/23/16 5:10 PM
@@ -22,5 +24,10 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * @return
      */
     BusinessUserEntity findBusinessUser(String rid);
+
+    BusinessUserEntity findById(String id);
     boolean doesBusinessUserExists(String rid, String bizId);
+
+    long awaitingApprovalCount();
+    List<BusinessUserEntity> awaitingApprovals();
 }
