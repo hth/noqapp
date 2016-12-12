@@ -40,15 +40,19 @@ public class BusinessUserEntity extends BaseEntity {
     private String validateByRid;
 
     @DBRef
-    @Field ("BIZ_NAME")
+    @Field ("B_N")
     private BizNameEntity bizName;
+
+    @DBRef
+    @Field ("B_S")
+    private BizStoreEntity bizStore;
 
     /* Set the kind of business is registered as. */
     @Field ("UL")
     private UserLevelEnum userLevel;
 
     @SuppressWarnings("unused")
-    private BusinessUserEntity() {
+    public BusinessUserEntity() {
         super();
     }
 
@@ -98,6 +102,15 @@ public class BusinessUserEntity extends BaseEntity {
 
     public BusinessUserEntity setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+        return this;
+    }
+
+    public BizStoreEntity getBizStore() {
+        return bizStore;
+    }
+
+    public BusinessUserEntity setBizStore(BizStoreEntity bizStore) {
+        this.bizStore = bizStore;
         return this;
     }
 

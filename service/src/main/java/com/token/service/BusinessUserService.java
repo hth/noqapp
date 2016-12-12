@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.token.domain.BusinessUserEntity;
 import com.token.domain.types.UserLevelEnum;
+import com.token.repository.BizStoreManager;
 import com.token.repository.BusinessUserManager;
 
 import java.util.List;
@@ -27,10 +28,15 @@ public class BusinessUserService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserService.class);
 
     private BusinessUserManager businessUserManager;
+    private BizStoreManager bizStoreManager;
 
     @Autowired
-    public BusinessUserService(BusinessUserManager businessUserManager) {
+    public BusinessUserService(
+            BusinessUserManager businessUserManager,
+            BizStoreManager bizStoreManager
+    ) {
         this.businessUserManager = businessUserManager;
+        this.bizStoreManager = bizStoreManager;
     }
 
     /**
@@ -70,6 +76,10 @@ public class BusinessUserService {
 
     public BusinessUserEntity findBusinessUser(String rid) {
         return businessUserManager.findBusinessUser(rid);
+    }
+
+    public BusinessUserEntity fingById(String id) {
+        return businessUserManager.findById(id);
     }
 
     public boolean doesBusinessUserExists(String rid, String bizId) {

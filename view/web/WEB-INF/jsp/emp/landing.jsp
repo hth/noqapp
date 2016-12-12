@@ -68,20 +68,40 @@
 <header>
 </header>
 <div class="main clearfix">
-    <div class="rightside-content">
-        <div id="tabs" class="nav-list">
-            <ul class="nav-block">
-                <li><a href="#tab1"></a></li>
-            </ul>
-            <div id="tab1" class="ajx-content">
-                <div class="rightside-title">
-                    Welcome
-                </div>
-
-                <div class="rightside-title">
-                    Awaiting business approvals ${empLandingForm.awaitingApprovalCount}
-                </div>
-            </div>
+    <div class="down_form" style="width: 90%">
+        Total awaiting approvals: ${empLandingForm.awaitingApprovalCount}
+    </div>
+    <div class="rightside-list-holder full-list-holder"
+            style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
+        <div class="down_form" style="width: 96%;">
+            <c:choose>
+                <c:when test="${!empty empLandingForm.businessUsers}">
+                    <table width="80%" style="margin: 0 4px 0 4px">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th width="440px;">Business Name</th>
+                            <th width="260px;">Since</th>
+                        </tr>
+                        </thead>
+                        <c:forEach items="${empLandingForm.businessUsers}" var="businessUser" varStatus="status">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ccc" rowspan="3">${status.count}&nbsp;</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">
+                                <a href="/emp/landing/${businessUser.id}.htm">${businessUser.bizName.businessName}</a>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">
+                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/>
+                                <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span>
+                            </td>
+                        </tr>
+                        </c:forEach>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    There are no new business to approve.
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <div class="footer-tooth clearfix">

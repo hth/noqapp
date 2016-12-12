@@ -24,6 +24,8 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * @return
      */
     BusinessUserEntity findBusinessUser(String rid);
+
+    BusinessUserEntity findById(String id);
     boolean doesBusinessUserExists(String rid, String bizId);
 
     long awaitingApprovalCount();
