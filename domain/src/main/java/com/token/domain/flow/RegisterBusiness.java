@@ -25,6 +25,13 @@ public class RegisterBusiness implements Serializable {
     private String countryShortName;
     private BusinessUserEntity businessUser;
 
+    private boolean multiStore = false;
+    private boolean businessSameAsStore = false;
+
+    private String addressStore;
+    private String phoneStore;
+    private String countryShortNameStore;
+
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
 
@@ -91,5 +98,45 @@ public class RegisterBusiness implements Serializable {
 
     public void setAvailableBusinessTypes(List<BusinessTypeEnum> availableBusinessTypes) {
         this.availableBusinessTypes = availableBusinessTypes;
+    }
+
+    public boolean isMultiStore() {
+        return multiStore;
+    }
+
+    public void setMultiStore(boolean multiStore) {
+        this.multiStore = multiStore;
+    }
+
+    public boolean isBusinessSameAsStore() {
+        return businessSameAsStore;
+    }
+
+    public void setBusinessSameAsStore(boolean businessSameAsStore) {
+        this.businessSameAsStore = businessSameAsStore;
+    }
+
+    public String getAddressStore() {
+        return addressStore;
+    }
+
+    public void setAddressStore(String addressStore) {
+        this.addressStore = addressStore;
+    }
+
+    public String getPhoneStore() {
+        return phoneStore;
+    }
+
+    public void setPhoneStore(String phoneStore) {
+        this.phoneStore = phoneStore;
+    }
+
+    public String getCountryShortNameStore() {
+        return countryShortNameStore;
+    }
+
+    public void setCountryShortNameStore(String countryShortNameStore) {
+        this.countryShortNameStore = countryShortNameStore;
     }
 }

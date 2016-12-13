@@ -40,6 +40,12 @@ class RegistrationFlowActions {
             register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
         }
         register.getRegisterBusiness().setPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getPhone()));
+
+        if (register.getRegisterBusiness().isMultiStore()) {
+            register.getRegisterBusiness().setAddressStore(null);
+            register.getRegisterBusiness().setPhoneStore(null);
+            register.getRegisterBusiness().setCountryShortNameStore(null);
+        }
     }
 
     private void validateAddress(BizStoreEntity bizStore) {
@@ -48,26 +54,42 @@ class RegistrationFlowActions {
         }
     }
 
-    BizStoreEntity registerBusinessDetails(Register register) {
+    private void validateAddress(BizNameEntity bizName) {
+        if (null == bizName.getId() || !bizName.isValidatedUsingExternalAPI()) {
+            externalService.decodeAddress(bizName);
+        }
+    }
+
+    BizNameEntity registerBusinessDetails(Register register) {
         BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
             bizName.setBusinessName(register.getRegisterBusiness().getName());
         }
         bizName.setBusinessTypes(register.getRegisterBusiness().getBusinessTypes());
+        bizName.setPhone(register.getRegisterBusiness().getPhone());
+        bizName.setAddress(register.getRegisterBusiness().getAddress());
+        bizName.setMultiStore(register.getRegisterBusiness().isMultiStore());
+        validateAddress(bizName);
         bizService.saveName(bizName);
 
-        BizStoreEntity bizStore = bizService.findMatchingStore(
-                register.getRegisterBusiness().getAddress(),
-                register.getRegisterBusiness().getBusinessPhoneNotFormatted());
-        if (bizStore == null) {
-            bizStore = BizStoreEntity.newInstance();
-            bizStore.setBizName(bizName);
-            bizStore.setPhone(register.getRegisterBusiness().getPhone());
-            bizStore.setAddress(register.getRegisterBusiness().getAddress());
-            validateAddress(bizStore);
-            bizService.saveStore(bizStore);
+        /* Add a store. */
+        if (!register.getRegisterBusiness().isMultiStore()) {
+
+            BizStoreEntity bizStore = bizService.findMatchingStore(
+                    register.getRegisterBusiness().getAddress(),
+                    register.getRegisterBusiness().getBusinessPhoneNotFormatted());
+            if (bizStore == null) {
+                bizStore = BizStoreEntity.newInstance();
+                bizStore.setBizName(bizName);
+                bizStore.setPhone(register.getRegisterBusiness().getPhone());
+                bizStore.setAddress(register.getRegisterBusiness().getAddress());
+
+                //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
+                validateAddress(bizStore);
+                bizService.saveStore(bizStore);
+            }
         }
-        return bizStore;
+        return bizName;
     }
 }

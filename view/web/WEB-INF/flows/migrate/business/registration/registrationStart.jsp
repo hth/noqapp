@@ -26,7 +26,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/business/landing.htm">Receiptofi</a></h1>
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -81,12 +81,12 @@
                     </c:if>
 
                     <div class="row_field">
-                        <form:label path="name" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="name" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Name</form:label>
                         <form:input path="name" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
-                        <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Type</form:label>
 
                         <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
@@ -94,14 +94,43 @@
                         </form:select>
                     </div>
                     <div class="row_field">
-                        <form:label path="address" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="address" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Address</form:label>
                         <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="phone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="phone" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Phone</form:label>
                         <form:input path="phone" size="20" cssClass="name_txt" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="multiStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">More than 1 store?</form:label>
+                        <form:checkbox path="multiStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" />
+                        &nbsp; (Select for franchise or stores at multiple locations)
+                    </div>
+
+                    <div id="storeDetail">
+                    <h1 class="h1">&nbsp;</h1>
+                    <h1 class="h1">Add Store details</h1>
+                    <hr>
+
+                    <div class="row_field">
+                        <form:label path="businessSameAsStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Address same as Business</form:label>
+                        <form:checkbox path="businessSameAsStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" />
+                        &nbsp;
+                    </div>
+                    <div class="row_field">
+                        <form:label path="addressStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Address</form:label>
+                        <form:input path="addressStore" size="200" cssClass="name_txt" style="width: 600px;" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="phoneStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Phone</form:label>
+                        <form:input path="phoneStore" size="20" cssClass="name_txt" />
+                    </div>
                     </div>
 
                     <div class="full">
@@ -131,4 +160,47 @@
 </div>
 </body>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[name="registerBusiness.businessSameAsStore"]').click(function () {
+            if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
+                $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
+                $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
+            } else {
+                //Clear on un-check
+                $('[name="registerBusiness.addressStore"]').val("");
+                $('[name="registerBusiness.phoneStore"]').val("");
+            }
+        });
+
+        $('[name="registerBusiness.multiStore"]').click(function () {
+            if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+                $('#storeDetail').hide();
+            } else {
+                $('#storeDetail').show();
+                $('[name="registerBusiness.addressStore"]').val("");
+                $('[name="registerBusiness.phoneStore"]').val("");
+                $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
+            }
+        });
+
+        if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
+            $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
+            $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
+        } else {
+            //Clear on un-check
+            $('[name="registerBusiness.addressStore"]').val("");
+            $('[name="registerBusiness.phoneStore"]').val("");
+        }
+
+        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+            $('#storeDetail').hide();
+        } else {
+            $('#storeDetail').show();
+            $('[name="registerBusiness.addressStore"]').val("");
+            $('[name="registerBusiness.phoneStore"]').val("");
+            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
+        }
+    });
+</script>
 </html>
