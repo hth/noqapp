@@ -26,7 +26,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/business/landing.htm">Receiptofi</a></h1>
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -71,33 +71,33 @@
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                     <div class="row_field">
-                        <form:label path="registerUser.firstName" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerUser.firstName" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">First name</form:label>
                         <form:input path="registerUser.firstName" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerUser.lastName" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerUser.lastName" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Last name</form:label>
                         <form:input path="registerUser.lastName" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerUser.address" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerUser.address" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Your Address</form:label>
                         <form:input path="registerUser.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerUser.phone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerUser.phone" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Your Phone</form:label>
                         <form:input path="registerUser.phone" size="20" cssClass="name_txt" readonly="true" />
                     </div>
 
                     <div class="row_field">
-                        <form:label path="registerBusiness.name" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.name" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Name</form:label>
                         <form:input path="registerBusiness.name" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.businessTypes" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Type</form:label>
                         <form:select path="registerBusiness.businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
                             <form:options items="${register.registerBusiness.availableBusinessTypes}"
@@ -105,14 +105,33 @@
                         </form:select>
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.address" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.address" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Address</form:label>
                         <form:input path="registerBusiness.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.phone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.phone" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Business Phone</form:label>
                         <form:input path="registerBusiness.phone" size="20" cssClass="name_txt" readonly="true" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="registerBusiness.multiStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">More than 1 store?</form:label>
+                        <form:checkbox path="registerBusiness.multiStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" disabled="true" />
+                        &nbsp; (Select for franchise or stores at multiple locations)
+                    </div>
+
+                    <div id="storeDetail">
+                    <div class="row_field">
+                        <form:label path="registerBusiness.addressStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Address</form:label>
+                        <form:input path="registerBusiness.addressStore" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="registerBusiness.phoneStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Phone</form:label>
+                        <form:input path="registerBusiness.phoneStore" size="20" cssClass="name_txt" readonly="true" />
+                    </div>
                     </div>
 
                     <div class="full">
@@ -144,4 +163,13 @@
 </div>
 </body>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+            $('#storeDetail').hide();
+        } else {
+            $('#storeDetail').show();
+        }
+    });
+</script>
 </html>

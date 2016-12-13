@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.token.domain.BizNameEntity;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.shared.DecodedAddress;
 
@@ -40,7 +41,10 @@ public class ExternalService {
             @Value ("${google-server-api-key}")
                     String googleServerApiKey
     ) {
-        this.context = new GeoApiContext().setApiKey(googleServerApiKey);
+        this.context = new GeoApiContext()
+                .setApiKey(googleServerApiKey)
+                .setMaxRetries(0)
+                .disableRetries();
     }
 
     /**
@@ -78,6 +82,43 @@ public class ExternalService {
         } catch (Exception e) {
             LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
                     bizStore.getId(), bizStore.getAddress(), e.getLocalizedMessage(), e);
+        }
+    }
+
+    /**
+     * Find and populate Address, Latitude and Longitude for a given address from Google API Service to bizStore.
+     *
+     * @param bizName
+     */
+    public void decodeAddress(BizNameEntity bizName) {
+        try {
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
+            if (decodedAddress.isNotEmpty()) {
+                bizName.setAddress(decodedAddress.getAddress());
+                bizName.setFormattedAddress(decodedAddress.getFormattedAddress());
+                bizName.setPostalCode(decodedAddress.getPostalCode());
+                bizName.setCountryShortName(decodedAddress.getCountryShortName());
+                if (null != decodedAddress.getCoordinate()) {
+                    bizName.setCoordinate(decodedAddress.getCoordinate());
+                }
+                bizName.setPlaceId(decodedAddress.getPlaceId());
+
+                PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
+                if (null != placeDetails) {
+                    bizName.setPlaceType(placeDetails.types);
+                    if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
+                        bizName.setPhone(placeDetails.formattedPhoneNumber);
+                    }
+                }
+
+                bizName.setValidatedUsingExternalAPI(true);
+            } else {
+                LOG.warn("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
+                        bizName.getId(), bizName.getAddress());
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
+                    bizName.getId(), bizName.getAddress(), e.getLocalizedMessage(), e);
         }
     }
 

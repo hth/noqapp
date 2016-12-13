@@ -43,10 +43,6 @@ public class BusinessUserEntity extends BaseEntity {
     @Field ("B_N")
     private BizNameEntity bizName;
 
-    @DBRef
-    @Field ("B_S")
-    private BizStoreEntity bizStore;
-
     /* Set the kind of business is registered as. */
     @Field ("UL")
     private UserLevelEnum userLevel;
@@ -102,15 +98,6 @@ public class BusinessUserEntity extends BaseEntity {
 
     public BusinessUserEntity setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
-        return this;
-    }
-
-    public BizStoreEntity getBizStore() {
-        return bizStore;
-    }
-
-    public BusinessUserEntity setBizStore(BizStoreEntity bizStore) {
-        this.bizStore = bizStore;
         return this;
     }
 

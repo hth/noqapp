@@ -112,14 +112,14 @@
                     </form:select>
                 </div>
                 <div class="row_field">
-                    <form:label path="businessUser.bizStore.address" cssClass="profile_label" cssStyle="width: 145px;"
+                    <form:label path="businessUser.bizName.address" cssClass="profile_label" cssStyle="width: 145px;"
                             cssErrorClass="profile_label lb_error">Business Address</form:label>
-                    <form:input path="businessUser.bizStore.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
+                    <form:input path="businessUser.bizName.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
                 </div>
                 <div class="row_field">
-                    <form:label path="businessUser.bizStore.phone" cssClass="profile_label" cssStyle="width: 145px;"
+                    <form:label path="businessUser.bizName.phone" cssClass="profile_label" cssStyle="width: 145px;"
                             cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                    <form:input path="businessUser.bizStore.phone" size="20" cssClass="name_txt" readonly="true" />
+                    <form:input path="businessUser.bizName.phone" size="20" cssClass="name_txt" readonly="true" />
                 </div>
 
                 <c:choose>
