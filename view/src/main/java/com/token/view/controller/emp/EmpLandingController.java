@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.token.domain.BusinessUserEntity;
-import com.token.domain.UserAccountEntity;
-import com.token.domain.UserProfileEntity;
 import com.token.domain.site.TokenUser;
-import com.token.domain.types.BusinessUserRegistrationStatusEnum;
-import com.token.domain.types.UserLevelEnum;
 import com.token.service.AccountService;
 import com.token.service.BusinessUserService;
+import com.token.service.emp.EmpLandingService;
 import com.token.utils.ScrubbedInput;
 import com.token.view.form.emp.BusinessAwaitingApprovalForm;
 import com.token.view.form.emp.EmpLandingForm;
@@ -43,6 +40,7 @@ public class EmpLandingController {
     private String businessAwaitingApproval;
     private BusinessUserService businessUserService;
     private AccountService accountService;
+    private EmpLandingService empLandingService;
 
     @Autowired
     public EmpLandingController(
@@ -53,12 +51,15 @@ public class EmpLandingController {
             String businessAwaitingApproval,
 
             BusinessUserService businessUserService,
-            AccountService accountService) {
+            AccountService accountService,
+            EmpLandingService empLandingService
+    ) {
         this.empLanding = empLanding;
         this.businessAwaitingApproval = businessAwaitingApproval;
 
         this.businessUserService = businessUserService;
         this.accountService = accountService;
+        this.empLandingService = empLandingService;
     }
 
     @RequestMapping (method = RequestMethod.GET)
@@ -108,22 +109,7 @@ public class EmpLandingController {
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
                 tokenUser.getRid());
 
-        BusinessUserEntity businessUser = businessUserService.fingById(businessAwaitingApprovalForm.getBusinessUser().getId());
-        businessUser
-                .setValidateByRid(tokenUser.getRid())
-                .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
-        businessUserService.save(businessUser);
-
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getReceiptUserId());
-        userProfile.setLevel(UserLevelEnum.BUSINESS);
-        accountService.save(userProfile);
-
-        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getReceiptUserId(),
-                userProfile.getLevel()
-        );
-        accountService.save(userAccount);
-
+        empLandingService.approveBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), tokenUser.getRid());
         return empLanding;
     }
 }
