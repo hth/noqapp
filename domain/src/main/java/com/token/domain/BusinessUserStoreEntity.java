@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Contains relation of Business_Manager with specific store access.
+ *
  * User: hitender
  * Date: 12/13/16 10:26 AM
  */
@@ -34,6 +36,12 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @NotNull
     @Field ("BN")
     private String bizNameId;
+
+    public BusinessUserStoreEntity(String receiptUserId, String bizStoreId, String bizNameId) {
+        this.receiptUserId = receiptUserId;
+        this.bizStoreId = bizStoreId;
+        this.bizNameId = bizNameId;
+    }
 
     public String getReceiptUserId() {
         return receiptUserId;

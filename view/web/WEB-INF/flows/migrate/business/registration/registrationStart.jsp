@@ -117,7 +117,7 @@
 
                     <div class="row_field">
                         <form:label path="businessSameAsStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Address same as Business</form:label>
+                                cssErrorClass="profile_label lb_error">Same as Business Address</form:label>
                         <form:checkbox path="businessSameAsStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" />
                         &nbsp;
                     </div>

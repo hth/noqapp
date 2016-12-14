@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -17,6 +16,7 @@ import com.token.domain.BizNameEntity;
 import com.token.domain.BusinessUserEntity;
 import com.token.domain.analytic.BizDimensionEntity;
 import com.token.domain.site.TokenUser;
+import com.token.service.BizService;
 import com.token.service.BusinessUserService;
 import com.token.service.analytic.BizDimensionService;
 import com.token.view.form.business.BusinessLandingForm;
@@ -41,6 +41,7 @@ public class BusinessLandingController {
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
+    private BizService bizService;
 
     @Autowired
     public BusinessLandingController(
@@ -51,12 +52,15 @@ public class BusinessLandingController {
             String migrateBusinessRegistrationFlow,
 
             BusinessUserService businessUserService,
-            BizDimensionService bizDimensionService
+            BizDimensionService bizDimensionService,
+            BizService bizService
     ) {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
+
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
+        this.bizService = bizService;
     }
 
     /**
@@ -65,14 +69,14 @@ public class BusinessLandingController {
      * @param businessLandingForm
      * @return
      */
-    @PreAuthorize ("hasAnyRole('ROLE_BUSINESS')")
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
-    public String loadForm(@ModelAttribute ("businessLandingForm") BusinessLandingForm businessLandingForm) {
+    public String landing(
+            @ModelAttribute ("businessLandingForm")
+            BusinessLandingForm businessLandingForm
+    ) {
         TokenUser receiptUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
-
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(receiptUser.getRid());
-        return nextPage(businessUser, businessLandingForm);
+        return nextPage(businessUserService.findBusinessUser(receiptUser.getRid()), businessLandingForm);
     }
 
     private String nextPage(
@@ -102,7 +106,11 @@ public class BusinessLandingController {
         BizDimensionEntity bizDimension = bizDimensionService.findBy(bizNameId);
         if (null != bizDimension) {
             businessLandingForm.setBizName(bizDimension.getBizName());
+        } else {
+            businessLandingForm.setBizName(bizName.getBusinessName());
         }
+
+        businessLandingForm.setBizStores(bizService.getAllBizStores(businessUser.getBizName().getId()));
     }
 
 }

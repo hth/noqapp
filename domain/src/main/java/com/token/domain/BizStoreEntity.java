@@ -50,6 +50,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("FA")
     private String formattedAddress;
 
+    /* Postal code could be empty for few countries. */
     @Field ("PC")
     private String postalCode;
 
@@ -83,6 +84,12 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("VC")
     private int validationCount;
+
+    @Field ("QR")
+    private String codeQR;
+
+    @Field ("CQ")
+    private boolean changedCodeQR = false;
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -247,5 +254,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void increaseValidationCount() {
         this.validationCount += 1;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public void setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        this.changedCodeQR = true;
     }
 }

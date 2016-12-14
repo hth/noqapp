@@ -118,7 +118,15 @@
                         <form:label path="registerBusiness.multiStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">More than 1 store?</form:label>
                         <form:checkbox path="registerBusiness.multiStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" disabled="true" />
-                        &nbsp; (Select for franchise or stores at multiple locations)
+                        &nbsp;
+                        <c:choose>
+                            <c:when test="${register.registerBusiness.multiStore eq false}">
+                                <span>You have answered 'NO'. You can always change this later.</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span>You have answered 'YES'</span>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
 
                     <div id="storeDetail">
