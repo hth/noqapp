@@ -72,6 +72,7 @@
         Address : ${storeLandingForm.address}
         Phone : ${storeLandingForm.phone}
         Display Name : ${storeLandingForm.displayName}
+        <img src="/business/bm/store/i/${storeLandingForm.qrFileName}.htm" />
     </div>
     <div class="footer-tooth clearfix">
         <div class="footer-tooth-middle"></div>

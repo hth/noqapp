@@ -9,6 +9,7 @@ public class StoreLandingForm {
     private String address;
     private String phone;
     private String displayName;
+    private String qrFileName;
 
     public String getAddress() {
         return address;
@@ -34,6 +35,15 @@ public class StoreLandingForm {
 
     public StoreLandingForm setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    public String getQrFileName() {
+        return qrFileName;
+    }
+
+    public StoreLandingForm setQrFileName(String qrFileName) {
+        this.qrFileName = qrFileName;
         return this;
     }
 }

@@ -7,6 +7,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import org.apache.commons.io.FilenameUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +31,13 @@ import javax.imageio.ImageIO;
  * Date: 11/21/16 8:57 AM
  */
 @Service
-public class QCRCodeGeneratorService {
+public class CodeQRGeneratorService {
+    private static final Logger LOG = LoggerFactory.getLogger(CodeQRGeneratorService.class);
 
     @Value("${size:300}")
     private int size;
 
-    public void createQRImage(String qrCodeText) throws WriterException, IOException {
+    public String createQRImage(String qrCodeText) throws WriterException, IOException {
         File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PNG.name());
 
         // Create the ByteMatrix for the QR-Code that encodes the given String
@@ -58,5 +64,6 @@ public class QCRCodeGeneratorService {
             }
         }
         ImageIO.write(image, FileExtensionTypeEnum.PNG.name(), toFile);
+        return FilenameUtils.getBaseName(toFile.getName());
     }
 }
