@@ -12,11 +12,8 @@ package com.token.domain.types;
 })
 public enum UserLevelEnum {
     USER("User", 10),
-    ACCOUNTANT("Accountant", 11),
-    ENTERPRISE("Enterprise", 20),
     BUSINESS("Business", 30),
     TECH_RECEIPT("Receipt Tech", 40),
-    TECH_CAMPAIGN("Campaign Tech", 41),
     SUPERVISOR("Super", 50),
     ANALYSIS_READ("Analysis Read", 60),
     ADMIN("Admin", 90);

@@ -124,18 +124,12 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return empLanding;
             case ROLE_TECHNICIAN:
                 return empReceiptLanding;
-            case ROLE_CAMPAIGN:
-                return empCampaignLanding;
-            case ROLE_ACCOUNTANT:
-                return accountantLanding;
             case ROLE_ADMIN:
                 return adminLanding;
             case ROLE_ANALYSIS_READ:
                 return displayLanding;
             case ROLE_BUSINESS:
                 return businessLanding;
-            case ROLE_ENTERPRISE:
-                return enterpriseLanding;
             default:
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");

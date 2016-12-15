@@ -106,10 +106,6 @@
         <intercept-url pattern="/emp/receipt/**"
                        access="hasRole('ROLE_TECHNICIAN')" />
 
-        <!-- Note: narrowed interceptor has to be before broader interceptor, example '/emp/**' for ROLE_SUPERVISOR -->
-        <intercept-url pattern="/emp/campaign/**"
-                       access="hasRole('ROLE_CAMPAIGN')" />
-
         <!-- Note: broader interceptor after narrowed interceptor, example '/emp/receipt/**' for ROLE_TECHNICIAN -->
         <intercept-url pattern="/emp/**"
                        access="hasRole('ROLE_SUPERVISOR')" />
@@ -122,12 +118,6 @@
 
         <intercept-url pattern="/business/**"
                        access="hasRole('ROLE_BUSINESS')" />
-
-        <intercept-url pattern="/accountant/**"
-                       access="hasRole('ROLE_ACCOUNTANT')" />
-
-        <intercept-url pattern="/enterprise/**"
-                       access="hasRole('ROLE_ENTERPRISE')" />
 
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />

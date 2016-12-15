@@ -18,22 +18,13 @@ public enum RoleEnum {
     /** A regular user. */
     ROLE_USER,
 
-    /** Account. */
-    ROLE_ACCOUNTANT,
-
     /** A business user. */
     ROLE_BUSINESS,
-
-    /** An enterprise user who has multiple receipt user. */
-    ROLE_ENTERPRISE,
 
     /** Validate and process data. */
     ROLE_TECHNICIAN,
 
-    /** Approve Campaign. */
-    ROLE_CAMPAIGN,
-
-    /** Has view access pending things for to ROLE_TECHNICIAN, ROLE_CAMPAIGN. */
+    /** Has view access pending things for to ROLE_TECHNICIAN. */
     ROLE_SUPERVISOR,
 
     /** Has administrator role. */
