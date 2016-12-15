@@ -91,7 +91,7 @@
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="3">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${store.address}
+                                        <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>

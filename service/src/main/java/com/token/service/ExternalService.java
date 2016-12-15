@@ -58,7 +58,11 @@ public class ExternalService {
             if (decodedAddress.isNotEmpty()) {
                 bizStore.setAddress(decodedAddress.getAddress());
                 bizStore.setFormattedAddress(decodedAddress.getFormattedAddress());
+                bizStore.setTown(decodedAddress.getTown());
+                bizStore.setDistrict(decodedAddress.getDistrict());
+                bizStore.setState(decodedAddress.getState());
                 bizStore.setPostalCode(decodedAddress.getPostalCode());
+                bizStore.setCountry(decodedAddress.getCountry());
                 bizStore.setCountryShortName(decodedAddress.getCountryShortName());
                 if (null != decodedAddress.getCoordinate()) {
                     bizStore.setCoordinate(decodedAddress.getCoordinate());
@@ -96,7 +100,11 @@ public class ExternalService {
             if (decodedAddress.isNotEmpty()) {
                 bizName.setAddress(decodedAddress.getAddress());
                 bizName.setFormattedAddress(decodedAddress.getFormattedAddress());
+                bizName.setTown(decodedAddress.getTown());
+                bizName.setDistrict(decodedAddress.getDistrict());
+                bizName.setState(decodedAddress.getState());
                 bizName.setPostalCode(decodedAddress.getPostalCode());
+                bizName.setCountry(decodedAddress.getCountry());
                 bizName.setCountryShortName(decodedAddress.getCountryShortName());
                 if (null != decodedAddress.getCoordinate()) {
                     bizName.setCoordinate(decodedAddress.getCoordinate());

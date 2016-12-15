@@ -18,7 +18,11 @@ public class DecodedAddress {
 
     private String address;
     private String formattedAddress;
+    private String town;
+    private String district;
+    private String state;
     private String postalCode;
+    private String country;
     private String countryShortName;
 
     /** Format Longitude and then Latitude. */
@@ -42,11 +46,26 @@ public class DecodedAddress {
                         case COUNTRY:
                             LOG.debug("country code={}", addressComponent.shortName);
                             countryShortName = addressComponent.shortName;
+                            country = addressComponent.longName;
+                            break;
+                        case LOCALITY:
+                            LOG.debug("town code={}", addressComponent.shortName);
+                            town = addressComponent.longName;
                             break;
                         case POSTAL_CODE:
                             LOG.debug("postal code={}", addressComponent.longName);
                             postalCode = addressComponent.longName;
                             break;
+                        case ADMINISTRATIVE_AREA_LEVEL_1:
+                            LOG.debug("state code={}", addressComponent.longName);
+                            state = addressComponent.longName;
+                            break;
+                        case ADMINISTRATIVE_AREA_LEVEL_2:
+                            LOG.debug("district code={}", addressComponent.longName);
+                            district = addressComponent.longName;
+                            break;
+                        default:
+                            LOG.debug("{} city code={}", addressComponentType.name(), addressComponent.longName);
                     }
                 }
             }
@@ -84,8 +103,24 @@ public class DecodedAddress {
         return formattedAddress;
     }
 
+    public String getTown() {
+        return town;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getState() {
+        return state;
+    }
+
     public String getPostalCode() {
         return postalCode;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public String getCountryShortName() {
