@@ -118,8 +118,14 @@
                     <div class="row_field">
                         <form:label path="businessSameAsStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Same as Business Address</form:label>
-                        <form:checkbox path="businessSameAsStore" size="5" cssClass="name_txt" cssStyle="width: 20px; height:20px; margin-top: 8px;" />
+                        <form:checkbox path="businessSameAsStore" size="5" cssClass="name_txt"
+                                cssStyle="width: 20px; height:20px; margin-top: 8px;" />
                         &nbsp;
+                    </div>
+                    <div class="row_field">
+                        <form:label path="displayName" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Name</form:label>
+                        <form:input path="displayName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
                         <form:label path="addressStore" cssClass="profile_label" cssStyle="width: 155px;"
@@ -178,29 +184,12 @@
                 $('#storeDetail').hide();
             } else {
                 $('#storeDetail').show();
+                $('[name="registerBusiness.displayName"]').val("");
                 $('[name="registerBusiness.addressStore"]').val("");
                 $('[name="registerBusiness.phoneStore"]').val("");
                 $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
             }
         });
-
-        if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
-            $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
-            $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
-        } else {
-            //Clear on un-check
-            $('[name="registerBusiness.addressStore"]').val("");
-            $('[name="registerBusiness.phoneStore"]').val("");
-        }
-
-        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-            $('#storeDetail').hide();
-        } else {
-            $('#storeDetail').show();
-            $('[name="registerBusiness.addressStore"]').val("");
-            $('[name="registerBusiness.phoneStore"]').val("");
-            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
-        }
     });
 </script>
 </html>

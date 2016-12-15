@@ -28,6 +28,7 @@ public class RegisterBusiness implements Serializable {
     private boolean multiStore = false;
     private boolean businessSameAsStore = false;
 
+    private String displayName;
     private String addressStore;
     private String phoneStore;
     private String countryShortNameStore;
@@ -116,6 +117,14 @@ public class RegisterBusiness implements Serializable {
         this.businessSameAsStore = businessSameAsStore;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getAddressStore() {
         return addressStore;
     }
@@ -126,6 +135,15 @@ public class RegisterBusiness implements Serializable {
 
     public String getPhoneStore() {
         return phoneStore;
+    }
+
+    @Transient
+    public String getStorePhoneNotFormatted() {
+        if (StringUtils.isNotBlank(phoneStore)) {
+            return CommonUtil.phoneFormatter(phoneStore, countryShortName);
+        } else {
+            return phoneStore;
+        }
     }
 
     public void setPhoneStore(String phoneStore) {
