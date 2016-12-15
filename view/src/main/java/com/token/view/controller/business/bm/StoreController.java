@@ -65,10 +65,11 @@ public class StoreController {
         TokenUser receiptUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
 
-
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
-
-
+        storeLandingForm
+                .setAddress(bizStore.getAddress())
+                .setPhone(bizStore.getPhone())
+                .setDisplayName(bizStore.getDisplayName());
 
         return nextPage;
     }
