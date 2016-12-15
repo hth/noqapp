@@ -50,9 +50,21 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("FA")
     private String formattedAddress;
 
+    @Field ("TO")
+    private String town;
+
+    @Field ("DT")
+    private String district;
+
+    @Field ("ST")
+    private String state;
+
     /* Postal code could be empty for few countries. */
     @Field ("PC")
     private String postalCode;
+
+    @Field ("CC")
+    private String country;
 
     @NotNull
     @Field ("CS")
@@ -91,6 +103,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
+    //TODO Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
 
@@ -143,12 +156,44 @@ public class BizStoreEntity extends BaseEntity {
         this.formattedAddress = formattedAddress;
     }
 
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public String getPostalCode() {
         return postalCode;
     }
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getCountryShortName() {

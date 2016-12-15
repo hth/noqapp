@@ -44,6 +44,14 @@ public class FileUtil {
     private FileUtil() {
     }
 
+    private static String getTmpDir() {
+        return System.getProperty("java.io.tmpdir");
+    }
+
+    public static File getFileFromTmpDir(String filename) {
+        return new File(getTmpDir() + File.separator + filename);
+    }
+
     public static File createTempFile(String name, String ext) throws IOException {
         try {
             if (name.startsWith(TEMP_FILE_START_WITH)) {

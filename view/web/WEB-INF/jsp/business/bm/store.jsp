@@ -1,4 +1,4 @@
-<%@ include file="../include.jsp"%>
+<%@ include file="../../include.jsp"%>
 <!DOCTYPE html>
 <html lang="en" ng-app="scroll" ng-controller="Main">
 <head>
@@ -69,43 +69,10 @@
 </header>
 <div class="main clearfix">
     <div class="down_form" style="width: 90%">
-        Business Name: ${businessLandingForm.bizName}
-    </div>
-    <div class="rightside-list-holder full-list-holder"
-            style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
-        <div class="down_form" style="width: 96%;">
-            Click Add new store (Not working)
-
-            <div class="down_form" style="width: 96%;">
-                <c:choose>
-                    <c:when test="${!empty businessLandingForm.bizStores}">
-                        <table width="80%" style="margin: 0 4px 0 4px">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th width="440px;">Store Location</th>
-                                <th width="260px;">Since</th>
-                            </tr>
-                            </thead>
-                            <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
-                                <tr>
-                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="3">${status.count}&nbsp;</td>
-                                    <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                    </c:when>
-                    <c:otherwise>
-                        There are no new business to approve.
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
+        Address : ${storeLandingForm.address}
+        Phone : ${storeLandingForm.phone}
+        Display Name : ${storeLandingForm.displayName}
+        <img src="/business/bm/store/i/${storeLandingForm.qrFileName}.htm" />
     </div>
     <div class="footer-tooth clearfix">
         <div class="footer-tooth-middle"></div>
