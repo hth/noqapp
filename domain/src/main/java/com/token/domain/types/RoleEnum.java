@@ -13,7 +13,7 @@ package com.token.domain.types;
 public enum RoleEnum {
 
     /** Has read access. */
-    ROLE_ANALYSIS_READ,
+    ROLE_ANALYSIS,
 
     /** A regular user. */
     ROLE_USER,

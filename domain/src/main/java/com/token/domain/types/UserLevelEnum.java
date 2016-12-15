@@ -16,7 +16,7 @@ public enum UserLevelEnum {
     BIZ_ADMIN("Business Admin", 30),
     TECHNICIAN("Tech", 40),
     SUPERVISOR("Super", 50),
-    ANALYSIS_READ("Analysis Read", 60),
+    ANALYSIS("Analysis", 60),
     ADMIN("Admin", 90);
 
     private final String description;

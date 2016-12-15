@@ -113,7 +113,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         switch (getHighestRoleEnum(authorities)) {
             case ROLE_USER:
                 return accessLanding;
-            case ROLE_ANALYSIS_READ:
+            case ROLE_ANALYSIS:
                 return displayLanding;
             case ROLE_BIZ_MANAGER:
                 return businessManagerLanding;
