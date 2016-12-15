@@ -355,24 +355,24 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
-                roles.add(RoleEnum.ROLE_ANALYSIS_READ);
+                roles.add(RoleEnum.ROLE_ANALYSIS);
                 userAccount.setRoles(roles);
                 break;
-            case ANALYSIS_READ:
-                roles.add(RoleEnum.ROLE_ANALYSIS_READ);
+            case ANALYSIS:
+                roles.add(RoleEnum.ROLE_ANALYSIS);
                 userAccount.setRoles(roles);
                 break;
             case USER:
                 roles.add(RoleEnum.ROLE_USER);
                 userAccount.setRoles(roles);
                 break;
-            case BUSINESS_MANAGER:
-                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
+            case BIZ_MANAGER:
+                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
                 userAccount.setRoles(roles);
                 break;
-            case BUSINESS_ADMIN:
-                roles.add(RoleEnum.ROLE_BUSINESS_ADMIN);
-                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
+            case BIZ_ADMIN:
+                roles.add(RoleEnum.ROLE_BIZ_ADMIN);
+                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             default:

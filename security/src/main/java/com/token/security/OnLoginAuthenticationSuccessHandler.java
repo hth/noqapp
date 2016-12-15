@@ -113,18 +113,18 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         switch (getHighestRoleEnum(authorities)) {
             case ROLE_USER:
                 return accessLanding;
+            case ROLE_ANALYSIS:
+                return displayLanding;
+            case ROLE_BIZ_MANAGER:
+                return businessManagerLanding;
+            case ROLE_BIZ_ADMIN:
+                return businessAdminLanding;
             case ROLE_TECHNICIAN:
                 return empTechLanding;
             case ROLE_SUPERVISOR:
                 return empLanding;
             case ROLE_ADMIN:
                 return adminLanding;
-            case ROLE_ANALYSIS_READ:
-                return displayLanding;
-            case ROLE_BUSINESS_MANAGER:
-                return businessManagerLanding;
-            case ROLE_BUSINESS_ADMIN:
-                return businessAdminLanding;
             default:
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");

@@ -50,9 +50,9 @@ public class BusinessUserService {
         BusinessUserEntity businessUser = businessUserManager.findByRid(rid);
         switch (userLevel) {
             //TODO add Accountant and Enterprise
-            case BUSINESS_ADMIN:
+            case BIZ_ADMIN:
                 if (null == businessUser) {
-                    businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BUSINESS_ADMIN);
+                    businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BIZ_ADMIN);
                 }
 
                 if (active) {

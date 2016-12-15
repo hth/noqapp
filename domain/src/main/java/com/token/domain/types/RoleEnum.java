@@ -13,16 +13,16 @@ package com.token.domain.types;
 public enum RoleEnum {
 
     /** Has read access. */
-    ROLE_ANALYSIS_READ,
+    ROLE_ANALYSIS,
 
     /** A regular user. */
     ROLE_USER,
 
     /** A business manager. */
-    ROLE_BUSINESS_MANAGER,
+    ROLE_BIZ_MANAGER,
 
     /** A business admin. */
-    ROLE_BUSINESS_ADMIN,
+    ROLE_BIZ_ADMIN,
 
     /** Validate and process data. */
     ROLE_TECHNICIAN,
