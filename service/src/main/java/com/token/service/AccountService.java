@@ -366,8 +366,13 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_USER);
                 userAccount.setRoles(roles);
                 break;
-            case BUSINESS:
-                roles.add(RoleEnum.ROLE_BUSINESS);
+            case BUSINESS_MANAGER:
+                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
+                userAccount.setRoles(roles);
+                break;
+            case BUSINESS_ADMIN:
+                roles.add(RoleEnum.ROLE_BUSINESS_ADMIN);
+                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             default:

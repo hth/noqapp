@@ -12,7 +12,8 @@ package com.token.domain.types;
 })
 public enum UserLevelEnum {
     USER("User", 10),
-    BUSINESS("Business", 30),
+    BUSINESS_MANAGER("Business Manager", 20),
+    BUSINESS_ADMIN("Business Admin", 30),
     TECHNICIAN("Tech", 40),
     SUPERVISOR("Super", 50),
     ANALYSIS_READ("Analysis Read", 60),

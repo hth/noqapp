@@ -53,7 +53,7 @@ public class EmpLandingService {
         businessUserService.save(businessUser);
 
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getReceiptUserId());
-        userProfile.setLevel(UserLevelEnum.BUSINESS);
+        userProfile.setLevel(UserLevelEnum.BUSINESS_ADMIN);
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
