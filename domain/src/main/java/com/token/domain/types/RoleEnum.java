@@ -18,8 +18,11 @@ public enum RoleEnum {
     /** A regular user. */
     ROLE_USER,
 
-    /** A business user. */
-    ROLE_BUSINESS,
+    /** A business manager. */
+    ROLE_BUSINESS_MANAGER,
+
+    /** A business admin. */
+    ROLE_BUSINESS_ADMIN,
 
     /** Validate and process data. */
     ROLE_TECHNICIAN,

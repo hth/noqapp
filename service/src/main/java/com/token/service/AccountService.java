@@ -338,7 +338,7 @@ public class AccountService {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
-            case TECH_RECEIPT:
+            case TECHNICIAN:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 userAccount.setRoles(roles);
@@ -366,8 +366,13 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_USER);
                 userAccount.setRoles(roles);
                 break;
-            case BUSINESS:
-                roles.add(RoleEnum.ROLE_BUSINESS);
+            case BUSINESS_MANAGER:
+                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
+                userAccount.setRoles(roles);
+                break;
+            case BUSINESS_ADMIN:
+                roles.add(RoleEnum.ROLE_BUSINESS_ADMIN);
+                roles.add(RoleEnum.ROLE_BUSINESS_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             default:

@@ -35,19 +35,12 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     private String accessLanding;
 
     /** For receipt techs. */
-    @Value ("${empLanding:/emp/receipt/landing.htm}")
-    private String empReceiptLanding;
-
-    /** For campaign techs. */
-    @Value ("${empLanding:/emp/campaign/landing.htm}")
-    private String empCampaignLanding;
+    @Value ("${empTechLanding:/emp/receipt/landing.htm}")
+    private String empTechLanding;
 
     /** For supers. */
     @Value ("${empLanding:/emp/landing.htm}")
     private String empLanding;
-
-    @Value ("${accountantLanding:/accountant/landing.htm}")
-    private String accountantLanding;
 
     @Value ("${adminLanding:/admin/landing.htm}")
     private String adminLanding;
@@ -55,11 +48,11 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${displayLanding:/display/landing.htm}")
     private String displayLanding;
 
-    @Value ("${businessLanding:/business/landing.htm}")
-    private String businessLanding;
+    @Value ("${businessManagerLanding:/business/bm/landing.htm}")
+    private String businessManagerLanding;
 
-    @Value ("${enterpriseLanding:/enterprise/landing.htm}")
-    private String enterpriseLanding;
+    @Value ("${businessAdminLanding:/business/landing.htm}")
+    private String businessAdminLanding;
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -120,16 +113,18 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         switch (getHighestRoleEnum(authorities)) {
             case ROLE_USER:
                 return accessLanding;
+            case ROLE_TECHNICIAN:
+                return empTechLanding;
             case ROLE_SUPERVISOR:
                 return empLanding;
-            case ROLE_TECHNICIAN:
-                return empReceiptLanding;
             case ROLE_ADMIN:
                 return adminLanding;
             case ROLE_ANALYSIS_READ:
                 return displayLanding;
-            case ROLE_BUSINESS:
-                return businessLanding;
+            case ROLE_BUSINESS_MANAGER:
+                return businessManagerLanding;
+            case ROLE_BUSINESS_ADMIN:
+                return businessAdminLanding;
             default:
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");

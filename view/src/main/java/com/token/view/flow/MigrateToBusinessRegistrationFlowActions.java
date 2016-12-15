@@ -67,7 +67,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
         if (null == businessUser) {
-            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BUSINESS);
+            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BUSINESS_ADMIN);
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
@@ -110,7 +110,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             BizNameEntity bizName = registerBusinessDetails(register);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
             if(businessUser == null) {
-                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.BUSINESS);
+                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.BUSINESS_ADMIN);
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
             }
             businessUser
