@@ -338,7 +338,7 @@ public class AccountService {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
-            case TECH_RECEIPT:
+            case TECHNICIAN:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 userAccount.setRoles(roles);
