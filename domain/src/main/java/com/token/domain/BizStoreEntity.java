@@ -85,6 +85,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("VC")
     private int validationCount;
 
+    @Field ("DN")
+    private String displayName;
+
     @Field ("QR")
     private String codeQR;
 
@@ -263,5 +266,13 @@ public class BizStoreEntity extends BaseEntity {
     public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         this.changedCodeQR = true;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

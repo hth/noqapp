@@ -66,9 +66,41 @@ public class BusinessFlowValidator {
                     new MessageBuilder()
                             .error()
                             .source("registerBusiness.businessPhone")
-                            .defaultText("Business Phone cannot be Empty")
+                            .defaultText("Business Phone cannot be empty")
                             .build());
             status = "failure";
+        }
+
+        if (!register.getRegisterBusiness().isMultiStore()) {
+            if (StringUtils.isBlank(register.getRegisterBusiness().getDisplayName())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.displayName")
+                                .defaultText("Name cannot be empty. Example: Pharmacy, Driving License, Registration")
+                                .build());
+                status = "failure";
+            }
+
+            if (StringUtils.isBlank(register.getRegisterBusiness().getAddressStore())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.addressStore")
+                                .defaultText("Stored Address cannot be empty")
+                                .build());
+                status = "failure";
+            }
+
+            if (StringUtils.isBlank(register.getRegisterBusiness().getStorePhoneNotFormatted())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.phoneStore")
+                                .defaultText("Store Phone cannot be empty")
+                                .build());
+                status = "failure";
+            }
         }
 
         LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);

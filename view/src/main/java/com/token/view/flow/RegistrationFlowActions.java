@@ -82,6 +82,7 @@ class RegistrationFlowActions {
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
+                bizStore.setDisplayName(register.getRegisterBusiness().getDisplayName());
                 bizStore.setPhone(register.getRegisterBusiness().getPhone());
                 bizStore.setAddress(register.getRegisterBusiness().getAddress());
 

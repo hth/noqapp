@@ -130,6 +130,11 @@
                     </div>
 
                     <div id="storeDetail">
+                        <div class="row_field">
+                            <form:label path="registerBusiness.displayName" cssClass="profile_label" cssStyle="width: 155px;"
+                                    cssErrorClass="profile_label lb_error">Name</form:label>
+                            <form:input path="registerBusiness.displayName" size="20" cssClass="name_txt" readonly="true" style="width: 600px;" />
+                        </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.addressStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Store Address</form:label>
