@@ -151,12 +151,12 @@
                     </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Phone</form:label>
+                                cssErrorClass="profile_label lb_error">Store Start Time</form:label>
                         <form:input path="registerBusiness.startHourStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Phone</form:label>
+                                cssErrorClass="profile_label lb_error">Store Close Time</form:label>
                         <form:input path="registerBusiness.endHourStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     </div>

@@ -101,6 +101,26 @@ public class BusinessFlowValidator {
                                 .build());
                 status = "failure";
             }
+
+            if (register.getRegisterBusiness().getStartHourStore() == 0) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.startHourStore")
+                                .defaultText("Store start time cannot be empty")
+                                .build());
+                status = "failure";
+            }
+
+            if (register.getRegisterBusiness().getEndHourStore() == 0) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.endHourStore")
+                                .defaultText("Store close time cannot be empty")
+                                .build());
+                status = "failure";
+            }
         }
 
         LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
