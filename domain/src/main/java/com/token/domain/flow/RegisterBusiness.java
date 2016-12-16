@@ -32,6 +32,8 @@ public class RegisterBusiness implements Serializable {
     private String addressStore;
     private String phoneStore;
     private String countryShortNameStore;
+    private int startHourStore;
+    private int endHourStore;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
@@ -156,5 +158,21 @@ public class RegisterBusiness implements Serializable {
 
     public void setCountryShortNameStore(String countryShortNameStore) {
         this.countryShortNameStore = countryShortNameStore;
+    }
+
+    public int getStartHourStore() {
+        return startHourStore;
+    }
+
+    public void setStartHourStore(int startHourStore) {
+        this.startHourStore = startHourStore;
+    }
+
+    public int getEndHourStore() {
+        return endHourStore;
+    }
+
+    public void setEndHourStore(int endHourStore) {
+        this.endHourStore = endHourStore;
     }
 }

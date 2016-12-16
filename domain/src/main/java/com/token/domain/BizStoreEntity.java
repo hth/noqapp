@@ -104,6 +104,12 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
+    @Field ("SH")
+    private int startHour;
+
+    @Field ("EH")
+    private int endHour;
+
     //TODO Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
@@ -320,5 +326,21 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public void setStartHour(int startHour) {
+        this.startHour = startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
     }
 }
