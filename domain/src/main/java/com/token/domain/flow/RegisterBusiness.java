@@ -34,6 +34,7 @@ public class RegisterBusiness implements Serializable {
     private String countryShortNameStore;
     private int startHourStore;
     private int endHourStore;
+    private int tokenAvailableSince;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
@@ -174,5 +175,13 @@ public class RegisterBusiness implements Serializable {
 
     public void setEndHourStore(int endHourStore) {
         this.endHourStore = endHourStore;
+    }
+
+    public int getTokenAvailableSince() {
+        return tokenAvailableSince;
+    }
+
+    public void setTokenAvailableSince(int tokenAvailableSince) {
+        this.tokenAvailableSince = tokenAvailableSince;
     }
 }

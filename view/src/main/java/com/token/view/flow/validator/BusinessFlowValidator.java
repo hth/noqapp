@@ -121,6 +121,16 @@ public class BusinessFlowValidator {
                                 .build());
                 status = "failure";
             }
+
+            if (register.getRegisterBusiness().getTokenAvailableSince() == 0) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.tokenAvailableSince")
+                                .defaultText("Time from Token available cannot be empty")
+                                .build());
+                status = "failure";
+            }
         }
 
         LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
