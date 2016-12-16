@@ -24,4 +24,8 @@ public class TokenService {
         TokenEntity token = new TokenEntity(codeQR);
         tokenManager.save(token);
     }
+
+    public TokenEntity findByCodeQR(String codeQR) {
+        return tokenManager.findByCodeQR(codeQR);
+    }
 }

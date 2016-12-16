@@ -1,5 +1,8 @@
 package com.token.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,5 +50,10 @@ public class TokenManagerImpl implements TokenManager {
     @Override
     public void deleteHard(TokenEntity object) {
 
+    }
+
+    @Override
+    public TokenEntity findByCodeQR(String codeQR) {
+        return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenEntity.class, TABLE);
     }
 }

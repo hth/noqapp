@@ -45,10 +45,24 @@ public class JsonTokenState {
     private String storePhone;
 
     @JsonProperty ("s")
-    private String servingNumber;
+    private int tokenAvailableSince;
+
+    /* Store business start hour. */
+    @JsonProperty ("b")
+    private int startHour;
+
+    /* Store business end hour. */
+    @JsonProperty ("e")
+    private int endHour;
+
+    @JsonProperty ("s")
+    private int servingNumber;
 
     @JsonProperty ("l")
-    private String lastNumber;
+    private int lastNumber;
+
+    @JsonProperty ("q")
+    private boolean closeQueue;
 
     public JsonTokenState(String code) {
         this.code = code;
@@ -74,13 +88,33 @@ public class JsonTokenState {
         return this;
     }
 
-    public JsonTokenState setServingNumber(String servingNumber) {
+    public JsonTokenState setTokenAvailableSince(int tokenAvailableSince) {
+        this.tokenAvailableSince = tokenAvailableSince;
+        return this;
+    }
+
+    public JsonTokenState setStartHour(int startHour) {
+        this.startHour = startHour;
+        return this;
+    }
+
+    public JsonTokenState setEndHour(int endHour) {
+        this.endHour = endHour;
+        return this;
+    }
+
+    public JsonTokenState setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
         return this;
     }
 
-    public JsonTokenState setLastNumber(String lastNumber) {
+    public JsonTokenState setLastNumber(int lastNumber) {
         this.lastNumber = lastNumber;
+        return this;
+    }
+
+    public JsonTokenState setCloseQueue(boolean closeQueue) {
+        this.closeQueue = closeQueue;
         return this;
     }
 }

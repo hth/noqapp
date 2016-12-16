@@ -18,8 +18,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document (collection = "TOKEN")
 public class TokenEntity extends BaseEntity {
 
-    @Field("TK")
-    private int token;
+    @Field("LN")
+    private int lastNumber;
 
     @Field ("CS")
     private int currentlyServing;
@@ -31,12 +31,12 @@ public class TokenEntity extends BaseEntity {
         this.id = codeQR;
     }
 
-    public int getToken() {
-        return token;
+    public int getLastNumber() {
+        return lastNumber;
     }
 
-    public void setToken(int token) {
-        this.token = token;
+    public void setLastNumber(int lastNumber) {
+        this.lastNumber = lastNumber;
     }
 
     public int getCurrentlyServing() {

@@ -7,4 +7,6 @@ import com.token.domain.TokenEntity;
  * Date: 12/16/16 8:50 AM
  */
 public interface TokenManager extends RepositoryManager<TokenEntity> {
+
+    TokenEntity findByCodeQR(String codeQR);
 }
