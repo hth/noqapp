@@ -35,8 +35,14 @@ public class JsonTokenState {
     @JsonProperty ("n")
     private String businessName;
 
+    @JsonProperty ("d")
+    private String displayName;
+
     @JsonProperty ("a")
-    private String businessAddress;
+    private String storeAddress;
+
+    @JsonProperty ("p")
+    private String storePhone;
 
     @JsonProperty ("s")
     private String servingNumber;
@@ -53,8 +59,18 @@ public class JsonTokenState {
         return this;
     }
 
-    public JsonTokenState setBusinessAddress(String businessAddress) {
-        this.businessAddress = businessAddress;
+    public JsonTokenState setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    public JsonTokenState setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
+        return this;
+    }
+
+    public JsonTokenState setStorePhone(String storePhone) {
+        this.storePhone = storePhone;
         return this;
     }
 

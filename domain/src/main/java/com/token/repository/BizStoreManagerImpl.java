@@ -249,6 +249,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public BizStoreEntity findByCodeQR(String codeQR) {
+        return mongoTemplate.findOne(query(where("QR").is(codeQR)), BizStoreEntity.class);
+    }
+
+    @Override
+    public boolean isValidCodeQR(String codeQR) {
+        return mongoTemplate.exists(query(where("QR").is(codeQR)), BizStoreEntity.class);
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM
