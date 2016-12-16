@@ -130,11 +130,15 @@
                     </div>
 
                     <div id="storeDetail">
-                        <div class="row_field">
-                            <form:label path="registerBusiness.displayName" cssClass="profile_label" cssStyle="width: 155px;"
-                                    cssErrorClass="profile_label lb_error">Name</form:label>
-                            <form:input path="registerBusiness.displayName" size="20" cssClass="name_txt" readonly="true" style="width: 600px;" />
-                        </div>
+                    <h1 class="h1">&nbsp;</h1>
+                    <h1 class="h1">Add Store details</h1>
+                    <hr>
+
+                    <div class="row_field">
+                        <form:label path="registerBusiness.displayName" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Name</form:label>
+                        <form:input path="registerBusiness.displayName" size="20" cssClass="name_txt" readonly="true" style="width: 600px;" />
+                    </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.addressStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Store Address</form:label>
@@ -144,6 +148,21 @@
                         <form:label path="registerBusiness.phoneStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Store Phone</form:label>
                         <form:input path="registerBusiness.phoneStore" size="20" cssClass="name_txt" readonly="true" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="registerBusiness.tokenAvailableSince" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Token Available Time</form:label>
+                        <form:input path="registerBusiness.tokenAvailableSince" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
+                    </div>
+                    <div class="row_field">
+                        <form:label path="registerBusiness.startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Start Time</form:label>
+                        <form:input path="registerBusiness.startHourStore" size="20" cssClass="name_txt" readonly="true" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="registerBusiness.endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Store Close Time</form:label>
+                        <form:input path="registerBusiness.endHourStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     </div>
 
