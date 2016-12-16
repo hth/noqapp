@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         /** Business name with address and phone makes it a unique store. */
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
+        @CompoundIndex (name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
         @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
