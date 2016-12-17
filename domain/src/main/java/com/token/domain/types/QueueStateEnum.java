@@ -2,16 +2,17 @@ package com.token.domain.types;
 
 /**
  * User: hitender
- * Date: 11/25/16 9:42 AM
+ * Date: 12/16/16 3:57 PM
  */
-public enum NotificationStateEnum {
-    S("S", "Success"),
-    F("F", "Failure");
+public enum QueueStateEnum {
+    Q("Q", "Queued"),
+    N("N", "No Show"),
+    S("S", "Serviced");
 
     private final String name;
     private final String description;
 
-    NotificationStateEnum(String name, String description) {
+    QueueStateEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -28,4 +29,6 @@ public enum NotificationStateEnum {
     public String toString() {
         return description;
     }
+
+
 }

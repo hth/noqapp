@@ -33,8 +33,8 @@ public enum NotificationTypeEnum {
     /** DOCUMENT_UPLOAD_FAILED is used in mobile to save local notification when document image fails to upload. */
     DOCUMENT_UPLOAD_FAILED("DOCUMENT_UPLOAD_FAILED", "Document Upload Failed", I, 100);
 
-    public final String description;
     public final String name;
+    public final String description;
     public final NotificationMarkerEnum notificationMarker;
     public final int delayNotifying;
 
