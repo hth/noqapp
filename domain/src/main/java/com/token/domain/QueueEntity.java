@@ -43,11 +43,11 @@ public class QueueEntity extends BaseEntity {
     @Field ("QS")
     private QueueStateEnum queueState = QueueStateEnum.Q;
 
-    public QueueEntity(String did, String rid, int tokenNumber, String codeQR) {
+    public QueueEntity(String codeQR, String did, String rid, int tokenNumber) {
+        this.codeQR = codeQR;
         this.did = did;
         this.rid = rid;
         this.tokenNumber = tokenNumber;
-        this.codeQR = codeQR;
     }
 
     public String getDid() {
