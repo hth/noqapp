@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
-import com.token.domain.TokenEntity;
+import com.token.domain.TokenQueueEntity;
 
 /**
  * User: hitender
@@ -25,22 +25,22 @@ import com.token.domain.TokenEntity;
         "PMD.LongVariable"
 })
 @Repository
-public class TokenManagerImpl implements TokenManager {
-    private static final Logger LOG = LoggerFactory.getLogger(TokenManagerImpl.class);
+public class TokenQueueManagerImpl implements TokenQueueManager {
+    private static final Logger LOG = LoggerFactory.getLogger(TokenQueueManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            TokenEntity.class,
+            TokenQueueEntity.class,
             Document.class,
             "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public TokenManagerImpl(MongoTemplate mongoTemplate) {
+    public TokenQueueManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(TokenEntity object) {
+    public void save(TokenQueueEntity object) {
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -48,12 +48,13 @@ public class TokenManagerImpl implements TokenManager {
     }
 
     @Override
-    public void deleteHard(TokenEntity object) {
+    public void deleteHard(TokenQueueEntity object) {
 
     }
 
     @Override
-    public TokenEntity findByCodeQR(String codeQR) {
-        return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenEntity.class, TABLE);
+    public TokenQueueEntity findByCodeQR(String codeQR) {
+        LOG.info("codeQR={}", codeQR);
+        return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenQueueEntity.class, TABLE);
     }
 }

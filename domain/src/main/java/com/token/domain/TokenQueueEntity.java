@@ -15,8 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "TOKEN")
-public class TokenEntity extends BaseEntity {
+@Document (collection = "TOKEN_QUEUE")
+public class TokenQueueEntity extends BaseEntity {
 
     @Field("LN")
     private int lastNumber;
@@ -26,10 +26,6 @@ public class TokenEntity extends BaseEntity {
 
     @Field ("CQ")
     private boolean closeQueue;
-
-    public TokenEntity(String codeQR) {
-        this.id = codeQR;
-    }
 
     public int getLastNumber() {
         return lastNumber;

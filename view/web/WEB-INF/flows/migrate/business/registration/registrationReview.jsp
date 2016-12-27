@@ -150,9 +150,9 @@
                         <form:input path="registerBusiness.phoneStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.tokenAvailableSince" cssClass="profile_label" cssStyle="width: 155px;"
+                        <form:label path="registerBusiness.tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Token Available Time</form:label>
-                        <form:input path="registerBusiness.tokenAvailableSince" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
+                        <form:input path="registerBusiness.tokenAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
                     </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.startHourStore" cssClass="profile_label" cssStyle="width: 155px;"

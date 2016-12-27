@@ -122,7 +122,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (register.getRegisterBusiness().getTokenAvailableSince() == 0) {
+            if (register.getRegisterBusiness().getTokenAvailableFrom() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()

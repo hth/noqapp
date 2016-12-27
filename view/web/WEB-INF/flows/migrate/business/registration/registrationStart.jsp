@@ -138,9 +138,9 @@
                         <form:input path="phoneStore" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
-                        <form:label path="tokenAvailableSince" cssClass="profile_label" cssStyle="width: 155px;"
+                        <form:label path="tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Token Available Time</form:label>
-                        <form:input path="tokenAvailableSince" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
+                        <form:input path="tokenAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
                     </div>
                     <div class="row_field">
                         <form:label path="startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
