@@ -19,7 +19,7 @@ import com.token.domain.types.UserLevelEnum;
 import com.token.service.AccountService;
 import com.token.service.BizService;
 import com.token.service.BusinessUserService;
-import com.token.service.TokenService;
+import com.token.service.TokenQueueService;
 
 import java.util.List;
 
@@ -34,18 +34,18 @@ public class EmpLandingService {
     private BusinessUserService businessUserService;
     private AccountService accountService;
     private BizService bizService;
-    private TokenService tokenService;
+    private TokenQueueService tokenQueueService;
 
     @Autowired
     public EmpLandingService(
             BusinessUserService businessUserService,
             AccountService accountService,
             BizService bizService,
-            TokenService tokenService) {
+            TokenQueueService tokenQueueService) {
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.bizService = bizService;
-        this.tokenService = tokenService;
+        this.tokenQueueService = tokenQueueService;
     }
 
     public void approveBusiness(String businessUserId, String rid) {
@@ -72,7 +72,7 @@ public class EmpLandingService {
                 bizService.saveStore(bizStore);
 
                 //TODO remove me as this as to be done by cron job. Temp way of creating token
-                tokenService.create(bizStore.getCodeQR());
+                tokenQueueService.create(bizStore.getCodeQR());
 
                 LOG.info("added QR for rid={} bizName={} bizStore={}",
                         rid, businessUser.getBizName().getBusinessName(), bizStore.getId());

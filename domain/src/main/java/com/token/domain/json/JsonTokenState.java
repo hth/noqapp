@@ -44,8 +44,8 @@ public class JsonTokenState {
     @JsonProperty ("p")
     private String storePhone;
 
-    @JsonProperty ("s")
-    private int tokenAvailableSince;
+    @JsonProperty ("f")
+    private int tokenAvailableFrom;
 
     /* Store business start hour. */
     @JsonProperty ("b")
@@ -88,8 +88,8 @@ public class JsonTokenState {
         return this;
     }
 
-    public JsonTokenState setTokenAvailableSince(int tokenAvailableSince) {
-        this.tokenAvailableSince = tokenAvailableSince;
+    public JsonTokenState setTokenAvailableFrom(int tokenAvailableFrom) {
+        this.tokenAvailableFrom = tokenAvailableFrom;
         return this;
     }
 

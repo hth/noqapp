@@ -33,21 +33,21 @@ public class JsonTokenQueue {
     private String code;
 
     @JsonProperty ("t")
-    private String token;
+    private int token;
 
     @JsonProperty ("s")
-    private String servingNumber;
+    private int servingNumber;
 
     public JsonTokenQueue(String code) {
         this.code = code;
     }
 
-    public JsonTokenQueue setToken(String token) {
+    public JsonTokenQueue setToken(int token) {
         this.token = token;
         return this;
     }
 
-    public JsonTokenQueue setServingNumber(String servingNumber) {
+    public JsonTokenQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
         return this;
     }

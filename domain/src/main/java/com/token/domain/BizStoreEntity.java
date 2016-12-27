@@ -104,8 +104,8 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
-    @Field ("TA")
-    private int tokenAvailableSince;
+    @Field ("TF")
+    private int tokenAvailableFrom;
 
     @Field ("SH")
     private int startHour;
@@ -347,11 +347,11 @@ public class BizStoreEntity extends BaseEntity {
         this.endHour = endHour;
     }
 
-    public int getTokenAvailableSince() {
-        return tokenAvailableSince;
+    public int getTokenAvailableFrom() {
+        return tokenAvailableFrom;
     }
 
-    public void setTokenAvailableSince(int tokenAvailableSince) {
-        this.tokenAvailableSince = tokenAvailableSince;
+    public void setTokenAvailableFrom(int tokenAvailableFrom) {
+        this.tokenAvailableFrom = tokenAvailableFrom;
     }
 }
