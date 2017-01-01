@@ -86,7 +86,7 @@
                         </thead>
                         <c:forEach items="${empLandingForm.businessUsers}" var="businessUser" varStatus="status">
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #ccc" rowspan="3">${status.count}&nbsp;</td>
+                            <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
                             <td style="padding: 10px; border: 1px solid #ccc;">
                                 <a href="/emp/landing/${businessUser.id}.htm">${businessUser.bizName.businessName}</a>
                             </td>
