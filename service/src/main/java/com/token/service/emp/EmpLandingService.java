@@ -19,6 +19,7 @@ import com.token.domain.types.UserLevelEnum;
 import com.token.service.AccountService;
 import com.token.service.BizService;
 import com.token.service.BusinessUserService;
+import com.token.service.FirebaseService;
 import com.token.service.TokenQueueService;
 
 import java.util.List;
@@ -35,17 +36,20 @@ public class EmpLandingService {
     private AccountService accountService;
     private BizService bizService;
     private TokenQueueService tokenQueueService;
+    private FirebaseService firebaseService;
 
     @Autowired
     public EmpLandingService(
             BusinessUserService businessUserService,
             AccountService accountService,
             BizService bizService,
-            TokenQueueService tokenQueueService) {
+            TokenQueueService tokenQueueService,
+            FirebaseService firebaseService) {
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
+        this.firebaseService = firebaseService;
     }
 
     public void approveBusiness(String businessUserId, String rid) {
@@ -73,6 +77,10 @@ public class EmpLandingService {
 
                 //TODO remove me as this as to be done by cron job. Temp way of creating token
                 tokenQueueService.create(bizStore.getCodeQR());
+                boolean success = firebaseService.registerTopic(bizStore.getTopic(), "Say Hi to " + bizStore.getDisplayName());
+                bizStore.setRegistered(success);
+                bizService.saveStore(bizStore);
+                //End cron job code
 
                 LOG.info("added QR for rid={} bizName={} bizStore={}",
                         rid, businessUser.getBizName().getBusinessName(), bizStore.getId());

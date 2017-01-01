@@ -14,6 +14,8 @@ import org.springframework.format.annotation.NumberFormat;
 
 import com.token.utils.CommonUtil;
 
+import java.io.File;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -38,6 +40,8 @@ public class BizStoreEntity extends BaseEntity {
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";
     public static final String PHONE_FIELD_NAME = "PH";
+    private static final String TOPICS = "/topics";
+    private static final String SEPARATOR = File.separator;
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")
@@ -116,6 +120,9 @@ public class BizStoreEntity extends BaseEntity {
     //TODO Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
+
+    @Field ("RG")
+    private boolean registered = false;
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -353,5 +360,18 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
+    @Transient
+    public String getTopic() {
+        return TOPICS + SEPARATOR + countryShortName + SEPARATOR + codeQR;
     }
 }
