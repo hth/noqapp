@@ -30,7 +30,7 @@ public class JsonTokenState {
     private static final Logger LOG = LoggerFactory.getLogger(JsonTokenState.class);
 
     @JsonProperty ("c")
-    private String code;
+    private String codeQR;
 
     @JsonProperty ("n")
     private String businessName;
@@ -64,8 +64,8 @@ public class JsonTokenState {
     @JsonProperty ("q")
     private boolean closeQueue;
 
-    public JsonTokenState(String code) {
-        this.code = code;
+    public JsonTokenState(String codeQR) {
+        this.codeQR = codeQR;
     }
 
     public JsonTokenState setBusinessName(String businessName) {
