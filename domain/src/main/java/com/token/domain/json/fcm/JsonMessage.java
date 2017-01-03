@@ -5,9 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.token.domain.AbstractDomain;
+import com.token.domain.json.fcm.data.JsonData;
+import com.token.domain.json.fcm.data.JsonTopicData;
+
 /**
  * User: hitender
- * Date: 1/1/17 7:06 AM
+ * Date: 1/1/17 7:04 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -23,12 +30,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonTopicData {
+public class JsonMessage extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonMessage.class);
 
-    @JsonProperty ("message")
-    private String message;
+    @JsonProperty ("to")
+    private String to;
 
-    public JsonTopicData(String message) {
-        this.message = message;
+    @JsonProperty ("data")
+    private JsonData data;
+
+    /**
+     *
+     * @param to        topic
+     * @param message   message
+     */
+    public JsonMessage(String to, String message) {
+        this.to = to;
+        this.data = new JsonTopicData(message);
     }
 }
