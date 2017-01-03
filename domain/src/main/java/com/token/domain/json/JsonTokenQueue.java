@@ -30,7 +30,7 @@ public class JsonTokenQueue {
     private static final Logger LOG = LoggerFactory.getLogger(JsonTokenQueue.class);
 
     @JsonProperty ("c")
-    private String code;
+    private String codeQR;
 
     @JsonProperty ("t")
     private int token;
@@ -38,8 +38,11 @@ public class JsonTokenQueue {
     @JsonProperty ("s")
     private int servingNumber;
 
-    public JsonTokenQueue(String code) {
-        this.code = code;
+    @JsonProperty ("r")
+    private boolean topicRegistration;
+
+    public JsonTokenQueue(String codeQR) {
+        this.codeQR = codeQR;
     }
 
     public JsonTokenQueue setToken(int token) {
@@ -49,6 +52,11 @@ public class JsonTokenQueue {
 
     public JsonTokenQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public JsonTokenQueue setTopicRegistration(boolean topicRegistration) {
+        this.topicRegistration = topicRegistration;
         return this;
     }
 }

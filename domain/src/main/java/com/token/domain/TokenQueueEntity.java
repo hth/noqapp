@@ -27,6 +27,13 @@ public class TokenQueueEntity extends BaseEntity {
     @Field ("CQ")
     private boolean closeQueue;
 
+    @Field ("TP")
+    private String topic;
+
+    public TokenQueueEntity(String topic) {
+        this.topic = topic;
+    }
+
     public int getLastNumber() {
         return lastNumber;
     }
@@ -49,5 +56,9 @@ public class TokenQueueEntity extends BaseEntity {
 
     public void setCloseQueue(boolean closeQueue) {
         this.closeQueue = closeQueue;
+    }
+
+    public String getTopic() {
+        return topic;
     }
 }

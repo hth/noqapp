@@ -9,4 +9,6 @@ import com.token.domain.TokenQueueEntity;
 public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
 
     TokenQueueEntity findByCodeQR(String codeQR);
+
+    TokenQueueEntity getNextToken(String codeQR);
 }

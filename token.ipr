@@ -1257,9 +1257,10 @@
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
-      <item index="1" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="com.token.domain.annotation.Mobile" />
+      <item index="1" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
+      <item index="2" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
     </list>
   </component>
   <component name="GradleLocalSettings">
@@ -1305,6 +1306,16 @@
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
       <option name="myName" value="Project Default" />
+      <inspection_tool class="FieldCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true">
+        <option name="EXCLUDE_ANNOS">
+          <value>
+            <list size="3">
+              <item index="0" class="java.lang.String" itemvalue="com.fasterxml.jackson.annotation.JsonProperty" />
+            </list>
+          </value>
+        </option>
+        <option name="IGNORE_FIELDS_USED_IN_MULTIPLE_METHODS" value="true" />
+      </inspection_tool>
     </profile>
     <version value="1.0" />
   </component>

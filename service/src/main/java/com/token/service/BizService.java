@@ -119,4 +119,12 @@ public class BizService {
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return bizStoreManager.getAllBizStores(bizNameId);
     }
+
+    public BizStoreEntity findByCodeQR(String codeQR) {
+        return bizStoreManager.findByCodeQR(codeQR);
+    }
+
+    public boolean isValidCodeQR(String codeQR) {
+        return bizStoreManager.isValidCodeQR(codeQR);
+    }
 }

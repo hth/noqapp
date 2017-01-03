@@ -76,7 +76,7 @@ public class EmpLandingService {
                 bizService.saveStore(bizStore);
 
                 //TODO remove me as this as to be done by cron job. Temp way of creating token
-                tokenQueueService.create(bizStore.getCodeQR());
+                tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic());
                 boolean success = firebaseService.registerTopic(bizStore.getTopic(), "Say Hi to " + bizStore.getDisplayName());
                 bizStore.setRegistered(success);
                 bizService.saveStore(bizStore);

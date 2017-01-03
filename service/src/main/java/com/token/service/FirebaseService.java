@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.token.domain.json.JsonTopicMessage;
+import com.token.domain.json.fcm.JsonMessage;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -24,7 +24,7 @@ import java.io.IOException;
 public class FirebaseService {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private String firebaseServerKey;
     private String authorizationKey;
@@ -41,10 +41,10 @@ public class FirebaseService {
     }
 
     public boolean registerTopic(String topic, String message) {
-        JsonTopicMessage jsonTopicMessage = new JsonTopicMessage(topic, message);
-        LOG.info("Message body={}", jsonTopicMessage.asJson());
+        JsonMessage jsonMessage = new JsonMessage(topic, message);
+        LOG.info("Message body={}", jsonMessage.asJson());
 
-        RequestBody body = RequestBody.create(JSON, jsonTopicMessage.asJson());
+        RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
                 .addHeader("Authorization", authorizationKey)
@@ -60,5 +60,9 @@ public class FirebaseService {
 
         LOG.debug("FCM success topic={} response={}", topic, response.body());
         return response.isSuccessful();
+    }
+
+    public boolean subscribeTopic(String topic, String did, String deviceToken) {
+        return false;
     }
 }
