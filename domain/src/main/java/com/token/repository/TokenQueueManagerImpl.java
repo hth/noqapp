@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
@@ -56,5 +57,14 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     public TokenQueueEntity findByCodeQR(String codeQR) {
         LOG.info("codeQR={}", codeQR);
         return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenQueueEntity.class, TABLE);
+    }
+
+    @Override
+    public TokenQueueEntity getNextToken(String codeQR) {
+        return mongoTemplate.findAndModify(
+                query(where("_id").is(codeQR)),
+                new Update().inc("LN", 1),
+                TokenQueueEntity.class,
+                TABLE);
     }
 }

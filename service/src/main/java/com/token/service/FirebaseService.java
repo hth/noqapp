@@ -24,7 +24,7 @@ import java.io.IOException;
 public class FirebaseService {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private String firebaseServerKey;
     private String authorizationKey;
@@ -62,7 +62,7 @@ public class FirebaseService {
         return response.isSuccessful();
     }
 
-    public boolean subscribeTopic(String topic, String phoneToken) {
+    public boolean subscribeTopic(String topic, String did, String deviceToken) {
         return false;
     }
 }

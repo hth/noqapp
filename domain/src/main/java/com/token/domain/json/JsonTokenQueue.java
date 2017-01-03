@@ -38,6 +38,9 @@ public class JsonTokenQueue {
     @JsonProperty ("s")
     private int servingNumber;
 
+    @JsonProperty ("r")
+    private boolean topicRegistration;
+
     public JsonTokenQueue(String codeQR) {
         this.codeQR = codeQR;
     }
@@ -49,6 +52,11 @@ public class JsonTokenQueue {
 
     public JsonTokenQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public JsonTokenQueue setTopicRegistration(boolean topicRegistration) {
+        this.topicRegistration = topicRegistration;
         return this;
     }
 }
