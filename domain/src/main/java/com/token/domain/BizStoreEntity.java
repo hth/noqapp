@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.util.Assert;
 
 import com.token.utils.CommonUtil;
 
@@ -372,6 +373,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getTopic() {
+        Assert.notNull(countryShortName, "Country short name null for id=" + id);
         return TOPICS + SEPARATOR + countryShortName + SEPARATOR + codeQR;
     }
 }
