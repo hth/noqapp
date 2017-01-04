@@ -1257,10 +1257,11 @@
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="com.token.domain.annotation.Mobile" />
       <item index="1" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
       <item index="2" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
+      <item index="3" class="java.lang.String" itemvalue="org.springframework.stereotype.Repository" />
     </list>
   </component>
   <component name="GradleLocalSettings">

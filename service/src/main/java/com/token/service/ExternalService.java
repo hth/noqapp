@@ -43,7 +43,7 @@ public class ExternalService {
     ) {
         this.context = new GeoApiContext()
                 .setApiKey(googleServerApiKey)
-                .setMaxRetries(0)
+                .setMaxRetries(3)
                 .disableRetries();
     }
 
