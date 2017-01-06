@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.token.domain.annotation.Mobile;
 import com.token.domain.json.fcm.JsonMessage;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -32,7 +33,7 @@ public class FirebaseService {
 
     @Autowired
     public FirebaseService(
-            @Value("${firebase.server.key}")
+            @Value ("${firebase.server.key}")
             String firebaseServerKey
     ) {
         this.firebaseServerKey = firebaseServerKey;
@@ -40,8 +41,16 @@ public class FirebaseService {
         client = new OkHttpClient();
     }
 
+    /**
+     * Called when new queue is created or first time business is approved with store.
+     *
+     * @param topic
+     * @param message
+     * @return
+     */
     public boolean registerTopic(String topic, String message) {
-        JsonMessage jsonMessage = new JsonMessage(topic, message);
+        JsonMessage jsonMessage = new JsonMessage(topic);
+        jsonMessage.getJsonTopicData().setMessage(message);
         LOG.info("Message body={}", jsonMessage.asJson());
 
         RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
@@ -50,19 +59,51 @@ public class FirebaseService {
                 .addHeader("Authorization", authorizationKey)
                 .post(body)
                 .build();
-        Response response;
+        Response response = null;
         try {
             response = client.newCall(request).execute();
         } catch (IOException e) {
             LOG.error("Error making FCM request reason={}", e.getLocalizedMessage(), e);
             return false;
+        } finally {
+            if (response != null) {
+                response.body().close();
+            }
         }
 
         LOG.debug("FCM success topic={} response={}", topic, response.body());
         return response.isSuccessful();
     }
 
-    public boolean subscribeTopic(String topic, String did, String deviceToken) {
-        return false;
+    /**
+     * Sends message to topic when any change happens in queue
+     *
+     * @param jsonMessage
+     * @return
+     */
+    @Mobile
+    public boolean messageToTopic(JsonMessage jsonMessage) {
+        LOG.info("Message body={}", jsonMessage.asJson());
+
+        RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
+        Request request = new Request.Builder()
+                .url("https://fcm.googleapis.com/fcm/send")
+                .addHeader("Authorization", authorizationKey)
+                .post(body)
+                .build();
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            LOG.error("Error making FCM request reason={}", e.getLocalizedMessage(), e);
+            return false;
+        } finally {
+            if (response != null) {
+                response.body().close();
+            }
+        }
+
+        LOG.debug("FCM success topic={} response={}", jsonMessage.getTo(), response.body());
+        return response.isSuccessful();
     }
 }

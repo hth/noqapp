@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Update;
@@ -64,6 +65,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         return mongoTemplate.findAndModify(
                 query(where("_id").is(codeQR)),
                 new Update().inc("LN", 1),
+                FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
                 TABLE);
     }

@@ -15,8 +15,6 @@ import org.springframework.util.Assert;
 
 import com.token.utils.CommonUtil;
 
-import java.io.File;
-
 import javax.validation.constraints.NotNull;
 
 /**
@@ -41,8 +39,7 @@ public class BizStoreEntity extends BaseEntity {
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";
     public static final String PHONE_FIELD_NAME = "PH";
-    private static final String TOPICS = "/topics";
-    private static final String SEPARATOR = File.separator;
+    private static final String UNDER_SCORE = "_";
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")
@@ -373,7 +370,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getTopic() {
-        Assert.notNull(countryShortName, "Country short name null for id=" + id);
-        return TOPICS + SEPARATOR + countryShortName + SEPARATOR + codeQR;
+        Assert.notNull(countryShortName, "Country short name null for bizStore id=" + id);
+        return countryShortName + UNDER_SCORE + codeQR;
     }
 }
