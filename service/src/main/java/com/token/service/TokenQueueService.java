@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.token.domain.QueueEntity;
@@ -60,29 +61,36 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid, String deviceToken) {
+        QueueEntity queue = queueManager.findOne(codeQR, did, rid);
         TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
+        if (queue == null) {
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
+            jsonMessage.getJsonTopicData()
+                    .setLastNumber(tokenQueue.getLastNumber())
+                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                    .setCodeQR(codeQR);
+            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
 
-        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
-        jsonMessage.getJsonTopicData()
-                .setLastNumber(tokenQueue.getLastNumber())
-                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                .setCodeQR(codeQR);
-        boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            }
 
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            try {
+                queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
+                queueManager.save(queue);
+            } catch (DuplicateKeyException e) {
+                LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+                return new JsonToken(codeQR);
+            }
+
+            return new JsonToken(codeQR)
+                    .setToken(tokenQueue.getLastNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing());
+        } else {
+
+            return new JsonToken(codeQR)
+                    .setToken(queue.getTokenNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing());
         }
-
-        try {
-            QueueEntity queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
-            queueManager.save(queue);
-        } catch (Exception e) {
-            LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
-            return new JsonToken(codeQR);
-        }
-
-        return new JsonToken(codeQR)
-                .setToken(tokenQueue.getLastNumber())
-                .setServingNumber(tokenQueue.getCurrentlyServing());
     }
 }
