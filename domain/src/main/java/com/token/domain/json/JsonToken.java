@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonTokenQueue {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonTokenQueue.class);
+public class JsonToken {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonToken.class);
 
     @JsonProperty ("c")
     private String codeQR;
@@ -38,25 +38,17 @@ public class JsonTokenQueue {
     @JsonProperty ("s")
     private int servingNumber;
 
-    @JsonProperty ("r")
-    private boolean topicRegistration;
-
-    public JsonTokenQueue(String codeQR) {
+    public JsonToken(String codeQR) {
         this.codeQR = codeQR;
     }
 
-    public JsonTokenQueue setToken(int token) {
+    public JsonToken setToken(int token) {
         this.token = token;
         return this;
     }
 
-    public JsonTokenQueue setServingNumber(int servingNumber) {
+    public JsonToken setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
-        return this;
-    }
-
-    public JsonTokenQueue setTopicRegistration(boolean topicRegistration) {
-        this.topicRegistration = topicRegistration;
         return this;
     }
 }

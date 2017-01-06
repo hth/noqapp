@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import com.token.domain.QueueEntity;
 import com.token.domain.TokenQueueEntity;
 import com.token.domain.annotation.Mobile;
-import com.token.domain.json.JsonTokenQueue;
+import com.token.domain.json.JsonToken;
+import com.token.domain.json.fcm.JsonMessage;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
 
@@ -48,21 +49,40 @@ public class TokenQueueService {
         return tokenQueueManager.findByCodeQR(codeQR);
     }
 
+    /**
+     * Get new token. This process adds the user to queue. Invoke broadcast.
+     *
+     * @param codeQR
+     * @param did
+     * @param rid
+     * @param deviceToken
+     * @return
+     */
     @Mobile
-    public JsonTokenQueue getNextToken(String codeQR, String did, String rid, String deviceToken) {
+    public JsonToken getNextToken(String codeQR, String did, String rid, String deviceToken) {
         TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-        boolean topicRegistration = firebaseService.subscribeTopic(tokenQueue.getTopic(), did, deviceToken);
 
-        if (topicRegistration) {
-            QueueEntity queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
-            queueManager.save(queue);
-        } else {
-            LOG.error("Failed subscription did={} codeQR={}", did, codeQR);
+        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
+        jsonMessage.getJsonTopicData()
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                .setCodeQR(codeQR);
+        boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
         }
 
-        return new JsonTokenQueue(codeQR)
+        try {
+            QueueEntity queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
+            queueManager.save(queue);
+        } catch (Exception e) {
+            LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+            return new JsonToken(codeQR);
+        }
+
+        return new JsonToken(codeQR)
                 .setToken(tokenQueue.getLastNumber())
-                .setServingNumber(tokenQueue.getCurrentlyServing())
-                .setTopicRegistration(topicRegistration);
+                .setServingNumber(tokenQueue.getCurrentlyServing());
     }
 }

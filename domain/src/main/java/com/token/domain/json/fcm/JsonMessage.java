@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
-import com.token.domain.json.fcm.data.JsonData;
 import com.token.domain.json.fcm.data.JsonTopicData;
 
 /**
@@ -37,15 +36,22 @@ public class JsonMessage extends AbstractDomain {
     private String to;
 
     @JsonProperty ("data")
-    private JsonData data;
+    private JsonTopicData jsonTopicData;
 
     /**
      *
      * @param to        topic
-     * @param message   message
      */
-    public JsonMessage(String to, String message) {
+    public JsonMessage(String to) {
         this.to = to;
-        this.data = new JsonTopicData(message);
+        this.jsonTopicData = new JsonTopicData();
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public JsonTopicData getJsonTopicData() {
+        return jsonTopicData;
     }
 }

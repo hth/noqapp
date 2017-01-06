@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonTokenState {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonTokenState.class);
+public class JsonQueue {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
     @JsonProperty ("c")
     private String codeQR;
@@ -55,6 +55,9 @@ public class JsonTokenState {
     @JsonProperty ("e")
     private int endHour;
 
+    @JsonProperty ("t")
+    private String topic;
+
     @JsonProperty ("s")
     private int servingNumber;
 
@@ -64,56 +67,61 @@ public class JsonTokenState {
     @JsonProperty ("q")
     private boolean closeQueue;
 
-    public JsonTokenState(String codeQR) {
+    public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
     }
 
-    public JsonTokenState setBusinessName(String businessName) {
+    public JsonQueue setBusinessName(String businessName) {
         this.businessName = businessName;
         return this;
     }
 
-    public JsonTokenState setDisplayName(String displayName) {
+    public JsonQueue setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
-    public JsonTokenState setStoreAddress(String storeAddress) {
+    public JsonQueue setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
         return this;
     }
 
-    public JsonTokenState setStorePhone(String storePhone) {
+    public JsonQueue setStorePhone(String storePhone) {
         this.storePhone = storePhone;
         return this;
     }
 
-    public JsonTokenState setTokenAvailableFrom(int tokenAvailableFrom) {
+    public JsonQueue setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
         return this;
     }
 
-    public JsonTokenState setStartHour(int startHour) {
+    public JsonQueue setStartHour(int startHour) {
         this.startHour = startHour;
         return this;
     }
 
-    public JsonTokenState setEndHour(int endHour) {
+    public JsonQueue setEndHour(int endHour) {
         this.endHour = endHour;
         return this;
     }
 
-    public JsonTokenState setServingNumber(int servingNumber) {
+    public JsonQueue setTopic(String topic) {
+        this.topic = topic;
+        return this;
+    }
+
+    public JsonQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
         return this;
     }
 
-    public JsonTokenState setLastNumber(int lastNumber) {
+    public JsonQueue setLastNumber(int lastNumber) {
         this.lastNumber = lastNumber;
         return this;
     }
 
-    public JsonTokenState setCloseQueue(boolean closeQueue) {
+    public JsonQueue setCloseQueue(boolean closeQueue) {
         this.closeQueue = closeQueue;
         return this;
     }
