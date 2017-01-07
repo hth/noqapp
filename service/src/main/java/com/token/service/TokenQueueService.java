@@ -62,20 +62,9 @@ public class TokenQueueService {
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid, String deviceToken) {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
-        TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
         if (queue == null) {
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
-            jsonMessage.getJsonTopicData()
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                    .setCodeQR(codeQR);
-            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
-
-            if (!fcmMessageBroadcast) {
-                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-            } else {
-                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
-            }
+            TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
+            sendMessageToTopic(codeQR, tokenQueue);
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
@@ -86,13 +75,43 @@ public class TokenQueueService {
             }
 
             return new JsonToken(codeQR)
-                    .setToken(tokenQueue.getLastNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing());
+                    .setToken(queue.getTokenNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setActive(queue.isActive());
         } else {
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+            LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
+            sendMessageToTopic(codeQR, tokenQueue);
 
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing());
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setActive(queue.isActive());
+        }
+    }
+
+    /**
+     * Send message to Topic.
+     * @param codeQR
+     * @param tokenQueue
+     */
+    private void sendMessageToTopic(String codeQR, TokenQueueEntity tokenQueue) {
+        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
+        jsonMessage.getTopicData()
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                .setCodeQR(codeQR);
+
+        jsonMessage.getNotification()
+                .setBody("Hello Body")
+                .setTitle("Hello");
+
+        boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
         }
     }
 }

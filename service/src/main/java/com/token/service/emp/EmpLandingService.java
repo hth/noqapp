@@ -85,8 +85,12 @@ public class EmpLandingService {
                 }
                 //End cron job code
 
-                LOG.info("added QR for rid={} bizName={} bizStore={}",
-                        rid, businessUser.getBizName().getBusinessName(), bizStore.getId());
+                LOG.info("added QR for rid={} bizName={} queueName={} topic={} bizStore={} ",
+                        rid,
+                        businessUser.getBizName().getBusinessName(),
+                        bizStore.getDisplayName(),
+                        bizStore.getTopic(),
+                        bizStore.getId());
             }
 
             if (1 < bizStores.size()) {
