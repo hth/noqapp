@@ -73,6 +73,8 @@ public class TokenQueueService {
 
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
 
             try {
