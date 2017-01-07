@@ -72,7 +72,7 @@ public class FirebaseService {
         }
 
         LOG.debug("FCM success topic={} headers={} message={} body={}",
-                topic, response.headers(), response.message(), response.body());
+                jsonMessage.getTo(), response.headers(), response.message(), response.body());
         return response.isSuccessful();
     }
 
@@ -104,7 +104,8 @@ public class FirebaseService {
             }
         }
 
-        LOG.debug("FCM success topic={} response={}", jsonMessage.getTo(), response.body());
+        LOG.debug("FCM success topic={} headers={} message={} body={}",
+                jsonMessage.getTo(), response.headers(), response.message(), response.body());
         return response.isSuccessful();
     }
 }
