@@ -38,6 +38,9 @@ public class JsonToken {
     @JsonProperty ("s")
     private int servingNumber;
 
+    @JsonProperty ("a")
+    private boolean active;
+
     public JsonToken(String codeQR) {
         this.codeQR = codeQR;
     }
@@ -49,6 +52,11 @@ public class JsonToken {
 
     public JsonToken setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public JsonToken setActive(boolean active) {
+        this.active = active;
         return this;
     }
 }

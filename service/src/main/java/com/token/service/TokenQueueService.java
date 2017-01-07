@@ -62,8 +62,8 @@ public class TokenQueueService {
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid, String deviceToken) {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
-        TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
         if (queue == null) {
+            TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
             jsonMessage.getJsonTopicData()
                     .setLastNumber(tokenQueue.getLastNumber())
@@ -86,13 +86,16 @@ public class TokenQueueService {
             }
 
             return new JsonToken(codeQR)
-                    .setToken(tokenQueue.getLastNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing());
+                    .setToken(queue.getTokenNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setActive(queue.isActive());
         } else {
-
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+            LOG.info("Already registered topic={} rid={} did={}", tokenQueue.getTopic(), rid, did);
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing());
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setActive(queue.isActive());
         }
     }
 }
