@@ -50,7 +50,7 @@ public class FirebaseService {
      */
     public boolean registerTopic(String topic, String message) {
         JsonMessage jsonMessage = new JsonMessage(topic);
-        jsonMessage.getJsonTopicData().setMessage(message);
+        jsonMessage.getTopicData().setMessage(message);
         LOG.info("Message body={}", jsonMessage.asJson());
 
         RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());

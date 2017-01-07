@@ -2,6 +2,7 @@ package com.token.domain.json.fcm;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.json.fcm.data.JsonNotification;
 import com.token.domain.json.fcm.data.JsonTopicData;
 
 /**
@@ -29,14 +31,24 @@ import com.token.domain.json.fcm.data.JsonTopicData;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
+@JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonMessage extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMessage.class);
 
     @JsonProperty ("to")
     private String to;
 
+    @JsonProperty ("priority")
+    private String priority = "high";
+
+    @JsonProperty ("content_available")
+    private boolean content_available = true;
+
     @JsonProperty ("data")
-    private JsonTopicData jsonTopicData;
+    private JsonTopicData topicData;
+
+    @JsonProperty ("notification")
+    private JsonNotification notification;
 
     /**
      *
@@ -44,14 +56,19 @@ public class JsonMessage extends AbstractDomain {
      */
     public JsonMessage(String to) {
         this.to = to;
-        this.jsonTopicData = new JsonTopicData();
+        this.topicData = new JsonTopicData();
+        this.notification = new JsonNotification();
     }
 
     public String getTo() {
         return to;
     }
 
-    public JsonTopicData getJsonTopicData() {
-        return jsonTopicData;
+    public JsonTopicData getTopicData() {
+        return topicData;
+    }
+
+    public JsonNotification getNotification() {
+        return notification;
     }
 }

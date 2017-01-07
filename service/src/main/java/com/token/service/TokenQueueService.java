@@ -97,10 +97,15 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, TokenQueueEntity tokenQueue) {
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
-        jsonMessage.getJsonTopicData()
+        jsonMessage.getTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR);
+
+        jsonMessage.getNotification()
+                .setBody("Hello Body")
+                .setTitle("Hello");
+
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
 
         if (!fcmMessageBroadcast) {
