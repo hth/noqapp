@@ -64,18 +64,7 @@ public class TokenQueueService {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
         if (queue == null) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
-            jsonMessage.getJsonTopicData()
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                    .setCodeQR(codeQR);
-            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
-
-            if (!fcmMessageBroadcast) {
-                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-            } else {
-                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
-            }
+            sendMessageToTopic(codeQR, tokenQueue);
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
@@ -92,10 +81,32 @@ public class TokenQueueService {
         } else {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
             LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
+            sendMessageToTopic(codeQR, tokenQueue);
+
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setActive(queue.isActive());
+        }
+    }
+
+    /**
+     * Send message to Topic.
+     * @param codeQR
+     * @param tokenQueue
+     */
+    private void sendMessageToTopic(String codeQR, TokenQueueEntity tokenQueue) {
+        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
+        jsonMessage.getJsonTopicData()
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                .setCodeQR(codeQR);
+        boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
         }
     }
 }
