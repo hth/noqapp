@@ -91,7 +91,7 @@ public class TokenQueueService {
                     .setActive(queue.isActive());
         } else {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-            LOG.info("Already registered topic={} rid={} did={}", tokenQueue.getTopic(), rid, did);
+            LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
