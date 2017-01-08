@@ -96,7 +96,7 @@ public class TokenQueueService {
      * @param tokenQueue
      */
     private void sendMessageToTopic(String codeQR, TokenQueueEntity tokenQueue) {
-        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopic());
+        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopicWellFormatted());
         jsonMessage.getTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
