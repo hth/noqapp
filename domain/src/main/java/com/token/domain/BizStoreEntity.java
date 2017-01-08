@@ -39,6 +39,7 @@ public class BizStoreEntity extends BaseEntity {
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";
     public static final String PHONE_FIELD_NAME = "PH";
+    private static final String TOPICS = "/topics/";
     private static final String UNDER_SCORE = "_";
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
@@ -371,6 +372,6 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     public String getTopic() {
         Assert.notNull(countryShortName, "Country short name null for bizStore id=" + id);
-        return countryShortName + UNDER_SCORE + codeQR;
+        return TOPICS + countryShortName + UNDER_SCORE + codeQR;
     }
 }
