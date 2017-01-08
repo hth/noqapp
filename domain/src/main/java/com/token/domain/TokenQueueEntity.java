@@ -1,5 +1,6 @@
 package com.token.domain;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "TOKEN_QUEUE")
 public class TokenQueueEntity extends BaseEntity {
+    public static final String TOPICS = "/topics/";
 
     @Field("LN")
     private int lastNumber;
@@ -60,5 +62,10 @@ public class TokenQueueEntity extends BaseEntity {
 
     public String getTopic() {
         return topic;
+    }
+
+    @Transient
+    public String getTopicWellFormatted() {
+        return TOPICS + topic;
     }
 }

@@ -79,8 +79,6 @@ public class EmpLandingService {
                 //For all registered false run job
                 if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
                     tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic());
-                    boolean success = firebaseService.registerTopic(bizStore.getTopic(), "Say Hi to " + bizStore.getDisplayName());
-                    bizStore.setRegistered(success);
                     bizService.saveStore(bizStore);
                 }
                 //End cron job code
