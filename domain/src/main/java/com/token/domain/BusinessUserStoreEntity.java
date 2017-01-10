@@ -21,7 +21,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BUSINESS_USER_STORE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "business_user_store_idx", def = "{'RID': -1, 'BS': -1, 'BN' : -1}", unique = true, background = true)
+        @CompoundIndex (name = "business_user_store_idx", def = "{'RID': -1, 'BS': -1, 'BN' : -1}", unique = true, background = true),
+        @CompoundIndex (name = "business_user_store_qr_idx", def = "{'RID': -1, 'QR': -1}", unique = true, background = true)
 })
 public class BusinessUserStoreEntity extends BaseEntity {
 
@@ -37,33 +38,30 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @Field ("BN")
     private String bizNameId;
 
-    public BusinessUserStoreEntity(String receiptUserId, String bizStoreId, String bizNameId) {
+    @NotNull
+    @Field ("QR")
+    private String codeQR;
+
+    public BusinessUserStoreEntity(String receiptUserId, String bizStoreId, String bizNameId, String codeQR) {
         this.receiptUserId = receiptUserId;
         this.bizStoreId = bizStoreId;
         this.bizNameId = bizNameId;
+        this.codeQR = codeQR;
     }
 
     public String getReceiptUserId() {
         return receiptUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
-    }
-
     public String getBizStoreId() {
         return bizStoreId;
-    }
-
-    public void setBizStoreId(String bizStoreId) {
-        this.bizStoreId = bizStoreId;
     }
 
     public String getBizNameId() {
         return bizNameId;
     }
 
-    public void setBizNameId(String bizNameId) {
-        this.bizNameId = bizNameId;
+    public String getCodeQR() {
+        return codeQR;
     }
 }

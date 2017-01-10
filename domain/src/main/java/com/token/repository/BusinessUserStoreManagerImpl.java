@@ -1,5 +1,8 @@
 package com.token.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -43,5 +46,10 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public void deleteHard(BusinessUserStoreEntity object) {
 
+    }
+
+    @Override
+    public boolean hasAccess(String rid, String codeQR) {
+        return mongoTemplate.exists(query(where("RID").is(rid).and("QR").is(codeQR)), BusinessUserStoreEntity.class, TABLE);
     }
 }
