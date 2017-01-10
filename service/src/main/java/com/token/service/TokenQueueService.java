@@ -90,6 +90,17 @@ public class TokenQueueService {
         }
     }
 
+    @Mobile
+    public JsonToken updateServing(String codeQR, int serving) {
+        TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving);
+        sendMessageToTopic(codeQR, tokenQueue);
+
+        return new JsonToken(codeQR)
+                .setActive(tokenQueue.isActive())
+                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setToken(tokenQueue.getLastNumber());
+    }
+
     /**
      * Send message to Topic.
      * @param codeQR

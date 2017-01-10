@@ -1,7 +1,9 @@
 package com.token.repository;
 
+import static com.token.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +67,16 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         return mongoTemplate.findAndModify(
                 query(where("_id").is(codeQR)),
                 new Update().inc("LN", 1),
+                FindAndModifyOptions.options().returnNew(true),
+                TokenQueueEntity.class,
+                TABLE);
+    }
+
+    @Override
+    public TokenQueueEntity updateServing(String codeQR, int serving) {
+        return mongoTemplate.findAndModify(
+                query(where("_id").is(codeQR)),
+                entityUpdate(update("CS", serving)),
                 FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
                 TABLE);
