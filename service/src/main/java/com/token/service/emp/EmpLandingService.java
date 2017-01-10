@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.token.domain.BizStoreEntity;
 import com.token.domain.BusinessUserEntity;
+import com.token.domain.BusinessUserStoreEntity;
 import com.token.domain.UserAccountEntity;
 import com.token.domain.UserProfileEntity;
 import com.token.domain.types.BusinessUserRegistrationStatusEnum;
@@ -19,7 +20,7 @@ import com.token.domain.types.UserLevelEnum;
 import com.token.service.AccountService;
 import com.token.service.BizService;
 import com.token.service.BusinessUserService;
-import com.token.service.FirebaseService;
+import com.token.service.BusinessUserStoreService;
 import com.token.service.TokenQueueService;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class EmpLandingService {
     private AccountService accountService;
     private BizService bizService;
     private TokenQueueService tokenQueueService;
-    private FirebaseService firebaseService;
+    private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
     public EmpLandingService(
@@ -44,12 +45,12 @@ public class EmpLandingService {
             AccountService accountService,
             BizService bizService,
             TokenQueueService tokenQueueService,
-            FirebaseService firebaseService) {
+            BusinessUserStoreService businessUserStoreService) {
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
-        this.firebaseService = firebaseService;
+        this.businessUserStoreService = businessUserStoreService;
     }
 
     public void approveBusiness(String businessUserId, String rid) {
@@ -81,6 +82,14 @@ public class EmpLandingService {
                     tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic());
                     bizService.saveStore(bizStore);
                 }
+
+                /* Create relation for easy access. */
+                BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
+                        businessUser.getReceiptUserId(),
+                        bizStore.getId(),
+                        bizStore.getBizName().getId(),
+                        bizStore.getCodeQR());
+                businessUserStoreService.save(businessUserStore);
                 //End cron job code
 
                 LOG.info("added QR for rid={} bizName={} queueName={} topic={} bizStore={} ",

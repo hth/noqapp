@@ -33,4 +33,8 @@ public class BusinessUserStoreService {
     public void save(BusinessUserStoreEntity businessUserStore) {
         businessUserStoreManager.save(businessUserStore);
     }
+
+    public boolean hasAccess(String rid, String codeQR) {
+        return businessUserStoreManager.hasAccess(rid, codeQR);
+    }
 }
