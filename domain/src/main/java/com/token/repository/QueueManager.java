@@ -1,6 +1,8 @@
 package com.token.repository;
 
 import com.token.domain.QueueEntity;
+import com.token.domain.annotation.Mobile;
+import com.token.domain.types.QueueStateEnum;
 
 /**
  * User: hitender
@@ -8,4 +10,7 @@ import com.token.domain.QueueEntity;
  */
 public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findOne(String codeQR, String did, String rid);
+
+    @Mobile
+    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueStateEnum queueState);
 }
