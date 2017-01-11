@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.token.domain.AbstractDomain;
+
 /**
  * User: hitender
  * Date: 12/1/16 9:28 AM
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonQueue {
+public class JsonQueue extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
     @JsonProperty ("c")
