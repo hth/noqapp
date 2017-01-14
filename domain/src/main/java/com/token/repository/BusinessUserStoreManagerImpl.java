@@ -59,7 +59,7 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
     //TODO support pagination
     @Override
-    public List<BusinessUserStoreEntity> getQueues(String rid) {
+    public List<BusinessUserStoreEntity> getQueues(String rid, int limit) {
         return mongoTemplate.find(
             query(where("RID").is(rid)
                     .andOperator(

@@ -46,7 +46,7 @@ public class BusinessUserStoreService {
     }
 
     public List<JsonToken> getQueues(String rid) {
-        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid);
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
 
         String[] codes = new String[10];
         int i = 0;
@@ -57,12 +57,7 @@ public class BusinessUserStoreService {
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
         List<JsonToken> jsonTokens = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
-            JsonToken jsonToken = new JsonToken(tokenQueue.getId());
-            jsonToken.setActive(tokenQueue.isActive())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setToken(tokenQueue.getLastNumber());
-
-            jsonTokens.add(jsonToken);
+            jsonTokens.add(new JsonToken(tokenQueue));
         }
 
         return jsonTokens;
