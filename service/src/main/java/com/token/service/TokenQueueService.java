@@ -15,6 +15,8 @@ import com.token.domain.json.fcm.JsonMessage;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/16/16 9:42 AM
@@ -124,5 +126,9 @@ public class TokenQueueService {
         } else {
             LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
         }
+    }
+
+    public List<TokenQueueEntity> getTokenQueue(String[] ids) {
+        return tokenQueueManager.getTokenQueues(ids);
     }
 }

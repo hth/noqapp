@@ -2,6 +2,8 @@ package com.token.repository;
 
 import com.token.domain.TokenQueueEntity;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/16/16 8:50 AM
@@ -13,4 +15,6 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
     TokenQueueEntity getNextToken(String codeQR);
 
     TokenQueueEntity updateServing(String codeQR, int serving);
+
+    List<TokenQueueEntity> getTokenQueues(String[] ids);
 }

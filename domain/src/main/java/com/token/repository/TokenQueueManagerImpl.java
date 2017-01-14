@@ -3,7 +3,7 @@ package com.token.repository;
 import static com.token.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.TokenQueueEntity;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: hitender
@@ -80,5 +83,14 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
                 FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public List<TokenQueueEntity> getTokenQueues(String[] ids) {
+        return mongoTemplate.find(
+                query(where("_id").in(Arrays.asList(ids))),
+                TokenQueueEntity.class,
+                TABLE
+        );
     }
 }

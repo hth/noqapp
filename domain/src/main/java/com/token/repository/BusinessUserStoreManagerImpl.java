@@ -1,5 +1,7 @@
 package com.token.repository;
 
+import static com.token.repository.util.AppendAdditionalFields.isActive;
+import static com.token.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.BusinessUserStoreEntity;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -51,5 +55,20 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public boolean hasAccess(String rid, String codeQR) {
         return mongoTemplate.exists(query(where("RID").is(rid).and("QR").is(codeQR)), BusinessUserStoreEntity.class, TABLE);
+    }
+
+    //TODO support pagination
+    @Override
+    public List<BusinessUserStoreEntity> getQueues(String rid) {
+        return mongoTemplate.find(
+            query(where("RID").is(rid)
+                    .andOperator(
+                        isActive(),
+                        isNotDeleted()
+                    )
+            ).limit(10),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
     }
 }
