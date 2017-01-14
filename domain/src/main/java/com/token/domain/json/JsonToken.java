@@ -43,18 +43,18 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("s")
     private int servingNumber;
 
-    @JsonProperty ("a")
-    private boolean active;
-
     @JsonProperty ("d")
     private String displayName;
+
+    @JsonProperty ("a")
+    private boolean active;
 
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
-        this.active = tokenQueue.isActive();
         this.displayName = tokenQueue.getDisplayName();
+        this.active = tokenQueue.isActive();
     }
 
     public JsonToken(String codeQR) {
@@ -68,6 +68,11 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public JsonToken setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 

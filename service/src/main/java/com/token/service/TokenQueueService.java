@@ -79,6 +79,7 @@ public class TokenQueueService {
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayName(tokenQueue.getDisplayName())
                     .setActive(queue.isActive());
         } else {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
@@ -88,6 +89,7 @@ public class TokenQueueService {
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayName(tokenQueue.getDisplayName())
                     .setActive(queue.isActive());
         }
     }
@@ -100,6 +102,7 @@ public class TokenQueueService {
         return new JsonToken(codeQR)
                 .setActive(tokenQueue.isActive())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber());
     }
 
