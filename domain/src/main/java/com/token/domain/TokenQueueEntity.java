@@ -32,8 +32,12 @@ public class TokenQueueEntity extends BaseEntity {
     @Field ("TP")
     private String topic;
 
-    public TokenQueueEntity(String topic) {
+    @Field ("DN")
+    private String displayName;
+
+    public TokenQueueEntity(String topic, String displayName) {
         this.topic = topic;
+        this.displayName = displayName;
     }
 
     public int getLastNumber() {
@@ -62,6 +66,10 @@ public class TokenQueueEntity extends BaseEntity {
 
     public String getTopic() {
         return topic;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Transient

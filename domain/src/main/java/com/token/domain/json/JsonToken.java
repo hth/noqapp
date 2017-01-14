@@ -46,15 +46,15 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("a")
     private boolean active;
 
-    @JsonProperty ("n")
-    private String topic;
+    @JsonProperty ("d")
+    private String displayName;
 
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.active = tokenQueue.isActive();
-        this.topic = tokenQueue.getTopic();
+        this.displayName = tokenQueue.getDisplayName();
     }
 
     public JsonToken(String codeQR) {
