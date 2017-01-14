@@ -91,7 +91,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueStateEnum queueState) {
         boolean status = mongoTemplate.updateFirst(
-                query(where("id").is(codeQR).and("TN").is(tokenNumber)),
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
                 entityUpdate(update("QS", queueState).set("A", false)),
                 QueueEntity.class).getN() > 1;
         LOG.debug("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
