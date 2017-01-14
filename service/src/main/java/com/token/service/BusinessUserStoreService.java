@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.token.domain.BusinessUserStoreEntity;
+import com.token.domain.TokenQueueEntity;
+import com.token.domain.json.JsonToken;
 import com.token.repository.BusinessUserStoreManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -24,10 +29,12 @@ public class BusinessUserStoreService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserStoreService.class);
 
     private BusinessUserStoreManager businessUserStoreManager;
+    private TokenQueueService tokenQueueService;
 
     @Autowired
-    public BusinessUserStoreService(BusinessUserStoreManager businessUserStoreManager) {
+    public BusinessUserStoreService(BusinessUserStoreManager businessUserStoreManager, TokenQueueService tokenQueueService) {
         this.businessUserStoreManager = businessUserStoreManager;
+        this.tokenQueueService = tokenQueueService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -36,5 +43,28 @@ public class BusinessUserStoreService {
 
     public boolean hasAccess(String rid, String codeQR) {
         return businessUserStoreManager.hasAccess(rid, codeQR);
+    }
+
+    public List<JsonToken> getQueues(String rid) {
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid);
+
+        String[] codes = new String[10];
+        int i = 0;
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            codes[i] = businessUserStore.getCodeQR();
+        }
+
+        List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
+        List<JsonToken> jsonTokens = new ArrayList<>();
+        for(TokenQueueEntity tokenQueue : tokenQueues) {
+            JsonToken jsonToken = new JsonToken(tokenQueue.getId());
+            jsonToken.setActive(tokenQueue.isActive())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setToken(tokenQueue.getLastNumber());
+
+            jsonTokens.add(jsonToken);
+        }
+
+        return jsonTokens;
     }
 }
