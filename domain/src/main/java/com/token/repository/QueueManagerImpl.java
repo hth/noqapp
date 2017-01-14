@@ -6,8 +6,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.mongodb.ReadPreference;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -99,7 +97,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     private QueueEntity getNext(String codeQR) {
-        mongoTemplate.setReadPreference(ReadPreference.primary());
+//        mongoTemplate.setReadPreference(ReadPreference.primary());
         return mongoTemplate.findOne(
                 query(
                         where("QR").is(codeQR)
