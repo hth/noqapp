@@ -2,6 +2,7 @@ package com.token.domain.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -29,6 +30,7 @@ import com.token.domain.TokenQueueEntity;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
+@JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonToken extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonToken.class);
 
@@ -44,11 +46,15 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("a")
     private boolean active;
 
+    @JsonProperty ("n")
+    private String topic;
+
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.active = tokenQueue.isActive();
+        this.topic = tokenQueue.getTopic();
     }
 
     public JsonToken(String codeQR) {
