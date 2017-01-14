@@ -381,4 +381,35 @@ public class AccountService {
         }
         return userAccount;
     }
+
+    /**
+     * Updates existing userId with new userId.
+     * </p>
+     * Do not add send email in this method. Any call invokes this method needs to call accountValidationMail after it.
+     *
+     * @param existingUserId
+     * @param newUserId
+     * @return
+     * @see com.token.service.MailService#accountValidationMail(String, String, String) ()
+     */
+    @Mobile
+    @SuppressWarnings ("unused")
+    public UserAccountEntity updateUID(String existingUserId, String newUserId) {
+        UserAccountEntity userAccount = findByUserId(existingUserId);
+        if (!userAccount.isAccountValidated()) {
+            emailValidateService.invalidateAllEntries(userAccount.getReceiptUserId());
+        }
+        userAccount.setUserId(newUserId);
+        userAccount.setAccountValidated(false);
+        userAccount.active();
+
+        UserProfileEntity userProfile = doesUserExists(existingUserId);
+        userProfile.setEmail(newUserId);
+
+        /** Always update userAccount before userProfile */
+        userAccountManager.save(userAccount);
+        userProfileManager.save(userProfile);
+
+        return userAccount;
+    }
 }
