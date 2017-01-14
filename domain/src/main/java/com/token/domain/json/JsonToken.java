@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.TokenQueueEntity;
 
 /**
  * User: hitender
@@ -42,6 +43,13 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty ("a")
     private boolean active;
+
+    public JsonToken(TokenQueueEntity tokenQueue) {
+        this.codeQR = tokenQueue.getId();
+        this.token = tokenQueue.getLastNumber();
+        this.servingNumber = tokenQueue.getCurrentlyServing();
+        this.active = tokenQueue.isActive();
+    }
 
     public JsonToken(String codeQR) {
         this.codeQR = codeQR;

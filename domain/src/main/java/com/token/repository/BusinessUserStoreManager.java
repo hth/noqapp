@@ -12,5 +12,5 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     boolean hasAccess(String rid, String codeQR);
 
-    List<BusinessUserStoreEntity> getQueues(String rid);
+    List<BusinessUserStoreEntity> getQueues(String rid, int limit);
 }
