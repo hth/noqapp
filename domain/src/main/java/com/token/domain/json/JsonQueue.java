@@ -57,7 +57,7 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("e")
     private int endHour;
 
-    @JsonProperty ("t")
+    @JsonProperty ("o")
     private String topic;
 
     @JsonProperty ("s")
