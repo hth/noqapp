@@ -355,6 +355,7 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.5" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.15" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
@@ -363,7 +364,6 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.62.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.token-common.jar">
               <element id="module-output" name="common_main" />
@@ -484,13 +484,13 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.RC1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="archive" name="com.token-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -591,6 +591,7 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.5" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.15" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
@@ -599,7 +600,6 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.62.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.token-common.jar">
               <element id="module-output" name="common_main" />
@@ -720,6 +720,7 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.RC1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="archive" name="com.token-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -741,8 +742,7 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -843,6 +843,7 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.5" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.15" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
@@ -851,7 +852,6 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.62.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.token-common.jar">
               <element id="module-output" name="common_main" />
@@ -972,6 +972,7 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.RC1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="archive" name="com.token-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -981,8 +982,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -1083,6 +1083,7 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.5" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.15" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
@@ -1091,7 +1092,6 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.62.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.token-common.jar">
               <element id="module-output" name="common_main" />
@@ -1212,6 +1212,7 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.RC1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="archive" name="com.token-service.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -1220,8 +1221,7 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -2539,15 +2539,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: net.bull.javamelody:javamelody-core:1.62.0">
+    <library name="Gradle: net.bull.javamelody:javamelody-core:1.63.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.62.0/f1ee3fe3a023d07cd071dbd424a1b1d7bafbc59a/javamelody-core-1.62.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.62.0/5efc44301d06bf59caa7ca89d65b83bf9588187/javamelody-core-1.62.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/f1f94cdc2a64e7a7e3fcdf1768318c8d55726498/javamelody-core-1.63.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.62.0/4c39fa6c5755a1130d345878da6a6ab2646a8cfc/javamelody-core-1.62.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/67b9b2358d9591978fdad2f1f9e2d3adb82ef43c/javamelody-core-1.63.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: net.iharder:base64:2.3.9">

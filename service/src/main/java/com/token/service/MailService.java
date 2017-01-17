@@ -1,7 +1,5 @@
 package com.token.service;
 
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -13,13 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 
 import com.token.domain.MailEntity;
 import com.token.domain.types.MailStatusEnum;
 import com.token.repository.MailManager;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -45,8 +40,8 @@ public class MailService {
     private static final int SIZE_100 = 100;
 
     private AccountService accountService;
-    private FreeMarkerConfigurationFactory freemarkerConfiguration;
     private EmailValidateService emailValidateService;
+    private FreemarkerService freemarkerService;
     private UserProfilePreferenceService userProfilePreferenceService;
     private NotificationService notificationService;
     private MailManager mailManager;
@@ -99,9 +94,7 @@ public class MailService {
 
             AccountService accountService,
 
-            @SuppressWarnings ("SpringJavaAutowiringInspection")
-            FreeMarkerConfigurationFactory freemarkerConfiguration,
-
+            FreemarkerService freemarkerService,
             EmailValidateService emailValidateService,
             UserProfilePreferenceService userProfilePreferenceService,
             NotificationService notificationService,
@@ -123,7 +116,7 @@ public class MailService {
         this.accountNotFoundSubject = accountNotFoundSubject;
 
         this.accountService = accountService;
-        this.freemarkerConfiguration = freemarkerConfiguration;
+        this.freemarkerService = freemarkerService;
         this.emailValidateService = emailValidateService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.notificationService = notificationService;
@@ -157,7 +150,7 @@ public class MailService {
                     .setToMail(userId)
                     .setToName(name)
                     .setSubject(mailValidateSubject)
-                    .setMessage(freemarkerToString("mail/self-signup.ftl", rootMap))
+                    .setMessage(freemarkerService.freemarkerToString("mail/self-signup.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
@@ -166,12 +159,4 @@ public class MailService {
         }
         return true;
     }
-
-    private String freemarkerToString(String ftl, Map<String, String> rootMap) throws IOException, TemplateException {
-        Configuration cfg = freemarkerConfiguration.createConfiguration();
-        Template template = cfg.getTemplate(ftl);
-        return processTemplateIntoString(template, rootMap);
-    }
-
-
 }
