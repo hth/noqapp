@@ -362,4 +362,9 @@ public class BizStoreEntity extends BaseEntity {
         Assert.notNull(countryShortName, "Country short name null for bizStore id=" + id);
         return countryShortName + UNDER_SCORE + codeQR;
     }
+
+    @Transient
+    public String getCodeQRInALink() {
+        return "https://tp.receiptofi.com/" + codeQR + "/q.htm";
+    }
 }

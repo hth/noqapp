@@ -89,7 +89,7 @@ public class StoreController {
                 .setDisplayName(bizStore.getDisplayName());
 
         try {
-            storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQR()));
+            storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));
         } catch (WriterException | IOException e) {
             LOG.error("error generating code={}", e.getLocalizedMessage());
         }
