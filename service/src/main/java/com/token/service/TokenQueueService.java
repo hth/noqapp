@@ -77,7 +77,7 @@ public class TokenQueueService {
             }
 
             return new JsonToken(codeQR)
-                    .setToken(queue.getTokenNumber())
+                    .setTotalToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setActive(queue.isActive());
@@ -87,7 +87,7 @@ public class TokenQueueService {
             sendMessageToTopic(codeQR, tokenQueue);
 
             return new JsonToken(codeQR)
-                    .setToken(queue.getTokenNumber())
+                    .setTotalToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setActive(queue.isActive());
@@ -103,7 +103,7 @@ public class TokenQueueService {
                 .setActive(tokenQueue.isActive())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setToken(tokenQueue.getLastNumber());
+                .setTotalToken(tokenQueue.getLastNumber());
     }
 
     /**
