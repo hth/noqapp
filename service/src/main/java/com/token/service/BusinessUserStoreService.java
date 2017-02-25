@@ -52,6 +52,7 @@ public class BusinessUserStoreService {
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
+            i ++;
         }
 
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
