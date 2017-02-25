@@ -89,7 +89,7 @@
                             </thead>
                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
                                 <tr>
-                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="3">${status.count}&nbsp;</td>
+                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
                                     </td>
