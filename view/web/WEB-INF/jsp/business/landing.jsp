@@ -84,6 +84,7 @@
                             <tr>
                                 <th></th>
                                 <th width="440px;">Store Location</th>
+                                <th width="260px;">Queue Name</th>
                                 <th width="260px;">Since</th>
                             </tr>
                             </thead>
@@ -92,6 +93,9 @@
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
+                                    </td>
+                                    <td>
+                                        ${store.displayName}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>
