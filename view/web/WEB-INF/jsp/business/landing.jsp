@@ -94,7 +94,7 @@
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
                                     </td>
-                                    <td>
+                                    <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${store.displayName}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
