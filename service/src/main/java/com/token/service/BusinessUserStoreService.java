@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.token.domain.BusinessUserStoreEntity;
 import com.token.domain.TokenQueueEntity;
+import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonToken;
+import com.token.domain.json.JsonTopic;
 import com.token.repository.BusinessUserStoreManager;
 
 import java.util.ArrayList;
@@ -45,7 +47,8 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.hasAccess(rid, codeQR);
     }
 
-    public List<JsonToken> getQueues(String rid) {
+    @Mobile
+    public List<JsonTopic> getQueues(String rid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
 
         String[] codes = new String[10];
@@ -56,9 +59,9 @@ public class BusinessUserStoreService {
         }
 
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
-        List<JsonToken> jsonTokens = new ArrayList<>();
+        List<JsonTopic> jsonTokens = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
-            jsonTokens.add(new JsonToken(tokenQueue));
+            jsonTokens.add(new JsonTopic(tokenQueue));
         }
 
         return jsonTokens;
