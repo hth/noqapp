@@ -61,9 +61,17 @@ public class JsonToken extends AbstractDomain {
         this.codeQR = codeQR;
     }
 
+    public String getCodeQR() {
+        return codeQR;
+    }
+
     public JsonToken setToken(int token) {
         this.token = token;
         return this;
+    }
+
+    public int getToken() {
+        return token;
     }
 
     public JsonToken setServingNumber(int servingNumber) {
@@ -71,13 +79,25 @@ public class JsonToken extends AbstractDomain {
         return this;
     }
 
+    public int getServingNumber() {
+        return servingNumber;
+    }
+
     public JsonToken setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public JsonToken setActive(boolean active) {
         this.active = active;
         return this;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

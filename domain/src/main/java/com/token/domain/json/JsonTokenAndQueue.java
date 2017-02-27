@@ -3,6 +3,7 @@ package com.token.domain.json;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.token.domain.AbstractDomain;
@@ -28,27 +29,64 @@ import com.token.domain.AbstractDomain;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueue extends AbstractDomain {
 
-    private JsonToken jsonToken;
-    private JsonQueue jsonQueue;
+    @JsonProperty ("c")
+    private String codeQR;
 
-    public JsonTokenAndQueue(JsonToken jsonToken, JsonQueue jsonQueue) {
-        this.jsonToken = jsonToken;
-        this.jsonQueue = jsonQueue;
-    }
+    @JsonProperty ("n")
+    private String businessName;
 
-    public JsonToken getJsonToken() {
-        return jsonToken;
-    }
+    @JsonProperty ("d")
+    private String displayName;
 
-    public void setJsonToken(JsonToken jsonToken) {
-        this.jsonToken = jsonToken;
-    }
+    @JsonProperty ("sa")
+    private String storeAddress;
 
-    public JsonQueue getJsonQueue() {
-        return jsonQueue;
-    }
+    @JsonProperty ("p")
+    private String storePhone;
 
-    public void setJsonQueue(JsonQueue jsonQueue) {
-        this.jsonQueue = jsonQueue;
+    @JsonProperty ("f")
+    private int tokenAvailableFrom;
+
+    /* Store business start hour. */
+    @JsonProperty ("b")
+    private int startHour;
+
+    /* Store business end hour. */
+    @JsonProperty ("e")
+    private int endHour;
+
+    @JsonProperty ("o")
+    private String topic;
+
+    @JsonProperty ("s")
+    private int servingNumber;
+
+    @JsonProperty ("l")
+    private int lastNumber;
+
+    @JsonProperty ("q")
+    private boolean closeQueue;
+
+    @JsonProperty ("t")
+    private int token;
+
+    @JsonProperty ("a")
+    private boolean active;
+
+    public JsonTokenAndQueue(int token, boolean active, JsonQueue jsonQueue) {
+        this.codeQR = jsonQueue.getCodeQR();
+        this.businessName = jsonQueue.getBusinessName();
+        this.displayName = jsonQueue.getDisplayName();
+        this.storeAddress = jsonQueue.getStoreAddress();
+        this.storePhone = jsonQueue.getStorePhone();
+        this.tokenAvailableFrom = jsonQueue.getTokenAvailableFrom();
+        this.startHour = jsonQueue.getStartHour();
+        this.endHour = jsonQueue.getEndHour();
+        this.topic = jsonQueue.getTopic();
+        this.servingNumber = jsonQueue.getServingNumber();
+        this.lastNumber = jsonQueue.getLastNumber();
+        this.closeQueue = jsonQueue.isCloseQueue();
+        this.token = token;
+        this.active = active;
     }
 }
