@@ -118,7 +118,7 @@ public class TokenQueueService {
                 .setCodeQR(codeQR);
 
         jsonMessage.getNotification()
-                .setBody("Serving Token " + tokenQueue.getCurrentlyServing())
+                .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                 .setTitle(tokenQueue.getDisplayName());
 
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
