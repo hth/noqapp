@@ -38,7 +38,7 @@ public class JsonToken extends AbstractDomain {
     private String codeQR;
 
     @JsonProperty ("t")
-    private int totalToken;
+    private int token;
 
     @JsonProperty ("s")
     private int servingNumber;
@@ -51,7 +51,7 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
-        this.totalToken = tokenQueue.getLastNumber();
+        this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.displayName = tokenQueue.getDisplayName();
         this.active = tokenQueue.isActive();
@@ -61,8 +61,8 @@ public class JsonToken extends AbstractDomain {
         this.codeQR = codeQR;
     }
 
-    public JsonToken setTotalToken(int totalToken) {
-        this.totalToken = totalToken;
+    public JsonToken setToken(int token) {
+        this.token = token;
         return this;
     }
 
