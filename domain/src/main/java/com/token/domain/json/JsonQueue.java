@@ -73,9 +73,17 @@ public class JsonQueue extends AbstractDomain {
         this.codeQR = codeQR;
     }
 
+    public String getCodeQR() {
+        return codeQR;
+    }
+
     public JsonQueue setBusinessName(String businessName) {
         this.businessName = businessName;
         return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
     }
 
     public JsonQueue setDisplayName(String displayName) {
@@ -83,9 +91,17 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public JsonQueue setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
         return this;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
     }
 
     public JsonQueue setStorePhone(String storePhone) {
@@ -93,9 +109,17 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
+    public String getStorePhone() {
+        return storePhone;
+    }
+
     public JsonQueue setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
         return this;
+    }
+
+    public int getTokenAvailableFrom() {
+        return tokenAvailableFrom;
     }
 
     public JsonQueue setStartHour(int startHour) {
@@ -103,9 +127,17 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
+    public int getStartHour() {
+        return startHour;
+    }
+
     public JsonQueue setEndHour(int endHour) {
         this.endHour = endHour;
         return this;
+    }
+
+    public int getEndHour() {
+        return endHour;
     }
 
     public JsonQueue setTopic(String topic) {
@@ -113,9 +145,17 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
+    public String getTopic() {
+        return topic;
+    }
+
     public JsonQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
         return this;
+    }
+
+    public int getServingNumber() {
+        return servingNumber;
     }
 
     public JsonQueue setLastNumber(int lastNumber) {
@@ -123,8 +163,16 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
+    public int getLastNumber() {
+        return lastNumber;
+    }
+
     public JsonQueue setCloseQueue(boolean closeQueue) {
         this.closeQueue = closeQueue;
         return this;
+    }
+
+    public boolean isCloseQueue() {
+        return closeQueue;
     }
 }
