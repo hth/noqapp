@@ -22,6 +22,8 @@ import com.token.domain.BaseEntity;
 import com.token.domain.QueueEntity;
 import com.token.domain.types.QueueStateEnum;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 1/2/17 8:32 PM
@@ -103,6 +105,20 @@ public class QueueManagerImpl implements QueueManager {
                         where("QR").is(codeQR)
                                 .and("QS").is(QueueStateEnum.Q)
                 ).with(new Sort(ASC, "TN")),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    public List<QueueEntity> findAllByDid(String did) {
+        return mongoTemplate.find(
+                query(where("DID").is(did)),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    public List<QueueEntity> findAllByRid(String rid) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid)),
                 QueueEntity.class,
                 TABLE);
     }
