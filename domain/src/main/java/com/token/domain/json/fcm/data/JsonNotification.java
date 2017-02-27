@@ -30,8 +30,20 @@ public class JsonNotification {
     @JsonProperty ("title")
     private String title;
 
+    @JsonProperty("title-loc-key")
+    private String titleLocKey;
+
+    @JsonProperty("title-loc-args")
+    private String[] titleLocArgs;
+
     @JsonProperty ("body")
     private String body;
+
+    @JsonProperty ("loc-key")
+    private String locKey;
+
+    @JsonProperty ("loc-args")
+    private String[] locArgs;
 
     public String getTitle() {
         return title;
@@ -48,6 +60,26 @@ public class JsonNotification {
 
     public JsonNotification setBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    public JsonNotification setTitleLocKey(String titleLocKey) {
+        this.titleLocKey = titleLocKey;
+        return this;
+    }
+
+    public JsonNotification setTitleLocArgs(String[] titleLocArgs) {
+        this.titleLocArgs = titleLocArgs;
+        return this;
+    }
+
+    public JsonNotification setLocKey(String locKey) {
+        this.locKey = locKey;
+        return this;
+    }
+
+    public JsonNotification setLocArgs(String[] locArgs) {
+        this.locArgs = locArgs;
         return this;
     }
 }
