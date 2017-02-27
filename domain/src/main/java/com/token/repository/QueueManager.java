@@ -22,14 +22,15 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @param did
      * @return
      */
+    @Mobile
     List<QueueEntity> findAllByDid(String did);
 
     /**
      * Find all based on registered user.
      *
-     * @param did
      * @param rid
      * @return
      */
+    @Mobile
     List<QueueEntity> findAllByRid(String rid);
 }
