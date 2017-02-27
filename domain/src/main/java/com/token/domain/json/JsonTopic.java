@@ -29,7 +29,7 @@ import com.token.domain.TokenQueueEntity;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTopic extends JsonToken {
 
-    @JsonProperty ("to")
+    @JsonProperty ("o")
     private String topic;
 
     public JsonTopic(TokenQueueEntity tokenQueue) {
