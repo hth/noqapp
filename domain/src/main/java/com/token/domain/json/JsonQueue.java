@@ -40,7 +40,7 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("d")
     private String displayName;
 
-    @JsonProperty ("a")
+    @JsonProperty ("sa")
     private String storeAddress;
 
     @JsonProperty ("p")
