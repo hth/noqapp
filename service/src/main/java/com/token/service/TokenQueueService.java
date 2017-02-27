@@ -58,7 +58,6 @@ public class TokenQueueService {
      * @param codeQR
      * @param did
      * @param rid
-     * @param deviceToken
      * @return
      */
     @Mobile
@@ -119,8 +118,8 @@ public class TokenQueueService {
                 .setCodeQR(codeQR);
 
         jsonMessage.getNotification()
-                .setBody("Hello Body")
-                .setTitle("Hello");
+                .setBody("Serving Token " + tokenQueue.getCurrentlyServing())
+                .setTitle(tokenQueue.getDisplayName());
 
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
 
