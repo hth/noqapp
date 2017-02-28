@@ -27,7 +27,7 @@ import com.token.domain.AbstractDomain;
 @JsonIgnoreProperties (ignoreUnknown = true)
 public class JsonBooleanResponse extends AbstractDomain {
 
-    @JsonProperty("response")
+    @JsonProperty("r")
     private boolean response;
 
     public JsonBooleanResponse(boolean response) {
