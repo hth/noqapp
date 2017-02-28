@@ -7,6 +7,7 @@ package com.token.domain.types;
 public enum QueueStateEnum {
     Q("Q", "Queued"),
     N("N", "No Show"),
+    A("A", "Abort"),
     S("S", "Serviced");
 
     private final String name;

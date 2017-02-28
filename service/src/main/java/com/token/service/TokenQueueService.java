@@ -12,6 +12,7 @@ import com.token.domain.TokenQueueEntity;
 import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
+import com.token.domain.types.QueueStateEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
 
@@ -80,17 +81,30 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setActive(queue.isActive());
-        } else {
-            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-            LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-            sendMessageToTopic(codeQR, tokenQueue);
-
-            return new JsonToken(codeQR)
-                    .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setActive(queue.isActive());
         }
+        
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
+        sendMessageToTopic(codeQR, tokenQueue);
+
+        return new JsonToken(codeQR)
+                .setToken(queue.getTokenNumber())
+                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setActive(queue.isActive());
+    }
+
+    @Mobile
+    public boolean abortQueue(String codeQR, String did, String rid) {
+        QueueEntity queue = queueManager.findOne(codeQR, did, rid);
+        if (queue == null) {
+            LOG.warn("Not joined to queue, ignore abort");
+            return true;
+        }
+
+        queue.setQueueState(QueueStateEnum.A);
+        queueManager.save(queue);
+        return true;
     }
 
     @Mobile
@@ -119,7 +133,7 @@ public class TokenQueueService {
 
         jsonMessage.getNotification()
                 .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                .setLocKey("Serving")
+                .setLocKey("serving")
                 .setLocArgs(new String[] {String.valueOf(tokenQueue.getCurrentlyServing())})
                 .setTitle(tokenQueue.getDisplayName());
 
