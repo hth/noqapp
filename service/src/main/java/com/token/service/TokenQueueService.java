@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.token.domain.QueueEntity;
 import com.token.domain.TokenQueueEntity;
 import com.token.domain.annotation.Mobile;
+import com.token.domain.json.JsonBooleanResponse;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
 import com.token.domain.types.QueueStateEnum;
@@ -95,16 +96,16 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public boolean abortQueue(String codeQR, String did, String rid) {
+    public JsonBooleanResponse abortQueue(String codeQR, String did, String rid) {
         QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
         if (queue == null) {
-            LOG.warn("Not joined to queue, ignore abort");
-            return true;
+            LOG.warn("Not joined to queue did={}, ignore abort", did);
+            return new JsonBooleanResponse(true);
         }
 
         queue.setQueueState(QueueStateEnum.A);
         queueManager.save(queue);
-        return true;
+        return new JsonBooleanResponse(true);
     }
 
     @Mobile
