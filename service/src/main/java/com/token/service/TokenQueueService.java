@@ -98,7 +98,7 @@ public class TokenQueueService {
     public boolean abortQueue(String codeQR, String did, String rid) {
         QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
         if (queue == null) {
-            LOG.warn("Not joined to queue, ignore abort");
+            LOG.warn("Not joined to queue did={}, ignore abort", did);
             return true;
         }
 
