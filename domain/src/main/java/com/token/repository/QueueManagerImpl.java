@@ -66,21 +66,11 @@ public class QueueManagerImpl implements QueueManager {
             query = query(where("QR").is(codeQR).and("DID").is(did));
         }
 
-        QueueEntity queue = mongoTemplate.findOne(
+        return mongoTemplate.findOne(
                 query,
                 QueueEntity.class,
                 TABLE
         );
-
-        if (queue == null) {
-            queue = mongoTemplate.findOne(
-                    query,
-                    QueueEntity.class,
-                    TABLE
-            );
-        }
-
-        return queue;
     }
 
     @Override
@@ -92,21 +82,11 @@ public class QueueManagerImpl implements QueueManager {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueStateEnum.Q));
         }
 
-        QueueEntity queue = mongoTemplate.findOne(
+        return mongoTemplate.findOne(
                 query,
                 QueueEntity.class,
                 TABLE
         );
-
-        if (queue == null) {
-            queue = mongoTemplate.findOne(
-                    query,
-                    QueueEntity.class,
-                    TABLE
-            );
-        }
-
-        return queue;
     }
 
     @Override
