@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findOne(String codeQR, String did, String rid);
+    QueueEntity findToAbort(String codeQR, String did, String rid);
 
     @Mobile
     QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueStateEnum queueState);
