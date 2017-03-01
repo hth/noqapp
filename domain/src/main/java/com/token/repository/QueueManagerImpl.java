@@ -61,9 +61,9 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findOne(String codeQR, String did, String rid) {
         Query query;
         if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("RID").is(rid));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueStateEnum.Q).and("RID").is(rid));
         } else {
-            query = query(where("QR").is(codeQR).and("DID").is(did));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueStateEnum.Q));
         }
 
         return mongoTemplate.findOne(
