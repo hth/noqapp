@@ -67,7 +67,7 @@ public class JsonQueue extends AbstractDomain {
     private int lastNumber;
 
     @JsonProperty ("q")
-    private boolean closeQueue;
+    private int closeQueue;
 
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
@@ -168,11 +168,11 @@ public class JsonQueue extends AbstractDomain {
     }
 
     public JsonQueue setCloseQueue(boolean closeQueue) {
-        this.closeQueue = closeQueue;
+        this.closeQueue = closeQueue ? 1 : 0;
         return this;
     }
 
-    public boolean isCloseQueue() {
+    public int getCloseQueue() {
         return closeQueue;
     }
 }

@@ -65,15 +65,15 @@ public class JsonTokenAndQueue extends AbstractDomain {
     private int lastNumber;
 
     @JsonProperty ("q")
-    private boolean closeQueue;
+    private int closeQueue;
 
     @JsonProperty ("t")
     private int token;
 
     @JsonProperty ("a")
-    private boolean active;
+    private int active;
 
-    public JsonTokenAndQueue(int token, boolean active, JsonQueue jsonQueue) {
+    public JsonTokenAndQueue(int token, int active, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
@@ -85,7 +85,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
-        this.closeQueue = jsonQueue.isCloseQueue();
+        this.closeQueue = jsonQueue.getCloseQueue();
         this.token = token;
         this.active = active;
     }
