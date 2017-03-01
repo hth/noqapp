@@ -65,7 +65,7 @@ public class TokenQueueService {
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid) {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
-        if (queue == null) {
+        if (null == queue || QueueStateEnum.Q != queue.getQueueState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
             sendMessageToTopic(codeQR, tokenQueue);
 
