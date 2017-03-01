@@ -6,6 +6,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteConcern;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -54,6 +56,7 @@ public class QueueManagerImpl implements QueueManager {
         if (object.getId() != null) {
             object.setUpdated();
         }
+        mongoTemplate.setWriteConcern(WriteConcern.W3);
         mongoTemplate.save(object, TABLE);
     }
 
@@ -63,6 +66,16 @@ public class QueueManagerImpl implements QueueManager {
             object.setUpdated();
         }
         mongoTemplate.insert(object, TABLE);
+    }
+
+    @Override
+    public void abort(String id) {
+        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("QS", QueueStateEnum.A)),
+                QueueEntity.class
+        );
     }
 
     @Override

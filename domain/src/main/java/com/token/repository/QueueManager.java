@@ -13,6 +13,13 @@ import java.util.List;
 public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     void insert(QueueEntity queue);
+
+    /**
+     * Abort queue. Set QueueState to Abort.
+     * @param id
+     */
+    void abort(String id);
+
     QueueEntity findOne(String codeQR, String did, String rid);
     QueueEntity findToAbort(String codeQR, String did, String rid);
 
