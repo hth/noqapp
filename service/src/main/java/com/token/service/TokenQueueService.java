@@ -105,8 +105,7 @@ public class TokenQueueService {
             }
 
             LOG.info("Found queue id={}", queue.getId());
-            queue.setQueueState(QueueStateEnum.A);
-            queueManager.save(queue);
+            queueManager.abort(queue.getId());
             return new JsonResponse(true);
         } catch (Exception e) {
             LOG.error("Abort {}", e.getLocalizedMessage(), e);
