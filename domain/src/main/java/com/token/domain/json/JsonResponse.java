@@ -25,12 +25,12 @@ import com.token.domain.AbstractDomain;
 )
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
-public class JsonBooleanResponse extends AbstractDomain {
+public class JsonResponse extends AbstractDomain {
 
     @JsonProperty("r")
     private int response;
 
-    public JsonBooleanResponse(boolean response) {
+    public JsonResponse(boolean response) {
         this.response = response ? 1 : 0;
     }
 }
