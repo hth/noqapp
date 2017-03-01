@@ -108,7 +108,7 @@ public class TokenQueueService {
             queueManager.abort(queue.getId());
             return new JsonResponse(true);
         } catch (Exception e) {
-            LOG.error("Abort {}", e.getLocalizedMessage(), e);
+            LOG.error("Abort failed {}", e.getLocalizedMessage(), e);
             return new JsonResponse(false);
         }
     }
