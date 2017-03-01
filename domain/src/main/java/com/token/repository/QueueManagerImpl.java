@@ -73,8 +73,9 @@ public class QueueManagerImpl implements QueueManager {
         mongoTemplate.setWriteConcern(WriteConcern.W3);
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("QS", QueueStateEnum.A)),
-                QueueEntity.class
+                entityUpdate(update("QS", QueueStateEnum.A).set("A", false)),
+                QueueEntity.class,
+                TABLE
         );
     }
 
