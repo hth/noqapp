@@ -54,6 +54,14 @@ public class QueueManagerImpl implements QueueManager {
         if (object.getId() != null) {
             object.setUpdated();
         }
+        mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public void insert(QueueEntity object) {
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
         mongoTemplate.insert(object, TABLE);
     }
 

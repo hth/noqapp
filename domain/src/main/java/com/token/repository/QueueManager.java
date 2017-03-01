@@ -11,6 +11,8 @@ import java.util.List;
  * Date: 1/2/17 8:32 PM
  */
 public interface QueueManager extends RepositoryManager<QueueEntity> {
+
+    void insert(QueueEntity queue);
     QueueEntity findOne(String codeQR, String did, String rid);
     QueueEntity findToAbort(String codeQR, String did, String rid);
 

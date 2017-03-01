@@ -71,7 +71,7 @@ public class TokenQueueService {
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
-                queueManager.save(queue);
+                queueManager.insert(queue);
             } catch (DuplicateKeyException e) {
                 LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                 return new JsonToken(codeQR);
@@ -104,12 +104,13 @@ public class TokenQueueService {
                 return new JsonResponse(true);
             }
 
+            LOG.info("Found queue id={}", queue.getId());
             queue.setQueueState(QueueStateEnum.A);
             queueManager.save(queue);
             return new JsonResponse(true);
         } catch (Exception e) {
             LOG.error("Abort {}", e.getLocalizedMessage(), e);
-            return new JsonResponse(true);
+            return new JsonResponse(false);
         }
     }
 
