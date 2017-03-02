@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.types.QueueStatusEnum;
 
 /**
  * User: hitender
@@ -64,16 +65,13 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("l")
     private int lastNumber;
 
-    @JsonProperty ("q")
-    private int closeQueue;
-
     @JsonProperty ("t")
     private int token;
 
-    @JsonProperty ("a")
-    private int active;
+    @JsonProperty ("q")
+    private QueueStatusEnum queueStatus;
 
-    public JsonTokenAndQueue(int token, int active, JsonQueue jsonQueue) {
+    public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
@@ -85,8 +83,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
-        this.closeQueue = jsonQueue.getCloseQueue();
+
+        this.queueStatus = queueStatus;
         this.token = token;
-        this.active = active;
     }
 }
