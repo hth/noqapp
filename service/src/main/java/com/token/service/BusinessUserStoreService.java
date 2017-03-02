@@ -61,16 +61,7 @@ public class BusinessUserStoreService {
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
         List<JsonTopic> jsonTokens = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
-            JsonTopic jsonTopic = new JsonTopic(tokenQueue);
-            if(tokenQueue.getLastNumber() == tokenQueue.getCurrentlyServing()) {
-                /* Now check if last number is served. */
-                if(tokenQueueService.isQueued(tokenQueue.getLastNumber(), tokenQueue.getId())) {
-                    jsonTopic.setQueueStatus(QueueStatusEnum.N);
-                } else {
-                    jsonTopic.setQueueStatus(QueueStatusEnum.D);
-                }
-            }
-            jsonTokens.add(jsonTopic);
+            jsonTokens.add(new JsonTopic(tokenQueue));
         }
 
         return jsonTokens;
