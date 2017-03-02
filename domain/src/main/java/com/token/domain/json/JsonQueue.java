@@ -172,12 +172,8 @@ public class JsonQueue extends AbstractDomain {
         return queueStatus;
     }
 
-    public JsonQueue setQueueStatus(boolean closeQueue) {
-        if (closeQueue) {
-            queueStatus = QueueStatusEnum.C;
-        } else {
-            queueStatus = QueueStatusEnum.N;
-        }
+    public JsonQueue setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
         return this;
     }
 }

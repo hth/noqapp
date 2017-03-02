@@ -90,7 +90,7 @@ public class TokenQueueService {
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(tokenQueue.isCloseQueue());
+                    .setQueueStatus(tokenQueue.getQueueStatus());
         }
         
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
@@ -106,7 +106,7 @@ public class TokenQueueService {
                 .setToken(queue.getTokenNumber())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setQueueStatus(tokenQueue.isCloseQueue());
+                .setQueueStatus(tokenQueue.getQueueStatus());
     }
 
     @Mobile
@@ -133,7 +133,7 @@ public class TokenQueueService {
         sendMessageToTopic(codeQR, queueStatus, tokenQueue);
 
         return new JsonToken(codeQR)
-                .setQueueStatus(tokenQueue.isCloseQueue())
+                .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber());
