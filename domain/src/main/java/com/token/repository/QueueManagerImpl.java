@@ -150,4 +150,11 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE);
     }
+
+    public boolean isQueued(int tokenNumber, String codeQR) {
+        return mongoTemplate.exists(
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").is(QueueStateEnum.Q)),
+                QueueEntity.class,
+                TABLE);
+    }
 }
