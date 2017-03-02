@@ -28,9 +28,6 @@ public class TokenQueueEntity extends BaseEntity {
     @Field ("CS")
     private int currentlyServing;
 
-    @Field ("CQ")
-    private boolean closeQueue;
-
     @Field ("TP")
     private String topic;
 
@@ -61,12 +58,8 @@ public class TokenQueueEntity extends BaseEntity {
         this.currentlyServing = currentlyServing;
     }
 
-    public boolean isCloseQueue() {
-        return closeQueue;
-    }
-
-    public void setCloseQueue(boolean closeQueue) {
-        this.closeQueue = closeQueue;
+    public void closeQueue() {
+        this.queueStatus = QueueStatusEnum.C;
     }
 
     public String getTopic() {
