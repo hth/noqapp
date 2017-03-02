@@ -157,4 +157,8 @@ public class TokenQueueService {
     public List<TokenQueueEntity> getTokenQueue(String[] ids) {
         return tokenQueueManager.getTokenQueues(ids);
     }
+
+    public boolean isQueued(int tokenNumber, String codeQR) {
+        return queueManager.isQueued(tokenNumber, codeQR);
+    }
 }

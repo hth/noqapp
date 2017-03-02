@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.token.domain.BusinessUserStoreEntity;
 import com.token.domain.TokenQueueEntity;
 import com.token.domain.annotation.Mobile;
-import com.token.domain.json.JsonToken;
 import com.token.domain.json.JsonTopic;
+import com.token.domain.types.QueueStatusEnum;
 import com.token.repository.BusinessUserStoreManager;
 
 import java.util.ArrayList;
@@ -61,7 +61,16 @@ public class BusinessUserStoreService {
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
         List<JsonTopic> jsonTokens = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
-            jsonTokens.add(new JsonTopic(tokenQueue));
+            JsonTopic jsonTopic = new JsonTopic(tokenQueue);
+            if(tokenQueue.getLastNumber() == tokenQueue.getCurrentlyServing()) {
+                /* Now check if last number is served. */
+                if(tokenQueueService.isQueued(tokenQueue.getLastNumber(), tokenQueue.getId())) {
+                    jsonTopic.setQueueStatus(QueueStatusEnum.D);
+                } else {
+                    jsonTopic.setQueueStatus(QueueStatusEnum.N);
+                }
+            }
+            jsonTokens.add(jsonTopic);
         }
 
         return jsonTokens;
