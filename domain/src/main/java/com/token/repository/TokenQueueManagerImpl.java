@@ -5,6 +5,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteConcern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.TokenQueueEntity;
+import com.token.domain.types.QueueStatusEnum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,5 +95,15 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
                 TokenQueueEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
+        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        mongoTemplate.updateFirst(
+                query(where("_id").is(codeQR)),
+                entityUpdate(update("QS", queueStatus)),
+                TokenQueueEntity.class,
+                TABLE);
     }
 }

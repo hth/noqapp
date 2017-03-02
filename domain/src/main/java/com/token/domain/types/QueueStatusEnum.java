@@ -6,6 +6,7 @@ package com.token.domain.types;
  */
 public enum QueueStatusEnum {
     S("S", "Start"),
+    R("R", "Re-Start"),
     N("N", "Next"),
     D("D", "Done"),
     C("C", "Closed");
