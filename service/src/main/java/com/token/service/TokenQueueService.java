@@ -14,6 +14,7 @@ import com.token.domain.json.JsonResponse;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
 import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueStatusEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
 
@@ -69,7 +70,7 @@ public class TokenQueueService {
         /* Either not registered or registered but has been serviced so get new token. */
         if (null == queue || QueueStateEnum.Q != queue.getQueueState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-            sendMessageToTopic(codeQR, tokenQueue);
+            sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
@@ -88,7 +89,7 @@ public class TokenQueueService {
         
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
         LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-        sendMessageToTopic(codeQR, tokenQueue);
+        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
 
         return new JsonToken(codeQR)
                 .setToken(queue.getTokenNumber())
@@ -116,9 +117,9 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public JsonToken updateServing(String codeQR, int serving) {
+    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving);
-        sendMessageToTopic(codeQR, tokenQueue);
+        sendMessageToTopic(codeQR, queueStatus, tokenQueue);
 
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.isCloseQueue())
@@ -132,12 +133,13 @@ public class TokenQueueService {
      * @param codeQR
      * @param tokenQueue
      */
-    private void sendMessageToTopic(String codeQR, TokenQueueEntity tokenQueue) {
+    private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopicWellFormatted());
         jsonMessage.getTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                .setCodeQR(codeQR);
+                .setCodeQR(codeQR)
+                .setQueueStatus(queueStatus);
 
         jsonMessage.getNotification()
                 .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
