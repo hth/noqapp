@@ -55,7 +55,7 @@ public class TokenQueueService {
     }
 
     /**
-     * Get new token. This process adds the user to queue. Invoke broadcast.
+     * Get new token. This process adds the user to queue. Invokes broadcast.
      *
      * @param codeQR
      * @param did
@@ -65,6 +65,8 @@ public class TokenQueueService {
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid) {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
+
+        /* Either not registered or registered but has been serviced so get new token. */
         if (null == queue || QueueStateEnum.Q != queue.getQueueState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
             sendMessageToTopic(codeQR, tokenQueue);
@@ -81,7 +83,7 @@ public class TokenQueueService {
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
-                    .setActive(queue.isActive());
+                    .setQueueStatus(tokenQueue.isCloseQueue());
         }
         
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
@@ -92,7 +94,7 @@ public class TokenQueueService {
                 .setToken(queue.getTokenNumber())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setActive(queue.isActive());
+                .setQueueStatus(tokenQueue.isCloseQueue());
     }
 
     @Mobile
@@ -119,7 +121,7 @@ public class TokenQueueService {
         sendMessageToTopic(codeQR, tokenQueue);
 
         return new JsonToken(codeQR)
-                .setActive(tokenQueue.isActive())
+                .setQueueStatus(tokenQueue.isCloseQueue())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber());

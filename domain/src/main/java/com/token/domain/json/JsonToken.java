@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
 import com.token.domain.TokenQueueEntity;
+import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueStatusEnum;
 
 /**
  * User: hitender
@@ -46,15 +48,23 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("d")
     private String displayName;
 
-    @JsonProperty ("a")
-    private int active;
+    @JsonProperty ("q")
+    private QueueStatusEnum queueStatus;
 
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.displayName = tokenQueue.getDisplayName();
-        this.active = tokenQueue.isActive() ? 1 : 0;
+        if (tokenQueue.isCloseQueue()) {
+            queueStatus = QueueStatusEnum.C;
+        } else {
+            queueStatus = QueueStatusEnum.N;
+        }
+    }
+
+    public JsonToken(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
     }
 
     public JsonToken(String codeQR) {
@@ -92,12 +102,21 @@ public class JsonToken extends AbstractDomain {
         return displayName;
     }
 
-    public JsonToken setActive(boolean active) {
-        this.active = active ? 1 : 0;
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
+    }
+
+    public JsonToken setQueueStatus(boolean closeQueue) {
+        if (closeQueue) {
+            queueStatus = QueueStatusEnum.C;
+        } else {
+            queueStatus = QueueStatusEnum.N;
+        }
         return this;
     }
 
-    public int getActive() {
-        return active;
+    public JsonToken setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
+        return this;
     }
 }

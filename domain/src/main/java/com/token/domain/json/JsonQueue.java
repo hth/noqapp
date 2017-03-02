@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.types.QueueStatusEnum;
 
 /**
  * User: hitender
@@ -67,7 +68,7 @@ public class JsonQueue extends AbstractDomain {
     private int lastNumber;
 
     @JsonProperty ("q")
-    private int closeQueue;
+    private QueueStatusEnum queueStatus;
 
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
@@ -167,12 +168,16 @@ public class JsonQueue extends AbstractDomain {
         return lastNumber;
     }
 
-    public JsonQueue setCloseQueue(boolean closeQueue) {
-        this.closeQueue = closeQueue ? 1 : 0;
-        return this;
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
     }
 
-    public int getCloseQueue() {
-        return closeQueue;
+    public JsonQueue setQueueStatus(boolean closeQueue) {
+        if (closeQueue) {
+            queueStatus = QueueStatusEnum.C;
+        } else {
+            queueStatus = QueueStatusEnum.N;
+        }
+        return this;
     }
 }
