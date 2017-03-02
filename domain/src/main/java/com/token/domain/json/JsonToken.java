@@ -56,11 +56,7 @@ public class JsonToken extends AbstractDomain {
         this.token = tokenQueue.getLastNumber();
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.displayName = tokenQueue.getDisplayName();
-        if (tokenQueue.isCloseQueue()) {
-            queueStatus = QueueStatusEnum.C;
-        } else {
-            queueStatus = QueueStatusEnum.N;
-        }
+        this.queueStatus = tokenQueue.getQueueStatus();
     }
 
     public JsonToken(QueueStatusEnum queueStatus) {
