@@ -70,7 +70,13 @@ public class TokenQueueService {
         /* Either not registered or registered but has been serviced so get new token. */
         if (null == queue || QueueStateEnum.Q != queue.getQueueState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-            sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+
+            if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.N);
+            } else {
+                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+            }
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
@@ -89,7 +95,12 @@ public class TokenQueueService {
         
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
         LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+        if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
+            sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+            tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.N);
+        } else {
+            sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+        }
 
         return new JsonToken(codeQR)
                 .setToken(queue.getTokenNumber())

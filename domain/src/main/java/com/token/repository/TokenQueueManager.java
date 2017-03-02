@@ -1,6 +1,7 @@
 package com.token.repository;
 
 import com.token.domain.TokenQueueEntity;
+import com.token.domain.types.QueueStatusEnum;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
     TokenQueueEntity updateServing(String codeQR, int serving);
 
     List<TokenQueueEntity> getTokenQueues(String[] ids);
+
+    void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus);
 }
