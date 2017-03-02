@@ -73,7 +73,7 @@ public class TokenQueueService {
 
             if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
                 sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.N);
+                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
             } else {
                 sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
             }
@@ -97,7 +97,7 @@ public class TokenQueueService {
         LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
         if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
             sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-            tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.N);
+            tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
         } else {
             sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
         }
