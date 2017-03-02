@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.token.domain.types.QueueStatusEnum;
+
 /**
  * User: hitender
  * Date: 1/1/17 7:06 AM
@@ -38,6 +40,9 @@ public class JsonTopicData {
 
     @JsonProperty ("c")
     private String codeQR;
+
+    @JsonProperty ("q")
+    private QueueStatusEnum queueStatus;
 
     public String getMessage() {
         return message;
@@ -72,6 +77,15 @@ public class JsonTopicData {
 
     public JsonTopicData setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
+    }
+
+    public JsonTopicData setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
         return this;
     }
 }
