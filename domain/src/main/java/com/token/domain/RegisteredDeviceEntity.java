@@ -51,6 +51,11 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("TK")
     private String token;
 
+    /** To keep bean happy. */
+    private RegisteredDeviceEntity() {
+        super();
+    }
+
     private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
         super();
         this.receiptUserId = receiptUserId;
