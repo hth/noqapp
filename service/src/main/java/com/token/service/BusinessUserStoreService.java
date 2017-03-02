@@ -65,9 +65,9 @@ public class BusinessUserStoreService {
             if(tokenQueue.getLastNumber() == tokenQueue.getCurrentlyServing()) {
                 /* Now check if last number is served. */
                 if(tokenQueueService.isQueued(tokenQueue.getLastNumber(), tokenQueue.getId())) {
-                    jsonTopic.setQueueStatus(QueueStatusEnum.D);
-                } else {
                     jsonTopic.setQueueStatus(QueueStatusEnum.N);
+                } else {
+                    jsonTopic.setQueueStatus(QueueStatusEnum.D);
                 }
             }
             jsonTokens.add(jsonTopic);
