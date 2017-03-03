@@ -126,8 +126,8 @@ public class QueueManagerImpl implements QueueManager {
         return getNext(codeQR);
     }
 
-    private QueueEntity getNext(String codeQR) {
-//        mongoTemplate.setReadPreference(ReadPreference.primary());
+    @Override
+    public QueueEntity getNext(String codeQR) {
         return mongoTemplate.findOne(
                 query(
                         where("QR").is(codeQR)
