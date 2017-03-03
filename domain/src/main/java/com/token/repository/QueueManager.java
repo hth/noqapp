@@ -15,7 +15,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void insert(QueueEntity queue);
 
     /**
-     * Abort queue. Set QueueState to Abort.
+     * Abort queue. Set QueueUserState to Abort.
      * @param id
      */
     void abort(String id);
@@ -25,6 +25,9 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     @Mobile
     QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
+
+    @Mobile
+    QueueEntity getNext(String codeQR);
 
     /**
      * Find all based on device id, this is when user is not registered.
