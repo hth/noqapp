@@ -50,6 +50,7 @@ public class BusinessUserStoreService {
     @Mobile
     public List<JsonTopic> getQueues(String rid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
+        LOG.info("Found user associated to business count={}", businessUserStores.size());
 
         String[] codes = new String[10];
         int i = 0;
@@ -59,6 +60,7 @@ public class BusinessUserStoreService {
         }
 
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
+        LOG.info("tokenQueues found count={} for codes={}", tokenQueues.size(), codes);
         List<JsonTopic> jsonTopics = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
             jsonTopics.add(new JsonTopic(tokenQueue));
