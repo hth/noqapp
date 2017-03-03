@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueUserStateEnum;
 
 import javax.validation.constraints.NotNull;
 
@@ -42,7 +42,7 @@ public class QueueEntity extends BaseEntity {
 
     @NotNull
     @Field ("QS")
-    private QueueStateEnum queueState = QueueStateEnum.Q;
+    private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber) {
         this.codeQR = codeQR;
@@ -83,11 +83,11 @@ public class QueueEntity extends BaseEntity {
         this.codeQR = codeQR;
     }
 
-    public QueueStateEnum getQueueState() {
-        return queueState;
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
     }
 
-    public void setQueueState(QueueStateEnum queueState) {
-        this.queueState = queueState;
+    public void setQueueUserState(QueueUserStateEnum queueUserState) {
+        this.queueUserState = queueUserState;
     }
 }

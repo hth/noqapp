@@ -4,7 +4,7 @@ package com.token.domain.types;
  * User: hitender
  * Date: 12/16/16 3:57 PM
  */
-public enum QueueStateEnum {
+public enum QueueUserStateEnum {
     Q("Q", "Queued"),
     N("N", "No Show"),
     A("A", "Abort"),
@@ -13,7 +13,7 @@ public enum QueueStateEnum {
     private final String name;
     private final String description;
 
-    QueueStateEnum(String name, String description) {
+    QueueUserStateEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.QueueEntity;
-import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueUserStateEnum;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class QueueManagerImpl implements QueueManager {
         mongoTemplate.setWriteConcern(WriteConcern.W3);
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("QS", QueueStateEnum.A).set("A", false)),
+                entityUpdate(update("QS", QueueUserStateEnum.A).set("A", false)),
                 QueueEntity.class,
                 TABLE
         );
@@ -99,9 +99,9 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findToAbort(String codeQR, String did, String rid) {
         Query query;
         if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueStateEnum.Q).and("RID").is(rid));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("RID").is(rid));
         } else {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
 
         return mongoTemplate.findOne(
@@ -117,10 +117,10 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueStateEnum queueState) {
+    public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
         boolean status = mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
-                entityUpdate(update("QS", queueState).set("A", false)),
+                entityUpdate(update("QS", queueUserState).set("A", false)),
                 QueueEntity.class).getN() > 1;
         LOG.debug("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
         return getNext(codeQR);
@@ -131,7 +131,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.findOne(
                 query(
                         where("QR").is(codeQR)
-                                .and("QS").is(QueueStateEnum.Q)
+                                .and("QS").is(QueueUserStateEnum.Q)
                 ).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
@@ -139,21 +139,21 @@ public class QueueManagerImpl implements QueueManager {
 
     public List<QueueEntity> findAllByDid(String did) {
         return mongoTemplate.find(
-                query(where("DID").is(did).and("QS").is(QueueStateEnum.Q)),
+                query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
 
     public List<QueueEntity> findAllByRid(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("QS").is(QueueStateEnum.Q)),
+                query(where("RID").is(rid).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
 
     public boolean isQueued(int tokenNumber, String codeQR) {
         return mongoTemplate.exists(
-                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").is(QueueStateEnum.Q)),
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }

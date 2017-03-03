@@ -2,7 +2,7 @@ package com.token.repository;
 
 import com.token.domain.QueueEntity;
 import com.token.domain.annotation.Mobile;
-import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueUserStateEnum;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findToAbort(String codeQR, String did, String rid);
 
     @Mobile
-    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueStateEnum queueState);
+    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
 
     /**
      * Find all based on device id, this is when user is not registered.
