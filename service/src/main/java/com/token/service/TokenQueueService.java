@@ -13,7 +13,7 @@ import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonResponse;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
-import com.token.domain.types.QueueStateEnum;
+import com.token.domain.types.QueueUserStateEnum;
 import com.token.domain.types.QueueStatusEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
@@ -68,7 +68,7 @@ public class TokenQueueService {
         QueueEntity queue = queueManager.findOne(codeQR, did, rid);
 
         /* Either not registered or registered but has been serviced so get new token. */
-        if (null == queue || QueueStateEnum.Q != queue.getQueueState()) {
+        if (null == queue || QueueUserStateEnum.Q != queue.getQueueUserState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
             if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
