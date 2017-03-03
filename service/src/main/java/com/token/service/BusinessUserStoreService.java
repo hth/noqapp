@@ -59,11 +59,12 @@ public class BusinessUserStoreService {
         }
 
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
-        List<JsonTopic> jsonTokens = new ArrayList<>();
+        List<JsonTopic> jsonTopics = new ArrayList<>();
         for(TokenQueueEntity tokenQueue : tokenQueues) {
-            jsonTokens.add(new JsonTopic(tokenQueue));
+            jsonTopics.add(new JsonTopic(tokenQueue));
         }
 
-        return jsonTokens;
+        LOG.info("Found queues count={}", jsonTopics.size());
+        return jsonTopics;
     }
 }
