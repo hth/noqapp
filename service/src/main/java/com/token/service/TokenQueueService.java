@@ -13,8 +13,8 @@ import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonResponse;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
-import com.token.domain.types.QueueUserStateEnum;
 import com.token.domain.types.QueueStatusEnum;
+import com.token.domain.types.QueueUserStateEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.TokenQueueManager;
 
@@ -71,11 +71,20 @@ public class TokenQueueService {
         if (null == queue || QueueUserStateEnum.Q != queue.getQueueUserState()) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
-            if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
-                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
-            } else {
-                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+            switch (tokenQueue.getQueueStatus()) {
+                case D:
+                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                    tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
+                    break;
+                case S:
+                    sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
+                    break;
+                case R:
+                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                    break;
+                default:
+                    sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+                    break;
             }
 
             try {
@@ -92,10 +101,10 @@ public class TokenQueueService {
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus());
         }
-        
+
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
         LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-        if(tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
+        if (tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
             sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
             tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
         } else {
@@ -141,6 +150,7 @@ public class TokenQueueService {
 
     /**
      * Send message to Topic.
+     *
      * @param codeQR
      * @param tokenQueue
      */
@@ -155,7 +165,7 @@ public class TokenQueueService {
         jsonMessage.getNotification()
                 .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                 .setLocKey("serving")
-                .setLocArgs(new String[] {String.valueOf(tokenQueue.getCurrentlyServing())})
+                .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                 .setTitle(tokenQueue.getDisplayName());
 
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);

@@ -38,17 +38,17 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("c")
     private String codeQR;
 
-    @JsonProperty ("t")
-    private int token;
-
-    @JsonProperty ("s")
-    private int servingNumber;
-
     @JsonProperty ("d")
     private String displayName;
 
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty ("s")
+    private int servingNumber;
+
+    @JsonProperty ("t")
+    private int token;
 
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
