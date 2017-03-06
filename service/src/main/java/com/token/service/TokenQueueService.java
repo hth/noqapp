@@ -164,7 +164,7 @@ public class TokenQueueService {
      * @param tokenQueue
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
-        JsonMessage jsonMessage = new JsonMessage("dY29hMsIfEU:APA91bGS7TIB98bRDMIFLFOu2IwD2zRvpryVGcNeWfnAYghU5rDA-p7jS-xSkAhfNR8gYf-aeCwjTKq5N9iTyXfMtP7X16c_m3zwlLEdRiXlIVwPaNV2tOJDkfi8hxCrn-Cxny0RW9fH");
+        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopicWellFormatted());
         jsonMessage.getTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
