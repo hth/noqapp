@@ -184,7 +184,7 @@ public class TokenQueueService {
                  * will not get any update if some one joins. FCM makes sure the message is dispersed.  
                  */
                 jsonMessage.getNotification()
-                        .setBody(tokenQueue.getDisplayName()  + " has " + tokenQueue.totalWaiting() + " waiting")
+                        .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
                         .setTitle(tokenQueue.getDisplayName() + " Queue");
                 break;
             default:

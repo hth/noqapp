@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.token.domain.types.QueueStatusEnum;
-import com.token.repository.NotificationManagerImpl;
 
 /**
  * Token should exists only when open for business or when token is suppose to be made available.
@@ -24,7 +23,7 @@ import com.token.repository.NotificationManagerImpl;
 @Document (collection = "TOKEN_QUEUE")
 public class TokenQueueEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueEntity.class);
-    public static final String TOPICS = "/topics/";
+    private static final String TOPICS = "/topics/";
 
     @Field ("LN")
     private int lastNumber;
