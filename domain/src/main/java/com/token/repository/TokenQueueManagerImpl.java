@@ -79,10 +79,10 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     }
 
     @Override
-    public TokenQueueEntity updateServing(String codeQR, int serving) {
+    public TokenQueueEntity updateServing(String codeQR, int serving, QueueStatusEnum queueStatus) {
         return mongoTemplate.findAndModify(
                 query(where("_id").is(codeQR)),
-                entityUpdate(update("CS", serving)),
+                entityUpdate(update("CS", serving).set("QS", queueStatus)),
                 FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
                 TABLE);

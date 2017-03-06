@@ -144,11 +144,11 @@ public class TokenQueueService {
             return new JsonResponse(false);
         }
     }
-
+    
     @Mobile
     public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving) {
-        TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving);
-        sendMessageToTopic(codeQR, queueStatus, tokenQueue);
+        TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
 
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
