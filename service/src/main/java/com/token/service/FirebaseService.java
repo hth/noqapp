@@ -104,8 +104,7 @@ public class FirebaseService {
             }
         }
 
-        LOG.debug("FCM success HTTP={} topic={} headers={} message={} body={}",
-                response.code(), jsonMessage.getTo(), response.headers(), response.message(), response.body());
+        LOG.debug("FCM success HTTP={} topic={} headers={} message={} body={}", response.code(), jsonMessage.getTo(), response.headers(), response.message(), response.body());
         return response.isSuccessful();
     }
 }

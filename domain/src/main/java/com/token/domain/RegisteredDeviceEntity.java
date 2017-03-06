@@ -1,5 +1,7 @@
 package com.token.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -72,11 +74,11 @@ public class RegisteredDeviceEntity extends BaseEntity {
     }
 
     public static RegisteredDeviceEntity newInstance(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
-        return new RegisteredDeviceEntity(receiptUserId, deviceId, deviceType, token);
-    }
-
-    public static RegisteredDeviceEntity newInstance(String deviceId, DeviceTypeEnum deviceType, String token) {
-        return new RegisteredDeviceEntity(deviceId, deviceType, token);
+        if (StringUtils.isBlank(receiptUserId)) {
+            return new RegisteredDeviceEntity(deviceId, deviceType, token);
+        } else {
+            return new RegisteredDeviceEntity(receiptUserId, deviceId, deviceType, token);
+        }
     }
 
     public String getReceiptUserId() {
