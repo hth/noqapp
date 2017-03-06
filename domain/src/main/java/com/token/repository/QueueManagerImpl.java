@@ -56,7 +56,9 @@ public class QueueManagerImpl implements QueueManager {
         if (object.getId() != null) {
             object.setUpdated();
         }
-        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
         mongoTemplate.save(object, TABLE);
     }
 
@@ -70,7 +72,10 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void abort(String id) {
-        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
+
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(update("QS", QueueUserStateEnum.A).set("A", false)),
@@ -121,7 +126,8 @@ public class QueueManagerImpl implements QueueManager {
         boolean status = mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
                 entityUpdate(update("QS", queueUserState).set("A", false)),
-                QueueEntity.class).getN() > 1;
+                QueueEntity.class,
+                TABLE).getN() > 1;
         LOG.debug("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
         return getNext(codeQR);
     }

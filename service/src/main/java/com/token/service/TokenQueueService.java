@@ -104,11 +104,20 @@ public class TokenQueueService {
 
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
         LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-        if (tokenQueue.getQueueStatus() == QueueStatusEnum.D) {
-            sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-            tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
-        } else {
-            sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+        switch (tokenQueue.getQueueStatus()) {
+            case D:
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
+                break;
+            case S:
+                sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
+                break;
+            case R:
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                break;
+            default:
+                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+                break;
         }
 
         return new JsonToken(codeQR)
@@ -155,21 +164,38 @@ public class TokenQueueService {
      * @param tokenQueue
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
-        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getTopicWellFormatted());
+        JsonMessage jsonMessage = new JsonMessage("dY29hMsIfEU:APA91bGS7TIB98bRDMIFLFOu2IwD2zRvpryVGcNeWfnAYghU5rDA-p7jS-xSkAhfNR8gYf-aeCwjTKq5N9iTyXfMtP7X16c_m3zwlLEdRiXlIVwPaNV2tOJDkfi8hxCrn-Cxny0RW9fH");
         jsonMessage.getTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR)
                 .setQueueStatus(queueStatus);
 
-        jsonMessage.getNotification()
-                .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                .setLocKey("serving")
-                .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
-                .setTitle(tokenQueue.getDisplayName());
+        /*
+        Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
+        Otherwise we will have to manage more number of topic.
+        */
+        switch(queueStatus) {
+            case S:
+            case R:
+            case D:
+                /**
+                 * This message has to go as the merchant with the opened queue
+                 * will not get any update if some one joins. FCM makes sure the message is dispersed.  
+                 */
+                jsonMessage.getNotification()
+                        .setBody(tokenQueue.getDisplayName()  + " has " + tokenQueue.totalWaiting() + " waiting")
+                        .setTitle(tokenQueue.getDisplayName() + " Queue");
+                break;
+            default:
+                jsonMessage.getNotification()
+                        .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                        .setLocKey("serving")
+                        .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
+                        .setTitle(tokenQueue.getDisplayName());
+        }
 
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
-
         if (!fcmMessageBroadcast) {
             LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
         } else {

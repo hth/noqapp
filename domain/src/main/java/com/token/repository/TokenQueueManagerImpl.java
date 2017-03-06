@@ -99,7 +99,9 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
-        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
         mongoTemplate.updateFirst(
                 query(where("_id").is(codeQR)),
                 entityUpdate(update("QS", queueStatus)),
