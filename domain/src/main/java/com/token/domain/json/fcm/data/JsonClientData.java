@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.token.domain.types.FirebaseMessageTypeEnum;
 import com.token.domain.types.QueueUserStateEnum;
 
 /**
@@ -28,13 +29,17 @@ import com.token.domain.types.QueueUserStateEnum;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonClientData implements JsonData {
+public class JsonClientData extends JsonData {
 
     @JsonProperty ("c")
     private String codeQR;
 
     @JsonProperty ("u")
     private QueueUserStateEnum queueUserState;
+
+    public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType) {
+        super(firebaseMessageType);
+    }
 
     public String getCodeQR() {
         return codeQR;

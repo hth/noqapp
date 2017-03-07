@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.token.domain.types.FirebaseMessageTypeEnum;
 import com.token.domain.types.QueueStatusEnum;
 
 /**
@@ -27,7 +28,7 @@ import com.token.domain.types.QueueStatusEnum;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTopicData implements JsonData {
+public class JsonTopicData extends JsonData {
 
     @JsonProperty ("message")
     private String message;
@@ -43,6 +44,10 @@ public class JsonTopicData implements JsonData {
 
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
+
+    public JsonTopicData(FirebaseMessageTypeEnum firebaseMessageType) {
+        super(firebaseMessageType);
+    }
 
     public String getMessage() {
         return message;

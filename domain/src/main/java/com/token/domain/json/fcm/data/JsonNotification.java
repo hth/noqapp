@@ -30,10 +30,10 @@ public class JsonNotification {
     @JsonProperty ("title")
     private String title;
 
-    @JsonProperty("title-loc-key")
+    @JsonProperty ("title-loc-key")
     private String titleLocKey;
 
-    @JsonProperty("title-loc-args")
+    @JsonProperty ("title-loc-args")
     private String[] titleLocArgs;
 
     @JsonProperty ("body")

@@ -13,6 +13,7 @@ import com.token.domain.QueueEntity;
 import com.token.domain.json.fcm.JsonMessage;
 import com.token.domain.json.fcm.data.JsonClientData;
 import com.token.domain.json.fcm.data.JsonData;
+import com.token.domain.types.FirebaseMessageTypeEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.RegisteredDeviceManager;
 import com.token.service.CronStatsService;
@@ -103,7 +104,7 @@ public class ServicedPersonalFCM {
 
     private JsonMessage composeMessage(String token, QueueEntity queue) {
         JsonMessage jsonMessage = new JsonMessage(token);
-        JsonData jsonData = new JsonClientData()
+        JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P)
                 .setCodeQR(queue.getCodeQR())
                 .setQueueUserState(queue.getQueueUserState());
         jsonMessage.setData(jsonData);

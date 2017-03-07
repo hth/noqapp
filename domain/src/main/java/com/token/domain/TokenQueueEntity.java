@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.token.domain.types.FirebaseMessageTypeEnum;
 import com.token.domain.types.QueueStatusEnum;
 
 /**
@@ -39,6 +40,9 @@ public class TokenQueueEntity extends BaseEntity {
 
     @Field ("QS")
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
+
+    @Transient
+    private FirebaseMessageTypeEnum firebaseMessageType;
 
     public TokenQueueEntity(String topic, String displayName) {
         this.topic = topic;
@@ -97,16 +101,24 @@ public class TokenQueueEntity extends BaseEntity {
             case S:
             case R:
             case D:
+                firebaseMessageType = FirebaseMessageTypeEnum.M;
                 return getMerchantTopicWellFormatted();
             case N:
-                 return getTopicWellFormatted();
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
             case C:
                 //Very specific message to send to all on queue closed
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
                 return  getTopicWellFormatted();
             default:
                 LOG.error("Reached unreachable condition");
                 throw new IllegalStateException("Condition set is not defined");
         }
+    }
+
+    @Transient
+    public FirebaseMessageTypeEnum getFirebaseMessageType() {
+        return firebaseMessageType;
     }
 
     @Transient

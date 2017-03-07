@@ -167,7 +167,7 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus));
-        JsonData jsonData = new JsonTopicData()
+        JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR)

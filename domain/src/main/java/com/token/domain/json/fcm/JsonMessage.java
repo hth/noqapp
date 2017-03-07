@@ -51,8 +51,7 @@ public class JsonMessage extends AbstractDomain {
     private JsonNotification notification;
 
     /**
-     *
-     * @param to        topic
+     * @param to topic
      */
     public JsonMessage(String to) {
         this.to = to;
