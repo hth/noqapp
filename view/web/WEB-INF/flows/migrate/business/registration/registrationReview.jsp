@@ -160,6 +160,11 @@
                         <form:input path="registerBusiness.startHourStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
+                        <form:label path="registerBusiness.tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Token Not Available Time</form:label>
+                        <form:input path="registerBusiness.tokenNotAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
+                    </div>
+                    <div class="row_field">
                         <form:label path="registerBusiness.endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Store Close Time</form:label>
                         <form:input path="registerBusiness.endHourStore" size="20" cssClass="name_txt" readonly="true" />

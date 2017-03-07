@@ -112,6 +112,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("SH")
     private int startHour;
 
+    @Field ("TE")
+    private int tokenNotAvailableFrom;
+
     @Field ("EH")
     private int endHour;
 
@@ -355,6 +358,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+    }
+
+    public int getTokenNotAvailableFrom() {
+        return tokenNotAvailableFrom;
+    }
+
+    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
     }
 
     @Transient

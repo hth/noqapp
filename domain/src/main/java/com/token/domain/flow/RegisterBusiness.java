@@ -35,6 +35,7 @@ public class RegisterBusiness implements Serializable {
     private int startHourStore;
     private int endHourStore;
     private int tokenAvailableFrom;
+    private int tokenNotAvailableFrom;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
@@ -183,5 +184,13 @@ public class RegisterBusiness implements Serializable {
 
     public void setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+    }
+
+    public int getTokenNotAvailableFrom() {
+        return tokenNotAvailableFrom;
+    }
+
+    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
     }
 }

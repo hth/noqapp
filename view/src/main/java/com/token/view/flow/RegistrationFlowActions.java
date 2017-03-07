@@ -88,6 +88,7 @@ class RegistrationFlowActions {
                 bizStore.setStartHour(register.getRegisterBusiness().getStartHourStore());
                 bizStore.setEndHour(register.getRegisterBusiness().getEndHourStore());
                 bizStore.setTokenAvailableFrom(register.getRegisterBusiness().getTokenAvailableFrom());
+                bizStore.setTokenNotAvailableFrom(register.getRegisterBusiness().getTokenNotAvailableFrom());
 
                 //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
                 validateAddress(bizStore);

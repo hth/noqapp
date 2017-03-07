@@ -148,6 +148,11 @@
                         <form:input path="startHourStore" size="20" cssClass="name_txt" /> (As 1000 for 10:00 AM)
                     </div>
                     <div class="row_field">
+                        <form:label path="tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Token Not Available Time</form:label>
+                        <form:input path="tokenNotAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
+                    </div>
+                    <div class="row_field">
                         <form:label path="endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
                                 cssErrorClass="profile_label lb_error">Store Close Time</form:label>
                         <form:input path="endHourStore" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
