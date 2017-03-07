@@ -1,5 +1,7 @@
 package com.token.loader.scheduledtasks;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +48,7 @@ public class ServicedPersonalFCM {
     @Autowired
     public ServicedPersonalFCM(
             @Value ("${ServicedPersonalFCM.sendPersonalNotification}")
-            String sendPersonalNotification,
+                    String sendPersonalNotification,
 
             QueueManager queueManager,
             RegisteredDeviceManager registeredDeviceManager,
@@ -79,17 +81,21 @@ public class ServicedPersonalFCM {
 
             for (QueueEntity queue : queues) {
                 String token = registeredDeviceManager.findToken(queue.getRid(), queue.getDid());
-                JsonMessage jsonMessage = composeMessage(token, queue);
-                if (firebaseService.messageToTopic(jsonMessage)) {
-                    queue.setNotifiedOnService(true);
-                    queueManager.save(queue);
-                    sent++;
+                if (StringUtils.isNotBlank(token)) {
+                    JsonMessage jsonMessage = composeMessage(token, queue);
+                    if (firebaseService.messageToTopic(jsonMessage)) {
+                        queue.setNotifiedOnService(true);
+                        queueManager.save(queue);
+                        sent++;
+                    } else {
+                        failure++;
+                    }
                 } else {
                     failure++;
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error updating bizStore, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Error sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
             cronStats.addStats("found", found);
