@@ -112,12 +112,12 @@ public class ServicedPersonalFCM {
             case S:
                 jsonMessage.getNotification()
                         .setBody("How was your service?")
-                        .setTitle("NoQApp");
+                        .setTitle(queue.getDisplayName());
                 break;
             case N:
                 jsonMessage.getNotification()
                         .setBody("You were not served?")
-                        .setTitle("NoQApp");
+                        .setTitle(queue.getDisplayName());
                 break;
             default:
                 LOG.warn("Un-supported status reached. Skipping rid={} did={}", queue.getRid(), queue.getDid());

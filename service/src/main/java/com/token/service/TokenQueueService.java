@@ -90,7 +90,7 @@ public class TokenQueueService {
             }
 
             try {
-                queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber());
+                queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                 queueManager.insert(queue);
             } catch (DuplicateKeyException e) {
                 LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
@@ -206,7 +206,7 @@ public class TokenQueueService {
         }
     }
 
-    public List<TokenQueueEntity> getTokenQueue(String[] ids) {
+    List<TokenQueueEntity> getTokenQueue(String[] ids) {
         return tokenQueueManager.getTokenQueues(ids);
     }
 

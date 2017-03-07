@@ -41,6 +41,10 @@ public class QueueEntity extends BaseEntity {
     private int tokenNumber;
 
     @NotNull
+    @Field ("DN")
+    private String displayName;
+
+    @NotNull
     @Field ("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
@@ -48,43 +52,32 @@ public class QueueEntity extends BaseEntity {
     @Field ("NS")
     private boolean notifiedOnService = false;
 
-    public QueueEntity(String codeQR, String did, String rid, int tokenNumber) {
+    public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
         this.rid = rid;
         this.tokenNumber = tokenNumber;
-    }
-
-    public String getDid() {
-        return did;
-    }
-
-    public void setDid(String did) {
-        this.did = did;
-    }
-
-    public String getRid() {
-        return rid;
-    }
-
-    public void setRid(String rid) {
-        this.rid = rid;
-    }
-
-    public int getTokenNumber() {
-        return tokenNumber;
-    }
-
-    public void setTokenNumber(int tokenNumber) {
-        this.tokenNumber = tokenNumber;
+        this.displayName = displayName;
     }
 
     public String getCodeQR() {
         return codeQR;
     }
 
-    public void setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
+    public String getDid() {
+        return did;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public QueueUserStateEnum getQueueUserState() {
