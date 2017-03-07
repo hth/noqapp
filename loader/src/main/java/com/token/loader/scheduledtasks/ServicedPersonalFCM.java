@@ -97,7 +97,7 @@ public class ServicedPersonalFCM {
             cronStats.addStats("sentServicedClientFCM", sent);
             cronStatsService.save(cronStats);
 
-            LOG.info("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
+            LOG.debug("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
         }
     }
 
