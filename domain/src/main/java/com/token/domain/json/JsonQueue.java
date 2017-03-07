@@ -54,6 +54,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("b")
     private int startHour;
 
+    @JsonProperty ("m")
+    private int tokenNotAvailableFrom;
+
     /* Store business end hour. */
     @JsonProperty ("e")
     private int endHour;
@@ -130,6 +133,15 @@ public class JsonQueue extends AbstractDomain {
 
     public int getStartHour() {
         return startHour;
+    }
+
+    public int getTokenNotAvailableFrom() {
+        return tokenNotAvailableFrom;
+    }
+
+    public JsonQueue setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
     }
 
     public JsonQueue setEndHour(int endHour) {
