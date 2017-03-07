@@ -13,6 +13,8 @@ import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonResponse;
 import com.token.domain.json.JsonToken;
 import com.token.domain.json.fcm.JsonMessage;
+import com.token.domain.json.fcm.data.JsonData;
+import com.token.domain.json.fcm.data.JsonTopicData;
 import com.token.domain.types.QueueStatusEnum;
 import com.token.domain.types.QueueUserStateEnum;
 import com.token.repository.QueueManager;
@@ -165,11 +167,12 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus));
-        jsonMessage.getTopicData()
+        JsonData jsonData = new JsonTopicData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR)
                 .setQueueStatus(queueStatus);
+        jsonMessage.setData(jsonData);
 
         /*
         Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.

@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.json.fcm.data.JsonData;
 import com.token.domain.json.fcm.data.JsonNotification;
-import com.token.domain.json.fcm.data.JsonTopicData;
 
 /**
  * User: hitender
@@ -45,7 +45,7 @@ public class JsonMessage extends AbstractDomain {
     private boolean content_available = true;
 
     @JsonProperty ("data")
-    private JsonTopicData topicData;
+    private JsonData data;
 
     @JsonProperty ("notification")
     private JsonNotification notification;
@@ -56,7 +56,6 @@ public class JsonMessage extends AbstractDomain {
      */
     public JsonMessage(String to) {
         this.to = to;
-        this.topicData = new JsonTopicData();
         this.notification = new JsonNotification();
     }
 
@@ -64,8 +63,12 @@ public class JsonMessage extends AbstractDomain {
         return to;
     }
 
-    public JsonTopicData getTopicData() {
-        return topicData;
+    public JsonData getData() {
+        return data;
+    }
+
+    public void setData(JsonData data) {
+        this.data = data;
     }
 
     public JsonNotification getNotification() {

@@ -27,7 +27,7 @@ import com.token.domain.types.QueueStatusEnum;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTopicData {
+public class JsonTopicData implements JsonData {
 
     @JsonProperty ("message")
     private String message;
