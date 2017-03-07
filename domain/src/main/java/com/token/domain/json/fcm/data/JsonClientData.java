@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.token.domain.types.QueueUserStateEnum;
 
 /**
+ * Data associated after client has been served or either was skipped for no show.
  * User: hitender
  * Date: 3/7/17 11:07 AM
  */
@@ -28,7 +29,7 @@ import com.token.domain.types.QueueUserStateEnum;
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonClientData implements JsonData {
-    
+
     @JsonProperty ("c")
     private String codeQR;
 
