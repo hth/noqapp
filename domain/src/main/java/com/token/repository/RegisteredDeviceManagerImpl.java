@@ -71,7 +71,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public String findToken(String rid, String did) {
         Query query;
-        if(StringUtils.isBlank(rid)) {
+        if (StringUtils.isBlank(rid)) {
             query = query(where("DID").is(did));
         } else {
             query = query(where("RID").is(rid).and("DID").is(did));

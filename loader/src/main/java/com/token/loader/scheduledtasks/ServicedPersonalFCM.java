@@ -1,7 +1,5 @@
 package com.token.loader.scheduledtasks;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,15 +79,11 @@ public class ServicedPersonalFCM {
 
             for (QueueEntity queue : queues) {
                 String token = registeredDeviceManager.findToken(queue.getRid(), queue.getDid());
-                if (StringUtils.isNotBlank(token)) {
-                    JsonMessage jsonMessage = composeMessage(token, queue);
-                    if (firebaseService.messageToTopic(jsonMessage)) {
-                        queue.setNotifiedOnService(true);
-                        queueManager.save(queue);
-                        sent++;
-                    } else {
-                        failure++;
-                    }
+                JsonMessage jsonMessage = composeMessage(token, queue);
+                if (firebaseService.messageToTopic(jsonMessage)) {
+                    queue.setNotifiedOnService(true);
+                    queueManager.save(queue);
+                    sent++;
                 } else {
                     failure++;
                 }
