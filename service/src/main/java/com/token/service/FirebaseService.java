@@ -42,41 +42,6 @@ public class FirebaseService {
     }
 
     /**
-     * Called when new queue is created or first time business is approved with store.
-     *
-     * @param topic
-     * @param message
-     * @return
-     */
-    public boolean registerTopic(String topic, String message) {
-        JsonMessage jsonMessage = new JsonMessage(topic);
-        jsonMessage.getTopicData().setMessage(message);
-        LOG.info("Message body={}", jsonMessage.asJson());
-
-        RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
-        Request request = new Request.Builder()
-                .url("https://fcm.googleapis.com/fcm/send")
-                .addHeader("Authorization", authorizationKey)
-                .post(body)
-                .build();
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-        } catch (IOException e) {
-            LOG.error("Error making FCM request reason={}", e.getLocalizedMessage(), e);
-            return false;
-        } finally {
-            if (response != null) {
-                response.body().close();
-            }
-        }
-
-        LOG.debug("FCM success topic={} headers={} message={} body={}",
-                jsonMessage.getTo(), response.headers(), response.message(), response.body());
-        return response.isSuccessful();
-    }
-
-    /**
      * Sends message to topic when any change happens in queue
      *
      * @param jsonMessage
