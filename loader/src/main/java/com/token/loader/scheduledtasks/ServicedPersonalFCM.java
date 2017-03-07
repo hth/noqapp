@@ -47,7 +47,7 @@ public class ServicedPersonalFCM {
     @Autowired
     public ServicedPersonalFCM(
             @Value ("${ServicedPersonalFCM.sendPersonalNotification}")
-                    String sendPersonalNotification,
+            String sendPersonalNotification,
 
             QueueManager queueManager,
             RegisteredDeviceManager registeredDeviceManager,
