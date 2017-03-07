@@ -45,7 +45,7 @@ public class ServicedPersonalFCM {
 
     @Autowired
     public ServicedPersonalFCM(
-            @Value ("${sendPersonalNotification:ON}")
+            @Value ("${ServicedPersonalFCM.sendPersonalNotification}")
                     String sendPersonalNotification,
 
             QueueManager queueManager,
@@ -70,7 +70,7 @@ public class ServicedPersonalFCM {
 
         int found = 0, failure = 0, sent = 0;
         if ("OFF".equalsIgnoreCase(sendPersonalNotification)) {
-            LOG.info("feature is {}", sendPersonalNotification);
+            LOG.debug("feature is {}", sendPersonalNotification);
         }
 
         try {
