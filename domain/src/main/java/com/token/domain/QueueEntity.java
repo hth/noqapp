@@ -44,6 +44,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
+    @NotNull
+    @Field ("NS")
+    private boolean notifiedOnService = false;
+
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber) {
         this.codeQR = codeQR;
         this.did = did;
@@ -89,5 +93,13 @@ public class QueueEntity extends BaseEntity {
 
     public void setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
+    }
+
+    public boolean isNotifiedOnService() {
+        return notifiedOnService;
+    }
+
+    public void setNotifiedOnService(boolean notifiedOnService) {
+        this.notifiedOnService = notifiedOnService;
     }
 }

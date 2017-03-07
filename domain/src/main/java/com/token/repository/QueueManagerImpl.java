@@ -118,7 +118,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void deleteHard(QueueEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
@@ -162,5 +162,18 @@ public class QueueManagerImpl implements QueueManager {
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
+    }
+
+    public List<QueueEntity> findAllClientServiced() {
+        return mongoTemplate.find(
+                query(where("NS").is(false)
+                        .orOperator(
+                                where("QS").is(QueueUserStateEnum.S),
+                                where("QS").is(QueueUserStateEnum.N)
+                        )
+                ),
+                QueueEntity.class,
+                TABLE
+        );
     }
 }

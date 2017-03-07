@@ -49,7 +49,7 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
     @Override
     public void deleteHard(BusinessUserStoreEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override

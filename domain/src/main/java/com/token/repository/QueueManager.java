@@ -49,4 +49,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
+
+    List<QueueEntity> findAllClientServiced();
 }

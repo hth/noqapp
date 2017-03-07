@@ -3,6 +3,8 @@ package com.token.repository;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
@@ -54,7 +57,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     @Override
     public void deleteHard(RegisteredDeviceEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
@@ -63,5 +66,21 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 query(where("DID").is(did).and("TK").is(token)),
                 RegisteredDeviceEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public String findToken(String rid, String did) {
+        Query query;
+        if(StringUtils.isBlank(rid)) {
+            query = query(where("DID").is(did));
+        } else {
+            query = query(where("RID").is(rid).and("DID").is(did));
+        }
+        query.fields().include("TK");
+        return mongoTemplate.findOne(
+                query,
+                RegisteredDeviceEntity.class,
+                TABLE
+        ).getToken();
     }
 }
