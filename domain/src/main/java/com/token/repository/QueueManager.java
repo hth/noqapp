@@ -51,4 +51,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     boolean isQueued(int tokenNumber, String codeQR);
 
     List<QueueEntity> findAllClientServiced();
+
+    List<QueueEntity> findByCodeQR(String codeQR);
+
+    int deleteByCodeQR(String codeQR);
 }

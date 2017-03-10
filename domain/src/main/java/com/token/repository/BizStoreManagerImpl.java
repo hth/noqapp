@@ -1,8 +1,10 @@
 package com.token.repository;
 
+import static com.token.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.token.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,6 +29,7 @@ import com.token.domain.BizStoreEntity;
 import com.token.domain.types.PaginationEnum;
 import com.token.utils.CommonUtil;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -257,6 +260,25 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public boolean isValidCodeQR(String codeQR) {
         return mongoTemplate.exists(query(where("QR").is(codeQR)), BizStoreEntity.class);
+    }
+
+    @Override
+    public boolean setZoneIdAndQueueHistory(String id, String zoneId, Date queueHistory) {
+        return mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("TZ", zoneId).set("QH", queueHistory)),
+                BizStoreEntity.class,
+                TABLE
+        ).getN() > 1;
+    }
+
+    @Override
+    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
+        return mongoTemplate.find(
+                query(where("QH").lte(now).and("A").is(true)),
+                BizStoreEntity.class,
+                TABLE
+        );
     }
 
     //TODO add query to for near and for nearBy with distance

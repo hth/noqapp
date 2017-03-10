@@ -60,6 +60,12 @@ class RegistrationFlowActions {
         }
     }
 
+    private void addTimezone(BizStoreEntity bizStore) {
+        if (bizStore.getCoordinate() != null && bizStore.isValidatedUsingExternalAPI()) {
+            externalService.findTimezone(bizStore);
+        }
+    }
+
     BizNameEntity registerBusinessDetails(Register register) {
         BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
         if (null == bizName) {
@@ -93,6 +99,8 @@ class RegistrationFlowActions {
                 //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
                 validateAddress(bizStore);
                 bizService.saveStore(bizStore);
+                /* Since missing id. */
+                addTimezone(bizStore);
             }
         }
         return bizName;

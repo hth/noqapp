@@ -1,5 +1,7 @@
 package com.token.domain;
 
+import com.google.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,6 +16,8 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.util.Assert;
 
 import com.token.utils.CommonUtil;
+
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -117,6 +121,13 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("EH")
     private int endHour;
+
+    @Field ("TZ")
+    private String timeZoneId;
+
+    /* Used when running cron job. */
+    @Field ("QH")
+    private Date queueHistory;
 
     //TODO Change to false after sending notification of change
     @Field ("CQ")
@@ -368,6 +379,22 @@ public class BizStoreEntity extends BaseEntity {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
     }
 
+    public String getTimeZoneId() {
+        return timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId) {
+        this.timeZoneId = timeZoneId;
+    }
+
+    public Date getQueueHistory() {
+        return queueHistory;
+    }
+
+    public void setQueueHistory(Date queueHistory) {
+        this.queueHistory = queueHistory;
+    }
+
     @Transient
     public String getTopic() {
         Assert.notNull(countryShortName, "Country short name null for bizStore id=" + id);
@@ -377,5 +404,20 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     public String getCodeQRInALink() {
         return "https://tp.receiptofi.com/" + codeQR + "/q.htm";
+    }
+
+    @Transient
+    public LatLng getLatLng() {
+        return new LatLng(getLat(), getLng());
+    }
+
+    @Transient
+    public int storeClosingHourOfDay() {
+        return endHour / 100;
+    }
+
+    @Transient
+    public int storeClosingMinuteOfDay() {
+        return endHour % 100;
     }
 }

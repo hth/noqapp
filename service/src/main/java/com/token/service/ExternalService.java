@@ -2,7 +2,9 @@ package com.token.service;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.PendingResult;
 import com.google.maps.PlacesApi;
+import com.google.maps.TimeZoneApi;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 
@@ -19,6 +21,18 @@ import org.springframework.util.Assert;
 import com.token.domain.BizNameEntity;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.shared.DecodedAddress;
+import com.token.repository.BizStoreManager;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -33,18 +47,25 @@ import com.token.domain.shared.DecodedAddress;
 @Service
 public class ExternalService {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
+    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private GeoApiContext context;
+    private BizStoreManager bizStoreManager;
 
     @Autowired
     public ExternalService(
             @Value ("${google-server-api-key}")
-                    String googleServerApiKey
+            String googleServerApiKey,
+
+            BizStoreManager bizStoreManager
     ) {
         this.context = new GeoApiContext()
                 .setApiKey(googleServerApiKey)
                 .setMaxRetries(3)
                 .disableRetries();
+
+        this.bizStoreManager = bizStoreManager;
     }
 
     /**
@@ -169,5 +190,61 @@ public class ExternalService {
             LOG.error("Failed fetching from google placeId={} reason={}", placeId, e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public void findTimezone(BizStoreEntity bizStore) {
+        try {
+            TimeZoneApi.getTimeZone(context, bizStore.getLatLng()).setCallback(
+                    new PendingResult.Callback<TimeZone>() {
+
+                        @Override
+                        public void onResult(TimeZone timeZone) {
+                            String zoneId = timeZone.toZoneId().getId();
+                            Date queueHistory = computeNextRunTimeAtUTC(
+                                    timeZone,
+                                    bizStore.storeClosingHourOfDay(),
+                                    bizStore.storeClosingMinuteOfDay());
+
+                            boolean status = bizStoreManager.setZoneIdAndQueueHistory(bizStore.getId(), zoneId, queueHistory);
+                            if (status) {
+                                LOG.info("Update UTC time for store={} address={}", bizStore.getId(), bizStore.getAddress());
+                            } else {
+                                LOG.error("Update UTC time for store={} address={}", bizStore.getId(), bizStore.getAddress());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable e) {
+                            LOG.error("Failed getting timezone");
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            LOG.error("Failed fetching from google timezone reason={}", e.getLocalizedMessage(), e);
+        }
+    }
+
+    /**
+     * Compute local time with zone id at UTC.
+     *
+     * @param timeZone
+     * @param hourOfDay
+     * @param minuteOfDay
+     * @return
+     */
+    public Date computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
+        LocalDateTime currentLocalDateTime = LocalDateTime.now(Clock.system(timeZone.toZoneId()));
+        currentLocalDateTime.plusDays(1);
+        Instant futureInstant = currentLocalDateTime.toInstant(ZoneOffset.ofHours(0));
+        Date futureDate = Date.from(futureInstant);
+
+        String str = df.format(futureDate) + " " + hourOfDay + ":" + minuteOfDay;
+        LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
+        LOG.debug("Current date and time in a particular timezone={}", zonedDateTime);
+
+        ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+        LOG.debug("Current date and time in UTC={}", utcDate);
+        return Date.from(utcDate.toInstant());
     }
 }

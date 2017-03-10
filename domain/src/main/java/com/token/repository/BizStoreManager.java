@@ -3,6 +3,7 @@ package com.token.repository;
 import com.token.domain.BizNameEntity;
 import com.token.domain.BizStoreEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,5 +96,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     BizStoreEntity findByCodeQR(String codeQR);
 
     boolean isValidCodeQR(String codeQR);
+
+    boolean setZoneIdAndQueueHistory(String id, String zoneId, Date queueHistory);
+
+    List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 }
 

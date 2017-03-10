@@ -22,6 +22,7 @@ import com.token.service.FirebaseService;
 import java.util.List;
 
 /**
+ * This process sends out personal FCM when client is serviced or skipped.
  * User: hitender
  * Date: 3/6/17 6:39 PM
  */
