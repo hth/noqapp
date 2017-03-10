@@ -9,8 +9,10 @@ Added user to this schema
 
     CREATE TABLE token_test.QUEUE
     (
+        ID VARCHAR(30),
         QR VARCHAR(30),
         DID VARCHAR(50),
+        RID VARCHAR(13),
         TN INT,
         DN VARCHAR(100),
         QS VARCHAR(10),

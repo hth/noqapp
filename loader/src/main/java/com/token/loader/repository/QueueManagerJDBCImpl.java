@@ -25,9 +25,9 @@ import javax.sql.DataSource;
 @Repository
 public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String query =
-            "INSERT INTO QUEUE (QR, DID, TN, DN, QS, NS, V, U, C, A, D)" +
+            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D)" +
                     " VALUES " +
-                    "(:qr,:did,:tn,:dn,:qs,:ns,:v,:u,:c,:a,:d)";
+                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:v,:u,:c,:a,:d)";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -43,8 +43,10 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         int i = 0;
         for(QueueEntity queue : queues) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("id", queue.getId());
             namedParameters.addValue("qr", queue.getCodeQR());
             namedParameters.addValue("did", queue.getDid());
+            namedParameters.addValue("rid", queue.getRid());
             namedParameters.addValue("tn", queue.getTokenNumber());
             namedParameters.addValue("dn", queue.getDisplayName());
             namedParameters.addValue("qs", queue.getQueueUserState().getName());
