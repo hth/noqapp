@@ -104,13 +104,15 @@ public class QueueHistory {
         } catch (Exception e) {
             LOG.error("Failed to execute QueueHistory move to RDBS");
         } finally {
-            cronStats.addStats("found", found);
-            cronStats.addStats("failure", failure);
-            cronStats.addStats("success", success);
-            cronStatsService.save(cronStats);
+            if (found != 0 || failure != 0 || success != 0) {
+                cronStats.addStats("found", found);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("success", success);
+                cronStatsService.save(cronStats);
 
-            /* Too noisy. */
-            //LOG.debug("complete found={} failure={}, found, failure);
+                /* Without if condition its too noisy. */
+                LOG.info("complete found={} failure={} success={}", found, failure, success);
+            }
         }
     }
 }

@@ -94,13 +94,15 @@ public class ServicedPersonalFCM {
             LOG.error("Error sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            cronStats.addStats("found", found);
-            cronStats.addStats("failure", failure);
-            cronStats.addStats("sentServicedClientFCM", sent);
-            cronStatsService.save(cronStats);
+            if (found != 0 || failure != 0 || sent != 0) {
+                cronStats.addStats("found", found);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("sentServicedClientFCM", sent);
+                cronStatsService.save(cronStats);
 
-            /* Too noisy. */
-            //LOG.debug("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
+                /* Without if condition its too noisy. */
+                LOG.info("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
+            }
         }
     }
 
