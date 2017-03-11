@@ -50,12 +50,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             namedParameters.addValue("tn", queue.getTokenNumber());
             namedParameters.addValue("dn", queue.getDisplayName());
             namedParameters.addValue("qs", queue.getQueueUserState().getName());
-            namedParameters.addValue("ns", queue.isNotifiedOnService());
+            namedParameters.addValue("ns", queue.isNotifiedOnService() ? 1 : 0);
             namedParameters.addValue("v", queue.getVersion());
             namedParameters.addValue("u", queue.getUpdated());
             namedParameters.addValue("c", queue.getCreated());
-            namedParameters.addValue("a", queue.isActive());
-            namedParameters.addValue("d", queue.isDeleted());
+            namedParameters.addValue("a", queue.isActive() ? 1 : 0);
+            namedParameters.addValue("d", queue.isDeleted() ? 1 : 0);
 
             maps[i] = namedParameters;
             i ++;
