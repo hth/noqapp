@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.token.domain.AbstractDomain;
+import com.token.domain.BizStoreEntity;
+import com.token.domain.QueueEntity;
 import com.token.domain.types.QueueStatusEnum;
 
 /**
@@ -86,5 +88,19 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         this.queueStatus = queueStatus;
         this.token = token;
+    }
+
+    public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
+        this.codeQR = queue.getCodeQR();
+        this.businessName = bizStore.getBizName().getBusinessName();
+        this.displayName = queue.getDisplayName();
+        this.storeAddress = bizStore.getAddress();
+        this.storePhone = bizStore.getPhone();
+        this.tokenAvailableFrom = bizStore.getTokenAvailableFrom();
+        this.startHour = bizStore.getStartHour();
+        this.endHour = bizStore.getEndHour();
+        this.topic = bizStore.getTopic();
+
+        this.token = queue.getTokenNumber();
     }
 }

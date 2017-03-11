@@ -1,12 +1,14 @@
-package com.token.loader.repository;
+package com.token.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.QueueEntity;
+import com.token.domain.mapper.QueueRowMapper;
 
 import java.util.List;
 
@@ -24,16 +26,28 @@ import javax.sql.DataSource;
 })
 @Repository
 public class QueueManagerJDBCImpl implements QueueManagerJDBC {
-    private static final String query =
+    private static final String insert =
             "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D)" +
                     " VALUES " +
                     "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:v,:u,:c,:a,:d)";
 
+    private static final String findByRid =
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+                    " FROM " +
+                    "QUEUE WHERE RID = ?";
+
+    private static final String findByDid =
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+                    " FROM " +
+                    "QUEUE WHERE DID = ?";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     public QueueManagerJDBCImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
@@ -61,6 +75,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             i++;
         }
 
-        namedParameterJdbcTemplate.batchUpdate(query, maps);
+        namedParameterJdbcTemplate.batchUpdate(insert, maps);
+    }
+
+    public List<QueueEntity> findByDid(String did) {
+        return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
+    }
+
+    public List<QueueEntity> findByRid(String rid) {
+        return jdbcTemplate.query(findByRid, new Object[]{rid}, new QueueRowMapper());
     }
 }

@@ -1,6 +1,7 @@
-package com.token.loader.repository;
+package com.token.repository;
 
 import com.token.domain.QueueEntity;
+import com.token.domain.annotation.Mobile;
 
 import java.util.List;
 
@@ -11,4 +12,11 @@ import java.util.List;
 public interface QueueManagerJDBC {
 
     void batchQueue(List<QueueEntity> queues);
+
+    @Mobile
+    List<QueueEntity> findByDid(String did);
+
+    @Mobile
+    List<QueueEntity> findByRid(String rid);
+
 }

@@ -1,4 +1,4 @@
-package com.token.loader.config;
+package com.token.domain.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.CronStatsEntity;
 import com.token.domain.QueueEntity;
-import com.token.loader.repository.QueueManagerJDBC;
+import com.token.repository.QueueManagerJDBC;
 import com.token.repository.BizStoreManager;
 import com.token.repository.QueueManager;
 import com.token.service.CronStatsService;
@@ -102,7 +102,7 @@ public class QueueHistory {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed to execute QueueHistory move to RDBS");
+            LOG.error("Failed to execute QueueHistory move to RDB");
         } finally {
             if (found != 0 || failure != 0 || success != 0) {
                 cronStats.addStats("found", found);
