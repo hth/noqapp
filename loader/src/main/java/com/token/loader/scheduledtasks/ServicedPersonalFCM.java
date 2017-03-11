@@ -94,7 +94,7 @@ public class ServicedPersonalFCM {
             LOG.error("Error sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            if (found != 0 || failure != 0 || sent != 0) {
+            if (0 != found || 0 != failure || 0 != sent) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("sentServicedClientFCM", sent);

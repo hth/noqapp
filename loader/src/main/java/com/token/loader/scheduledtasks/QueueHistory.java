@@ -104,7 +104,7 @@ public class QueueHistory {
         } catch (Exception e) {
             LOG.error("Failed to execute QueueHistory move to RDB");
         } finally {
-            if (found != 0 || failure != 0 || success != 0) {
+            if (0 != found || 0 != failure || 0 != success) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("success", success);
