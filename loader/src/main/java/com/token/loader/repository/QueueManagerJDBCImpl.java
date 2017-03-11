@@ -41,7 +41,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         SqlParameterSource[] maps = new SqlParameterSource[queues.size()];
 
         int i = 0;
-        for(QueueEntity queue : queues) {
+        for (QueueEntity queue : queues) {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("id", queue.getId());
             namedParameters.addValue("qr", queue.getCodeQR());
@@ -58,7 +58,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             namedParameters.addValue("d", queue.isDeleted() ? 1 : 0);
 
             maps[i] = namedParameters;
-            i ++;
+            i++;
         }
 
         namedParameterJdbcTemplate.batchUpdate(query, maps);
