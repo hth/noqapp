@@ -5,11 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.token.domain.AbstractDomain;
 import com.token.domain.types.QueueStatusEnum;
+
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -72,6 +77,9 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty ("u")
+    private String createDate;
 
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
@@ -187,5 +195,13 @@ public class JsonQueue extends AbstractDomain {
     public JsonQueue setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
         return this;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date date) {
+        this.createDate = DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }

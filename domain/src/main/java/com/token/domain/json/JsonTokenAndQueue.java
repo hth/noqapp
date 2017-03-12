@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import com.token.domain.AbstractDomain;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.QueueEntity;
 import com.token.domain.types.QueueStatusEnum;
+
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -73,6 +77,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("u")
+    private String createDate;
+
     public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.businessName = jsonQueue.getBusinessName();
@@ -85,6 +92,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
+        this.createDate = jsonQueue.getCreateDate();
 
         this.queueStatus = queueStatus;
         this.token = token;
@@ -100,6 +108,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.startHour = bizStore.getStartHour();
         this.endHour = bizStore.getEndHour();
         this.topic = bizStore.getTopic();
+        //Skipped serving number
+        //Skipped last number
+        this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         this.token = queue.getTokenNumber();
     }
