@@ -201,7 +201,8 @@ public class JsonQueue extends AbstractDomain {
         return createDate;
     }
 
-    public void setCreateDate(Date date) {
+    public JsonQueue setCreateDate(Date date) {
         this.createDate = DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        return this;
     }
 }
