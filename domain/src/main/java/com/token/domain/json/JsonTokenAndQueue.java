@@ -92,7 +92,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
-        this.createDate = jsonQueue.getCreateDate();
+        this.createDate = jsonQueue.getCreated();
 
         this.queueStatus = queueStatus;
         this.token = token;

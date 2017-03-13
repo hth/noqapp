@@ -79,7 +79,7 @@ public class JsonQueue extends AbstractDomain {
     private QueueStatusEnum queueStatus;
 
     @JsonProperty ("u")
-    private String createDate;
+    private String created;
 
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
@@ -197,12 +197,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getCreated() {
+        return created;
     }
 
-    public JsonQueue setCreateDate(Date date) {
-        this.createDate = DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+    public JsonQueue setCreated(Date date) {
+        this.created = DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
     }
 }
