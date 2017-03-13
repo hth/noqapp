@@ -37,6 +37,9 @@ public class JsonClientData extends JsonData {
     @JsonProperty ("u")
     private QueueUserStateEnum queueUserState;
 
+    @JsonProperty ("o")
+    private String topic;
+
     public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType) {
         super(firebaseMessageType);
     }
@@ -56,6 +59,15 @@ public class JsonClientData extends JsonData {
 
     public JsonClientData setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
+        return this;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public JsonClientData setTopic(String topic) {
+        this.topic = topic;
         return this;
     }
 }

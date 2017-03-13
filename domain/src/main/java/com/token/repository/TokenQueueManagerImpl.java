@@ -62,6 +62,12 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         throw new UnsupportedOperationException("This method is not supported");
     }
 
+    /**
+     * TODO add REDIS cache
+     *
+     * @param codeQR
+     * @return
+     */
     @Override
     public TokenQueueEntity findByCodeQR(String codeQR) {
         LOG.info("codeQR={}", codeQR);

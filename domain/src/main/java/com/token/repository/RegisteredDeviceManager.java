@@ -12,5 +12,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     @Mobile
     RegisteredDeviceEntity find(String did, String token);
 
-    String findToken(String rid, String did);
+    String findFCMToken(String rid, String did);
 }

@@ -10,19 +10,22 @@ import org.springframework.stereotype.Component;
 
 import com.token.domain.CronStatsEntity;
 import com.token.domain.QueueEntity;
+import com.token.domain.TokenQueueEntity;
 import com.token.domain.json.fcm.JsonMessage;
 import com.token.domain.json.fcm.data.JsonClientData;
 import com.token.domain.json.fcm.data.JsonData;
 import com.token.domain.types.FirebaseMessageTypeEnum;
 import com.token.repository.QueueManager;
 import com.token.repository.RegisteredDeviceManager;
+import com.token.repository.TokenQueueManager;
 import com.token.service.CronStatsService;
 import com.token.service.FirebaseService;
 
 import java.util.List;
 
 /**
- * This process sends out personal FCM when client is serviced or skipped.
+ * This process sends out personal FCM when client is serviced or skipped. Message includes topic to help client
+ * un-subscribe to prevent receiving any more message sent to topic.
  * User: hitender
  * Date: 3/6/17 6:39 PM
  */
@@ -39,6 +42,7 @@ public class ServicedPersonalFCM {
     private String sendPersonalNotification;
 
     private QueueManager queueManager;
+    private TokenQueueManager tokenQueueManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
     private CronStatsService cronStatsService;
@@ -51,6 +55,7 @@ public class ServicedPersonalFCM {
             String sendPersonalNotification,
 
             QueueManager queueManager,
+            TokenQueueManager tokenQueueManager,
             RegisteredDeviceManager registeredDeviceManager,
             FirebaseService firebaseService,
             CronStatsService cronStatsService
@@ -58,6 +63,7 @@ public class ServicedPersonalFCM {
         this.sendPersonalNotification = sendPersonalNotification;
 
         this.queueManager = queueManager;
+        this.tokenQueueManager = tokenQueueManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
         this.cronStatsService = cronStatsService;
@@ -80,8 +86,10 @@ public class ServicedPersonalFCM {
             found = queues.size();
 
             for (QueueEntity queue : queues) {
-                String token = registeredDeviceManager.findToken(queue.getRid(), queue.getDid());
-                JsonMessage jsonMessage = composeMessage(token, queue);
+                String token = registeredDeviceManager.findFCMToken(queue.getRid(), queue.getDid());
+                /* TODO add cache Redis. */
+                TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
+                JsonMessage jsonMessage = composeMessage(token, tokenQueue.getTopic(), queue);
                 if (firebaseService.messageToTopic(jsonMessage)) {
                     queue.setNotifiedOnService(true);
                     queueManager.save(queue);
@@ -106,11 +114,22 @@ public class ServicedPersonalFCM {
         }
     }
 
-    private JsonMessage composeMessage(String token, QueueEntity queue) {
+    /**
+     * Send personal message upon service. Include topic to help un-subscribe. Un-subscription is not a sure shot
+     * thing. This works when app is running in background(TODO confirm) or when app is in foreground(Active). If app is closed then
+     * this will not work until app is opened and this message is read.
+     *
+     * @param token
+     * @param topic send topic to initiate un-subscription by app. Not a sure shot thing. Will work
+     * @param queue
+     * @return
+     */
+    private JsonMessage composeMessage(String token, String topic, QueueEntity queue) {
         JsonMessage jsonMessage = new JsonMessage(token);
         JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P)
                 .setCodeQR(queue.getCodeQR())
-                .setQueueUserState(queue.getQueueUserState());
+                .setQueueUserState(queue.getQueueUserState())
+                .setTopic(topic);
         jsonMessage.setData(jsonData);
 
         switch (queue.getQueueUserState()) {

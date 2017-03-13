@@ -49,7 +49,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("DT")
     private DeviceTypeEnum deviceType;
 
-    /** Apple device token for sending push notification. */
+    /** FCM token for sending push notification. */
     @Field ("TK")
     private String token;
 

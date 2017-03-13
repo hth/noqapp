@@ -69,7 +69,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public String findToken(String rid, String did) {
+    public String findFCMToken(String rid, String did) {
         Query query;
         if (StringUtils.isBlank(rid)) {
             query = query(where("DID").is(did));
