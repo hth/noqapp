@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/webflow
        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_USER" match="any" />
+    <secured attributes="ROLE_CLIENT" match="any" />
 
     <on-start>
         <evaluate expression="migrateToBusinessRegistrationFlowActions.createBusinessRegistration()"

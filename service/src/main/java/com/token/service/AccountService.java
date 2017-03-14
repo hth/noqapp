@@ -339,19 +339,19 @@ public class AccountService {
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
             case TECHNICIAN:
-                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 userAccount.setRoles(roles);
                 break;
             case SUPERVISOR:
-                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
                 /** As of now admin does not have Business and Enterprise role. */
-                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
@@ -363,7 +363,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case USER:
-                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_CLIENT);
                 userAccount.setRoles(roles);
                 break;
             case BIZ_MANAGER:

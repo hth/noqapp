@@ -16,7 +16,7 @@ public enum RoleEnum {
     ROLE_ANALYSIS,
 
     /** A regular user. */
-    ROLE_USER,
+    ROLE_CLIENT,
 
     /** A business manager. */
     ROLE_BIZ_MANAGER,

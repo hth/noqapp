@@ -111,7 +111,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     public String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         switch (getHighestRoleEnum(authorities)) {
-            case ROLE_USER:
+            case ROLE_CLIENT:
                 return accessLanding;
             case ROLE_ANALYSIS:
                 return displayLanding;

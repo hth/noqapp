@@ -62,7 +62,7 @@
     <div class="sidebar_no_use">
     </div>
     <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_USER')">
+        <sec:authorize access="hasRole('ROLE_CLIENT')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <form:form commandName="register">

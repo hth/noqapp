@@ -118,7 +118,7 @@ public class UserAccountEntity extends BaseEntity {
     private UserAccountEntity() {
         super();
         roles = new LinkedHashSet<>();
-        roles.add(RoleEnum.ROLE_USER);
+        roles.add(RoleEnum.ROLE_CLIENT);
     }
 
     private UserAccountEntity(

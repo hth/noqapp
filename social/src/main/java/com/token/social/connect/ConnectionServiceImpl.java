@@ -490,7 +490,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     public Connection<?> getPrimaryConnection(String userId, ProviderEnum providerId) {
-        Query q = query(where("UID").is(userId).and("PID").is(providerId).and("RE").is(RoleEnum.ROLE_USER));
+        Query q = query(where("UID").is(userId).and("PID").is(providerId).and("RE").is(RoleEnum.ROLE_CLIENT));
         UserAccountEntity mc = mongoTemplate.findOne(q, UserAccountEntity.class);
         return connectionConverter.convert(mc);
     }

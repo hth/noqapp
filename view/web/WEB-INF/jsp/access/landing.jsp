@@ -77,7 +77,7 @@
                 <div class="rightside-title">
                     Welcome
                 </div>
-                <sec:authorize access="hasRole('ROLE_USER')">
+                <sec:authorize access="hasRole('ROLE_CLIENT')">
                 <c:choose>
                     <c:when test="${!empty landingForm.businessUserRegistrationStatus}">
                         <c:if test="${landingForm.businessUserRegistrationStatus eq 'C'}">
