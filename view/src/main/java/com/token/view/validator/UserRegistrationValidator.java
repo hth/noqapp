@@ -13,7 +13,7 @@ import org.springframework.validation.Validator;
 
 import com.token.utils.Constants;
 import com.token.utils.Validate;
-import com.token.view.form.UserRegistrationForm;
+import com.token.view.form.MerchantRegistrationForm;
 
 /**
  * User: hitender
@@ -40,7 +40,7 @@ public class UserRegistrationValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return UserRegistrationForm.class.equals(clazz);
+        return MerchantRegistrationForm.class.equals(clazz);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class UserRegistrationValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
 
         if (!errors.hasErrors()) {
-            UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
+            MerchantRegistrationForm userRegistration = (MerchantRegistrationForm) obj;
             if (!Validate.isValidName(userRegistration.getFirstName())) {
                 errors.rejectValue("firstName",
                         "field.invalid",
@@ -123,7 +123,7 @@ public class UserRegistrationValidator implements Validator {
     }
 
     public void accountExists(Object obj, Errors errors) {
-        UserRegistrationForm userRegistration = (UserRegistrationForm) obj;
+        MerchantRegistrationForm userRegistration = (MerchantRegistrationForm) obj;
         errors.rejectValue("mail",
                 "emailId.already.registered",
                 new Object[]{userRegistration.getMail()},

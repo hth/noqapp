@@ -108,10 +108,6 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("AVD")
     private Date accountValidatedBeginDate;
 
-    /** When RegistrationIsOff, the value is true. */
-    @Field ("RIO")
-    private boolean registeredWhenRegistrationIsOff;
-
     @Field ("AIR")
     private AccountInactiveReasonEnum accountInactiveReason;
 
@@ -326,14 +322,6 @@ public class UserAccountEntity extends BaseEntity {
             return displayName;
         }
         return userId;
-    }
-
-    public boolean isRegisteredWhenRegistrationIsOff() {
-        return registeredWhenRegistrationIsOff;
-    }
-
-    public void setRegisteredWhenRegistrationIsOff(boolean registeredWhenRegistrationIsOff) {
-        this.registeredWhenRegistrationIsOff = registeredWhenRegistrationIsOff;
     }
 
     public AccountInactiveReasonEnum getAccountInactiveReason() {

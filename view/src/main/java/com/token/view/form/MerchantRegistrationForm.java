@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class UserRegistrationForm {
+public final class MerchantRegistrationForm {
 
     private String firstName;
     private String lastName;
@@ -22,11 +22,11 @@ public final class UserRegistrationForm {
     private boolean accountExists;
     private boolean acceptsAgreement;
 
-    private UserRegistrationForm() {
+    private MerchantRegistrationForm() {
     }
 
-    public static UserRegistrationForm newInstance() {
-        return new UserRegistrationForm();
+    public static MerchantRegistrationForm newInstance() {
+        return new MerchantRegistrationForm();
     }
 
     public String getFirstName() {
@@ -92,7 +92,7 @@ public final class UserRegistrationForm {
 
     @Override
     public String toString() {
-        return "UserRegistrationForm [" +
+        return "MerchantRegistrationForm [" +
                 "firstName=" + firstName + ", " +
                 "lastName=" + lastName + ", " +
                 "mail=" + mail + ", " +

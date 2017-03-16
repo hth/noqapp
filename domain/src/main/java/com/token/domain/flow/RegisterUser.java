@@ -26,7 +26,6 @@ public class RegisterUser implements Serializable {
     private String password;
     private boolean accountExists;
     private boolean acceptsAgreement;
-    private boolean registrationTurnedOn;
 
     public String getRid() {
         return rid;
@@ -109,15 +108,6 @@ public class RegisterUser implements Serializable {
         return this;
     }
 
-    public boolean isRegistrationTurnedOn() {
-        return registrationTurnedOn;
-    }
-
-    public RegisterUser setRegistrationTurnedOn(boolean registrationTurnedOn) {
-        this.registrationTurnedOn = registrationTurnedOn;
-        return this;
-    }
-
     public String getCountryShortName() {
         return countryShortName;
     }
@@ -169,7 +159,6 @@ public class RegisterUser implements Serializable {
                 ", password='" + password + '\'' +
                 ", accountExists=" + accountExists +
                 ", acceptsAgreement=" + acceptsAgreement +
-                ", registrationTurnedOn=" + registrationTurnedOn +
                 '}';
     }
 }

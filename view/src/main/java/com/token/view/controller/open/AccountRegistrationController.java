@@ -26,7 +26,7 @@ import com.token.service.MailService;
 import com.token.utils.DateUtil;
 import com.token.utils.ParseJsonStringToMap;
 import com.token.utils.ScrubbedInput;
-import com.token.view.form.UserRegistrationForm;
+import com.token.view.form.MerchantRegistrationForm;
 import com.token.view.helper.AvailabilityStatus;
 import com.token.view.validator.UserRegistrationValidator;
 
@@ -76,9 +76,6 @@ public class AccountRegistrationController {
     @Value ("${AccountRegistrationController.passwordLength}")
     private int passwordLength;
 
-    @Value ("${registration.turned.on}")
-    private boolean registrationTurnedOn;
-
     @Autowired
     public AccountRegistrationController(
             UserRegistrationValidator userRegistrationValidator,
@@ -96,51 +93,45 @@ public class AccountRegistrationController {
     @RequestMapping (method = RequestMethod.GET)
     public String loadForm(
             @ModelAttribute ("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
-
-            ModelMap model
+            MerchantRegistrationForm merchantRegistrationForm
     ) {
-        LOG.info("New Account Registration invoked, registrationTurnedOn={}", registrationTurnedOn);
-        model.addAttribute("registrationTurnedOn", registrationTurnedOn);
+        LOG.info("New Account Registration invoked");
         return registrationPage;
     }
 
     @RequestMapping (method = RequestMethod.POST, params = {"signup"})
     public String signup(
             @ModelAttribute ("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
+                    MerchantRegistrationForm merchantRegistrationForm,
 
             ModelMap model,
             RedirectAttributes redirectAttrs,
             BindingResult result
     ) {
-        userRegistrationValidator.validate(userRegistrationForm, result);
+        userRegistrationValidator.validate(merchantRegistrationForm, result);
         if (result.hasErrors()) {
             LOG.warn("validation fail");
-            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }
 
-        UserProfileEntity userProfile = accountService.doesUserExists(userRegistrationForm.getMail());
+        UserProfileEntity userProfile = accountService.doesUserExists(merchantRegistrationForm.getMail());
         if (userProfile != null) {
             LOG.warn("account exists");
-            userRegistrationValidator.accountExists(userRegistrationForm, result);
-            userRegistrationForm.setAccountExists(true);
-            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
+            userRegistrationValidator.accountExists(merchantRegistrationForm, result);
+            merchantRegistrationForm.setAccountExists(true);
             return registrationPage;
         }
 
         UserAccountEntity userAccount;
         try {
             userAccount = accountService.createNewMerchantAccount(
-                    userRegistrationForm.getMail(),
-                    userRegistrationForm.getFirstName(),
-                    userRegistrationForm.getLastName(),
-                    userRegistrationForm.getPassword(),
-                    StringUtils.isNotBlank(userRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(userRegistrationForm.getBirthday()) : "");
+                    merchantRegistrationForm.getMail(),
+                    merchantRegistrationForm.getFirstName(),
+                    merchantRegistrationForm.getLastName(),
+                    merchantRegistrationForm.getPassword(),
+                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(merchantRegistrationForm.getBirthday()) : "");
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
-            model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return registrationPage;
         }
 
@@ -155,12 +146,6 @@ public class AccountRegistrationController {
                 accountValidate.getAuthenticationKey());
 
         LOG.info("Account registered success");
-        if (!registrationTurnedOn) {
-            LOG.info("Registration is off, sending to {}", registrationSuccess);
-            redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
-            return registrationSuccess;
-        }
-
         String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getReceiptUserId());
         LOG.info("Redirecting user to {}", redirectTo);
         return "redirect:" + redirectTo;
@@ -192,18 +177,18 @@ public class AccountRegistrationController {
     /**
      * Starts the account recovery process.
      *
-     * @param userRegistrationForm
+     * @param merchantRegistrationForm
      * @param redirectAttrs
      * @return
      */
     @RequestMapping (method = RequestMethod.POST, params = {"recover"})
     public String recover(
             @ModelAttribute ("userRegistrationForm")
-            UserRegistrationForm userRegistrationForm,
+                    MerchantRegistrationForm merchantRegistrationForm,
 
             RedirectAttributes redirectAttrs
     ) {
-        redirectAttrs.addFlashAttribute("userRegistrationForm", userRegistrationForm);
+        redirectAttrs.addFlashAttribute("userRegistrationForm", merchantRegistrationForm);
         return recover;
     }
 

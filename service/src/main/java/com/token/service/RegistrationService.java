@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
-import com.token.domain.UserAccountEntity;
 import com.token.domain.site.TokenUser;
 
 /**
@@ -33,18 +32,13 @@ import com.token.domain.site.TokenUser;
 public class RegistrationService {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
-    private boolean registrationTurnedOn;
     private String loginController;
 
     @Autowired
     public RegistrationService(
-            @Value ("${registration.turned.on}")
-                    boolean registrationTurnedOn,
-
             @Value ("${indexController:/open/login.htm}")
-                    String loginController
+            String loginController
     ) {
-        this.registrationTurnedOn = registrationTurnedOn;
         this.loginController = loginController;
     }
 
@@ -67,33 +61,7 @@ public class RegistrationService {
         return false;
     }
 
-    /**
-     * To check is app is currently accepting registration.
-     *
-     * @param userAccount
-     */
-    void isRegistrationAllowed(UserAccountEntity userAccount) {
-        if (!registrationTurnedOn) {
-            userAccount.setRegisteredWhenRegistrationIsOff(!registrationTurnedOn);
-        }
-    }
-
-    /**
-     * Last line of defense when registration is turned off and user logs in through one of the social provider.
-     *
-     * @param user
-     * @return
-     */
-    public boolean checkRegistrationIsTurnedOn(UserDetails user) {
-        LOG.info("profile active={} user={} redirect to {}", user.isEnabled(), user.getUsername(), loginController);
-        return !(user.isEnabled() || registrationTurnedOn);
-    }
-
     public String getLoginController() {
         return loginController;
-    }
-
-    public boolean isRegistrationTurnedOn() {
-        return registrationTurnedOn;
     }
 }
