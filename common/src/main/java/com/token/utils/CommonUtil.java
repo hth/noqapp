@@ -1,5 +1,7 @@
 package com.token.utils;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
  * Date: 11/18/16 6:09 PM
  */
 public final class CommonUtil {
+
+    private static final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
     private CommonUtil() {
     }
@@ -49,6 +53,10 @@ public final class CommonUtil {
 
     public static String phoneFormatter(String phone, String countryShortName) {
         return Formatter.phone(phone, countryShortName);
+    }
+
+    public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
+        return phoneUtil.getCountryCodeForRegion(countryShortName) + phone;
     }
 
     public static List<ObjectId> convertStringArrayToObjectIdArray(List<String> ids) {

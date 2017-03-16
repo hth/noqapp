@@ -516,8 +516,11 @@ public class UserProfileEntity extends BaseEntity {
         return phone;
     }
 
+    /* Set phone with country code. */
     public void setPhone(String phone) {
-        if (StringUtils.isNotBlank(phone)) {
+        if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(countryShortName)) {
+            this.phone = CommonUtil.phoneNumberWithCountryCode(CommonUtil.phoneCleanup(phone), countryShortName);
+        } else if (StringUtils.isNotBlank(phone)) {
             this.phone = CommonUtil.phoneCleanup(phone);
         }
     }
