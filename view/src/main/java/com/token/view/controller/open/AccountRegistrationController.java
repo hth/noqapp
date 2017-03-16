@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -92,7 +91,7 @@ public class AccountRegistrationController {
 
     @RequestMapping (method = RequestMethod.GET)
     public String loadForm(
-            @ModelAttribute ("userRegistrationForm")
+            @ModelAttribute ("merchantRegistrationForm")
             MerchantRegistrationForm merchantRegistrationForm
     ) {
         LOG.info("New Account Registration invoked");
@@ -101,11 +100,8 @@ public class AccountRegistrationController {
 
     @RequestMapping (method = RequestMethod.POST, params = {"signup"})
     public String signup(
-            @ModelAttribute ("userRegistrationForm")
-                    MerchantRegistrationForm merchantRegistrationForm,
-
-            ModelMap model,
-            RedirectAttributes redirectAttrs,
+            @ModelAttribute ("merchantRegistrationForm")
+            MerchantRegistrationForm merchantRegistrationForm,
             BindingResult result
     ) {
         userRegistrationValidator.validate(merchantRegistrationForm, result);
@@ -183,8 +179,8 @@ public class AccountRegistrationController {
      */
     @RequestMapping (method = RequestMethod.POST, params = {"recover"})
     public String recover(
-            @ModelAttribute ("userRegistrationForm")
-                    MerchantRegistrationForm merchantRegistrationForm,
+            @ModelAttribute ("merchantRegistrationForm")
+            MerchantRegistrationForm merchantRegistrationForm,
 
             RedirectAttributes redirectAttrs
     ) {
