@@ -111,7 +111,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     /** Social account, hence account is considered validated by default. */
                     userAccount.setAccountValidatedBeginDate();
                     userAccount.setAccountValidated(true);
-                    accountService.createNewAccount(userAccount);
+                    accountService.createNewMerchantAccount(userAccount);
 
                     userProfile = copyToUserProfile(user, userAccount);
                     accountService.save(userProfile);
@@ -148,7 +148,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     /** Social account, hence account is considered validated by default. */
                     userAccount.setAccountValidatedBeginDate();
                     userAccount.setAccountValidated(true);
-                    accountService.createNewAccount(userAccount);
+                    accountService.createNewMerchantAccount(userAccount);
 
                     userProfile = copyToUserProfile(person, userAccount);
                     accountService.save(userProfile);

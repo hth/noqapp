@@ -285,7 +285,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 /** Copy to user profile. */
                 userProfile = connectionService.copyToUserProfile(facebook.userOperations().getUserProfile(), userAccount);
                 accountService.save(userProfile);
-                accountService.createNewAccount(userAccount);
+                accountService.createNewMerchantAccount(userAccount);
                 accountService.createPreferences(userProfile);
                 updateUserIdWithEmailWhenPresent(userAccount, userProfile);
             } catch (DataIntegrityViolationException e) {
@@ -363,7 +363,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 /** Copy to user profile. */
                 userProfile = connectionService.copyToUserProfile(google.plusOperations().getGoogleProfile(), userAccount);
                 accountService.save(userProfile);
-                accountService.createNewAccount(userAccount);
+                accountService.createNewMerchantAccount(userAccount);
                 accountService.createPreferences(userProfile);
                 updateUserIdWithEmailWhenPresent(userAccount, userProfile);
             } catch (DataIntegrityViolationException e) {

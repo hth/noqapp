@@ -119,7 +119,7 @@ public class AccountService {
      * @param birthday
      * @return
      */
-    public UserAccountEntity createNewAccount(
+    public UserAccountEntity createNewMerchantAccount(
             String mail,
             String firstName,
             String lastName,
@@ -183,7 +183,7 @@ public class AccountService {
     /**
      * Create new account using social login.
      */
-    public void createNewAccount(UserAccountEntity userAccount) {
+    public void createNewMerchantAccount(UserAccountEntity userAccount) {
         Assert.notNull(userAccount.getProviderId());
         LOG.info("New account created using social user={} provider={}",
                 userAccount.getReceiptUserId(), userAccount.getProviderId());
@@ -362,17 +362,17 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_ANALYSIS);
                 userAccount.setRoles(roles);
                 break;
-            case USER:
+            case CLIENT:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 userAccount.setRoles(roles);
                 break;
-            case BIZ_MANAGER:
-                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
+            case MER_MANAGER:
+                roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;
-            case BIZ_ADMIN:
-                roles.add(RoleEnum.ROLE_BIZ_ADMIN);
-                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
+            case MER_ADMIN:
+                roles.add(RoleEnum.ROLE_MER_ADMIN);
+                roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             default:

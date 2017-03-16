@@ -153,7 +153,7 @@ public class UserProfileEntity extends BaseEntity {
 
     @NotNull
     @Field ("UL")
-    private UserLevelEnum level = UserLevelEnum.USER;
+    private UserLevelEnum level = UserLevelEnum.CLIENT;
 
     @Field ("AD")
     private String address;

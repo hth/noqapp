@@ -117,8 +117,6 @@ public class UserAccountEntity extends BaseEntity {
 
     private UserAccountEntity() {
         super();
-        roles = new LinkedHashSet<>();
-        roles.add(RoleEnum.ROLE_CLIENT);
     }
 
     private UserAccountEntity(
@@ -134,6 +132,9 @@ public class UserAccountEntity extends BaseEntity {
         this.firstName = WordUtils.capitalizeFully(firstName);
         this.lastName = WordUtils.capitalizeFully(lastName);
         this.userAuthentication = userAuthentication;
+
+        roles = new LinkedHashSet<>();
+        roles.add(RoleEnum.ROLE_MER_MANAGER);
     }
 
     public static UserAccountEntity newInstance(

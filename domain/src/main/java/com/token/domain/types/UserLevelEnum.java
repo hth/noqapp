@@ -11,9 +11,9 @@ package com.token.domain.types;
         "PMD.LongVariable"
 })
 public enum UserLevelEnum {
-    USER("User", 10),
-    BIZ_MANAGER("Business Manager", 20),
-    BIZ_ADMIN("Business Admin", 30),
+    CLIENT("Client", 10),
+    MER_MANAGER("Merchant Manager", 20),
+    MER_ADMIN("Merchant Admin", 30),
     TECHNICIAN("Tech", 40),
     SUPERVISOR("Super", 50),
     ANALYSIS("Analysis", 60),
