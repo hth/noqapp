@@ -41,7 +41,7 @@
         <ul>
             <!-- inser more links here -->
             <li><a href="#0">Sign In</a></li>
-            <li><a href="${pageContext.request.contextPath}/open/registration.htm">Register</a></li>
+            <li><a href="${pageContext.request.contextPath}/open/registration.htm">Merchant Register</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
 </header>
@@ -147,7 +147,7 @@
             <legend>New User</legend>
 
             <div class="icon">
-                <span class="cd-link"><a href="${pageContext.request.contextPath}/open/registration.htm">Click here to Register</a></span>
+                <span class="cd-link"><a href="${pageContext.request.contextPath}/open/registration.htm">Click here to Register as Merchant</a></span>
             </div>
         </fieldset>
     </div>

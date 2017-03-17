@@ -79,7 +79,7 @@
                 </spring:hasBindErrors>
 
                 <fieldset>
-                    <legend>Registration</legend>
+                    <legend>Merchant Registration</legend>
 
                     <div class="icon">
                         <form:label for="firstName" path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
