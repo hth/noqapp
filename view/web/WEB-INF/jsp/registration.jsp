@@ -39,7 +39,7 @@
     <nav class="cd-main-nav">
         <ul>
             <li><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></li>
-            <li><a href="#">Register</a></li>
+            <li><a href="#">Merchant Register</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
 </header>

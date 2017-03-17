@@ -105,7 +105,7 @@
                     <div class="profile_label profile_label_note">
                         <p>
                         Your email address <span style="color: red; font-weight: bold">${register.registerUser.email}</span>
-                        has not been validated. Please validated email address to continue business account registration.
+                        has not been validated. Please validated email address to continue merchant account registration.
                         </p>
                         <p style="padding-top: 20px;">
                         To resend account validation email, click here.
