@@ -3,10 +3,10 @@ package com.token.view.flow;
 import com.token.domain.BizNameEntity;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.flow.Register;
-import com.token.domain.shared.DecodedAddress;
+import com.token.domain.flow.RegisterBusiness;
 import com.token.service.BizService;
 import com.token.service.ExternalService;
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 /**
  * User: hitender
@@ -24,22 +24,12 @@ class RegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(Register register) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
-        }
-        register.getRegisterUser().setPhone(CommonUtil.phoneCleanup(register.getRegisterUser().getPhone()));
+        register.getRegisterUser().setPhone(Formatter.phoneCleanup(register.getRegisterUser().getPhone()));
     }
 
     @SuppressWarnings ("unused")
     public void updateBusiness(Register register) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getAddress()), register.getRegisterBusiness().getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            register.getRegisterBusiness().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
-        }
-        register.getRegisterBusiness().setPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getPhone()));
+        register.getRegisterBusiness().setPhone(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone()));
 
         if (register.getRegisterBusiness().isMultiStore()) {
             register.getRegisterBusiness().setAddressStore(null);
@@ -62,39 +52,48 @@ class RegistrationFlowActions {
 
     private void addTimezone(BizStoreEntity bizStore) {
         if (bizStore.getCoordinate() != null && bizStore.isValidatedUsingExternalAPI()) {
-            externalService.findTimezone(bizStore);
+            externalService.updateTimezone(bizStore);
         }
     }
 
     BizNameEntity registerBusinessDetails(Register register) {
-        BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
+
+        RegisterBusiness registerBusiness = register.getRegisterBusiness();
+        BizNameEntity bizName = bizService.findMatchingBusiness(
+                registerBusiness.getName(),
+                registerBusiness.getPhoneNotFormatted());
+
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
-            bizName.setBusinessName(register.getRegisterBusiness().getName());
+            bizName.setBusinessName(registerBusiness.getName());
         }
-        bizName.setBusinessTypes(register.getRegisterBusiness().getBusinessTypes());
-        bizName.setPhone(register.getRegisterBusiness().getPhone());
-        bizName.setAddress(register.getRegisterBusiness().getAddress());
-        bizName.setMultiStore(register.getRegisterBusiness().isMultiStore());
+        bizName.setBusinessTypes(registerBusiness.getBusinessTypes());
+        bizName.setPhone(registerBusiness.getPhoneWithCountryCode());
+        bizName.setPhoneRaw(registerBusiness.getPhoneNotFormatted());
+        bizName.setAddress(registerBusiness.getAddress());
+        bizName.setTimeZone(registerBusiness.getTimeZone());
+        bizName.setMultiStore(registerBusiness.isMultiStore());
         validateAddress(bizName);
         bizService.saveName(bizName);
 
         /* Add a store. */
-        if (!register.getRegisterBusiness().isMultiStore()) {
+        if (!registerBusiness.isMultiStore()) {
 
             BizStoreEntity bizStore = bizService.findMatchingStore(
-                    register.getRegisterBusiness().getAddress(),
-                    register.getRegisterBusiness().getBusinessPhoneNotFormatted());
+                    registerBusiness.getAddress(),
+                    registerBusiness.getPhoneNotFormatted());
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
-                bizStore.setDisplayName(register.getRegisterBusiness().getDisplayName());
-                bizStore.setPhone(register.getRegisterBusiness().getPhone());
-                bizStore.setAddress(register.getRegisterBusiness().getAddress());
-                bizStore.setStartHour(register.getRegisterBusiness().getStartHourStore());
-                bizStore.setEndHour(register.getRegisterBusiness().getEndHourStore());
-                bizStore.setTokenAvailableFrom(register.getRegisterBusiness().getTokenAvailableFrom());
-                bizStore.setTokenNotAvailableFrom(register.getRegisterBusiness().getTokenNotAvailableFrom());
+                bizStore.setDisplayName(registerBusiness.getDisplayName());
+                bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
+                bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
+                bizStore.setAddress(registerBusiness.getAddress());
+                bizStore.setTimeZone(registerBusiness.getTimeZone());
+                bizStore.setStartHour(registerBusiness.getStartHourStore());
+                bizStore.setEndHour(registerBusiness.getEndHourStore());
+                bizStore.setTokenAvailableFrom(registerBusiness.getTokenAvailableFrom());
+                bizStore.setTokenNotAvailableFrom(registerBusiness.getTokenNotAvailableFrom());
 
                 //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
                 validateAddress(bizStore);

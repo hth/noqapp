@@ -110,16 +110,43 @@ public final class Formatter {
         }
     }
 
-    public static boolean isValidPhone(String phone) {
+    public static boolean isValidPhone(String phone, String countryShortName) {
         try {
-            PHONE_INSTANCE.parse(phone, FORMAT_TO_US);
+            PHONE_INSTANCE.parse(phone, countryShortName);
             return true;
         } catch (NumberParseException e) {
+            LOG.error("Error parsing phone={} countryShortName={}", phone, countryShortName);
             return false;
         }
     }
 
     public static String toSmallDate(Date date) {
         return SDF_SMALL.format(date);
+    }
+
+    /**
+     * Strip all the characters other than number.
+     *
+     * @param phone
+     * @return
+     */
+    public static String phoneCleanup(String phone) {
+        if (StringUtils.isNotEmpty(phone)) {
+            return phone.replaceAll("[^0-9]", "");
+        }
+        return phone;
+    }
+
+    public static String phoneFormatter(String phone, String countryShortName) {
+        return Formatter.phone(phone, countryShortName);
+    }
+
+    public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
+        try {
+            return PHONE_INSTANCE.getCountryCodeForRegion(countryShortName) + phone;
+        } catch (Exception e) {
+            LOG.error("Failed to parse phone={} for countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed parsing phone number");
+        }
     }
 }

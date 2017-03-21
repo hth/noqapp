@@ -1,16 +1,23 @@
 package com.token.view.flow.validator;
 
+import com.google.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 import com.token.domain.flow.Register;
+import com.token.domain.shared.DecodedAddress;
+import com.token.service.AccountService;
+import com.token.service.ExternalService;
+import com.token.utils.CommonUtil;
 import com.token.utils.Constants;
 import com.token.utils.Formatter;
 import com.token.utils.Validate;
@@ -24,14 +31,33 @@ import com.token.view.controller.access.LandingController;
 public class UserFlowValidator {
     private static final Logger LOG = LoggerFactory.getLogger(UserFlowValidator.class);
 
-    @Value ("${AccountRegistrationController.mailLength}")
     private int mailLength;
-
-    @Value ("${AccountRegistrationController.nameLength}")
     private int nameLength;
-
-    @Value ("${AccountRegistrationController.passwordLength}")
     private int passwordLength;
+
+    private AccountService accountService;
+    private ExternalService externalService;
+
+    @Autowired
+    public UserFlowValidator(
+            @Value ("${AccountRegistrationController.mailLength}")
+            int mailLength,
+
+            @Value ("${AccountRegistrationController.nameLength}")
+            int nameLength,
+
+            @Value ("${AccountRegistrationController.passwordLength}")
+            int passwordLength,
+
+            AccountService accountService,
+            ExternalService externalService
+    ) {
+        this.mailLength = mailLength;
+        this.nameLength = nameLength;
+        this.passwordLength = passwordLength;
+        this.accountService = accountService;
+        this.externalService = externalService;
+    }
 
     /**
      * Validate business user profile.
@@ -121,6 +147,16 @@ public class UserFlowValidator {
         LOG.info("Validate user profile rid={}", register.getRegisterUser().getRid());
         String status = LandingController.SUCCESS;
 
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
+        if (decodedAddress.isNotEmpty()) {
+            register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
+            register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
+
+            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+            String timeZone = externalService.findTimeZone(latLng);
+            register.getRegisterUser().setTimeZone(timeZone);
+        }
+
         if (StringUtils.isBlank(register.getRegisterUser().getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -192,7 +228,7 @@ public class UserFlowValidator {
         }
 
         if (StringUtils.isNotBlank(register.getRegisterUser().getPhoneNotFormatted())) {
-            if (!Formatter.isValidPhone(register.getRegisterUser().getPhoneNotFormatted())) {
+            if (!Formatter.isValidPhone(register.getRegisterUser().getPhoneNotFormatted(), register.getRegisterUser().getCountryShortName())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -201,6 +237,21 @@ public class UserFlowValidator {
                                 .build());
                 status = "failure";
             }
+        }
+
+        if (accountService.checkUserExistsByPhone(
+                register.getRegisterUser().getPhoneNotFormatted(),
+                register.getRegisterUser().getCountryShortName()) != null) {
+
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerUser.phone")
+                            .defaultText("You seem to be already registered with this phone number '"
+                                    + register.getRegisterUser().getPhoneNotFormatted()
+                                    + "'. Try recovery of you account using OTP")
+                            .build());
+            status = "failure";
         }
 
         LOG.info("Validate user profile rid={} status={}", register.getRegisterUser().getRid(), status);

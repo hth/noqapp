@@ -27,7 +27,7 @@ import com.token.domain.BaseEntity;
 import com.token.domain.BizNameEntity;
 import com.token.domain.BizStoreEntity;
 import com.token.domain.types.PaginationEnum;
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.util.Date;
 import java.util.List;
@@ -92,7 +92,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         if (StringUtils.isEmpty(phone)) {
             criteria = where("AD").is(address);
         } else {
-            criteria = where("AD").is(address).and("PH").is(CommonUtil.phoneCleanup(phone));
+            criteria = where("AD").is(address).and("PH").is(Formatter.phoneCleanup(phone));
         }
 
         return mongoTemplate.findOne(query(criteria), BizStoreEntity.class);

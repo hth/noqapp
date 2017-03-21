@@ -1,15 +1,21 @@
 package com.token.view.flow.validator;
 
+import com.google.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 import com.token.domain.flow.Register;
+import com.token.domain.shared.DecodedAddress;
+import com.token.service.ExternalService;
+import com.token.utils.CommonUtil;
 
 /**
  * User: hitender
@@ -18,6 +24,13 @@ import com.token.domain.flow.Register;
 @Component
 public class BusinessFlowValidator {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessFlowValidator.class);
+
+    private ExternalService externalService;
+
+    @Autowired
+    public BusinessFlowValidator(ExternalService externalService) {
+        this.externalService = externalService;
+    }
 
     /**
      * Validate business user profile.
@@ -30,6 +43,16 @@ public class BusinessFlowValidator {
     public String validateBusinessDetails(Register register, MessageContext messageContext) {
         LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
         String status = "success";
+
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getAddress()), register.getRegisterBusiness().getAddress());
+        if (decodedAddress.isNotEmpty()) {
+            register.getRegisterBusiness().setAddress(decodedAddress.getFormattedAddress());
+            register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
+
+            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+            String timeZone = externalService.findTimeZone(latLng);
+            register.getRegisterBusiness().setTimeZone(timeZone);
+        }
 
         if (StringUtils.isBlank(register.getRegisterBusiness().getName())) {
             messageContext.addMessage(
@@ -61,7 +84,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessPhoneNotFormatted())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -92,7 +115,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (StringUtils.isBlank(register.getRegisterBusiness().getStorePhoneNotFormatted())) {
+            if (StringUtils.isBlank(register.getRegisterBusiness().getPhoneStoreNotFormatted())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()

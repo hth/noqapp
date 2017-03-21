@@ -21,7 +21,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
      * @param businessName
      * @return
      */
-    BizNameEntity findOneByName(String businessName);
+    BizNameEntity findOneByNameAndPhone(String businessName, String phone);
 
     /**
      * Find all the Business with businessName

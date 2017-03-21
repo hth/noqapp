@@ -26,6 +26,7 @@ import com.token.repository.UserAccountManager;
 import com.token.repository.UserAuthenticationManager;
 import com.token.repository.UserPreferenceManager;
 import com.token.repository.UserProfileManager;
+import com.token.utils.Formatter;
 import com.token.utils.HashText;
 import com.token.utils.RandomString;
 
@@ -74,6 +75,10 @@ public class AccountService {
 
     public UserProfileEntity doesUserExists(String mail) {
         return userProfileManager.findOneByMail(mail);
+    }
+    
+    public UserProfileEntity checkUserExistsByPhone(String phone, String countryShortName) {
+        return userProfileManager.findOneByPhone(Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName));
     }
 
     public UserAccountEntity findByReceiptUserId(String rid) {
@@ -350,7 +355,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
-                /** As of now admin does not have Business and Enterprise role. */
+                /** As of now admin does not have any Merchant role. */
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
@@ -367,6 +372,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case MER_MANAGER:
+                roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;

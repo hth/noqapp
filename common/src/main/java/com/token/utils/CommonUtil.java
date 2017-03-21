@@ -1,8 +1,6 @@
 package com.token.utils;
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-
-import org.apache.commons.lang3.StringUtils;
+import com.google.maps.model.LatLng;
 
 import org.bson.types.ObjectId;
 
@@ -19,9 +17,6 @@ import java.util.stream.Collectors;
  * Date: 11/18/16 6:09 PM
  */
 public final class CommonUtil {
-
-    private static final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-
     private CommonUtil() {
     }
 
@@ -38,32 +33,31 @@ public final class CommonUtil {
         return true;
     }
 
-    /**
-     * Strip all the characters other than number.
-     *
-     * @param phone
-     * @return
-     */
-    public static String phoneCleanup(String phone) {
-        if (StringUtils.isNotEmpty(phone)) {
-            return phone.replaceAll("[^0-9]", "");
-        }
-        return phone;
-    }
-
-    public static String phoneFormatter(String phone, String countryShortName) {
-        return Formatter.phone(phone, countryShortName);
-    }
-
-    public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
-        return phoneUtil.getCountryCodeForRegion(countryShortName) + phone;
-    }
-
     public static List<ObjectId> convertStringArrayToObjectIdArray(List<String> ids) {
         List<ObjectId> objectIds = new ArrayList<>();
         if (null != ids) {
             objectIds.addAll(ids.stream().map(ObjectId::new).collect(Collectors.toList()));
         }
         return objectIds;
+    }
+
+    public static LatLng getLatLng(double[] coordinate) {
+        return new LatLng(getLat(coordinate), getLng(coordinate));
+    }
+
+    private static double getLat(double[] coordinate) {
+        if (null != coordinate) {
+            return coordinate[1];
+        } else {
+            return 0.0;
+        }
+    }
+
+    private static double getLng(double[] coordinate) {
+        if (null != coordinate) {
+            return coordinate[0];
+        } else {
+            return 0.0;
+        }
     }
 }

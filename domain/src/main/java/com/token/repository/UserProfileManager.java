@@ -35,7 +35,15 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
      */
     List<UserProfileEntity> searchAllByName(String name);
 
-    UserProfileEntity findOneByMail(String emailId);
+    UserProfileEntity findOneByMail(String email);
+
+    /**
+     * Phone number should come with country code.
+     *
+     * @param phone
+     * @return
+     */
+    UserProfileEntity findOneByPhone(String phone);
 
     @Mobile
     UserProfileEntity getProfileUpdateSince(String rid, Date since);

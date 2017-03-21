@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Transient;
 
 import com.token.domain.BusinessUserEntity;
 import com.token.domain.types.BusinessTypeEnum;
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,8 +21,9 @@ public class RegisterBusiness implements Serializable {
     /** Business types are initialized in flow. Why? Show off. */
     private List<BusinessTypeEnum> businessTypes;
     private String address;
-    private String phone;
     private String countryShortName;
+    private String phone;
+    private String timeZone;
     private BusinessUserEntity businessUser;
 
     private boolean multiStore = false;
@@ -30,8 +31,9 @@ public class RegisterBusiness implements Serializable {
 
     private String displayName;
     private String addressStore;
-    private String phoneStore;
     private String countryShortNameStore;
+    private String phoneStore;
+    private String timeZoneStore;
     private int startHourStore;
     private int endHourStore;
     private int tokenAvailableFrom;
@@ -64,16 +66,33 @@ public class RegisterBusiness implements Serializable {
         this.address = address;
     }
 
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+    }
+
     public String getPhone() {
         if (StringUtils.isNotBlank(phone)) {
-            return CommonUtil.phoneFormatter(phone, countryShortName);
+            return Formatter.phoneFormatter(phone, countryShortName);
         } else {
             return phone;
         }
     }
 
     @Transient
-    public String getBusinessPhoneNotFormatted() {
+    public String getPhoneNotFormatted() {
+        return Formatter.phoneCleanup(phone);
+    }
+
+    @Transient
+    public String getPhoneWithCountryCode() {
+        if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(countryShortName)) {
+            return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName);
+        }
+
         return phone;
     }
 
@@ -81,12 +100,12 @@ public class RegisterBusiness implements Serializable {
         this.phone = phone;
     }
 
-    public String getCountryShortName() {
-        return countryShortName;
+    public String getTimeZone() {
+        return timeZone;
     }
 
-    public void setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public BusinessUserEntity getBusinessUser() {
@@ -138,20 +157,29 @@ public class RegisterBusiness implements Serializable {
     }
 
     public String getPhoneStore() {
-        return phoneStore;
-    }
-
-    @Transient
-    public String getStorePhoneNotFormatted() {
         if (StringUtils.isNotBlank(phoneStore)) {
-            return CommonUtil.phoneFormatter(phoneStore, countryShortName);
+            return Formatter.phoneFormatter(phoneStore, countryShortName);
         } else {
             return phoneStore;
         }
     }
 
+    @Transient
+    public String getPhoneStoreNotFormatted() {
+        return Formatter.phoneCleanup(phoneStore);
+    }
+
     public void setPhoneStore(String phoneStore) {
         this.phoneStore = phoneStore;
+    }
+
+    @Transient
+    public String getPhoneStoreWithCountryCode() {
+        if (StringUtils.isNotBlank(phoneStore) && StringUtils.isNotBlank(countryShortNameStore)) {
+            return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phoneStore), countryShortNameStore);
+        }
+
+        return phoneStore;
     }
 
     public String getCountryShortNameStore() {
@@ -160,6 +188,14 @@ public class RegisterBusiness implements Serializable {
 
     public void setCountryShortNameStore(String countryShortNameStore) {
         this.countryShortNameStore = countryShortNameStore;
+    }
+
+    public String getTimeZoneStore() {
+        return timeZoneStore;
+    }
+
+    public void setTimeZoneStore(String timeZoneStore) {
+        this.timeZoneStore = timeZoneStore;
     }
 
     public int getStartHourStore() {

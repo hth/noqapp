@@ -200,6 +200,11 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
+    public UserProfileEntity findOneByPhone(String phone) {
+        return mongoTemplate.findOne(query(where("PH").is(phone)), UserProfileEntity.class, TABLE);
+    }
+
+    @Override
     public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
         return mongoTemplate.findOne(
                 query(where("RID").is(rid).and("U").gte(since)),
