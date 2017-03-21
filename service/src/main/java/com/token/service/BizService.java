@@ -104,8 +104,8 @@ public class BizService {
         return bizStoreManager.findMatchingStore(address, phone);
     }
 
-    public BizNameEntity findMatchingBusiness(String name) {
-        return bizNameManager.findOneByName(name);
+    public BizNameEntity findMatchingBusiness(String name, String phone) {
+        return bizNameManager.findOneByNameAndPhone(name, phone);
     }
 
     public BizStoreEntity findOneBizStore(String bizNameId) {

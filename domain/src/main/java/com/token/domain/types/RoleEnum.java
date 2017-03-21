@@ -19,10 +19,10 @@ public enum RoleEnum {
     ROLE_CLIENT,
 
     /** A business manager. */
-    ROLE_BIZ_MANAGER,
+    ROLE_MER_MANAGER,
 
     /** A business admin. */
-    ROLE_BIZ_ADMIN,
+    ROLE_MER_ADMIN,
 
     /** Validate and process data. */
     ROLE_TECHNICIAN,

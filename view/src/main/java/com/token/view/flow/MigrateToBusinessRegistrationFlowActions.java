@@ -67,7 +67,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
         if (null == businessUser) {
-            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BIZ_ADMIN);
+            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.MER_ADMIN);
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
@@ -110,7 +110,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             BizNameEntity bizName = registerBusinessDetails(register);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
             if (businessUser == null) {
-                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.BIZ_ADMIN);
+                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.MER_ADMIN);
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
             }
             businessUser
@@ -137,7 +137,9 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
         userProfile.setAddress(register.getRegisterUser().getAddress());
         userProfile.setCountryShortName(register.getRegisterUser().getCountryShortName());
-        userProfile.setPhone(register.getRegisterUser().getPhoneNotFormatted());
+        userProfile.setPhone(register.getRegisterUser().getPhoneWithCountryCode());
+        userProfile.setPhoneRaw(register.getRegisterUser().getPhoneNotFormatted());
+        userProfile.setTimeZone(register.getRegisterUser().getTimeZone());
         userProfilePreferenceService.updateProfile(userProfile);
 
         if (!userProfile.getFirstName().equals(register.getRegisterUser().getFirstName()) && !userProfile.getLastName().equals(register.getRegisterUser().getLastName())) {

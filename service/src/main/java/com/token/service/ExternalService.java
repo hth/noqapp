@@ -6,6 +6,7 @@ import com.google.maps.PendingResult;
 import com.google.maps.PlacesApi;
 import com.google.maps.TimeZoneApi;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.LatLng;
 import com.google.maps.model.PlaceDetails;
 
 import org.apache.commons.lang3.StringUtils;
@@ -93,7 +94,7 @@ public class ExternalService {
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
                     bizStore.setPlaceType(placeDetails.types);
-                    bizStore.setPlaceRating(placeDetails.rating);
+                    bizStore.setRating(placeDetails.rating);
                     if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
                         bizStore.setPhone(placeDetails.formattedPhoneNumber);
                     }
@@ -192,7 +193,12 @@ public class ExternalService {
         return null;
     }
 
-    public void findTimezone(BizStoreEntity bizStore) {
+    /**
+     * Updates Biz Store time zone based on the address of the store. Asynchronous call.
+     * 
+     * @param bizStore
+     */
+    public void updateTimezone(BizStoreEntity bizStore) {
         try {
             TimeZoneApi.getTimeZone(context, bizStore.getLatLng()).setCallback(
                     new PendingResult.Callback<TimeZone>() {
@@ -215,12 +221,29 @@ public class ExternalService {
 
                         @Override
                         public void onFailure(Throwable e) {
-                            LOG.error("Failed getting timezone");
+                            LOG.error("Failed getting timezone reason={}", e.getLocalizedMessage(), e);
                         }
                     }
             );
         } catch (Exception e) {
             LOG.error("Failed fetching from google timezone reason={}", e.getLocalizedMessage(), e);
+        }
+    }
+
+    /**
+     * No call back. Synchronous call.
+     * 
+     * @param latLng
+     * @return
+     */
+    public String findTimeZone(LatLng latLng) {
+        try {
+            TimeZone tz = TimeZoneApi.getTimeZone(context, latLng).await();
+            Assert.notNull(tz, "TimeZone could not be found for " + latLng);
+            return tz.getID();
+        } catch (Exception e) {
+            LOG.error("Failed fetching from google timezone reason={}", e.getLocalizedMessage(), e);
+            return null;
         }
     }
 
@@ -233,12 +256,13 @@ public class ExternalService {
      * @return
      */
     public Date computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
+        Assert.notNull(timeZone, "TimeZone should not be null");
         LocalDateTime currentLocalDateTime = LocalDateTime.now(Clock.system(timeZone.toZoneId()));
         currentLocalDateTime.plusDays(1);
         Instant futureInstant = currentLocalDateTime.toInstant(ZoneOffset.ofHours(0));
         Date futureDate = Date.from(futureInstant);
 
-        String str = df.format(futureDate) + " " + hourOfDay + ":" + minuteOfDay;
+        String str = df.format(futureDate) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
         LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
         LOG.debug("Current date and time in a particular timezone={}", zonedDateTime);

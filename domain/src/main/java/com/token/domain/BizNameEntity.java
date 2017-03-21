@@ -10,10 +10,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.NumberFormat;
 
 import com.token.domain.types.BusinessTypeEnum;
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BIZ_NAME")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_name_idx", def = "{'N': 1}", unique = false),
+        @CompoundIndex (name = "biz_name_ph_idx", def = "{'N': 1, 'PH' : 1}", unique = true)
 })
 public class BizNameEntity extends BaseEntity {
 
@@ -75,9 +74,14 @@ public class BizNameEntity extends BaseEntity {
     @Field ("CS")
     private String countryShortName;
 
+    /* Phone number saved with country code. */
     @NotNull
     @Field ("PH")
     private String phone;
+
+    /* To not loose user entered phone number. */
+    @Field ("PR")
+    private String phoneRaw;
 
     /** Format Longitude and then Latitude. */
     @Field ("COR")
@@ -94,6 +98,9 @@ public class BizNameEntity extends BaseEntity {
 
     @Field ("VC")
     private int validationCount;
+
+    @Field ("TZ")
+    private String timeZone;
 
     @Field ("MS")
     private boolean multiStore = false;
@@ -242,32 +249,22 @@ public class BizNameEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if (StringUtils.isBlank(phone)) {
-            this.phone = CommonUtil.phoneCleanup(phoneNumberBlank);
+            this.phone = Formatter.phoneCleanup(phoneNumberBlank);
         } else {
-            this.phone = CommonUtil.phoneCleanup(phone);
+            this.phone = Formatter.phoneCleanup(phone);
         }
     }
 
     public String getPhoneFormatted() {
-        return CommonUtil.phoneFormatter(phone, countryShortName);
+        return Formatter.phoneFormatter(phone, countryShortName);
     }
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLng() {
-        if (null != coordinate) {
-            return coordinate[0];
-        } else {
-            return 0.0;
-        }
+    public String getPhoneRaw() {
+        return phoneRaw;
     }
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLat() {
-        if (null != coordinate) {
-            return coordinate[1];
-        } else {
-            return 0.0;
-        }
+    public void setPhoneRaw(String phoneRaw) {
+        this.phoneRaw = phoneRaw;
     }
 
     public boolean isValidatedUsingExternalAPI() {
@@ -321,6 +318,14 @@ public class BizNameEntity extends BaseEntity {
 
     public void setMultiStore(boolean multiStore) {
         this.multiStore = multiStore;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     @Override

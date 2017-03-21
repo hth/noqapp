@@ -16,7 +16,7 @@ import org.springframework.social.facebook.api.WorkEntry;
 
 import com.token.domain.types.ProviderEnum;
 import com.token.domain.types.UserLevelEnum;
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +37,8 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "USER_PROFILE")
 @CompoundIndexes ({
         @CompoundIndex (name = "user_profile_rid_puid_pid_em_idx", def = "{'RID': -1, 'PUID': -1, 'PID': 1, 'EM' : 1}", unique = true),
-        @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true)
+        @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
+        @CompoundIndex (name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
 })
 public class UserProfileEntity extends BaseEntity {
 
@@ -89,7 +90,7 @@ public class UserProfileEntity extends BaseEntity {
     private String thirdPartyId;
 
     @Field ("TZ")
-    private Float timezone;
+    private String timeZone;
 
     @Field ("UT")
     private Date updatedTime;
@@ -153,7 +154,7 @@ public class UserProfileEntity extends BaseEntity {
 
     @NotNull
     @Field ("UL")
-    private UserLevelEnum level = UserLevelEnum.USER;
+    private UserLevelEnum level = UserLevelEnum.CLIENT;
 
     @Field ("AD")
     private String address;
@@ -161,8 +162,13 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("CS")
     private String countryShortName;
 
+    /* Phone number saved with country code. */
     @Field ("PH")
     private String phone;
+
+    /* To not loose user entered phone number. */
+    @Field ("PR")
+    private String phoneRaw;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -313,12 +319,12 @@ public class UserProfileEntity extends BaseEntity {
         this.thirdPartyId = thirdPartyId;
     }
 
-    public Float getTimezone() {
-        return timezone;
+    public String getTimeZone() {
+        return timeZone;
     }
 
-    public void setTimezone(Float timezone) {
-        this.timezone = timezone;
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public Date getUpdatedTime() {
@@ -516,18 +522,25 @@ public class UserProfileEntity extends BaseEntity {
         return phone;
     }
 
+    /* Phone number is suppose to be with country code. */
     public void setPhone(String phone) {
-        if (StringUtils.isNotBlank(phone)) {
-            this.phone = CommonUtil.phoneCleanup(phone);
-        }
+        this.phone = phone;
     }
 
     public String getPhoneFormatted() {
         if (StringUtils.isNotBlank(phone)) {
-            return CommonUtil.phoneFormatter(phone, countryShortName);
+            return Formatter.phoneFormatter(phone, countryShortName);
         } else {
             return "";
         }
+    }
+
+    public String getPhoneRaw() {
+        return phoneRaw;
+    }
+
+    public void setPhoneRaw(String phoneRaw) {
+        this.phoneRaw = phoneRaw;
     }
 
     @Transient

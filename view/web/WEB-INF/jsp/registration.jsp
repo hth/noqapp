@@ -39,7 +39,7 @@
     <nav class="cd-main-nav">
         <ul>
             <li><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></li>
-            <li><a href="#">Register</a></li>
+            <li><a href="#">Merchant Register</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
 </header>
@@ -52,8 +52,8 @@
         </fieldset>
 
         <fieldset class="cd-form floating-labels">
-            <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm" autocomplete="true">
-                <spring:hasBindErrors name="userRegistrationForm">
+            <form:form method="post" modelAttribute="merchantRegistrationForm" action="registration.htm" autocomplete="true">
+                <spring:hasBindErrors name="merchantRegistrationForm">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
                             <c:if test="${errors.hasFieldErrors('firstName')}">
@@ -79,7 +79,7 @@
                 </spring:hasBindErrors>
 
                 <fieldset>
-                    <legend>Registration</legend>
+                    <legend>Merchant Registration</legend>
 
                     <div class="icon">
                         <form:label for="firstName" path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
@@ -120,7 +120,7 @@
 
                 <fieldset>
                     <c:choose>
-                        <c:when test="${userRegistrationForm.accountExists}">
+                        <c:when test="${merchantRegistrationForm.accountExists}">
                             <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="float: left;" />
                         </c:when>
                         <c:otherwise>
@@ -131,13 +131,6 @@
                         <input type="submit" value="Sign Me Up" name="signup">
                     </div>
                 </fieldset>
-
-                <c:if test="${!registrationTurnedOn}">
-                    <div class="error-message">
-                        <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
-                            you will be notified through email and your account would be turned active.</p>
-                    </div>
-                </c:if>
             </form:form>
         </fieldset>
     </div>

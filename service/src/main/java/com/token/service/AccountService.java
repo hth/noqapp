@@ -26,6 +26,7 @@ import com.token.repository.UserAccountManager;
 import com.token.repository.UserAuthenticationManager;
 import com.token.repository.UserPreferenceManager;
 import com.token.repository.UserProfileManager;
+import com.token.utils.Formatter;
 import com.token.utils.HashText;
 import com.token.utils.RandomString;
 
@@ -75,6 +76,10 @@ public class AccountService {
     public UserProfileEntity doesUserExists(String mail) {
         return userProfileManager.findOneByMail(mail);
     }
+    
+    public UserProfileEntity checkUserExistsByPhone(String phone, String countryShortName) {
+        return userProfileManager.findOneByPhone(Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName));
+    }
 
     public UserAccountEntity findByReceiptUserId(String rid) {
         return userAccountManager.findByReceiptUserId(rid);
@@ -119,7 +124,7 @@ public class AccountService {
      * @param birthday
      * @return
      */
-    public UserAccountEntity createNewAccount(
+    public UserAccountEntity createNewMerchantAccount(
             String mail,
             String firstName,
             String lastName,
@@ -183,7 +188,7 @@ public class AccountService {
     /**
      * Create new account using social login.
      */
-    public void createNewAccount(UserAccountEntity userAccount) {
+    public void createNewMerchantAccount(UserAccountEntity userAccount) {
         Assert.notNull(userAccount.getProviderId());
         LOG.info("New account created using social user={} provider={}",
                 userAccount.getReceiptUserId(), userAccount.getProviderId());
@@ -350,7 +355,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
-                /** As of now admin does not have Business and Enterprise role. */
+                /** As of now admin does not have any Merchant role. */
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
@@ -362,17 +367,18 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_ANALYSIS);
                 userAccount.setRoles(roles);
                 break;
-            case USER:
+            case CLIENT:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 userAccount.setRoles(roles);
                 break;
-            case BIZ_MANAGER:
-                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
+            case MER_MANAGER:
+                roles.add(RoleEnum.ROLE_CLIENT);
+                roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;
-            case BIZ_ADMIN:
-                roles.add(RoleEnum.ROLE_BIZ_ADMIN);
-                roles.add(RoleEnum.ROLE_BIZ_MANAGER);
+            case MER_ADMIN:
+                roles.add(RoleEnum.ROLE_MER_ADMIN);
+                roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             default:

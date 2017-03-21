@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Transient;
 
-import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.io.Serializable;
 
@@ -20,13 +20,13 @@ public class RegisterUser implements Serializable {
     private String address;
     private String countryShortName;
     private String phone;
+    private String timeZone;
     private boolean emailValidated;
 
     private String birthday;
     private String password;
     private boolean accountExists;
     private boolean acceptsAgreement;
-    private boolean registrationTurnedOn;
 
     public String getRid() {
         return rid;
@@ -109,15 +109,6 @@ public class RegisterUser implements Serializable {
         return this;
     }
 
-    public boolean isRegistrationTurnedOn() {
-        return registrationTurnedOn;
-    }
-
-    public RegisterUser setRegistrationTurnedOn(boolean registrationTurnedOn) {
-        this.registrationTurnedOn = registrationTurnedOn;
-        return this;
-    }
-
     public String getCountryShortName() {
         return countryShortName;
     }
@@ -129,7 +120,7 @@ public class RegisterUser implements Serializable {
 
     public String getPhone() {
         if (StringUtils.isNotBlank(phone)) {
-            return CommonUtil.phoneFormatter(phone, countryShortName);
+            return Formatter.phoneFormatter(phone, countryShortName);
         } else {
             return phone;
         }
@@ -137,12 +128,29 @@ public class RegisterUser implements Serializable {
 
     @Transient
     public String getPhoneNotFormatted() {
-        return phone;
+        return Formatter.phoneCleanup(phone);
+    }
+
+    @Transient
+    public String getPhoneWithCountryCode() {
+        if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(countryShortName)) {
+            return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName);
+        }
+
+        return null;
     }
 
     public RegisterUser setPhone(String phone) {
         this.phone = phone;
         return this;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public boolean isEmailValidated() {
@@ -169,7 +177,6 @@ public class RegisterUser implements Serializable {
                 ", password='" + password + '\'' +
                 ", accountExists=" + accountExists +
                 ", acceptsAgreement=" + acceptsAgreement +
-                ", registrationTurnedOn=" + registrationTurnedOn +
                 '}';
     }
 }

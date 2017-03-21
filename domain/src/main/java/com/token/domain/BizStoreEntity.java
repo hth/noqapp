@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.util.Assert;
 
 import com.token.utils.CommonUtil;
+import com.token.utils.Formatter;
 
 import java.util.Date;
 
@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "BIZ_STORE")
 @CompoundIndexes (value = {
         /** Business name with address and phone makes it a unique store. */
-        @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
+        @CompoundIndex (name = "biz_store_ph_idx", def = "{'PH': 1}", unique = true),
         @CompoundIndex (name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
         @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
@@ -77,9 +77,14 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("CS")
     private String countryShortName;
 
+    /* Phone number saved with country code. */
     @NotNull
     @Field ("PH")
     private String phone;
+
+    /* To not loose user entered phone number. */
+    @Field ("PR")
+    private String phoneRaw;
 
     /** Format Longitude and then Latitude. */
     @Field ("COR")
@@ -91,8 +96,8 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PT")
     private String[] placeType;
 
-    @Field ("PR")
-    private float placeRating;
+    @Field ("RA")
+    private float rating;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -123,7 +128,7 @@ public class BizStoreEntity extends BaseEntity {
     private int endHour;
 
     @Field ("TZ")
-    private String timeZoneId;
+    private String timeZone;
 
     /* Used when running cron job. */
     @Field ("QH")
@@ -241,32 +246,22 @@ public class BizStoreEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if (StringUtils.isBlank(phone)) {
-            this.phone = CommonUtil.phoneCleanup(phoneNumberBlank);
+            this.phone = Formatter.phoneCleanup(phoneNumberBlank);
         } else {
-            this.phone = CommonUtil.phoneCleanup(phone);
+            this.phone = Formatter.phoneCleanup(phone);
         }
     }
 
     public String getPhoneFormatted() {
-        return CommonUtil.phoneFormatter(phone, countryShortName);
+        return Formatter.phoneFormatter(phone, countryShortName);
     }
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLng() {
-        if (null != coordinate) {
-            return coordinate[0];
-        } else {
-            return 0.0;
-        }
+    public String getPhoneRaw() {
+        return phoneRaw;
     }
 
-    @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLat() {
-        if (null != coordinate) {
-            return coordinate[1];
-        } else {
-            return 0.0;
-        }
+    public void setPhoneRaw(String phoneRaw) {
+        this.phoneRaw = phoneRaw;
     }
 
     public BizNameEntity getBizName() {
@@ -309,12 +304,12 @@ public class BizStoreEntity extends BaseEntity {
         this.placeType = placeType;
     }
 
-    public float getPlaceRating() {
-        return placeRating;
+    public float getRating() {
+        return rating;
     }
 
-    public void setPlaceRating(float placeRating) {
-        this.placeRating = placeRating;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public int getValidationCount() {
@@ -379,12 +374,12 @@ public class BizStoreEntity extends BaseEntity {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
     }
 
-    public String getTimeZoneId() {
-        return timeZoneId;
+    public String getTimeZone() {
+        return timeZone;
     }
 
-    public void setTimeZoneId(String timeZoneId) {
-        this.timeZoneId = timeZoneId;
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public Date getQueueHistory() {
@@ -408,7 +403,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public LatLng getLatLng() {
-        return new LatLng(getLat(), getLng());
+        return CommonUtil.getLatLng(coordinate);
     }
 
     @Transient

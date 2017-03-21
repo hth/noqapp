@@ -52,9 +52,6 @@ public class ValidateEmailController {
     @Value ("${emailValidatePage:validate/failure}")
     private String validateFailurePage;
 
-    @Value ("${registration.turned.on}")
-    private boolean registrationTurnedOn;
-
     @Autowired
     public ValidateEmailController(
             EmailValidateService emailValidateService,
@@ -90,9 +87,6 @@ public class ValidateEmailController {
         } else {
             accountService.validateAccount(emailValidate, userAccount);
             redirectAttrs.addFlashAttribute("success", "true");
-            redirectAttrs.addFlashAttribute(
-                    "userRegisteredWhenRegistrationIsOff",
-                    userAccount.isRegisteredWhenRegistrationIsOff());
 
             LOG.info("email address authentication success for user={}", userAccount.getReceiptUserId());
         }
@@ -104,9 +98,6 @@ public class ValidateEmailController {
             @ModelAttribute ("success")
             ScrubbedInput success,
 
-            @ModelAttribute ("userRegisteredWhenRegistrationIsOff")
-            boolean userRegisteredWhenRegistrationIsOff,
-
             ModelMap modelMap,
 
             HttpServletResponse httpServletResponse
@@ -114,16 +105,10 @@ public class ValidateEmailController {
         String nextPage = null;
         if (StringUtils.isNotBlank(success.getText())) {
             nextPage =  Boolean.valueOf(success.getText()) ? validateSuccessPage : validateFailurePage;
-            if (userRegisteredWhenRegistrationIsOff && !registrationTurnedOn) {
-                modelMap.addAttribute(
-                        "registrationMessage",
-                        "Currently we are not accepting new users. We will notify you on your registered email when " +
-                                "we start accepting new users.");
-            } else {
-                modelMap.addAttribute(
-                        "registrationMessage",
-                        "Please log in with your email address and password entered during registration.");
-            }
+            modelMap.addAttribute(
+                    "registrationMessage",
+                    "Please log in with your email address and password entered during registration.");
+
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         }

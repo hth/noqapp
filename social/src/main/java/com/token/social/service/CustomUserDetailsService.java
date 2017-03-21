@@ -100,7 +100,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
-            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount);
+            boolean condition = isUserActive(userAccount);
             if (!condition && null == userAccount.getProviderId()) {
                 /** Throw exception when its NOT a social signup. */
                 throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
@@ -129,15 +129,8 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param userAccount
      * @return
      */
-    public boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
-        if (userAccount.isRegisteredWhenRegistrationIsOff()) {
-            /**
-             * Do not throw exception here as Social API will get exception that would not be handled properly.
-             * For regular sign up user to be notified during login is managed inside the method.
-             * @see CustomUserDetailsService#loadUserByUsername(String)
-             */
-            return false;
-        } else if (userAccount.isActive()) {
+    public boolean isUserActive(UserAccountEntity userAccount) {
+        if (userAccount.isActive()) {
             if (userAccount.isAccountValidated() || userAccount.isValidationExpired(mailValidationTimeoutPeriod)) {
                 return true;
             } else {
@@ -179,7 +172,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
-            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount);
+            boolean condition = isUserActive(userAccount);
             return new TokenUser(
                     StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getProviderUserId() : userAccount.getUserId(),
                     userAccount.getUserAuthentication().getPassword(),
@@ -285,7 +278,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 /** Copy to user profile. */
                 userProfile = connectionService.copyToUserProfile(facebook.userOperations().getUserProfile(), userAccount);
                 accountService.save(userProfile);
-                accountService.createNewAccount(userAccount);
+                accountService.createNewMerchantAccount(userAccount);
                 accountService.createPreferences(userProfile);
                 updateUserIdWithEmailWhenPresent(userAccount, userProfile);
             } catch (DataIntegrityViolationException e) {
@@ -363,7 +356,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 /** Copy to user profile. */
                 userProfile = connectionService.copyToUserProfile(google.plusOperations().getGoogleProfile(), userAccount);
                 accountService.save(userProfile);
-                accountService.createNewAccount(userAccount);
+                accountService.createNewMerchantAccount(userAccount);
                 accountService.createPreferences(userProfile);
                 updateUserIdWithEmailWhenPresent(userAccount, userProfile);
             } catch (DataIntegrityViolationException e) {

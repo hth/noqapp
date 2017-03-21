@@ -92,9 +92,9 @@ public class QueueHistory {
                         LOG.error("mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
-                    TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZoneId());
+                    TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
                     Date nextDay = externalService.computeNextRunTimeAtUTC(timeZone, bizStore.storeClosingHourOfDay(), bizStore.storeClosingMinuteOfDay());
-                    bizStoreManager.setZoneIdAndQueueHistory(bizStore.getId(), bizStore.getTimeZoneId(), nextDay);
+                    bizStoreManager.setZoneIdAndQueueHistory(bizStore.getId(), bizStore.getTimeZone(), nextDay);
                     success++;
                 } catch (Exception e) {
                     failure++;

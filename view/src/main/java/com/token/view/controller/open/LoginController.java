@@ -169,7 +169,7 @@ public class LoginController {
                 rid,
                 userProfile.getProviderId(),
                 userProfile.getLevel(),
-                customUserDetailsService.isUserActiveAndRegistrationTurnedOn(userAccount),
+                customUserDetailsService.isUserActive(userAccount),
                 userAccount.isAccountValidated(),
                 userProfile.getCountryShortName()
         );
