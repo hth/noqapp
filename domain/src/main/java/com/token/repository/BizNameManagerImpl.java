@@ -69,8 +69,8 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public BizNameEntity findOneByNameAndPhone(String businessName, String phone) {
-        return mongoTemplate.findOne(query(where("N").is(businessName).and("PH").is(phone)), BizNameEntity.class, TABLE);
+    public BizNameEntity findByPhone(String phone) {
+        return mongoTemplate.findOne(query(where("PH").is(phone)), BizNameEntity.class, TABLE);
     }
 
     @Override

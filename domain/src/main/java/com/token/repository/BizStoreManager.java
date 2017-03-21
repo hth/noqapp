@@ -16,7 +16,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     BizStoreEntity noStore();
 
-    BizStoreEntity findMatchingStore(String address, String phone);
+    BizStoreEntity findByPhone(String phone);
 
     /**
      * Search for specific Biz, Address or Phone. Limited to 10.

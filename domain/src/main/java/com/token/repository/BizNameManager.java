@@ -18,10 +18,10 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     /**
      * Find one Biz Name for the supplied value for the column businessName
      *
-     * @param businessName
+     * @param phone
      * @return
      */
-    BizNameEntity findOneByNameAndPhone(String businessName, String phone);
+    BizNameEntity findByPhone(String phone);
 
     /**
      * Find all the Business with businessName

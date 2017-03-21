@@ -58,9 +58,7 @@ class RegistrationFlowActions {
 
     BizNameEntity registerBusinessDetails(Register register) {
         RegisterBusiness registerBusiness = register.getRegisterBusiness();
-        BizNameEntity bizName = bizService.findMatchingBusiness(
-                registerBusiness.getName(),
-                registerBusiness.getPhoneWithCountryCode());
+        BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
 
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
@@ -78,10 +76,8 @@ class RegistrationFlowActions {
         /* Add a store. */
         if (!registerBusiness.isMultiStore()) {
 
-            BizStoreEntity bizStore = bizService.findMatchingStore(
-                    registerBusiness.getAddress(),
-                    registerBusiness.getPhoneNotFormatted());
-            if (bizStore == null) {
+            BizStoreEntity bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
+            if (null == bizStore) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
                 bizStore.setDisplayName(registerBusiness.getDisplayName());

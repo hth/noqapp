@@ -100,12 +100,12 @@ public class BizService {
         bizNameManager.deleteHard(bizName);
     }
 
-    public BizStoreEntity findMatchingStore(String address, String phone) {
-        return bizStoreManager.findMatchingStore(address, phone);
+    public BizStoreEntity findStoreByPhone(String phone) {
+        return bizStoreManager.findByPhone(phone);
     }
 
-    public BizNameEntity findMatchingBusiness(String name, String phone) {
-        return bizNameManager.findOneByNameAndPhone(name, phone);
+    public BizNameEntity findByPhone(String phone) {
+        return bizNameManager.findByPhone(phone);
     }
 
     public BizStoreEntity findOneBizStore(String bizNameId) {
