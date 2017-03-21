@@ -3,6 +3,7 @@ package com.token.domain.flow;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.util.Assert;
 
 import com.token.domain.BusinessUserEntity;
 import com.token.domain.types.BusinessTypeEnum;
@@ -89,11 +90,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public String getPhoneWithCountryCode() {
+        Assert.notNull(countryShortName, "Country code cannot be null");
         if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(countryShortName)) {
             return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName);
         }
 
-        return phone;
+        return null;
     }
 
     public void setPhone(String phone) {
@@ -175,11 +177,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public String getPhoneStoreWithCountryCode() {
+        Assert.notNull(countryShortNameStore, "Country code cannot be null");
         if (StringUtils.isNotBlank(phoneStore) && StringUtils.isNotBlank(countryShortNameStore)) {
             return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phoneStore), countryShortNameStore);
         }
 
-        return phoneStore;
+        return null;
     }
 
     public String getCountryShortNameStore() {

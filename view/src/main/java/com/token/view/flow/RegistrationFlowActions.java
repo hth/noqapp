@@ -57,11 +57,10 @@ class RegistrationFlowActions {
     }
 
     BizNameEntity registerBusinessDetails(Register register) {
-
         RegisterBusiness registerBusiness = register.getRegisterBusiness();
         BizNameEntity bizName = bizService.findMatchingBusiness(
                 registerBusiness.getName(),
-                registerBusiness.getPhoneNotFormatted());
+                registerBusiness.getPhoneWithCountryCode());
 
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
@@ -98,7 +97,7 @@ class RegistrationFlowActions {
                 //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
                 validateAddress(bizStore);
                 bizService.saveStore(bizStore);
-                /* Since missing id. */
+                /* Add timezone later as its missing id. */
                 addTimezone(bizStore);
             }
         }
