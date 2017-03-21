@@ -12,7 +12,6 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
-import com.token.domain.BizNameEntity;
 import com.token.domain.flow.Register;
 import com.token.domain.flow.RegisterBusiness;
 import com.token.domain.shared.DecodedAddress;
@@ -103,9 +102,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (bizService.findMatchingBusiness(
-                registerBusiness.getName(),
-                registerBusiness.getPhoneWithCountryCode()) != null) {
+        if (bizService.findByPhone(registerBusiness.getPhoneWithCountryCode()) != null) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -144,6 +141,18 @@ public class BusinessFlowValidator {
                                 .error()
                                 .source("registerBusiness.phoneStore")
                                 .defaultText("Store Phone cannot be empty")
+                                .build());
+                status = "failure";
+            }
+
+            if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.phoneStore")
+                                .defaultText("Store already registered with this phone number '"
+                                        + registerBusiness.getPhone()
+                                        + "'. Try recovery of you account using OTP or contact customer support")
                                 .build());
                 status = "failure";
             }
