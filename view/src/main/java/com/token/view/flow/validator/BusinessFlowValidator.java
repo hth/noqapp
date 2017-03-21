@@ -12,8 +12,11 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
+import com.token.domain.BizNameEntity;
 import com.token.domain.flow.Register;
+import com.token.domain.flow.RegisterBusiness;
 import com.token.domain.shared.DecodedAddress;
+import com.token.service.BizService;
 import com.token.service.ExternalService;
 import com.token.utils.CommonUtil;
 
@@ -26,10 +29,15 @@ public class BusinessFlowValidator {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessFlowValidator.class);
 
     private ExternalService externalService;
+    private BizService bizService;
 
     @Autowired
-    public BusinessFlowValidator(ExternalService externalService) {
+    public BusinessFlowValidator(
+            ExternalService externalService,
+            BizService bizService
+    ) {
         this.externalService = externalService;
+        this.bizService = bizService;
     }
 
     /**
@@ -44,17 +52,18 @@ public class BusinessFlowValidator {
         LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
         String status = "success";
 
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getAddress()), register.getRegisterBusiness().getAddress());
+        final RegisterBusiness registerBusiness = register.getRegisterBusiness();
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(registerBusiness.getAddress()), registerBusiness.getAddress());
         if (decodedAddress.isNotEmpty()) {
-            register.getRegisterBusiness().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
+            registerBusiness.setAddress(decodedAddress.getFormattedAddress());
+            registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
 
             LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
             String timeZone = externalService.findTimeZone(latLng);
-            register.getRegisterBusiness().setTimeZone(timeZone);
+            registerBusiness.setTimeZone(timeZone);
         }
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getName())) {
+        if (StringUtils.isBlank(registerBusiness.getName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -64,7 +73,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (null == register.getRegisterBusiness().getBusinessTypes()) {
+        if (null == registerBusiness.getBusinessTypes()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -74,7 +83,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getAddress())) {
+        if (StringUtils.isBlank(registerBusiness.getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -84,7 +93,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getPhoneNotFormatted())) {
+        if (StringUtils.isBlank(registerBusiness.getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -94,8 +103,22 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (!register.getRegisterBusiness().isMultiStore()) {
-            if (StringUtils.isBlank(register.getRegisterBusiness().getDisplayName())) {
+        if (bizService.findMatchingBusiness(
+                registerBusiness.getName(),
+                registerBusiness.getPhoneWithCountryCode()) != null) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.phone")
+                            .defaultText("Business already registered with this phone number '"
+                                    + registerBusiness.getPhone()
+                                    + "'. Try recovery of you account using OTP or contact customer support")
+                            .build());
+            status = "failure";
+        }
+
+        if (!registerBusiness.isMultiStore()) {
+            if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -105,7 +128,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (StringUtils.isBlank(register.getRegisterBusiness().getAddressStore())) {
+            if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -115,7 +138,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (StringUtils.isBlank(register.getRegisterBusiness().getPhoneStoreNotFormatted())) {
+            if (StringUtils.isBlank(registerBusiness.getPhoneStoreNotFormatted())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -125,7 +148,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (register.getRegisterBusiness().getStartHourStore() == 0) {
+            if (registerBusiness.getStartHourStore() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -135,7 +158,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (register.getRegisterBusiness().getEndHourStore() == 0) {
+            if (registerBusiness.getEndHourStore() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -145,7 +168,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (register.getRegisterBusiness().getTokenAvailableFrom() == 0) {
+            if (registerBusiness.getTokenAvailableFrom() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()

@@ -3,6 +3,7 @@ package com.token.domain.flow;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.util.Assert;
 
 import com.token.utils.Formatter;
 
@@ -133,6 +134,7 @@ public class RegisterUser implements Serializable {
 
     @Transient
     public String getPhoneWithCountryCode() {
+        Assert.notNull(countryShortName, "Country code cannot be null");
         if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(countryShortName)) {
             return Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName);
         }
