@@ -421,26 +421,39 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/ccab5346d4ef81de1db52849fc904b625f95c7ed/spring-data-mongodb-1.10.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7da4a8f70af30e0eee5bfa943b550e7d1cc5208a/spring-data-mongodb-1.10.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/b030a853a119da9f312d550d21df05a9d8360c09/spring-data-mongodb-1.10.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/9bd46ce22dd8393c0499cedb8c48f694130b191b/spring-data-mongodb-1.10.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/6c9988ceca272f89a4b7588511c7271ede3f6a4e/spring-data-mongodb-1.10.0.RELEASE-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7f0ae60b5a211b9575a57d74f481dbb628f10607/spring-data-mongodb-1.10.1.RELEASE-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/cc204fde3e80dc4417bcba5e4b22dae8c7647cb6/mongo-java-driver-3.4.1.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/4e4257f2eb3f191613b4b000d43e8d0c3ff4457e/spring-data-commons-1.13.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/e633f79a3ae746aeb2dbfa779945e00e471e2ff3/mongo-java-driver-3.4.1-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/b42783b73b6b26c2f18fb62c41e78a4248f940b5/spring-data-commons-1.13.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/b0e8dd9ca0431b17f1350e96d17b66cf6516a9b9/mongo-java-driver-3.4.1-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/322a1d35f7aec991da348d643590e2d9be4c9fc8/spring-data-commons-1.13.1.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/5d0448606f5f7f3974dbae69c4ccfffe214ae60d/mongo-java-driver-3.4.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/8001495ddb9be7bcc219c4d28c2d135f7c4c38e/mongo-java-driver-3.4.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/b354296d5d0869b84f7ea6850faf7d76c04e8e26/mongo-java-driver-3.4.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -627,19 +640,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/a1c83373863cec7ae8d89dc1c5722d8cb6ec0309/slf4j-api-1.7.22.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/d6848073152a0d251419abd9a170da96b3cd5cc2/slf4j-api-1.7.22-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/2b9722cdf33bd0b1d1639a98034dde38b156ad34/slf4j-api-1.7.22-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3616bb87707910296e2c195dc016287080bba5af/jboss-logging-3.3.0.Final.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -647,6 +647,30 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3625e6818158ddb4754fa2ec51299e5f57e596b4/jboss-logging-3.3.0.Final-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -679,6 +703,19 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -705,13 +742,13 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/ce021971974ee6a26572e43eaba7edf184c3c63d/libphonenumber-8.0.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/f457d4456f20f20bed793163f917d898f21c7e34/libphonenumber-8.3.3.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/4c2fd4d7ef3220370640d9522c3326338781ddd2/libphonenumber-8.0.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/d1c199e63a14e81ea8e7ecf0389f71d1d2943d88/libphonenumber-8.3.3-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/32a32701ce147f79e19674c059c6159f8cd37bee/libphonenumber-8.0.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/2a6a1aa974c52d84601dbd30bf632fb11ab3cea3/libphonenumber-8.3.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -1017,13 +1054,13 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/d976e799628972cb4f3cc4c3cbe63bbfed1a17e2/javamelody-core-1.65.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/f1f94cdc2a64e7a7e3fcdf1768318c8d55726498/javamelody-core-1.63.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/27e681c71733282e12d127d0d6f0fa89123cf5c/javamelody-core-1.65.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/67b9b2358d9591978fdad2f1f9e2d3adb82ef43c/javamelody-core-1.63.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/9675c654fa6ab689422b73e1745f7a114f3b05b5/javamelody-core-1.65.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -1095,13 +1132,13 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/86ceac14535af5a42c8fb0d06d79b925dd3cb263/jcl-over-slf4j-1.7.22.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/e6a8629079856a2aa7862c6327ccf6dd1988d7fc/jcl-over-slf4j-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/26367ff339fbd003b7f4771ece328478d5fb8e77/jcl-over-slf4j-1.7.22-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/46e765292dadf56531c7388e623f4c6f58095465/jcl-over-slf4j-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/b03a290ee39cf7c2eed57a73402ce25d9f76ff00/jcl-over-slf4j-1.7.22-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/4bdf69b0b7d3553dfe144e9d74cd256b79e5d4d4/jcl-over-slf4j-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -1321,6 +1358,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.11.0/46bdbd0e079883accbf581986e7f8f0d999a2637/okio-1.11.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -1960,30 +2010,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.3.5.RELEASE/7c09e38b6f6e0b178973dea06bb8fdc6d19aa596/spring-jdbc-4.3.5.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -2421,19 +2447,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.21.0/61ec42bbfc51aafde5eb8b4923c602c5b5965bc2/google-oauth-client-1.21.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -2547,26 +2560,13 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/4472200cf3fca46e12612e548c4a52a531edf10b/spring-data-commons-1.13.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/3f6b4bd4f8dbe8d4bea06d107a3826469b85c3e9/slf4j-api-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/f30b899876f614eeee18b1da66ea6e379e804496/spring-data-commons-1.13.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/cfb26c12340ab1f9fe28a2ee6dbf77de3cc34bc3/slf4j-api-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/323bbf6e092205e8e46cfc70a9c9c2df29f0009b/spring-data-commons-1.13.0.RELEASE-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/9f1cecd7c757ad5dde29453d43315228bb0a7c7e/slf4j-api-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -2991,26 +2991,39 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/ccab5346d4ef81de1db52849fc904b625f95c7ed/spring-data-mongodb-1.10.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7da4a8f70af30e0eee5bfa943b550e7d1cc5208a/spring-data-mongodb-1.10.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/b030a853a119da9f312d550d21df05a9d8360c09/spring-data-mongodb-1.10.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/9bd46ce22dd8393c0499cedb8c48f694130b191b/spring-data-mongodb-1.10.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/6c9988ceca272f89a4b7588511c7271ede3f6a4e/spring-data-mongodb-1.10.0.RELEASE-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7f0ae60b5a211b9575a57d74f481dbb628f10607/spring-data-mongodb-1.10.1.RELEASE-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/cc204fde3e80dc4417bcba5e4b22dae8c7647cb6/mongo-java-driver-3.4.1.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/4e4257f2eb3f191613b4b000d43e8d0c3ff4457e/spring-data-commons-1.13.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/e633f79a3ae746aeb2dbfa779945e00e471e2ff3/mongo-java-driver-3.4.1-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/b42783b73b6b26c2f18fb62c41e78a4248f940b5/spring-data-commons-1.13.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/b0e8dd9ca0431b17f1350e96d17b66cf6516a9b9/mongo-java-driver-3.4.1-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/322a1d35f7aec991da348d643590e2d9be4c9fc8/spring-data-commons-1.13.1.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/5d0448606f5f7f3974dbae69c4ccfffe214ae60d/mongo-java-driver-3.4.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/8001495ddb9be7bcc219c4d28c2d135f7c4c38e/mongo-java-driver-3.4.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/b354296d5d0869b84f7ea6850faf7d76c04e8e26/mongo-java-driver-3.4.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3197,19 +3210,6 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/a1c83373863cec7ae8d89dc1c5722d8cb6ec0309/slf4j-api-1.7.22.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/d6848073152a0d251419abd9a170da96b3cd5cc2/slf4j-api-1.7.22-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/2b9722cdf33bd0b1d1639a98034dde38b156ad34/slf4j-api-1.7.22-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3616bb87707910296e2c195dc016287080bba5af/jboss-logging-3.3.0.Final.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -3217,6 +3217,30 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3625e6818158ddb4754fa2ec51299e5f57e596b4/jboss-logging-3.3.0.Final-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3249,6 +3273,19 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -3275,13 +3312,13 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/ce021971974ee6a26572e43eaba7edf184c3c63d/libphonenumber-8.0.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/f457d4456f20f20bed793163f917d898f21c7e34/libphonenumber-8.3.3.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/4c2fd4d7ef3220370640d9522c3326338781ddd2/libphonenumber-8.0.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/d1c199e63a14e81ea8e7ecf0389f71d1d2943d88/libphonenumber-8.3.3-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/32a32701ce147f79e19674c059c6159f8cd37bee/libphonenumber-8.0.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/2a6a1aa974c52d84601dbd30bf632fb11ab3cea3/libphonenumber-8.3.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3587,13 +3624,13 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/d976e799628972cb4f3cc4c3cbe63bbfed1a17e2/javamelody-core-1.65.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/f1f94cdc2a64e7a7e3fcdf1768318c8d55726498/javamelody-core-1.63.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/27e681c71733282e12d127d0d6f0fa89123cf5c/javamelody-core-1.65.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/67b9b2358d9591978fdad2f1f9e2d3adb82ef43c/javamelody-core-1.63.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/9675c654fa6ab689422b73e1745f7a114f3b05b5/javamelody-core-1.65.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3663,13 +3700,13 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/86ceac14535af5a42c8fb0d06d79b925dd3cb263/jcl-over-slf4j-1.7.22.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/e6a8629079856a2aa7862c6327ccf6dd1988d7fc/jcl-over-slf4j-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/26367ff339fbd003b7f4771ece328478d5fb8e77/jcl-over-slf4j-1.7.22-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/46e765292dadf56531c7388e623f4c6f58095465/jcl-over-slf4j-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/b03a290ee39cf7c2eed57a73402ce25d9f76ff00/jcl-over-slf4j-1.7.22-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/4bdf69b0b7d3553dfe144e9d74cd256b79e5d4d4/jcl-over-slf4j-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3889,6 +3926,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.11.0/46bdbd0e079883accbf581986e7f8f0d999a2637/okio-1.11.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -4511,30 +4561,6 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -4978,19 +5004,6 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.21.0/61ec42bbfc51aafde5eb8b4923c602c5b5965bc2/google-oauth-client-1.21.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -5104,26 +5117,13 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/4472200cf3fca46e12612e548c4a52a531edf10b/spring-data-commons-1.13.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/3f6b4bd4f8dbe8d4bea06d107a3826469b85c3e9/slf4j-api-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/f30b899876f614eeee18b1da66ea6e379e804496/spring-data-commons-1.13.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/cfb26c12340ab1f9fe28a2ee6dbf77de3cc34bc3/slf4j-api-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/323bbf6e092205e8e46cfc70a9c9c2df29f0009b/spring-data-commons-1.13.0.RELEASE-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/9f1cecd7c757ad5dde29453d43315228bb0a7c7e/slf4j-api-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -5548,26 +5548,39 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/ccab5346d4ef81de1db52849fc904b625f95c7ed/spring-data-mongodb-1.10.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7da4a8f70af30e0eee5bfa943b550e7d1cc5208a/spring-data-mongodb-1.10.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/b030a853a119da9f312d550d21df05a9d8360c09/spring-data-mongodb-1.10.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/9bd46ce22dd8393c0499cedb8c48f694130b191b/spring-data-mongodb-1.10.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.0.RELEASE/6c9988ceca272f89a4b7588511c7271ede3f6a4e/spring-data-mongodb-1.10.0.RELEASE-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/1.10.1.RELEASE/7f0ae60b5a211b9575a57d74f481dbb628f10607/spring-data-mongodb-1.10.1.RELEASE-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/cc204fde3e80dc4417bcba5e4b22dae8c7647cb6/mongo-java-driver-3.4.1.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/4e4257f2eb3f191613b4b000d43e8d0c3ff4457e/spring-data-commons-1.13.1.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/e633f79a3ae746aeb2dbfa779945e00e471e2ff3/mongo-java-driver-3.4.1-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/b42783b73b6b26c2f18fb62c41e78a4248f940b5/spring-data-commons-1.13.1.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.1/b0e8dd9ca0431b17f1350e96d17b66cf6516a9b9/mongo-java-driver-3.4.1-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.1.RELEASE/322a1d35f7aec991da348d643590e2d9be4c9fc8/spring-data-commons-1.13.1.RELEASE-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/5d0448606f5f7f3974dbae69c4ccfffe214ae60d/mongo-java-driver-3.4.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/8001495ddb9be7bcc219c4d28c2d135f7c4c38e/mongo-java-driver-3.4.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.4.2/b354296d5d0869b84f7ea6850faf7d76c04e8e26/mongo-java-driver-3.4.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -5754,19 +5767,6 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/a1c83373863cec7ae8d89dc1c5722d8cb6ec0309/slf4j-api-1.7.22.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/d6848073152a0d251419abd9a170da96b3cd5cc2/slf4j-api-1.7.22-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.22/2b9722cdf33bd0b1d1639a98034dde38b156ad34/slf4j-api-1.7.22-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3616bb87707910296e2c195dc016287080bba5af/jboss-logging-3.3.0.Final.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -5774,6 +5774,30 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.0.Final/3625e6818158ddb4754fa2ec51299e5f57e596b4/jboss-logging-3.3.0.Final-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -5806,6 +5830,19 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -5832,13 +5869,13 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/ce021971974ee6a26572e43eaba7edf184c3c63d/libphonenumber-8.0.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/f457d4456f20f20bed793163f917d898f21c7e34/libphonenumber-8.3.3.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/4c2fd4d7ef3220370640d9522c3326338781ddd2/libphonenumber-8.0.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/d1c199e63a14e81ea8e7ecf0389f71d1d2943d88/libphonenumber-8.3.3-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.0.0/32a32701ce147f79e19674c059c6159f8cd37bee/libphonenumber-8.0.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.3.3/2a6a1aa974c52d84601dbd30bf632fb11ab3cea3/libphonenumber-8.3.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -6144,13 +6181,13 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/d976e799628972cb4f3cc4c3cbe63bbfed1a17e2/javamelody-core-1.65.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/f1f94cdc2a64e7a7e3fcdf1768318c8d55726498/javamelody-core-1.63.0-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/27e681c71733282e12d127d0d6f0fa89123cf5c/javamelody-core-1.65.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/67b9b2358d9591978fdad2f1f9e2d3adb82ef43c/javamelody-core-1.63.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.65.0/9675c654fa6ab689422b73e1745f7a114f3b05b5/javamelody-core-1.65.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -6248,13 +6285,13 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/86ceac14535af5a42c8fb0d06d79b925dd3cb263/jcl-over-slf4j-1.7.22.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/e6a8629079856a2aa7862c6327ccf6dd1988d7fc/jcl-over-slf4j-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/26367ff339fbd003b7f4771ece328478d5fb8e77/jcl-over-slf4j-1.7.22-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/46e765292dadf56531c7388e623f4c6f58095465/jcl-over-slf4j-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.22/b03a290ee39cf7c2eed57a73402ce25d9f76ff00/jcl-over-slf4j-1.7.22-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/4bdf69b0b7d3553dfe144e9d74cd256b79e5d4d4/jcl-over-slf4j-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -6474,6 +6511,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.11.0/46bdbd0e079883accbf581986e7f8f0d999a2637/okio-1.11.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -7107,30 +7157,6 @@
         <JAVADOC/>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/2f5877ef15adb721421e80f5aa2b6fe069eec8ed/jstl-1.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/95baa522c5ae4dbff61e8ebd1b2578665d6853a0/mysql-connector-java-5.1.31.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/30be73c965cc990b153a100aaaaafcf239f82d39/commons-dbcp-1.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/98bf7c8d5b026f6e3969259a36e813ac37432b3/commons-dbcp-1.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -7587,19 +7613,6 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/75b6e20c596ed2945a259cea26d7fadd298398e6/commons-pool-1.5.4.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/4710cbbd141a42705af9b8831d7176b434630a6c/commons-pool-1.5.4-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/4.0.0/deb6bf66918989b50209b8c9aaf3b2561af7f011/jna-platform-4.0.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -7726,26 +7739,13 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/4472200cf3fca46e12612e548c4a52a531edf10b/spring-data-commons-1.13.0.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/3f6b4bd4f8dbe8d4bea06d107a3826469b85c3e9/slf4j-api-1.7.24.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/f30b899876f614eeee18b1da66ea6e379e804496/spring-data-commons-1.13.0.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/cfb26c12340ab1f9fe28a2ee6dbf77de3cc34bc3/slf4j-api-1.7.24-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/1.13.0.RELEASE/323bbf6e092205e8e46cfc70a9c9c2df29f0009b/spring-data-commons-1.13.0.RELEASE-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.24/9f1cecd7c757ad5dde29453d43315228bb0a7c7e/slf4j-api-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
