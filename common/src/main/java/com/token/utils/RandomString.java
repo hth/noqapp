@@ -70,6 +70,6 @@ public final class RandomString {
     }
 
     public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
-        return generateEmailAddress(firstName, lastName, rid) + "@receiptofi.com";
+        return generateEmailAddress(firstName, lastName, rid) + "@mail.noqapp.com";
     }
 }
