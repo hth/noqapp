@@ -58,12 +58,15 @@ public class ExternalService {
     public ExternalService(
             @Value ("${google-server-api-key}")
             String googleServerApiKey,
+            
+            @Value("${google-api-max-retries}")
+            int maxRetries,        
 
             BizStoreManager bizStoreManager
     ) {
         this.context = new GeoApiContext()
                 .setApiKey(googleServerApiKey)
-                .setMaxRetries(3)
+                .setMaxRetries(maxRetries)
                 .disableRetries();
 
         this.bizStoreManager = bizStoreManager;

@@ -52,15 +52,6 @@ public class BusinessFlowValidator {
         String status = "success";
 
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(registerBusiness.getAddress()), registerBusiness.getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            registerBusiness.setAddress(decodedAddress.getFormattedAddress());
-            registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
-
-            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-            String timeZone = externalService.findTimeZone(latLng);
-            registerBusiness.setTimeZone(timeZone);
-        }
 
         if (StringUtils.isBlank(registerBusiness.getName())) {
             messageContext.addMessage(
@@ -82,7 +73,20 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(registerBusiness.getAddress())) {
+        if (StringUtils.isNotBlank(registerBusiness.getAddress())) {
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(
+                    externalService.getGeocodingResults(registerBusiness.getAddress()),
+                    registerBusiness.getAddress());
+            
+            if (decodedAddress.isNotEmpty()) {
+                registerBusiness.setAddress(decodedAddress.getFormattedAddress());
+                registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
+
+                LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                String timeZone = externalService.findTimeZone(latLng);
+                registerBusiness.setTimeZone(timeZone);
+            }
+        } else {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -102,19 +106,21 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (bizService.findByPhone(registerBusiness.getPhoneWithCountryCode()) != null) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerBusiness.phone")
-                            .defaultText("Business already registered with this phone number '"
-                                    + registerBusiness.getPhone()
-                                    + "'. Try recovery of you account using OTP or contact customer support")
-                            .build());
-            status = "failure";
-        }
-
+        /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
+            DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
+                    externalService.getGeocodingResults(registerBusiness.getAddressStore()),
+                    registerBusiness.getAddressStore());
+
+            if (decodedAddressStore.isNotEmpty()) {
+                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
+                registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
+
+                LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
+                String timeZone = externalService.findTimeZone(latLng);
+                registerBusiness.setTimeZoneStore(timeZone);
+            }
+
             if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
                 messageContext.addMessage(
                         new MessageBuilder()

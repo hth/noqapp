@@ -163,6 +163,7 @@ public class UserProfileEntity extends BaseEntity {
     private String countryShortName;
 
     /* Phone number saved with country code. */
+    @NotNull
     @Field ("PH")
     private String phone;
 
