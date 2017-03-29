@@ -120,12 +120,16 @@ public class AccountRegistrationController {
 
         UserAccountEntity userAccount;
         try {
-            userAccount = accountService.createNewMerchantAccount(
-                    merchantRegistrationForm.getMail(),
+            userAccount = accountService.createNewClientAccount(
+                    merchantRegistrationForm.getPhone(),
                     merchantRegistrationForm.getFirstName(),
                     merchantRegistrationForm.getLastName(),
-                    merchantRegistrationForm.getPassword(),
-                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(merchantRegistrationForm.getBirthday()) : "");
+                    merchantRegistrationForm.getMail(),
+                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(merchantRegistrationForm.getBirthday()) : "",
+                    merchantRegistrationForm.getGender(),
+                    merchantRegistrationForm.getCountryShortName(),
+                    merchantRegistrationForm.getTimeZone(),
+                    merchantRegistrationForm.getPassword());
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
             return registrationPage;

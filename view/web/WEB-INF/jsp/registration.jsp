@@ -82,27 +82,47 @@
                     <legend>Merchant Registration</legend>
 
                     <div class="icon">
-                        <form:label for="firstName" path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
+                        <form:label path="phone" cssClass="cd-label">Phone:</form:label>
+                        <form:input path="phone" cssClass="user" required="required" cssErrorClass="user error" />
+                    </div>
+
+                    <div class="icon">
+                        <form:label path="countryShortName" cssClass="cd-label">Country:</form:label>
+                        <form:input path="countryShortName" cssClass="user" required="required" cssErrorClass="user error" />
+                    </div>
+
+                    <div class="icon">
+                        <form:label path="timeZone" cssClass="cd-label">TimeZone:</form:label>
+                        <form:input path="timeZone" cssClass="user" required="required" cssErrorClass="user error" />
+                    </div>
+
+                    <div class="icon">
+                        <form:label path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
                         <form:input path="firstName" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="lastName" path="lastName" cssClass="cd-label">And last name is:</form:label>
+                        <form:label path="lastName" cssClass="cd-label">And last name is:</form:label>
                         <form:input path="lastName" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="birthday" path="birthday" cssClass="cd-label">How old are you?</form:label>
+                        <form:label path="birthday" cssClass="cd-label">How old are you?</form:label>
                         <form:input path="birthday" cssClass="user" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="mail" path="mail" cssClass="cd-label">Valid email as your login:</form:label>
+                        <form:label path="gender" cssClass="cd-label">Gender?</form:label>
+                        <form:input path="gender" cssClass="user" cssErrorClass="user error" />
+                    </div>
+
+                    <div class="icon">
+                        <form:label path="mail" cssClass="cd-label">Valid email as your login:</form:label>
                         <form:input path="mail" cssClass="email" required="required" type="email" cssErrorClass="email error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="password" path="password" cssClass="cd-label">Password:</form:label>
+                        <form:label path="password" cssClass="cd-label">Password:</form:label>
                         <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                     </div>
                 </fieldset>

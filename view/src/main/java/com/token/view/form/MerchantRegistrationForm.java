@@ -14,10 +14,14 @@ import org.apache.commons.lang3.StringUtils;
 })
 public final class MerchantRegistrationForm {
 
+    private String phone;
     private String firstName;
     private String lastName;
     private String mail;
     private String birthday;
+    private String gender;
+    private String countryShortName;
+    private String timeZone;
     private String password;
     private boolean accountExists;
     private boolean acceptsAgreement;
@@ -27,6 +31,14 @@ public final class MerchantRegistrationForm {
 
     public static MerchantRegistrationForm newInstance() {
         return new MerchantRegistrationForm();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getFirstName() {
@@ -64,6 +76,30 @@ public final class MerchantRegistrationForm {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     public String getPassword() {
