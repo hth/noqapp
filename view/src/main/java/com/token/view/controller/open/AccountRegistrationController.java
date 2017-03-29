@@ -120,7 +120,7 @@ public class AccountRegistrationController {
 
         UserAccountEntity userAccount;
         try {
-            userAccount = accountService.createNewClientAccount(
+            userAccount = accountService.createNewAccount(
                     merchantRegistrationForm.getPhone(),
                     merchantRegistrationForm.getFirstName(),
                     merchantRegistrationForm.getLastName(),

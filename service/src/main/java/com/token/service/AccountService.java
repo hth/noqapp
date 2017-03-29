@@ -116,7 +116,7 @@ public class AccountService {
     }
 
     /**
-     * Creates new user account. There are some rollback but this process should not fail.
+     * Creates new user for client or merchant account. There are some rollback but this process should not fail.
      *
      * @param mail
      * @param firstName
@@ -126,7 +126,7 @@ public class AccountService {
      * @return
      */
     @Mobile
-    public UserAccountEntity createNewClientAccount(
+    public UserAccountEntity createNewAccount(
             String phone,
             String firstName,
             String lastName,
