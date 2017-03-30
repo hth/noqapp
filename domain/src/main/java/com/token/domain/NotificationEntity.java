@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "NOTIFICATION")
-/** Updated index. */
 @CompoundIndexes (value = {
         @CompoundIndex (name = "notification_idx", def = "{'C': -1, 'RID': 1}", background = true),
         @CompoundIndex (name = "notification_rid_idx", def = "{'RID': 1}", background = true)

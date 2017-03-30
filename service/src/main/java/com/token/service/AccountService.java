@@ -125,7 +125,6 @@ public class AccountService {
      * @param birthday
      * @return
      */
-    @Mobile
     public UserAccountEntity createNewAccount(
             String phone,
             String firstName,
