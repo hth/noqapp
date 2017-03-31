@@ -22,6 +22,8 @@ import com.token.domain.BaseEntity;
 import com.token.domain.InviteEntity;
 import com.token.domain.aggregate.SumRemoteScan;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 3/29/17 10:40 PM
@@ -72,6 +74,10 @@ public class InviteManagerImpl implements InviteManager {
 
         Aggregation aggregation = newAggregation(groupByStateAndSumPop, filterStates);
         AggregationResults<SumRemoteScan> result = mongoTemplate.aggregate(aggregation, TABLE, SumRemoteScan.class);
-        return result.getMappedResults().iterator().next().getSumOfRemoteScanAvailable();
+        List<SumRemoteScan> sumRemoteScans = result.getMappedResults();
+        if (sumRemoteScans.size() > 0) {
+            return sumRemoteScans.iterator().next().getRemoteScanForReceiptUserCount();
+        }
+        return 0;
     }
 }
