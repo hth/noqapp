@@ -3,7 +3,6 @@ package com.token.repository;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.aggregation.Fields.fields;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.InviteEntity;
-import com.token.domain.aggregate.SumRemoteScan;
+import com.token.domain.aggregate.GroupedValue;
 
 import java.util.List;
 
@@ -61,23 +60,29 @@ public class InviteManagerImpl implements InviteManager {
 
     @Override
     public int getRemoteScanCount(String rid) {
-        GroupOperation groupByStateAndSumPop = group(fields().and("RID").and("IID"))
-                .sum("RSR").as("remoteScanForReceiptUserCount")
-                .sum("RSI").as("remoteScanForInviterCount");
+        int sum = 0;
+        /* To group additional field add next to RID with comma separated like "RID", "XYZ" */
+        GroupOperation groupByStateAndSumPop = group("RID")
+                .sum("RSR").as("summation");
 
-        MatchOperation filterStates = match(
-                where("A").is(true).orOperator(
-                        where("RID").is(rid),
-                        where("IID").is(rid)
-                )
-        );
-
-        Aggregation aggregation = newAggregation(groupByStateAndSumPop, filterStates);
-        AggregationResults<SumRemoteScan> result = mongoTemplate.aggregate(aggregation, TABLE, SumRemoteScan.class);
-        List<SumRemoteScan> sumRemoteScans = result.getMappedResults();
-        if (sumRemoteScans.size() > 0) {
-            return sumRemoteScans.iterator().next().getRemoteScanForReceiptUserCount();
+        MatchOperation filterStates = match(where("A").is(true).and("RID").is(rid));
+        Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
+        AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
+        List<GroupedValue> groupedValues = result.getMappedResults();
+        if (groupedValues.size() > 0) {
+            sum = groupedValues.iterator().next().getSummation();
         }
-        return 0;
+
+        groupByStateAndSumPop = group("IID")
+                .sum("RSI").as("summation");
+
+        filterStates = match(where("A").is(true).and("IID").is(rid));
+        aggregation = newAggregation(filterStates, groupByStateAndSumPop);
+        result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
+        groupedValues = result.getMappedResults();
+        if (groupedValues.size() > 0) {
+            sum += groupedValues.iterator().next().getSummation();
+        }
+        return sum;
     }
 }
