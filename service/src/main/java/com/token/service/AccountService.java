@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.token.domain.EmailValidateEntity;
+import com.token.domain.InviteEntity;
 import com.token.domain.UserAccountEntity;
 import com.token.domain.UserAuthenticationEntity;
 import com.token.domain.UserPreferenceEntity;
@@ -55,6 +56,7 @@ public class AccountService {
     private GenerateUserIdService generateUserIdService;
     private NotificationService notificationService;
     private EmailValidateService emailValidateService;
+    private InviteService inviteService;
 
     @Autowired
     public AccountService(
@@ -64,7 +66,9 @@ public class AccountService {
             UserProfileManager userProfileManager,
             GenerateUserIdService generateUserIdService,
             NotificationService notificationService,
-            EmailValidateService emailValidateService) {
+            EmailValidateService emailValidateService,
+            InviteService inviteService
+    ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
@@ -72,6 +76,7 @@ public class AccountService {
         this.generateUserIdService = generateUserIdService;
         this.notificationService = notificationService;
         this.emailValidateService = emailValidateService;
+        this.inviteService = inviteService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -117,12 +122,17 @@ public class AccountService {
 
     /**
      * Creates new user for client or merchant account. There are some rollback but this process should not fail.
-     *
-     * @param mail
+     * 
+     * @param phone
      * @param firstName
      * @param lastName
-     * @param password
+     * @param mail
      * @param birthday
+     * @param gender
+     * @param countryShortName
+     * @param timeZone
+     * @param password
+     * @param inviteCode
      * @return
      */
     public UserAccountEntity createNewAccount(
@@ -134,11 +144,12 @@ public class AccountService {
             String gender,
             String countryShortName,
             String timeZone,
-            String password
+            String password,
+            String inviteCode
     ) {
         String phoneRaw = Formatter.phoneCleanup(phone);
         String phoneWithCountryCode = Formatter.phoneNumberWithCountryCode(phoneRaw, countryShortName);
-        if (userProfileManager.findOneByPhone(phoneWithCountryCode) == null) {
+        if (null == userProfileManager.findOneByPhone(phoneWithCountryCode)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
 
@@ -176,6 +187,11 @@ public class AccountService {
                 userProfile.setGender(gender);
                 userProfile.setCountryShortName(countryShortName);
                 userProfile.setTimeZone(timeZone);
+                String generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, rid);
+                while (userProfileManager.inviteCodeExists(generatedInviteCode) != null) {
+                    generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, rid);
+                }
+                userProfile.setInviteCode(generatedInviteCode);
                 userProfileManager.save(userProfile);
             } catch (Exception e) {
                 LOG.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
@@ -190,6 +206,11 @@ public class AccountService {
 
             createPreferences(userProfile);
             addWelcomeNotification(userAccount);
+            if (StringUtils.isNotBlank(inviteCode)) {
+                UserProfileEntity userProfileOfInvitee = userProfileManager.inviteCodeExists(inviteCode);
+                InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getReceiptUserId(), inviteCode);
+                inviteService.save(invite);
+            }
             return userAccount;
         } else {
             LOG.error("Account creation failed as it already exists for phone={}", phoneWithCountryCode);

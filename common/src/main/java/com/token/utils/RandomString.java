@@ -19,6 +19,7 @@ public final class RandomString {
     private static final int CHARACTER_SIZE = 32;
     private static final char[] SYMBOLS = new char[36];
     private static final String RID_SHORTEN = "^10+(?!$)";
+    private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
 
     static {
         for (int idx = 0; idx < 10; ++idx) {
@@ -71,5 +72,12 @@ public final class RandomString {
 
     public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
         return generateEmailAddress(firstName, lastName, rid) + "@mail.noqapp.com";
+    }
+
+    public static String generateInviteCode(String firstName, String lastName, String rid) {
+        if (StringUtils.isBlank(lastName)) {
+            return StringUtils.lowerCase(firstName + rid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+        }
+        return StringUtils.lowerCase(firstName + lastName + rid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
     }
 }

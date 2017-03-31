@@ -38,7 +38,7 @@ public class AccountServiceTest {
                 userProfileManager,
                 generateUserIdService,
                 notificationService,
-                emailValidateService);
+                emailValidateService, inviteService);
     }
 
     @Test

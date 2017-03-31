@@ -224,4 +224,14 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE
         );
     }
+
+    @Override
+    public UserProfileEntity inviteCodeExists(String inviteCode) {
+        Assert.hasLength(inviteCode, "Invite code cannot be empty");
+        return mongoTemplate.findOne(
+                query(where("IC").is(inviteCode)),
+                UserProfileEntity.class,
+                TABLE
+        );
+    }
 }

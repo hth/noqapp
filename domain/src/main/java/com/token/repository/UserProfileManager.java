@@ -50,4 +50,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     @Mobile
     void updateCountryShortName(String country, String rid);
+
+    UserProfileEntity inviteCodeExists(String inviteCode);
 }

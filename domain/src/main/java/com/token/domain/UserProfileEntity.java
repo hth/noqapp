@@ -39,6 +39,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "user_profile_rid_puid_pid_em_idx", def = "{'RID': -1, 'PUID': -1, 'PID': 1, 'EM' : 1}", unique = true),
         @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
         @CompoundIndex (name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
+        @CompoundIndex (name = "user_profile_ic_idx", def = "{'IC': 1}", unique = true),
 })
 public class UserProfileEntity extends BaseEntity {
 
@@ -170,6 +171,10 @@ public class UserProfileEntity extends BaseEntity {
     /* To not loose user entered phone number. */
     @Field ("PR")
     private String phoneRaw;
+
+    @NotNull
+    @Field ("IC")
+    private String inviteCode;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -552,5 +557,13 @@ public class UserProfileEntity extends BaseEntity {
         } else {
             return WordUtils.initials(getEmail()) + "@";
         }
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }
