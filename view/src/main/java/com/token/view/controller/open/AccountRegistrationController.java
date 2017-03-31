@@ -117,7 +117,7 @@ public class AccountRegistrationController {
             merchantRegistrationForm.setAccountExists(true);
             return registrationPage;
         }
-
+                                                               
         UserAccountEntity userAccount;
         try {
             userAccount = accountService.createNewAccount(
@@ -129,7 +129,8 @@ public class AccountRegistrationController {
                     merchantRegistrationForm.getGender(),
                     merchantRegistrationForm.getCountryShortName(),
                     merchantRegistrationForm.getTimeZone(),
-                    merchantRegistrationForm.getPassword());
+                    merchantRegistrationForm.getPassword(),
+                    null);
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
             return registrationPage;
