@@ -25,6 +25,7 @@ public class AccountServiceTest {
     @Mock private GenerateUserIdService generateUserIdService;
     @Mock private NotificationService notificationService;
     @Mock private EmailValidateService emailValidateService;
+    @Mock private InviteService inviteService;
 
     private AccountService accountService;
 
@@ -38,7 +39,8 @@ public class AccountServiceTest {
                 userProfileManager,
                 generateUserIdService,
                 notificationService,
-                emailValidateService, inviteService);
+                emailValidateService,
+                inviteService);
     }
 
     @Test
