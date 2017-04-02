@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import org.junit.Assert;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -28,18 +30,20 @@ public class InviteEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
+    /* RSR maps to RID. */
     @NotNull
-    @Field ("IID")
-    private String inviterId;
+    @Field ("RSR")
+    private int remoteScanForReceiptUserCount = 2;
 
     @NotNull
     @Field ("IC")
     private String inviteeCode;
 
     @NotNull
-    @Field ("RSR")
-    private int remoteScanForReceiptUserCount = 2;
+    @Field ("IID")
+    private String inviterId;
 
+    /* IID maps to RSI. */
     @NotNull
     @Field ("RSI")
     private int remoteScanForInviterCount = 2;
@@ -58,12 +62,8 @@ public class InviteEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
     }
 
-    public String getInviterId() {
-        return inviterId;
-    }
-
-    public void setInviterId(String inviterId) {
-        this.inviterId = inviterId;
+    public int getRemoteScanForReceiptUserCount() {
+        return remoteScanForReceiptUserCount;
     }
 
     public String getInviteeCode() {
@@ -74,11 +74,25 @@ public class InviteEntity extends BaseEntity {
         this.inviteeCode = inviteeCode;
     }
 
-    public int getRemoteScanForReceiptUserCount() {
-        return remoteScanForReceiptUserCount;
+    public String getInviterId() {
+        return inviterId;
+    }
+
+    public void setInviterId(String inviterId) {
+        this.inviterId = inviterId;
     }
 
     public int getRemoteScanForInviterCount() {
         return remoteScanForInviterCount;
+    }
+
+    public void deductRemoteScanForReceiptUserCount() {
+        Assert.assertNotEquals(0, remoteScanForReceiptUserCount);
+        this.remoteScanForReceiptUserCount --;
+    }
+
+    public void deductRemoteScanForInviterCount() {
+        Assert.assertNotEquals(0, remoteScanForInviterCount);
+        this.remoteScanForInviterCount --;
     }
 }
