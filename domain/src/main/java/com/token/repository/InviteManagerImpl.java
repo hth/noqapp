@@ -4,6 +4,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.grou
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.token.domain.BaseEntity;
 import com.token.domain.InviteEntity;
@@ -60,29 +62,63 @@ public class InviteManagerImpl implements InviteManager {
 
     @Override
     public int getRemoteScanCount(String rid) {
+        Assert.hasLength(rid, "RID cannot be empty");
+
         int sum = 0;
+
         /* To group additional field add next to RID with comma separated like "RID", "XYZ" */
         GroupOperation groupByStateAndSumPop = group("RID")
                 .sum("RSR").as("summation");
 
-        MatchOperation filterStates = match(where("A").is(true).and("RID").is(rid));
+        MatchOperation filterStates = match(where("RID").is(rid).and("A").is(true));
         Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
         AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
         List<GroupedValue> groupedValues = result.getMappedResults();
-        if (groupedValues.size() > 0) {
+        if (0 < groupedValues.size()) {
             sum = groupedValues.iterator().next().getSummation();
         }
 
         groupByStateAndSumPop = group("IID")
                 .sum("RSI").as("summation");
 
-        filterStates = match(where("A").is(true).and("IID").is(rid));
+        filterStates = match(where("IID").is(rid).and("A").is(true));
         aggregation = newAggregation(filterStates, groupByStateAndSumPop);
         result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
         groupedValues = result.getMappedResults();
-        if (groupedValues.size() > 0) {
+        if (0 < groupedValues.size()) {
             sum += groupedValues.iterator().next().getSummation();
         }
+
         return sum;
+    }
+
+    public boolean deductRemoteScanCount(String rid) {
+        Assert.hasLength(rid, "RID cannot be empty");
+
+        InviteEntity invite = mongoTemplate.findOne(
+                query(where("A").is(true)
+                        .orOperator(
+                                where("RID").is(rid).and("RSR").gt(0),
+                                where("IID").is(rid).and("RSI").gt(0)
+                        )
+                ),
+                InviteEntity.class,
+                TABLE);
+
+        boolean updated = false;
+        if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
+            invite.deductRemoteScanForReceiptUserCount();
+            updated = true;
+        } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
+            invite.deductRemoteScanForInviterCount();
+            updated = true;
+        }
+
+        if (0 == invite.getRemoteScanForReceiptUserCount() && 0 == invite.getRemoteScanForInviterCount()) {
+            invite.inActive();
+        }
+
+        save(invite);
+        return updated;
     }
 }

@@ -8,5 +8,19 @@ import com.token.domain.InviteEntity;
  */
 public interface InviteManager extends RepositoryManager<InviteEntity> {
 
+    /**
+     * Lists total number of remote scan available.
+     *
+     * @param rid
+     * @return
+     */
     int getRemoteScanCount(String rid);
+
+    /**
+     * Deducts remote scan from available remote scans.
+     *
+     * @param rid
+     * @return
+     */
+    boolean deductRemoteScanCount(String rid);
 }

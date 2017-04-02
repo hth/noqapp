@@ -39,4 +39,9 @@ public class InviteService {
     public int getRemoteScanCount(String rid) {
         return inviteManager.getRemoteScanCount(rid);
     }
+
+    @Mobile
+    public boolean deductRemoteScanCount(String rid) {
+        return inviteManager.deductRemoteScanCount(rid);
+    }
 }
