@@ -82,7 +82,7 @@ public class AccountService {
     public UserProfileEntity doesUserExists(String mail) {
         return userProfileManager.findOneByMail(mail);
     }
-    
+
     public UserProfileEntity checkUserExistsByPhone(String phone, String countryShortName) {
         return userProfileManager.findOneByPhone(Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName));
     }
@@ -122,7 +122,7 @@ public class AccountService {
 
     /**
      * Creates new user for client or merchant account. There are some rollback but this process should not fail.
-     * 
+     *
      * @param phone
      * @param firstName
      * @param lastName
