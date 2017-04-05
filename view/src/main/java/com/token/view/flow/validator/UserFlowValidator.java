@@ -18,7 +18,7 @@ import com.token.domain.shared.DecodedAddress;
 import com.token.service.AccountService;
 import com.token.service.ExternalService;
 import com.token.utils.CommonUtil;
-import com.token.utils.Constants;
+import com.token.utils.DateUtil;
 import com.token.utils.Formatter;
 import com.token.utils.Validate;
 import com.token.view.controller.access.LandingController;
@@ -71,7 +71,7 @@ public class UserFlowValidator {
         LOG.info("Validate user profile signup rid={}", register.getRegisterUser().getRid());
         String status = validateUserProfileDetails(register, messageContext);
 
-        if (StringUtils.isNotBlank(register.getRegisterUser().getBirthday()) && !Constants.AGE_RANGE.matcher(register.getRegisterUser().getBirthday()).matches()) {
+        if (StringUtils.isNotBlank(register.getRegisterUser().getBirthday()) && !DateUtil.DOB_PATTERN.matcher(register.getRegisterUser().getBirthday()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

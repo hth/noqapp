@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * User: hitender
@@ -41,6 +42,7 @@ public final class DateUtil {
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final DateTimeFormatter DF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
+    public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{1,2}\\-\\d{1,2}\\-\\d{4}$");
 
     private DateUtil() {
     }

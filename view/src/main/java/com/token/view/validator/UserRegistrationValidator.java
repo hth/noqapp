@@ -11,7 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.token.utils.Constants;
+import com.token.utils.DateUtil;
 import com.token.utils.Validate;
 import com.token.view.form.MerchantRegistrationForm;
 
@@ -99,7 +99,7 @@ public class UserRegistrationValidator implements Validator {
                         "Minimum length of " + passwordLength + " characters");
             }
 
-            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(userRegistration.getBirthday()).matches()) {
+            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(userRegistration.getBirthday()).matches()) {
                 errors.rejectValue("birthday",
                         "field.birthday.not.valid",
                         new Object[]{2},
