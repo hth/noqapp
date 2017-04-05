@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * User: hitender
@@ -41,6 +41,7 @@ public final class DateUtil {
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final DateTimeFormatter DF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
+    public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{1,2}\\-\\d{1,2}\\-\\d{4}$");
 
     private DateUtil() {
     }
@@ -130,36 +131,6 @@ public final class DateUtil {
         LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
         Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
-    }
-
-    /**
-     * Converts age to birthday.
-     *
-     * @param age any number greater than zero
-     * @return start of the year as birthday
-     */
-    private static String covertAgeToBirthday(String age) {
-        long years = Long.parseLong(age);
-        if (years <= 0) {
-            return "";
-        }
-
-        LocalDate localDate = LocalDate.now().minusYears(years);
-        localDate = localDate.with(TemporalAdjusters.firstDayOfYear());
-        return localDate.format(DF_MM_DD_YYYY);
-    }
-
-    public static String parseAgeForBirthday(String age) {
-        String birthday = "";
-        if (StringUtils.isNotBlank(age)) {
-            if (age.contains("-")) {
-                String[] range = age.split("-");
-                birthday = covertAgeToBirthday(range[0]);
-            } else {
-                birthday = covertAgeToBirthday(age);
-            }
-        }
-        return birthday;
     }
 
     /**
