@@ -22,7 +22,6 @@ import com.token.domain.UserProfileEntity;
 import com.token.service.AccountService;
 import com.token.service.EmailValidateService;
 import com.token.service.MailService;
-import com.token.utils.DateUtil;
 import com.token.utils.ParseJsonStringToMap;
 import com.token.utils.ScrubbedInput;
 import com.token.view.form.MerchantRegistrationForm;
@@ -125,7 +124,7 @@ public class AccountRegistrationController {
                     merchantRegistrationForm.getFirstName(),
                     merchantRegistrationForm.getLastName(),
                     merchantRegistrationForm.getMail(),
-                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(merchantRegistrationForm.getBirthday()) : "",
+                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? merchantRegistrationForm.getBirthday() : "",
                     merchantRegistrationForm.getGender(),
                     merchantRegistrationForm.getCountryShortName(),
                     merchantRegistrationForm.getTimeZone(),

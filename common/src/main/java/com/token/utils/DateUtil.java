@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -132,36 +131,6 @@ public final class DateUtil {
         LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
         Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
-    }
-
-    /**
-     * Converts age to birthday.
-     *
-     * @param age any number greater than zero
-     * @return start of the year as birthday
-     */
-    private static String covertAgeToBirthday(String age) {
-        long years = Long.parseLong(age);
-        if (years <= 0) {
-            return "";
-        }
-
-        LocalDate localDate = LocalDate.now().minusYears(years);
-        localDate = localDate.with(TemporalAdjusters.firstDayOfYear());
-        return localDate.format(DF_MM_DD_YYYY);
-    }
-
-    public static String parseAgeForBirthday(String age) {
-        String birthday = "";
-        if (StringUtils.isNotBlank(age)) {
-            if (age.contains("-")) {
-                String[] range = age.split("-");
-                birthday = covertAgeToBirthday(range[0]);
-            } else {
-                birthday = covertAgeToBirthday(age);
-            }
-        }
-        return birthday;
     }
 
     /**
