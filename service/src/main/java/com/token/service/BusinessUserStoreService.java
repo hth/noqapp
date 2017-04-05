@@ -10,7 +10,6 @@ import com.token.domain.BusinessUserStoreEntity;
 import com.token.domain.TokenQueueEntity;
 import com.token.domain.annotation.Mobile;
 import com.token.domain.json.JsonTopic;
-import com.token.domain.types.QueueStatusEnum;
 import com.token.repository.BusinessUserStoreManager;
 
 import java.util.ArrayList;
@@ -56,13 +55,13 @@ public class BusinessUserStoreService {
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
-            i ++;
+            i++;
         }
 
         List<TokenQueueEntity> tokenQueues = tokenQueueService.getTokenQueue(codes);
         LOG.info("tokenQueues found count={} for codes={}", tokenQueues.size(), codes);
         List<JsonTopic> jsonTopics = new ArrayList<>();
-        for(TokenQueueEntity tokenQueue : tokenQueues) {
+        for (TokenQueueEntity tokenQueue : tokenQueues) {
             jsonTopics.add(new JsonTopic(tokenQueue));
         }
 

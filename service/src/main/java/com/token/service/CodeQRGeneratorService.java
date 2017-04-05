@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
 public class CodeQRGeneratorService {
     private static final Logger LOG = LoggerFactory.getLogger(CodeQRGeneratorService.class);
 
-    @Value("${size:300}")
+    @Value ("${size:300}")
     private int size;
 
     public String createQRImage(String qrCodeText) throws WriterException, IOException {
