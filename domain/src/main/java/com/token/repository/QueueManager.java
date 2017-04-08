@@ -16,11 +16,13 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Abort queue. Set QueueUserState to Abort.
+     *
      * @param id
      */
     void abort(String id);
 
     QueueEntity findOne(String codeQR, String did, String rid);
+
     QueueEntity findToAbort(String codeQR, String did, String rid);
 
     @Mobile
@@ -50,9 +52,17 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
 
-    List<QueueEntity> findAllClientServiced();
+    /**
+     * Find all clients serviced to send messages.
+     *
+     * @param attemptToSendNotificationCounts
+     * @return
+     */
+    List<QueueEntity> findAllClientServiced(int attemptToSendNotificationCounts);
 
     List<QueueEntity> findByCodeQR(String codeQR);
 
     int deleteByCodeQR(String codeQR);
+
+    void increaseAttemptToSendNotificationCount(String id);
 }

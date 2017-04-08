@@ -1,5 +1,7 @@
 package com.token.loader.scheduledtasks;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,26 +78,33 @@ public class ServicedPersonalFCM {
                 "Serviced_Client_FCM",
                 sendPersonalNotification);
 
-        int found = 0, failure = 0, sent = 0;
+        int found = 0, failure = 0, sent = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(sendPersonalNotification)) {
             LOG.debug("feature is {}", sendPersonalNotification);
         }
 
         try {
-            List<QueueEntity> queues = queueManager.findAllClientServiced();
+            List<QueueEntity> queues = queueManager.findAllClientServiced(5);
             found = queues.size();
 
             for (QueueEntity queue : queues) {
                 String token = registeredDeviceManager.findFCMToken(queue.getRid(), queue.getDid());
                 /* TODO add cache Redis. */
-                TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
-                JsonMessage jsonMessage = composeMessage(token, tokenQueue.getTopic(), queue);
-                if (firebaseService.messageToTopic(jsonMessage)) {
-                    queue.setNotifiedOnService(true);
-                    queueManager.save(queue);
-                    sent++;
+                if (StringUtils.isBlank(token)) {
+                    LOG.info("Skipped sending message rid={} did={}", queue.getRid(), queue.getDid());
+                    skipped++;
+                    queueManager.increaseAttemptToSendNotificationCount(queue.getId());
                 } else {
-                    failure++;
+                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
+                    JsonMessage jsonMessage = composeMessage(token, tokenQueue.getTopic(), queue);
+                    if (firebaseService.messageToTopic(jsonMessage)) {
+                        queue.setNotifiedOnService(true);
+                        queueManager.save(queue);
+                        sent++;
+                    } else {
+                        failure++;
+                        queueManager.increaseAttemptToSendNotificationCount(queue.getId());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -105,6 +114,7 @@ public class ServicedPersonalFCM {
             if (0 != found || 0 != failure || 0 != sent) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
+                cronStats.addStats("skipped", skipped);
                 cronStats.addStats("sentServicedClientFCM", sent);
                 cronStatsService.save(cronStats);
 
