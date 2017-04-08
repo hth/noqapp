@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.token.domain.BaseEntity;
@@ -164,9 +165,9 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllClientServiced() {
+    public List<QueueEntity> findAllClientServiced(int attemptToSendNotificationCounts) {
         return mongoTemplate.find(
-                query(where("NS").is(false)
+                query(where("NS").is(false).and("NC").lt(attemptToSendNotificationCounts)
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.S),
                                 where("QS").is(QueueUserStateEnum.N)
@@ -191,5 +192,15 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE
         ).getN();
+    }
+
+    @Override
+    public void increaseAttemptToSendNotificationCount(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(new Update().inc("NC", 1)),
+                QueueEntity.class,
+                TABLE
+        );
     }
 }

@@ -52,6 +52,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("NS")
     private boolean notifiedOnService = false;
 
+    @NotNull
+    @Field ("NC")
+    private int attemptToSendNotificationCounts;
+
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
@@ -94,5 +98,9 @@ public class QueueEntity extends BaseEntity {
 
     public void setNotifiedOnService(boolean notifiedOnService) {
         this.notifiedOnService = notifiedOnService;
+    }
+
+    public int getAttemptToSendNotificationCounts() {
+        return attemptToSendNotificationCounts;
     }
 }

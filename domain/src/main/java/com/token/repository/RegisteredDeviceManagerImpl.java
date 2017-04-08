@@ -77,10 +77,17 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             query = query(where("RID").is(rid).and("DID").is(did));
         }
         query.fields().include("TK");
-        return mongoTemplate.findOne(
+        RegisteredDeviceEntity registeredDevice = mongoTemplate.findOne(
                 query,
                 RegisteredDeviceEntity.class,
                 TABLE
-        ).getToken();
+        );
+
+        if (registeredDevice == null) {
+            LOG.warn("Device not registered rid={} did={}", rid, did);
+            return null;
+        }
+
+        return registeredDevice.getToken();
     }
 }
