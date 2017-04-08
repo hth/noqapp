@@ -102,8 +102,8 @@ public class UserRegistrationValidator implements Validator {
             if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(userRegistration.getBirthday()).matches()) {
                 errors.rejectValue("birthday",
                         "field.birthday.not.valid",
-                        new Object[]{2},
-                        "Age not valid. Should be digits and not more than 2 digits");
+                        new Object[]{userRegistration.getBirthday()},
+                        "Date format not valid " + userRegistration.getBirthday());
             }
 
             if (!userRegistration.isAcceptsAgreement()) {
