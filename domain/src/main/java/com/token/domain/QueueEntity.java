@@ -54,7 +54,7 @@ public class QueueEntity extends BaseEntity {
 
     @NotNull
     @Field ("NC")
-    private int attemptToSendNotificationCounts;
+    private int attemptToSendNotificationCounts = 0;
 
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
