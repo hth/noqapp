@@ -21,7 +21,7 @@
         <on-entry>
             <!-- Populates all available business types -->
             <evaluate result="register.registerBusiness.availableBusinessTypes"
-                      expression="T(com.token.domain.types.BusinessTypeEnum).asList()" />
+                      expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="validateUserProfile" />
     </view-state>
@@ -59,7 +59,7 @@
         <evaluate result="register"
                   expression="migrateToBusinessRegistrationFlowActions.completeRegistrationInformation(register)"/>
 
-        <transition on-exception="com.token.view.flow.exception.MigrateToBusinessRegistrationException"
+        <transition on-exception="com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException"
                     to="profileCompletion" />
 
         <transition to="registrationComplete"/>

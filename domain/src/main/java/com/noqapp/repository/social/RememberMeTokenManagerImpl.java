@@ -1,0 +1,82 @@
+package com.noqapp.repository.social;
+
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Repository;
+
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.RememberMeTokenEntity;
+
+/**
+ * User: hitender
+ * Date: 11/18/16 3:18 PM
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
+@Repository
+public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
+    private static final Logger LOG = LoggerFactory.getLogger(RememberMeTokenManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            RememberMeTokenEntity.class,
+            Document.class,
+            "collection");
+
+    private final MongoTemplate mongoTemplate;
+
+    @Autowired
+    public RememberMeTokenManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    public RememberMeTokenEntity findBySeries(String series) {
+        return mongoTemplate.findOne(query(where("S").is(series)), RememberMeTokenEntity.class, TABLE);
+    }
+
+    @Override
+    public boolean existsBySeries(String series) {
+        return mongoTemplate.exists(query(where("S").is(series)), RememberMeTokenEntity.class, TABLE);
+    }
+
+    @Override
+    public void deleteTokensWithUsername(String username) {
+        mongoTemplate.remove(query(where("UN").is(username)), RememberMeTokenEntity.class, TABLE);
+    }
+
+    @Override
+    public void save(RememberMeTokenEntity rememberMeToken) {
+        try {
+            mongoTemplate.save(rememberMeToken);
+        } catch (Exception e) {
+            LOG.error("Failed saving rememberMeToken un={} reason={}", rememberMeToken.getUsername(), e.getLocalizedMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateToken(String series, String tokenValue) {
+        mongoTemplate.updateFirst(
+                query(where("S").is(series)),
+                entityUpdate(update("TV", tokenValue)),
+                RememberMeTokenEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void deleteHard(RememberMeTokenEntity rememberMeToken) {
+        mongoTemplate.remove(rememberMeToken);
+    }
+}

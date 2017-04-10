@@ -39,8 +39,8 @@
         </encoder>
     </appender>
 
-    <logger name="com.token" level="DEBUG" />
-    <logger name="com.token.view.filter.LogContextFilter" level="OFF" />
+    <logger name="com.noqapp" level="DEBUG" />
+    <logger name="com.noqapp.view.filter.LogContextFilter" level="OFF" />
     <logger name="org.springframework" level="WARN" />
     <logger name="org.springframework.social" level="WARN" />
     <logger name="org.springframework.data.mongodb" level="WARN" />

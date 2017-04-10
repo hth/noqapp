@@ -47,7 +47,7 @@ ext {
     dkimCertTest = file(dkimCertificateTestFileLocation)
     dkimCertProd = file(dkimCertificateProdFileLocation)
 
-    baseName = "token"
+    baseName = "noqapp"
 }
 
 buildscript {
@@ -67,7 +67,7 @@ apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
 
 allprojects {
-    group = 'com.token'
+    group = 'com.noqapp'
     apply from: "$rootDir/versioning.gradle"
 }
 
@@ -472,7 +472,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
     doLast {
         activeProfilewarClassesDir.mkdirs()
         activeProfilewarConfDir.mkdirs()
-        activeProfilewarFreemarkerDir.mkdirs();
+        activeProfilewarFreemarkerDir.mkdirs()
 
         copy {
             from file("view/environment/$env/$env" + ".properties")
@@ -519,7 +519,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
         }
 
         copy {
-            from "view/environment/$env/token-servlet.xml"
+            from "view/environment/$env/noqapp-servlet.xml"
             into activeProfilewarWebInfDir
         }
 
@@ -599,13 +599,13 @@ task createBuildInfoFile {
     doLast {
         buildDir.mkdirs()
         def buildInfoFile = new File("$buildDir/build-info.properties")
-        Properties props = new Properties();
-        props.setProperty('owner', 'Receiptofi Inc');
-        props.setProperty('copyright', 'All rights reserved');
-        props.setProperty('build.version', project.version.toString());
-        props.setProperty('build.env', "$env");
+        Properties props = new Properties()
+        props.setProperty('owner', 'NoQApp Inc')
+        props.setProperty('copyright', 'All rights reserved')
+        props.setProperty('build.version', project.version.toString())
+        props.setProperty('build.env', "$env")
 
-        props.store(buildInfoFile.newWriter(), null);
+        props.store(buildInfoFile.newWriter(), null)
     }
 }
 
@@ -746,7 +746,7 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from "view/environment/$env/token-servlet.xml"
+            from "view/environment/$env/noqapp-servlet.xml"
             into warWebInfDir
         }
 
@@ -779,7 +779,7 @@ task clean(type: Delete) {
 //import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
     doFirst {
-        exclude('**/token-loader-*.jar')
+        exclude('**/noqapp-loader-*.jar')
         if (env == 'sandbox' || env == 'prod') {
             baseName = "ROOT-$env." + project.version.toString()
         }
@@ -834,19 +834,19 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'Receiptofi Web')
-                root.appendNode('description', 'Receiptofi Inc applications jar')
-                root.appendNode('inceptionYear', '2013')
+                root.appendNode('name', 'NoQApp Web')
+                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2017. All rights reserved.')
-                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
-                license.appendNode('distribution', 'Receiptofi private repository')
+                license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'Receiptofi')
-                developer.appendNode('name', 'Receiptofi Inc')
-                developer.appendNode('email', 'info@receiptofi.com')
+                developer.appendNode('id', 'NoQApp')
+                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
             }
         }
 
@@ -856,19 +856,19 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'Receiptofi Web')
-                root.appendNode('description', 'Receiptofi Inc applications jar')
-                root.appendNode('inceptionYear', '2013')
+                root.appendNode('name', 'NoQApp Web')
+                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2017. All rights reserved.')
-                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
-                license.appendNode('distribution', 'Receiptofi private repository')
+                license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'Receiptofi')
-                developer.appendNode('name', 'Receiptofi Inc')
-                developer.appendNode('email', 'info@receiptofi.com')
+                developer.appendNode('id', 'NoQApp')
+                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
             }
         }
 
@@ -878,19 +878,19 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'Receiptofi Web')
-                root.appendNode('description', 'Receiptofi Inc applications jar')
-                root.appendNode('inceptionYear', '2013')
+                root.appendNode('name', 'NoQApp Web')
+                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2017. All rights reserved.')
-                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
-                license.appendNode('distribution', 'Receiptofi private repository')
+                license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'Receiptofi')
-                developer.appendNode('name', 'Receiptofi Inc')
-                developer.appendNode('email', 'info@receiptofi.com')
+                developer.appendNode('id', 'NoQApp')
+                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
             }
         }
 
@@ -900,19 +900,19 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'Receiptofi Web')
-                root.appendNode('description', 'Receiptofi Inc applications jar')
-                root.appendNode('inceptionYear', '2013')
+                root.appendNode('name', 'NoQApp Web')
+                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2012-2017. All rights reserved.')
-                license.appendNode('url', 'https://www.receiptofi.com/licenses/private.txt')
-                license.appendNode('distribution', 'Receiptofi private repository')
+                license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'Receiptofi')
-                developer.appendNode('name', 'Receiptofi Inc')
-                developer.appendNode('email', 'info@receiptofi.com')
+                developer.appendNode('id', 'NoQApp')
+                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
             }
         }
     }
