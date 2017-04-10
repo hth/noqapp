@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		    http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/cache
+            http://www.springframework.org/schema/cache/spring-cache.xsd
+            http://www.springframework.org/schema/task
+            http://www.springframework.org/schema/task/spring-task.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Scans the classpath of this application for @Components to deploy as beans -->
+    <context:component-scan base-package="com.noqapp" />
+
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+
+    <!-- turn on declarative caching -->
+    <cache:annotation-driven />
+
+    <!--suppress SpringModelInspection -->
+    <util:properties id="systemProperty" location="classpath:/conf/dev.properties" />
+    <!--suppress SpringModelInspection -->
+    <util:properties id="environmentProperty" location="classpath:/build-info.properties" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder location="classpath:/conf/pass.properties"                    order="1" ignore-unresolvable="true" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder properties-ref="systemProperty" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="1" ignore-unresolvable="true" />
+    <!--suppress SpringModelInspection -->
+    <context:property-placeholder properties-ref="environmentProperty" />
+
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926" />
+
+    <!-- for setting up scheduling of task -->
+    <task:executor id="taskExecutor" pool-size="10" />
+    <task:scheduler id="scheduler" pool-size="5" />
+    <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/>
+    <!-- for setting up scheduling of task ends -->
+
+    <!-- Forwards requests to the "/" resource to the "welcome" view -->
+    <!--suppress SpringModelInspection -->
+    <mvc:view-controller path="/" view-name="login"/>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false" />
+        <property name="favorParameter"     value="true" />
+        <!-- Uncomment the single line below -->
+        <!--<property name="ignoreAcceptHeader" value="true" />-->
+        <!--<property name="defaultContentType" value="text/html" />-->
+        <!--<property name="useJaf"             value="false"/>-->
+
+        <property name="mediaTypes">
+            <map>
+                <entry key="html"   value="text/html" />
+                <entry key="json"   value="application/json" />
+                <entry key="xml"    value="application/xml" />
+            </map>
+        </property>
+    </bean>
+
+    <!-- the application context definition for the receipt DispatcherServlet -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <!--suppress SpringModelInspection -->
+        <property name="basename" value="messages" />
+        <!--<property name="cacheSeconds" value="0" />-->
+    </bean>
+
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--&lt;!&ndash; one of the properties available; the maximum file size in bytes; supports 10MB &ndash;&gt;-->
+        <!--<property name="maxUploadSize" value="10485760"/>-->
+    <!--</bean>-->
+
+    <bean id="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--https://stackoverflow.com/questions/21397939/spring-security-3-2-csrf-support-for-multipart-requests-->
+        <property name="maxUploadSize" value="10485760" />
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="port"               value="${sslMailPort}"/>
+        <property name="defaultEncoding"    value="${mailEncoding}"/>
+        <property name="host"               value="${goDaddyMailHost}"/>
+        <property name="username"           value="${goDaddyUsername}"/>
+        <property name="password"           value="${goDaddy}"/>
+        <property name="javaMailProperties">
+            <props>
+                <!-- Use SMTP transport protocol -->
+                <prop key="mail.transport.protocol">${smtpProtocol}</prop>
+                <!-- Use SMTP-AUTH to authenticate to SMTP server -->
+                <prop key="mail.smtp.auth">true</prop>
+                <!-- Use TLS to encrypt communication with SMTP server, May be just for GMAIL-->
+                <!--<prop key="mail.smtp.starttls.enable">true</prop>-->
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.port">${sslMailPort}</prop>
+                <prop key="mail.smtp.socketFactory.port">${sslMailPort}</prop>
+                <prop key="mail.debug">false</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="${goDaddyUsername}"/>
+    </bean>
+
+    <bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+    </bean>
+
+    <!--
+    If a compatible view cannot be supplied by the ViewResolver chain, then the list of views specified through the
+    DefaultViews property will be consulted
+    http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html 17.5.4
+    -->
+    <!--<bean id="defaultViews" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />-->
+</beans>

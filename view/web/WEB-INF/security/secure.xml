@@ -169,7 +169,7 @@
         </headers>
     </http>
 
-    <beans:bean id="onLoginSuccessHandler" class="com.token.security.OnLoginAuthenticationSuccessHandler" />
+    <beans:bean id="onLoginSuccessHandler" class="com.noqapp.security.OnLoginAuthenticationSuccessHandler" />
 
     <!-- Declare an authentication-manager to use a custom userDetailsService -->
     <authentication-manager>

@@ -1,13 +1,16 @@
 ### MySQL Script
 
-    CREATE SCHEMA `token_test` DEFAULT CHARACTER SET utf8 ;
+    CREATE SCHEMA `noqapp_test` DEFAULT CHARACTER SET utf8 ;
     
 #### Add user
 Added user to this schema
+
+#### Add Account limit to the user
+Set default from 0 to 1000
     
 #### Create Table     
 
-    CREATE TABLE token_test.QUEUE
+    CREATE TABLE noqapp_test.QUEUE
     (
         ID VARCHAR(30),
         QR VARCHAR(30),
