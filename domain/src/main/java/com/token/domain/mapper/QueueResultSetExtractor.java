@@ -25,7 +25,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         );
         queue.setId(rs.getString(1));
         queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(7)));
-        queue.setNotifiedOnService(rs.getInt(8) == 1 ? true : false);
+        queue.setNotifiedOnService(rs.getInt(8) == 1);
         queue.setVersion(rs.getInt(9));
         queue.setCreateAndUpdate(rs.getTimestamp(10));
         queue.setCreated(rs.getTimestamp(11));
