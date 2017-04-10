@@ -207,15 +207,24 @@ public class AccountService {
             createPreferences(userProfile);
             addWelcomeNotification(userAccount);
             if (StringUtils.isNotBlank(inviteCode)) {
-                UserProfileEntity userProfileOfInvitee = userProfileManager.inviteCodeExists(inviteCode);
-                InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getReceiptUserId(), inviteCode);
-                inviteService.save(invite);
+                UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
+                if (null != userProfileOfInvitee) {
+                    InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getReceiptUserId(), inviteCode);
+                    inviteService.save(invite);
+                } else {
+                    LOG.info("Skipped invite as its invalid code {}", inviteCode);
+                }
             }
             return userAccount;
         } else {
             LOG.error("Account creation failed as it already exists for phone={}", phoneWithCountryCode);
             return null;
         }
+    }
+
+    @Mobile
+    public UserProfileEntity findProfileByInviteCode(String inviteCode) {
+        return userProfileManager.inviteCodeExists(inviteCode);
     }
 
     /**
