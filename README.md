@@ -1,7 +1,7 @@
-receipt
+NoQApp
 =======
 
-Receipt Web Application
+NoQApp Web Application
 
 Code Style
 ==========
