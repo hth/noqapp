@@ -239,21 +239,6 @@ public class UserFlowValidator {
             }
         }
 
-        if (accountService.checkUserExistsByPhone(
-                register.getRegisterUser().getPhoneNotFormatted(),
-                register.getRegisterUser().getCountryShortName()) != null) {
-
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerUser.phone")
-                            .defaultText("You seem to be already registered with this phone number '"
-                                    + register.getRegisterUser().getPhoneNotFormatted()
-                                    + "'. Try recovery of you account using OTP")
-                            .build());
-            status = "failure";
-        }
-
         LOG.info("Validate user profile rid={} status={}", register.getRegisterUser().getRid(), status);
         return status;
     }

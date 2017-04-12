@@ -125,9 +125,9 @@ public class UserRegistrationValidator implements Validator {
     public void accountExists(Object obj, Errors errors) {
         MerchantRegistrationForm userRegistration = (MerchantRegistrationForm) obj;
         errors.rejectValue("mail",
-                "emailId.already.registered",
-                new Object[]{userRegistration.getMail()},
-                "Account already registered with this Email Address");
+                "phone.already.registered",
+                new Object[]{userRegistration.getPhone()},
+                "Account already registered with phone " + userRegistration.getPhone());
     }
 }
 
