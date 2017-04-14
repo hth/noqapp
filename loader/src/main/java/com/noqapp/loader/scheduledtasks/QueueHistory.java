@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.CronStatsEntity;
 import com.noqapp.domain.QueueEntity;
-import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ExternalService;
 
