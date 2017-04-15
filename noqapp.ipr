@@ -1309,8 +1309,9 @@
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
+      <item index="1" class="java.lang.String" itemvalue="org.springframework.stereotype.Repository" />
     </list>
   </component>
   <component name="GradleSettings">
