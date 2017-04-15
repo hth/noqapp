@@ -119,7 +119,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     public void resetForNewDay(String codeQR) {
         mongoTemplate.updateFirst(
                 query(where("_id").is(codeQR).and("QS").ne(QueueStatusEnum.C)),
-                entityUpdate(update("LN", 0).set("CS", 0)),
+                entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.S)),
                 TokenQueueEntity.class,
                 TABLE);
     }
