@@ -1,5 +1,7 @@
 package com.noqapp.repository;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 
@@ -93,6 +95,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     List<BizStoreEntity> getAllBizStores(String bizNameId);
 
+    @Cacheable (value = "findByCodeQR", keyGenerator = "customKeyGenerator")
     BizStoreEntity findByCodeQR(String codeQR);
 
     boolean isValidCodeQR(String codeQR);
