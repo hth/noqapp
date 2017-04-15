@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BizNameEntity;
@@ -121,7 +120,6 @@ public class BizService {
         return bizStoreManager.getAllBizStores(bizNameId);
     }
 
-    @Cacheable (value = "findByCodeQR", keyGenerator = "customKeyGenerator")
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
     }
