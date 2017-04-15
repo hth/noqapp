@@ -97,7 +97,15 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     boolean isValidCodeQR(String codeQR);
 
-    boolean setZoneIdAndQueueHistory(String id, String zoneId, Date queueHistory);
+    /**
+     * Set next cron run date for moving history from previous day.
+     *
+     * @param id
+     * @param zoneId
+     * @param queueHistory
+     * @return
+     */
+    boolean setNextRun(String id, String zoneId, Date queueHistory);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 }

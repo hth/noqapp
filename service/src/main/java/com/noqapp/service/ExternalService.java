@@ -214,7 +214,7 @@ public class ExternalService {
                                     bizStore.storeClosingHourOfDay(),
                                     bizStore.storeClosingMinuteOfDay());
 
-                            boolean status = bizStoreManager.setZoneIdAndQueueHistory(bizStore.getId(), zoneId, queueHistory);
+                            boolean status = bizStoreManager.setNextRun(bizStore.getId(), zoneId, queueHistory);
                             if (status) {
                                 LOG.info("Update UTC time for store={} address={}", bizStore.getId(), bizStore.getAddress());
                             } else {
