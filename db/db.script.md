@@ -26,3 +26,11 @@ Set default from 0 to 1000
         A TINYINT(1),
         D TINYINT(1)
     );
+    
+#### Change DB temp 
+    
+    SELECT * FROM noqapp_test.QUEUE;
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE noqapp_test.QUEUE set QR = "58f11ee1aa664651e8bad4fb", DID = "123";
+    SET SQL_SAFE_UPDATES = 1;    
+    
