@@ -20,4 +20,6 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
     List<TokenQueueEntity> getTokenQueues(String[] ids);
 
     void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus);
+
+    void resetForNewDay(String codeQR);
 }

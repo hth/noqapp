@@ -255,7 +255,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean setZoneIdAndQueueHistory(String id, String zoneId, Date queueHistory) {
+    public boolean setNextRun(String id, String zoneId, Date queueHistory) {
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(update("TZ", zoneId).set("QH", queueHistory)),

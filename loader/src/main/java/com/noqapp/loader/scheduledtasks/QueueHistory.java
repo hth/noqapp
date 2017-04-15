@@ -14,6 +14,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ExternalService;
 
@@ -39,6 +40,7 @@ public class QueueHistory {
 
     private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
+    private TokenQueueManager tokenQueueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private CronStatsService cronStatsService;
     private ExternalService externalService;
@@ -52,6 +54,7 @@ public class QueueHistory {
 
             BizStoreManager bizStoreManager,
             QueueManager queueManager,
+            TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
             CronStatsService cronStatsService,
             ExternalService externalService
@@ -59,6 +62,7 @@ public class QueueHistory {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
+        this.tokenQueueManager = tokenQueueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.cronStatsService = cronStatsService;
         this.externalService = externalService;
@@ -93,8 +97,14 @@ public class QueueHistory {
                     }
 
                     TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
-                    Date nextDay = externalService.computeNextRunTimeAtUTC(timeZone, bizStore.storeClosingHourOfDay(), bizStore.storeClosingMinuteOfDay());
-                    bizStoreManager.setZoneIdAndQueueHistory(bizStore.getId(), bizStore.getTimeZone(), nextDay);
+                    Date nextDay = externalService.computeNextRunTimeAtUTC(
+                            timeZone,
+                            bizStore.storeClosingHourOfDay(),
+                            bizStore.storeClosingMinuteOfDay());
+                    
+                    bizStoreManager.setNextRun(bizStore.getId(), bizStore.getTimeZone(), nextDay);
+                    tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
+
                     success++;
                 } catch (Exception e) {
                     failure++;
