@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.mapper.QueueRowMapper;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -36,10 +37,20 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     " FROM " +
                     "QUEUE WHERE RID = ?";
 
+    private static final String findByRidAndByLastUpdated =
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+                    " FROM " +
+                    "QUEUE WHERE RID = ? AND U >= ?";
+
     private static final String findByDid =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ?";
+
+    private static final String findByDidAndByLastUpdated =
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+                    " FROM " +
+                    "QUEUE WHERE DID = ? AND U >= ?";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -78,11 +89,19 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         namedParameterJdbcTemplate.batchUpdate(insert, maps);
     }
 
-    public List<QueueEntity> findByDid(String did) {
+    public List<QueueEntity> getByDid(String did) {
         return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
     }
 
-    public List<QueueEntity> findByRid(String rid) {
+    public List<QueueEntity> getByDid(String did, Date lastAccessed) {
+        return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed}, new QueueRowMapper());
+    }
+
+    public List<QueueEntity> getByRid(String rid) {
         return jdbcTemplate.query(findByRid, new Object[]{rid}, new QueueRowMapper());
+    }
+
+    public List<QueueEntity> getByRid(String rid, Date lastAccessed) {
+        return jdbcTemplate.query(findByRidAndByLastUpdated, new Object[]{rid, lastAccessed}, new QueueRowMapper());
     }
 }
