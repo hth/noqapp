@@ -100,11 +100,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
-            if (!userAccount.getRoles().contains(RoleEnum.ROLE_MER_ADMIN) || !userAccount.getRoles().contains(RoleEnum.ROLE_MER_MANAGER)) {
-                LOG.info("Not authorized to have merchant access");
-                throw new UsernameNotFoundException("Not authorized. Please contact your account administrator.");
-            }
-
             boolean condition = isUserActive(userAccount);
             if (!condition && null == userAccount.getProviderId()) {
                 /** Throw exception when its NOT a social signup. */
