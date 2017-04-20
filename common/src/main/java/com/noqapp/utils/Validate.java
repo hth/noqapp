@@ -46,7 +46,7 @@ public class Validate {
 
     public static boolean isValidRid(String text) {
         Assert.hasText(text, "Not a valid text");
-        Matcher m = namePattern.matcher(text);
+        Matcher m = ridPattern.matcher(text);
         return m.matches();
     }
 }
