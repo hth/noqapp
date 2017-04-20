@@ -2,7 +2,6 @@ package com.noqapp.utils;
 
 import org.springframework.util.Assert;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -28,25 +27,21 @@ public class Validate {
 
     public static boolean isValidObjectId(String text) {
         Assert.hasText(text, "Not a valid text");
-        Matcher m = objectIdPattern.matcher(text);
-        return m.matches();
+        return objectIdPattern.matcher(text).matches();
     }
 
     public static boolean isValidMail(String text) {
         Assert.hasText(text, "Not a valid text");
-        Matcher m = mailPattern.matcher(text);
-        return m.matches();
+        return mailPattern.matcher(text).matches();
     }
 
     public static boolean isValidName(String text) {
         Assert.hasText(text, "Not a valid text");
-        Matcher m = namePattern.matcher(text);
-        return m.matches();
+        return namePattern.matcher(text).matches();
     }
 
     public static boolean isValidRid(String text) {
         Assert.hasText(text, "Not a valid text");
-        Matcher m = ridPattern.matcher(text);
-        return m.matches();
+        return ridPattern.matcher(text).matches();
     }
 }
