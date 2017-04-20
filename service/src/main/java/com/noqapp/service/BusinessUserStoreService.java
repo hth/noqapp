@@ -10,6 +10,7 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.json.JsonTopicList;
 import com.noqapp.repository.BusinessUserStoreManager;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class BusinessUserStoreService {
     }
 
     @Mobile
-    public List<JsonTopic> getQueues(String rid) {
+    public JsonTopicList getQueues(String rid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
         LOG.info("Found user associated to business count={}", businessUserStores.size());
 
@@ -66,6 +67,8 @@ public class BusinessUserStoreService {
         }
 
         LOG.info("Found queues count={}", jsonTopics.size());
-        return jsonTopics;
+        JsonTopicList topics = new JsonTopicList();
+        topics.setTopics(jsonTopics);
+        return topics;
     }
 }
