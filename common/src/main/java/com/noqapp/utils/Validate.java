@@ -21,24 +21,31 @@ public class Validate {
     private static Pattern mailPattern = Pattern.compile("^[^@]+@[^@]+\\.[^@]+$");
     private static Pattern otherMailPattern = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
     private static Pattern namePattern = Pattern.compile("^[\\p{L} .'-]+$");
+    private static Pattern ridPattern = Pattern.compile("^1[0-9]{11}$");
 
     private Validate() {
     }
 
     public static boolean isValidObjectId(String text) {
-        Assert.hasText(text);
+        Assert.hasText(text, "Not a valid text");
         Matcher m = objectIdPattern.matcher(text);
         return m.matches();
     }
 
     public static boolean isValidMail(String text) {
-        Assert.hasText(text);
+        Assert.hasText(text, "Not a valid text");
         Matcher m = mailPattern.matcher(text);
         return m.matches();
     }
 
     public static boolean isValidName(String text) {
-        Assert.hasText(text);
+        Assert.hasText(text, "Not a valid text");
+        Matcher m = namePattern.matcher(text);
+        return m.matches();
+    }
+
+    public static boolean isValidRid(String text) {
+        Assert.hasText(text, "Not a valid text");
         Matcher m = namePattern.matcher(text);
         return m.matches();
     }
