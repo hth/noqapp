@@ -50,6 +50,8 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    JsonToken() {}
+
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();

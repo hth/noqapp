@@ -32,6 +32,10 @@ public class JsonTopic extends JsonToken {
     @JsonProperty ("o")
     private String topic;
 
+    private JsonTopic() {
+        super();
+    }
+
     public JsonTopic(TokenQueueEntity tokenQueue) {
         super(tokenQueue);
         this.topic = tokenQueue.getTopic();

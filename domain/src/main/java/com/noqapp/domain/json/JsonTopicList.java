@@ -41,4 +41,8 @@ public class JsonTopicList extends AbstractDomain {
     public void setTopics(List<JsonTopic> topics) {
         this.topics = topics;
     }
+
+    public void addTopic(JsonTopic topic) {
+        this.topics.add(topic);
+    }
 }
