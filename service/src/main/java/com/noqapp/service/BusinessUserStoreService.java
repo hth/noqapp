@@ -48,7 +48,7 @@ public class BusinessUserStoreService {
     }
 
     @Mobile
-    public JsonTopicList getQueues(String rid) {
+    public List<JsonTopic> getQueues(String rid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
         LOG.info("Found user associated to business count={}", businessUserStores.size());
 
@@ -67,8 +67,6 @@ public class BusinessUserStoreService {
         }
 
         LOG.info("Found queues count={}", jsonTopics.size());
-        JsonTopicList topics = new JsonTopicList();
-        topics.setTopics(jsonTopics);
-        return topics;
+        return jsonTopics;
     }
 }
