@@ -267,7 +267,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
         return mongoTemplate.find(
-                query(where("QH").lte(now).and("A").is(true)),
+                query(where("QH").gt(now).and("A").is(true)),
                 BizStoreEntity.class,
                 TABLE
         );
