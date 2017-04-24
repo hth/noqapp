@@ -23,6 +23,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     QueueEntity findOne(String codeQR, String did, String rid);
 
+    QueueEntity findOne(String codeQR, int tokenNumber);
+
     QueueEntity findToAbort(String codeQR, String did, String rid);
 
     @Mobile
