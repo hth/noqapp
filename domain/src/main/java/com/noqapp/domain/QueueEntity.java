@@ -56,6 +56,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("NC")
     private int attemptToSendNotificationCounts = 0;
 
+    @NotNull
+    @Field ("CN")
+    private String customerName;
+
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
@@ -102,5 +106,13 @@ public class QueueEntity extends BaseEntity {
 
     public int getAttemptToSendNotificationCounts() {
         return attemptToSendNotificationCounts;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

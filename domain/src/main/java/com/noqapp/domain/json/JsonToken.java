@@ -50,6 +50,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty ("n")
+    private String customerName = "";
+
     JsonToken() {}
 
     public JsonToken(TokenQueueEntity tokenQueue) {
@@ -114,6 +117,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public JsonToken setCustomerName(String customerName) {
+        this.customerName = customerName;
         return this;
     }
 }
