@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonResponse;
 import com.noqapp.domain.json.JsonToken;
@@ -33,16 +36,19 @@ public class TokenQueueService {
     private TokenQueueManager tokenQueueManager;
     private FirebaseService firebaseService;
     private QueueManager queueManager;
+    private AccountService accountService;
 
     @Autowired
     public TokenQueueService(
             TokenQueueManager tokenQueueManager,
             FirebaseService firebaseService,
-            QueueManager queueManager
+            QueueManager queueManager,
+            AccountService accountService
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseService = firebaseService;
         this.queueManager = queueManager;
+        this.accountService = accountService;
     }
 
     //TODO has to create by cron job
@@ -91,6 +97,10 @@ public class TokenQueueService {
 
             try {
                 queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                if (StringUtils.isNotBlank(rid)) {
+                    UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+                    queue.setCustomerName(userAccount.getDisplayName());
+                }
                 queueManager.insert(queue);
             } catch (DuplicateKeyException e) {
                 LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
@@ -154,8 +164,15 @@ public class TokenQueueService {
 
         LOG.info("After sending message to merchant");
         QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
-        if (queue != null) {
+        if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
+
+            return new JsonToken(codeQR)
+                    .setQueueStatus(tokenQueue.getQueueStatus())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayName(tokenQueue.getDisplayName())
+                    .setToken(tokenQueue.getLastNumber())
+                    .setCustomerName(queue.getCustomerName());
         }
 
         return new JsonToken(codeQR)
