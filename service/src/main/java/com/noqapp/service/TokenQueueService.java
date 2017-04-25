@@ -15,6 +15,7 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.QueueManager;
@@ -151,6 +152,14 @@ public class TokenQueueService {
     public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
+
+        if (tokenQueue.getFirebaseMessageType() == FirebaseMessageTypeEnum.M) {
+            LOG.info("After sending message to merchant");
+            QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+            if (queue != null) {
+                LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
+            }
+        }
 
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
