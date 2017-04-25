@@ -264,14 +264,15 @@ public class ExternalService {
         currentLocalDateTime.plusDays(1);
         Instant futureInstant = currentLocalDateTime.toInstant(ZoneOffset.ofHours(0));
         Date futureDate = Date.from(futureInstant);
+        LOG.info("Future date={}", futureDate);
 
         String str = df.format(futureDate) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
         LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
-        LOG.debug("Current date and time in a particular timezone={}", zonedDateTime);
+        LOG.info("Current date and time in a particular timezone={}", zonedDateTime);
 
         ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
-        LOG.debug("Current date and time in UTC={}", utcDate);
+        LOG.info("Current date and time in UTC={}", utcDate);
         return Date.from(utcDate.toInstant());
     }
 }

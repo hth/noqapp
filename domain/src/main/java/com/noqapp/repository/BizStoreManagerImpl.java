@@ -256,6 +256,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean setNextRun(String id, String zoneId, Date queueHistory) {
+        LOG.info("Set next run for id={} zoneId={} queueHistory={}", id, zoneId, queueHistory);
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(update("TZ", zoneId).set("QH", queueHistory)),
