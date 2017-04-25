@@ -153,6 +153,14 @@ public class TokenQueueService {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
 
+        if (tokenQueue.getFirebaseMessageType() == FirebaseMessageTypeEnum.M) {
+            LOG.info("After sending message to merchant");
+            QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+            if (queue != null) {
+                LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
+            }
+        }
+
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
@@ -168,10 +176,6 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus));
-        if (tokenQueue.getFirebaseMessageType() == FirebaseMessageTypeEnum.M) {
-            QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
-            LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
-        }
         JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
