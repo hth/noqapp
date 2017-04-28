@@ -60,6 +60,12 @@ public class QueueEntity extends BaseEntity {
     @Field ("CN")
     private String customerName;
 
+    @Field ("RA")
+    private int ratingCount;
+
+    @Field ("HR")
+    private int hoursSaved;
+
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
@@ -114,5 +120,21 @@ public class QueueEntity extends BaseEntity {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public int getHoursSaved() {
+        return hoursSaved;
+    }
+
+    public void setHoursSaved(int hoursSaved) {
+        this.hoursSaved = hoursSaved;
     }
 }

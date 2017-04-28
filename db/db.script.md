@@ -20,6 +20,8 @@ Set default from 0 to 1000
         DN VARCHAR(100),
         QS VARCHAR(10),
         NS TINYINT(1),
+        RA TINYINT(1),
+        HR TINYINT(1),
         V INT(11),
         U DATETIME,
         C DATETIME,
@@ -33,4 +35,10 @@ Set default from 0 to 1000
     SET SQL_SAFE_UPDATES = 0;
     UPDATE noqapp_test.QUEUE set QR = "58f11ee1aa664651e8bad4fb", DID = "123";
     SET SQL_SAFE_UPDATES = 1;    
+    
+#### Alter Table
+    
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `RA` TINYINT(1) NULL DEFAULT NULL AFTER `NS`,
+    ADD COLUMN `HR` TINYINT(1) NULL DEFAULT NULL AFTER `RA`;
     

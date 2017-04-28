@@ -28,27 +28,27 @@ import javax.sql.DataSource;
 @Repository
 public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String insert =
-            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D)" +
+            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D)" +
                     " VALUES " +
-                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:v,:u,:c,:a,:d)";
+                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:v,:u,:c,:a,:d)";
 
     private static final String findByRid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ?";
 
     private static final String findByRidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ? AND U >= ?";
 
     private static final String findByDid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ?";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? AND U >= ?";
 
@@ -76,6 +76,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             namedParameters.addValue("dn", queue.getDisplayName());
             namedParameters.addValue("qs", queue.getQueueUserState().getName());
             namedParameters.addValue("ns", queue.isNotifiedOnService() ? 1 : 0);
+            namedParameters.addValue("ra", queue.getRatingCount());
+            namedParameters.addValue("hr", queue.getHoursSaved());
+
             namedParameters.addValue("v", queue.getVersion());
             namedParameters.addValue("u", queue.getUpdated());
             namedParameters.addValue("c", queue.getCreated());
