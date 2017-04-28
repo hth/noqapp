@@ -26,16 +26,18 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setId(rs.getString(1));
         queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(7)));
         queue.setNotifiedOnService(rs.getInt(8) == 1);
-        queue.setVersion(rs.getInt(9));
-        queue.setCreateAndUpdate(rs.getTimestamp(10));
-        queue.setCreated(rs.getTimestamp(11));
-        if (rs.getInt(12) > 0) {
+        queue.setRatingCount(rs.getInt(9));
+        queue.setHoursSaved(rs.getInt(10));
+        queue.setVersion(rs.getInt(11));
+        queue.setCreateAndUpdate(rs.getTimestamp(12));
+        queue.setCreated(rs.getTimestamp(13));
+        if (rs.getInt(14) > 0) {
             queue.active();
         } else {
             queue.inActive();
         }
 
-        if (rs.getInt(13) > 0) {
+        if (rs.getInt(15) > 0) {
             queue.markAsDeleted();
         }
 
