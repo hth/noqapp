@@ -212,4 +212,21 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE
         );
     }
+
+    @Override
+    public boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved) {
+        Query query;
+        if (StringUtils.isNotBlank(rid)) {
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q).and("RID").is(rid));
+        } else {
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q));
+        }
+
+        return mongoTemplate.updateFirst(
+                query,
+                entityUpdate(update("RA", ratingCount).set("HR", hoursSaved)),
+                QueueEntity.class,
+                TABLE
+        ).getN() > 1;
+    }
 }

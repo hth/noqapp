@@ -67,4 +67,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     int deleteByCodeQR(String codeQR);
 
     void increaseAttemptToSendNotificationCount(String id);
+
+    @Mobile
+    boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved);
 }
