@@ -214,6 +214,7 @@
             <element id="library" level="project" name="Gradle: org.apache.sis.core:sis-referencing:0.6" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.oauth-client:google-oauth-client:1.21.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.21.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -223,7 +224,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="archive" name="com.noqapp-service.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -458,6 +458,7 @@
             <element id="library" level="project" name="Gradle: org.apache.sis.core:sis-referencing:0.6" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.oauth-client:google-oauth-client:1.21.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.21.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -467,7 +468,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -699,6 +699,7 @@
             <element id="library" level="project" name="Gradle: org.apache.sis.core:sis-referencing:0.6" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.oauth-client:google-oauth-client:1.21.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.21.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -708,7 +709,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -944,6 +944,7 @@
             <element id="library" level="project" name="Gradle: org.apache.sis.core:sis-referencing:0.6" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.oauth-client:google-oauth-client:1.21.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.21.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -953,7 +954,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -1306,6 +1306,8 @@
       <module name="loader_integration" target="1.8" />
       <module name="loader_main" target="1.8" />
       <module name="loader_test" target="1.8" />
+      <module name="noqapp_main" target="1.8" />
+      <module name="noqapp_test" target="1.8" />
       <module name="security_integration" target="1.8" />
       <module name="security_main" target="1.8" />
       <module name="security_test" target="1.8" />
@@ -1446,6 +1448,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp_main.iml" group="noqapp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp_test.iml" group="noqapp" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_integration.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_main.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_main.iml" group="security" />
