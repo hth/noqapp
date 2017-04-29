@@ -52,4 +52,6 @@ public interface QueueManagerJDBC {
     @Mobile
     List<QueueEntity> getByRid(String rid, Date lastAccessed);
 
+    @Mobile
+    boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved);
 }
