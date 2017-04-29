@@ -1,11 +1,11 @@
 package com.noqapp.domain;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import org.junit.Assert;
 
 import javax.validation.constraints.NotNull;
 
@@ -87,12 +87,12 @@ public class InviteEntity extends BaseEntity {
     }
 
     public void deductRemoteScanForReceiptUserCount() {
-        Assert.assertNotEquals(0, remoteScanForReceiptUserCount);
+        assertNotEquals(0, remoteScanForReceiptUserCount);
         this.remoteScanForReceiptUserCount --;
     }
 
     public void deductRemoteScanForInviterCount() {
-        Assert.assertNotEquals(0, remoteScanForInviterCount);
+        assertNotEquals(0, remoteScanForInviterCount);
         this.remoteScanForInviterCount --;
     }
 }
