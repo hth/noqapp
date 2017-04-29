@@ -1,5 +1,7 @@
 package com.noqapp.repository;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -92,19 +94,36 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         namedParameterJdbcTemplate.batchUpdate(insert, maps);
     }
 
+    @Override
     public List<QueueEntity> getByDid(String did) {
         return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
     }
 
+    @Override
     public List<QueueEntity> getByDid(String did, Date lastAccessed) {
         return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed}, new QueueRowMapper());
     }
 
+    @Override
     public List<QueueEntity> getByRid(String rid) {
         return jdbcTemplate.query(findByRid, new Object[]{rid}, new QueueRowMapper());
     }
 
+    @Override
     public List<QueueEntity> getByRid(String rid, Date lastAccessed) {
         return jdbcTemplate.query(findByRidAndByLastUpdated, new Object[]{rid, lastAccessed}, new QueueRowMapper());
+    }
+
+    @Override
+    public boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved) {
+        if (StringUtils.isNotBlank(rid)) {
+            return this.jdbcTemplate.update(
+                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, RID = ? AND RA <> 0",
+                    ratingCount, hoursSaved, codeQR, did, rid) > 0;
+        } else {
+            return this.jdbcTemplate.update(
+                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ? AND RA <> 0",
+                    ratingCount, hoursSaved, codeQR, did) > 0;
+        }
     }
 }
