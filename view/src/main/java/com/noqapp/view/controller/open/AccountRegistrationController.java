@@ -123,7 +123,8 @@ public class AccountRegistrationController {
                     merchantRegistrationForm.getCountryShortName(),
                     merchantRegistrationForm.getTimeZone(),
                     merchantRegistrationForm.getPassword(),
-                    null);
+                    null,
+                    false);
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
             return registrationPage;

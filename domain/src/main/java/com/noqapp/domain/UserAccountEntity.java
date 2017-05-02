@@ -108,6 +108,9 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("AVD")
     private Date accountValidatedBeginDate;
 
+    @Field ("PV")
+    private boolean phoneValidated;
+
     @Field ("AIR")
     private AccountInactiveReasonEnum accountInactiveReason;
 
@@ -307,6 +310,14 @@ public class UserAccountEntity extends BaseEntity {
     public boolean isValidationExpired(int mailValidationFailPeriod) {
         return accountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
                 new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
+    }
+
+    public boolean isPhoneValidated() {
+        return phoneValidated;
+    }
+
+    public void setPhoneValidated(boolean phoneValidated) {
+        this.phoneValidated = phoneValidated;
     }
 
     public String getName() {
