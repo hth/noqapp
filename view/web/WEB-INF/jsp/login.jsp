@@ -41,7 +41,7 @@
         <ul>
             <!-- inser more links here -->
             <li><a href="#0">Sign In</a></li>
-            <li><a href="${pageContext.request.contextPath}/open/registration.htm">Merchant Register</a></li>
+            <li><a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Merchant Register</a></li>
         </ul>
     </nav> <!-- cd-main-nav -->
 </header>
