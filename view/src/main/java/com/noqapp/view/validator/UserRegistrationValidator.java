@@ -12,6 +12,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.noqapp.utils.DateUtil;
+import com.noqapp.utils.Formatter;
 import com.noqapp.utils.Validate;
 import com.noqapp.view.form.MerchantRegistrationForm;
 
@@ -29,13 +30,16 @@ import com.noqapp.view.form.MerchantRegistrationForm;
 public class UserRegistrationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
 
-    @Value ("${AccountRegistrationController.mailLength}")
+    @Value ("${UserRegistrationValidator.countryShortNameLength}")
+    private int countryShortNameLength;
+
+    @Value ("${UserRegistrationValidator.mailLength}")
     private int mailLength;
 
-    @Value ("${AccountRegistrationController.nameLength}")
+    @Value ("${UserRegistrationValidator.nameLength}")
     private int nameLength;
 
-    @Value ("${AccountRegistrationController.passwordLength}")
+    @Value ("${UserRegistrationValidator.passwordLength}")
     private int passwordLength;
 
     @Override
@@ -53,9 +57,23 @@ public class UserRegistrationValidator implements Validator {
         /** Example of validation message: Email Address field.required. */
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "countryShortName", "field.required", new Object[]{"Country Code"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "field.required", new Object[]{"Phone"});
 
         if (!errors.hasErrors()) {
             MerchantRegistrationForm userRegistration = (MerchantRegistrationForm) obj;
+            if (StringUtils.isNotBlank(userRegistration.getCountryShortName()) && userRegistration.getCountryShortName().length() != countryShortNameLength) {
+                errors.rejectValue("countryShortName",
+                        "field.length",
+                        new Object[]{"Country Code", countryShortNameLength},
+                        "Minimum length of " + countryShortNameLength + " characters");
+            } else if(!Formatter.isValidCountryCode(userRegistration.getCountryShortName())) {
+                errors.rejectValue("countryShortName",
+                        "field.invalid",
+                        new Object[]{"Country Code", userRegistration.getCountryShortName()},
+                        "Country Code is not a valid name " + userRegistration.getCountryShortName());
+            }
+
             if (!Validate.isValidName(userRegistration.getFirstName())) {
                 errors.rejectValue("firstName",
                         "field.invalid",
@@ -67,7 +85,7 @@ public class UserRegistrationValidator implements Validator {
                 errors.rejectValue("firstName",
                         "field.length",
                         new Object[]{"First name", nameLength},
-                        "Minimum length of four characters");
+                        "Minimum length of " + nameLength + " characters");
             }
 
             if (!Validate.isValidName(userRegistration.getLastName())) {

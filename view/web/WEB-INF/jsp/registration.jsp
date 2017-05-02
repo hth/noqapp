@@ -56,6 +56,12 @@
                 <spring:hasBindErrors name="merchantRegistrationForm">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
+                            <c:if test="${errors.hasFieldErrors('countryShortName')}">
+                                <li><form:errors path="countryShortName" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('phone')}">
+                                <li><form:errors path="phone" /></li>
+                            </c:if>
                             <c:if test="${errors.hasFieldErrors('firstName')}">
                                 <li><form:errors path="firstName" /></li>
                             </c:if>
