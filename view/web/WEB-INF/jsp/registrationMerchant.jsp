@@ -52,7 +52,7 @@
         </fieldset>
 
         <fieldset class="cd-form floating-labels">
-            <form:form method="post" modelAttribute="merchantRegistrationForm" action="registration.htm" autocomplete="true">
+            <form:form method="post" modelAttribute="merchantRegistrationForm" action="registrationMerchant.htm" autocomplete="true">
                 <spring:hasBindErrors name="merchantRegistrationForm">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
@@ -209,7 +209,7 @@
     function checkAvailability() {
         $.ajax({
             type: "POST",
-            url: '${pageContext. request. contextPath}/open/registration/availability.htm',
+            url: '${pageContext. request. contextPath}/open/registrationMerchant/availability.htm',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },

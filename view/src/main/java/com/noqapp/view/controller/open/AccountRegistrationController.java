@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/registration")
+@RequestMapping (value = "/open/registrationMerchant")
 public class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
 
@@ -53,10 +53,10 @@ public class AccountRegistrationController {
     private EmailValidateService emailValidateService;
     private LoginController loginController;
 
-    @Value ("${registrationPage:registration}")
+    @Value ("${registrationPage:registrationMerchant}")
     private String registrationPage;
 
-    @Value ("${registrationSuccess:redirect:/open/registration/success.htm}")
+    @Value ("${registrationSuccess:redirect:/open/registrationMerchant/success.htm}")
     private String registrationSuccess;
 
     @Value ("${registrationSuccessPage:registrationsuccess}")
