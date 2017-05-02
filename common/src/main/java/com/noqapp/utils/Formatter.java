@@ -155,7 +155,6 @@ public final class Formatter {
     }
 
     public static boolean isValidCountryCode(String countryShortName) {
-        int countryCode = PHONE_INSTANCE.getCountryCodeForRegion(countryShortName);
-        return countryCode != 0;
+        return PHONE_INSTANCE.getCountryCodeForRegion(countryShortName) != 0;
     }
 }
