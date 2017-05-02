@@ -71,6 +71,9 @@
                             <c:if test="${errors.hasFieldErrors('birthday')}">
                                 <li><form:errors path="birthday" /></li>
                             </c:if>
+                            <c:if test="${errors.hasFieldErrors('gender')}">
+                                <li><form:errors path="gender" /></li>
+                            </c:if>
                             <c:if test="${errors.hasFieldErrors('mail')}">
                                 <li><form:errors path="mail" /></li>
                             </c:if>

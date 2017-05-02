@@ -26,7 +26,7 @@ import com.noqapp.utils.ParseJsonStringToMap;
 import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.helper.AvailabilityStatus;
-import com.noqapp.view.validator.UserRegistrationValidator;
+import com.noqapp.view.validator.AccountValidator;
 
 import java.io.IOException;
 
@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AccountRegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
 
-    private UserRegistrationValidator userRegistrationValidator;
+    private AccountValidator accountValidator;
     private AccountService accountService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
@@ -67,12 +67,12 @@ public class AccountRegistrationController {
 
     @Autowired
     public AccountRegistrationController(
-            UserRegistrationValidator userRegistrationValidator,
+            AccountValidator accountValidator,
             AccountService accountService,
             MailService mailService,
             EmailValidateService emailValidateService,
             LoginController loginController) {
-        this.userRegistrationValidator = userRegistrationValidator;
+        this.accountValidator = accountValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
@@ -94,7 +94,7 @@ public class AccountRegistrationController {
             MerchantRegistrationForm merchantRegistrationForm,
             BindingResult result
     ) {
-        userRegistrationValidator.validate(merchantRegistrationForm, result);
+        accountValidator.validate(merchantRegistrationForm, result);
         if (result.hasErrors()) {
             LOG.warn("validation fail");
             return registrationPage;
@@ -106,7 +106,7 @@ public class AccountRegistrationController {
 
         if (null != userProfile) {
             LOG.warn("account exists");
-            userRegistrationValidator.accountExists(merchantRegistrationForm, result);
+            accountValidator.accountExists(merchantRegistrationForm, result);
             merchantRegistrationForm.setAccountExists(true);
             return registrationPage;
         }
