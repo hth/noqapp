@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.utils.DateUtil;
 import com.noqapp.utils.Formatter;
 import com.noqapp.utils.Validate;
@@ -27,19 +28,22 @@ import com.noqapp.view.form.MerchantRegistrationForm;
         "PMD.LongVariable"
 })
 @Component
-public class UserRegistrationValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidator.class);
+public class AccountValidator implements Validator {
+    private static final Logger LOG = LoggerFactory.getLogger(AccountValidator.class);
 
-    @Value ("${UserRegistrationValidator.countryShortNameLength}")
-    private int countryShortNameLength;
-
-    @Value ("${UserRegistrationValidator.mailLength}")
+    @Value ("${AccountValidator.mailLength}")
     private int mailLength;
 
-    @Value ("${UserRegistrationValidator.nameLength}")
+    @Value ("${AccountValidator.nameLength}")
     private int nameLength;
 
-    @Value ("${UserRegistrationValidator.passwordLength}")
+    @Value ("${AccountValidator.genderLength}")
+    private int genderLength;
+
+    @Value ("${AccountValidator.countryShortNameLength}")
+    private int countryShortNameLength;
+
+    @Value ("${AccountValidator.passwordLength}")
     private int passwordLength;
 
     @Override
@@ -53,8 +57,8 @@ public class UserRegistrationValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last name"});
 
-        /** Example of validation message: Email Address cannot be left blank. */
-        /** Example of validation message: Email Address field.required. */
+        /* Example of validation message: Email Address cannot be left blank. */
+        /* Example of validation message: Email Address field.required. */
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mail", "field.required", new Object[]{"Email address"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", new Object[]{"Password"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "countryShortName", "field.required", new Object[]{"Country Code"});
@@ -100,6 +104,17 @@ public class UserRegistrationValidator implements Validator {
                         "field.email.address.not.valid",
                         new Object[]{userRegistration.getMail()},
                         "Email Address provided is not valid");
+            }
+
+            if (StringUtils.isNotBlank(userRegistration.getGender())) {
+                try {
+                    GenderEnum.valueOf(userRegistration.getGender());
+                } catch (IllegalArgumentException e) {
+                    errors.rejectValue("gender",
+                            "field.invalid",
+                            new Object[]{"Gender", userRegistration.getGender()},
+                            "Gender provided is not valid");
+                }
             }
 
             if (userRegistration.getMail() != null && userRegistration.getMail().length() <= mailLength) {
