@@ -143,10 +143,19 @@ public final class Formatter {
 
     public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
         try {
-            return PHONE_INSTANCE.getCountryCodeForRegion(countryShortName) + phone;
+            int countryCode = PHONE_INSTANCE.getCountryCodeForRegion(countryShortName);
+            if (countryCode != 0) {
+                return countryCode + phone;
+            }
+            throw new RuntimeException("Failed parsing country code");
         } catch (Exception e) {
-            LOG.error("Failed to parse phone={} for countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
-            throw new RuntimeException("Failed parsing phone number");
+            LOG.error("Failed to parse countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed parsing country code");
         }
+    }
+
+    public static boolean isValidCountryCode(String countryShortName) {
+        int countryCode = PHONE_INSTANCE.getCountryCodeForRegion(countryShortName);
+        return countryCode != 0;
     }
 }

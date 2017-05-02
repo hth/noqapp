@@ -65,15 +65,6 @@ public class AccountRegistrationController {
     @Value ("${recover:redirect:/open/forgot/recover.htm}")
     private String recover;
 
-    @Value ("${AccountRegistrationController.mailLength}")
-    private int mailLength;
-
-    @Value ("${AccountRegistrationController.nameLength}")
-    private int nameLength;
-
-    @Value ("${AccountRegistrationController.passwordLength}")
-    private int passwordLength;
-
     @Autowired
     public AccountRegistrationController(
             UserRegistrationValidator userRegistrationValidator,

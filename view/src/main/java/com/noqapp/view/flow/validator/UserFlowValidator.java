@@ -40,13 +40,13 @@ public class UserFlowValidator {
 
     @Autowired
     public UserFlowValidator(
-            @Value ("${AccountRegistrationController.mailLength}")
+            @Value ("${UserRegistrationValidator.mailLength}")
             int mailLength,
 
-            @Value ("${AccountRegistrationController.nameLength}")
+            @Value ("${UserRegistrationValidator.nameLength}")
             int nameLength,
 
-            @Value ("${AccountRegistrationController.passwordLength}")
+            @Value ("${UserRegistrationValidator.passwordLength}")
             int passwordLength,
 
             AccountService accountService,
