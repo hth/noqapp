@@ -145,7 +145,8 @@ public class AccountService {
             String countryShortName,
             String timeZone,
             String password,
-            String inviteCode
+            String inviteCode,
+            boolean phoneValidated
     ) {
         String phoneRaw = Formatter.phoneCleanup(phone);
         String phoneWithCountryCode = Formatter.phoneNumberWithCountryCode(phoneRaw, countryShortName);
@@ -166,6 +167,7 @@ public class AccountService {
                 );
                 userAccount.setAccountValidated(false);
                 userAccount.setAccountValidatedBeginDate();
+                userAccount.setPhoneValidated(phoneValidated);
                 userAccount.active();
                 userAccountManager.save(userAccount);
 
