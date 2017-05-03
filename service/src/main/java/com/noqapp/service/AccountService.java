@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.noqapp.domain.EmailValidateEntity;
+import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.InviteEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
@@ -23,6 +24,7 @@ import com.noqapp.domain.types.NotificationTypeEnum;
 import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.repository.ForgotRecoverManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
@@ -57,6 +59,7 @@ public class AccountService {
     private NotificationService notificationService;
     private EmailValidateService emailValidateService;
     private InviteService inviteService;
+    private ForgotRecoverManager forgotRecoverManager;
 
     @Autowired
     public AccountService(
@@ -67,8 +70,8 @@ public class AccountService {
             GenerateUserIdService generateUserIdService,
             NotificationService notificationService,
             EmailValidateService emailValidateService,
-            InviteService inviteService
-    ) {
+            InviteService inviteService,
+            ForgotRecoverManager forgotRecoverManager) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
@@ -77,6 +80,7 @@ public class AccountService {
         this.notificationService = notificationService;
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
+        this.forgotRecoverManager = forgotRecoverManager;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -476,5 +480,35 @@ public class AccountService {
         userProfileManager.save(userProfile);
 
         return userAccount;
+    }
+
+    /**
+     * Used in for sending authentication link to recover account in case of the lost password
+     *
+     * @param receiptUserId
+     * @return
+     */
+    ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
+        String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
+        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(receiptUserId, authenticationKey);
+        forgotRecoverManager.save(forgotRecoverEntity);
+        return forgotRecoverEntity;
+    }
+
+    public void invalidateAllEntries(String receiptUserId) {
+        forgotRecoverManager.invalidateAllEntries(receiptUserId);
+    }
+
+    public ForgotRecoverEntity findByAuthenticationKey(String key) {
+        return forgotRecoverManager.findByAuthenticationKey(key);
+    }
+
+    /**
+     * Called during forgotten password or during an invite.
+     *
+     * @param userAuthentication
+     */
+    public void updateAuthentication(UserAuthenticationEntity userAuthentication) {
+        userAuthenticationManager.save(userAuthentication);
     }
 }

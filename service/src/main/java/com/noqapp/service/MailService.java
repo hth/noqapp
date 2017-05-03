@@ -12,8 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.noqapp.domain.EmailValidateEntity;
+import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.MailEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.types.MailStatusEnum;
+import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.MailManager;
 import freemarker.template.TemplateException;
 
@@ -158,5 +162,85 @@ public class MailService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Send recover email to user of provided email id.
+     * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
+     *
+     * @param userId
+     */
+    public MailTypeEnum mailRecoverLink(String userId) {
+        UserAccountEntity userAccount = accountService.findByUserId(userId);
+        if (null == userAccount) {
+            LOG.warn("Could not recover user={}", userId);
+
+            Map<String, String> rootMap = new HashMap<>();
+            rootMap.put("contact_email", userId);
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
+
+            try {
+                MailEntity mail = new MailEntity()
+                        .setToMail(userId)
+                        .setSubject(accountNotFoundSubject)
+                        .setMessage(freemarkerService.freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap))
+                        .setMailStatus(MailStatusEnum.N);
+                mailManager.save(mail);
+
+                return MailTypeEnum.SUCCESS;
+            } catch (IOException | TemplateException exception) {
+                LOG.error("Account not found email={}", exception.getLocalizedMessage(), exception);
+            }
+
+            return MailTypeEnum.ACCOUNT_NOT_FOUND;
+        }
+
+        if (null != userAccount.getProviderId()) {
+            /** Cannot change password for social account. Well this condition is checked in Mobile Server too. */
+            LOG.warn("Social account user={} tried recovering password", userId);
+            return MailTypeEnum.SOCIAL_ACCOUNT;
+        }
+
+        if (userAccount.isAccountValidated()) {
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
+                    userAccount.getReceiptUserId());
+
+            Map<String, String> rootMap = new HashMap<>();
+            rootMap.put("to", userAccount.getName());
+            rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
+
+            try {
+                MailEntity mail = new MailEntity()
+                        .setToMail(userId)
+                        .setToName(userAccount.getName())
+                        .setSubject(mailRecoverSubject)
+                        .setMessage(freemarkerService.freemarkerToString("mail/account-recover.ftl", rootMap))
+                        .setMailStatus(MailStatusEnum.N);
+                mailManager.save(mail);
+
+                return MailTypeEnum.SUCCESS;
+            } catch (IOException | TemplateException exception) {
+                LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
+                return MailTypeEnum.FAILURE;
+            }
+        } else {
+            /** Since account is not validated, send account validation email. */
+            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
+                    userAccount.getReceiptUserId(),
+                    userAccount.getUserId());
+
+            boolean status = accountValidationMail(
+                    userAccount.getUserId(),
+                    userAccount.getName(),
+                    accountValidate.getAuthenticationKey());
+
+            if (status) {
+                return MailTypeEnum.ACCOUNT_NOT_VALIDATED;
+            }
+            return MailTypeEnum.FAILURE;
+        }
     }
 }
