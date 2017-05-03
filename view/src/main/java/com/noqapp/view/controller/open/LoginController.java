@@ -156,7 +156,7 @@ public class LoginController {
      * @param rid
      * @return
      */
-    public String continueLoginAfterRegistration(String rid) {
+    String continueLoginAfterRegistration(String rid) {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         Assert.notNull(userAccount, "UserAccount not found rid=" + rid);
 

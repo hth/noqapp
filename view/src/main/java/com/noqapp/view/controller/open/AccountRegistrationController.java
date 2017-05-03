@@ -183,7 +183,7 @@ public class AccountRegistrationController {
 
             RedirectAttributes redirectAttrs
     ) {
-        redirectAttrs.addFlashAttribute("userRegistrationForm", merchantRegistrationForm);
+        redirectAttrs.addFlashAttribute("merchantRegistrationForm", merchantRegistrationForm);
         return recover;
     }
 

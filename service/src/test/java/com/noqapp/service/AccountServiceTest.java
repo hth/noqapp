@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.noqapp.repository.ForgotRecoverManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
@@ -27,6 +28,7 @@ class AccountServiceTest {
     @Mock private NotificationService notificationService;
     @Mock private EmailValidateService emailValidateService;
     @Mock private InviteService inviteService;
+    @Mock private ForgotRecoverManager forgotRecoverManager;
 
     private AccountService accountService;
 
@@ -41,7 +43,8 @@ class AccountServiceTest {
                 generateUserIdService,
                 notificationService,
                 emailValidateService,
-                inviteService);
+                inviteService,
+                forgotRecoverManager);
     }
 
     @Test
