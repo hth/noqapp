@@ -57,7 +57,7 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.businessName")
+                            .source("registerBusiness.name")
                             .defaultText("Business Name cannot be empty")
                             .build());
             status = "failure";
@@ -90,7 +90,7 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.businessAddress")
+                            .source("registerBusiness.address")
                             .defaultText("Business Address cannot be empty")
                             .build());
             status = "failure";
@@ -100,7 +100,7 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.businessPhone")
+                            .source("registerBusiness.phone")
                             .defaultText("Business Phone cannot be empty")
                             .build());
             status = "failure";
@@ -108,17 +108,27 @@ public class BusinessFlowValidator {
 
         /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
-            DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
-                    externalService.getGeocodingResults(registerBusiness.getAddressStore()),
-                    registerBusiness.getAddressStore());
+            if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.addressStore")
+                                .defaultText("Store Address cannot be empty")
+                                .build());
+                status = "failure";
+            } else {
+                DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
+                        externalService.getGeocodingResults(registerBusiness.getAddressStore()),
+                        registerBusiness.getAddressStore());
 
-            if (decodedAddressStore.isNotEmpty()) {
-                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
-                registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
+                if (decodedAddressStore.isNotEmpty()) {
+                    registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
+                    registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
 
-                LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
-                String timeZone = externalService.findTimeZone(latLng);
-                registerBusiness.setTimeZoneStore(timeZone);
+                    LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
+                    String timeZone = externalService.findTimeZone(latLng);
+                    registerBusiness.setTimeZoneStore(timeZone);
+                }
             }
 
             if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
@@ -126,17 +136,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.displayName")
-                                .defaultText("Name cannot be empty. Example: Pharmacy, Driving License, Registration")
-                                .build());
-                status = "failure";
-            }
-
-            if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.addressStore")
-                                .defaultText("Stored Address cannot be empty")
+                                .defaultText("Name cannot be empty. Example: Pharmacy, Driving License, Registration Queue")
                                 .build());
                 status = "failure";
             }
@@ -149,18 +149,18 @@ public class BusinessFlowValidator {
                                 .defaultText("Store Phone cannot be empty")
                                 .build());
                 status = "failure";
-            }
-
-            if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.phoneStore")
-                                .defaultText("Store already registered with this phone number '"
-                                        + registerBusiness.getPhone()
-                                        + "'. Try recovery of you account using OTP or contact customer support")
-                                .build());
-                status = "failure";
+            } else {
+                if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.phoneStore")
+                                    .defaultText("Store already registered with this phone number '"
+                                            + registerBusiness.getPhone()
+                                            + "'. Try recovery of you account using OTP or contact customer support")
+                                    .build());
+                    status = "failure";
+                }
             }
 
             if (registerBusiness.getStartHourStore() == 0) {
@@ -168,7 +168,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.startHourStore")
-                                .defaultText("Store start time cannot be empty")
+                                .defaultText("Store Start Time cannot be empty")
                                 .build());
                 status = "failure";
             }
@@ -178,7 +178,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.endHourStore")
-                                .defaultText("Store close time cannot be empty")
+                                .defaultText("Store Close Time cannot be empty")
                                 .build());
                 status = "failure";
             }
@@ -187,8 +187,8 @@ public class BusinessFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerBusiness.tokenAvailableSince")
-                                .defaultText("Time from Token available cannot be empty")
+                                .source("registerBusiness.tokenAvailableFrom")
+                                .defaultText("Token Available Time cannot be empty. This is the time from when Token would be available to users.")
                                 .build());
                 status = "failure";
             }

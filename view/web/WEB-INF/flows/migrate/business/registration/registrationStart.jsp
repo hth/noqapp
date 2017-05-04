@@ -149,7 +149,7 @@
                     </div>
                     <div class="row_field">
                         <form:label path="tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Token Not Available Time</form:label>
+                                cssErrorClass="profile_label lb_error">Token Not Available After</form:label>
                         <form:input path="tokenNotAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
                     </div>
                     <div class="row_field">
