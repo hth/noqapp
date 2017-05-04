@@ -35,6 +35,10 @@ class RegistrationFlowActions {
             register.getRegisterBusiness().setAddressStore(null);
             register.getRegisterBusiness().setPhoneStore(null);
             register.getRegisterBusiness().setCountryShortNameStore(null);
+        } else {
+            if (register.getRegisterBusiness().getTokenNotAvailableFrom() == 0) {
+                register.getRegisterBusiness().setTokenNotAvailableFrom(register.getRegisterBusiness().getEndHourStore());
+            }
         }
     }
 
