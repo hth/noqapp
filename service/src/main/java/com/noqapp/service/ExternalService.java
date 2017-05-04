@@ -216,9 +216,13 @@ public class ExternalService {
 
                             boolean status = bizStoreManager.setNextRun(bizStore.getId(), zoneId, queueHistory);
                             if (status) {
-                                LOG.info("Update UTC time for store={} address={}", bizStore.getId(), bizStore.getAddress());
+                                LOG.info("Update next run UTC time for store={} address={}",
+                                        bizStore.getId(),
+                                        bizStore.getAddress());
                             } else {
-                                LOG.error("Update UTC time for store={} address={}", bizStore.getId(), bizStore.getAddress());
+                                LOG.error("Failed update next run UTC time for store={} address={}",
+                                        bizStore.getId(),
+                                        bizStore.getAddress());
                             }
                         }
 

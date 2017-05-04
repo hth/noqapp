@@ -132,7 +132,7 @@ public class BizStoreEntity extends BaseEntity {
 
     /* Used when running cron job. */
     @Field ("QH")
-    private Date queueHistory;
+    private Date queueHistory = new Date();
 
     //TODO Change to false after sending notification of change
     @Field ("CQ")
