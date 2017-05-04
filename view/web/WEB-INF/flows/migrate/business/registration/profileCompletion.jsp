@@ -98,8 +98,9 @@
                     <div class="row_field">
                         <form:label path="phone" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                        <form:input path="phone" size="20" cssClass="name_txt" readonly="true"/>
+                        <form:input path="phone" size="20" cssClass="name_txt" readonly="${register.registerUser.phoneValidated}"/>
                     </div>
+
 
                     <c:if test="${!register.registerUser.emailValidated}">
                     <div class="profile_label profile_label_note">
@@ -109,6 +110,14 @@
                         </p>
                         <p style="padding-top: 20px;">
                         To resend account validation email, click here.
+                        </p>
+                    </div>
+                    </c:if>
+
+                    <c:if test="${!register.registerUser.phoneValidated}">
+                    <div class="profile_label profile_label_note">
+                        <p>
+                            Your phone number has not been validated.
                         </p>
                     </div>
                     </c:if>
