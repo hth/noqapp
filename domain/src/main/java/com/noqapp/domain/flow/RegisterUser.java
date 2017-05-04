@@ -23,6 +23,7 @@ public class RegisterUser implements Serializable {
     private String phone;
     private String timeZone;
     private boolean emailValidated;
+    private boolean phoneValidated;
 
     private String birthday;
     private String password;
@@ -161,6 +162,15 @@ public class RegisterUser implements Serializable {
 
     public RegisterUser setEmailValidated(boolean emailValidated) {
         this.emailValidated = emailValidated;
+        return this;
+    }
+
+    public boolean isPhoneValidated() {
+        return phoneValidated;
+    }
+
+    public RegisterUser setPhoneValidated(boolean phoneValidated) {
+        this.phoneValidated = phoneValidated;
         return this;
     }
 

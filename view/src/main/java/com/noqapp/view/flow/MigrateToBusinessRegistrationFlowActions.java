@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
@@ -71,6 +72,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(rid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(userProfile.getEmail())
@@ -79,7 +81,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 .setAddress(userProfile.getAddress())
                 .setCountryShortName(userProfile.getCountryShortName())
                 .setPhone(userProfile.getPhone())
-                .setEmailValidated(accountService.findByReceiptUserId(rid).isAccountValidated());
+                .setEmailValidated(userAccount.isAccountValidated())
+                .setPhoneValidated(userAccount.isPhoneValidated());
         return register;
     }
 
