@@ -12,12 +12,15 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
+
+import java.util.Set;
 
 /**
  * User: hitender
@@ -106,6 +109,26 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
+        if (status.equalsIgnoreCase("success")) {
+            Set<BizStoreEntity> bizStores = bizService.bizSearch(
+                    registerBusiness.getName(),
+                    registerBusiness.getAddress(),
+                    registerBusiness.getPhoneWithCountryCode());
+
+            if (bizStores.size() != 0) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.name")
+                                .defaultText(
+                                        "Business Name already exist wth this name or address or phone. " +
+                                        "Please email us at contact@noqapp.com.")
+                                .build());
+                status = "failure";
+            }
+
+        }
+
         /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
             if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
@@ -136,7 +159,8 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.displayName")
-                                .defaultText("Name cannot be empty. Example: Pharmacy, Driving License, Registration Queue")
+                                .defaultText("Queue Name cannot be empty. " +
+                                        "Queue Names can be like: Pharmacy, Driving License, Dinner Registration")
                                 .build());
                 status = "failure";
             }
@@ -157,7 +181,7 @@ public class BusinessFlowValidator {
                                     .source("registerBusiness.phoneStore")
                                     .defaultText("Store already registered with this phone number '"
                                             + registerBusiness.getPhone()
-                                            + "'. Try recovery of you account using OTP or contact customer support")
+                                            + "'. Please email us at contact@noqapp.com.")
                                     .build());
                     status = "failure";
                 }

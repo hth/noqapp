@@ -30,7 +30,7 @@ class RegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(Register register) {
-        register.getRegisterUser().setPhone(Formatter.phoneCleanup(register.getRegisterUser().getPhone()));
+        register.getRegisterUser().setPhone(register.getRegisterUser().getPhoneNotFormatted());
     }
 
     @SuppressWarnings ("unused")

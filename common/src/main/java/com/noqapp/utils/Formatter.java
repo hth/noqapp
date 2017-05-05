@@ -92,7 +92,7 @@ public final class Formatter {
      * @param formatToCountry Format phone to a country type
      * @return Formatted phone string
      */
-    public static String phone(String phone, String formatToCountry) {
+    public static String phoneNationalFormat(String phone, String formatToCountry) {
         try {
             if (StringUtils.isBlank(phone)) {
                 LOG.debug("phone number blank");
@@ -140,7 +140,7 @@ public final class Formatter {
     }
 
     public static String phoneFormatter(String phone, String countryShortName) {
-        return Formatter.phone(phone, countryShortName);
+        return phoneNationalFormat(phone, countryShortName);
     }
 
     public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
@@ -175,5 +175,38 @@ public final class Formatter {
             LOG.error("Failed to parse phone={} reason={}", phone, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed parsing country code");
         }
+    }
+
+    /**
+     * Format phoneNationalFormat to international.
+     *
+     * @param phone
+     * @param formatToCountry
+     * @return
+     */
+    public static String phoneInternationalFormat(String phone, String formatToCountry) {
+        try {
+            if (StringUtils.isBlank(phone)) {
+                LOG.debug("phoneNationalFormat number blank");
+                return "";
+            }
+
+            Phonenumber.PhoneNumber phoneNumber;
+            if (StringUtils.isBlank(formatToCountry)) {
+                phoneNumber = PHONE_INSTANCE.parse(phone, FORMAT_TO_US);
+            } else {
+                phoneNumber = PHONE_INSTANCE.parse(phone, formatToCountry);
+            }
+            return PHONE_INSTANCE.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+        } catch (NumberParseException e) {
+            LOG.warn("Failed parsing phoneNationalFormat number={} reason={}", phone, e.getLocalizedMessage(), e);
+            return StringUtils.EMPTY;
+        }
+    }
+
+    public static String resetPhoneToRawFormat(String phone, String countryShortName) {
+        String internationalFormat = Formatter.phoneInternationalFormat(phone, countryShortName);
+        String withoutInternationalCode = Formatter.phoneStripCountryCode(internationalFormat);
+        return Formatter.phoneCleanup(withoutInternationalCode);
     }
 }
