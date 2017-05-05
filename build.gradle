@@ -468,8 +468,9 @@ task unzip(type: Copy, dependsOn: [':view:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) {
+task setUpProfileForJunit() {
     doLast {
+        delete buildDir
         activeProfilewarClassesDir.mkdirs()
         activeProfilewarConfDir.mkdirs()
         activeProfilewarFreemarkerDir.mkdirs()
