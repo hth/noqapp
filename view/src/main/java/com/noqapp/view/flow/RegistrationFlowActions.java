@@ -1,5 +1,10 @@
 package com.noqapp.view.flow;
 
+import org.bson.types.ObjectId;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.flow.Register;
@@ -13,6 +18,7 @@ import com.noqapp.utils.Formatter;
  * Date: 11/23/16 4:18 PM
  */
 class RegistrationFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationFlowActions.class);
 
     private ExternalService externalService;
     private BizService bizService;
@@ -75,32 +81,46 @@ class RegistrationFlowActions {
         bizName.setTimeZone(registerBusiness.getTimeZone());
         bizName.setMultiStore(registerBusiness.isMultiStore());
         validateAddress(bizName);
-        bizService.saveName(bizName);
 
-        /* Add a store. */
-        if (!registerBusiness.isMultiStore()) {
+        try {
+            bizService.saveName(bizName);
 
-            BizStoreEntity bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
-            if (null == bizStore) {
-                bizStore = BizStoreEntity.newInstance();
-                bizStore.setBizName(bizName);
-                bizStore.setDisplayName(registerBusiness.getDisplayName());
-                bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
-                bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
-                bizStore.setAddress(registerBusiness.getAddress());
-                bizStore.setTimeZone(registerBusiness.getTimeZone());
-                bizStore.setStartHour(registerBusiness.getStartHourStore());
-                bizStore.setEndHour(registerBusiness.getEndHourStore());
-                bizStore.setTokenAvailableFrom(registerBusiness.getTokenAvailableFrom());
-                bizStore.setTokenNotAvailableFrom(registerBusiness.getTokenNotAvailableFrom());
+            /* Add a store. */
+            if (!registerBusiness.isMultiStore()) {
 
-                //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
-                validateAddress(bizStore);
-                bizService.saveStore(bizStore);
-                /* Add timezone later as its missing id. */
-                addTimezone(bizStore);
+                BizStoreEntity bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
+                if (null == bizStore) {
+                    bizStore = BizStoreEntity.newInstance();
+                    bizStore.setBizName(bizName);
+                    bizStore.setDisplayName(registerBusiness.getDisplayName());
+                    bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
+                    bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
+                    bizStore.setAddress(registerBusiness.getAddress());
+                    bizStore.setTimeZone(registerBusiness.getTimeZone());
+                    bizStore.setStartHour(registerBusiness.getStartHourStore());
+                    bizStore.setEndHour(registerBusiness.getEndHourStore());
+                    bizStore.setTokenAvailableFrom(registerBusiness.getTokenAvailableFrom());
+                    bizStore.setTokenNotAvailableFrom(registerBusiness.getTokenNotAvailableFrom());
+                    bizStore.setCodeQR(ObjectId.get().toString());
+
+                    //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
+                    validateAddress(bizStore);
+                    try {
+                        bizService.saveStore(bizStore);
+                        /* Add timezone later as its missing id. */
+                        addTimezone(bizStore);
+                    } catch (Exception e) {
+                        LOG.error("Error saving store name={}, starting rollback...", bizName.getBusinessName());
+                        bizService.deleteBizName(bizName);
+                        LOG.info("Rollback successful");
+                        throw new RuntimeException("Error saving store");
+                    }
+                }
             }
+            return bizName;
+        } catch(Exception e) {
+            LOG.error("Error saving business");
+            throw new RuntimeException("Error saving business");
         }
-        return bizName;
     }
 }
