@@ -102,6 +102,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.65.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -227,7 +228,6 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-service.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -350,6 +350,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.65.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -475,7 +476,6 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -595,6 +595,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.65.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -720,7 +721,6 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -844,6 +844,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.65.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
+            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -969,7 +970,6 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -1590,6 +1590,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp_main.iml" group="noqapp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/noqapp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/noqapp_test.iml" group="noqapp" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_integration.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_main.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_main.iml" group="security" />
