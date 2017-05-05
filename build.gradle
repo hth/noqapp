@@ -146,11 +146,11 @@ subprojects {
     jar {
         manifest {
             attributes(
-                    'Implementation-Vendor': 'Receiptofi Inc',
+                    'Implementation-Vendor': 'NoQueue Inc',
                     'Implementation-Title': rootProject.name,
                     'Implementation-Version': allprojects.version + " $env",
                     'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
-                    'Copyright': '2012-2017, Receiptofi Inc'
+                    'Copyright': '2016-2017, NoQueue Inc'
             )
         }
     }
@@ -288,13 +288,13 @@ subprojects {
         compile "net.logstash.logback:logstash-logback-encoder:$logstashlogbackencoder"
         compile 'net.bull.javamelody:javamelody-core:1.+'
         /** Because using org.junit.Assert in code. */
-        compile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0-M4'
-        compile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+        compile 'org.junit.jupiter:junit-jupiter-engine:5.0.0-M4'
+        compile 'org.hamcrest:hamcrest-all:1.3'
 
-        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0-M4'
-        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-        testCompile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "$flapdoodle"
-        testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
+        testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
+        testCompile "org.mockito:mockito-all:1.10.19"
+        testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo$flapdoodle"
+        testCompile "org.springframework:spring-test:$springVersion"
     }
 
     test {
@@ -600,7 +600,7 @@ task createBuildInfoFile {
         buildDir.mkdirs()
         def buildInfoFile = new File("$buildDir/build-info.properties")
         Properties props = new Properties()
-        props.setProperty('owner', 'NoQApp Inc')
+        props.setProperty('owner', 'NoQueue Inc')
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
@@ -830,8 +830,8 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'NoQApp Web')
-                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -840,8 +840,8 @@ publishing {
                 license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'NoQApp')
-                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -852,8 +852,8 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'NoQApp Web')
-                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -862,8 +862,8 @@ publishing {
                 license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'NoQApp')
-                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -874,18 +874,18 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'NoQApp Web')
-                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
                 license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
-                license.appendNode('distribution', 'NoQApp private repository')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'NoQApp')
-                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -896,18 +896,18 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('name', 'NoQApp Web')
-                root.appendNode('description', 'NoQApp Inc applications jar')
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
                 license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
-                license.appendNode('distribution', 'NoQApp private repository')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
-                developer.appendNode('id', 'NoQApp')
-                developer.appendNode('name', 'NoQApp Inc')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
