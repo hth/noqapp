@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="icon">
-                        <form:label path="birthday" cssClass="cd-label">How old are you?</form:label>
+                        <form:label path="birthday" cssClass="cd-label">Date of Birth?</form:label>
                         <form:input path="birthday" cssClass="user" cssErrorClass="user error" />
                     </div>
 

@@ -23,12 +23,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      *
      * @param bizAddress
      * @param bizPhone
-     * @param bizNameEntity
+     * @param bizName
      * @return
      */
-    List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
+    List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizName);
 
-    List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizNameEntity);
+    List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizName);
 
     /**
      * Used for Ajax. Populates BizStoreEntity with just fieldName.

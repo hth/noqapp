@@ -149,6 +149,10 @@ public class UserFlowValidator {
 
         DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
         if (decodedAddress.isNotEmpty()) {
+            /* Reset to raw format before updating to new address and countryShortName. */
+            String updatedPhone = Formatter.resetPhoneToRawFormat(register.getRegisterUser().getPhone(), register.getRegisterUser().getCountryShortName());
+            register.getRegisterUser().setPhone(updatedPhone);
+
             register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
             register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
 

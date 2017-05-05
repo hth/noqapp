@@ -80,7 +80,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 .setLastName(userProfile.getLastName())
                 .setAddress(userProfile.getAddress())
                 .setCountryShortName(userProfile.getCountryShortName())
-                .setPhone(userProfile.getPhone())
+                .setPhone(userProfile.getPhoneRaw())
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
         return register;

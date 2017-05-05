@@ -124,7 +124,7 @@
                     </div>
                     <div class="row_field">
                         <form:label path="displayName" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Name</form:label>
+                                cssErrorClass="profile_label lb_error">Queue Name</form:label>
                         <form:input path="displayName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">

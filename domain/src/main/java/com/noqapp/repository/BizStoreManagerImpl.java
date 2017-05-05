@@ -96,7 +96,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(
             String bizAddress,
             String bizPhone,
-            BizNameEntity bizNameEntity
+            BizNameEntity bizName
     ) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotEmpty(bizAddress)) {
@@ -106,8 +106,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             criteriaA.and("PH").regex(bizPhone, "i");
         }
 
-        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
-            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             return mongoTemplate.find(
                     query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
                     BizStoreEntity.class
@@ -124,30 +124,30 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(
             String bizAddress,
             String bizPhone,
-            BizNameEntity bizNameEntity
+            BizNameEntity bizName
     ) {
         Query query = null;
-        if (StringUtils.isNotEmpty(bizAddress)) {
+        if (StringUtils.isNotBlank(bizAddress) && StringUtils.isNotBlank(bizPhone)) {
+            query = query(
+                    new Criteria().orOperator(
+                            where("AD").regex("^" + bizAddress, "i"),
+                            where("PH").regex("^" + bizPhone, "i"))
+            );
+        } else if (StringUtils.isNotBlank(bizAddress)) {
             query = query(where("AD").regex("^" + bizAddress, "i"));
-        }
-        if (StringUtils.isNotEmpty(bizPhone)) {
-            Criteria criteria = where("PH").regex("^" + bizPhone, "i");
-            if (null == query) {
-                query = query(criteria);
-            } else {
-                query.addCriteria(criteria);
-            }
+        } else if (StringUtils.isNotBlank(bizPhone)) {
+            query = query(where("PH").regex("^" + bizPhone, "i"));
         }
 
-        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
-            Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+            Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             if (null == query) {
                 query = query(criteriaA);
             } else {
                 query.addCriteria(criteriaA);
             }
         }
-        Assert.notNull(query);
+        Assert.notNull(query, "Query cannot be null");
         return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class);
     }
 
