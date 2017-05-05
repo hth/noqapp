@@ -2,8 +2,6 @@ package com.noqapp.service.emp;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +71,6 @@ public class EmpLandingService {
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         for (BizStoreEntity bizStore : bizStores) {
             if (StringUtils.isBlank(bizStore.getCodeQR())) {
-                bizStore.setCodeQR(ObjectId.get().toString());
                 bizService.saveStore(bizStore);
 
                 //TODO remove me as this as to be done by cron job. Temp way of creating

@@ -110,19 +110,25 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             throws MigrateToBusinessRegistrationException {
         try {
             updateUserProfile(register);
-            BizNameEntity bizName = registerBusinessDetails(register);
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
-            if (businessUser == null) {
-                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.MER_ADMIN);
-                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
-            }
-            businessUser
-                    .setBizName(bizName)
-                    .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+            try {
+                BizNameEntity bizName = registerBusinessDetails(register);
+                BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
+                if (businessUser == null) {
+                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.MER_ADMIN);
+                    businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+                }
+                businessUser
+                        .setBizName(bizName)
+                        .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
-            businessUserService.save(businessUser);
-            register.getRegisterBusiness().setBusinessUser(businessUser);
-            return register;
+                businessUserService.save(businessUser);
+                register.getRegisterBusiness().setBusinessUser(businessUser);
+                return register;
+            } catch (Exception e) {
+                LOG.error("Error adding business rid={} reason={}",
+                        register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
+                throw new MigrateToBusinessRegistrationException("Error adding business", e);
+            }
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
                     register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);

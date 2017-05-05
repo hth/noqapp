@@ -1,6 +1,8 @@
 package com.noqapp.utils;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.getInstance;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -86,7 +88,7 @@ public final class Formatter {
     /**
      * Helps format phone numbers.
      *
-     * @param phone Phone number
+     * @param phone           Phone number
      * @param formatToCountry Format phone to a country type
      * @return Formatted phone string
      */
@@ -149,12 +151,29 @@ public final class Formatter {
             }
             throw new RuntimeException("Failed parsing country code");
         } catch (Exception e) {
-            LOG.error("Failed to parse countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
+            LOG.error("Failed to parse phone={} countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed parsing country code");
         }
     }
 
     public static boolean isValidCountryCode(String countryShortName) {
         return PHONE_INSTANCE.getCountryCodeForRegion(countryShortName) != 0;
+    }
+
+    /**
+     * Removes country code from phone.
+     *
+     * @param phone should begin with +
+     * @return
+     */
+    public static String phoneStripCountryCode(String phone) {
+        assertThat(phone, containsString("+"));
+        try {
+            Phonenumber.PhoneNumber numberProto = PHONE_INSTANCE.parse(phone, "");
+            return StringUtils.removeFirst(phone, String.valueOf(numberProto.getCountryCode()));
+        } catch (NumberParseException e) {
+            LOG.error("Failed to parse phone={} reason={}", phone, e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed parsing country code");
+        }
     }
 }

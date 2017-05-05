@@ -1269,6 +1269,7 @@
         <element id="file-copy" path="$PROJECT_DIR$/view/web/404.html" />
         <element id="file-copy" path="$PROJECT_DIR$/view/web/favicon.ico" />
         <element id="file-copy" path="$PROJECT_DIR$/view/web/robots.txt" />
+        <element id="file-copy" path="$PROJECT_DIR$/view/web/410.html" />
       </root>
     </artifact>
   </component>
