@@ -75,11 +75,11 @@ public class BizService {
 
         if (StringUtils.isNotEmpty(businessName)) {
             List<BizNameEntity> bizNameEntities = bizNameManager.findAllBizWithMatchingName(businessName);
-            for (BizNameEntity bizNameEntity : bizNameEntities) {
+            for (BizNameEntity bizName : bizNameEntities) {
                 List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(
                         bizAddress,
                         bizPhone,
-                        bizNameEntity);
+                        bizName);
                 bizStoreEntities.addAll(bizStores);
             }
         } else {
