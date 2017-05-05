@@ -124,7 +124,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(
             String bizAddress,
             String bizPhone,
-            BizNameEntity bizNameEntity
+            BizNameEntity bizName
     ) {
         Query query = null;
         if (StringUtils.isNotEmpty(bizAddress)) {
@@ -139,15 +139,15 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             }
         }
 
-        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
-            Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+            Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             if (null == query) {
                 query = query(criteriaA);
             } else {
                 query.addCriteria(criteriaA);
             }
         }
-        Assert.notNull(query);
+        Assert.notNull(query, "Query cannot be null");
         return mongoTemplate.find(query.limit(PaginationEnum.TEN.getLimit()), BizStoreEntity.class);
     }
 
