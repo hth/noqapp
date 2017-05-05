@@ -96,7 +96,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(
             String bizAddress,
             String bizPhone,
-            BizNameEntity bizNameEntity
+            BizNameEntity bizName
     ) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotEmpty(bizAddress)) {
@@ -106,8 +106,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             criteriaA.and("PH").regex(bizPhone, "i");
         }
 
-        if (bizNameEntity != null && StringUtils.isNotEmpty(bizNameEntity.getId())) {
-            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+            Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             return mongoTemplate.find(
                     query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
                     BizStoreEntity.class
