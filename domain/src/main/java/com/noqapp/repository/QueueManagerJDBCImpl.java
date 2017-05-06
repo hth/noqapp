@@ -2,6 +2,9 @@ package com.noqapp.repository;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.mapper.QueueRowMapper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +33,8 @@ import javax.sql.DataSource;
 })
 @Repository
 public class QueueManagerJDBCImpl implements QueueManagerJDBC {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
+
     private static final String insert =
             "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D)" +
                     " VALUES " +
@@ -96,12 +102,24 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> getByDid(String did) {
-        return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
+        LOG.info("Fetch history by did={}", did);
+        try {
+            return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
+        } catch(Exception e) {
+            LOG.error("Error did={} reason={}", did, e.getLocalizedMessage(), e);
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public List<QueueEntity> getByDid(String did, Date lastAccessed) {
-        return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed}, new QueueRowMapper());
+        LOG.info("Fetch history by did={} lastAccessed={}", did, lastAccessed);
+        try {
+            return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed}, new QueueRowMapper());
+        } catch(Exception e) {
+            LOG.error("Error did={} lastAccessed={} reason={}", did, lastAccessed, e.getLocalizedMessage(), e);
+            return new ArrayList<>();
+        }
     }
 
     @Override
