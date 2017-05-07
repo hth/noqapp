@@ -80,6 +80,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("st")
+    private String servicedTime;
+
     @JsonProperty ("u")
     private String createDate;
 
@@ -96,6 +99,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
+        this.servicedTime = jsonQueue.getServicedTime();
         this.createDate = jsonQueue.getCreated();
 
         this.queueStatus = queueStatus;
@@ -115,6 +119,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = bizStore.getTopic();
         //Skipped serving number
         //Skipped last number
+        this.servicedTime = DateFormatUtils.format(queue.getServicedTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         this.token = queue.getTokenNumber();
