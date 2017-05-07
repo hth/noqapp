@@ -1,11 +1,16 @@
 package com.noqapp.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.noqapp.domain.types.QueueUserStateEnum;
+
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +30,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "queue_tn_idx", def = "{'QR' : -1, 'TN': -1}", unique = true, background = true)
 })
 public class QueueEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueEntity.class);
 
     @NotNull
     @Field ("QR")
@@ -65,6 +71,9 @@ public class QueueEntity extends BaseEntity {
 
     @Field ("HR")
     private int hoursSaved;
+
+    @Field ("ST")
+    private Date servicedTime;
 
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
@@ -136,5 +145,19 @@ public class QueueEntity extends BaseEntity {
 
     public void setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+    }
+
+    public Date getServicedTime() {
+        switch (queueUserState) {
+            case A:
+            case Q:
+                return getCreated();
+            case N:
+            case S:
+                return servicedTime;
+            default:
+                LOG.error("Reached un-supported condition queueUserState={}", queueUserState);
+                return getCreated();
+        }
     }
 }

@@ -81,6 +81,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("st")
+    private String servicedTime;
+
     @JsonProperty ("u")
     private String created;
 
@@ -206,6 +209,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
+    }
+
+    public String getServicedTime() {
+        return servicedTime;
+    }
+
+    public JsonQueue setServicedTime(Date servicedTime) {
+        this.servicedTime = DateFormatUtils.format(servicedTime, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
     }
 
