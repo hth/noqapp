@@ -48,6 +48,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("sa")
     private String storeAddress;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty ("p")
     private String storePhone;
 
@@ -85,6 +88,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
         this.storeAddress = jsonQueue.getStoreAddress();
+        this.countryShortName = jsonQueue.getCountryShortName();
         this.storePhone = jsonQueue.getStorePhone();
         this.tokenAvailableFrom = jsonQueue.getTokenAvailableFrom();
         this.startHour = jsonQueue.getStartHour();
@@ -103,6 +107,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = queue.getDisplayName();
         this.storeAddress = bizStore.getAddress();
+        this.countryShortName = bizStore.getCountryShortName();
         this.storePhone = bizStore.getPhone();
         this.tokenAvailableFrom = bizStore.getTokenAvailableFrom();
         this.startHour = bizStore.getStartHour();
