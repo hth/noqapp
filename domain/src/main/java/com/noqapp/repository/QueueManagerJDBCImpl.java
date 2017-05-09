@@ -86,6 +86,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             namedParameters.addValue("ns", queue.isNotifiedOnService() ? 1 : 0);
             namedParameters.addValue("ra", queue.getRatingCount());
             namedParameters.addValue("hr", queue.getHoursSaved());
+            namedParameters.addValue("st", queue.getServicedTime());
 
             namedParameters.addValue("v", queue.getVersion());
             namedParameters.addValue("u", queue.getUpdated());
