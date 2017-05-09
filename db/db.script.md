@@ -44,3 +44,9 @@ Set default from 0 to 1000
     ADD COLUMN `HR` TINYINT(1) NULL DEFAULT NULL AFTER `RA`,
     ADD COLUMN `ST` DATETIME NULL DEFAULT NULL AFTER `HR`;
     
+#### Insert System Date
+    
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE noqapp_test.QUEUE set ST =  NOW();
+    SET SQL_SAFE_UPDATES = 1;
+    
