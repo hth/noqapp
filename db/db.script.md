@@ -22,6 +22,7 @@ Set default from 0 to 1000
         NS TINYINT(1),
         RA TINYINT(1),
         HR TINYINT(1),
+        ST DATETIME,
         V INT(11),
         U DATETIME,
         C DATETIME,
@@ -40,5 +41,6 @@ Set default from 0 to 1000
     
     ALTER TABLE `noqapp_test`.`QUEUE` 
     ADD COLUMN `RA` TINYINT(1) NULL DEFAULT NULL AFTER `NS`,
-    ADD COLUMN `HR` TINYINT(1) NULL DEFAULT NULL AFTER `RA`;
+    ADD COLUMN `HR` TINYINT(1) NULL DEFAULT NULL AFTER `RA`,
+    ADD COLUMN `ST` DATETIME NULL DEFAULT NULL AFTER `HR`;
     

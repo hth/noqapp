@@ -80,7 +80,7 @@ public class QueueManagerImpl implements QueueManager {
 
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("QS", QueueUserStateEnum.A).set("A", false)),
+                entityUpdate(update("QS", QueueUserStateEnum.A).set("ST", new Date()).set("A", false)),
                 QueueEntity.class,
                 TABLE
         );

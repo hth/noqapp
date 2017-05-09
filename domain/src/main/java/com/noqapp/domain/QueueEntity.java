@@ -149,9 +149,9 @@ public class QueueEntity extends BaseEntity {
 
     public Date getServicedTime() {
         switch (queueUserState) {
-            case A:
             case Q:
                 return getCreated();
+            case A:
             case N:
             case S:
                 return servicedTime;
