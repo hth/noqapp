@@ -124,4 +124,26 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         this.token = queue.getTokenNumber();
     }
+
+    @Override
+    public String toString() {
+        return "JsonTokenAndQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", token=" + token +
+                ", queueStatus=" + queueStatus +
+                ", servicedTime='" + servicedTime + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
+    }
 }

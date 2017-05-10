@@ -42,4 +42,11 @@ public class JsonTokenAndQueueList extends AbstractDomain {
     public void setTokenAndQueues(List<JsonTokenAndQueue> tokenAndQueues) {
         this.tokenAndQueues = tokenAndQueues;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTokenAndQueueList{" +
+                "tokenAndQueues=" + tokenAndQueues +
+                '}';
+    }
 }
