@@ -150,6 +150,7 @@ public class QueueEntity extends BaseEntity {
     public Date getServicedTime() {
         switch (queueUserState) {
             case Q:
+                LOG.info("{} insert date {}", queueUserState, getCreated());
                 return getCreated();
             case A:
             case N:
