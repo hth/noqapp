@@ -161,4 +161,8 @@ public class QueueEntity extends BaseEntity {
                 return getCreated();
         }
     }
+
+    public void setServicedTime(Date servicedTime) {
+        this.servicedTime = servicedTime;
+    }
 }
