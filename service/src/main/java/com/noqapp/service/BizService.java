@@ -66,8 +66,8 @@ public class BizService {
         return bizStoreManager.getById(storeId);
     }
 
-    public void saveStore(BizStoreEntity bizStoreEntity) {
-        bizStoreManager.save(bizStoreEntity);
+    public void saveStore(BizStoreEntity bizStore) {
+        bizStoreManager.save(bizStore);
     }
 
     public Set<BizStoreEntity> bizSearch(String businessName, String bizAddress, String bizPhone) {
