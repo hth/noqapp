@@ -218,9 +218,22 @@ public class QueueManagerImpl implements QueueManager {
     public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
         Query query;
         if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("TN").is(token).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q).and("RID").is(rid));
+            query = query(
+                    where("QR").is(codeQR)
+                            .and("TN").is(token)
+                            .and("DID").is(did)
+                            .and("QS").ne(QueueUserStateEnum.Q)
+                            .and("RA").is(0)
+                            .and("HR").is(0)
+                            .and("RID").is(rid));
         } else {
-            query = query(where("QR").is(codeQR).and("TN").is(token).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q));
+            query = query(
+                    where("QR").is(codeQR)
+                            .and("TN").is(token)
+                            .and("DID").is(did)
+                            .and("QS").ne(QueueUserStateEnum.Q)
+                            .and("RA").is(0)
+                            .and("HR").is(0));
         }
 
         return mongoTemplate.updateFirst(
