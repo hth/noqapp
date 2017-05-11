@@ -70,39 +70,35 @@ public class EmpLandingService {
 
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         for (BizStoreEntity bizStore : bizStores) {
-            if (StringUtils.isBlank(bizStore.getCodeQR())) {
-                bizService.saveStore(bizStore);
-
-                //TODO remove me as this as to be done by cron job. Temp way of creating
-                //For all registered false run job
-                if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
-                    tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
-                    bizService.saveStore(bizStore);
-                }
-
-                /* Create relation for easy access. */
-                BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                        businessUser.getReceiptUserId(),
-                        bizStore.getId(),
-                        bizStore.getBizName().getId(),
-                        bizStore.getCodeQR());
-                businessUserStoreService.save(businessUserStore);
-                //End cron job code
-
-                LOG.info("added QR for rid={} bizName={} queueName={} topic={} bizStore={} ",
-                        rid,
-                        businessUser.getBizName().getBusinessName(),
-                        bizStore.getDisplayName(),
-                        bizStore.getTopic(),
-                        bizStore.getId());
+            //TODO remove me as this as to be done by cron job. Temp way of creating
+            //For all registered false run job
+            if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
+                tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
             }
 
-            if (1 < bizStores.size()) {
-                LOG.warn("Found stores more than 1, rid={} bizName={}", rid, businessUser.getBizName().getBusinessName());
-            }
+            /* Create relation for easy access. */
+            BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
+                    businessUser.getReceiptUserId(),
+                    bizStore.getId(),
+                    bizStore.getBizName().getId(),
+                    bizStore.getCodeQR());
+            businessUserStoreService.save(businessUserStore);
+            //End cron job code
+
+            LOG.info("added QR for rid={} bizName={} queueName={} topic={} bizStore={} ",
+                    rid,
+                    businessUser.getBizName().getBusinessName(),
+                    bizStore.getDisplayName(),
+                    bizStore.getTopic(),
+                    bizStore.getId());
+        }
+
+        if (1 < bizStores.size()) {
+            LOG.warn("Found stores more than 1, rid={} bizName={}", rid, businessUser.getBizName().getBusinessName());
         }
     }
 
+    //TODO
     public void rejectBusiness() {
 
     }

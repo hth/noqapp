@@ -53,9 +53,14 @@ public class TokenQueueService {
 
     //TODO has to create by cron job
     public void create(String codeQR, String topic, String displayName) {
-        TokenQueueEntity token = new TokenQueueEntity(topic, displayName);
-        token.setId(codeQR);
-        tokenQueueManager.save(token);
+        try {
+            TokenQueueEntity token = new TokenQueueEntity(topic, displayName);
+            token.setId(codeQR);
+            tokenQueueManager.save(token);
+        } catch (Exception e) {
+            LOG.error("Failed creating TokenQueue codeQR={} topic={} displayName={}", codeQR, topic, displayName);
+            throw new RuntimeException("Failed creating TokenQueue");
+        }
     }
 
     @Mobile
