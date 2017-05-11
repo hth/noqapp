@@ -16,6 +16,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 /**
  * User: hitender
@@ -60,8 +61,11 @@ public class FirebaseService {
         Response response = null;
         try {
             response = client.newCall(request).execute();
+        } catch (UnknownHostException e) {
+            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            return false;
         } catch (IOException e) {
-            LOG.error("Error making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
             return false;
         } finally {
             if (response != null) {
