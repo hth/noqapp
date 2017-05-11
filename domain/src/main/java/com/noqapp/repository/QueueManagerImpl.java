@@ -215,12 +215,12 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved) {
+    public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
         Query query;
         if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q).and("RID").is(rid));
+            query = query(where("QR").is(codeQR).and("TN").is(token).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q).and("RID").is(rid));
         } else {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("TN").is(token).and("DID").is(did).and("QS").ne(QueueUserStateEnum.Q));
         }
 
         return mongoTemplate.updateFirst(
@@ -228,6 +228,6 @@ public class QueueManagerImpl implements QueueManager {
                 entityUpdate(update("RA", ratingCount).set("HR", hoursSaved)),
                 QueueEntity.class,
                 TABLE
-        ).getN() > 1;
+        ).getN() > 0;
     }
 }
