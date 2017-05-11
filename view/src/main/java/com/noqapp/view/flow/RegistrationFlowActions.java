@@ -42,7 +42,7 @@ class RegistrationFlowActions {
             register.getRegisterBusiness().setPhoneStore(null);
             register.getRegisterBusiness().setCountryShortNameStore(null);
         } else {
-            if (register.getRegisterBusiness().getTokenNotAvailableFrom() == 0) {
+            if (0 == register.getRegisterBusiness().getTokenNotAvailableFrom()) {
                 register.getRegisterBusiness().setTokenNotAvailableFrom(register.getRegisterBusiness().getEndHourStore());
             }
         }
