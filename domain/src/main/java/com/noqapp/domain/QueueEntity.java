@@ -157,28 +157,12 @@ public class QueueEntity extends BaseEntity {
             case S:
                 return servicedTime;
             default:
-                LOG.error("Reached un-supported get condition queueUserState={}", queueUserState);
+                LOG.error("Reached un-supported condition queueUserState={}", queueUserState);
                 return getCreated();
         }
     }
 
     public void setServicedTime(Date servicedTime) {
         this.servicedTime = servicedTime;
-
-        if (servicedTime == null) {
-            switch (queueUserState) {
-                case Q:
-                    LOG.info("{} insert date {}", queueUserState, getCreated());
-                    this.servicedTime = getCreated();
-                    break;
-                case A:
-                case N:
-                case S:
-                    break;
-                default:
-                    LOG.error("Reached un-supported set condition queueUserState={}", queueUserState);
-                    this.servicedTime = getCreated();
-            }
-        }
     }
 }
