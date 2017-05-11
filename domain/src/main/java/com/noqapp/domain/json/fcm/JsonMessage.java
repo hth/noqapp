@@ -35,6 +35,7 @@ import com.noqapp.domain.json.fcm.data.JsonNotification;
 public class JsonMessage extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMessage.class);
 
+    /* Can be topic or token. */
     @JsonProperty ("to")
     private String to;
 
@@ -51,7 +52,7 @@ public class JsonMessage extends AbstractDomain {
     private JsonNotification notification;
 
     /**
-     * @param to topic
+     * @param to topic or token
      */
     public JsonMessage(String to) {
         this.to = to;
