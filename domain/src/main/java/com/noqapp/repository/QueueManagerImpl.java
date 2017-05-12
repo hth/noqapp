@@ -154,16 +154,30 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllByDid(String did) {
+    public List<QueueEntity> findAllQueuedByDid(String did) {
         return mongoTemplate.find(
                 query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
 
-    public List<QueueEntity> findAllByRid(String rid) {
+    public List<QueueEntity> findAllQueuedByRid(String rid) {
         return mongoTemplate.find(
                 query(where("RID").is(rid).and("QS").is(QueueUserStateEnum.Q)),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    public List<QueueEntity> findAllNotQueuedByDid(String did) {
+        return mongoTemplate.find(
+                query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    public List<QueueEntity> findAllNotQueuedByRid(String rid) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid).and("QS").ne(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }

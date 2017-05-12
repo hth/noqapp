@@ -40,7 +40,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @return
      */
     @Mobile
-    List<QueueEntity> findAllByDid(String did);
+    List<QueueEntity> findAllQueuedByDid(String did);
 
     /**
      * Find all based on registered user.
@@ -49,7 +49,13 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @return
      */
     @Mobile
-    List<QueueEntity> findAllByRid(String rid);
+    List<QueueEntity> findAllQueuedByRid(String rid);
+
+    @Mobile
+    List<QueueEntity> findAllNotQueuedByDid(String did);
+
+    @Mobile
+    List<QueueEntity> findAllNotQueuedByRid(String rid);
 
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
