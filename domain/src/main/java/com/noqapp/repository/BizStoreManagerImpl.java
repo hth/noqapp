@@ -6,8 +6,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.mongodb.WriteResult;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
@@ -257,16 +255,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean setNextRun(String id, String zoneId, Date queueHistory) {
-        LOG.info("Set next run for id={} zoneId={} queueHistory={}", id, zoneId, queueHistory);
-        WriteResult writeResult = mongoTemplate.updateFirst(
+    public boolean setNextRun(String id, String zoneId, Date queueHistoryNextRun) {
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
+        return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("TZ", zoneId).set("QH", queueHistory)),
+                entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun)),
                 BizStoreEntity.class,
                 TABLE
-        );
-
-        return writeResult.getN() > 0;
+        ).getN() > 0;
     }
 
     @Override
