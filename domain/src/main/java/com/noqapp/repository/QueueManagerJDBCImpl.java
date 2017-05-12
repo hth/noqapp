@@ -36,9 +36,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D)" +
+            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, ST, V, U, C, A, D)" +
                     " VALUES " +
-                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:v,:u,:c,:a,:d)";
+                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:st,:v,:u,:c,:a,:d)";
 
     private static final String findByRid =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
