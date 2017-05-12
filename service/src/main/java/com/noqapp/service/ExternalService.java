@@ -209,18 +209,20 @@ public class ExternalService {
                         @Override
                         public void onResult(TimeZone timeZone) {
                             String zoneId = timeZone.toZoneId().getId();
-                            Date queueHistory = computeNextRunTimeAtUTC(
+                            Date queueHistoryNextRun = computeNextRunTimeAtUTC(
                                     timeZone,
                                     bizStore.storeClosingHourOfDay(),
                                     bizStore.storeClosingMinuteOfDay());
 
-                            boolean status = bizStoreManager.setNextRun(bizStore.getId(), zoneId, queueHistory);
+                            boolean status = bizStoreManager.setNextRun(bizStore.getId(), zoneId, queueHistoryNextRun);
                             if (status) {
-                                LOG.info("Update next run UTC time for store={} address={}",
+                                LOG.info("Successful next run set UTC time={} for store={} address={}",
+                                        queueHistoryNextRun,
                                         bizStore.getId(),
                                         bizStore.getAddress());
                             } else {
-                                LOG.error("Failed update next run UTC time for store={} address={}",
+                                LOG.error("Failed update next run UTC time={} for store={} address={}",
+                                        queueHistoryNextRun,
                                         bizStore.getId(),
                                         bizStore.getAddress());
                             }

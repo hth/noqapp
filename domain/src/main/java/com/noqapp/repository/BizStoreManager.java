@@ -102,10 +102,10 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      *
      * @param id
      * @param zoneId
-     * @param queueHistory
+     * @param queueHistoryNextRun
      * @return
      */
-    boolean setNextRun(String id, String zoneId, Date queueHistory);
+    boolean setNextRun(String id, String zoneId, Date queueHistoryNextRun);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 }
