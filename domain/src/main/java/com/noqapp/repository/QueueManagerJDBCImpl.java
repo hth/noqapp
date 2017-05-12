@@ -41,22 +41,22 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:st,:v,:u,:c,:a,:d)";
 
     private static final String findByRid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, ST, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ?";
 
     private static final String findByRidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, ST, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ? AND U >= ?";
 
     private static final String findByDid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, ST, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ?";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, V, U, C, A, D" +
+            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, ST, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? AND U >= ?";
 
