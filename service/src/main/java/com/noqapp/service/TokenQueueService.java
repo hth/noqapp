@@ -78,7 +78,7 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid) {
-        QueueEntity queue = queueManager.findOne(codeQR, did, rid);
+        QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
 
         /* Either not registered or registered but has been serviced so get new token. */
         if (null == queue || QueueUserStateEnum.Q != queue.getQueueUserState()) {
