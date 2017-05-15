@@ -131,7 +131,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         if (StringUtils.isBlank(rid)) {
             query = query(where("DID").is(did));
         } else {
-            query = query(where("RID").is(rid).and("DID").is(did));
+            query = query(
+                    where("DID").is(did)
+                            .orOperator(
+                                    where("RID").exists(false),
+                                    where("RID").is(rid)
+                            ));
         }
 
         return mongoTemplate.findAndModify(
