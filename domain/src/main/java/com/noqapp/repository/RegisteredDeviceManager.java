@@ -15,17 +15,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     String findFCMToken(String rid, String did);
 
     /**
-     * If updates are available then return device and mark the device as inactive else return null
-     *
-     * @param rid
-     * @param did
-     * @return
-     */
-    @SuppressWarnings ("unused")
-    @Mobile
-    RegisteredDeviceEntity lastAccessed(String rid, String did);
-
-    /**
      * Update the token for a particular device id. Update token every time the request comes in.
      *
      * @param rid
