@@ -80,8 +80,8 @@ public class TokenQueueService {
     public JsonToken getNextToken(String codeQR, String did, String rid) {
         QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
 
-        /* Either not registered or registered but has been serviced so get new token. */
-        if (null == queue || QueueUserStateEnum.Q != queue.getQueueUserState()) {
+        /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
+        if (null == queue) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
             switch (tokenQueue.getQueueStatus()) {
