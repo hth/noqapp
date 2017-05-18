@@ -18,6 +18,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -60,6 +62,7 @@ public final class Formatter {
     private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();
     private static final NumberFormat CURRENCY_INSTANCE = FormatterSingleton.INSTANCE.currencyInstance();
     private static final ScriptEngine SCRIPT_INSTANCE = FormatterSingleton.INSTANCE.engine();
+    private static Map<String, Locale> localeMap;
 
     private Formatter() {
     }
@@ -168,9 +171,20 @@ public final class Formatter {
      */
     public static String phoneStripCountryCode(String phone) {
         assertThat(phone, containsString("+"));
+        return StringUtils.removeFirst(phone, String.valueOf(findCountryCode(phone)));
+    }
+
+    /**
+     * Parse for country code from phone.
+     *
+     * @param phone should begin with +
+     * @return
+     */
+    public static int findCountryCode(String phone) {
+        assertThat(phone, containsString("+"));
         try {
-            Phonenumber.PhoneNumber numberProto = PHONE_INSTANCE.parse(phone, "");
-            return StringUtils.removeFirst(phone, String.valueOf(numberProto.getCountryCode()));
+            Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, "");
+            return phoneNumber.getCountryCode();
         } catch (NumberParseException e) {
             LOG.error("Failed to parse phone={} reason={}", phone, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed parsing country code");
@@ -208,5 +222,31 @@ public final class Formatter {
         String internationalFormat = Formatter.phoneInternationalFormat(phone, countryShortName);
         String withoutInternationalCode = Formatter.phoneStripCountryCode(internationalFormat);
         return Formatter.phoneCleanup(withoutInternationalCode);
+    }
+
+    /**
+     * Gets ISO country short name for international number supplied.
+     *
+     * @param countryCode
+     * @return
+     */
+    public static String getCountryShortNameFromCountryCode(int countryCode) {
+        String countryShortName = PHONE_INSTANCE.getRegionCodeForCountryCode(countryCode);
+        if ("ZZ".equalsIgnoreCase(countryShortName)) {
+            LOG.error("Failed to find countryShortName for countryCode={}", countryCode);
+            throw new RuntimeException("Cannot find Country ISO code");
+        }
+
+        return countryShortName;
+    }
+
+    /**
+     * Gets ISO country short name for international number supplied.
+     *
+     * @param phone
+     * @return
+     */
+    public static String getCountryShortNameFromInternationalPhone(String phone) {
+        return getCountryShortNameFromCountryCode(findCountryCode(phone));
     }
 }
