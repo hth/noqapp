@@ -239,4 +239,14 @@ public final class Formatter {
 
         return countryShortName;
     }
+
+    /**
+     * Gets ISO country short name for international number supplied.
+     *
+     * @param phone
+     * @return
+     */
+    public static String getCountryShortNameFromInternationalPhone(String phone) {
+        return getCountryShortNameFromCountryCode(findCountryCode(phone));
+    }
 }
