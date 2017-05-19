@@ -100,9 +100,7 @@ public class AccountRegistrationController {
             return registrationPage;
         }
 
-        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(
-                merchantRegistrationForm.getPhone(),
-                merchantRegistrationForm.getCountryShortName());
+        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistrationForm.getPhone());
 
         if (null != userProfile) {
             LOG.warn("account exists");

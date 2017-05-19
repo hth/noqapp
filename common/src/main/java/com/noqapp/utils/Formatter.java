@@ -170,8 +170,18 @@ public final class Formatter {
      * @return
      */
     public static String phoneStripCountryCode(String phone) {
-        assertThat(phone, containsString("+"));
-        return StringUtils.removeFirst(phone, String.valueOf(findCountryCode(phone)));
+        try {
+            assertThat(phone, containsString("+"));
+            return StringUtils.removeFirst(phone, String.valueOf(findCountryCode(phone)));
+        } catch (AssertionError a) {
+            LOG.warn("Phone number should begin with + phone={}", phone);
+            try {
+                return phoneStripCountryCode("+" + phone);
+            } catch (Exception e) {
+                LOG.error("Failed getting country code from phone={} reason={}", phone, e.getLocalizedMessage(), e);
+                throw new RuntimeException("Failed finding country code from phone");
+            }
+        }
     }
 
     /**
@@ -181,8 +191,8 @@ public final class Formatter {
      * @return
      */
     public static int findCountryCode(String phone) {
-        assertThat(phone, containsString("+"));
         try {
+            assertThat(phone, containsString("+"));
             Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, "");
             return phoneNumber.getCountryCode();
         } catch (NumberParseException e) {
@@ -247,6 +257,7 @@ public final class Formatter {
      * @return
      */
     public static String getCountryShortNameFromInternationalPhone(String phone) {
-        return getCountryShortNameFromCountryCode(findCountryCode(phone));
+        /* Added for making phone number as international. */
+        return getCountryShortNameFromCountryCode(findCountryCode("+" + phone));
     }
 }
