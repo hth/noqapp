@@ -87,8 +87,8 @@ public class AccountService {
         return userProfileManager.findOneByMail(mail);
     }
 
-    public UserProfileEntity checkUserExistsByPhone(String phone, String countryShortName) {
-        return userProfileManager.findOneByPhone(Formatter.phoneNumberWithCountryCode(Formatter.phoneCleanup(phone), countryShortName));
+    public UserProfileEntity checkUserExistsByPhone(String phone) {
+        return userProfileManager.findOneByPhone(phone);
     }
 
     public UserAccountEntity findByReceiptUserId(String rid) {
@@ -152,8 +152,8 @@ public class AccountService {
             String inviteCode,
             boolean phoneValidated
     ) {
-        String phoneRaw = Formatter.phoneCleanup(phone);
-        String phoneWithCountryCode = Formatter.phoneNumberWithCountryCode(phoneRaw, countryShortName);
+        String phoneWithCountryCode = Formatter.phoneCleanup(phone);
+        String phoneRaw = Formatter.phoneStripCountryCode("+"+ phoneWithCountryCode);
         if (null == userProfileManager.findOneByPhone(phoneWithCountryCode)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
