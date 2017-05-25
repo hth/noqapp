@@ -147,6 +147,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getNext(String codeQR) {
+        LOG.info("Getting next");
         if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
             mongoTemplate.setWriteConcern(WriteConcern.W3);
