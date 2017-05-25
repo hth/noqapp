@@ -32,7 +32,31 @@ public abstract class JsonData {
     @JsonProperty ("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
 
+    @JsonProperty ("title")
+    private String title;
+
+    @JsonProperty ("body")
+    private String body;
+
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public JsonData setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public JsonData setBody(String body) {
+        this.body = body;
+        return this;
     }
 }

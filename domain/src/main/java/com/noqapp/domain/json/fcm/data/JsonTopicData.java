@@ -45,12 +45,6 @@ public class JsonTopicData extends JsonData {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("title")
-    private String title = "This is Topic Title";
-
-    @JsonProperty ("body")
-    private String body = "This is topic body";
-
     public JsonTopicData(FirebaseMessageTypeEnum firebaseMessageType) {
         super(firebaseMessageType);
     }
