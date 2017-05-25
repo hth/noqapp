@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
 import org.slf4j.Logger;
@@ -71,6 +72,9 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public TokenQueueEntity findByCodeQR(String codeQR) {
         LOG.info("codeQR={}", codeQR);
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
+        }
         return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenQueueEntity.class, TABLE);
     }
 
