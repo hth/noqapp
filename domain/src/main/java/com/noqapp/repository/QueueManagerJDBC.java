@@ -53,5 +53,5 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByRid(String rid, Date lastAccessed);
 
     @Mobile
-    boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved);
+    boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved);
 }

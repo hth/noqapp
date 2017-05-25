@@ -134,14 +134,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public boolean reviewService(String codeQR, String did, String rid, int ratingCount, int hoursSaved) {
+    public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
         if (StringUtils.isNotBlank(rid)) {
             return this.jdbcTemplate.update(
-                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, RID = ? AND RA <> 0",
+                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, RID = ?, TN = ? AND RA <> 0",
                     ratingCount, hoursSaved, codeQR, did, rid) > 0;
         } else {
             return this.jdbcTemplate.update(
-                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ? AND RA <> 0",
+                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, TN = ? AND RA <> 0",
                     ratingCount, hoursSaved, codeQR, did) > 0;
         }
     }
