@@ -149,7 +149,7 @@ public class TokenQueueService {
             QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
             if (queue == null) {
                 LOG.warn("Not joined to queue did={}, ignore abort", did);
-                return new JsonResponse(true);
+                return new JsonResponse(false);
             }
 
             LOG.info("Found queue id={}", queue.getId());
