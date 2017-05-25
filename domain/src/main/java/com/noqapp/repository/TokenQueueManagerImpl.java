@@ -80,6 +80,10 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public TokenQueueEntity getNextToken(String codeQR) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
         return mongoTemplate.findAndModify(
                 query(where("_id").is(codeQR)),
                 new Update().inc("LN", 1),
