@@ -134,9 +134,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
-        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
         boolean status = mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
                 entityUpdate(update("QS", queueUserState).set("A", false).set("ST", new Date())),
@@ -148,9 +145,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getNext(String codeQR) {
-        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
