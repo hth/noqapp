@@ -19,12 +19,6 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
      */
     TokenQueueEntity findByCodeQR(String codeQR);
 
-    /**
-     * This query prefers to read and write from primary.
-     *
-     * @param codeQR
-     * @return
-     */
     TokenQueueEntity getNextToken(String codeQR);
 
     TokenQueueEntity updateServing(String codeQR, int serving, QueueStatusEnum queueStatus);
