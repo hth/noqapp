@@ -19,7 +19,6 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.QueueStatusEnum;
-import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
 
@@ -214,16 +213,16 @@ public class TokenQueueService {
                  * This message has to go as the merchant with the opened queue
                  * will not get any update if some one joins. FCM makes sure the message is dispersed.  
                  */
-                jsonMessage.getNotification()
-                        .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
-                        .setTitle(tokenQueue.getDisplayName() + " Queue");
+//                jsonMessage.getNotification()
+//                        .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+//                        .setTitle(tokenQueue.getDisplayName() + " Queue");
                 break;
             default:
-                jsonMessage.getNotification()
-                        .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                        .setLocKey("serving")
-                        .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
-                        .setTitle(tokenQueue.getDisplayName());
+//                jsonMessage.getNotification()
+//                        .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+//                        .setLocKey("serving")
+//                        .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
+//                        .setTitle(tokenQueue.getDisplayName());
         }
 
         boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);

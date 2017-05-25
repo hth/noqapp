@@ -67,8 +67,4 @@ public class JsonMessage extends AbstractDomain {
     public void setData(JsonData data) {
         this.data = data;
     }
-
-    public JsonNotification getNotification() {
-        return null;
-    }
 }
