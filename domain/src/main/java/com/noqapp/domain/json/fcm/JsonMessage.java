@@ -48,15 +48,12 @@ public class JsonMessage extends AbstractDomain {
     @JsonProperty ("data")
     private JsonData data;
 
-    @JsonProperty ("notification")
-    private JsonNotification notification;
-
     /**
      * @param to topic or token
      */
     public JsonMessage(String to) {
         this.to = to;
-        this.notification = new JsonNotification();
+        //this.notification = new JsonNotification();
     }
 
     public String getTo() {
@@ -72,6 +69,6 @@ public class JsonMessage extends AbstractDomain {
     }
 
     public JsonNotification getNotification() {
-        return notification;
+        return null;
     }
 }

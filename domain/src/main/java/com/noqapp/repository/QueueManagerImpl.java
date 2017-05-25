@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -157,13 +158,18 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
 
         /* Mark as being served. */
-        mongoTemplate.updateFirst(
-                query(where("id").is(queue.getId())),
+        WriteResult writeConcern = mongoTemplate.updateFirst(
+                query(where("id").is(queue.getId()).and("LO").is(false)),
                 entityUpdate(update("LO", true)),
                 QueueEntity.class,
                 TABLE
         );
-        
+
+        if (writeConcern.getN() <= 0) {
+            LOG.info("Could not lock since its already modified token={}, going to next", queue.getTokenNumber());
+            getNext(codeQR);
+        }
+
         return queue;
     }
 
