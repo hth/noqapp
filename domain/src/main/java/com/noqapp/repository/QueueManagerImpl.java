@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -145,8 +146,10 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getNext(String codeQR) {
-        return mongoTemplate.findOne(
-                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "TN")),
+        return mongoTemplate.findAndModify(
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("LO").is(false)).with(new Sort(ASC, "TN")),
+                entityUpdate(update("LO", true)),
+                FindAndModifyOptions.options().returnNew(true),
                 QueueEntity.class,
                 TABLE);
     }
