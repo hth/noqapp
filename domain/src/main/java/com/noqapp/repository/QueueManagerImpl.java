@@ -146,10 +146,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public QueueEntity getNext(String codeQR) {
         return mongoTemplate.findOne(
-                query(
-                        where("QR").is(codeQR)
-                                .and("QS").is(QueueUserStateEnum.Q)
-                ).with(new Sort(ASC, "TN")),
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
     }
