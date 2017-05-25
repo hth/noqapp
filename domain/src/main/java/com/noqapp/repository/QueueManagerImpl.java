@@ -141,7 +141,7 @@ public class QueueManagerImpl implements QueueManager {
                 entityUpdate(update("QS", queueUserState).set("A", false).set("ST", new Date())),
                 QueueEntity.class,
                 TABLE).getN() > 1;
-        LOG.debug("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
+        LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
         return getNext(codeQR);
     }
 
