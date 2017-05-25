@@ -40,12 +40,6 @@ public class JsonClientData extends JsonData {
     @JsonProperty ("o")
     private String topic;
 
-    @JsonProperty ("title")
-    private String title = "I am Client";
-
-    @JsonProperty ("body")
-    private String body= "This is client body";
-
     public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType) {
         super(firebaseMessageType);
     }
