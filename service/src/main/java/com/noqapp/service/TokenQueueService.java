@@ -83,8 +83,7 @@ public class TokenQueueService {
         /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
         if (null == queue) {
             TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-            LOG.info("NextToken queueStatus={} serving={}", tokenQueue.getQueueStatus(), tokenQueue.getCurrentlyServing());
-            
+
             switch (tokenQueue.getQueueStatus()) {
                 case D:
                     sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
