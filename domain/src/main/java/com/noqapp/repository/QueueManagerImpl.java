@@ -166,9 +166,11 @@ public class QueueManagerImpl implements QueueManager {
                     TABLE
             );
 
-            LOG.info("Next to server WriteConcern={} queue={}", writeConcern.getN(), queue);
-            if (writeConcern.getN() <= 0) {
-                LOG.info("Could not lock since its already modified codeQR={} token={}, going to next", codeQR, queue.getTokenNumber());
+            LOG.info("Next to serve WriteConcern={} queue={}", writeConcern.getN(), queue);
+            if (writeConcern.getN() == 0) {
+                LOG.info("Could not lock since its already modified codeQR={} token={}, going to next in queue",
+                        codeQR, queue.getTokenNumber());
+
                 return getNext(codeQR);
             }
         }

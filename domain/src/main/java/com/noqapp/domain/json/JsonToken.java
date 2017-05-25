@@ -128,4 +128,16 @@ public class JsonToken extends AbstractDomain {
         this.customerName = customerName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonToken{" +
+                "codeQR='" + codeQR + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", queueStatus=" + queueStatus +
+                ", servingNumber=" + servingNumber +
+                ", token=" + token +
+                ", customerName='" + customerName + '\'' +
+                '}';
+    }
 }
