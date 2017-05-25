@@ -165,9 +165,9 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE
         );
 
-        if (writeConcern.getN() <= 0) {
+        if (writeConcern.getN() <= 0 && null != queue) {
             LOG.info("Could not lock since its already modified token={}, going to next", queue.getTokenNumber());
-            getNext(codeQR);
+            return getNext(codeQR);
         }
 
         return queue;
