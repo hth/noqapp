@@ -169,4 +169,23 @@ public class QueueEntity extends BaseEntity {
     public void setServicedTime(Date servicedTime) {
         this.servicedTime = servicedTime;
     }
+
+    @Override
+    public String toString() {
+        return "QueueEntity{" +
+                "codeQR='" + codeQR + '\'' +
+                ", did='" + did + '\'' +
+                ", rid='" + rid + '\'' +
+                ", tokenNumber=" + tokenNumber +
+                ", displayName='" + displayName + '\'' +
+                ", queueUserState=" + queueUserState +
+                ", locked=" + locked +
+                ", notifiedOnService=" + notifiedOnService +
+                ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
+                ", customerName='" + customerName + '\'' +
+                ", ratingCount=" + ratingCount +
+                ", hoursSaved=" + hoursSaved +
+                ", servicedTime=" + servicedTime +
+                '}';
+    }
 }
