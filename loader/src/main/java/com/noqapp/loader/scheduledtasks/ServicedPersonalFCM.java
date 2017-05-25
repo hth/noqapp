@@ -144,14 +144,14 @@ public class ServicedPersonalFCM {
 
         switch (queue.getQueueUserState()) {
             case S:
-                jsonMessage.getNotification()
-                        .setBody("How was your service?")
-                        .setTitle(queue.getDisplayName());
+//                jsonMessage.getNotification()
+//                        .setBody("How was your service?")
+//                        .setTitle(queue.getDisplayName());
                 break;
             case N:
-                jsonMessage.getNotification()
-                        .setBody("You were not served?")
-                        .setTitle(queue.getDisplayName());
+//                jsonMessage.getNotification()
+//                        .setBody("You were not served?")
+//                        .setTitle(queue.getDisplayName());
                 break;
             default:
                 LOG.warn("Un-supported status reached. Skipping rid={} did={}", queue.getRid(), queue.getDid());
