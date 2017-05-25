@@ -153,6 +153,7 @@ public class QueueManagerImpl implements QueueManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
+        LOG.info("FindOne");
         QueueEntity queue = mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("LO").is(false)).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
@@ -166,11 +167,12 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE
         );
 
+        LOG.info("WriteConcern={} queue={}", writeConcern.getN(), queue);
         if (writeConcern.getN() <= 0 && null != queue) {
             LOG.info("Could not lock since its already modified token={}, going to next", queue.getTokenNumber());
             return getNext(codeQR);
         }
-
+        
         return queue;
     }
 
