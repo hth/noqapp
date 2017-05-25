@@ -137,12 +137,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
         if (StringUtils.isNotBlank(rid)) {
             return this.jdbcTemplate.update(
-                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, RID = ?, TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, codeQR, did, rid) > 0;
+                    "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND RID = ? AND TN = ? AND RA <> 0",
+                    ratingCount, hoursSaved, codeQR, did, rid, token) > 0;
         } else {
             return this.jdbcTemplate.update(
-                    "UPDATE QUEUE set RA = ?, HA = ? where QR = ?, DID = ?, TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, codeQR, did) > 0;
+                    "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
+                    ratingCount, hoursSaved, codeQR, did, token) > 0;
         }
     }
 }
