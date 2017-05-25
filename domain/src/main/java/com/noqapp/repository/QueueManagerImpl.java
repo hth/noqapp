@@ -159,18 +159,20 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE);
 
-        /* Mark as being served. */
-        WriteResult writeConcern = mongoTemplate.updateFirst(
-                query(where("id").is(queue.getId()).and("LO").is(false)),
-                entityUpdate(update("LO", true)),
-                QueueEntity.class,
-                TABLE
-        );
+        if (null != queue) {
+            /* Mark as being served. */
+            WriteResult writeConcern = mongoTemplate.updateFirst(
+                    query(where("id").is(queue.getId()).and("LO").is(false)),
+                    entityUpdate(update("LO", true)),
+                    QueueEntity.class,
+                    TABLE
+            );
 
-        LOG.info("WriteConcern={} queue={}", writeConcern.getN(), queue);
-        if (writeConcern.getN() <= 0 && null != queue) {
-            LOG.info("Could not lock since its already modified token={}, going to next", queue.getTokenNumber());
-            return getNext(codeQR);
+            LOG.info("WriteConcern={} queue={}", writeConcern.getN(), queue);
+            if (writeConcern.getN() <= 0) {
+                LOG.info("Could not lock since its already modified token={}, going to next", queue.getTokenNumber());
+                return getNext(codeQR);
+            }
         }
         
         return queue;
