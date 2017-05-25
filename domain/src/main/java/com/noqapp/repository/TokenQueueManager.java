@@ -11,12 +11,6 @@ import java.util.List;
  */
 public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
 
-    /**
-     * This query prefers to read from primary.
-     *
-     * @param codeQR
-     * @return
-     */
     TokenQueueEntity findByCodeQR(String codeQR);
 
     TokenQueueEntity getNextToken(String codeQR);
