@@ -54,10 +54,6 @@ public class QueueEntity extends BaseEntity {
     @Field ("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
-    /* Locked when being served. */
-    @Field ("LO")
-    private boolean locked = false;
-
     @NotNull
     @Field ("NS")
     private boolean notifiedOnService = false;
