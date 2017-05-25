@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -146,12 +146,25 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getNext(String codeQR) {
-        return mongoTemplate.findAndModify(
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
+
+        QueueEntity queue = mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("LO").is(false)).with(new Sort(ASC, "TN")),
-                entityUpdate(update("LO", true)),
-                FindAndModifyOptions.options().returnNew(true),
                 QueueEntity.class,
                 TABLE);
+
+        /* Mark as being served. */
+        mongoTemplate.updateFirst(
+                query(where("id").is(queue.getId())),
+                entityUpdate(update("LO", true)),
+                QueueEntity.class,
+                TABLE
+        );
+        
+        return queue;
     }
 
     public List<QueueEntity> findAllQueuedByDid(String did) {
