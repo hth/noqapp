@@ -77,12 +77,50 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken getNextToken(String codeQR, String did, String rid) {
-        QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
+        try {
+            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
 
-        /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
-        if (null == queue) {
-            TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
+            /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
+            if (null == queue) {
+                TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
+                switch (tokenQueue.getQueueStatus()) {
+                    case D:
+                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                        tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
+                        break;
+                    case S:
+                        sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
+                        break;
+                    case R:
+                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                        break;
+                    default:
+                        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+                        break;
+                }
+
+                try {
+                    queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    if (StringUtils.isNotBlank(rid)) {
+                        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+                        queue.setCustomerName(userAccount.getDisplayName());
+                    }
+                    queueManager.insert(queue);
+                } catch (DuplicateKeyException e) {
+                    LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+                    return new JsonToken(codeQR);
+                }
+
+                return new JsonToken(codeQR)
+                        .setToken(queue.getTokenNumber())
+                        .setServingNumber(tokenQueue.getCurrentlyServing())
+                        .setDisplayName(tokenQueue.getDisplayName())
+                        .setQueueStatus(tokenQueue.getQueueStatus());
+            }
+
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+            LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
             switch (tokenQueue.getQueueStatus()) {
                 case D:
                     sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
@@ -99,48 +137,15 @@ public class TokenQueueService {
                     break;
             }
 
-            try {
-                queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
-                if (StringUtils.isNotBlank(rid)) {
-                    UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
-                    queue.setCustomerName(userAccount.getDisplayName());
-                }
-                queueManager.insert(queue);
-            } catch (DuplicateKeyException e) {
-                LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
-                return new JsonToken(codeQR);
-            }
-
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus());
+        } catch(Exception e) {
+            LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed getting token");
         }
-
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-        LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
-        switch (tokenQueue.getQueueStatus()) {
-            case D:
-                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
-                break;
-            case S:
-                sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
-                break;
-            case R:
-                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
-                break;
-            default:
-                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
-                break;
-        }
-
-        return new JsonToken(codeQR)
-                .setToken(queue.getTokenNumber())
-                .setServingNumber(tokenQueue.getCurrentlyServing())
-                .setDisplayName(tokenQueue.getDisplayName())
-                .setQueueStatus(tokenQueue.getQueueStatus());
     }
 
     @Mobile
