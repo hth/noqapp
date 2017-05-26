@@ -79,6 +79,7 @@ public class TokenQueueService {
     public JsonToken getNextToken(String codeQR, String did, String rid) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
+            LOG.info("next Token queue={}", queue);
 
             /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
             if (null == queue) {
@@ -152,6 +153,8 @@ public class TokenQueueService {
     public JsonResponse abortQueue(String codeQR, String did, String rid) {
         try {
             QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
+            LOG.info("abort queue={}", queue);
+
             if (queue == null) {
                 LOG.warn("Not joined to queue did={}, ignore abort", did);
                 return new JsonResponse(false);
