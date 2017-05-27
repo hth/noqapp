@@ -87,17 +87,17 @@ public class TokenQueueService {
 
                 switch (tokenQueue.getQueueStatus()) {
                     case D:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
                         tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
                         break;
                     case S:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
+                        sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
                         break;
                     case R:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
                         break;
                     default:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+                        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
                         break;
                 }
 
@@ -126,17 +126,17 @@ public class TokenQueueService {
 
             switch (tokenQueue.getQueueStatus()) {
                 case D:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
                     tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
                     break;
                 case S:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue);
+                    sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
                     break;
                 case R:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
+                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
                     break;
                 default:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue);
+                    sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
                     break;
             }
 
@@ -172,9 +172,9 @@ public class TokenQueueService {
     }
     
     @Mobile
-    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving) {
+    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
-        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
 
         LOG.info("After sending message to merchant");
         QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
@@ -202,13 +202,15 @@ public class TokenQueueService {
      * @param codeQR
      * @param tokenQueue
      */
-    private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue) {
+    private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
+        LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
         JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus));
         JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR)
-                .setQueueStatus(queueStatus);
+                .setQueueStatus(queueStatus)
+                .setGoTo(goTo);
 
         /*
         Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
