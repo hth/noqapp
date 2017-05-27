@@ -84,6 +84,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("st")
     private String servicedTime;
 
+    @JsonProperty ("r")
+    private int remoteJoin;
+
     @JsonProperty ("u")
     private String created;
 
@@ -219,6 +222,14 @@ public class JsonQueue extends AbstractDomain {
     public JsonQueue setServicedTime(Date servicedTime) {
         this.servicedTime = DateFormatUtils.format(servicedTime, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
+    }
+
+    public int getRemoteJoin() {
+        return remoteJoin;
+    }
+
+    public void setRemoteJoin(int remoteJoin) {
+        this.remoteJoin = remoteJoin;
     }
 
     public String getCreated() {
