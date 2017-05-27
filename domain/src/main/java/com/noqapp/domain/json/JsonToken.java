@@ -50,8 +50,13 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    /* Customer name goes to merchant. */
     @JsonProperty ("n")
     private String customerName = "";
+
+    /* Merchant counter goes to the client being served. */
+    @JsonProperty ("g")
+    private String goTo = "";
 
     JsonToken() {}
 
@@ -126,6 +131,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
+    }
+
+    public String getGoTo() {
+        return goTo;
+    }
+
+    public JsonToken setGoTo(String goTo) {
+        this.goTo = goTo;
         return this;
     }
 
