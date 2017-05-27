@@ -130,15 +130,4 @@ public class TokenQueueEntity extends BaseEntity {
             return "no";
         }
     }
-
-    @Transient
-    public int computeCurrentlyServing() {
-        switch (queueStatus) {
-            case C:
-            case D:
-                return 0;
-            default:
-                return currentlyServing;
-        }
-    }
 }
