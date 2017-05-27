@@ -9,18 +9,18 @@ import com.noqapp.domain.InviteEntity;
 public interface InviteManager extends RepositoryManager<InviteEntity> {
 
     /**
-     * Lists total number of remote scan available.
+     * Lists total number of remote join available.
      *
      * @param rid
      * @return
      */
-    int getRemoteScanCount(String rid);
+    int getRemoteJoinCount(String rid);
 
     /**
-     * Deducts remote scan from available remote scans.
+     * Deducts remote join from available remote scans.
      *
      * @param rid
      * @return
      */
-    boolean deductRemoteScanCount(String rid);
+    boolean deductRemoteJoinCount(String rid);
 }

@@ -61,7 +61,7 @@ public class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public int getRemoteScanCount(String rid) {
+    public int getRemoteJoinCount(String rid) {
         Assert.hasLength(rid, "RID cannot be empty");
 
         int sum = 0;
@@ -92,7 +92,7 @@ public class InviteManagerImpl implements InviteManager {
         return sum;
     }
 
-    public boolean deductRemoteScanCount(String rid) {
+    public boolean deductRemoteJoinCount(String rid) {
         Assert.hasLength(rid, "RID cannot be empty");
 
         InviteEntity invite = mongoTemplate.findOne(
@@ -107,14 +107,14 @@ public class InviteManagerImpl implements InviteManager {
 
         boolean updated = false;
         if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
-            invite.deductRemoteScanForReceiptUserCount();
+            invite.deductRemoteJoinForReceiptUserCount();
             updated = true;
         } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
-            invite.deductRemoteScanForInviterCount();
+            invite.deductRemoteJoinForInviterCount();
             updated = true;
         }
 
-        if (0 == invite.getRemoteScanForReceiptUserCount() && 0 == invite.getRemoteScanForInviterCount()) {
+        if (0 == invite.getRemoteJoinForReceiptUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
             invite.inActive();
         }
 
