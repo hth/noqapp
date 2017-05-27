@@ -172,7 +172,7 @@ public class TokenQueueService {
     }
     
     @Mobile
-    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
+    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
 
@@ -180,22 +180,20 @@ public class TokenQueueService {
         QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
-                                                                    
+
             return new JsonToken(codeQR)
                     .setQueueStatus(tokenQueue.getQueueStatus())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName())
-                    .setGoTo(goTo);
+                    .setCustomerName(queue.getCustomerName());
         }
 
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setToken(tokenQueue.getLastNumber())
-                .setGoTo(goTo);
+                .setToken(tokenQueue.getLastNumber());
     }
 
     /**
