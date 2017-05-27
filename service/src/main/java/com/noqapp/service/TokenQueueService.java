@@ -121,7 +121,9 @@ public class TokenQueueService {
             }
 
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-            LOG.info("Already registered token={} topic={} rid={} did={}", queue.getTokenNumber(), tokenQueue.getTopic(), rid, did);
+            LOG.info("Already registered token={} topic={} rid={} did={} queueStatus={}",
+                    queue.getTokenNumber(), tokenQueue.getTopic(), rid, did, tokenQueue.getQueueStatus());
+
             switch (tokenQueue.getQueueStatus()) {
                 case D:
                     sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue);
