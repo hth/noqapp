@@ -30,9 +30,9 @@ public class InviteEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
-    /* RSR maps to RID. */
+    /* RJR maps to RID. */
     @NotNull
-    @Field ("RSR")
+    @Field ("RJR")
     private int remoteJoinForReceiptUserCount = 2;
 
     @NotNull
@@ -43,9 +43,9 @@ public class InviteEntity extends BaseEntity {
     @Field ("IID")
     private String inviterId;
 
-    /* IID maps to RSI. */
+    /* IID maps to RJI. */
     @NotNull
-    @Field ("RSI")
+    @Field ("RJI")
     private int remoteJoinForInviterCount = 2;
 
     public InviteEntity(String receiptUserId, String inviterId, String inviteeCode) {
