@@ -55,10 +55,11 @@ public class JsonToken extends AbstractDomain {
 
     JsonToken() {}
 
+    /* Mostly used by Merchant to display queues assigned. */
     public JsonToken(TokenQueueEntity tokenQueue) {
         this.codeQR = tokenQueue.getId();
         this.token = tokenQueue.getLastNumber();
-        this.servingNumber = tokenQueue.getCurrentlyServing();
+        this.servingNumber = tokenQueue.computeCurrentlyServing();
         this.displayName = tokenQueue.getDisplayName();
         this.queueStatus = tokenQueue.getQueueStatus();
     }
