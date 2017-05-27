@@ -45,6 +45,9 @@ public class JsonTopicData extends JsonData {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("g")
+    private String goTo;
+
     public JsonTopicData(FirebaseMessageTypeEnum firebaseMessageType) {
         super(firebaseMessageType);
     }
@@ -91,6 +94,15 @@ public class JsonTopicData extends JsonData {
 
     public JsonTopicData setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
+    }
+
+    public String getGoTo() {
+        return goTo;
+    }
+
+    public JsonTopicData setGoTo(String goTo) {
+        this.goTo = goTo;
         return this;
     }
 }
