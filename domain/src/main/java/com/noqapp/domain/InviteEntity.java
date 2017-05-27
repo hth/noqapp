@@ -33,7 +33,7 @@ public class InviteEntity extends BaseEntity {
     /* RSR maps to RID. */
     @NotNull
     @Field ("RSR")
-    private int remoteScanForReceiptUserCount = 2;
+    private int remoteJoinForReceiptUserCount = 2;
 
     @NotNull
     @Field ("IC")
@@ -46,7 +46,7 @@ public class InviteEntity extends BaseEntity {
     /* IID maps to RSI. */
     @NotNull
     @Field ("RSI")
-    private int remoteScanForInviterCount = 2;
+    private int remoteJoinForInviterCount = 2;
 
     public InviteEntity(String receiptUserId, String inviterId, String inviteeCode) {
         this.receiptUserId = receiptUserId;
@@ -62,8 +62,8 @@ public class InviteEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
     }
 
-    public int getRemoteScanForReceiptUserCount() {
-        return remoteScanForReceiptUserCount;
+    public int getRemoteJoinForReceiptUserCount() {
+        return remoteJoinForReceiptUserCount;
     }
 
     public String getInviteeCode() {
@@ -82,17 +82,17 @@ public class InviteEntity extends BaseEntity {
         this.inviterId = inviterId;
     }
 
-    public int getRemoteScanForInviterCount() {
-        return remoteScanForInviterCount;
+    public int getRemoteJoinForInviterCount() {
+        return remoteJoinForInviterCount;
     }
 
-    public void deductRemoteScanForReceiptUserCount() {
-        assertNotEquals(0, remoteScanForReceiptUserCount);
-        this.remoteScanForReceiptUserCount --;
+    public void deductRemoteJoinForReceiptUserCount() {
+        assertNotEquals(0, remoteJoinForReceiptUserCount);
+        this.remoteJoinForReceiptUserCount--;
     }
 
-    public void deductRemoteScanForInviterCount() {
-        assertNotEquals(0, remoteScanForInviterCount);
-        this.remoteScanForInviterCount --;
+    public void deductRemoteJoinForInviterCount() {
+        assertNotEquals(0, remoteJoinForInviterCount);
+        this.remoteJoinForInviterCount--;
     }
 }
