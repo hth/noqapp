@@ -81,7 +81,7 @@ public class TokenQueueService {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
             LOG.info("next Token queue={}", queue);
 
-            /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
+            /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
@@ -115,7 +115,7 @@ public class TokenQueueService {
 
                 return new JsonToken(codeQR)
                         .setToken(queue.getTokenNumber())
-                        .setServingNumber(tokenQueue.getCurrentlyServing())
+                        .setServingNumber(tokenQueue.computeCurrentlyServing())
                         .setDisplayName(tokenQueue.getDisplayName())
                         .setQueueStatus(tokenQueue.getQueueStatus());
             }
@@ -140,7 +140,7 @@ public class TokenQueueService {
 
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setServingNumber(tokenQueue.computeCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus());
         } catch(Exception e) {
@@ -175,13 +175,13 @@ public class TokenQueueService {
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue);
 
         LOG.info("After sending message to merchant");
-        QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+        QueueEntity queue = queueManager.findOne(codeQR, serving);
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
 
             return new JsonToken(codeQR)
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setServingNumber(tokenQueue.computeCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
                     .setCustomerName(queue.getCustomerName());
@@ -189,7 +189,7 @@ public class TokenQueueService {
 
         return new JsonToken(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
-                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setServingNumber(tokenQueue.computeCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber());
     }
