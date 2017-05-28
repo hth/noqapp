@@ -37,5 +37,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param token
      */
     @Mobile
-    void resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
+    boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
 }

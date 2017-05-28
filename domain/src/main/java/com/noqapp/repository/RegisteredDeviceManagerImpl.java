@@ -148,7 +148,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         );
     }
 
-    public void resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token) {
+    public boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token) {
         Update update;
         if (StringUtils.isBlank(rid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
@@ -162,11 +162,11 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                     .set("TK", token);
         }
 
-        mongoTemplate.updateFirst(
+        return mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
                 update,
                 RegisteredDeviceEntity.class,
                 TABLE
-        );
+        ).getN() > 0;
     }
 }
