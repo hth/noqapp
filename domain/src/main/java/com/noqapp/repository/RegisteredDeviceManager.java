@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.DeviceTypeEnum;
 
 /**
  * User: hitender
@@ -25,4 +26,16 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     @SuppressWarnings ("unused")
     @Mobile
     RegisteredDeviceEntity lastAccessed(String rid, String did, String token);
+
+    /**
+     * When existing did, update with latest info. This happens when one user logs out and another user
+     * logs in without deleting the app.
+     *
+     * @param did
+     * @param rid
+     * @param deviceType
+     * @param token
+     */
+    @Mobile
+    boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
 }

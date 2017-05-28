@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.types.DeviceTypeEnum;
 
 import java.util.Date;
 
@@ -111,6 +112,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     /**
      * Returns old document with old date when last accessed. And updates with new date
+     *
      * @param rid
      * @param did
      * @param token
@@ -144,5 +146,27 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 RegisteredDeviceEntity.class,
                 TABLE
         );
+    }
+
+    public boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token) {
+        Update update;
+        if (StringUtils.isBlank(rid)) {
+            update = update("U", DateTime.now().minusYears(100).toDate())
+                    .unset("RID")
+                    .set("DT", deviceType)
+                    .set("TK", token);
+        } else {
+            update = update("U", DateTime.now().minusYears(100).toDate())
+                    .set("RID", rid)
+                    .set("DT", deviceType)
+                    .set("TK", token);
+        }
+
+        return mongoTemplate.updateFirst(
+                query(where("DID").is(did)),
+                update,
+                RegisteredDeviceEntity.class,
+                TABLE
+        ).getN() > 0;
     }
 }
