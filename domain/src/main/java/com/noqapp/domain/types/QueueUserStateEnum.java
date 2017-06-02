@@ -30,6 +30,4 @@ public enum QueueUserStateEnum {
     public String toString() {
         return description;
     }
-
-
 }
