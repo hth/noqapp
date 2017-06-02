@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.noqapp.domain.AbstractDomain;
 import com.noqapp.domain.json.fcm.data.JsonData;
+import com.noqapp.domain.json.fcm.data.JsonNotification;
 
 /**
  * User: hitender
@@ -47,11 +48,15 @@ public class JsonMessage extends AbstractDomain {
     @JsonProperty ("data")
     private JsonData data;
 
+    @JsonProperty ("notification")
+    private JsonNotification notification;
+
     /**
      * @param to topic or token
      */
     public JsonMessage(String to) {
         this.to = to;
+        this.notification = new JsonNotification();
     }
 
     public String getTo() {
@@ -64,5 +69,9 @@ public class JsonMessage extends AbstractDomain {
 
     public void setData(JsonData data) {
         this.data = data;
+    }
+
+    public JsonNotification getNotification() {
+        return notification;
     }
 }
