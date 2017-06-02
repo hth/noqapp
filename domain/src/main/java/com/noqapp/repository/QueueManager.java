@@ -39,6 +39,9 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
 
     @Mobile
+    boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
+
+    @Mobile
     QueueEntity getNext(String codeQR);
 
     /**

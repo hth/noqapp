@@ -8,6 +8,7 @@ public enum QueueStatusEnum {
     S("S", "Start"),
     R("R", "Re-Start"),
     N("N", "Next"),
+    P("P", "Pause"),
     D("D", "Done"),
     C("C", "Closed");
 

@@ -136,13 +136,20 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
+        boolean status = updateServedInQueue(codeQR, tokenNumber, queueUserState);
+        LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
+        return getNext(codeQR);
+    }
+
+    @Override
+    public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
         boolean status = mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
                 entityUpdate(update("QS", queueUserState).set("A", false).set("ST", new Date())),
                 QueueEntity.class,
                 TABLE).getN() > 1;
         LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
-        return getNext(codeQR);
+        return status;
     }
 
     @Override
