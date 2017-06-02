@@ -224,10 +224,20 @@ public class TokenQueueService {
                  * This message has to go as the merchant with the opened queue
                  * will not get any update if some one joins. FCM makes sure the message is dispersed.  
                  */
+                jsonMessage.getNotification()
+                        .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+                        .setTitle(tokenQueue.getDisplayName() + " Queue");
+                
                 jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
                         .setTitle(tokenQueue.getDisplayName() + " Queue");
                 break;
             default:
+                jsonMessage.getNotification()
+                        .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                        .setLocKey("serving")
+                        .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
+                        .setTitle(tokenQueue.getDisplayName());
+
                 jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                         .setTitle(tokenQueue.getDisplayName());
         }
