@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude (JsonInclude.Include.NON_NULL)
-@Deprecated/* Since notification message was preventing from reading data in payload when app is in background. */
 public class JsonNotification {
 
     @JsonProperty ("title")
