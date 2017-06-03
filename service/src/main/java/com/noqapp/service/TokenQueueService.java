@@ -18,6 +18,7 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -204,11 +205,10 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
-        char[] deviceSpecifics = {'I', 'A'};
 
-        for (char deviceSpecific : deviceSpecifics) {
-            LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceSpecific);
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceSpecific);
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
             JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
@@ -228,7 +228,7 @@ public class TokenQueueService {
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */
-                    if (deviceSpecific == deviceSpecifics[0]) {
+                    if (deviceType == DeviceTypeEnum.I) {
                         jsonMessage.getNotification()
                                 .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
                                 .setTitle(tokenQueue.getDisplayName() + " Queue");
@@ -239,7 +239,7 @@ public class TokenQueueService {
                     }
                     break;
                 default:
-                    if (deviceSpecific == deviceSpecifics[0]) {
+                    if (deviceType == DeviceTypeEnum.I) {
                         jsonMessage.getNotification()
                                 .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                                 .setLocKey("serving")
