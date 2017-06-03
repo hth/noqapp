@@ -13,7 +13,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     @Mobile
     RegisteredDeviceEntity find(String rid, String did);
 
-    String findFCMToken(String rid, String did);
+    RegisteredDeviceEntity findFCMToken(String rid, String did);
 
     /**
      * Update the token for a particular device id. Update token every time the request comes in.

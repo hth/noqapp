@@ -12,10 +12,12 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.CronStatsEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonClientData;
 import com.noqapp.domain.json.fcm.data.JsonData;
+import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -84,19 +86,19 @@ public class ServicedPersonalFCM {
         }
 
         try {
-            List<QueueEntity> queues = queueManager.findAllClientServiced(5);
+            List<QueueEntity> queues = queueManager.findAllClientServiced(100);
             found = queues.size();
 
             for (QueueEntity queue : queues) {
-                String token = registeredDeviceManager.findFCMToken(queue.getRid(), queue.getDid());
+                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(queue.getRid(), queue.getDid());
                 /* TODO add cache Redis. */
-                if (StringUtils.isBlank(token)) {
+                if (StringUtils.isBlank(registeredDevice.getToken())) {
                     LOG.info("Skipped sending message rid={} did={}", queue.getRid(), queue.getDid());
                     skipped++;
                     queueManager.increaseAttemptToSendNotificationCount(queue.getId());
                 } else {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
-                    JsonMessage jsonMessage = composeMessage(token, tokenQueue.getTopic(), queue);
+                    JsonMessage jsonMessage = composeMessage(registeredDevice, tokenQueue.getTopic(), queue);
                     if (firebaseService.messageToTopic(jsonMessage)) {
                         queue.setNotifiedOnService(true);
                         queueManager.save(queue);
@@ -129,13 +131,13 @@ public class ServicedPersonalFCM {
      * thing. This works when app is running in background(TODO confirm) or when app is in foreground(Active). If app is closed then
      * this will not work until app is opened and this message is read.
      *
-     * @param token
-     * @param topic send topic to initiate un-subscription by app. Not a sure shot thing. Will work
+     * @param registeredDevice
+     * @param topic            send topic to initiate un-subscription by app. Not a sure shot thing. Will work
      * @param queue
      * @return
      */
-    private JsonMessage composeMessage(String token, String topic, QueueEntity queue) {
-        JsonMessage jsonMessage = new JsonMessage(token);
+    private JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, String topic, QueueEntity queue) {
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P)
                 .setCodeQR(queue.getCodeQR())
                 .setQueueUserState(queue.getQueueUserState())
@@ -143,20 +145,26 @@ public class ServicedPersonalFCM {
 
         switch (queue.getQueueUserState()) {
             case S:
-                 jsonMessage.getNotification()
-                         .setBody("How was your service?")
-                         .setTitle(queue.getDisplayName());
-
-                jsonData.setBody("How was your service?")
-                        .setTitle(queue.getDisplayName());
+                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+                    jsonMessage.getNotification()
+                            .setBody("How was your service?")
+                            .setTitle(queue.getDisplayName());
+                } else {
+                    jsonMessage.setNotification(null);
+                    jsonData.setBody("How was your service?")
+                            .setTitle(queue.getDisplayName());
+                }
                 break;
             case N:
-                jsonMessage.getNotification()
-                        .setBody("You were not served?")
-                        .setTitle(queue.getDisplayName());
-
-                jsonData.setBody("You were not served?")
-                        .setTitle(queue.getDisplayName());
+                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+                    jsonMessage.getNotification()
+                            .setBody("You were not served?")
+                            .setTitle(queue.getDisplayName());
+                } else {
+                    jsonMessage.setNotification(null);
+                    jsonData.setBody("You were not served?")
+                            .setTitle(queue.getDisplayName());
+                }
                 break;
             default:
                 LOG.warn("Un-supported status reached. Skipping rid={} did={}", queue.getRid(), queue.getDid());
