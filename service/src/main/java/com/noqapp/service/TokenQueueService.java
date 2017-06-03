@@ -204,50 +204,61 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
-        JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus));
-        JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
-                .setLastNumber(tokenQueue.getLastNumber())
-                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                .setCodeQR(codeQR)
-                .setQueueStatus(queueStatus)
-                .setGoTo(goTo);
+        char[] deviceSpecifics = {'I', 'A'};
 
-        /*
-        Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
-        Otherwise we will have to manage more number of topic.
-        */
-        switch(queueStatus) {
-            case S:
-            case R:
-            case D:
-                /**
-                 * This message has to go as the merchant with the opened queue
-                 * will not get any update if some one joins. FCM makes sure the message is dispersed.  
-                 */
-                jsonMessage.getNotification()
-                        .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
-                        .setTitle(tokenQueue.getDisplayName() + " Queue");
-                
-                jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
-                        .setTitle(tokenQueue.getDisplayName() + " Queue");
-                break;
-            default:
-                jsonMessage.getNotification()
-                        .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                        .setLocKey("serving")
-                        .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
-                        .setTitle(tokenQueue.getDisplayName());
+        for (char deviceSpecific : deviceSpecifics) {
+            LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceSpecific);
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceSpecific);
+            JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
+                    .setLastNumber(tokenQueue.getLastNumber())
+                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                    .setCodeQR(codeQR)
+                    .setQueueStatus(queueStatus)
+                    .setGoTo(goTo);
 
-                jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                        .setTitle(tokenQueue.getDisplayName());
-        }
+            /*
+            Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
+            Otherwise we will have to manage more number of topic.
+            */
+            switch (queueStatus) {
+                case S:
+                case R:
+                case D:
+                    /**
+                     * This message has to go as the merchant with the opened queue
+                     * will not get any update if some one joins. FCM makes sure the message is dispersed.
+                     */
+                    if (deviceSpecific == deviceSpecifics[0]) {
+                        jsonMessage.getNotification()
+                                .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+                                .setTitle(tokenQueue.getDisplayName() + " Queue");
+                    } else {
+                        jsonMessage.setNotification(null);
+                        jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+                                .setTitle(tokenQueue.getDisplayName() + " Queue");
+                    }
+                    break;
+                default:
+                    if (deviceSpecific == deviceSpecifics[0]) {
+                        jsonMessage.getNotification()
+                                .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                                .setLocKey("serving")
+                                .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
+                                .setTitle(tokenQueue.getDisplayName());
+                    } else {
+                        jsonMessage.setNotification(null);
+                        jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                                .setTitle(tokenQueue.getDisplayName());
+                    }
+            }
 
-        jsonMessage.setData(jsonData);
-        boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-        } else {
-            LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+            jsonMessage.setData(jsonData);
+            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+            }
         }
     }
 
