@@ -133,6 +133,7 @@ public class UserAccountEntity extends BaseEntity {
         this.firstName = WordUtils.capitalizeFully(firstName);
         this.lastName = WordUtils.capitalizeFully(lastName);
         this.userAuthentication = userAuthentication;
+        this.displayName = getName();
     }
 
     public static UserAccountEntity newInstance(
