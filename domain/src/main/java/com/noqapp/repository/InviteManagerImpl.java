@@ -62,63 +62,73 @@ public class InviteManagerImpl implements InviteManager {
 
     @Override
     public int getRemoteJoinCount(String rid) {
-        Assert.hasLength(rid, "RID cannot be empty");
+        try {
+            Assert.hasLength(rid, "RID cannot be empty");
 
-        int sum = 0;
+            int sum = 0;
 
-        /* To group additional field add next to RID with comma separated like "RID", "XYZ" */
-        GroupOperation groupByStateAndSumPop = group("RID")
-                .sum("RJR").as("summation");
+            /* To group additional field add next to RID with comma separated like "RID", "XYZ" */
+            GroupOperation groupByStateAndSumPop = group("RID")
+                    .sum("RJR").as("summation");
 
-        MatchOperation filterStates = match(where("RID").is(rid).and("A").is(true));
-        Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
-        AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
-        List<GroupedValue> groupedValues = result.getMappedResults();
-        if (0 < groupedValues.size()) {
-            sum = groupedValues.iterator().next().getSummation();
+            MatchOperation filterStates = match(where("RID").is(rid).and("A").is(true));
+            Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
+            AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
+            List<GroupedValue> groupedValues = result.getMappedResults();
+            if (0 < groupedValues.size()) {
+                sum = groupedValues.iterator().next().getSummation();
+            }
+
+            groupByStateAndSumPop = group("IID")
+                    .sum("RJI").as("summation");
+
+            filterStates = match(where("IID").is(rid).and("A").is(true));
+            aggregation = newAggregation(filterStates, groupByStateAndSumPop);
+            result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
+            groupedValues = result.getMappedResults();
+            if (0 < groupedValues.size()) {
+                sum += groupedValues.iterator().next().getSummation();
+            }
+
+            return sum;
+        } catch(Exception e) {
+            LOG.error("Failed computing remote join reason={}", e.getLocalizedMessage(), e);
+            return 0;
         }
-
-        groupByStateAndSumPop = group("IID")
-                .sum("RJI").as("summation");
-
-        filterStates = match(where("IID").is(rid).and("A").is(true));
-        aggregation = newAggregation(filterStates, groupByStateAndSumPop);
-        result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
-        groupedValues = result.getMappedResults();
-        if (0 < groupedValues.size()) {
-            sum += groupedValues.iterator().next().getSummation();
-        }
-
-        return sum;
     }
 
     public boolean deductRemoteJoinCount(String rid) {
-        Assert.hasLength(rid, "RID cannot be empty");
+        try {
+            Assert.hasLength(rid, "RID cannot be empty");
 
-        InviteEntity invite = mongoTemplate.findOne(
-                query(where("A").is(true)
-                        .orOperator(
-                                where("RID").is(rid).and("RJR").gt(0),
-                                where("IID").is(rid).and("RJI").gt(0)
-                        )
-                ),
-                InviteEntity.class,
-                TABLE);
+            InviteEntity invite = mongoTemplate.findOne(
+                    query(where("A").is(true)
+                            .orOperator(
+                                    where("RID").is(rid).and("RJR").gt(0),
+                                    where("IID").is(rid).and("RJI").gt(0)
+                            )
+                    ),
+                    InviteEntity.class,
+                    TABLE);
 
-        boolean updated = false;
-        if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
-            invite.deductRemoteJoinForReceiptUserCount();
-            updated = true;
-        } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
-            invite.deductRemoteJoinForInviterCount();
-            updated = true;
+            boolean updated = false;
+            if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
+                invite.deductRemoteJoinForReceiptUserCount();
+                updated = true;
+            } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
+                invite.deductRemoteJoinForInviterCount();
+                updated = true;
+            }
+
+            if (0 == invite.getRemoteJoinForReceiptUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
+                invite.inActive();
+            }
+
+            save(invite);
+            return updated;
+        } catch(Exception e) {
+            LOG.error("Failed deducting from remote join reason={}", e.getLocalizedMessage(), e);
+            return false;
         }
-
-        if (0 == invite.getRemoteJoinForReceiptUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
-            invite.inActive();
-        }
-
-        save(invite);
-        return updated;
     }
 }
