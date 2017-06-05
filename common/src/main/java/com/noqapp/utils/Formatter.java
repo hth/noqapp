@@ -173,7 +173,7 @@ public final class Formatter {
         try {
             assertThat(phone, containsString("+"));
             /* Remove `+` sign with country code before sending the number back. */
-            return StringUtils.removeFirst(phone, "+" + String.valueOf(findCountryCode(phone)));
+            return StringUtils.removeFirst(phone, "\\+" + String.valueOf(findCountryCode(phone)));
         } catch (AssertionError a) {
             LOG.warn("Phone number should begin with + phone={}", phone);
             try {
