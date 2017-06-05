@@ -153,7 +153,7 @@ public class AccountService {
             boolean phoneValidated
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
-        String phoneRaw = Formatter.phoneStripCountryCode("+"+ phoneWithCountryCode);
+        String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
         LOG.info("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
         if (null == userProfileManager.findOneByPhone(phoneWithCountryCode)) {
             UserAccountEntity userAccount = null;
