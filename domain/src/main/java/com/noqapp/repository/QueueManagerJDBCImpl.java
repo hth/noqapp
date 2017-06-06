@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.QueueRowMapper;
 
 import java.util.ArrayList;
@@ -69,41 +70,48 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /* Any RuntimeException triggers rollback, and any checked Exception does not. Hence added @CustomTransactional */
     @Override
+    @CustomTransactional
     public void batchQueue(List<QueueEntity> queues) {
-        SqlParameterSource[] maps = new SqlParameterSource[queues.size()];
+        try {
+            SqlParameterSource[] maps = new SqlParameterSource[queues.size()];
 
-        int i = 0;
-        for (QueueEntity queue : queues) {
-            LOG.info("Added queue id={}", queue.getId());
+            int i = 0;
+            for (QueueEntity queue : queues) {
+                LOG.info("Added queue id={}", queue.getId());
 
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("id", queue.getId());
-            namedParameters.addValue("qr", queue.getCodeQR());
-            namedParameters.addValue("did", queue.getDid());
-            namedParameters.addValue("rid", queue.getRid());
-            namedParameters.addValue("tn", queue.getTokenNumber());
-            namedParameters.addValue("dn", queue.getDisplayName());
-            namedParameters.addValue("qs", queue.getQueueUserState().getName());
-            namedParameters.addValue("ns", queue.isNotifiedOnService() ? 1 : 0);
-            namedParameters.addValue("ra", queue.getRatingCount());
-            namedParameters.addValue("hr", queue.getHoursSaved());
-            namedParameters.addValue("sn", queue.getServerName());
-            namedParameters.addValue("sb", queue.getServiceBeginTime());
-            namedParameters.addValue("se", queue.getServiceEndTime());
+                MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+                namedParameters.addValue("id", queue.getId());
+                namedParameters.addValue("qr", queue.getCodeQR());
+                namedParameters.addValue("did", queue.getDid());
+                namedParameters.addValue("rid", queue.getRid());
+                namedParameters.addValue("tn", queue.getTokenNumber());
+                namedParameters.addValue("dn", queue.getDisplayName());
+                namedParameters.addValue("qs", queue.getQueueUserState().getName());
+                namedParameters.addValue("ns", queue.isNotifiedOnService() ? 1 : 0);
+                namedParameters.addValue("ra", queue.getRatingCount());
+                namedParameters.addValue("hr", queue.getHoursSaved());
+                namedParameters.addValue("sn", queue.getServerName());
+                namedParameters.addValue("sb", queue.getServiceBeginTime());
+                namedParameters.addValue("se", queue.getServiceEndTime());
 
-            namedParameters.addValue("v", queue.getVersion());
-            namedParameters.addValue("u", queue.getUpdated());
-            namedParameters.addValue("c", queue.getCreated());
-            namedParameters.addValue("a", queue.isActive() ? 1 : 0);
-            namedParameters.addValue("d", queue.isDeleted() ? 1 : 0);
+                namedParameters.addValue("v", queue.getVersion());
+                namedParameters.addValue("u", queue.getUpdated());
+                namedParameters.addValue("c", queue.getCreated());
+                namedParameters.addValue("a", queue.isActive() ? 1 : 0);
+                namedParameters.addValue("d", queue.isDeleted() ? 1 : 0);
 
-            maps[i] = namedParameters;
-            i++;
+                maps[i] = namedParameters;
+                i++;
+            }
+
+            int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(insert, maps);
+            LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated);
+        } catch (Exception e) {
+            LOG.error("Failed batch update reason={}", e.getLocalizedMessage(), e);
+            throw e;
         }
-
-        int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(insert, maps);
-        LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated);
     }
 
     @Override
@@ -139,15 +147,22 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
+    @CustomTransactional
     public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
-        if (StringUtils.isNotBlank(rid)) {
-            return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND RID = ? AND TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, codeQR, did, rid, token) > 0;
-        } else {
-            return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, codeQR, did, token) > 0;
+        try {
+            if (StringUtils.isNotBlank(rid)) {
+                return this.jdbcTemplate.update(
+                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND RID = ? AND TN = ? AND RA <> 0",
+                        ratingCount, hoursSaved, codeQR, did, rid, token) > 0;
+            } else {
+                return this.jdbcTemplate.update(
+                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
+                        ratingCount, hoursSaved, codeQR, did, token) > 0;
+            }
+        } catch (Exception e) {
+            LOG.error("Failed review update codeQR={} token={} did={} rid={} ratingCount={} hoursSaved={} reason={}",
+                    codeQR, token, did, rid, ratingCount, hoursSaved, e.getLocalizedMessage(), e);
+            throw e;
         }
     }
 }
