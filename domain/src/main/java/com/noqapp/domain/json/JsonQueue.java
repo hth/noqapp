@@ -81,8 +81,8 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("st")
-    private String servicedTime;
+    @JsonProperty ("se")
+    private String servicedEndTime;
 
     @JsonProperty ("rj")
     private int remoteJoin;
@@ -215,12 +215,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public String getServicedTime() {
-        return servicedTime;
+    public String getServicedEndTime() {
+        return servicedEndTime;
     }
 
-    public JsonQueue setServicedTime(Date servicedTime) {
-        this.servicedTime = DateFormatUtils.format(servicedTime, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+    public JsonQueue setServicedEndTime(Date servicedEndTime) {
+        this.servicedEndTime = DateFormatUtils.format(servicedEndTime, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
     }
 

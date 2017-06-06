@@ -36,13 +36,13 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findToAbort(String codeQR, String did, String rid);
 
     @Mobile
-    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
+    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo);
 
     @Mobile
     boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState);
 
     @Mobile
-    QueueEntity getNext(String codeQR);
+    QueueEntity getNext(String codeQR, String goTo);
 
     /**
      * Find all based on device id, this is when user is not registered.

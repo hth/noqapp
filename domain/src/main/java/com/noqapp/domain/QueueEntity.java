@@ -54,10 +54,6 @@ public class QueueEntity extends BaseEntity {
     @Field ("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
-    /* Locked when being served. */
-    @Field ("LO")
-    private boolean locked = false;
-
     @NotNull
     @Field ("NS")
     private boolean notifiedOnService = false;
@@ -76,8 +72,15 @@ public class QueueEntity extends BaseEntity {
     @Field ("HR")
     private int hoursSaved;
 
-    @Field ("ST")
-    private Date servicedTime;
+    /* Locked when being served. */
+    @Field ("SN")
+    private String serverName;
+
+    @Field ("SB")
+    private Date serviceBeginTime;
+
+    @Field ("SE")
+    private Date serviceEndTime;
 
     public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
@@ -151,7 +154,23 @@ public class QueueEntity extends BaseEntity {
         this.hoursSaved = hoursSaved;
     }
 
-    public Date getServicedTime() {
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public Date getServiceBeginTime() {
+        return serviceBeginTime;
+    }
+
+    public void setServiceBeginTime(Date serviceBeginTime) {
+        this.serviceBeginTime = serviceBeginTime;
+    }
+
+    public Date getServiceEndTime() {
         switch (queueUserState) {
             case Q:
                 LOG.info("{} insert date {}", queueUserState, getCreated());
@@ -159,15 +178,15 @@ public class QueueEntity extends BaseEntity {
             case A:
             case N:
             case S:
-                return servicedTime;
+                return serviceEndTime;
             default:
                 LOG.error("Reached un-supported condition queueUserState={}", queueUserState);
                 return getCreated();
         }
     }
 
-    public void setServicedTime(Date servicedTime) {
-        this.servicedTime = servicedTime;
+    public void setServiceEndTime(Date serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
     }
 
     @Override
@@ -179,13 +198,13 @@ public class QueueEntity extends BaseEntity {
                 ", tokenNumber=" + tokenNumber +
                 ", displayName='" + displayName + '\'' +
                 ", queueUserState=" + queueUserState +
-                ", locked=" + locked +
+                ", serverName=" + serverName +
                 ", notifiedOnService=" + notifiedOnService +
                 ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
                 ", customerName='" + customerName + '\'' +
                 ", ratingCount=" + ratingCount +
                 ", hoursSaved=" + hoursSaved +
-                ", servicedTime=" + servicedTime +
+                ", serviceEndTime=" + serviceEndTime +
                 '}';
     }
 }
