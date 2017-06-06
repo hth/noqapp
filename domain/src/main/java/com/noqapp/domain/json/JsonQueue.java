@@ -40,6 +40,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("c")
     private String codeQR;
 
+    @JsonProperty ("cor")
+    private double[] coordinate;
+
     @JsonProperty ("n")
     private String businessName;
 
@@ -96,6 +99,15 @@ public class JsonQueue extends AbstractDomain {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public JsonQueue setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
+        return this;
     }
 
     public JsonQueue setBusinessName(String businessName) {
