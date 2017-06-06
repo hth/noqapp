@@ -2,6 +2,8 @@ package com.noqapp.domain;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -33,7 +35,7 @@ public class InviteEntity extends BaseEntity {
     /* RJR maps to RID. */
     @NotNull
     @Field ("RJR")
-    private int remoteJoinForReceiptUserCount = 2;
+    private int remoteJoinForReceiptUserCount;
 
     @NotNull
     @Field ("IC")
@@ -46,12 +48,16 @@ public class InviteEntity extends BaseEntity {
     /* IID maps to RJI. */
     @NotNull
     @Field ("RJI")
-    private int remoteJoinForInviterCount = 2;
+    private int remoteJoinForInviterCount;
 
     public InviteEntity(String receiptUserId, String inviterId, String inviteeCode) {
         this.receiptUserId = receiptUserId;
-        this.inviterId = inviterId;
-        this.inviteeCode = inviteeCode;
+        this.remoteJoinForReceiptUserCount = 2;
+        if (StringUtils.isNotBlank(inviteeCode)) {
+            this.inviteeCode = inviteeCode;
+            this.inviterId = inviterId;
+            this.remoteJoinForInviterCount = 2;
+        }
     }
 
     public String getReceiptUserId() {
