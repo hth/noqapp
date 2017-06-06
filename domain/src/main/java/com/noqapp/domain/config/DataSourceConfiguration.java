@@ -35,7 +35,11 @@ public class DataSourceConfiguration {
         ds.setUsername(mysqlUsername);
         ds.setPassword(mysqlPassword);
         ds.setInitialSize(5);
-        ds.setMaxActive(10);
+        ds.setMaxActive(100);
+        ds.setMinIdle(5);
+        ds.setMaxIdle(20);
+        ds.setMaxWait(10000);
+        ds.setRemoveAbandonedTimeout(300);
         return ds;
     }
 }
