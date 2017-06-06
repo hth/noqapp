@@ -219,8 +219,12 @@ public class AccountService {
                     InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getReceiptUserId(), inviteCode);
                     inviteService.save(invite);
                 } else {
-                    LOG.info("Skipped invite as its invalid code {}", inviteCode);
+                    InviteEntity invite = new InviteEntity(rid, null, null);
+                    inviteService.save(invite);
                 }
+            } else {
+                InviteEntity invite = new InviteEntity(rid, null, null);
+                inviteService.save(invite);
             }
             return userAccount;
         } else {
