@@ -144,7 +144,8 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
         boolean status = mongoTemplate.updateFirst(
-                query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
+                /* Do not update if user aborted between begining of service and before completion of service. */
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A)),
                 entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
                 QueueEntity.class,
                 TABLE).getN() > 1;
