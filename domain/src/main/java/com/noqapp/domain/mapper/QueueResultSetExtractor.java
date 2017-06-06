@@ -28,17 +28,19 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setNotifiedOnService(rs.getInt(8) == 1);
         queue.setRatingCount(rs.getInt(9));
         queue.setHoursSaved(rs.getInt(10));
-        queue.setServicedTime(rs.getTimestamp(11));
-        queue.setVersion(rs.getInt(12));
-        queue.setCreateAndUpdate(rs.getTimestamp(13));
-        queue.setCreated(rs.getTimestamp(14));
-        if (rs.getInt(15) > 0) {
+        queue.setServerName(rs.getString(11));
+        queue.setServiceBeginTime(rs.getTimestamp(12));
+        queue.setServiceEndTime(rs.getTimestamp(13));
+        queue.setVersion(rs.getInt(14));
+        queue.setCreateAndUpdate(rs.getTimestamp(15));
+        queue.setCreated(rs.getTimestamp(16));
+        if (rs.getInt(17) > 0) {
             queue.active();
         } else {
             queue.inActive();
         }
 
-        if (rs.getInt(16) > 0) {
+        if (rs.getInt(18) > 0) {
             queue.markAsDeleted();
         }
 

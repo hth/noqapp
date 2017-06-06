@@ -82,7 +82,7 @@ public class QueueManagerImpl implements QueueManager {
 
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("QS", QueueUserStateEnum.A).set("ST", new Date()).set("A", false)),
+                entityUpdate(update("QS", QueueUserStateEnum.A).set("SB", new Date()).set("SE", new Date()).set("A", false)),
                 QueueEntity.class,
                 TABLE
         );
@@ -135,17 +135,17 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
+    public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo) {
         boolean status = updateServedInQueue(codeQR, tokenNumber, queueUserState);
         LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
-        return getNext(codeQR);
+        return getNext(codeQR, goTo);
     }
 
     @Override
     public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState) {
         boolean status = mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
-                entityUpdate(update("QS", queueUserState).set("A", false).set("ST", new Date())),
+                entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
                 QueueEntity.class,
                 TABLE).getN() > 1;
         LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
@@ -153,22 +153,22 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity getNext(String codeQR) {
+    public QueueEntity getNext(String codeQR, String goTo) {
         if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
         QueueEntity queue = mongoTemplate.findOne(
-                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("LO").is(false)).with(new Sort(ASC, "TN")),
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("SN").exists(false)).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
 
         if (null != queue) {
             /* Mark as being served. */
             WriteResult writeConcern = mongoTemplate.updateFirst(
-                    query(where("id").is(queue.getId()).and("LO").is(false)),
-                    entityUpdate(update("LO", true)),
+                    query(where("id").is(queue.getId()).and("SN").exists(false)),
+                    entityUpdate(update("SN", goTo).set("SB", new Date())),
                     QueueEntity.class,
                     TABLE
             );
@@ -178,7 +178,7 @@ public class QueueManagerImpl implements QueueManager {
                 LOG.info("Could not lock since its already modified codeQR={} token={}, going to next in queue",
                         codeQR, queue.getTokenNumber());
 
-                return getNext(codeQR);
+                return getNext(codeQR, goTo);
             }
         }
         
