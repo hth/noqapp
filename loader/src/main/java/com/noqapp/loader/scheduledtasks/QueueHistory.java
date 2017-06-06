@@ -91,7 +91,7 @@ public class QueueHistory {
                     queueManagerJDBC.batchQueue(queues);
                     int deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
-                        LOG.info("deleted and insert exact bizStore={}", bizStore.getId());
+                        LOG.info("deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
                     } else {
                         LOG.error("mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
@@ -108,7 +108,7 @@ public class QueueHistory {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail to RDB bizStore={}", bizStore.getId());
+                    LOG.error("Insert fail to RDB bizStore={} reason={}", bizStore.getId(), e.getLocalizedMessage(), e);
                 }
             }
         } catch (Exception e) {
