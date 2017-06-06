@@ -12,24 +12,25 @@ Set default from 0 to 1000
 
     CREATE TABLE noqapp_test.QUEUE
     (
-        ID VARCHAR(30),
-        QR VARCHAR(30),
-        DID VARCHAR(50),
+        ID VARCHAR(30)      NOT NULL,
+        QR VARCHAR(30)      NOT NULL,
+        DID VARCHAR(50)     NOT NULL,
         RID VARCHAR(13),
-        TN INT(11),
-        DN VARCHAR(100),
-        QS VARCHAR(10),
+        TN INT(10)          NOT NULL,
+        DN VARCHAR(100)     NOT NULL,
+        QS VARCHAR(1)       NOT NULL,
         NS TINYINT(1),
         RA TINYINT(1),
         HR TINYINT(1),
-        SN VARCHAR(15),
+        SN VARCHAR(20),
         SB DATETIME,
         SE DATETIME,
         V INT(11),
         U DATETIME,
         C DATETIME,
         A TINYINT(1),
-        D TINYINT(1)
+        D TINYINT(1),
+        PRIMARY KEY (ID)
     );
     
 #### Change DB temp 
