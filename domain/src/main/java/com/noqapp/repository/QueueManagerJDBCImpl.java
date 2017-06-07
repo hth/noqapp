@@ -42,7 +42,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     " VALUES " +
                     "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:sn,:sb,:se,:v,:u,:c,:a,:d)";
 
-    private static final String delete = "DELETE FROM QUEUE WHERE ID = ?";
+    private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByRid =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
