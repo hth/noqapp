@@ -116,7 +116,7 @@ public class QueueHistory {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail to RDB bizStore={} reason={}", bizStore.getId(), e.getLocalizedMessage(), e);
+                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}", bizStore.getId(), bizStore.getCodeQR(), e.getLocalizedMessage(), e);
                 }
             }
         } catch (Exception e) {
