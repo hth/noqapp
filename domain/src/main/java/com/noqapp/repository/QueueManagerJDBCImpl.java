@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -41,6 +42,8 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     " VALUES " +
                     "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:sn,:sb,:se,:v,:u,:c,:a,:d)";
 
+    private static final String delete = "DELETE FROM QUEUE WHERE ID = ?";
+
     private static final String findByRid =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
@@ -73,7 +76,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Any RuntimeException triggers rollback, and any checked Exception does not. Hence added @CustomTransactional */
     @Override
     @CustomTransactional
-    public void batchQueue(List<QueueEntity> queues) {
+    public void batchQueues(List<QueueEntity> queues) {
         try {
             SqlParameterSource[] maps = new SqlParameterSource[queues.size()];
 
@@ -108,8 +111,32 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
             int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(insert, maps);
             LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             LOG.error("Failed batch update reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void rollbackQueues(List<QueueEntity> queues) {
+        try {
+            SqlParameterSource[] maps = new SqlParameterSource[queues.size()];
+
+            int i = 0;
+            for (QueueEntity queue : queues) {
+                LOG.info("Delete queue id={}", queue.getId());
+
+                MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+                namedParameters.addValue("id", queue.getId());
+
+                maps[i] = namedParameters;
+                i++;
+            }
+
+            int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(delete, maps);
+            LOG.info("Deleted count={} rowUpdated={}", maps.length, rowUpdated);
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Failed batch delete reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
     }

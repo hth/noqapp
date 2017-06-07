@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -88,7 +89,14 @@ public class QueueHistory {
             for (BizStoreEntity bizStore : bizStores) {
                 try {
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
-                    queueManagerJDBC.batchQueue(queues);
+                    try {
+                        queueManagerJDBC.batchQueues(queues);
+                    } catch (DataIntegrityViolationException e) {
+                        LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+                        queueManagerJDBC.rollbackQueues(queues);
+                        LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+                        throw e;
+                    }
                     int deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
                         LOG.info("deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -101,7 +109,7 @@ public class QueueHistory {
                             timeZone,
                             bizStore.storeClosingHourOfDay(),
                             bizStore.storeClosingMinuteOfDay());
-                    
+
                     bizStoreManager.setNextRun(bizStore.getId(), bizStore.getTimeZone(), nextDay);
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
 

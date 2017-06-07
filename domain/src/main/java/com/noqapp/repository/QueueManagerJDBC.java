@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface QueueManagerJDBC {
 
-    void batchQueue(List<QueueEntity> queues);
+    void batchQueues(List<QueueEntity> queues);
+    void rollbackQueues(List<QueueEntity> queues);
 
     /**
      * Get all for did.
