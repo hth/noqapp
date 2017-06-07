@@ -83,6 +83,12 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("se")
     private String servicedEndTime;
 
+    @JsonProperty ("ra")
+    private int ratingCount;
+
+    @JsonProperty ("hr")
+    private int hoursSaved;
+
     @JsonProperty ("u")
     private String createDate;
 
@@ -120,6 +126,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Skipped serving number
         //Skipped last number
         this.servicedEndTime = DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.ratingCount = queue.getRatingCount();
+        this.hoursSaved = queue.getHoursSaved();
         this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         this.token = queue.getTokenNumber();
