@@ -13,6 +13,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
 
+import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
 /**
@@ -113,15 +114,17 @@ public class JsonTokenAndQueue extends AbstractDomain {
     }
 
     public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
         this.codeQR = queue.getCodeQR();
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = queue.getDisplayName();
         this.storeAddress = bizStore.getAddress();
         this.countryShortName = bizStore.getCountryShortName();
         this.storePhone = bizStore.getPhone();
-        this.tokenAvailableFrom = bizStore.getTokenAvailableFrom();
-        this.startHour = bizStore.getStartHour();
-        this.endHour = bizStore.getEndHour();
+        this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
+        this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
+        this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
         //Skipped serving number
         //Skipped last number

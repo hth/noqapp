@@ -137,26 +137,6 @@
                                 cssErrorClass="profile_label lb_error">Store Phone</form:label>
                         <form:input path="phoneStore" size="20" cssClass="name_txt" />
                     </div>
-                    <div class="row_field">
-                        <form:label path="tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Token Available Time</form:label>
-                        <form:input path="tokenAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Start Time</form:label>
-                        <form:input path="startHourStore" size="20" cssClass="name_txt" /> (As 1000 for 10:00 AM)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Token Not Available After</form:label>
-                        <form:input path="tokenNotAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Close Time</form:label>
-                        <form:input path="endHourStore" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
-                    </div>
                     </div>
 
                     <div class="full">

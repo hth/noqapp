@@ -106,8 +106,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
      * @throws MigrateToBusinessRegistrationException
      */
     @SuppressWarnings ("unused")
-    public Register completeRegistrationInformation(Register register)
-            throws MigrateToBusinessRegistrationException {
+    public Register completeRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
         try {
             updateUserProfile(register);
             try {

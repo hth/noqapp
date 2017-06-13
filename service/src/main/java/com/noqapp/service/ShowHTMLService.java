@@ -10,8 +10,10 @@ import com.noqapp.domain.BizStoreEntity;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -43,12 +45,14 @@ public class ShowHTMLService {
         try {
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
             if (bizStore != null) {
+                ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
                 rootMap.put("bizName", bizStore.getBizName().getBusinessName());
                 rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
                 rootMap.put("phone", bizStore.getPhoneFormatted());
                 rootMap.put("displayName", bizStore.getDisplayName());
-                rootMap.put("startHour", String.valueOf(bizStore.getStartHour()));
-                rootMap.put("endHour", String.valueOf(bizStore.getEndHour()));
+                rootMap.put("startHour", String.valueOf(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+                rootMap.put("endHour", String.valueOf(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
 
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             }

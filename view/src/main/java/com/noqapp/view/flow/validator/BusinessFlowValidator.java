@@ -13,6 +13,7 @@ import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
@@ -20,6 +21,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -80,7 +82,7 @@ public class BusinessFlowValidator {
             DecodedAddress decodedAddress = DecodedAddress.newInstance(
                     externalService.getGeocodingResults(registerBusiness.getAddress()),
                     registerBusiness.getAddress());
-            
+
             if (decodedAddress.isNotEmpty()) {
                 registerBusiness.setAddress(decodedAddress.getFormattedAddress());
                 registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
@@ -122,7 +124,7 @@ public class BusinessFlowValidator {
                                 .source("registerBusiness.name")
                                 .defaultText(
                                         "Business Name already exist wth this name or address or phone. " +
-                                        "Please email us at contact@noqapp.com.")
+                                                "Please email us at contact@noqapp.com.")
                                 .build());
                 status = "failure";
             }
@@ -186,8 +188,29 @@ public class BusinessFlowValidator {
                     status = "failure";
                 }
             }
+        }
 
-            if (registerBusiness.getStartHourStore() == 0) {
+        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
+        return status;
+    }
+
+    /**
+     * Validate business hours.
+     *
+     * @param register
+     * @param messageContext
+     * @return
+     */
+    @SuppressWarnings ("unused")
+    public String validateBusinessHours(Register register, MessageContext messageContext) {
+        LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
+        String status = "success";
+
+        final RegisterBusiness registerBusiness = register.getRegisterBusiness();
+        List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
+
+        for (BusinessHour businessHour : businessHours) {
+            if (businessHour.getStartHourStore() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -197,7 +220,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (registerBusiness.getEndHourStore() == 0) {
+            if (businessHour.getEndHourStore() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
@@ -207,7 +230,7 @@ public class BusinessFlowValidator {
                 status = "failure";
             }
 
-            if (registerBusiness.getTokenAvailableFrom() == 0) {
+            if (businessHour.getTokenAvailableFrom() == 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
