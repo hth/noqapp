@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -86,7 +87,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public List<StoreHourEntity> findAll(String bizStoreId) {
         return mongoTemplate.find(
-                query(where("BZ").is(bizStoreId)),
+                query(where("BZ").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
                 StoreHourEntity.class,
                 TABLE
         );
