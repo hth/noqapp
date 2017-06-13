@@ -149,26 +149,54 @@
                                 cssErrorClass="profile_label lb_error">Store Phone</form:label>
                         <form:input path="registerBusiness.phoneStore" size="20" cssClass="name_txt" readonly="true" />
                     </div>
-                    <div class="row_field">
-                        <form:label path="registerBusiness.tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Token Available Time</form:label>
-                        <form:input path="registerBusiness.tokenAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="registerBusiness.startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Start Time</form:label>
-                        <form:input path="registerBusiness.startHourStore" size="20" cssClass="name_txt" readonly="true" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="registerBusiness.tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Token Not Available Time</form:label>
-                        <form:input path="registerBusiness.tokenNotAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="registerBusiness.endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Store Close Time</form:label>
-                        <form:input path="registerBusiness.endHourStore" size="20" cssClass="name_txt" readonly="true" />
-                    </div>
+                    <%--<div class="row_field">--%>
+                        <%--<form:label path="registerBusiness.tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"--%>
+                                <%--cssErrorClass="profile_label lb_error">Token Available Time</form:label>--%>
+                        <%--<form:input path="registerBusiness.tokenAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)--%>
+                    <%--</div>--%>
+                    <%--<div class="row_field">--%>
+                        <%--<form:label path="registerBusiness.startHourStore" cssClass="profile_label" cssStyle="width: 155px;"--%>
+                                <%--cssErrorClass="profile_label lb_error">Store Start Time</form:label>--%>
+                        <%--<form:input path="registerBusiness.startHourStore" size="20" cssClass="name_txt" readonly="true" />--%>
+                    <%--</div>--%>
+                    <%--<div class="row_field">--%>
+                        <%--<form:label path="registerBusiness.tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"--%>
+                                <%--cssErrorClass="profile_label lb_error">Token Not Available Time</form:label>--%>
+                        <%--<form:input path="registerBusiness.tokenNotAvailableFrom" size="20" cssClass="name_txt" readonly="true" />  (As 1800 for 6:00 PM)--%>
+                    <%--</div>--%>
+                    <%--<div class="row_field">--%>
+                        <%--<form:label path="registerBusiness.endHourStore" cssClass="profile_label" cssStyle="width: 155px;"--%>
+                                <%--cssErrorClass="profile_label lb_error">Store Close Time</form:label>--%>
+                        <%--<form:input path="registerBusiness.endHourStore" size="20" cssClass="name_txt" readonly="true" />--%>
+                    <%--</div>--%>
+
+                    <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
+                        <h2 class="h2"><c:out value="${businessHour.dayOfWeek}" /></h2>
+                        <hr>
+
+                        <div class="row_field">
+                            <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
+                                    cssErrorClass="profile_label lb_error">Token Available Time</form:label>
+                            <form:input path="businessHours[${status.index}].tokenAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
+                        </div>
+                        <div class="row_field">
+                            <form:label path="businessHours[${status.index}].startHourStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                    cssErrorClass="profile_label lb_error">Store Start Time</form:label>
+                            <form:input path="businessHours[${status.index}].startHourStore" size="20" cssClass="name_txt" /> (As 1000 for 10:00 AM)
+                        </div>
+                        <div class="row_field">
+                            <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="profile_label" cssStyle="width: 155px;"
+                                    cssErrorClass="profile_label lb_error">Token Not Available After</form:label>
+                            <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
+                        </div>
+                        <div class="row_field">
+                            <form:label path="businessHours[${status.index}].endHourStore" cssClass="profile_label" cssStyle="width: 155px;"
+                                    cssErrorClass="profile_label lb_error">Store Close Time</form:label>
+                            <form:input path="businessHours[${status.index}].endHourStore" size="20" cssClass="name_txt" />  (As 1800 for 6:00 PM)
+                        </div>
+
+                    </c:forEach>
+
                     </div>
 
                     <div class="full">

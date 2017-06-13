@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.StoreHourManager;
 
+import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,21 +40,24 @@ public class BizService {
 
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
+    private StoreHourManager storeHourManager;
 
     @Autowired
     public BizService(
             @Value ("${degreeInMiles:69.172}")
             double degreeInMiles,
 
-            @Value("${degreeInKilometers:111.321}")
+            @Value ("${degreeInKilometers:111.321}")
             double degreeInKilometers,
 
             BizNameManager bizNameManager,
-            BizStoreManager bizStoreManager) {
+            BizStoreManager bizStoreManager,
+            StoreHourManager storeHourManager) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
+        this.storeHourManager = storeHourManager;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -126,5 +132,21 @@ public class BizService {
 
     public boolean isValidCodeQR(String codeQR) {
         return bizStoreManager.isValidCodeQR(codeQR);
+    }
+
+    public void insertAll(List<StoreHourEntity> storeHours) {
+        storeHourManager.insertAll(storeHours);
+    }
+
+    public void removeAll(String bizStoreId) {
+        storeHourManager.removeAll(bizStoreId);
+    }
+
+    public StoreHourEntity findOne(String bizStoreId, int dayOfWeek) {
+        return storeHourManager.findOne(bizStoreId, dayOfWeek);
+    }
+
+    public StoreHourEntity findOne(String bizStoreId, DayOfWeek dayOfWeek) {
+        return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 }

@@ -203,6 +203,7 @@ public class ExternalService {
      */
     public void updateTimezone(BizStoreEntity bizStore) {
         try {
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
             TimeZoneApi.getTimeZone(context, bizStore.getLatLng()).setCallback(
                     new PendingResult.Callback<TimeZone>() {
 
@@ -211,8 +212,8 @@ public class ExternalService {
                             String zoneId = timeZone.toZoneId().getId();
                             Date queueHistoryNextRun = computeNextRunTimeAtUTC(
                                     timeZone,
-                                    bizStore.storeClosingHourOfDay(),
-                                    bizStore.storeClosingMinuteOfDay());
+                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
+                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
                             boolean status = bizStoreManager.setNextRun(bizStore.getId(), zoneId, queueHistoryNextRun);
                             if (status) {

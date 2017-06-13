@@ -17,7 +17,9 @@ import org.springframework.util.Assert;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.Formatter;
 
+import java.time.DayOfWeek;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -115,18 +117,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
-    @Field ("TF")
-    private int tokenAvailableFrom;
-
-    @Field ("SH")
-    private int startHour;
-
-    @Field ("TE")
-    private int tokenNotAvailableFrom;
-
-    @Field ("EH")
-    private int endHour;
-
     @Field ("TZ")
     private String timeZone;
 
@@ -137,6 +127,9 @@ public class BizStoreEntity extends BaseEntity {
     //TODO Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
+
+    @Transient
+    private List<StoreHourEntity> storeHours;
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -342,38 +335,6 @@ public class BizStoreEntity extends BaseEntity {
         this.displayName = displayName;
     }
 
-    public int getStartHour() {
-        return startHour;
-    }
-
-    public void setStartHour(int startHour) {
-        this.startHour = startHour;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
-    public int getTokenAvailableFrom() {
-        return tokenAvailableFrom;
-    }
-
-    public void setTokenAvailableFrom(int tokenAvailableFrom) {
-        this.tokenAvailableFrom = tokenAvailableFrom;
-    }
-
-    public int getTokenNotAvailableFrom() {
-        return tokenNotAvailableFrom;
-    }
-
-    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
-        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
-    }
-
     public String getTimeZone() {
         return timeZone;
     }
@@ -407,12 +368,27 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @Transient
-    public int storeClosingHourOfDay() {
-        return endHour / 100;
+    public List<StoreHourEntity> getStoreHours() {
+        return storeHours;
     }
 
     @Transient
-    public int storeClosingMinuteOfDay() {
-        return endHour % 100;
+    public void setStoreHours(List<StoreHourEntity> storeHours) {
+        this.storeHours = storeHours;
+    }
+
+    @Transient
+    public int getTokenAvailableFrom(DayOfWeek dayOfWeek) {
+        return storeHours.get(dayOfWeek.getValue() - 1).getTokenAvailableFrom();
+    }
+
+    @Transient
+    public int getStartHour(DayOfWeek dayOfWeek) {
+        return storeHours.get(dayOfWeek.getValue() - 1).getTokenAvailableFrom();
+    }
+
+    @Transient
+    public int getEndHour(DayOfWeek dayOfWeek) {
+        return storeHours.get(dayOfWeek.getValue() - 1).getTokenAvailableFrom();
     }
 }

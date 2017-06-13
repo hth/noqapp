@@ -72,6 +72,12 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("e")
     private int endHour;
 
+    @JsonProperty ("pj")
+    private boolean preventJoining;
+
+    @JsonProperty ("dc")
+    private boolean dayClosed = false;
+
     @JsonProperty ("o")
     private String topic;
 
@@ -189,6 +195,24 @@ public class JsonQueue extends AbstractDomain {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public boolean isPreventJoining() {
+        return preventJoining;
+    }
+
+    public JsonQueue setPreventJoining(boolean preventJoining) {
+        this.preventJoining = preventJoining;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public JsonQueue setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
     }
 
     public JsonQueue setTopic(String topic) {

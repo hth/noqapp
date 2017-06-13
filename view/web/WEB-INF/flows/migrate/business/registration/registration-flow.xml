@@ -41,10 +41,21 @@
 
     <action-state id="validateBusinessProfile">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)" />
+        <transition on="success" to="businessHours" />
+        <transition on="failure" to="registrationStart" />
+    </action-state>
+
+    <view-state id="businessHours" model="register">
+        <transition on="submit" to="validateBusinessHours" />
+        <transition on="cancel" to="logout" />
+    </view-state>
+
+    <action-state id="validateBusinessHours">
+        <evaluate expression="businessFlowValidator.validateBusinessHours(register, messageContext)" />
         <transition on="success" to="registrationReview">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.updateBusiness(register)" />
         </transition>
-        <transition on="failure" to="registrationStart" />
+        <transition on="failure" to="businessHours" />
     </action-state>
 
     <view-state id="registrationReview">

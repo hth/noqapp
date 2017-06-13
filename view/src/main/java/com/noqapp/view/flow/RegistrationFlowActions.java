@@ -7,11 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.Formatter;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -42,9 +47,14 @@ class RegistrationFlowActions {
             register.getRegisterBusiness().setPhoneStore(null);
             register.getRegisterBusiness().setCountryShortNameStore(null);
         } else {
-            if (0 == register.getRegisterBusiness().getTokenNotAvailableFrom()) {
-                register.getRegisterBusiness().setTokenNotAvailableFrom(register.getRegisterBusiness().getEndHourStore());
+            List<BusinessHour> businessHours = register.getRegisterBusiness().getBusinessHours();
+            for (BusinessHour businessHour : businessHours) {
+                if (0 == businessHour.getTokenNotAvailableFrom()) {
+                    businessHour.setTokenNotAvailableFrom(businessHour.getEndHourStore());
+                }
             }
+
+            register.getRegisterBusiness().setBusinessHours(businessHours);
         }
     }
 
@@ -97,10 +107,6 @@ class RegistrationFlowActions {
                     bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
                     bizStore.setAddress(registerBusiness.getAddress());
                     bizStore.setTimeZone(registerBusiness.getTimeZone());
-                    bizStore.setStartHour(registerBusiness.getStartHourStore());
-                    bizStore.setEndHour(registerBusiness.getEndHourStore());
-                    bizStore.setTokenAvailableFrom(registerBusiness.getTokenAvailableFrom());
-                    bizStore.setTokenNotAvailableFrom(registerBusiness.getTokenNotAvailableFrom());
                     bizStore.setCodeQR(ObjectId.get().toString());
 
                     //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
@@ -109,6 +115,25 @@ class RegistrationFlowActions {
                         bizService.saveStore(bizStore);
                         /* Add timezone later as its missing id. */
                         addTimezone(bizStore);
+
+                        String bizStoreId = bizStore.getId();
+                        List<StoreHourEntity> storeHours = new LinkedList<>();
+                        for (BusinessHour businessHour : register.getRegisterBusiness().getBusinessHours()) {
+                            StoreHourEntity storeHour = new StoreHourEntity(bizStoreId, businessHour.getDayOfWeek().getValue());
+                            if (businessHour.isDayClosed()) {
+                                storeHour.setDayClosed(businessHour.isDayClosed());
+                            } else {
+                                storeHour.setStartHour(businessHour.getStartHourStore());
+                                storeHour.setEndHour(businessHour.getEndHourStore());
+                                storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
+                                storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
+                            }
+
+                            storeHours.add(storeHour);
+                        }
+
+                        /* Add store hours. */
+                        bizService.insertAll(storeHours);
                     } catch (Exception e) {
                         LOG.error("Error saving store name={}, starting rollback...", bizName.getBusinessName());
                         bizService.deleteBizName(bizName);

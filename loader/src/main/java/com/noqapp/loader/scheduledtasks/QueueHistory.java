@@ -19,6 +19,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ExternalService;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -88,6 +89,7 @@ public class QueueHistory {
         try {
             for (BizStoreEntity bizStore : bizStores) {
                 try {
+                    ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     try {
                         queueManagerJDBC.batchQueues(queues);
@@ -107,8 +109,8 @@ public class QueueHistory {
                     TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
                     Date nextDay = externalService.computeNextRunTimeAtUTC(
                             timeZone,
-                            bizStore.storeClosingHourOfDay(),
-                            bizStore.storeClosingMinuteOfDay());
+                            bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
+                            bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
                     bizStoreManager.setNextRun(bizStore.getId(), bizStore.getTimeZone(), nextDay);
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());

@@ -10,6 +10,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,10 +37,14 @@ public class RegisterBusiness implements Serializable {
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
-    private int startHourStore;
-    private int endHourStore;
-    private int tokenAvailableFrom;
-    private int tokenNotAvailableFrom;
+    private List<BusinessHour> businessHours = new LinkedList<>();
+
+    public RegisterBusiness() {
+        for (int i = 1; i <= 7; i++) {
+            BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
+            businessHours.add(businessHour);
+        }
+    }
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
@@ -201,35 +207,11 @@ public class RegisterBusiness implements Serializable {
         this.timeZoneStore = timeZoneStore;
     }
 
-    public int getStartHourStore() {
-        return startHourStore;
+    public List<BusinessHour> getBusinessHours() {
+        return businessHours;
     }
 
-    public void setStartHourStore(int startHourStore) {
-        this.startHourStore = startHourStore;
-    }
-
-    public int getEndHourStore() {
-        return endHourStore;
-    }
-
-    public void setEndHourStore(int endHourStore) {
-        this.endHourStore = endHourStore;
-    }
-
-    public int getTokenAvailableFrom() {
-        return tokenAvailableFrom;
-    }
-
-    public void setTokenAvailableFrom(int tokenAvailableFrom) {
-        this.tokenAvailableFrom = tokenAvailableFrom;
-    }
-
-    public int getTokenNotAvailableFrom() {
-        return tokenNotAvailableFrom;
-    }
-
-    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
-        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+    public void setBusinessHours(List<BusinessHour> businessHours) {
+        this.businessHours = businessHours;
     }
 }
