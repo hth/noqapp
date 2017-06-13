@@ -149,4 +149,8 @@ public class BizService {
     public StoreHourEntity findOne(String bizStoreId, DayOfWeek dayOfWeek) {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
+
+    public List<StoreHourEntity> finalAllStoreHours(String bizStoreId) {
+        return storeHourManager.findAll(bizStoreId);
+    }
 }
