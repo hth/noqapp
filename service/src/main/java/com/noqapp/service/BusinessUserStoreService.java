@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonTopic;
-import com.noqapp.domain.json.JsonTopicList;
 import com.noqapp.repository.BusinessUserStoreManager;
 
 import java.util.ArrayList;
@@ -30,11 +30,19 @@ import java.util.List;
 public class BusinessUserStoreService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserStoreService.class);
 
+    private int queueLimit;
     private BusinessUserStoreManager businessUserStoreManager;
     private TokenQueueService tokenQueueService;
 
     @Autowired
-    public BusinessUserStoreService(BusinessUserStoreManager businessUserStoreManager, TokenQueueService tokenQueueService) {
+    public BusinessUserStoreService(
+            @Value("${BusinessUserStoreService.queue.limit:10}")
+            int queueLimit,
+            
+            BusinessUserStoreManager businessUserStoreManager,
+            TokenQueueService tokenQueueService
+    ) {
+        this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
         this.tokenQueueService = tokenQueueService;
     }
@@ -43,16 +51,17 @@ public class BusinessUserStoreService {
         businessUserStoreManager.save(businessUserStore);
     }
 
+    @Mobile
     public boolean hasAccess(String rid, String codeQR) {
         return businessUserStoreManager.hasAccess(rid, codeQR);
     }
 
     @Mobile
     public List<JsonTopic> getQueues(String rid) {
-        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, 10);
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, queueLimit);
         LOG.info("Found user associated to business count={}", businessUserStores.size());
 
-        String[] codes = new String[10];
+        String[] codes = new String[queueLimit];
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
@@ -67,6 +76,14 @@ public class BusinessUserStoreService {
         }
 
         LOG.info("Found queues count={}", jsonTopics.size());
+        return jsonTopics;
+    }
+
+    @Mobile
+    public List<JsonTopic> getQueue(String codeQR) {
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+        List<JsonTopic> jsonTopics = new ArrayList<>();
+        jsonTopics.add(new JsonTopic(tokenQueue));
         return jsonTopics;
     }
 }
