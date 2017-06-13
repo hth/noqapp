@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
@@ -142,14 +143,17 @@ public class BizService {
         storeHourManager.removeAll(bizStoreId);
     }
 
+    @Mobile
     public StoreHourEntity findOne(String bizStoreId, int dayOfWeek) {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 
+    @Mobile
     public StoreHourEntity findOne(String bizStoreId, DayOfWeek dayOfWeek) {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 
+    @Mobile
     public List<StoreHourEntity> finalAllStoreHours(String bizStoreId) {
         return storeHourManager.findAll(bizStoreId);
     }
