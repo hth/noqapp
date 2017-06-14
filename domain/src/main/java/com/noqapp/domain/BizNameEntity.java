@@ -63,6 +63,9 @@ public class BizNameEntity extends BaseEntity {
     @Field ("ST")
     private String state;
 
+    @Field ("SS")
+    private String stateShortName;
+
     /* Postal code could be empty for few countries. */
     @Field ("PC")
     private String postalCode;
@@ -212,6 +215,14 @@ public class BizNameEntity extends BaseEntity {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getStateShortName() {
+        return stateShortName;
+    }
+
+    public void setStateShortName(String stateShortName) {
+        this.stateShortName = stateShortName;
     }
 
     public String getPostalCode() {

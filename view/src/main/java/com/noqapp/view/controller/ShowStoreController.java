@@ -34,7 +34,7 @@ public class ShowStoreController {
      *
      * @return
      */
-    @RequestMapping (value = "/{codeQR}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @RequestMapping (value = "/{codeQR}/c", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showStoreByCodeQR(codeQR.getText());
@@ -45,9 +45,9 @@ public class ShowStoreController {
      *
      * @return
      */
-    @RequestMapping (value = "/{webLocation}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @RequestMapping (value = "/{webLocation}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput codeQR) {
-        return showHTMLService.showStoreByWebLocation(codeQR.getText());
+    public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput webLocation) {
+        return showHTMLService.showStoreByWebLocation(webLocation.getText());
     }
 }
