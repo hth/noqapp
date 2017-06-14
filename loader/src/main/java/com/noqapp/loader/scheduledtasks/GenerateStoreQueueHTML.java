@@ -66,7 +66,7 @@ public class GenerateStoreQueueHTML {
         this.cronStatsService = cronStatsService;
     }
 
-    @Scheduled (fixedDelayString = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
+    @Scheduled (cron = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
     public void generateHTMLPages() {
         cronStats = new CronStatsEntity(
                 GenerateStoreQueueHTML.class.getName(),
@@ -82,7 +82,7 @@ public class GenerateStoreQueueHTML {
         try {
             int i = 1;
             do {
-                Path pathToTxtFile = Paths.get(baseDirectory + "all.txt");
+                Path pathToTxtFile = Paths.get(baseDirectory + "/" + "all.txt");
                 Files.deleteIfExists(pathToTxtFile);
                 Files.createDirectories(pathToTxtFile.getParent());
                 Files.createFile(pathToTxtFile);
