@@ -21,7 +21,6 @@ import com.noqapp.utils.ScrubbedInput;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/biz")
 public class ShowStoreController {
     private ShowHTMLService showHTMLService;
 
@@ -35,18 +34,18 @@ public class ShowStoreController {
      *
      * @return
      */
-    @RequestMapping (value = "/{codeQR}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @RequestMapping (value = "/{codeQR}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showStoreByCodeQR(codeQR.getText());
     }
 
     /**
-     * Loads biz store page when code scanned is not from our app but some other code scanning app.
+     * Loads biz store page or map links to store queue.
      *
      * @return
      */
-    @RequestMapping (value = "/{webLocation}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @RequestMapping (value = "/biz/{webLocation}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput webLocation) {
         return showHTMLService.showStoreByWebLocation(webLocation.getText());
