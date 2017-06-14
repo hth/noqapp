@@ -97,7 +97,10 @@ public class GenerateStoreQueueHTML {
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
+
+                            LOG.info("Write to File={} filePath={}", pathToFile.toFile().getAbsolutePath(), filePath);
                             FileUtils.writeStringToFile(pathToTxtFile.toFile(), filePath, Charset.forName("UTF-8"), true);
+
                             generated++;
                         } catch (IOException e) {
                             failure++;
