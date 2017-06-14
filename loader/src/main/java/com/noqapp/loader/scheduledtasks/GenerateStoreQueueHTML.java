@@ -134,8 +134,8 @@ public class GenerateStoreQueueHTML {
             }
 
             if (printWriter != null) {
-                printWriter.close();
                 printWriter.flush();
+                printWriter.close();
             }
         }
     }
