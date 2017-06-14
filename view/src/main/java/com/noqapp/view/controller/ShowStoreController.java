@@ -36,7 +36,18 @@ public class ShowStoreController {
      */
     @RequestMapping (value = "/{codeQR}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String landing(@PathVariable ("codeQR") ScrubbedInput codeQR) {
-        return showHTMLService.showStore(codeQR.getText());
+    public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
+        return showHTMLService.showStoreByCodeQR(codeQR.getText());
+    }
+
+    /**
+     * Loads biz store page when code scanned is not from our app but some other code scanning app.
+     *
+     * @return
+     */
+    @RequestMapping (value = "/{webLocation}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput codeQR) {
+        return showHTMLService.showStoreByWebLocation(codeQR.getText());
     }
 }

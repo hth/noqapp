@@ -274,6 +274,15 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public BizStoreEntity findByWebLocation(String webLocation) {
+        return mongoTemplate.findOne(
+                query(where("WL").is(webLocation)),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

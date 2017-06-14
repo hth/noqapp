@@ -128,6 +128,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("CQ")
     private boolean changedCodeQR = false;
 
+    @Field ("WL")
+    private String webLocation;
+
     @Transient
     private List<StoreHourEntity> storeHours;
 
@@ -349,6 +352,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setQueueHistory(Date queueHistory) {
         this.queueHistory = queueHistory;
+    }
+
+    public String getWebLocation() {
+        return webLocation;
+    }
+
+    public void computeWebLocation() {
+        this.webLocation = "/" + bizName.getCountryShortName() + "/" + bizName.getBusinessName() + "/" + town + "/" + displayName;
     }
 
     @Transient
