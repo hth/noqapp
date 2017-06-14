@@ -205,7 +205,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> getAll(int skip, int limit) {
-        return mongoTemplate.find(new Query().skip(skip).limit(limit), BizStoreEntity.class);
+        return mongoTemplate.find(new Query().skip(skip).limit(limit), BizStoreEntity.class, TABLE);
     }
 
     @Override
