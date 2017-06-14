@@ -17,6 +17,7 @@ import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ShowHTMLService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,9 +78,15 @@ public class GenerateStoreQueueHTML {
             LOG.debug("feature is {}", staticHTMLSwitch);
         }
 
+        PrintWriter printWriter = null;
         try {
             int i = 1;
             do {
+                Path pathToTxtFile = Paths.get(baseDirectory + "all.txt");
+                Files.createDirectories(pathToTxtFile.getParent());
+                Files.createFile(pathToTxtFile);
+                printWriter = new PrintWriter(pathToTxtFile.toFile(), "UTF-8");
+
                 List<BizStoreEntity> bizStores = bizStoreManager.getAll(i, 1000);
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
@@ -91,6 +98,7 @@ public class GenerateStoreQueueHTML {
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
+                            printWriter.println(pathToFile);
                             created++;
                         } catch (IOException e) {
                             failure++;
@@ -121,6 +129,11 @@ public class GenerateStoreQueueHTML {
 
                 /* Without if condition its too noisy. */
                 LOG.info("complete found={} failure={} generateHTMLPages={}", found, failure, created);
+            }
+
+            if (printWriter != null) {
+                printWriter.close();
+                printWriter.flush();
             }
         }
     }
