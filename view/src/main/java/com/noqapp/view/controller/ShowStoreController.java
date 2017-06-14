@@ -45,7 +45,7 @@ public class ShowStoreController {
      *
      * @return
      */
-    @RequestMapping (value = "/{webLocation}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @RequestMapping (value = "/biz/{webLocation}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput webLocation) {
         return showHTMLService.showStoreByWebLocation(webLocation.getText());
