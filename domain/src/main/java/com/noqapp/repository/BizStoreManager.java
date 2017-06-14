@@ -108,5 +108,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     boolean setNextRun(String id, String zoneId, Date queueHistoryNextRun);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
+
+    BizStoreEntity findByWebLocation(String webLocation);
 }
 

@@ -41,21 +41,11 @@ public class ShowHTMLService {
         }
     }
 
-    public String showStore(String codeQR) {
+    public String showStoreByCodeQR(String codeQR) {
         Map<String, String> rootMap = new HashMap<>();
         try {
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-            if (null != bizStore) {
-                bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
-                ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-
-                rootMap.put("bizName", bizStore.getBizName().getBusinessName());
-                rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
-                rootMap.put("phone", bizStore.getPhoneFormatted());
-                rootMap.put("displayName", bizStore.getDisplayName());
-                rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
-                rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
-
+            if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             }
 
@@ -64,5 +54,37 @@ public class ShowHTMLService {
             LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
             return showStoreBlank;
         }
+    }
+
+    public String showStoreByWebLocation(String webLocation) {
+        Map<String, String> rootMap = new HashMap<>();
+        try {
+            BizStoreEntity bizStore = bizService.findByWebLocation(webLocation);
+            if (populateStore(rootMap, bizStore)) {
+                return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
+            }
+
+            return showStoreBlank;
+        } catch (IOException | TemplateException e) {
+            LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
+            return showStoreBlank;
+        }
+    }
+
+    private boolean populateStore(Map<String, String> rootMap, BizStoreEntity bizStore) throws IOException, TemplateException {
+        if (null != bizStore) {
+            bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+            rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+            rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
+            rootMap.put("phone", bizStore.getPhoneFormatted());
+            rootMap.put("displayName", bizStore.getDisplayName());
+            rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+            rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+
+            return true;
+        }
+        return false;
     }
 }

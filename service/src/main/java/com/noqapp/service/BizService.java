@@ -74,6 +74,7 @@ public class BizService {
     }
 
     public void saveStore(BizStoreEntity bizStore) {
+        bizStore.computeWebLocation();
         bizStoreManager.save(bizStore);
     }
 
@@ -129,6 +130,10 @@ public class BizService {
 
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
+    }
+
+    public BizStoreEntity findByWebLocation(String webLocation) {
+        return bizStoreManager.findByWebLocation(webLocation);
     }
 
     public boolean isValidCodeQR(String codeQR) {
