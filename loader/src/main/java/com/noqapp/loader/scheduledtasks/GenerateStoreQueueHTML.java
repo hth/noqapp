@@ -50,7 +50,7 @@ public class GenerateStoreQueueHTML {
             @Value ("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
             String staticHTMLSwitch,
 
-            @Value ("${GenerateStoreQueueHTML.base.directory:/tmp}")
+            @Value ("${GenerateStoreQueueHTML.base.directory:/tmp/biz}")
             String baseDirectory,
 
             BizStoreManager bizStoreManager,
@@ -65,20 +65,21 @@ public class GenerateStoreQueueHTML {
         this.cronStatsService = cronStatsService;
     }
 
-    @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
+    @Scheduled (fixedDelayString = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
     public void generateHTMLPages() {
         cronStats = new CronStatsEntity(
                 GenerateStoreQueueHTML.class.getName(),
                 "Generate_Store_Queue_HTML",
                 staticHTMLSwitch);
 
-        int found = 0, failure = 0, sent = 0, skipped = 0;
+        int found = 0, failure = 0, created = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(staticHTMLSwitch)) {
             LOG.debug("feature is {}", staticHTMLSwitch);
         }
 
         try {
-            for (int i = 0; i < 10_000_000; i += 1000) {
+            int i = 1;
+            do {
                 List<BizStoreEntity> bizStores = bizStoreManager.getAll(i, 1000);
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
@@ -90,32 +91,36 @@ public class GenerateStoreQueueHTML {
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
-                            sent++;
+                            created++;
                         } catch (IOException e) {
                             failure++;
-                            LOG.error(e.getLocalizedMessage());
+                            LOG.error("Failed file operation failed for storeId={} reason={}", bizStore.getId(), e.getLocalizedMessage());
                         }
                     } catch (Exception e) {
-                        LOG.error("Failed HTML generation for storeId={}", bizStore.getId(), e.getLocalizedMessage(), e);
+                        LOG.error("Failed HTML generation for storeId={} reason={}", bizStore.getId(), e.getLocalizedMessage(), e);
                     }
                 }
 
                 found += bizStores.size();
-            }
+
+                i += 1000;
+                if (bizStores.size() == 0) {
+                    i = 0;
+                }
+            } while (i > 0);
         } catch (Exception e) {
-            LOG.error("Error sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed HTML generation, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            if (0 != found || 0 != failure || 0 != sent) {
+            if (0 != found || 0 != failure || 0 != created) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("skipped", skipped);
-                cronStats.addStats("generateHTMLPages", sent);
+                cronStats.addStats("generateHTMLPages", created);
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
-
+                LOG.info("complete found={} failure={} generateHTMLPages={}", found, failure, created);
             }
         }
     }
