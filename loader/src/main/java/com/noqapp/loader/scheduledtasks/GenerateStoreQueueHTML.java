@@ -73,7 +73,7 @@ public class GenerateStoreQueueHTML {
                 "Generate_Store_Queue_HTML",
                 staticHTMLSwitch);
 
-        int found = 0, failure = 0, created = 0, skipped = 0;
+        int found = 0, failure = 0, generated = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(staticHTMLSwitch)) {
             LOG.debug("feature is {}", staticHTMLSwitch);
         }
@@ -100,7 +100,7 @@ public class GenerateStoreQueueHTML {
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
                             printWriter.println(pathToFile);
-                            created++;
+                            generated++;
                         } catch (IOException e) {
                             failure++;
                             LOG.error("Failed file operation failed for storeId={} reason={}", bizStore.getId(), e.getLocalizedMessage());
@@ -121,15 +121,15 @@ public class GenerateStoreQueueHTML {
             LOG.error("Failed HTML generation, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            if (0 != found || 0 != failure || 0 != created) {
+            if (0 != found || 0 != failure || 0 != generated) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("skipped", skipped);
-                cronStats.addStats("generateHTMLPages", created);
+                cronStats.addStats("generateHTMLPages", generated);
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} generateHTMLPages={}", found, failure, created);
+                LOG.info("complete found={} failure={} generateHTMLPages={}", found, failure, generated);
             }
 
             if (printWriter != null) {
