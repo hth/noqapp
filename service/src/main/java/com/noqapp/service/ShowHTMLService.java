@@ -42,24 +42,18 @@ public class ShowHTMLService {
     }
 
     public String showStoreByCodeQR(String codeQR) {
-        Map<String, String> rootMap = new HashMap<>();
-        try {
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-            if (populateStore(rootMap, bizStore)) {
-                return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
-            }
-
-            return showStoreBlank;
-        } catch (IOException | TemplateException e) {
-            LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
-            return showStoreBlank;
-        }
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        return showStoreByWebLocation(bizStore);
     }
 
     public String showStoreByWebLocation(String webLocation) {
+        BizStoreEntity bizStore = bizService.findByWebLocation(webLocation);
+        return showStoreByWebLocation(bizStore);
+    }
+
+    public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, String> rootMap = new HashMap<>();
         try {
-            BizStoreEntity bizStore = bizService.findByWebLocation(webLocation);
             if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             }
