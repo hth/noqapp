@@ -77,7 +77,7 @@ public class QueueHistory {
                 "QueueHistory",
                 moveToRDBS);
 
-        int found, failure = 0, success = 0;
+        int found, failure = 0, success = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(moveToRDBS)) {
             LOG.debug("feature is {}", moveToRDBS);
         }
@@ -91,6 +91,13 @@ public class QueueHistory {
                 try {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
+                    if (null == queues) {
+                        skipped++;
+                        LOG.info("Skipped bizStore={} codeQR={} as it could be pending approval created={}",
+                                bizStore.getId(), bizStore.getCodeQR(), bizStore.getCreated());
+                        break;
+                    }
+
                     try {
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
@@ -128,10 +135,11 @@ public class QueueHistory {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("success", success);
+                cronStats.addStats("skipped", skipped);
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} success={}", found, failure, success);
+                LOG.info("complete found={} failure={} success={} skipped={}", found, failure, success, skipped);
             }
         }
     }
