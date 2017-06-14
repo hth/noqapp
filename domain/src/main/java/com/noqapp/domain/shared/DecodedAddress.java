@@ -21,6 +21,7 @@ public class DecodedAddress {
     private String town;
     private String district;
     private String state;
+    private String stateShortName;
     private String postalCode;
     private String country;
     private String countryShortName;
@@ -59,6 +60,7 @@ public class DecodedAddress {
                         case ADMINISTRATIVE_AREA_LEVEL_1:
                             LOG.debug("state code={}", addressComponent.longName);
                             state = addressComponent.longName;
+                            stateShortName = addressComponent.shortName;
                             break;
                         case ADMINISTRATIVE_AREA_LEVEL_2:
                             LOG.debug("district code={}", addressComponent.longName);
@@ -113,6 +115,10 @@ public class DecodedAddress {
 
     public String getState() {
         return state;
+    }
+
+    public String getStateShortName() {
+        return stateShortName;
     }
 
     public String getPostalCode() {

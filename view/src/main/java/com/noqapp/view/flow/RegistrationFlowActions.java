@@ -112,7 +112,7 @@ class RegistrationFlowActions {
                     //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
                     validateAddress(bizStore);
                     try {
-                        bizStore.setWebLocation(register.getRegisterBusiness().computeWebLocation(bizStore.getTown()));
+                        bizStore.setWebLocation(register.getRegisterBusiness().computeWebLocation(bizStore.getTown(), bizStore.getStateShortName()));
                         bizService.saveStore(bizStore);
                         /* Add timezone later as its missing id. */
                         addTimezone(bizStore);

@@ -216,7 +216,7 @@ public class RegisterBusiness implements Serializable {
     }
 
     @Transient
-    public String computeWebLocation(String town) {
-        return "/" + countryShortNameStore + "/" + name + "/" + town + "/" + displayName;
+    public String computeWebLocation(String town, String stateShortName) {
+        return "/" + countryShortNameStore.toLowerCase() + "/" + name + "/" + town.toLowerCase() + "-" + stateShortName.toLowerCase() + "/" + displayName;
     }
 }

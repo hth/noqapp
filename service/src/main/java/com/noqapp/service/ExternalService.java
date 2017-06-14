@@ -86,6 +86,7 @@ public class ExternalService {
                 bizStore.setTown(decodedAddress.getTown());
                 bizStore.setDistrict(decodedAddress.getDistrict());
                 bizStore.setState(decodedAddress.getState());
+                bizStore.setStateShortName(decodedAddress.getStateShortName());
                 bizStore.setPostalCode(decodedAddress.getPostalCode());
                 bizStore.setCountry(decodedAddress.getCountry());
                 bizStore.setCountryShortName(decodedAddress.getCountryShortName());
@@ -128,6 +129,7 @@ public class ExternalService {
                 bizName.setTown(decodedAddress.getTown());
                 bizName.setDistrict(decodedAddress.getDistrict());
                 bizName.setState(decodedAddress.getState());
+                bizName.setStateShortName(decodedAddress.getStateShortName());
                 bizName.setPostalCode(decodedAddress.getPostalCode());
                 bizName.setCountry(decodedAddress.getCountry());
                 bizName.setCountryShortName(decodedAddress.getCountryShortName());
