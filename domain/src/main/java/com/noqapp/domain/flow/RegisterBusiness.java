@@ -214,4 +214,9 @@ public class RegisterBusiness implements Serializable {
     public void setBusinessHours(List<BusinessHour> businessHours) {
         this.businessHours = businessHours;
     }
+
+    @Transient
+    public String computeWebLocation(String town) {
+        return "/" + countryShortNameStore + "/" + name + "/" + town + "/" + displayName;
+    }
 }

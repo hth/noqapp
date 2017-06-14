@@ -358,8 +358,8 @@ public class BizStoreEntity extends BaseEntity {
         return webLocation;
     }
 
-    public void computeWebLocation() {
-        this.webLocation = "/" + bizName.getCountryShortName() + "/" + bizName.getBusinessName() + "/" + town + "/" + displayName;
+    public void setWebLocation(String webLocation) {
+        this.webLocation = webLocation;
     }
 
     @Transient
