@@ -78,13 +78,13 @@ public class GenerateStoreQueueHTML {
         }
 
         try {
+            Path pathToTxtFile = Paths.get(baseDirectory + System.getProperty("file.separator") + "all.txt");
+            Files.deleteIfExists(pathToTxtFile);
+            Files.createDirectories(pathToTxtFile.getParent());
+            Files.createFile(pathToTxtFile);
+
             int i = 1;
             do {
-                Path pathToTxtFile = Paths.get(baseDirectory + System.getProperty("file.separator") + "all.txt");
-                Files.deleteIfExists(pathToTxtFile);
-                Files.createDirectories(pathToTxtFile.getParent());
-                Files.createFile(pathToTxtFile);
-
                 List<BizStoreEntity> bizStores = bizStoreManager.getAll(i, 1000);
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
@@ -97,8 +97,6 @@ public class GenerateStoreQueueHTML {
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
-
-                            LOG.info("Write to File={} filePath={}", pathToFile.toFile().getAbsolutePath(), filePath);
                             FileUtils.writeStringToFile(pathToTxtFile.toFile(), filePath, Charset.forName("UTF-8"), true);
 
                             generated++;
