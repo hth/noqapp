@@ -83,6 +83,7 @@ public class GenerateStoreQueueHTML {
             int i = 1;
             do {
                 Path pathToTxtFile = Paths.get(baseDirectory + "all.txt");
+                Files.deleteIfExists(pathToTxtFile);
                 Files.createDirectories(pathToTxtFile.getParent());
                 Files.createFile(pathToTxtFile);
                 printWriter = new PrintWriter(pathToTxtFile.toFile(), "UTF-8");
