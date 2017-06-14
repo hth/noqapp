@@ -110,7 +110,7 @@ public class ServicedPersonalFCM {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
             if (0 != found || 0 != failure || 0 != sent) {
