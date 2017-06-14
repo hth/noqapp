@@ -74,7 +74,6 @@ public class BizService {
     }
 
     public void saveStore(BizStoreEntity bizStore) {
-        bizStore.computeWebLocation();
         bizStoreManager.save(bizStore);
     }
 
