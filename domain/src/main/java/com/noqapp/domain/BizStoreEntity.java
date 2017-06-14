@@ -384,11 +384,11 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public int getStartHour(DayOfWeek dayOfWeek) {
-        return storeHours.get(dayOfWeek.getValue() - 1).getTokenAvailableFrom();
+        return storeHours.get(dayOfWeek.getValue() - 1).getStartHour();
     }
 
     @Transient
     public int getEndHour(DayOfWeek dayOfWeek) {
-        return storeHours.get(dayOfWeek.getValue() - 1).getTokenAvailableFrom();
+        return storeHours.get(dayOfWeek.getValue() - 1).getEndHour();
     }
 }

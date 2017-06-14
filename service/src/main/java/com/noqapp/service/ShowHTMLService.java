@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.utils.DateFormatter;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -44,15 +45,16 @@ public class ShowHTMLService {
         Map<String, String> rootMap = new HashMap<>();
         try {
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-            if (bizStore != null) {
+            if (null != bizStore) {
+                bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
                 ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
                 rootMap.put("bizName", bizStore.getBizName().getBusinessName());
                 rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
                 rootMap.put("phone", bizStore.getPhoneFormatted());
                 rootMap.put("displayName", bizStore.getDisplayName());
-                rootMap.put("startHour", String.valueOf(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
-                rootMap.put("endHour", String.valueOf(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+                rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+                rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
 
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             }

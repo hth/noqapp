@@ -41,10 +41,10 @@
     ${phone}
 </p>
 <p>
-    ${displayName}
+    Available Queues: ${displayName}
 </p>
 <p>
-    ${startHour}-${endHour}
+    Hours: ${startHour} - ${endHour}
 </p>
 <br/><br/><br/>
 <p>
