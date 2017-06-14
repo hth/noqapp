@@ -92,14 +92,15 @@ public class GenerateStoreQueueHTML {
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
                         String htmlData = showHTMLService.showStoreByWebLocation(bizStore);
-                        Path pathToFile = Paths.get(baseDirectory + bizStore.getWebLocation() + ".html");
+                        String filePath = baseDirectory + bizStore.getWebLocation() + ".html";
+                        Path pathToFile = Paths.get(filePath);
                         try {
                             Files.deleteIfExists(pathToFile);
                             Files.createDirectories(pathToFile.getParent());
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
-                            printWriter.println(pathToFile);
+                            printWriter.println(filePath);
                             generated++;
                         } catch (IOException e) {
                             failure++;
