@@ -16,6 +16,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.BizService;
 import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ExternalService;
 
@@ -46,6 +47,7 @@ public class QueueHistory {
     private QueueManagerJDBC queueManagerJDBC;
     private CronStatsService cronStatsService;
     private ExternalService externalService;
+    private BizService bizService;
 
     private CronStatsEntity cronStats;
 
@@ -59,7 +61,8 @@ public class QueueHistory {
             TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
             CronStatsService cronStatsService,
-            ExternalService externalService
+            ExternalService externalService,
+            BizService bizService
     ) {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
@@ -68,6 +71,7 @@ public class QueueHistory {
         this.queueManagerJDBC = queueManagerJDBC;
         this.cronStatsService = cronStatsService;
         this.externalService = externalService;
+        this.bizService = bizService;
     }
 
     @Scheduled (fixedDelayString = "${loader.QueueHistory.queuePastData}")
@@ -77,7 +81,7 @@ public class QueueHistory {
                 "QueueHistory",
                 moveToRDBS);
 
-        int found, failure = 0, success = 0, skipped = 0;
+        int found, failure = 0, success = 0;
         if ("OFF".equalsIgnoreCase(moveToRDBS)) {
             LOG.debug("feature is {}", moveToRDBS);
         }
@@ -91,13 +95,6 @@ public class QueueHistory {
                 try {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
-                    if (null == queues) {
-                        skipped++;
-                        LOG.info("Skipped bizStore={} codeQR={} as it could be pending approval created={}",
-                                bizStore.getId(), bizStore.getCodeQR(), bizStore.getCreated());
-                        break;
-                    }
-
                     try {
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
@@ -106,11 +103,13 @@ public class QueueHistory {
                         LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
                         throw e;
                     }
+
+                    bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
                     int deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
-                        LOG.info("deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+                        LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
                     } else {
-                        LOG.error("mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
+                        LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
                     TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
@@ -135,7 +134,6 @@ public class QueueHistory {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("success", success);
-                cronStats.addStats("skipped", skipped);
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
