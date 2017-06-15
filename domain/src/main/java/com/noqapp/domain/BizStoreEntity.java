@@ -392,6 +392,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public List<StoreHourEntity> getStoreHours() {
+        //TODO(hth) add check when storeHours is empty or null
         return storeHours;
     }
 
