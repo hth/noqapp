@@ -104,7 +104,7 @@ public class GenerateStoreQueueHTML {
                             FileUtils.writeStringToFile(
                                     pathToTxtFile.toFile(),
                                     //TODO(hth) replace domain name
-                                    filePath.replace("/tmp", "http://tp.receiptofi.com") + System.lineSeparator(),
+                                    filePath.replace("/tmp", "https://tp.receiptofi.com") + System.lineSeparator(),
                                     Charset.forName("UTF-8"),
                                     true);
 
