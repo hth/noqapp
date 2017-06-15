@@ -20,4 +20,11 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
     StoreHourEntity findOne(String bizStoreId, int dayOfWeek);
 
     List<StoreHourEntity> findAll(String bizStoreId);
+
+    StoreHourEntity modifyOne(
+            String bizStoreId,
+            DayOfWeek dayOfWeek,
+            boolean preventJoining,
+            boolean dayClosed
+    );
 }

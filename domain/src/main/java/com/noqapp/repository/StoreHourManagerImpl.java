@@ -1,13 +1,16 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -88,6 +91,22 @@ public class StoreHourManagerImpl implements StoreHourManager {
     public List<StoreHourEntity> findAll(String bizStoreId) {
         return mongoTemplate.find(
                 query(where("BZ").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
+                StoreHourEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public StoreHourEntity modifyOne(
+            String bizStoreId,
+            DayOfWeek dayOfWeek,
+            boolean preventJoining,
+            boolean dayClosed
+    ) {
+        return mongoTemplate.findAndModify(
+                query(where("BZ").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
+                entityUpdate(update("PJ", preventJoining).set("DC", dayClosed)),
+                FindAndModifyOptions.options().returnNew(true),
                 StoreHourEntity.class,
                 TABLE
         );
