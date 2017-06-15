@@ -46,11 +46,6 @@ public class ShowHTMLService {
         return showStoreByWebLocation(bizStore);
     }
 
-    public String showStoreByWebLocation(String webLocation) {
-        BizStoreEntity bizStore = bizService.findByWebLocation(webLocation);
-        return showStoreByWebLocation(bizStore);
-    }
-
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, String> rootMap = new HashMap<>();
         try {

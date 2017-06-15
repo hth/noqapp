@@ -131,10 +131,6 @@ public class BizService {
         return bizStoreManager.findByCodeQR(codeQR);
     }
 
-    public BizStoreEntity findByWebLocation(String webLocation) {
-        return bizStoreManager.findByWebLocation(webLocation);
-    }
-
     public boolean isValidCodeQR(String codeQR) {
         return bizStoreManager.isValidCodeQR(codeQR);
     }
