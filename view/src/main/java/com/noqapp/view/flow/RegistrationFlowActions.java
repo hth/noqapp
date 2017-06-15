@@ -114,8 +114,6 @@ class RegistrationFlowActions {
                     try {
                         bizStore.setWebLocation(register.getRegisterBusiness().computeWebLocation(bizStore.getTown(), bizStore.getStateShortName()));
                         bizService.saveStore(bizStore);
-                        /* Add timezone later as its missing id. */
-                        addTimezone(bizStore);
 
                         String bizStoreId = bizStore.getId();
                         List<StoreHourEntity> storeHours = new LinkedList<>();
@@ -135,6 +133,10 @@ class RegistrationFlowActions {
 
                         /* Add store hours. */
                         bizService.insertAll(storeHours);
+                        bizStore.setStoreHours(storeHours);
+
+                        /* Add timezone later as its missing id. */
+                        addTimezone(bizStore);
                     } catch (Exception e) {
                         LOG.error("Error saving store name={}, starting rollback...", bizName.getBusinessName());
                         bizService.deleteBizName(bizName);
