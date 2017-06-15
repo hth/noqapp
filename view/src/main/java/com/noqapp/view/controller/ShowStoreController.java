@@ -31,6 +31,9 @@ public class ShowStoreController {
 
     /**
      * Loads biz store page when code scanned is not from our app but some other code scanning app.
+     * {@link com.noqapp.domain.BizStoreEntity#getCodeQRInALink}
+     *
+     * Do not change the mapping as it will break all QR Code Mapping.
      *
      * @return
      */
@@ -38,16 +41,5 @@ public class ShowStoreController {
     @ResponseBody
     public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showStoreByCodeQR(codeQR.getText());
-    }
-
-    /**
-     * Loads biz store page or map links to store queue.
-     *
-     * @return
-     */
-    @RequestMapping (value = "/biz/{webLocation}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-    @ResponseBody
-    public String showStoreByWebLocation(@PathVariable ("webLocation") ScrubbedInput webLocation) {
-        return showHTMLService.showStoreByWebLocation(webLocation.getText());
     }
 }
