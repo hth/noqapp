@@ -78,12 +78,4 @@ public class BusinessUserStoreService {
         LOG.info("Found queues count={}", jsonTopics.size());
         return jsonTopics;
     }
-
-    @Mobile
-    public List<JsonTopic> getQueue(String codeQR) {
-        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-        List<JsonTopic> jsonTopics = new ArrayList<>();
-        jsonTopics.add(new JsonTopic(tokenQueue));
-        return jsonTopics;
-    }
 }
