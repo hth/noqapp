@@ -96,8 +96,16 @@ public class GenerateStoreQueueHTML {
                             Files.createDirectories(pathToFile.getParent());
                             Files.createFile(pathToFile);
 
-                            FileUtils.writeStringToFile(pathToFile.toFile(), htmlData, Charset.forName("UTF-8"));
-                            FileUtils.writeStringToFile(pathToTxtFile.toFile(), filePath + System.getProperty("line.separator "), Charset.forName("UTF-8"), true);
+                            FileUtils.writeStringToFile(
+                                    pathToFile.toFile(),
+                                    htmlData,
+                                    Charset.forName("UTF-8"));
+                            
+                            FileUtils.writeStringToFile(
+                                    pathToTxtFile.toFile(),
+                                    filePath + System.lineSeparator(),
+                                    Charset.forName("UTF-8"),
+                                    true);
 
                             generated++;
                         } catch (IOException e) {
