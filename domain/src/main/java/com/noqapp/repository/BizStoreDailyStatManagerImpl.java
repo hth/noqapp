@@ -48,4 +48,14 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
     public void deleteHard(BizStoreDailyStatEntity object) {
         mongoTemplate.remove(object);
     }
+
+    @Override
+    public float computeRatingForEachQueue(String bizStoreId) {
+        return 0;
+    }
+
+    @Override
+    public float computeRatingForBiz(String bizNameId) {
+        return 0;
+    }
 }

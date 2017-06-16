@@ -64,6 +64,7 @@ public class ShowHTMLService {
         if (null != bizStore) {
             bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+            LOG.debug("Zoned Date Time={} dayOfTheWeek={}", zonedDateTime.toLocalDateTime(), zonedDateTime.getDayOfWeek());
 
             rootMap.put("bizName", bizStore.getBizName().getBusinessName());
             rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
