@@ -124,7 +124,9 @@ public class QueueHistory {
                             bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                             bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
-                    bizStoreManager.setNextRun(bizStore.getId(), bizStore.getTimeZone(), nextDay);
+
+                    float rating = bizStoreDailyStatManager.computeRatingForEachQueue(bizStore.getId());
+                    bizStoreManager.updateNextRunAndRating(bizStore.getId(), bizStore.getTimeZone(), nextDay, rating);
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
 
                     success++;
@@ -170,21 +172,27 @@ public class QueueHistory {
                     int hours;
                     switch(queue.getHoursSaved()) {
                         case 1:
+                            /* Half hour. */
                             hours = 30;
                             break;
                         case 2:
+                            /* One hour. */
                             hours = 30 * 2;
                             break;
                         case 3:
+                            /* Two hours. */
                             hours = 30 * 4;
                             break;
                         case 4:
+                            /* Three hours. */
                             hours = 30 * 6;
                             break;
                         case 5:
+                            /* Four hours. */
                             hours = 30 * 8;
                             break;
                         default:
+                            /* Eight hours. */
                             hours = 30 * 16;
                     }
 
