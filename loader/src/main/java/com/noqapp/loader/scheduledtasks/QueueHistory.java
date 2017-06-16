@@ -182,5 +182,6 @@ public class QueueHistory {
         bizStoreDailyStat.setTotalCustomerRated(totalCustomerRated);
         bizStoreDailyStat.setTotalHoursSaved(totalHoursSaved);
         bizStoreDailyStatManager.save(bizStoreDailyStat);
+        LOG.debug("{}", bizStoreDailyStat);
     }
 }
