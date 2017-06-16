@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -76,7 +77,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         try {
             Assert.hasText(id, "Id empty for BizStore");
             return mongoTemplate.findOne(query(where("id").is(id)), BizStoreEntity.class);
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Failed to find BizStoreId={} reason={}", id, e.getLocalizedMessage(), e);
             return null;
         }
@@ -261,10 +262,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={}", id, zoneId, queueHistoryNextRun, rating);
+        Update update;
+        if (rating == 0) {
+            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun));
+        } else {
+            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun).set("RA", rating));
+        }
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun).set("RA", rating)),
+                update,
                 BizStoreEntity.class,
                 TABLE
         ).getN() > 0;
