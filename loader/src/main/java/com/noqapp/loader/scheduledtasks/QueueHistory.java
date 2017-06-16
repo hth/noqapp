@@ -101,7 +101,7 @@ public class QueueHistory {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     try {
-                        saveDailyStat(bizStore, queues);
+                        saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
                         LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -148,7 +148,14 @@ public class QueueHistory {
         }
     }
 
-    private void saveDailyStat(BizStoreEntity bizStore, List<QueueEntity> queues) {
+    /**
+     * Saves daily stats for BizStore Queues.
+     *
+     * @param bizStoreId
+     * @param bizNameId
+     * @param queues
+     */
+    private void saveDailyStat(String bizStoreId, String bizNameId, List<QueueEntity> queues) {
         long totalServiceTime = 0, totalHoursSaved = 0;
         int totalCustomerServed = 0, totalRating = 0, totalCustomerRated = 0;
         for (QueueEntity queue : queues) {
@@ -165,8 +172,8 @@ public class QueueHistory {
             }
         }
         BizStoreDailyStatEntity bizStoreDailyStat = new BizStoreDailyStatEntity();
-        bizStoreDailyStat.setBizStoreId(bizStore.getId());
-        bizStoreDailyStat.setBizNameId(bizStore.getBizName().getId());
+        bizStoreDailyStat.setBizStoreId(bizStoreId);
+        bizStoreDailyStat.setBizNameId(bizNameId);
         /* Service time is auto calculated. */
         bizStoreDailyStat.setTotalServiceTime(totalServiceTime);
         bizStoreDailyStat.setTotalCustomerServed(totalCustomerServed);
