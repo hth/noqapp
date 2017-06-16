@@ -167,7 +167,28 @@ public class QueueHistory {
                         totalCustomerRated++;
                     }
                     totalCustomerServed++;
-                    totalHoursSaved += queue.getHoursSaved() * 30 * 60 * 1000;
+                    int hours;
+                    switch(queue.getHoursSaved()) {
+                        case 1:
+                            hours = 30;
+                            break;
+                        case 2:
+                            hours = 30 * 2;
+                            break;
+                        case 3:
+                            hours = 30 * 4;
+                            break;
+                        case 4:
+                            hours = 30 * 6;
+                            break;
+                        case 5:
+                            hours = 30 * 8;
+                            break;
+                        default:
+                            hours = 30 * 16;
+                    }
+
+                    totalHoursSaved += hours * 60 * 1000;
                     break;
             }
         }
