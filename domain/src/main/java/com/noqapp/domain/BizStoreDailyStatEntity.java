@@ -1,5 +1,7 @@
 package com.noqapp.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -107,5 +109,18 @@ public class BizStoreDailyStatEntity extends BaseEntity {
 
     public void setTotalHoursSaved(long totalHoursSaved) {
         this.totalHoursSaved = totalHoursSaved;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("bizStoreId", bizStoreId)
+                .append("bizNameId", bizNameId)
+                .append("totalServiceTime", totalServiceTime)
+                .append("totalCustomerServed", totalCustomerServed)
+                .append("totalRating", totalRating)
+                .append("totalCustomerRated", totalCustomerRated)
+                .append("totalHoursSaved", totalHoursSaved)
+                .toString();
     }
 }
