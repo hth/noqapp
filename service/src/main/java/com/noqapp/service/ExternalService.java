@@ -217,7 +217,7 @@ public class ExternalService {
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
-                            boolean status = bizStoreManager.updateNextRunAndRating(bizStore.getId(), zoneId, queueHistoryNextRun);
+                            boolean status = bizStoreManager.updateNextRunAndRating(bizStore.getId(), zoneId, queueHistoryNextRun, 0);
                             if (status) {
                                 LOG.info("Successful next run set UTC time={} for store={} address={}",
                                         queueHistoryNextRun,
