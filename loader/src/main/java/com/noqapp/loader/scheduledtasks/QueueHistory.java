@@ -9,9 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.noqapp.domain.BizStoreDailyStatEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.CronStatsEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.repository.BizStoreDailyStatManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -42,6 +44,7 @@ public class QueueHistory {
     private String moveToRDBS;
 
     private BizStoreManager bizStoreManager;
+    private BizStoreDailyStatManager bizStoreDailyStatManager;
     private QueueManager queueManager;
     private TokenQueueManager tokenQueueManager;
     private QueueManagerJDBC queueManagerJDBC;
@@ -57,6 +60,7 @@ public class QueueHistory {
             String moveToRDBS,
 
             BizStoreManager bizStoreManager,
+            BizStoreDailyStatManager bizStoreDailyStatManager,
             QueueManager queueManager,
             TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
@@ -66,6 +70,7 @@ public class QueueHistory {
     ) {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
+        this.bizStoreDailyStatManager = bizStoreDailyStatManager;
         this.queueManager = queueManager;
         this.tokenQueueManager = tokenQueueManager;
         this.queueManagerJDBC = queueManagerJDBC;
@@ -96,6 +101,7 @@ public class QueueHistory {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     try {
+                        saveDailyStat(bizStore, queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
                         LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -140,5 +146,34 @@ public class QueueHistory {
                 LOG.info("complete found={} failure={} success={}", found, failure, success);
             }
         }
+    }
+
+    private void saveDailyStat(BizStoreEntity bizStore, List<QueueEntity> queues) {
+        long totalServiceTime = 0, totalHoursSaved = 0;
+        int totalCustomerServed = 0, totalRating = 0, totalCustomerRated = 0;
+        for (QueueEntity queue : queues) {
+            switch (queue.getQueueUserState()) {
+                case S:
+                    totalServiceTime += queue.timeTakenForService();
+                    if (queue.getRatingCount() > 0) {
+                        totalRating += queue.getRatingCount();
+                        totalCustomerRated++;
+                    }
+                    totalCustomerServed++;
+                    totalHoursSaved += queue.getHoursSaved() * 30 * 60 * 1000;
+                    break;
+            }
+        }
+        BizStoreDailyStatEntity bizStoreDailyStat = new BizStoreDailyStatEntity();
+        bizStoreDailyStat.setBizStoreId(bizStore.getId());
+        bizStoreDailyStat.setBizNameId(bizStore.getBizName().getId());
+        /* Service time is auto calculated. */
+        bizStoreDailyStat.setTotalServiceTime(totalServiceTime);
+        bizStoreDailyStat.setTotalCustomerServed(totalCustomerServed);
+        /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
+        bizStoreDailyStat.setTotalRating(totalRating);
+        bizStoreDailyStat.setTotalCustomerRated(totalCustomerRated);
+        bizStoreDailyStat.setTotalHoursSaved(totalHoursSaved);
+        bizStoreDailyStatManager.save(bizStoreDailyStat);
     }
 }
