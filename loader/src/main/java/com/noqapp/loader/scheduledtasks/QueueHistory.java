@@ -160,32 +160,17 @@ public class QueueHistory {
                         totalCustomerRated++;
                     }
                     totalCustomerServed++;
-
-                    switch (queue.getHoursSaved()) {
-                        case 1:
-                            totalHoursSaved += 30 * 60 * 1000;
-                            break;
-                        case 2:
-                            totalHoursSaved += 2 * 30 * 60 * 1000;
-                            break;
-                        case 3:
-                            totalHoursSaved += 3 * 30 * 60 * 1000;
-                            break;
-                        case 4:
-                            totalHoursSaved += 4 * 30 * 60 * 1000;
-                            break;
-                        case 5:
-                            totalHoursSaved += 5 * 30 * 60 * 1000;
-                            break;
-                    }
+                    totalHoursSaved += queue.getHoursSaved() * 30 * 60 * 1000;
                     break;
             }
         }
         BizStoreDailyStatEntity bizStoreDailyStat = new BizStoreDailyStatEntity();
         bizStoreDailyStat.setBizStoreId(bizStore.getId());
         bizStoreDailyStat.setBizNameId(bizStore.getBizName().getId());
+        /* Service time is auto calculated. */
         bizStoreDailyStat.setTotalServiceTime(totalServiceTime);
         bizStoreDailyStat.setTotalCustomerServed(totalCustomerServed);
+        /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         bizStoreDailyStat.setTotalRating(totalRating);
         bizStoreDailyStat.setTotalCustomerRated(totalCustomerRated);
         bizStoreDailyStat.setTotalHoursSaved(totalHoursSaved);
