@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizStoreDailyStatEntity;
-import com.noqapp.domain.BizStoreEntity;
 
 /**
  * User: hitender
@@ -26,7 +25,7 @@ import com.noqapp.domain.BizStoreEntity;
 public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreDailyStatManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BizStoreEntity.class,
+            BizStoreDailyStatEntity.class,
             Document.class,
             "collection");
 
