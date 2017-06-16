@@ -189,6 +189,10 @@ public class QueueEntity extends BaseEntity {
         this.serviceEndTime = serviceEndTime;
     }
 
+    public long timeTakenForService() {
+        return serviceEndTime.toInstant().toEpochMilli() - serviceBeginTime.toInstant().toEpochMilli();
+    }
+
     @Override
     public String toString() {
         return "QueueEntity{" +
