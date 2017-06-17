@@ -57,7 +57,7 @@
 	Currently Serving: ${currentlyServing}
 </p>
 <p>
-	People In Queue: ${lastNumber}
+	People In Queue: ${peopleInQueue}
 </p>
 <br/><br/><br/>
 <p>

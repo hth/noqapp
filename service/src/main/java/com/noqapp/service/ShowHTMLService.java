@@ -85,8 +85,8 @@ public class ShowHTMLService {
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
 
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            rootMap.put("currentlyServing", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
-            rootMap.put("lastNumber", String.valueOf(tokenQueue.getLastNumber()));
+            rootMap.put("currentlyServing", String.valueOf(tokenQueue.getCurrentlyServing()));
+            rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 
             int i = zonedDateTime.getDayOfWeek().getValue();
             StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
