@@ -69,8 +69,7 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
                         )),
                 group("bizStoreId")
                         .first("bizStoreId").as("BS")
-                        .sum("totalRating").as("TR"),
-                group("bizStoreId").count().as("count")
+                        .sum("totalRating").as("TR")
         );
         LOG.info("aggregate={}", agg);
         List<BizStoreDailyStatEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, BizStoreDailyStatEntity.class).getMappedResults();
