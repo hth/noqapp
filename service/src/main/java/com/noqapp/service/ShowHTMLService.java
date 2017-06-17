@@ -72,6 +72,7 @@ public class ShowHTMLService {
             rootMap.put("displayName", bizStore.getDisplayName());
             rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+            rootMap.put("rating", String.valueOf(bizStore.getRating()));
 
             return true;
         }

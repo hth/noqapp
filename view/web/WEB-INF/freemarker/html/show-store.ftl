@@ -41,10 +41,13 @@
     ${phone}
 </p>
 <p>
-    Available Queues: ${displayName}
+    ${displayName} queue at ${bizName}
 </p>
 <p>
     Hours: ${startHour} - ${endHour}
+</p>
+<p>
+	Rating: ${rating}
 </p>
 <br/><br/><br/>
 <p>
