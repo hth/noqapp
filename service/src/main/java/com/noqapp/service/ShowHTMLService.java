@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.utils.DateFormatter;
 import freemarker.template.TemplateException;
 
@@ -28,13 +30,19 @@ public class ShowHTMLService {
 
     private BizService bizService;
     private FreemarkerService freemarkerService;
+    private TokenQueueService tokenQueueService;
 
     private static String showStoreBlank;
 
     @Autowired
-    public ShowHTMLService(BizService bizService, FreemarkerService freemarkerService) {
+    public ShowHTMLService(
+            BizService bizService,
+            FreemarkerService freemarkerService,
+            TokenQueueService tokenQueueService
+    ) {
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
+        this.tokenQueueService = tokenQueueService;
 
         try {
             showStoreBlank = freemarkerService.freemarkerToString("html/show-store-blank.ftl", new HashMap<>());
@@ -76,6 +84,26 @@ public class ShowHTMLService {
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
 
+            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+            rootMap.put("currentlyServing", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
+            rootMap.put("lastNumber", String.valueOf(tokenQueue.getLastNumber()));
+
+            int i = zonedDateTime.getDayOfWeek().getValue();
+            StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
+            if (storeHour.isDayClosed()) {
+                rootMap.put("queueStatus", "Closed");
+            } else {
+                switch (tokenQueue.getQueueStatus()) {
+                    case S:
+                        rootMap.put("queueStatus", "Not yet started");
+                        break;
+                    case C:
+                        rootMap.put("queueStatus", "Closed");
+                        break;
+                    default:
+                        rootMap.put("queueStatus", "Active");
+                }
+            }
             return true;
         }
         return false;

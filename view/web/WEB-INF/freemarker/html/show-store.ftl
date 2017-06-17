@@ -51,6 +51,16 @@
 </p>
 <br/><br/><br/>
 <p>
+	Queue Status: ${queueStatus}
+</p>
+<p>
+	Currently Serving: ${currentlyServing}
+</p>
+<p>
+	People In Queue: ${lastNumber}
+</p>
+<br/><br/><br/>
+<p>
 	Download ReceiptApp to ...
 </p>
 <p>
