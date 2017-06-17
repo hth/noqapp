@@ -62,15 +62,15 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
     @Override
     public float computeRatingForEachQueue(String bizStoreId) {
         TypedAggregation<BizStoreDailyStatEntity> agg = newAggregation(BizStoreDailyStatEntity.class,
-                match(where("BS").is(bizStoreId)
+                match(where("BS").is(bizStoreId).and("TR").gt(0)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
                         )),
                 group("bizStoreId")
                         .first("bizStoreId").as("BS")
-                        .sum("totalRating").as("TR"),
-                group().count().as("CR")
+                        .sum("totalRating").as("TR")
+                        .sum("totalCustomerRated").as("CR")
         );
         LOG.info("aggregate={}", agg);
         List<BizStoreDailyStatEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, BizStoreDailyStatEntity.class).getMappedResults();
