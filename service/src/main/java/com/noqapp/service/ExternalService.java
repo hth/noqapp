@@ -26,8 +26,6 @@ import com.noqapp.repository.BizStoreManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -268,20 +266,18 @@ public class ExternalService {
      * @return
      */
     public Date computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
-        Assert.notNull(timeZone, "TimeZone should not be null");
-        LocalDateTime currentLocalDateTime = LocalDateTime.now(Clock.system(timeZone.toZoneId()));
-        currentLocalDateTime.plusDays(1);
-        Instant futureInstant = currentLocalDateTime.toInstant(ZoneOffset.ofHours(0));
-        Date futureDate = Date.from(futureInstant);
-        LOG.info("Future date={}", futureDate);
-
-        String str = df.format(futureDate) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
-        LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
-        LOG.info("Current date and time in a particular timezone={}", zonedDateTime);
-
-        ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
-        LOG.info("Current date and time in UTC={}", utcDate);
-        return Date.from(utcDate.toInstant());
+        try {
+            Assert.notNull(timeZone, "TimeZone should not be null");
+            String str = df.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
+            /* Increase day by one for next run. */
+            LocalDateTime localDateTime = LocalDateTime.parse(str, formatter).plusDays(1);
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
+            ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+            /* Note: Nothing UTC when converted to date. Hence the System time should always be on UTC. */
+            return Date.from(utcDate.toInstant());
+        } catch (Exception e) {
+            LOG.error("Failed to compute next run time reason={}", e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 }
