@@ -44,7 +44,7 @@
     ${displayName} queue at ${bizName}
 </p>
 <p>
-    Hours: ${startHour} - ${endHour}
+    ${dayOfWeek} Hours: ${startHour} - ${endHour}
 </p>
 <p>
 	Rating: ${rating}

@@ -64,11 +64,13 @@ public class ShowHTMLService {
         if (null != bizStore) {
             bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+            LOG.debug("Zoned Date Time={} dayOfTheWeek={}", zonedDateTime.toLocalDateTime(), zonedDateTime.getDayOfWeek());
 
             rootMap.put("bizName", bizStore.getBizName().getBusinessName());
             rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
             rootMap.put("phone", bizStore.getPhoneFormatted());
             rootMap.put("displayName", bizStore.getDisplayName());
+            rootMap.put("dayOfWeek", zonedDateTime.getDayOfWeek().name());
             rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
