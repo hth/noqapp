@@ -22,7 +22,9 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.CronStatsService;
 import com.noqapp.service.ExternalService;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -91,9 +93,15 @@ public class QueueHistory {
             LOG.debug("feature is {}", moveToRDBS);
         }
 
-        /* Date is based on UTC time of the System. Hence its important to run on UTC time. */
-        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(new Date());
+        /*
+         * Date is based on UTC time of the System.
+         * Hence its important to run on UTC time.
+         * Added lag of 5 minutes.
+         */
+        Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
+        LOG.info("found={} date={}", found, date);
 
         try {
             for (BizStoreEntity bizStore : bizStores) {
