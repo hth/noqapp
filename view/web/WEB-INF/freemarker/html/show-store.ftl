@@ -47,7 +47,7 @@
     ${dayOfWeek} Hours: ${startHour} - ${endHour}
 </p>
 <p>
-	Rating: ${rating}
+	Rating: ${rating} : ${ratingCount} Reviews
 </p>
 <br/><br/><br/>
 <p>

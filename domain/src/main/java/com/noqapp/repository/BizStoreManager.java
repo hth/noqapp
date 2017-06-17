@@ -105,7 +105,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @param queueHistoryNextRun
      * @return
      */
-    boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating);
+    boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun);
+
+    boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating, int ratingCount);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 }

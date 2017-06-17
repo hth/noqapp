@@ -133,8 +133,21 @@ public class QueueHistory {
                             bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
 
-                    float rating = bizStoreDailyStatManager.computeRatingForEachQueue(bizStore.getId());
-                    bizStoreManager.updateNextRunAndRating(bizStore.getId(), bizStore.getTimeZone(), nextDay, rating);
+                    BizStoreDailyStatEntity bizStoreDailyStat = bizStoreDailyStatManager.computeRatingForEachQueue(bizStore.getId());
+                    if (bizStoreDailyStat != null) {
+                        bizStoreManager.updateNextRunAndRating(
+                                bizStore.getId(),
+                                bizStore.getTimeZone(),
+                                nextDay,
+                                (float) bizStoreDailyStat.getTotalRating() / bizStoreDailyStat.getTotalCustomerRated(),
+                                bizStoreDailyStat.getTotalCustomerRated());
+                    } else {
+                        bizStoreManager.updateNextRun(
+                                bizStore.getId(),
+                                bizStore.getTimeZone(),
+                                nextDay);
+                    }
+
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
 
                     success++;
@@ -178,7 +191,7 @@ public class QueueHistory {
                     }
                     totalCustomerServed++;
                     int hours;
-                    switch(queue.getHoursSaved()) {
+                    switch (queue.getHoursSaved()) {
                         case 1:
                             /* Half hour. */
                             hours = 30;

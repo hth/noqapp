@@ -105,6 +105,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("RA")
     private float rating;
 
+    @Field ("RC")
+    private int ratingCount;
+
     @DBRef
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
@@ -318,6 +321,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public int getValidationCount() {

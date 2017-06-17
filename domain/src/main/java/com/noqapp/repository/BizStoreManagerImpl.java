@@ -261,13 +261,19 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating) {
+    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
+        return updateNextRunAndRating(id, zoneId, queueHistoryNextRun, 0 ,0);
+    }
+
+    @Override
+    public boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating, int ratingCount) {
         LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={}", id, zoneId, queueHistoryNextRun, rating);
         Update update;
-        if (rating == 0) {
+        if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun));
         } else {
-            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun).set("RA", rating));
+            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun).set("RA", rating).set("RC", ratingCount));
         }
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
