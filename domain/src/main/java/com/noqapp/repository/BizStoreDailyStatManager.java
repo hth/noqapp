@@ -8,7 +8,7 @@ import com.noqapp.domain.BizStoreDailyStatEntity;
  */
 public interface BizStoreDailyStatManager extends RepositoryManager<BizStoreDailyStatEntity> {
 
-    float computeRatingForEachQueue(String bizStoreId);
+    BizStoreDailyStatEntity computeRatingForEachQueue(String bizStoreId);
 
     float computeRatingForBiz(String bizNameId);
 }

@@ -83,6 +83,7 @@ public class ShowHTMLService {
             rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
+            rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
 
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
             rootMap.put("currentlyServing", String.valueOf(tokenQueue.getCurrentlyServing()));

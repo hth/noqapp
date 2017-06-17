@@ -60,7 +60,7 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
     }
 
     @Override
-    public float computeRatingForEachQueue(String bizStoreId) {
+    public BizStoreDailyStatEntity computeRatingForEachQueue(String bizStoreId) {
         TypedAggregation<BizStoreDailyStatEntity> agg = newAggregation(BizStoreDailyStatEntity.class,
                 match(where("BS").is(bizStoreId).and("TR").gt(0)
                         .andOperator(
@@ -76,10 +76,10 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
         List<BizStoreDailyStatEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, BizStoreDailyStatEntity.class).getMappedResults();
         if (bizStoreDailyStats.size() > 0) {
             LOG.info("{}", bizStoreDailyStats.get(0));
-            return (float) bizStoreDailyStats.get(0).getTotalRating() / bizStoreDailyStats.get(0).getTotalCustomerRated();
+            return bizStoreDailyStats.get(0);
         }
 
-        return 0;
+        return null;
     }
 
     @Override
