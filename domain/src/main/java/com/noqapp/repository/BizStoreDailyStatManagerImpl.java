@@ -1,15 +1,25 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizStoreDailyStatEntity;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -51,6 +61,20 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
 
     @Override
     public float computeRatingForEachQueue(String bizStoreId) {
+        TypedAggregation<BizStoreDailyStatEntity> agg = newAggregation(BizStoreDailyStatEntity.class,
+                match(where("BS").is(bizStoreId)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )),
+                group("bizStoreId")
+                        .first("bizStoreId").as("BS")
+                        .sum("totalRating").as("TR"),
+                group("bizStoreId").count().as("count")
+        );
+        LOG.info("aggregate={}", agg);
+        List<BizStoreDailyStatEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, BizStoreDailyStatEntity.class).getMappedResults();
+        LOG.info("{}", bizStoreDailyStats);
         return 0;
     }
 
