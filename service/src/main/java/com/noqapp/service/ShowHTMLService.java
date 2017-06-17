@@ -1,6 +1,6 @@
 package com.noqapp.service;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +71,7 @@ public class ShowHTMLService {
             rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
             rootMap.put("phone", bizStore.getPhoneFormatted());
             rootMap.put("displayName", bizStore.getDisplayName());
-            rootMap.put("dayOfWeek", StringUtils.capitalize(zonedDateTime.getDayOfWeek().name()));
+            rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
             rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
