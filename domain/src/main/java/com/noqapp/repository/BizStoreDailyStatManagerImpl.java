@@ -67,7 +67,7 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
                                 isActive(),
                                 isNotDeleted()
                         )),
-                group("BS")
+                group("bizStoreId")
                         .first("bizStoreId").as("BS")
                         .sum("totalRating").as("TR"),
                 group().count().as("CR")
