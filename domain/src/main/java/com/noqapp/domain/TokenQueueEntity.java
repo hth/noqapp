@@ -123,11 +123,16 @@ public class TokenQueueEntity extends BaseEntity {
 
     @Transient
     public String totalWaiting() {
-        int waiting = lastNumber - currentlyServing;
+        int waiting = numberOfPeopleInQueue();
         if (waiting > 0) {
             return String.valueOf(waiting);
         } else {
             return "no";
         }
+    }
+
+    @Transient
+    public int numberOfPeopleInQueue() {
+        return lastNumber - currentlyServing;
     }
 }
