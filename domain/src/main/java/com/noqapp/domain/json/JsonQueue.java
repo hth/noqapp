@@ -94,7 +94,7 @@ public class JsonQueue extends AbstractDomain {
     private String serviceEndTime;
 
     @JsonProperty ("rj")
-    private int remoteJoin;
+    private int remoteJoinCount;
 
     @JsonProperty ("u")
     private String created;
@@ -260,12 +260,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public int getRemoteJoin() {
-        return remoteJoin;
+    public int getRemoteJoinCount() {
+        return remoteJoinCount;
     }
 
-    public void setRemoteJoin(int remoteJoin) {
-        this.remoteJoin = remoteJoin;
+    public void setRemoteJoinCount(int remoteJoinCount) {
+        this.remoteJoinCount = remoteJoinCount;
     }
 
     public String getCreated() {
