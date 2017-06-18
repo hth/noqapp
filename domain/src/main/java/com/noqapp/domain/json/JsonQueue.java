@@ -94,10 +94,16 @@ public class JsonQueue extends AbstractDomain {
     private String serviceEndTime;
 
     @JsonProperty ("rj")
-    private int remoteJoin;
+    private int remoteJoinCount;
 
     @JsonProperty ("u")
     private String created;
+
+    @JsonProperty ("ra")
+    private float rating;
+
+    @JsonProperty ("rc")
+    private int ratingCount;
 
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
@@ -260,12 +266,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public int getRemoteJoin() {
-        return remoteJoin;
+    public int getRemoteJoinCount() {
+        return remoteJoinCount;
     }
 
-    public void setRemoteJoin(int remoteJoin) {
-        this.remoteJoin = remoteJoin;
+    public void setRemoteJoinCount(int remoteJoinCount) {
+        this.remoteJoinCount = remoteJoinCount;
     }
 
     public String getCreated() {
@@ -274,6 +280,24 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setCreated(Date created) {
         this.created = DateFormatUtils.format(created, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        return this;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public JsonQueue setRating(float rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public JsonQueue setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
         return this;
     }
 }
