@@ -269,8 +269,8 @@ public class ExternalService {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
             String str = df.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
-            /* Increase day by one for next run. */
-            LocalDateTime localDateTime = LocalDateTime.parse(str, formatter).plusDays(1);
+            /* Compute next run. */
+            LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
             ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
             /* Note: Nothing UTC when converted to date. Hence the System time should always be on UTC. */
