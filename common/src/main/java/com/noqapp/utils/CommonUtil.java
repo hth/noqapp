@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,5 +60,32 @@ public final class CommonUtil {
         } else {
             return 0.0;
         }
+    }
+
+    /**
+     * Gets next day of the week based on the day of the week supplied.
+     *
+     * @param dayOfWeek
+     * @return
+     */
+    public DayOfWeek getNextDayOfWeek(DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY:
+                return DayOfWeek.TUESDAY;
+            case TUESDAY:
+                return DayOfWeek.WEDNESDAY;
+            case WEDNESDAY:
+                return DayOfWeek.THURSDAY;
+            case THURSDAY:
+                return DayOfWeek.FRIDAY;
+            case FRIDAY:
+                return DayOfWeek.SATURDAY;
+            case SATURDAY:
+                return DayOfWeek.SUNDAY;
+            case SUNDAY:
+                return DayOfWeek.MONDAY;
+        }
+
+        return null;
     }
 }

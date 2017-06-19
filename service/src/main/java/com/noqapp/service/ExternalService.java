@@ -269,7 +269,7 @@ public class ExternalService {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
             String str = df.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
-            /* Compute next run. */
+            /* Compute next run. New Date technically gives us today's run date. */
             LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
             ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
