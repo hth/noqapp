@@ -13,6 +13,7 @@ import com.noqapp.domain.BizStoreDailyStatEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.CronStatsEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreDailyStatManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
@@ -127,11 +128,11 @@ public class QueueHistory {
                     }
 
                     TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
+                    StoreHourEntity storeHour = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
                     Date nextDay = externalService.computeNextRunTimeAtUTC(
                             timeZone,
-                            bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
-                            bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
-
+                            storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
+                            storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
                     BizStoreDailyStatEntity bizStoreDailyStat = bizStoreDailyStatManager.computeRatingForEachQueue(bizStore.getId());
                     if (bizStoreDailyStat != null) {
