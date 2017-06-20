@@ -162,14 +162,14 @@ public class QueueManagerImpl implements QueueManager {
 
         QueueEntity queue = mongoTemplate.findOne(
                 query(where("QR").is(codeQR)
-                                .orOperator(
-                                        where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
-                                        /*
-                                         * Second or condition will get you any of the skipped
-                                         * clients by the same server device id.
-                                         */
-                                        where("QS").is(QueueUserStateEnum.Q).and("SE").exists(false).and("SID").is(sid)
-                                )
+                        .orOperator(
+                                where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
+                                /*
+                                 * Second or condition will get you any of the skipped
+                                 * clients by the same server device id.
+                                 */
+                                where("QS").is(QueueUserStateEnum.Q).and("SE").exists(false).and("SID").is(sid)
+                        )
                 ).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
