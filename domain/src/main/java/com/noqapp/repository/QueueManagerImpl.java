@@ -160,18 +160,6 @@ public class QueueManagerImpl implements QueueManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
-        Query q = query(where("QR").is(codeQR)
-                .orOperator(
-                        where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
-                                        /*
-                                         * Second or condition will get you any of the skipped
-                                         * clients by the same server device id.
-                                         */
-                        where("QS").is(QueueUserStateEnum.S).and("SE").exists(false).and("SID").is(sid)
-                )
-        ).with(new Sort(ASC, "TN"));
-        LOG.info("{}", q);
-
         QueueEntity queue = mongoTemplate.findOne(
                 query(where("QR").is(codeQR)
                                 .orOperator(
@@ -180,7 +168,7 @@ public class QueueManagerImpl implements QueueManager {
                                          * Second or condition will get you any of the skipped
                                          * clients by the same server device id.
                                          */
-                                        where("QS").is(QueueUserStateEnum.S).and("SE").exists(false).and("SID").is(sid)
+                                        where("QS").is(QueueUserStateEnum.Q).and("SE").exists(false).and("SID").is(sid)
                                 )
                 ).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
@@ -190,7 +178,7 @@ public class QueueManagerImpl implements QueueManager {
             /* Mark as being served. */
             WriteResult writeConcern = mongoTemplate.updateFirst(
                     /* Removed additional where clause as we just did it and found one. */
-                    query(where("id").is(queue.getId())),
+                    query(where("id").is(queue.getId()).and("QS").is(QueueUserStateEnum.Q)),
                     entityUpdate(update("SN", goTo).set("SID", sid).set("SB", new Date())),
                     QueueEntity.class,
                     TABLE
