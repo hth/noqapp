@@ -99,10 +99,18 @@ public class ShowHTMLService {
                         rootMap.put("queueStatus", "Not yet started");
                         break;
                     case C:
-                        rootMap.put("queueStatus", "Closed");
+                        rootMap.put("queueStatus", "Closed Permanently");
                         break;
                     default:
-                        rootMap.put("queueStatus", "Active");
+                        //TODO(hth) check 0-23 or 1-24 hour format
+                        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
+                        if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
+                            rootMap.put("queueStatus", "Open");
+                        } else if (storeHour.getEndHour() < currentZoneTime) {
+                            rootMap.put("queueStatus", "Closed");
+                        } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
+                            rootMap.put("queueStatus", "Closing soon");
+                        }
                 }
             }
             return true;
