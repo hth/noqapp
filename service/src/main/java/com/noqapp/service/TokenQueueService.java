@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -38,6 +41,8 @@ public class TokenQueueService {
     private QueueManager queueManager;
     private AccountService accountService;
 
+    private ExecutorService service;
+
     @Autowired
     public TokenQueueService(
             TokenQueueManager tokenQueueManager,
@@ -49,6 +54,8 @@ public class TokenQueueService {
         this.firebaseService = firebaseService;
         this.queueManager = queueManager;
         this.accountService = accountService;
+
+        this.service = newCachedThreadPool();
     }
 
     //TODO has to create by cron job
@@ -198,12 +205,26 @@ public class TokenQueueService {
     }
 
     /**
-     * Send message to Topic.
+     * Send FCM message to Topic asynchronously.
      *
      * @param codeQR
+     * @param queueStatus
      * @param tokenQueue
+     * @param goTo
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
+        service.submit(() -> invokeThreadMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+    }
+
+    /**
+     * Formulates and send messages to FCM.
+     *
+     * @param codeQR
+     * @param queueStatus
+     * @param tokenQueue
+     * @param goTo
+     */
+    private void invokeThreadMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
