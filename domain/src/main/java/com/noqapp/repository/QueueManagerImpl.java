@@ -160,6 +160,18 @@ public class QueueManagerImpl implements QueueManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
+        Query q = query(where("QR").is(codeQR)
+                .orOperator(
+                        where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
+                                        /*
+                                         * Second or condition will get you any of the skipped
+                                         * clients by the same server device id.
+                                         */
+                        where("QS").is(QueueUserStateEnum.S).and("SE").exists(false).and("SID").is(sid)
+                )
+        ).with(new Sort(ASC, "TN"));
+        LOG.info("{}", q);
+
         QueueEntity queue = mongoTemplate.findOne(
                 query(where("QR").is(codeQR)
                                 .orOperator(
@@ -177,7 +189,8 @@ public class QueueManagerImpl implements QueueManager {
         if (null != queue) {
             /* Mark as being served. */
             WriteResult writeConcern = mongoTemplate.updateFirst(
-                    query(where("id").is(queue.getId()).and("SN").exists(false)),
+                    /* Removed additional where clause as we just did it and found one. */
+                    query(where("id").is(queue.getId())),
                     entityUpdate(update("SN", goTo).set("SID", sid).set("SB", new Date())),
                     QueueEntity.class,
                     TABLE
