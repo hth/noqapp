@@ -76,6 +76,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("SN")
     private String serverName;
 
+    @Field ("SID")
+    private String serverDeviceId;
+
     @Field ("SB")
     private Date serviceBeginTime;
 
@@ -160,6 +163,14 @@ public class QueueEntity extends BaseEntity {
 
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    public String getServerDeviceId() {
+        return serverDeviceId;
+    }
+
+    public void setServerDeviceId(String serverDeviceId) {
+        this.serverDeviceId = serverDeviceId;
     }
 
     public Date getServiceBeginTime() {
