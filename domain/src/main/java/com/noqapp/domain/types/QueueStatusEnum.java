@@ -8,7 +8,7 @@ public enum QueueStatusEnum {
     S("S", "Start"),
     R("R", "Re-Start"),
     N("N", "Next"),
-    /* Pause is a status for Server, Pause applies to just server. Queue never pauses. */
+    /* Pause is a status for Server/Merchant, Pause applies to just Server/Merchant. Queue never pauses. */
     P("P", "Pause"),
     D("D", "Done"),
     C("C", "Closed");

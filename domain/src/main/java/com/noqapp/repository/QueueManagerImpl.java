@@ -144,7 +144,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid) {
         boolean status = mongoTemplate.updateFirst(
-                /* Do not update if user aborted between begining of service and before completion of service. */
+                /* Do not update if user aborted between beginning of service and before completion of service. */
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A).and("SID").is(sid)),
                 entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
                 QueueEntity.class,
@@ -161,7 +161,16 @@ public class QueueManagerImpl implements QueueManager {
         }
 
         QueueEntity queue = mongoTemplate.findOne(
-                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("SN").exists(false)).with(new Sort(ASC, "TN")),
+                query(where("QR").is(codeQR)
+                                .orOperator(
+                                        where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
+                                        /*
+                                         * Second or condition will get you any of the skipped
+                                         * clients by the same server device id.
+                                         */
+                                        where("QS").is(QueueUserStateEnum.S).and("SE").exists(false).and("SID").is(sid)
+                                )
+                ).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
 
