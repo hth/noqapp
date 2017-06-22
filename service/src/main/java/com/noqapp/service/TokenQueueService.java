@@ -213,7 +213,7 @@ public class TokenQueueService {
      * @param goTo
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
-        service.submit(() -> invokeThreadMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+        service.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
     }
 
     /**
@@ -224,7 +224,7 @@ public class TokenQueueService {
      * @param tokenQueue
      * @param goTo
      */
-    private void invokeThreadMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
+    private void invokeThreadSendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
