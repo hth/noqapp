@@ -117,7 +117,6 @@ public class ShowHTMLService {
                     default:
                         LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
                         throw new UnsupportedOperationException("Reached unreachable condition");
-
                 }
             }
             return true;
