@@ -102,8 +102,10 @@ public class ShowHTMLService {
                         rootMap.put("queueStatus", "Closed Permanently");
                         rootMap.put("currentlyServing", "NA");
                         break;
+                    case R:
+                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getCurrentlyServing() + 1);
                     case D:
-                        rootMap.put("currentlyServing", "No one in queue");
+                        rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
                     default:
                         //TODO(hth) check 0-23 or 1-24 hour format
                         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
