@@ -98,30 +98,42 @@ public class ShowHTMLService {
                         rootMap.put("queueStatus", "Not yet started");
                         rootMap.put("currentlyServing", "0");
                         break;
+                    case R:
+                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getCurrentlyServing() + 1);
+                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                        break;
+                    case N:
+                        rootMap.put("currentlyServing", "Serving " + tokenQueue.getCurrentlyServing());
+                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                        break;
+                    case D:
+                        rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
+                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                        break;
                     case C:
                         rootMap.put("queueStatus", "Closed Permanently");
                         rootMap.put("currentlyServing", "NA");
                         break;
-                    case R:
-                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getCurrentlyServing() + 1);
-                    case D:
-                        rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
-                    case N:
-                        rootMap.put("currentlyServing", "Serving " + tokenQueue.getCurrentlyServing());
                     default:
-                        //TODO(hth) check 0-23 or 1-24 hour format
-                        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
-                        if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
-                            rootMap.put("queueStatus", "Open");
-                        } else if (storeHour.getEndHour() < currentZoneTime) {
-                            rootMap.put("queueStatus", "Closed");
-                        } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
-                            rootMap.put("queueStatus", "Closing soon");
-                        }
+                        LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                        throw new UnsupportedOperationException("Reached unreachable condition");
+
                 }
             }
             return true;
         }
         return false;
+    }
+
+    private void computeQueueStatus(Map<String, String> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
+        //TODO(hth) check 0-23 or 1-24 hour format
+        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
+        if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
+            rootMap.put("queueStatus", "Open");
+        } else if (storeHour.getEndHour() < currentZoneTime) {
+            rootMap.put("queueStatus", "Closed");
+        } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
+            rootMap.put("queueStatus", "Closing soon");
+        }
     }
 }

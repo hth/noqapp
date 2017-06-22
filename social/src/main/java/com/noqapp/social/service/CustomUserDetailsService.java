@@ -225,7 +225,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     }
                     break;
                 default:
-                    LOG.error("Reached unreachable condition", provider);
+                    LOG.error("Reached unreachable condition={}", provider);
                     throw new UnsupportedOperationException("Reached unreachable condition");
             }
             if (null != userAccount) {
