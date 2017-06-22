@@ -117,7 +117,6 @@ public class ShowHTMLService {
                     default:
                         LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
                         throw new UnsupportedOperationException("Reached unreachable condition");
-
                 }
             }
             return true;
@@ -133,7 +132,7 @@ public class ShowHTMLService {
         } else if (storeHour.getEndHour() < currentZoneTime) {
             rootMap.put("queueStatus", "Closed");
         } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
-            rootMap.put("queueStatus", "Closing soon");
+            rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         }
     }
 }
