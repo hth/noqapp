@@ -86,7 +86,6 @@ public class ShowHTMLService {
             rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
 
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            rootMap.put("currentlyServing", String.valueOf(tokenQueue.getCurrentlyServing()));
             rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 
             int i = zonedDateTime.getDayOfWeek().getValue();
@@ -97,10 +96,14 @@ public class ShowHTMLService {
                 switch (tokenQueue.getQueueStatus()) {
                     case S:
                         rootMap.put("queueStatus", "Not yet started");
+                        rootMap.put("currentlyServing", "0");
                         break;
                     case C:
                         rootMap.put("queueStatus", "Closed Permanently");
+                        rootMap.put("currentlyServing", "NA");
                         break;
+                    case D:
+                        rootMap.put("currentlyServing", "No one in queue");
                     default:
                         //TODO(hth) check 0-23 or 1-24 hour format
                         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
