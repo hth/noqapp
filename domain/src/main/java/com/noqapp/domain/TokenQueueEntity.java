@@ -111,7 +111,7 @@ public class TokenQueueEntity extends BaseEntity {
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
                 return  getTopicWellFormatted();
             default:
-                LOG.error("Reached unreachable condition");
+                LOG.error("Reached unreachable condition, queueStatus={}", queueStatus);
                 throw new IllegalStateException("Condition set is not defined");
         }
     }
