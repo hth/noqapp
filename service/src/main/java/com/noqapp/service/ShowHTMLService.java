@@ -92,6 +92,7 @@ public class ShowHTMLService {
             StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
             if (storeHour.isDayClosed()) {
                 rootMap.put("queueStatus", "Closed");
+                rootMap.put("currentlyServing", "NA");
             } else {
                 switch (tokenQueue.getQueueStatus()) {
                     case S:
@@ -128,10 +129,13 @@ public class ShowHTMLService {
         //TODO(hth) check 0-23 or 1-24 hour format
         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
         if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
+            LOG.debug("{} > {}", storeHour.getTokenNotAvailableFrom(), currentZoneTime);
             rootMap.put("queueStatus", "Open");
         } else if (storeHour.getEndHour() < currentZoneTime) {
+            LOG.debug("{} < {}", storeHour.getEndHour(), currentZoneTime);
             rootMap.put("queueStatus", "Closed");
         } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
+            LOG.debug("{} < {} & {} > {}", storeHour.getTokenNotAvailableFrom(), currentZoneTime, storeHour.getEndHour(), currentZoneTime);
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         }
     }
