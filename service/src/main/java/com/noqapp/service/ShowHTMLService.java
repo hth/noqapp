@@ -99,7 +99,7 @@ public class ShowHTMLService {
                         rootMap.put("currentlyServing", "0");
                         break;
                     case R:
-                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getCurrentlyServing() + 1);
+                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getLastNumber());
                         computeQueueStatus(rootMap, zonedDateTime, storeHour);
                         break;
                     case N:
