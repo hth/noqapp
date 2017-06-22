@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
+ * Generate store HTML page at runtime.
+ *
  * User: hitender
  * Date: 1/16/17 9:24 AM
  */
