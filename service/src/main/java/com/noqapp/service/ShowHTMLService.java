@@ -61,6 +61,10 @@ public class ShowHTMLService {
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, String> rootMap = new HashMap<>();
         try {
+            if (null == bizStore) {
+                return showStoreBlank;
+            }
+
             if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
