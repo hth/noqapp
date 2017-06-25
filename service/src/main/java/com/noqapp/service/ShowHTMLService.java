@@ -62,6 +62,7 @@ public class ShowHTMLService {
         Map<String, String> rootMap = new HashMap<>();
         try {
             if (null == bizStore) {
+                LOG.warn("No such store found. Showing blank store.");
                 return showStoreBlank;
             }
 
