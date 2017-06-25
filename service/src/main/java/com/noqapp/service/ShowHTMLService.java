@@ -61,19 +61,28 @@ public class ShowHTMLService {
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, String> rootMap = new HashMap<>();
         try {
+            if (null == bizStore) {
+                LOG.warn("No such store found. Showing blank store.");
+                return showStoreBlank;
+            }
+
             if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
+            } else {
+                LOG.warn("Skipped creating store html bizStore={} bizName={}",
+                        bizStore.getId(), bizStore.getBizName().getId());
             }
 
             return showStoreBlank;
-        } catch (IOException | TemplateException e) {
+        } catch (IOException | TemplateException | NullPointerException e) {
             LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
             return showStoreBlank;
         }
     }
 
     private boolean populateStore(Map<String, String> rootMap, BizStoreEntity bizStore) throws IOException, TemplateException {
-        if (null != bizStore) {
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+        if (null != tokenQueue) {
             bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
             
@@ -86,8 +95,6 @@ public class ShowHTMLService {
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
             rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
-
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
             rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 
             int i = zonedDateTime.getDayOfWeek().getValue();

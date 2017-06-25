@@ -78,6 +78,13 @@ public class AccountValidator implements Validator {
                         "Country Code is not a valid name " + userRegistration.getCountryShortName());
             }
 
+            if (!Validate.isValidPhoneWithInternationalCode(userRegistration.getPhone())) {
+                errors.rejectValue("phone",
+                        "field.phone.international.invalid",
+                        new Object[]{userRegistration.getPhone()},
+                        "Phone number " + userRegistration.getPhone() + " should start with '+' followed by international code");
+            }
+
             if (!Validate.isValidName(userRegistration.getFirstName())) {
                 errors.rejectValue("firstName",
                         "field.invalid",

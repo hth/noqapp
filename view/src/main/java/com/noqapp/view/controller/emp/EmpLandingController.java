@@ -109,7 +109,9 @@ public class EmpLandingController {
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
                 tokenUser.getRid());
 
-        empLandingService.approveBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), tokenUser.getRid());
+        empLandingService.approveBusiness(
+                businessAwaitingApprovalForm.getBusinessUser().getId(),
+                tokenUser.getRid());
         return empLanding;
     }
 }

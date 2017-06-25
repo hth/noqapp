@@ -44,4 +44,9 @@ public class Validate {
         Assert.hasText(text, "Not a valid text");
         return ridPattern.matcher(text).matches();
     }
+
+    public static boolean isValidPhoneWithInternationalCode(String text) {
+        Assert.hasText(text, "Not a valid text");
+        return text.startsWith("+");
+    }
 }
