@@ -69,7 +69,7 @@ public class ShowHTMLService {
             }
 
             return showStoreBlank;
-        } catch (IOException | TemplateException e) {
+        } catch (IOException | TemplateException | NullPointerException e) {
             LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
             return showStoreBlank;
         }
