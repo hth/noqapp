@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +60,9 @@ public final class Formatter {
     /* Defaults to US. */
     private static final String FORMAT_TO_US = "US";
     private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
+
+    private static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+    private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mma");
 
     private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();
     private static final NumberFormat CURRENCY_INSTANCE = FormatterSingleton.INSTANCE.currencyInstance();
@@ -260,5 +265,21 @@ public final class Formatter {
     public static String getCountryShortNameFromInternationalPhone(String phone) {
         /* Added for making phone number as international. */
         return getCountryShortNameFromCountryCode(findCountryCode("+" + phone));
+    }
+
+
+    private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
+        TemporalAccessor temporalAccessor = inputFormatter.parse(rawTimestamp);
+        return outputFormatter.format(temporalAccessor);
+    }
+
+    /**
+     * Converts military time like '10' to 12:10AM' and '1000' to '10:00AM' and '2345' to '11:45PM'.
+     *
+     * @param rawTimestamp
+     * @return
+     */
+    public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
+        return convertMilitaryTo12HourFormat(String.format(Locale.US, "%04d", rawTimestamp));
     }
 }
