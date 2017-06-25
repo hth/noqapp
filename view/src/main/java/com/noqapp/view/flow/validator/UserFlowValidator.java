@@ -135,6 +135,9 @@ public class UserFlowValidator {
         return status;
     }
 
+    //source("registerUser.phone")
+    //.code("field.phone.international.invalid")
+
     /**
      * Validate signed up user info.
      *

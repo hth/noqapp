@@ -63,6 +63,9 @@ public class ShowHTMLService {
         try {
             if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
+            } else {
+                LOG.warn("Skipped creating store html bizStore={} bizName={}",
+                        bizStore.getId(), bizStore.getBizName().getId());
             }
 
             return showStoreBlank;
@@ -73,7 +76,8 @@ public class ShowHTMLService {
     }
 
     private boolean populateStore(Map<String, String> rootMap, BizStoreEntity bizStore) throws IOException, TemplateException {
-        if (null != bizStore) {
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+        if (null != tokenQueue) {
             bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
             
@@ -86,8 +90,6 @@ public class ShowHTMLService {
             rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
             rootMap.put("rating", String.valueOf(bizStore.getRating()));
             rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
-
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
             rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 
             int i = zonedDateTime.getDayOfWeek().getValue();
