@@ -78,7 +78,7 @@ public class BusinessUserService {
         return businessUserManager.findBusinessUser(rid);
     }
 
-    public BusinessUserEntity fingById(String id) {
+    public BusinessUserEntity findById(String id) {
         return businessUserManager.findById(id);
     }
 

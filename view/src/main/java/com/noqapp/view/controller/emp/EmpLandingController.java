@@ -88,7 +88,7 @@ public class EmpLandingController {
         TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Business user={} loaded by rid={}", businessUserId.getText(), tokenUser.getRid());
 
-        BusinessUserEntity businessUser = businessUserService.fingById(businessUserId.getText());
+        BusinessUserEntity businessUser = businessUserService.findById(businessUserId.getText());
         businessAwaitingApprovalForm
                 .setBusinessUser(businessUser)
                 .setUserProfile(accountService.findProfileByReceiptUserId(businessUser.getReceiptUserId()));

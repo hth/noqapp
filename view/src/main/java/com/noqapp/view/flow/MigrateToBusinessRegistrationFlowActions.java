@@ -13,6 +13,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
+import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.site.TokenUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -21,6 +22,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
+import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException;
 
@@ -38,7 +40,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
-    private BizService bizService;
+    private TokenQueueService tokenQueueService;
 
     @SuppressWarnings ("all")
     @Autowired
@@ -48,13 +50,14 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             AccountService accountService,
             BusinessUserService businessUserService,
             BizService bizService,
-            ExternalService externalService) {
-        super(externalService, bizService);
+            ExternalService externalService,
+            TokenQueueService tokenQueueService
+    ) {
+        super(externalService, bizService, tokenQueueService);
         this.fetcherService = fetcherService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
-        this.bizService = bizService;
     }
 
     public Set<String> findAllDistinctBizName(String bizName) {
@@ -101,6 +104,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     }
 
     /**
+     * Register new business.
+     * 
      * @param register
      * @return
      * @throws MigrateToBusinessRegistrationException
@@ -132,6 +137,24 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             LOG.error("Error updating business user profile rid={} reason={}",
                     register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
+        }
+    }
+
+    /**
+     * Register new store.
+     *
+     * @param registerBusiness
+     * @return
+     * @throws MigrateToBusinessRegistrationException
+     */
+    @SuppressWarnings ("unused")
+    public RegisterBusiness completeRegistrationInformation(RegisterBusiness registerBusiness) throws MigrateToBusinessRegistrationException {
+        try {
+            return registerBusinessDetails(registerBusiness);
+        } catch (Exception e) {
+            LOG.error("Error adding business rid={} reason={}",
+                    registerBusiness.getBusinessUser().getReceiptUserId(), e.getLocalizedMessage(), e);
+            throw new MigrateToBusinessRegistrationException("Error adding business", e);
         }
     }
 

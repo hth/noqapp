@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
@@ -38,6 +40,7 @@ public class BusinessLandingController {
 
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
+    private String addStoreFlowActions;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -51,12 +54,16 @@ public class BusinessLandingController {
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
             String migrateBusinessRegistrationFlow,
 
+            @Value ("${addStoreFlowActions:redirect:/store/addStore.htm}")
+            String addStoreFlowActions,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService
     ) {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
+        this.addStoreFlowActions = addStoreFlowActions;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -113,4 +120,14 @@ public class BusinessLandingController {
         businessLandingForm.setBizStores(bizService.getAllBizStores(businessUser.getBizName().getId()));
     }
 
+    @Timed
+    @ExceptionMetered
+    @RequestMapping (
+            value = "/addStore",
+            method = RequestMethod.GET
+    )
+    public String addStore() {
+        LOG.info("Add store to business {}", addStoreFlowActions);
+        return addStoreFlowActions;
+    }
 }
