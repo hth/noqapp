@@ -52,7 +52,7 @@ public class EmpLandingService {
     }
 
     public void approveBusiness(String businessUserId, String rid) {
-        BusinessUserEntity businessUser = businessUserService.fingById(businessUserId);
+        BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
                 .setValidateByRid(rid)
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);

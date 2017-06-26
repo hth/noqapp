@@ -3,6 +3,7 @@ package com.noqapp.view.flow.validator;
 import com.google.maps.model.LatLng;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class BusinessFlowValidator {
     }
 
     /**
-     * Validate business user profile.
+     * Validate business user profile and business.
      *
      * @param register
      * @param messageContext
@@ -133,64 +134,77 @@ public class BusinessFlowValidator {
 
         /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
-            if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.addressStore")
-                                .defaultText("Store Address cannot be empty")
-                                .build());
-                status = "failure";
-            } else {
-                DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
-                        externalService.getGeocodingResults(registerBusiness.getAddressStore()),
-                        registerBusiness.getAddressStore());
+            status = validateStoreDetails(registerBusiness, messageContext);
+        }
 
-                if (decodedAddressStore.isNotEmpty()) {
-                    registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
-                    registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
+        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
+        return status;
+    }
 
-                    LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
-                    String timeZone = externalService.findTimeZone(latLng);
-                    registerBusiness.setTimeZoneStore(timeZone);
-                }
+    /**
+     * Validate store.
+     *
+     * @param registerBusiness
+     * @param messageContext
+     * @return
+     */
+    public String validateStoreDetails(RegisterBusiness registerBusiness, MessageContext messageContext) {
+        String status = "success";
+        if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.addressStore")
+                            .defaultText("Store Address cannot be empty")
+                            .build());
+            status = "failure";
+        } else {
+            DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
+                    externalService.getGeocodingResults(registerBusiness.getAddressStore()),
+                    registerBusiness.getAddressStore());
+
+            if (decodedAddressStore.isNotEmpty()) {
+                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
+                registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
+
+                LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
+                String timeZone = externalService.findTimeZone(latLng);
+                registerBusiness.setTimeZoneStore(timeZone);
             }
+        }
 
-            if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.displayName")
-                                .defaultText("Queue Name cannot be empty. " +
-                                        "Queue Names can be like: Pharmacy, Driving License, Dinner Registration")
-                                .build());
-                status = "failure";
-            }
+        if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.displayName")
+                            .defaultText("Queue Name cannot be empty. " +
+                                    "Queue Names can be like: Pharmacy, Driving License, Dinner Registration")
+                            .build());
+            status = "failure";
+        }
 
-            if (StringUtils.isBlank(registerBusiness.getPhoneStoreNotFormatted())) {
+        if (StringUtils.isBlank(registerBusiness.getPhoneStoreNotFormatted())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.phoneStore")
+                            .defaultText("Store Phone cannot be empty")
+                            .build());
+            status = "failure";
+        } else {
+            if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.phoneStore")
-                                .defaultText("Store Phone cannot be empty")
+                                .defaultText("Store already registered with this phone number '"
+                                        + registerBusiness.getPhoneStore()
+                                        + "'. Please email us at contact@noqapp.com.")
                                 .build());
                 status = "failure";
-            } else {
-                if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
-                    messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source("registerBusiness.phoneStore")
-                                    .defaultText("Store already registered with this phone number '"
-                                            + registerBusiness.getPhone()
-                                            + "'. Please email us at contact@noqapp.com.")
-                                    .build());
-                    status = "failure";
-                }
             }
         }
-
-        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
         return status;
     }
 
@@ -204,9 +218,20 @@ public class BusinessFlowValidator {
     @SuppressWarnings ("unused")
     public String validateBusinessHours(Register register, MessageContext messageContext) {
         LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
-        String status = "success";
-
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
+        return validateBusinessHours(registerBusiness, messageContext);
+    }
+
+
+    /**
+     * Validate store hours.
+     *
+     * @param registerBusiness
+     * @param messageContext
+     * @return
+     */
+    public String validateBusinessHours(RegisterBusiness registerBusiness, MessageContext messageContext) {
+        String status = "success";
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
 
         for (BusinessHour businessHour : businessHours) {
@@ -215,7 +240,8 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.startHourStore")
-                                .defaultText("Store Start Time cannot be empty")
+                                .defaultText("Specify Store Start Time for "
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
                 status = "failure";
             }
@@ -225,7 +251,8 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.endHourStore")
-                                .defaultText("Store Close Time cannot be empty")
+                                .defaultText("Specify Store Close Time for "
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
                 status = "failure";
             }
@@ -235,13 +262,15 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                                 .error()
                                 .source("registerBusiness.tokenAvailableFrom")
-                                .defaultText("Token Available Time cannot be empty. This is the time from when Token would be available to users.")
+                                .defaultText("Specify Token Available Time for "
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                        + ". This is the time from when Token would be available to users.")
                                 .build());
                 status = "failure";
             }
         }
 
-        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
+        LOG.info("Validate business rid={} status={}", registerBusiness.getBusinessUser().getReceiptUserId(), status);
         return status;
     }
 }

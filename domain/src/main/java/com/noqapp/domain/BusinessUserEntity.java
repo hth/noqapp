@@ -57,7 +57,7 @@ public class BusinessUserEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
         this.userLevel = userLevel;
 
-        /** When creating this record we are defaulting to Incomplete status. */
+        /* When creating this record we are defaulting to Incomplete status. */
         this.businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
     }
 

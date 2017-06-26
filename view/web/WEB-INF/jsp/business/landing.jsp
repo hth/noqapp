@@ -74,7 +74,7 @@
     <div class="rightside-list-holder full-list-holder"
             style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
         <div class="down_form" style="width: 96%;">
-            Click Add new store (Not working)
+            <a href="/business/addStore.htm">Click Add new store</a>
 
             <div class="down_form" style="width: 96%;">
                 <c:choose>
