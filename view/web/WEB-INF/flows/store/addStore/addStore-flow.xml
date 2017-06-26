@@ -53,7 +53,7 @@
         <transition to="registrationComplete"/>
     </action-state>
 
-    <view-state id="registrationComplete" />
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm" />
     <end-state id="logout" />
 
     <global-transitions>

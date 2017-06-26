@@ -199,7 +199,7 @@ public class BusinessFlowValidator {
                                 .error()
                                 .source("registerBusiness.phoneStore")
                                 .defaultText("Store already registered with this phone number '"
-                                        + registerBusiness.getPhone()
+                                        + registerBusiness.getPhoneStore()
                                         + "'. Please email us at contact@noqapp.com.")
                                 .build());
                 status = "failure";
@@ -241,7 +241,7 @@ public class BusinessFlowValidator {
                                 .error()
                                 .source("registerBusiness.startHourStore")
                                 .defaultText("Specify Store Start Time for "
-                                        + WordUtils.capitalize(businessHour.getDayOfWeek().name()))
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
                 status = "failure";
             }
@@ -252,7 +252,7 @@ public class BusinessFlowValidator {
                                 .error()
                                 .source("registerBusiness.endHourStore")
                                 .defaultText("Specify Store Close Time for "
-                                        + WordUtils.capitalize(businessHour.getDayOfWeek().name()))
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
                 status = "failure";
             }
@@ -263,7 +263,7 @@ public class BusinessFlowValidator {
                                 .error()
                                 .source("registerBusiness.tokenAvailableFrom")
                                 .defaultText("Specify Token Available Time for "
-                                        + WordUtils.capitalize(businessHour.getDayOfWeek().name())
+                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                         + ". This is the time from when Token would be available to users.")
                                 .build());
                 status = "failure";
