@@ -82,56 +82,59 @@ public class ShowHTMLService {
 
     private boolean populateStore(Map<String, String> rootMap, BizStoreEntity bizStore) throws IOException, TemplateException {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-        if (null != tokenQueue) {
-            bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
-            ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-            
-            rootMap.put("bizName", bizStore.getBizName().getBusinessName());
-            rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
-            rootMap.put("phone", bizStore.getPhoneFormatted());
-            rootMap.put("displayName", bizStore.getDisplayName());
-            rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
-            rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
-            rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
-            rootMap.put("rating", String.valueOf(bizStore.getRating()));
-            rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
-            rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 
-            int i = zonedDateTime.getDayOfWeek().getValue();
-            StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
-            if (storeHour.isDayClosed()) {
-                rootMap.put("queueStatus", "Closed");
-                rootMap.put("currentlyServing", "NA");
-            } else {
-                switch (tokenQueue.getQueueStatus()) {
-                    case S:
-                        rootMap.put("queueStatus", "Not yet started");
-                        rootMap.put("currentlyServing", "0");
-                        break;
-                    case R:
-                        rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getLastNumber());
-                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
-                        break;
-                    case N:
-                        rootMap.put("currentlyServing", "Serving " + tokenQueue.getCurrentlyServing());
-                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
-                        break;
-                    case D:
-                        rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
-                        computeQueueStatus(rootMap, zonedDateTime, storeHour);
-                        break;
-                    case C:
-                        rootMap.put("queueStatus", "Closed Permanently");
-                        rootMap.put("currentlyServing", "NA");
-                        break;
-                    default:
-                        LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
-                        throw new UnsupportedOperationException("Reached unreachable condition");
-                }
-            }
-            return true;
+        if (null == tokenQueue) {
+            LOG.warn("Could not find tokenQueue for codeQR={}", bizStore.getCodeQR());
+            return false;
         }
-        return false;
+
+        bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+        rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+        rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
+        rootMap.put("phone", bizStore.getPhoneFormatted());
+        rootMap.put("displayName", bizStore.getDisplayName());
+        rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
+        rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+        rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+        rootMap.put("rating", String.valueOf(bizStore.getRating()));
+        rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
+        rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
+
+        int i = zonedDateTime.getDayOfWeek().getValue();
+        StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
+        if (storeHour.isDayClosed()) {
+            rootMap.put("queueStatus", "Closed");
+            rootMap.put("currentlyServing", "NA");
+        } else {
+            switch (tokenQueue.getQueueStatus()) {
+                case S:
+                    rootMap.put("queueStatus", "Not yet started");
+                    rootMap.put("currentlyServing", "0");
+                    break;
+                case R:
+                    rootMap.put("currentlyServing", "Next to serve " + tokenQueue.getLastNumber());
+                    computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                    break;
+                case N:
+                    rootMap.put("currentlyServing", "Serving " + tokenQueue.getCurrentlyServing());
+                    computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                    break;
+                case D:
+                    rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
+                    computeQueueStatus(rootMap, zonedDateTime, storeHour);
+                    break;
+                case C:
+                    rootMap.put("queueStatus", "Closed Permanently");
+                    rootMap.put("currentlyServing", "NA");
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                    throw new UnsupportedOperationException("Reached unreachable condition");
+            }
+        }
+        return true;
     }
 
     private void computeQueueStatus(Map<String, String> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
