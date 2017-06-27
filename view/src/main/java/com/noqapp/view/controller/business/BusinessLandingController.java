@@ -72,6 +72,7 @@ public class BusinessLandingController {
 
     /**
      * Loading landing page for business.
+     * This link is mapped in web flow after merchant adds new store to existing business.
      *
      * @param businessLandingForm
      * @return
