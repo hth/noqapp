@@ -393,7 +393,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getCodeQRInALink() {
-        return "https://tp.receiptofi.com/" + codeQR + "/q.htm";
+        return "https://q.noqapp.com/" + codeQR + "/q.htm";
     }
 
     @Transient
