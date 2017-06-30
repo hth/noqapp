@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -17,13 +18,16 @@ import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
 import com.noqapp.domain.site.TokenUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
+import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.business.BusinessLandingForm;
+import com.noqapp.view.form.business.QueueManagerForm;
 
 import java.util.List;
 
@@ -45,6 +49,7 @@ public class BusinessLandingController {
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
     private String addStoreFlowActions;
+    private String listQueueManagerPage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -62,6 +67,9 @@ public class BusinessLandingController {
             @Value ("${addStoreFlowActions:redirect:/store/addStore.htm}")
             String addStoreFlowActions,
 
+            @Value("${listQueueManagerPage:/business/listQueueManager.htm}")
+            String listQueueManagerPage,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
@@ -69,6 +77,7 @@ public class BusinessLandingController {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
         this.addStoreFlowActions = addStoreFlowActions;
+        this.listQueueManagerPage = listQueueManagerPage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -128,8 +137,27 @@ public class BusinessLandingController {
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
             long assignedToQueue  = businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId());
-            businessLandingForm.addAssignedUsers(bizStore.getId(), assignedToQueue);
+            businessLandingForm.addAssignedQueueManagers(bizStore.getId(), assignedToQueue);
         }
+    }
+
+    @RequestMapping (
+            value = "/listQueueManager/${storeId}",
+            method = RequestMethod.GET
+    )
+    public String listQueueManager(
+            @PathVariable ("storeId")
+            ScrubbedInput storeId,
+
+            @ModelAttribute ("queueManagerForm")
+            QueueManagerForm queueManagerForm
+    ) {
+        BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+        queueManagerForm.setQueueName(bizStore.getDisplayName());
+
+        List<UserProfileEntity> userProfiles = businessUserStoreService.getAllQueueManagers(storeId.getText());
+        queueManagerForm.setUserProfiles(userProfiles);
+        return listQueueManagerPage;
     }
 
     @Timed

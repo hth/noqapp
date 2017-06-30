@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.repository.BusinessUserStoreManager;
@@ -33,18 +34,21 @@ public class BusinessUserStoreService {
     private int queueLimit;
     private BusinessUserStoreManager businessUserStoreManager;
     private TokenQueueService tokenQueueService;
+    private AccountService accountService;
 
     @Autowired
     public BusinessUserStoreService(
-            @Value("${BusinessUserStoreService.queue.limit:10}")
+            @Value ("${BusinessUserStoreService.queue.limit:10}")
             int queueLimit,
-            
+
             BusinessUserStoreManager businessUserStoreManager,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            AccountService accountService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
         this.tokenQueueService = tokenQueueService;
+        this.accountService = accountService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -81,5 +85,23 @@ public class BusinessUserStoreService {
 
     public long findNumberOfPeopleAssignedToQueue(String businessStoreId) {
         return businessUserStoreManager.findNumberOfPeopleAssignedToQueue(businessStoreId);
+    }
+
+    /**
+     * Gets all the profile information of queue manager for a specific store associated.
+     *
+     * @param storeId
+     * @return
+     */
+    public List<UserProfileEntity> getAllQueueManagers(String storeId) {
+        List<UserProfileEntity> userProfiles = new ArrayList<>();
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            String rid = businessUserStore.getReceiptUserId();
+            UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
+            userProfiles.add(userProfile);
+        }
+
+        return userProfiles;
     }
 }

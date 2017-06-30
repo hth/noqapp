@@ -69,47 +69,45 @@
 </header>
 <div class="main clearfix">
     <div class="down_form" style="width: 90%">
-        Business Name: ${businessLandingForm.bizName}
+        Queue Name: ${queueManager.queueName}
     </div>
     <div class="rightside-list-holder full-list-holder"
             style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
         <div class="down_form" style="width: 96%;">
-            <a href="/business/addStore.htm">Click Add new store</a>
-
             <div class="down_form" style="width: 96%;">
                 <c:choose>
-                    <c:when test="${!empty businessLandingForm.bizStores}">
+                    <c:when test="${!empty queueManager.userProfiles}">
                         <table width="90%" style="margin: 0 4px 0 4px">
                             <thead>
                             <tr>
                                 <th></th>
-                                <th width="440px;">Store Location</th>
-                                <th width="260px;">Queue Name</th>
-                                <th width="100px;"># Assigned</th>
-                                <th width="160px;">Since</th>
+                                <th width="440px;">Name</th>
+                                <th width="260px;">Phone</th>
+                                <th width="100px;">Address</th>
+                                <th width="160px;">Email</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
+                            <c:forEach items="${queueManager.userProfiles}" var="userProfile" varStatus="status">
                                 <tr>
-                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
+                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${userProfile.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
+                                        ${userProfile.name}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <a href="/business/listQueueManager/${store.id}.htm">${store.displayName}</a>
+                                        ${userProfile.phone}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <a href="/${store.codeQR}/q.htm" target="_blank">${businessLandingForm.assignedUsers.get(store.id)}</a>
+                                        ${userProfile.address}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>
+                                        ${userProfile.email}
                                     </td>
                                 </tr>
                             </c:forEach>
                         </table>
                     </c:when>
                     <c:otherwise>
-                        There are no new business to approve.
+                        There are no one assigned to this queue.
                     </c:otherwise>
                 </c:choose>
             </div>
