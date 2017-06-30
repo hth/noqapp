@@ -96,7 +96,7 @@
                                         <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${store.displayName}
+                                        <a href="/${store.codeQR}/q.htm">${store.displayName}</a>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${businessLandingForm.assignedUsers.get(store.id)}
