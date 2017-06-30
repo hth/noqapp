@@ -71,4 +71,13 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
             TABLE
         );
     }
+
+    @Override
+    public long findNumberOfPeopleAssignedToQueue(String businessStoreId) {
+        return mongoTemplate.count(
+                query(where("BS").is(businessStoreId)),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
 }

@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
 import com.noqapp.domain.site.TokenUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.view.form.business.BusinessLandingForm;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -45,6 +49,7 @@ public class BusinessLandingController {
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
     private BizService bizService;
+    private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
     public BusinessLandingController(
@@ -59,8 +64,8 @@ public class BusinessLandingController {
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
-            BizService bizService
-    ) {
+            BizService bizService,
+            BusinessUserStoreService businessUserStoreService) {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
         this.addStoreFlowActions = addStoreFlowActions;
@@ -68,6 +73,7 @@ public class BusinessLandingController {
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
         this.bizService = bizService;
+        this.businessUserStoreService = businessUserStoreService;
     }
 
     /**
@@ -118,7 +124,12 @@ public class BusinessLandingController {
             businessLandingForm.setBizName(bizName.getBusinessName());
         }
 
-        businessLandingForm.setBizStores(bizService.getAllBizStores(businessUser.getBizName().getId()));
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
+        businessLandingForm.setBizStores(bizStores);
+        for (BizStoreEntity bizStore : bizStores) {
+            long assignedToQueue  = businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId());
+            businessLandingForm.addAssignedUsers(bizStore.getId(), assignedToQueue);
+        }
     }
 
     @Timed
