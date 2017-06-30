@@ -78,4 +78,8 @@ public class BusinessUserStoreService {
         LOG.info("Found queues count={}", jsonTopics.size());
         return jsonTopics;
     }
+
+    public long findNumberOfPeopleAssignedToQueue(String businessStoreId) {
+        return businessUserStoreManager.findNumberOfPeopleAssignedToQueue(businessStoreId);
+    }
 }

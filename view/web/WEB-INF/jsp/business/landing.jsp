@@ -85,7 +85,8 @@
                                 <th></th>
                                 <th width="440px;">Store Location</th>
                                 <th width="260px;">Queue Name</th>
-                                <th width="260px;">Since</th>
+                                <th width="160px;"># Assigned to Queue</th>
+                                <th width="100px;">Since</th>
                             </tr>
                             </thead>
                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
@@ -96,6 +97,9 @@
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${store.displayName}
+                                    </td>
+                                    <td>
+                                        ${businessLandingForm.assignedUsers.get(store.id)}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>
