@@ -85,8 +85,8 @@
                                 <th></th>
                                 <th width="440px;">Store Location</th>
                                 <th width="260px;">Queue Name</th>
-                                <th width="160px;"># Assigned to Queue</th>
-                                <th width="100px;">Since</th>
+                                <th width="100px;"># Assigned</th>
+                                <th width="160px;">Since</th>
                             </tr>
                             </thead>
                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
