@@ -79,7 +79,7 @@
             <div class="down_form" style="width: 96%;">
                 <c:choose>
                     <c:when test="${!empty businessLandingForm.bizStores}">
-                        <table width="80%" style="margin: 0 4px 0 4px">
+                        <table width="90%" style="margin: 0 4px 0 4px">
                             <thead>
                             <tr>
                                 <th></th>
@@ -98,7 +98,7 @@
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${store.displayName}
                                     </td>
-                                    <td>
+                                    <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${businessLandingForm.assignedUsers.get(store.id)}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
