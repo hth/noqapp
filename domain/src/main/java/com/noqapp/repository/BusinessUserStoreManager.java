@@ -14,5 +14,7 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> getQueues(String rid, int limit);
 
-    long findNumberOfPeopleAssignedToQueue(String businessStoreId);
+    long findNumberOfPeopleAssignedToQueue(String storeId);
+
+    List<BusinessUserStoreEntity> getAllQueueManagers(String storeId);
 }

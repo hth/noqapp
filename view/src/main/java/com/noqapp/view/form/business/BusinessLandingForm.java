@@ -14,7 +14,7 @@ public class BusinessLandingForm {
 
     private String bizName;
     private List<BizStoreEntity> bizStores;
-    private Map<String, Long> assignedUsers = new HashMap<>();
+    private Map<String, Long> assignedQueueManagers = new HashMap<>();
 
     public String getBizName() {
         return bizName;
@@ -34,11 +34,11 @@ public class BusinessLandingForm {
         return this;
     }
 
-    public Map<String, Long> getAssignedUsers() {
-        return assignedUsers;
+    public Map<String, Long> getAssignedQueueManagers() {
+        return assignedQueueManagers;
     }
 
-    public void addAssignedUsers(String id, Long assignedToQueue) {
-        this.assignedUsers.put(id, assignedToQueue);
+    public void addAssignedQueueManagers(String id, Long assignedToQueue) {
+        this.assignedQueueManagers.put(id, assignedToQueue);
     }
 }
