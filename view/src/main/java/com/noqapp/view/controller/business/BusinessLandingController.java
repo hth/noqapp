@@ -92,7 +92,11 @@ public class BusinessLandingController {
      * @param businessLandingForm
      * @return
      */
-    @RequestMapping (value = "/landing", method = RequestMethod.GET)
+    @RequestMapping (
+            value = "/landing",
+            method = RequestMethod.GET,
+            produces = "text/html;charset=UTF-8"
+    )
     public String landing(
             @ModelAttribute ("businessLandingForm")
             BusinessLandingForm businessLandingForm
@@ -143,14 +147,15 @@ public class BusinessLandingController {
 
     @RequestMapping (
             value = "/listQueueManager/${storeId}",
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = "text/html;charset=UTF-8"
     )
     public String listQueueManager(
-            @PathVariable ("storeId")
-            ScrubbedInput storeId,
-
             @ModelAttribute ("queueManagerForm")
-            QueueManagerForm queueManagerForm
+            QueueManagerForm queueManagerForm,
+
+            @PathVariable ("storeId")
+            ScrubbedInput storeId
     ) {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         queueManagerForm.setQueueName(bizStore.getDisplayName());
@@ -164,7 +169,8 @@ public class BusinessLandingController {
     @ExceptionMetered
     @RequestMapping (
             value = "/addStore",
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = "text/html;charset=UTF-8"
     )
     public String addStore() {
         LOG.info("Add store to business {}", addStoreFlowActions);
