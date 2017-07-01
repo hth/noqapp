@@ -146,7 +146,7 @@ public class BusinessLandingController {
     }
 
     @RequestMapping (
-            value = "/listQueueManager/${storeId}",
+            value = "/listQueueManager/{storeId}",
             method = RequestMethod.GET,
             produces = "text/html;charset=UTF-8"
     )
