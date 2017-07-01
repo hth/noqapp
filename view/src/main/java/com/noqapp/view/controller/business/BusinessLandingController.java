@@ -67,7 +67,7 @@ public class BusinessLandingController {
             @Value ("${addStoreFlowActions:redirect:/store/addStore.htm}")
             String addStoreFlowActions,
 
-            @Value("${listQueueManagerPage:/business/listQueueManager.htm}")
+            @Value("${listQueueManagerPage:/business/listQueueManager}")
             String listQueueManagerPage,
 
             BusinessUserService businessUserService,
