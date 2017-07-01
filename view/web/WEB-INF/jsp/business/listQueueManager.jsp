@@ -69,27 +69,27 @@
 </header>
 <div class="main clearfix">
     <div class="down_form" style="width: 90%">
-        Queue Name: ${queueManager.queueName}
+        Queue Name: ${queueManagerForm.queueName}
     </div>
     <div class="rightside-list-holder full-list-holder"
             style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
         <div class="down_form" style="width: 96%;">
             <div class="down_form" style="width: 96%;">
                 <c:choose>
-                    <c:when test="${!empty queueManager.userProfiles}">
-                        <table width="90%" style="margin: 0 4px 0 4px">
+                    <c:when test="${!empty queueManagerForm.userProfiles}">
+                        <table width="100%" style="margin: 0 4px 0 4px">
                             <thead>
                             <tr>
                                 <th></th>
-                                <th width="440px;">Name</th>
-                                <th width="260px;">Phone</th>
-                                <th width="100px;">Address</th>
-                                <th width="160px;">Email</th>
+                                <th width="200px;">Name</th>
+                                <th width="160px;">Phone</th>
+                                <th width="340px;">Address</th>
+                                <th width="260px;">Email</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${queueManager.userProfiles}" var="userProfile" varStatus="status">
+                            <c:forEach items="${queueManagerForm.userProfiles}" var="userProfile" varStatus="status">
                                 <tr>
-                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${userProfile.count}&nbsp;</td>
+                                    <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${userProfile.name}
                                     </td>
