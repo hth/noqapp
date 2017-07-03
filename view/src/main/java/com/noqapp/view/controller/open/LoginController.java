@@ -25,7 +25,6 @@ import com.noqapp.domain.site.TokenUser;
 import com.noqapp.security.OnLoginAuthenticationSuccessHandler;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.LoginService;
-import com.noqapp.service.RegistrationService;
 import com.noqapp.social.service.CustomUserDetailsService;
 import com.noqapp.view.cache.CachedUserAgentStringParser;
 import com.noqapp.view.form.UserLoginForm;
@@ -53,6 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
+    //@Value ("${loginPage:digits}")
     @Value ("${loginPage:login}")
     private String loginPage;
 
@@ -60,7 +60,6 @@ public class LoginController {
     private final CachedUserAgentStringParser parser;
 
     private LoginService loginService;
-    private RegistrationService registrationService;
     private OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler;
     private AccountService accountService;
     private CustomUserDetailsService customUserDetailsService;
@@ -68,7 +67,6 @@ public class LoginController {
     @Autowired
     public LoginController(
             LoginService loginService,
-            RegistrationService registrationService,
             OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
             AccountService accountService,
             CustomUserDetailsService customUserDetailsService) {
@@ -77,7 +75,6 @@ public class LoginController {
         this.parser = CachedUserAgentStringParser.getInstance();
 
         this.loginService = loginService;
-        this.registrationService = registrationService;
         this.onLoginAuthenticationSuccessHandler = onLoginAuthenticationSuccessHandler;
         this.accountService = accountService;
         this.customUserDetailsService = customUserDetailsService;
@@ -140,10 +137,6 @@ public class LoginController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
         if (authentication instanceof AnonymousAuthenticationToken) {
-            return loginPage;
-        }
-
-        if (registrationService.validateIfRegistrationIsAllowed(map, authentication)) {
             return loginPage;
         }
 
