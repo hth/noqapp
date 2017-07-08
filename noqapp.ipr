@@ -76,7 +76,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:4.2.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.4.2" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
@@ -92,7 +91,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.20" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -103,8 +101,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:5.1.31" />
             <element id="library" level="project" name="Gradle: commons-dbcp:commons-dbcp:1.4" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152" />
             <element id="library" level="project" name="Gradle: edu.ucar:udunits:4.5.5" />
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
@@ -113,17 +109,8 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
-            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5" />
-            <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.2" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.5.1" />
@@ -151,8 +138,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.1" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.67.0" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
@@ -201,9 +186,6 @@
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.4" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -226,7 +208,6 @@
             <element id="library" level="project" name="Gradle: org.itadaki:bzip2:0.9.1" />
             <element id="library" level="project" name="Gradle: com.beust:jcommander:1.35" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -238,6 +219,19 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/2cc001a6b7588daf5b4d5d12c3fd949b1cb9e6e1/google-maps-services-0.1.21.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/6e7f8068388839c5dabc08239dbeec73ad0decd8/libphonenumber-8.6.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/163b6b046de5414ac17c83cbd6cb619e541fc69a/logstash-logback-encoder-4.11.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/4dfca3975be3c1a98eacb829e70f02e9a71bc159/jackson-databind-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/e0e758381a6579cb2029dace23a7209b90ac7232/jackson-annotations-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/569b1752705da98f49aabe2911cc956ff7d8ed9d/jackson-core-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/65e4d9a31c4b1d5b3a55401be70a8eb41f05a879/javamelody-core-1.68.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/de37a2528251707fc2e89a5e34075f7a33b959b7/junit-jupiter-engine-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/fa84be2483c79cb5c997f5dd2f132a7b6c103363/junit-platform-engine-1.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/1d2e0ff6dee4e8423beec23fc10d10b1eb3032dd/junit-jupiter-api-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6205156207eac647a0cff478bcfc27c614029bb8/junit-platform-commons-1.0.0-M5.jar" />
           </element>
         </element>
       </root>
@@ -322,7 +316,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:4.2.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.4.2" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
@@ -338,7 +331,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.20" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -349,8 +341,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:5.1.31" />
             <element id="library" level="project" name="Gradle: commons-dbcp:commons-dbcp:1.4" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152" />
             <element id="library" level="project" name="Gradle: edu.ucar:udunits:4.5.5" />
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
@@ -359,17 +349,8 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
-            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5" />
-            <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.2" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.5.1" />
@@ -397,8 +378,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.1" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.67.0" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
@@ -447,9 +426,6 @@
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.4" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -472,7 +448,6 @@
             <element id="library" level="project" name="Gradle: org.itadaki:bzip2:0.9.1" />
             <element id="library" level="project" name="Gradle: com.beust:jcommander:1.35" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -485,6 +460,19 @@
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/2cc001a6b7588daf5b4d5d12c3fd949b1cb9e6e1/google-maps-services-0.1.21.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/6e7f8068388839c5dabc08239dbeec73ad0decd8/libphonenumber-8.6.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/163b6b046de5414ac17c83cbd6cb619e541fc69a/logstash-logback-encoder-4.11.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/4dfca3975be3c1a98eacb829e70f02e9a71bc159/jackson-databind-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/e0e758381a6579cb2029dace23a7209b90ac7232/jackson-annotations-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/569b1752705da98f49aabe2911cc956ff7d8ed9d/jackson-core-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/65e4d9a31c4b1d5b3a55401be70a8eb41f05a879/javamelody-core-1.68.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/de37a2528251707fc2e89a5e34075f7a33b959b7/junit-jupiter-engine-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/fa84be2483c79cb5c997f5dd2f132a7b6c103363/junit-platform-engine-1.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/1d2e0ff6dee4e8423beec23fc10d10b1eb3032dd/junit-jupiter-api-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6205156207eac647a0cff478bcfc27c614029bb8/junit-platform-commons-1.0.0-M5.jar" />
           </element>
         </element>
       </root>
@@ -573,7 +561,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:4.2.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.4.2" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
@@ -589,7 +576,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.20" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -600,8 +586,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:5.1.31" />
             <element id="library" level="project" name="Gradle: commons-dbcp:commons-dbcp:1.4" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152" />
             <element id="library" level="project" name="Gradle: edu.ucar:udunits:4.5.5" />
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
@@ -610,17 +594,8 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
-            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5" />
-            <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.2" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.5.1" />
@@ -648,8 +623,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.1" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.67.0" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
@@ -698,9 +671,6 @@
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.4" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -723,7 +693,6 @@
             <element id="library" level="project" name="Gradle: org.itadaki:bzip2:0.9.1" />
             <element id="library" level="project" name="Gradle: com.beust:jcommander:1.35" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -736,6 +705,19 @@
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/2cc001a6b7588daf5b4d5d12c3fd949b1cb9e6e1/google-maps-services-0.1.21.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/6e7f8068388839c5dabc08239dbeec73ad0decd8/libphonenumber-8.6.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/163b6b046de5414ac17c83cbd6cb619e541fc69a/logstash-logback-encoder-4.11.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/4dfca3975be3c1a98eacb829e70f02e9a71bc159/jackson-databind-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/e0e758381a6579cb2029dace23a7209b90ac7232/jackson-annotations-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/569b1752705da98f49aabe2911cc956ff7d8ed9d/jackson-core-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/65e4d9a31c4b1d5b3a55401be70a8eb41f05a879/javamelody-core-1.68.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/de37a2528251707fc2e89a5e34075f7a33b959b7/junit-jupiter-engine-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/fa84be2483c79cb5c997f5dd2f132a7b6c103363/junit-platform-engine-1.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/1d2e0ff6dee4e8423beec23fc10d10b1eb3032dd/junit-jupiter-api-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6205156207eac647a0cff478bcfc27c614029bb8/junit-platform-commons-1.0.0-M5.jar" />
           </element>
         </element>
       </root>
@@ -824,7 +806,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:4.2.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.4.2" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.14" />
             <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
@@ -840,7 +821,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.20" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -851,8 +831,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.0.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:5.1.31" />
             <element id="library" level="project" name="Gradle: commons-dbcp:commons-dbcp:1.4" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152" />
             <element id="library" level="project" name="Gradle: edu.ucar:udunits:4.5.5" />
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
@@ -861,17 +839,8 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
-            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5" />
-            <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.2" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.5.1" />
@@ -899,8 +868,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.14" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.1" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.67.0" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
@@ -949,9 +916,6 @@
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.4" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -974,7 +938,6 @@
             <element id="library" level="project" name="Gradle: org.itadaki:bzip2:0.9.1" />
             <element id="library" level="project" name="Gradle: com.beust:jcommander:1.35" />
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava-jdk5:17.0" />
             <element id="library" level="project" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" />
@@ -999,6 +962,19 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/2cc001a6b7588daf5b4d5d12c3fd949b1cb9e6e1/google-maps-services-0.1.21.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/6e7f8068388839c5dabc08239dbeec73ad0decd8/libphonenumber-8.6.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/163b6b046de5414ac17c83cbd6cb619e541fc69a/logstash-logback-encoder-4.11.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/4dfca3975be3c1a98eacb829e70f02e9a71bc159/jackson-databind-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/e0e758381a6579cb2029dace23a7209b90ac7232/jackson-annotations-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/569b1752705da98f49aabe2911cc956ff7d8ed9d/jackson-core-2.8.9.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/65e4d9a31c4b1d5b3a55401be70a8eb41f05a879/javamelody-core-1.68.0.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/de37a2528251707fc2e89a5e34075f7a33b959b7/junit-jupiter-engine-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/fa84be2483c79cb5c997f5dd2f132a7b6c103363/junit-platform-engine-1.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/1d2e0ff6dee4e8423beec23fc10d10b1eb3032dd/junit-jupiter-api-5.0.0-M5.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6205156207eac647a0cff478bcfc27c614029bb8/junit-platform-commons-1.0.0-M5.jar" />
           </element>
         </element>
       </root>
@@ -1073,10 +1049,6 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
-            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.2" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.5.1" />
@@ -1093,7 +1065,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.1" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
-            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
@@ -1151,7 +1122,6 @@
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
             <element id="library" level="project" name="Gradle: org.apache.pdfbox:fontbox:2.0.3" />
             <element id="library" level="project" name="Gradle: org.apache.pdfbox:pdfbox-debugger:2.0.3" />
@@ -1193,17 +1163,11 @@
             <element id="library" level="project" name="Gradle: net.java.dev.jna:jna-platform:4.0.0" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.mockito:mockito-all:1.10.19" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4" />
-            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0-M2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.67.0" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava:22.0" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.25" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.4.RELEASE" />
@@ -1231,10 +1195,6 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.3.9.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.9.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.9.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.152" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
@@ -1249,14 +1209,24 @@
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.4" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
-            <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.9" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.9" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.9" />
+            <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.3" />
+            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.21" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.6.0" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.68.0" />
+            <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
+            <element id="library" level="project" name="Gradle: org.json:json:20170516" />
+            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M5" />
+            <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M5" />
+            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M5" />
+            <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M5" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -1719,50 +1689,6 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.adobe.xmp/xmpcore/5.1.2/ea3ab4092822df662b62d1f07b9748e83ebbe6f0/xmpcore-5.1.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.152">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.152/5e23887ff538ec02ea982102dbbc985d3ab9369/aws-java-sdk-core-1.11.152.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.152/3d0faa23b462321827c6c7cfd1903404253cdae/aws-java-sdk-core-1.11.152-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.152/e8b3ea2a7937cc2b1616647844ff5076da487e33/aws-java-sdk-core-1.11.152-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.152">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.152/22a61e96d65e5f07a2ab34a21d434ecde2714b08/aws-java-sdk-kms-1.11.152.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.152/209847c88980d8c00b2f45906d92644de8cf7e37/aws-java-sdk-kms-1.11.152-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.152/f27cd55b032d71bcbcbcb9385ce69950691943ed/aws-java-sdk-kms-1.11.152-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.152">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.152/c4220c2a0673ef0145d3109675014339ec6ff65c/aws-java-sdk-s3-1.11.152.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.152/a7296fc81ad03a9c6f8ce263c009f07e95c76647/aws-java-sdk-s3-1.11.152-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.152/986df28237459a446b3b77cbb51153caf4b4442f/aws-java-sdk-s3-1.11.152-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.amazonaws:jmespath-java:1.11.152">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.152/258bda7a30478f1c43436419a8ccd672e60d2e79/jmespath-java-1.11.152.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.152/bcc9c1e43127af4db8f49c15aafeb8b7b26f8cd2/jmespath-java-1.11.152-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.152/8b0599e92322296b4ee923bc71fdae7d5de69575/jmespath-java-1.11.152-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Gradle: com.beust:jcommander:1.35">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.beust/jcommander/1.35/47592e181b0bdbbeb63029e08c5e74f6803c4edd/jcommander-1.35.jar!/" />
@@ -1785,59 +1711,48 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.drewnoakes/metadata-extractor/2.9.1/b40a67afdb0c035b4c908083dd5c190a22bf27ff/metadata-extractor-2.9.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.5">
+    <library name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.9">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.5/9d82ff47bc2c2d3b5b6a6618fe636782bbcd5b07/jackson-annotations-2.8.5.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/e0e758381a6579cb2029dace23a7209b90ac7232/jackson-annotations-2.8.9.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.5/bcb44bd6cbb5cceab409ce47450d08e3208a9db2/jackson-annotations-2.8.5-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/2c3695f5f5d5cedf82979c94445560c7b7691d37/jackson-annotations-2.8.9-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.5/8c5c4f090d5a215bf404fd8d9e7d97adb4273bfb/jackson-annotations-2.8.5-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.8.9/830eda77a8aaaf68a87c7dad29b3d6acd4f4f074/jackson-annotations-2.8.9-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.5">
+    <library name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.9">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.5/60d059f5d2930ccd1ef03535b713fd9f933d1ba7/jackson-core-2.8.5.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/569b1752705da98f49aabe2911cc956ff7d8ed9d/jackson-core-2.8.9.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.5/5fbdef7c2013e19b3592f8358a172b1fe05037c1/jackson-core-2.8.5-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/f692b0889d52a9dae927cfaa5c8f0dc742a1b300/jackson-core-2.8.9-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.5/14b04ebe5d1d9b54b793f84245d983b4c329634d/jackson-core-2.8.5-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.8.9/8cf3613202ddcd495137f8cb944e2da69964a641/jackson-core-2.8.9-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5">
+    <library name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.9">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.5/b3035f37e674c04dafe36a660c3815cc59f764e2/jackson-databind-2.8.5.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/4dfca3975be3c1a98eacb829e70f02e9a71bc159/jackson-databind-2.8.9.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.5/a2731bbd4a2c022460f9662e01e05bbb5b142500/jackson-databind-2.8.5-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/5cd6dde8dab2566c7a800f017b9c26f802792405/jackson-databind-2.8.9-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.5/b658c4640ee224391e699ebaea4a3eb1c2ea8239/jackson-databind-2.8.5-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.8.9/98e1b4171628d8f230f6a60b248de84ed04fab0d/jackson-databind-2.8.9-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6">
+    <library name="Gradle: com.fasterxml:classmate:1.3.3">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/864c8e370a691e343210cc7c532fc198cee460d8/classmate-1.3.3.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/bdda1de360ed0fbd6354c5f69f696a22f5f658aa/jackson-dataformat-cbor-2.6.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/2d706c6bef9bcb09480f508794bd9b1630869f48/classmate-1.3.3-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/c9553dec78895e09e133bcd340fe5b1300f1e72b/jackson-dataformat-cbor-2.6.6-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.fasterxml:classmate:1.3.1">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.1/2ad2fd09dcf5607ca96f8ef432096a96986c40a/classmate-1.3.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.1/ce12d2a5b5cf41231df7994a9c28f64802921ec6/classmate-1.3.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.1/9553ee8c29df95f56207662c68a163601b26231e/classmate-1.3.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.3/959904631fc3caef02ab82c4ee31c6882b910b12/classmate-1.3.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.github.junrar:junrar:0.7">
@@ -1994,15 +1909,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/1efdf5b737b02f9b72ebdec4f72c37ec411302ff/j2objc-annotations-1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.google.maps:google-maps-services:0.1.20">
+    <library name="Gradle: com.google.maps:google-maps-services:0.1.21">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.20/1e0937a4dba57b19d8ea542a8da285f2a96035ab/google-maps-services-0.1.20.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/2cc001a6b7588daf5b4d5d12c3fd949b1cb9e6e1/google-maps-services-0.1.21.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.20/3795c8cb8a7cdd5f8ab54c06edec077802ca7d7d/google-maps-services-0.1.20-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/66cfaf8e76881b998e00d543daf923d4395ba481/google-maps-services-0.1.21-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.20/6beeb327444967128428180f63b7e5d978fac07c/google-maps-services-0.1.20-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.21/45329ae4aed0298fcfddcc02396afd687d6798b1/google-maps-services-0.1.21-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.oauth-client:google-oauth-client:1.22.0">
@@ -2060,15 +1975,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/77979eaa98f90806f984155f44f63cc1fb60ac25/juniversalchardet-1.0.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.5.0">
+    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.6.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.5.0/f46fee4df58ebfd15261db64ec43f4a536b56104/libphonenumber-8.5.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/6e7f8068388839c5dabc08239dbeec73ad0decd8/libphonenumber-8.6.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.5.0/49cac6152b07c155086abd29df0e5374f3606558/libphonenumber-8.5.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/749a8dcdc18361ab6903be8d006635fca59b17ee/libphonenumber-8.6.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.5.0/3059d3cbc12c2dd04c0d0191c652c33cf94a9b40/libphonenumber-8.5.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.6.0/21862fab3a7ae5775e1c54ce6d89cec8ff56ab0f/libphonenumber-8.6.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.googlecode.mp4parser:isoparser:1.1.18">
@@ -2627,15 +2542,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.31/30ecb102cf41efdcc75da96d7fcd678973f5f89a/mysql-connector-java-5.1.31-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: net.bull.javamelody:javamelody-core:1.67.0">
+    <library name="Gradle: net.bull.javamelody:javamelody-core:1.68.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.67.0/7553233d944dd3096deb3af3d54f8a4d3c237b20/javamelody-core-1.67.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/65e4d9a31c4b1d5b3a55401be70a8eb41f05a879/javamelody-core-1.68.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.67.0/7c84edbe8c6725c41e94e5ef002d3da13bd5504e/javamelody-core-1.67.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/86a15f577fefeec5dc45fe4894dd158f0ae676f3/javamelody-core-1.68.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.67.0/4072056055f0d405e9e347f79cb6d99daa7e38d1/javamelody-core-1.67.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.68.0/99a6c46bb62dc51b323f5bae2039e69e0510e331/javamelody-core-1.68.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: net.iharder:base64:2.3.9">
@@ -2680,15 +2595,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.jcip/jcip-annotations/1.0/d853625d8001c00d40abed553e670279504699f9/jcip-annotations-1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: net.logstash.logback:logstash-logback-encoder:4.9">
+    <library name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.9/4c192f4a76a204ec7c7e0656b4384269d5a3a3d4/logstash-logback-encoder-4.9.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/163b6b046de5414ac17c83cbd6cb619e541fc69a/logstash-logback-encoder-4.11.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.9/e755b1df834dea1682e2374c2f32d3b626496c04/logstash-logback-encoder-4.9-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/1fc2bfb4a10b7491ac6effcbbbb84c7a130cbfa1/logstash-logback-encoder-4.11-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.9/6bd3489b24d0ede5dd22cf5ce042b69e390c40aa/logstash-logback-encoder-4.9-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.logstash.logback/logstash-logback-encoder/4.11/8b889d5eb55aabfa5d9aa9cad95529668f3edb2b/logstash-logback-encoder-4.11-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: net.markenwerk:commons-nulls:1.0.4">
@@ -3365,15 +3280,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jrobin/jrobin/1.5.9/c0252c3fda6e1a7236a5e0dd9cae6b34d051a5e4/jrobin-1.5.9-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.json:json:20160810">
+    <library name="Gradle: org.json:json:20170516">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20160810/aca5eb39e2a12fddd6c472b240afe9ebea3a6733/json-20160810.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/949abe1460757b8dc9902c562f83e49675444572/json-20170516.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20160810/86b28952aebfea64a5528198df6a75172baa22f3/json-20160810-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/2c94bb4b058924f72e19e34d223f7509cec902cb/json-20170516-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20160810/92f4b89bc0bb4c7c3f7b52724568a901b7e0195b/json-20160810-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20170516/6d919271d0ac012fb5706abd62fd3aff0f78ed95/json-20170516-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.jsoup:jsoup:1.7.2">
@@ -3387,48 +3302,48 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.7.2/833f425e7a40d7fc88922370a072965dda8ee216/jsoup-1.7.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M4">
+    <library name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.0-M5">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M4/50f95d68c674a30374c5f50e6ad5212d2c1a3cec/junit-jupiter-api-5.0.0-M4.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/1d2e0ff6dee4e8423beec23fc10d10b1eb3032dd/junit-jupiter-api-5.0.0-M5.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M4/f870fab765b828f48b8b898689bea33203d33387/junit-jupiter-api-5.0.0-M4-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/2708b39f4516a09982c39e0cde37795cf6299a20/junit-jupiter-api-5.0.0-M5-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M4/656f7dcf3024258397d7ffdf88f0c909cd7caf11/junit-jupiter-api-5.0.0-M4-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.0.0-M5/8be486a8b160a77374bc3d5d209d416317f11c0b/junit-jupiter-api-5.0.0-M5-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M4">
+    <library name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.0-M5">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M4/10e0dc41a4e9c1817c2b729c3a7c48b1ddfed17/junit-jupiter-engine-5.0.0-M4.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/de37a2528251707fc2e89a5e34075f7a33b959b7/junit-jupiter-engine-5.0.0-M5.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M4/99ca5b7030d7488b61e5a47c9ceee67519df2f0e/junit-jupiter-engine-5.0.0-M4-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/ea56520abb56e2de9434c853c62bc09d942f4d07/junit-jupiter-engine-5.0.0-M5-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M4/dbb25d923cb576435c492859d2b5dd92a3b9a07a/junit-jupiter-engine-5.0.0-M4-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.0.0-M5/ec4d555aa15e11ef2476c2dbe97dc0824b1532f8/junit-jupiter-engine-5.0.0-M5-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M4">
+    <library name="Gradle: org.junit.platform:junit-platform-commons:1.0.0-M5">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M4/359eb461814bd7356de541d131d45473d394a168/junit-platform-commons-1.0.0-M4.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6205156207eac647a0cff478bcfc27c614029bb8/junit-platform-commons-1.0.0-M5.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M4/fe2ec7315b0bd76dade332b5fecdd7cf4532d3bb/junit-platform-commons-1.0.0-M4-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/b3bcc53a83113149e1b65179bf98acd88eb96b23/junit-platform-commons-1.0.0-M5-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M4/baf9c8a387ddf6626c893c5ba2012f461eff3621/junit-platform-commons-1.0.0-M4-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.0.0-M5/6c1ca81c550d257e8ce4344a19615e9907f00381/junit-platform-commons-1.0.0-M5-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M4">
+    <library name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M5">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M4/5e65bdd2d623dfc6a405911a6449f2c60808b0af/junit-platform-engine-1.0.0-M4.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/fa84be2483c79cb5c997f5dd2f132a7b6c103363/junit-platform-engine-1.0.0-M5.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M4/16f12939f4f9bdc5f40a401f56c6f231295add2b/junit-platform-engine-1.0.0-M4-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/bc9662cd978ad5dde0b063f0a7174c629f0d41d0/junit-platform-engine-1.0.0-M5-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M4/5d586950a3ff70a8e064b726b7e22fb8a5f3f12d/junit-platform-engine-1.0.0-M4-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.0-M5/dd53a0511d3e4799b55c73b27afdf6b8404207c9/junit-platform-engine-1.0.0-M5-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.mockito:mockito-all:1.10.19">
@@ -3964,17 +3879,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/6d75e2498cd82c02665df5f9d7a77d0b5e398157/jedis-2.9.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: software.amazon.ion:ion-java:1.0.2">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.ion/ion-java/1.0.2/ee9dacea7726e495f8352b81c12c23834ffbc564/ion-java-1.0.2.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.ion/ion-java/1.0.2/6d8ae18a7b9e9f567213ddb41622122623f98cec/ion-java-1.0.2-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.ion/ion-java/1.0.2/3077203a7e79dd126a480da0491ec60238bbb872/ion-java-1.0.2-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
