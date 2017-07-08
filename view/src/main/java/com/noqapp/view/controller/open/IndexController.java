@@ -12,8 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.noqapp.service.RegistrationService;
-
 /**
  * User: hitender
  * Date: 11/19/16 6:11 PM
@@ -28,11 +26,8 @@ import com.noqapp.service.RegistrationService;
 public class IndexController {
     private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
-    private final RegistrationService registrationService;
-
     @Autowired
-    public IndexController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public IndexController() {
     }
 
     /**
@@ -56,10 +51,6 @@ public class IndexController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
         if (authentication instanceof AnonymousAuthenticationToken) {
-            return "index";
-        }
-
-        if (registrationService.validateIfRegistrationIsAllowed(map, authentication)) {
             return "index";
         }
 
