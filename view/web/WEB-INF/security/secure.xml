@@ -126,7 +126,7 @@
                        access="hasRole('ROLE_MER_ADMIN')" />
 
         <intercept-url pattern="/monitoring/**"
-                       access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />
+                       access="hasIpAddress('192.168.1.0/24') or hasIpAddress('10.0.0.0/24') or hasIpAddress('127.0.0.1')" />
         <form-login
                 login-page="/open/login.htm"
                 default-target-url="/access/landing.htm"
