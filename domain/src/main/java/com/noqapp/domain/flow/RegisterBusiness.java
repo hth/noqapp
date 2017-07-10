@@ -37,6 +37,7 @@ public class RegisterBusiness implements Serializable {
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
+    private boolean allowLoggedInUser;
     private List<BusinessHour> businessHours = new LinkedList<>();
 
     public RegisterBusiness() {
@@ -205,6 +206,14 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZoneStore(String timeZoneStore) {
         this.timeZoneStore = timeZoneStore;
+    }
+
+    public boolean isAllowLoggedInUser() {
+        return allowLoggedInUser;
+    }
+
+    public void setAllowLoggedInUser(boolean allowLoggedInUser) {
+        this.allowLoggedInUser = allowLoggedInUser;
     }
 
     public List<BusinessHour> getBusinessHours() {

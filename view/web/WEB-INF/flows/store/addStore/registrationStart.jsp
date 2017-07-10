@@ -98,6 +98,11 @@
                                 cssErrorClass="profile_label lb_error">Store Phone</form:label>
                         <form:input path="phoneStore" size="20" cssClass="name_txt" />
                     </div>
+                    <div class="row_field">
+                        <form:label path="allowLoggedInUser" cssClass="profile_label" cssStyle="width: 155px;"
+                                cssErrorClass="profile_label lb_error">Allow Logged In User</form:label>
+                        <form:checkbox path="allowLoggedInUser" size="20" cssClass="name_txt" />
+                    </div>
                     </div>
 
                     <div class="full">
