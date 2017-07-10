@@ -38,11 +38,7 @@ ext {
     passFileLocal = file('view/resources/conf/pass.properties')
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
-
-    apnsCertLocal = file('view/resources/cert/aps_sandbox_credentials.p12')
-    apnsCertTest = file(apnsCertificateTestFileLocation)
-    apnsCertProd = file(apnsCertificateProdFileLocation)
-
+    
     dkimCertLocal = file('view/resources/dkim/dkim.der')
     dkimCertTest = file(dkimCertificateTestFileLocation)
     dkimCertProd = file(dkimCertificateProdFileLocation)
@@ -231,7 +227,6 @@ subprojects {
 
         /** --- Specific to Receipt Web Application ---- */
         compile "org.quartz-scheduler:quartz:$quartz"
-        compile "com.notnoop.apns:apns:$apns"
         compile "org.springframework.webflow:spring-webflow:$webflow"
         compile "net.markenwerk:utils-mail-dkim:$dkim"
         /** ------- */
@@ -679,35 +674,6 @@ task prepWar(dependsOn: [
             }
 
             into warConfDir
-        }
-
-        copy {
-            if (env == 'prod') {
-                if (apnsCertProd.exists()) {
-                    from apnsCertificateProdFileLocation
-                } else {
-                    throw new Exception("Required cert file does not exists: $apnsCertProd.canonicalPath")
-                }
-            }
-
-            if (env == 'sandbox') {
-                if (apnsCertTest.exists()) {
-                    from apnsCertificateTestFileLocation
-                } else {
-                    throw new Exception("Required cert file does not exists: $apnsCertTest.canonicalPath")
-                }
-            }
-
-            if (env == 'dev') {
-                println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
-                if (apnsCertLocal.exists()) {
-                    from 'view/resources/conf/aps_sandbox_credentials.p12'
-                } else {
-                    throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
-                }
-            }
-
-            into warCertDir
         }
 
         copy {
