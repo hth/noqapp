@@ -655,19 +655,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/57ddb400a779e7acf8ba0c400312abafe3a56abe/apns-1.0.0.Beta6.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/d4a1dfe7b41976c39e820b76ff6dfde3792d263c/apns-1.0.0.Beta6-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/c2c046e1690e6fff38cd8bb820b105fc7a09912e/apns-1.0.0.Beta6-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.markenwerk/utils-mail-dkim/1.1.9/2a5fd33ea24c8bb632045d13a8b86ca15ee0ba6b/utils-mail-dkim-1.1.9.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -1217,17 +1204,6 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.15/bd552aa859b560a2ab85694f23771b6ef50698dd/poi-3.15-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/c6d6ea83d0cf16d3ed9c1b7e600fa0f60b9d3159/commons-httpclient-3.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -3264,19 +3240,6 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/57ddb400a779e7acf8ba0c400312abafe3a56abe/apns-1.0.0.Beta6.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/d4a1dfe7b41976c39e820b76ff6dfde3792d263c/apns-1.0.0.Beta6-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/c2c046e1690e6fff38cd8bb820b105fc7a09912e/apns-1.0.0.Beta6-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.markenwerk/utils-mail-dkim/1.1.9/2a5fd33ea24c8bb632045d13a8b86ca15ee0ba6b/utils-mail-dkim-1.1.9.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -3826,17 +3789,6 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.15/bd552aa859b560a2ab85694f23771b6ef50698dd/poi-3.15-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/c6d6ea83d0cf16d3ed9c1b7e600fa0f60b9d3159/commons-httpclient-3.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -5860,19 +5812,6 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/57ddb400a779e7acf8ba0c400312abafe3a56abe/apns-1.0.0.Beta6.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/d4a1dfe7b41976c39e820b76ff6dfde3792d263c/apns-1.0.0.Beta6-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.notnoop.apns/apns/1.0.0.Beta6/c2c046e1690e6fff38cd8bb820b105fc7a09912e/apns-1.0.0.Beta6-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/net.markenwerk/utils-mail-dkim/1.1.9/2a5fd33ea24c8bb632045d13a8b86ca15ee0ba6b/utils-mail-dkim-1.1.9.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -6448,17 +6387,6 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.15/bd552aa859b560a2ab85694f23771b6ef50698dd/poi-3.15-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/c6d6ea83d0cf16d3ed9c1b7e600fa0f60b9d3159/commons-httpclient-3.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
