@@ -105,6 +105,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("rc")
     private int ratingCount;
 
+    @JsonProperty ("lu")
+    private boolean allowLoggedInUser = false;
+
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
     }
@@ -298,6 +301,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public boolean isAllowLoggedInUser() {
+        return allowLoggedInUser;
+    }
+
+    public JsonQueue setAllowLoggedInUser(boolean allowLoggedInUser) {
+        this.allowLoggedInUser = allowLoggedInUser;
         return this;
     }
 }

@@ -138,6 +138,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("WL")
     private String webLocation;
 
+    @Field ("LU")
+    private boolean allowLoggedInUser = false;
+
     @Transient
     private List<StoreHourEntity> storeHours;
 
@@ -383,6 +386,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+    }
+
+    public boolean isAllowLoggedInUser() {
+        return allowLoggedInUser;
+    }
+
+    public void setAllowLoggedInUser(boolean allowLoggedInUser) {
+        this.allowLoggedInUser = allowLoggedInUser;
     }
 
     @Transient
