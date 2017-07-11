@@ -139,8 +139,10 @@
                     </div>
                     <div class="row_field">
                         <form:label path="allowLoggedInUser" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Allow Logged In User</form:label>
-                        <form:checkbox path="allowLoggedInUser" size="20" cssClass="name_txt" />
+                                cssErrorClass="profile_label lb_error">Allow Registered User</form:label>
+                        <form:checkbox path="allowLoggedInUser" size="5" cssClass="name_txt"
+                                cssStyle="width: 20px; height:20px; margin-top: 8px;" />
+                        &nbsp; (Will limit joining this queue to registered users)
                     </div>
                     </div>
 

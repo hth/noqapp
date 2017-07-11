@@ -154,7 +154,7 @@ public class BizService {
     }
 
     @Mobile
-    public List<StoreHourEntity> finalAllStoreHours(String bizStoreId) {
+    public List<StoreHourEntity> findAllStoreHours(String bizStoreId) {
         return storeHourManager.findAll(bizStoreId);
     }
 }

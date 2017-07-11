@@ -119,7 +119,7 @@ public class QueueHistory {
                         throw e;
                     }
 
-                    bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
+                    bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
                     int deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
                         LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -131,6 +131,7 @@ public class QueueHistory {
                     StoreHourEntity storeHour = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
                     Date nextDay = externalService.computeNextRunTimeAtUTC(
                             timeZone,
+                            /* When closed set hour to 23 and minute to 59. */
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 

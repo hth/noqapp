@@ -1,5 +1,9 @@
 package com.noqapp.view.form.business;
 
+import com.noqapp.domain.StoreHourEntity;
+
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/15/16 9:11 AM
@@ -10,6 +14,7 @@ public class StoreLandingForm {
     private String phone;
     private String displayName;
     private String qrFileName;
+    List<StoreHourEntity> storeHours;
 
     public String getAddress() {
         return address;
@@ -44,6 +49,15 @@ public class StoreLandingForm {
 
     public StoreLandingForm setQrFileName(String qrFileName) {
         this.qrFileName = qrFileName;
+        return this;
+    }
+
+    public List<StoreHourEntity> getStoreHours() {
+        return storeHours;
+    }
+
+    public StoreLandingForm setStoreHours(List<StoreHourEntity> storeHours) {
+        this.storeHours = storeHours;
         return this;
     }
 }
