@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.site.TokenUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.CodeQRGeneratorService;
@@ -29,6 +30,7 @@ import com.noqapp.view.form.business.StoreLandingForm;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -83,10 +85,12 @@ public class StoreController {
         LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+        List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
         storeLandingForm
                 .setAddress(bizStore.getAddress())
                 .setPhone(bizStore.getPhone())
-                .setDisplayName(bizStore.getDisplayName());
+                .setDisplayName(bizStore.getDisplayName())
+                .setStoreHours(storeHours);
 
         try {
             storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));

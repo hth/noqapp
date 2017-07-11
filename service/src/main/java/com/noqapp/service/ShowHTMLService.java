@@ -88,7 +88,7 @@ public class ShowHTMLService {
             return false;
         }
 
-        bizStore.setStoreHours(bizService.finalAllStoreHours(bizStore.getId()));
+        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());

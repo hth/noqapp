@@ -69,9 +69,22 @@
 </header>
 <div class="main clearfix">
     <div class="down_form" style="width: 90%">
-        Address : ${storeLandingForm.address}
-        Phone : ${storeLandingForm.phone}
-        Display Name : ${storeLandingForm.displayName}
+        Address : ${storeLandingForm.address} <br>
+        Phone : ${storeLandingForm.phone} <br>
+        Queue Name : ${storeLandingForm.displayName} <br><br><br>
+
+        Store Hours <br>
+        <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
+            <c:choose>
+                <c:when test="${storeHour.dayClosed}">
+                    ${storeHour.dayOfTheWeekAsString}: Closed <br>
+                </c:when>
+                <c:otherwise>
+                    ${storeHour.dayOfTheWeekAsString}: ${storeHour.storeStartHourAsString} - ${storeHour.storeEndHourAsString} <br>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
         <img src="/business/bm/store/i/${storeLandingForm.qrFileName}.htm" />
     </div>
     <div class="footer-tooth clearfix">

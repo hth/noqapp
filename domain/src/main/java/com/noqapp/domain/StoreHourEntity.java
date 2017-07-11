@@ -1,10 +1,16 @@
 package com.noqapp.domain;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.noqapp.utils.Formatter;
+
+import java.time.DayOfWeek;
 
 /**
  * User: hitender
@@ -115,5 +121,35 @@ public class StoreHourEntity extends BaseEntity {
     @Transient
     public int storeClosingMinuteOfDay() {
         return endHour % 100;
+    }
+
+    /**
+     * Used for displaying store hours on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getStoreStartHourAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(startHour);
+    }
+
+    /**
+     * Used for displaying store hours on JSP.
+     * 
+     * @return
+     */
+    @Transient
+    public String getStoreEndHourAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(endHour);
+    }
+
+    /**
+     * Used for displaying day of the week on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getDayOfTheWeekAsString() {
+        return WordUtils.capitalizeFully(DayOfWeek.of(dayOfWeek).name());
     }
 }
