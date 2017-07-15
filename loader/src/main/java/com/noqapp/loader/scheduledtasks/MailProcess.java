@@ -209,7 +209,7 @@ public class MailProcess {
             while (!noAuthenticationException && count < 10) {
                 count++;
                 try {
-                    MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "receiptofi.com", "receiptapp");
+                    MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "noqapp.com", "noqapp");
                     mailSender.send(dkimSignedMessage);
                     noAuthenticationException = true;
                     LOG.info("Mail success... subject={}", mail.getSubject());
