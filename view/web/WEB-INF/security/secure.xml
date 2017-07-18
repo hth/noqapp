@@ -67,6 +67,9 @@
                        'ROLE_CLIENT',
                        'ROLE_MER_ADMIN')" />
 
+        <intercept-url pattern="/migrate/business/profile/**"
+                       access="hasRole('ROLE_Q_SUPERVISOR')" />
+
         <intercept-url pattern="/access/signoff.htm"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
@@ -118,6 +121,9 @@
 
         <intercept-url pattern="/display/**"
                        access="hasRole('ROLE_ANALYSIS')" />
+
+        <intercept-url pattern="/business/bm/queue/**"
+                       access="hasRole('ROLE_Q_SUPERVISOR')" />
 
         <intercept-url pattern="/business/bm/**"
                        access="hasRole('ROLE_MER_MANAGER')" />

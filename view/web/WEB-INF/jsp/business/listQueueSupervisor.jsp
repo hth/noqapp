@@ -69,14 +69,17 @@
 </header>
 <div class="main clearfix">
     <div class="down_form" style="width: 90%">
-        Queue Name: ${queueManagerForm.queueName}
+        Queue Name: ${queueSupervisorForm.queueName}
+    </div>
+    <div class="down_form" style="width: 90%">
+        <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm">Add new queue supervisor</a>
     </div>
     <div class="rightside-list-holder full-list-holder"
             style="overflow-y: hidden; height: 800px; margin-left: 0; padding-left: 0">
         <div class="down_form" style="width: 96%;">
             <div class="down_form" style="width: 96%;">
                 <c:choose>
-                    <c:when test="${!empty queueManagerForm.userProfiles}">
+                    <c:when test="${!empty queueSupervisorForm.userProfiles}">
                         <table width="100%" style="margin: 0 4px 0 4px">
                             <thead>
                             <tr>
@@ -85,9 +88,10 @@
                                 <th width="160px;">Phone</th>
                                 <th width="340px;">Address</th>
                                 <th width="260px;">Email</th>
+                                <th width="85px;">Remove</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${queueManagerForm.userProfiles}" var="userProfile" varStatus="status">
+                            <c:forEach items="${queueSupervisorForm.userProfiles}" var="userProfile" varStatus="status">
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
@@ -101,6 +105,9 @@
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${userProfile.email}
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
+                                        X
                                     </td>
                                 </tr>
                             </c:forEach>

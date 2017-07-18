@@ -12,6 +12,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -21,8 +22,10 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.DeviceTypeEnum;
+import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 
 import java.util.List;
@@ -40,6 +43,7 @@ public class TokenQueueService {
     private FirebaseService firebaseService;
     private QueueManager queueManager;
     private AccountService accountService;
+    private RegisteredDeviceManager registeredDeviceManager;
 
     private ExecutorService service;
 
@@ -48,12 +52,14 @@ public class TokenQueueService {
             TokenQueueManager tokenQueueManager,
             FirebaseService firebaseService,
             QueueManager queueManager,
-            AccountService accountService
+            AccountService accountService,
+            RegisteredDeviceManager registeredDeviceManager
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseService = firebaseService;
         this.queueManager = queueManager;
         this.accountService = accountService;
+        this.registeredDeviceManager = registeredDeviceManager;
 
         this.service = newCachedThreadPool();
     }
@@ -153,7 +159,7 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus());
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
@@ -178,7 +184,7 @@ public class TokenQueueService {
             return new JsonResponse(false);
         }
     }
-    
+
     @Mobile
     public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
@@ -217,6 +223,43 @@ public class TokenQueueService {
     }
 
     /**
+     * Invite sent when business adds client as supervisor to a queue.
+     *
+     * @param rid
+     * @param displayName
+     * @param businessName
+     */
+    public void sendQueueSupervisorInviteMessageToUser(String rid, String displayName, String businessName) {
+        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(rid);
+        for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
+            String token = registeredDevice.getToken();
+            JsonMessage jsonMessage = new JsonMessage(token);
+            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
+
+            if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+                jsonMessage.getNotification()
+                        .setBody(businessName + " has sent an invite")
+                        .setTitle("Invitation for Queue " + displayName);
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setBody(businessName + " has sent an invite")
+                        .setTitle("Invitation for Queue " + displayName);
+            }
+
+            jsonMessage.setData(jsonData);
+            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent message={}", jsonMessage.asJson());
+            }
+        }
+
+        LOG.info("Sent invite count={} displayName={} businessName={}",
+                registeredDevices.size(), displayName, businessName);
+    }
+
+    /**
      * Formulates and send messages to FCM.
      *
      * @param codeQR
@@ -245,7 +288,7 @@ public class TokenQueueService {
                 case S:
                 case R:
                 case D:
-                    /**
+                    /*
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */

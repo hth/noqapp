@@ -18,6 +18,7 @@ import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.NotificationGroupEnum;
 import com.noqapp.domain.types.NotificationTypeEnum;
@@ -423,7 +424,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
-                /** As of now admin does not have any Merchant role. */
+                /* As of now admin does not have any Merchant role. */
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
@@ -439,14 +440,21 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_CLIENT);
                 userAccount.setRoles(roles);
                 break;
-            case MER_MANAGER:
+            case Q_SUPERVISOR:
                 roles.add(RoleEnum.ROLE_CLIENT);
+                roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
+                userAccount.setRoles(roles);
+            case S_MANAGER:
+                roles.add(RoleEnum.ROLE_CLIENT);
+                roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_MER_MANAGER);
                 userAccount.setRoles(roles);
                 break;
-            case MER_ADMIN:
-                roles.add(RoleEnum.ROLE_MER_ADMIN);
+            case M_ADMIN:
+                roles.add(RoleEnum.ROLE_CLIENT);
+                roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_MER_MANAGER);
+                roles.add(RoleEnum.ROLE_MER_ADMIN);
                 userAccount.setRoles(roles);
                 break;
             default:
@@ -480,7 +488,7 @@ public class AccountService {
         UserProfileEntity userProfile = doesUserExists(existingUserId);
         userProfile.setEmail(newUserId);
 
-        /** Always update userAccount before userProfile */
+        /* Always update userAccount before userProfile. */
         userAccountManager.save(userAccount);
         userProfileManager.save(userProfile);
 
@@ -515,5 +523,32 @@ public class AccountService {
      */
     public void updateAuthentication(UserAuthenticationEntity userAuthentication) {
         userAuthenticationManager.save(userAuthentication);
+    }
+
+    /**
+     * Update user profile info.
+     *
+     * @param registerUser
+     */
+    public void updateUserProfile(RegisterUser registerUser, String username) {
+        UserProfileEntity userProfile = null;
+        if (!registerUser.getEmail().equalsIgnoreCase(username)) {
+            updateUID(username, registerUser.getEmail());
+            userProfile = doesUserExists(registerUser.getEmail());
+            registerUser.setEmailValidated(false);
+        } else {
+            userProfile = doesUserExists(username);
+        }
+        
+        userProfile.setAddress(registerUser.getAddress());
+        userProfile.setCountryShortName(registerUser.getCountryShortName());
+        userProfile.setPhone(registerUser.getPhoneWithCountryCode());
+        userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
+        userProfile.setTimeZone(registerUser.getTimeZone());
+        save(userProfile);
+
+        if (!userProfile.getFirstName().equals(registerUser.getFirstName()) && !userProfile.getLastName().equals(registerUser.getLastName())) {
+            updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getRid());
+        }
     }
 }

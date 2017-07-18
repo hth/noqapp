@@ -147,6 +147,16 @@ public final class Formatter {
         return phone;
     }
 
+    /**
+     * From country short code like "US" returns country dial code like "1".
+     *
+     * @param countryShortCode
+     * @return
+     */
+    public static int findCountryCodeFromCountryShortCode(String countryShortCode) {
+        return PHONE_INSTANCE.getCountryCodeForRegion(countryShortCode.toUpperCase());
+    }
+
     public static String phoneFormatter(String phone, String countryShortName) {
         return phoneNationalFormat(phone, countryShortName);
     }
