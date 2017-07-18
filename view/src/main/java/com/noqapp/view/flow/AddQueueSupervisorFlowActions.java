@@ -17,7 +17,6 @@ import org.springframework.webflow.context.ExternalContext;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
-import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
@@ -151,7 +150,7 @@ public class AddQueueSupervisorFlowActions {
 
         /* Send personal notification. */
         service.submit(() -> tokenQueueService.sendQueueSupervisorInviteMessageToUser(
-                userAccount.getReceiptUserId(),
+                userProfile.getReceiptUserId(),
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
 
