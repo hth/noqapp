@@ -48,8 +48,11 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${displayLanding:/display/landing.htm}")
     private String displayLanding;
 
-    @Value ("${businessManagerLanding:/business/bm/landing.htm}")
-    private String businessManagerLanding;
+    @Value ("${queueSupervisorLanding:/business/bm/queue/landing.htm}")
+    private String queueSupervisorLanding;
+
+    @Value ("${storeManagerLanding:/business/bm/landing.htm}")
+    private String storeManagerLanding;
 
     @Value ("${businessAdminLanding:/business/landing.htm}")
     private String businessAdminLanding;
@@ -68,7 +71,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             clearAuthenticationAttributes(request);
         }
 
-        /**
+        /*
          * Refer: http://www.baeldung.com/2011/10/31/securing-a-restful-web-service-with-spring-security-3-1-part-3/
          * To execute:
          * curl -i -X POST
@@ -115,8 +118,10 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return accessLanding;
             case ROLE_ANALYSIS:
                 return displayLanding;
+            case ROLE_Q_SUPERVISOR:
+                return queueSupervisorLanding;
             case ROLE_MER_MANAGER:
-                return businessManagerLanding;
+                return storeManagerLanding;
             case ROLE_MER_ADMIN:
                 return businessAdminLanding;
             case ROLE_TECHNICIAN:

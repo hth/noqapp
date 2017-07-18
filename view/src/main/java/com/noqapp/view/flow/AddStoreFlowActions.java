@@ -20,7 +20,6 @@ import com.noqapp.service.TokenQueueService;
 public class AddStoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
-    private TokenQueueService tokenQueueService;
 
     @SuppressWarnings ("all")
     @Autowired

@@ -40,7 +40,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
-    private TokenQueueService tokenQueueService;
 
     @SuppressWarnings ("all")
     @Autowired
@@ -71,7 +70,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
         if (null == businessUser) {
-            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.MER_ADMIN);
+            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.M_ADMIN);
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
@@ -79,6 +78,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(rid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(userProfile.getEmail())
+                .setGender(userProfile.getGender())
+                .setBirthday(userProfile.getBirthday())
                 .setFirstName(userProfile.getFirstName())
                 .setLastName(userProfile.getLastName())
                 .setAddress(userProfile.getAddress())
@@ -91,16 +92,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
     @SuppressWarnings ("unused")
     public boolean isRegistrationComplete(Register register) {
-        switch (register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus()) {
-            case C:
-                return true;
-            case I:
-            case N:
-                return false;
-            default:
-                LOG.error("Reached unsupported rid={} condition={}", register.getRegisterUser().getRid(), register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
-                throw new UnsupportedOperationException("Reached unsupported condition " + register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
-        }
+        return isBusinessUserRegistrationComplete(register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
     }
 
     /**
@@ -113,12 +105,15 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("unused")
     public Register completeRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
         try {
-            updateUserProfile(register);
+            TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = tokenUser.getUsername();
+
+            accountService.updateUserProfile(register.getRegisterUser(), username);
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
                 BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
                 if (businessUser == null) {
-                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.MER_ADMIN);
+                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.M_ADMIN);
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }
                 businessUser
@@ -155,29 +150,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             LOG.error("Error adding business rid={} reason={}",
                     registerBusiness.getBusinessUser().getReceiptUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error adding business", e);
-        }
-    }
-
-    /**
-     * Update user profile info.
-     *
-     * @param register
-     */
-    private void updateUserProfile(Register register) {
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(register.getRegisterUser().getRid());
-
-        userProfile.setAddress(register.getRegisterUser().getAddress());
-        userProfile.setCountryShortName(register.getRegisterUser().getCountryShortName());
-        userProfile.setPhone(register.getRegisterUser().getPhoneWithCountryCode());
-        userProfile.setPhoneRaw(register.getRegisterUser().getPhoneNotFormatted());
-        userProfile.setTimeZone(register.getRegisterUser().getTimeZone());
-        userProfilePreferenceService.updateProfile(userProfile);
-
-        if (!userProfile.getFirstName().equals(register.getRegisterUser().getFirstName()) && !userProfile.getLastName().equals(register.getRegisterUser().getLastName())) {
-            accountService.updateName(
-                    register.getRegisterUser().getFirstName(),
-                    register.getRegisterUser().getLastName(),
-                    register.getRegisterUser().getRid());
         }
     }
 }

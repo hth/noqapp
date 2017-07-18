@@ -12,8 +12,9 @@ package com.noqapp.domain.types;
 })
 public enum UserLevelEnum {
     CLIENT("Client", 10),
-    MER_MANAGER("Merchant Manager", 20),
-    MER_ADMIN("Merchant Admin", 30),
+    Q_SUPERVISOR("Queue Supervisor", 22),
+    S_MANAGER("Store Manager", 24),
+    M_ADMIN("Merchant Admin", 29),
     TECHNICIAN("Tech", 40),
     SUPERVISOR("Super", 50),
     ANALYSIS("Analysis", 60),

@@ -13,9 +13,8 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.flow.Register;
+import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.shared.DecodedAddress;
-import com.noqapp.service.AccountService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.DateUtil;
@@ -35,7 +34,6 @@ public class UserFlowValidator {
     private int nameLength;
     private int passwordLength;
 
-    private AccountService accountService;
     private ExternalService externalService;
 
     @Autowired
@@ -49,39 +47,37 @@ public class UserFlowValidator {
             @Value ("${AccountValidator.passwordLength}")
             int passwordLength,
 
-            AccountService accountService,
             ExternalService externalService
     ) {
         this.mailLength = mailLength;
         this.nameLength = nameLength;
         this.passwordLength = passwordLength;
-        this.accountService = accountService;
         this.externalService = externalService;
     }
 
     /**
      * Validate business user profile.
      *
-     * @param register
+     * @param registerUser
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileSignupDetails(Register register, MessageContext messageContext) {
-        LOG.info("Validate user profile signup rid={}", register.getRegisterUser().getRid());
-        String status = validateUserProfileDetails(register, messageContext);
+    public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
+        LOG.info("Validate user profile signup rid={}", registerUser.getRid());
+        String status = validateUserProfileDetails(registerUser, messageContext);
 
-        if (StringUtils.isNotBlank(register.getRegisterUser().getBirthday()) && !DateUtil.DOB_PATTERN.matcher(register.getRegisterUser().getBirthday()).matches()) {
+        if (StringUtils.isNotBlank(registerUser.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(registerUser.getBirthday()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("registerUser.birthday")
-                            .defaultText("Age not valid. Should be digits and not more than 2 digits")
+                            .defaultText("Data of birth not valid. Should be of format yyyy-MM-dd.")
                             .build());
             status = "failure";
         }
 
-        if (!Validate.isValidMail(register.getRegisterUser().getEmail())) {
+        if (!Validate.isValidMail(registerUser.getEmail())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -91,7 +87,7 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (register.getRegisterUser().getEmail() != null && register.getRegisterUser().getEmail().length() <= mailLength) {
+        if (registerUser.getEmail() != null && registerUser.getEmail().length() <= mailLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -101,7 +97,7 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (register.getRegisterUser().getPassword().length() < passwordLength) {
+        if (StringUtils.isBlank(registerUser.getPassword()) || registerUser.getPassword().length() < passwordLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -111,7 +107,7 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (!register.getRegisterUser().isAcceptsAgreement()) {
+        if (!registerUser.isAcceptsAgreement()) {
             if (messageContext.getAllMessages().length > 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
@@ -131,7 +127,7 @@ public class UserFlowValidator {
             }
         }
 
-        LOG.info("Validate user profile signup rid={} status={}", register.getRegisterUser().getRid(), status);
+        LOG.info("Validate user profile signup rid={} status={}", registerUser.getRid(), status);
         return status;
     }
 
@@ -141,30 +137,30 @@ public class UserFlowValidator {
     /**
      * Validate signed up user info.
      *
-     * @param register
+     * @param registerUser
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileDetails(Register register, MessageContext messageContext) {
-        LOG.info("Validate user profile rid={}", register.getRegisterUser().getRid());
+    public String validateUserProfileDetails(RegisterUser registerUser, MessageContext messageContext) {
+        LOG.info("Validate user profile rid={}", registerUser.getRid());
         String status = LandingController.SUCCESS;
 
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(registerUser.getAddress()), registerUser.getAddress());
         if (decodedAddress.isNotEmpty()) {
             /* Reset to raw format before updating to new address and countryShortName. */
-            String updatedPhone = Formatter.resetPhoneToRawFormat(register.getRegisterUser().getPhone(), register.getRegisterUser().getCountryShortName());
-            register.getRegisterUser().setPhone(updatedPhone);
+            String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+            registerUser.setPhone(updatedPhone);
 
-            register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
+            registerUser.setAddress(decodedAddress.getFormattedAddress());
+            registerUser.setCountryShortName(decodedAddress.getCountryShortName());
 
             LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
             String timeZone = externalService.findTimeZone(latLng);
-            register.getRegisterUser().setTimeZone(timeZone);
+            registerUser.setTimeZone(timeZone);
         }
 
-        if (StringUtils.isBlank(register.getRegisterUser().getFirstName())) {
+        if (StringUtils.isBlank(registerUser.getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -174,17 +170,17 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(register.getRegisterUser().getFirstName()) && !Validate.isValidName(register.getRegisterUser().getFirstName())) {
+        if (StringUtils.isNotBlank(registerUser.getFirstName()) && !Validate.isValidName(registerUser.getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("registerUser.firstName")
-                            .defaultText("First name is not a valid name: " + register.getRegisterUser().getFirstName())
+                            .defaultText("First name is not a valid name: " + registerUser.getFirstName())
                             .build());
             status = "failure";
         }
 
-        if (register.getRegisterUser().getFirstName().length() < nameLength) {
+        if (registerUser.getFirstName().length() < nameLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -194,7 +190,7 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterUser().getLastName())) {
+        if (StringUtils.isBlank(registerUser.getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -204,17 +200,17 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(register.getRegisterUser().getLastName()) && !Validate.isValidName(register.getRegisterUser().getLastName())) {
+        if (StringUtils.isNotBlank(registerUser.getLastName()) && !Validate.isValidName(registerUser.getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("registerUser.lastName")
-                            .defaultText("Last name is not a valid name: " + register.getRegisterUser().getLastName())
+                            .defaultText("Last name is not a valid name: " + registerUser.getLastName())
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterUser().getAddress())) {
+        if (StringUtils.isBlank(registerUser.getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -224,7 +220,7 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterUser().getPhoneNotFormatted())) {
+        if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -234,19 +230,19 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(register.getRegisterUser().getPhoneNotFormatted())) {
-            if (!Formatter.isValidPhone(register.getRegisterUser().getPhoneNotFormatted(), register.getRegisterUser().getCountryShortName())) {
+        if (StringUtils.isNotBlank(registerUser.getPhoneNotFormatted())) {
+            if (!Formatter.isValidPhone(registerUser.getPhoneNotFormatted(), registerUser.getCountryShortName())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
                                 .source("registerUser.phone")
-                                .defaultText("Your Phone number '" + register.getRegisterUser().getPhoneNotFormatted() + "' is not valid")
+                                .defaultText("Your Phone number '" + registerUser.getPhoneNotFormatted() + "' is not valid")
                                 .build());
                 status = "failure";
             }
         }
 
-        LOG.info("Validate user profile rid={} status={}", register.getRegisterUser().getRid(), status);
+        LOG.info("Validate user profile rid={} status={}", registerUser.getRid(), status);
         return status;
     }
 }

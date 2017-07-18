@@ -11,6 +11,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
@@ -215,5 +216,18 @@ class RegistrationFlowActions {
         }
 
         return bizStore;
+    }
+
+    boolean isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+        switch (businessUserRegistrationStatus) {
+            case C:
+                return true;
+            case I:
+            case N:
+                return false;
+            default:
+                LOG.error("Reached unsupported condition={}", businessUserRegistrationStatus);
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessUserRegistrationStatus);
+        }
     }
 }

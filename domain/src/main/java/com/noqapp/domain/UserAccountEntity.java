@@ -284,7 +284,7 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setAccountValidated(boolean accountValidated) {
         if (!accountValidated && this.accountValidated) {
-            /**
+            /*
              * Update accountValidatedBeginDate with new date when account has been validated previously or else
              * keep the date same as this can lead to continuous increase in account validation timeout period.
              */

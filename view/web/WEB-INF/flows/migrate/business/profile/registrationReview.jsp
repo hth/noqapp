@@ -62,81 +62,96 @@
     <div class="sidebar_no_use">
     </div>
     <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_CLIENT')">
+        <sec:authorize access="hasRole('ROLE_Q_SUPERVISOR')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="register.registerUser">
+                <form:form commandName="registerUser">
                     <h1 class="h1">Please complete your profile</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                     <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                            <li>${message.text}</li>
-                            </c:forEach>
-                        </ul>
-                    </div>
+                        <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                            <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                </c:forEach>
+                            </ul>
+                        </div>
                     </c:if>
-
                     <div class="row_field">
                         <form:label path="firstName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">First name</form:label>
-                        <form:input path="firstName" size="20" cssClass="name_txt" />
+                        <form:input path="firstName" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="lastName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Last name</form:label>
-                        <form:input path="lastName" size="20" cssClass="name_txt" />
+                        <form:input path="lastName" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="birthday" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Date of Birth</form:label>
-                        <form:input path="birthday" cssClass="name_txt" cssErrorClass="user error" />
+                        <form:input path="birthday" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="gender" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Gender</form:label>
-                        <form:input path="gender" cssClass="name_txt" cssErrorClass="user error" />
+                        <form:input path="gender" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="address" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Your Address</form:label>
-                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" />
+                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="phone" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                        <form:input path="phone" size="20" cssClass="name_txt" readonly="${register.registerUser.phoneValidated}"/>
+                        <form:input path="phone" size="20" cssClass="name_txt" readonly="true" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="email" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Email Address</form:label>
+                        <form:input path="email" size="30" cssClass="name_txt" readonly="true" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="password" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Password</form:label>
+                        <form:password path="password" size="20" cssClass="name_txt" readonly="true" />
                     </div>
 
+                    <%--//TODO add note when email address is different--%>
 
-                    <c:if test="${!register.registerUser.emailValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                        Your email address <span style="color: red; font-weight: bold">${register.registerUser.email}</span>
-                        has not been validated. Please validated email address to continue merchant account registration.
-                        </p>
-                        <p style="padding-top: 10px; padding-bottom: 20px;">
-                        To resend account validation email, click here.
-                        </p>
-                    </div>
+                    <c:if test="${!registerUser.emailValidated}">
+                        <div class="profile_label profile_label_note">
+                            <p>
+                                Your email address <span style="color: red; font-weight: bold">${registerUser.email}</span>
+                                has not been validated. Please validated email address to continue merchant account registration.
+                            </p>
+                            <p style="padding-top: 10px; padding-bottom: 20px;">
+                                To resend account validation email, click here.
+                            </p>
+                        </div>
                     </c:if>
 
-                    <c:if test="${!register.registerUser.phoneValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                            Your phone number has not been validated. Login through NoQApp to validate phone using OTP.
-                        </p>
-                    </div>
+                    <c:if test="${!registerUser.phoneValidated}">
+                        <div class="profile_label profile_label_note">
+                            <p>
+                                Your phone number has not been validated. Login through NoQApp to validate phone using OTP.
+                            </p>
+                        </div>
                     </c:if>
 
                     <div class="full">
-                        <c:if test="${register.registerUser.emailValidated}">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                        <c:if test="${registerUser.emailValidated}">
+                            <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
+                                    style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
+
+                        <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
+                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
+                                style="background: #FC462A; margin: 77px 10px 0 0;" formnovalidate>
                     </div>
                 </form:form>
             </div>

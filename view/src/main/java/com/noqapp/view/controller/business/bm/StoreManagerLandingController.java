@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 })
 @Controller
 @RequestMapping (value = "/business/bm")
-public class BusinessManagerLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessManagerLandingController.class);
+public class StoreManagerLandingController {
+    private static final Logger LOG = LoggerFactory.getLogger(StoreManagerLandingController.class);
 
     private String nextPage;
 
-
+//    @Autowired
+//    public StoreManagerLandingController(String nextPage) {
+//        this.nextPage = nextPage;
+//    }
 }

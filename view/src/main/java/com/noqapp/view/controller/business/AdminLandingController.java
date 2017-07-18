@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
@@ -27,7 +28,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.business.BusinessLandingForm;
-import com.noqapp.view.form.business.QueueManagerForm;
+import com.noqapp.view.form.business.QueueSupervisorForm;
 
 import java.util.List;
 
@@ -43,13 +44,14 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/business")
-public class BusinessLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessLandingController.class);
+public class AdminLandingController {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
 
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
-    private String addStoreFlowActions;
-    private String listQueueManagerPage;
+    private String addStoreFlow;
+    private String addQueueSupervisorFlow;
+    private String listQueueSupervisorPage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -57,18 +59,21 @@ public class BusinessLandingController {
     private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
-    public BusinessLandingController(
+    public AdminLandingController(
             @Value ("${nextPage:/business/landing}")
             String nextPage,
 
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
             String migrateBusinessRegistrationFlow,
 
-            @Value ("${addStoreFlowActions:redirect:/store/addStore.htm}")
-            String addStoreFlowActions,
+            @Value ("${addStoreFlow:redirect:/store/addStore.htm}")
+            String addStoreFlow,
 
-            @Value("${listQueueManagerPage:/business/listQueueManager}")
-            String listQueueManagerPage,
+            @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
+            String addQueueSupervisorFlow,
+
+            @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
+            String listQueueSupervisorPage,
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
@@ -76,8 +81,9 @@ public class BusinessLandingController {
             BusinessUserStoreService businessUserStoreService) {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
-        this.addStoreFlowActions = addStoreFlowActions;
-        this.listQueueManagerPage = listQueueManagerPage;
+        this.addStoreFlow = addStoreFlow;
+        this.addQueueSupervisorFlow = addQueueSupervisorFlow;
+        this.listQueueSupervisorPage = listQueueSupervisorPage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -111,7 +117,7 @@ public class BusinessLandingController {
             BusinessLandingForm businessLandingForm) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
             case V:
-                populateBusinessLandingForm(businessLandingForm, businessUser);
+                populateLandingForm(businessLandingForm, businessUser);
                 return nextPage;
             case C:
             case I:
@@ -124,7 +130,7 @@ public class BusinessLandingController {
         }
     }
 
-    private void populateBusinessLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
+    private void populateLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
         Assert.notNull(businessUser, "Business user should not be null");
         BizNameEntity bizName = businessUser.getBizName();
         String bizNameId = bizName.getId();
@@ -146,23 +152,24 @@ public class BusinessLandingController {
     }
 
     @RequestMapping (
-            value = "/{storeId}/listQueueManager",
+            value = "/{storeId}/listQueueSupervisor",
             method = RequestMethod.GET,
             produces = "text/html;charset=UTF-8"
     )
-    public String listQueueManager(
-            @ModelAttribute ("queueManagerForm")
-            QueueManagerForm queueManagerForm,
+    public String listQueueSupervisor(
+            @ModelAttribute ("queueSupervisorForm")
+            QueueSupervisorForm queueSupervisorForm,
 
             @PathVariable ("storeId")
             ScrubbedInput storeId
     ) {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
-        queueManagerForm.setQueueName(bizStore.getDisplayName());
+        queueSupervisorForm.setBizStoreId(bizStore.getId());
+        queueSupervisorForm.setQueueName(bizStore.getDisplayName());
 
         List<UserProfileEntity> userProfiles = businessUserStoreService.getAllQueueManagers(storeId.getText());
-        queueManagerForm.setUserProfiles(userProfiles);
-        return listQueueManagerPage;
+        queueSupervisorForm.setUserProfiles(userProfiles);
+        return listQueueSupervisorPage;
     }
 
     @Timed
@@ -173,7 +180,25 @@ public class BusinessLandingController {
             produces = "text/html;charset=UTF-8"
     )
     public String addStore() {
-        LOG.info("Add store to business {}", addStoreFlowActions);
-        return addStoreFlowActions;
+        LOG.info("Add store to business {}", addStoreFlow);
+        return addStoreFlow;
+    }
+
+    @Timed
+    @ExceptionMetered
+    @RequestMapping (
+            value = "/{bizStoreId}/addQueueSupervisor",
+            method = RequestMethod.GET,
+            produces = "text/html;charset=UTF-8"
+    )
+    public String addQueueSupervisorFlow(
+            @PathVariable ("bizStoreId")
+            ScrubbedInput bizStoreId,
+
+            RedirectAttributes redirectAttributes
+    ) {
+        LOG.info("Add queue manager to bizStoreId={} {}", bizStoreId.getText(), addQueueSupervisorFlow);
+        redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
+        return addQueueSupervisorFlow;
     }
 }

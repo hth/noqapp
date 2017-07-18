@@ -245,7 +245,7 @@ public class TokenQueueService {
                 case S:
                 case R:
                 case D:
-                    /**
+                    /*
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */

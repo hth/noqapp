@@ -227,7 +227,7 @@ public class MailService {
                 return MailTypeEnum.FAILURE;
             }
         } else {
-            /** Since account is not validated, send account validation email. */
+            /* Since account is not validated, send account validation email. */
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
                     userAccount.getReceiptUserId(),
                     userAccount.getUserId());

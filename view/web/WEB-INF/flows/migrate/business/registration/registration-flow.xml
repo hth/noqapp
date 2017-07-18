@@ -27,7 +27,7 @@
     </view-state>
 
     <action-state id="validateUserProfile">
-        <evaluate expression="userFlowValidator.validateUserProfileDetails(register, messageContext)" />
+        <evaluate expression="userFlowValidator.validateUserProfileDetails(register.registerUser, messageContext)" />
         <transition on="success" to="registrationStart">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.updateProfile(register)" />
         </transition>

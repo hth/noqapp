@@ -25,6 +25,7 @@ public class RegisterUser implements Serializable {
     private boolean emailValidated;
     private boolean phoneValidated;
 
+    private String gender;
     private String birthday;
     private String password;
     private boolean accountExists;
@@ -72,6 +73,15 @@ public class RegisterUser implements Serializable {
 
     public RegisterUser setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public RegisterUser setGender(String gender) {
+        this.gender = gender;
         return this;
     }
 

@@ -100,7 +100,7 @@
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <%--<a href="/${store.codeQR}/q.htm" target="_blank">${businessLandingForm.assignedUsers.get(store.id)}</a>--%>
-                                        <a href="/business/${store.id}/listQueueManager.htm">${businessLandingForm.assignedQueueManagers.get(store.id)}</a>
+                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.assignedQueueManagers.get(store.id)}</a>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/>
