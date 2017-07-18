@@ -1,5 +1,7 @@
 package com.noqapp.view.flow;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -24,9 +26,12 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.Formatter;
 import com.noqapp.view.flow.exception.InviteSupervisorException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -42,6 +47,9 @@ public class AddQueueSupervisorFlowActions {
     private AccountService accountService;
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
+    private TokenQueueService tokenQueueService;
+
+    private ExecutorService service;
 
     @Autowired
     public AddQueueSupervisorFlowActions(
@@ -52,7 +60,8 @@ public class AddQueueSupervisorFlowActions {
             BizService bizService,
             AccountService accountService,
             BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService
+            BusinessUserStoreService businessUserStoreService,
+            TokenQueueService tokenQueueService
     ) {
         this.queueLimit = queueLimit;
 
@@ -61,6 +70,9 @@ public class AddQueueSupervisorFlowActions {
         this.accountService = accountService;
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
+        this.tokenQueueService = tokenQueueService;
+
+        this.service = newCachedThreadPool();
     }
 
     @SuppressWarnings ("all")
@@ -148,6 +160,12 @@ public class AddQueueSupervisorFlowActions {
                 bizStore.getCodeQR());
 
         businessUserStoreService.save(businessUserStore);
+
+        /* Send personal notification. */
+        service.submit(() -> tokenQueueService.sendQueueSupervisorInviteMessageToUser(
+                userAccount.getReceiptUserId(),
+                bizStore.getDisplayName(),
+                bizStore.getBizName().getBusinessName()));
 
         return inviteQueueSupervisor;
     }

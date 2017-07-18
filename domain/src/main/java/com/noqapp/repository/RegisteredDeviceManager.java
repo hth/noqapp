@@ -4,6 +4,8 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 3/1/17 12:26 PM
@@ -14,6 +16,8 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     RegisteredDeviceEntity find(String rid, String did);
 
     RegisteredDeviceEntity findFCMToken(String rid, String did);
+
+    List<RegisteredDeviceEntity> findAll(String rid);
 
     /**
      * Update the token for a particular device id. Update token every time the request comes in.
