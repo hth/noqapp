@@ -255,8 +255,8 @@ public class TokenQueueService {
             }
         }
 
-        LOG.info("Sent invite count={} displayName={} businessName={}",
-                registeredDevices.size(), displayName, businessName);
+        LOG.info("Sent invite count={} rid={} displayName={} businessName={}",
+                registeredDevices.size(), rid, displayName, businessName);
     }
 
     /**
