@@ -104,18 +104,6 @@ public class AddQueueSupervisorFlowActions {
             throw new InviteSupervisorException("User does not exists or Invitee code does not match");
         }
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
-        if (!userAccount.isAccountValidated()) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " has not validated email address.")
-                            .build());
-
-            throw new InviteSupervisorException("User has not validated their email address");
-        }
-
         BizStoreEntity bizStore = bizService.getByStoreId(inviteQueueSupervisor.getBizStoreId());
         int supervisorCount = businessUserStoreService.getQueues(userProfile.getReceiptUserId()).size();
         if (supervisorCount > queueLimit) {
