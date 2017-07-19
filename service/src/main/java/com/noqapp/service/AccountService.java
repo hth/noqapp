@@ -444,6 +444,7 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
                 userAccount.setRoles(roles);
+                break;
             case S_MANAGER:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
