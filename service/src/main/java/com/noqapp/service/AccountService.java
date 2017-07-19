@@ -196,7 +196,7 @@ public class AccountService {
                 userProfile.setCountryShortName(countryShortName);
                 userProfile.setTimeZone(timeZone);
                 String generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, rid);
-                while (userProfileManager.inviteCodeExists(generatedInviteCode) != null) {
+                while (null != userProfileManager.inviteCodeExists(generatedInviteCode)) {
                     generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, rid);
                 }
                 userProfile.setInviteCode(generatedInviteCode);
@@ -261,7 +261,7 @@ public class AccountService {
     public void save(UserProfileEntity userProfile) {
         try {
             userProfileManager.save(userProfile);
-            LOG.debug("Created UserProfileEntity={} id={}", userProfile.getReceiptUserId(), userProfile.getId());
+            LOG.debug("Saved UserProfile={} id={}", userProfile.getReceiptUserId(), userProfile.getId());
         } catch (DataIntegrityViolationException e) {
             LOG.error("Duplicate record entry for UserProfileEntity={}", e.getLocalizedMessage(), e);
             throw e;
