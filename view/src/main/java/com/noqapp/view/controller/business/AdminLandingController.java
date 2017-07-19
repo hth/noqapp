@@ -19,8 +19,8 @@ import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.TokenUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -167,8 +167,8 @@ public class AdminLandingController {
         queueSupervisorForm.setBizStoreId(bizStore.getId());
         queueSupervisorForm.setQueueName(bizStore.getDisplayName());
 
-        List<UserProfileEntity> userProfiles = businessUserStoreService.getAllQueueManagers(storeId.getText());
-        queueSupervisorForm.setUserProfiles(userProfiles);
+        List<QueueSupervisor> queueSupervisors = businessUserStoreService.getAllQueueManagers(storeId.getText());
+        queueSupervisorForm.setQueueSupervisors(queueSupervisors);
         return listQueueSupervisorPage;
     }
 
