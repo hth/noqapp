@@ -56,6 +56,7 @@ public class MailService {
     private String domain;
     private String https;
     private String mailInviteSubject;
+    private String mailInviteQueueSupervisorSubject;
     private String mailRecoverSubject;
     private String mailValidateSubject;
     private String mailRegistrationActiveSubject;
@@ -83,6 +84,9 @@ public class MailService {
 
             @Value ("${mail.invite.subject}")
             String mailInviteSubject,
+
+            @Value ("${mail.invite.queue.supervisor.subject}")
+            String mailInviteQueueSupervisorSubject,
 
             @Value ("${mail.recover.subject}")
             String mailRecoverSubject,
@@ -114,6 +118,7 @@ public class MailService {
         this.domain = domain;
         this.https = https;
         this.mailInviteSubject = mailInviteSubject;
+        this.mailInviteQueueSupervisorSubject = mailInviteQueueSupervisorSubject;
         this.mailRecoverSubject = mailRecoverSubject;
         this.mailValidateSubject = mailValidateSubject;
         this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
@@ -255,7 +260,7 @@ public class MailService {
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(name)
-                    .setSubject(mailInviteSubject + " " + businessName)
+                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for " + displayName)
                     .setMessage(freemarkerService.freemarkerToString("mail/inviteAsQueueSupervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
