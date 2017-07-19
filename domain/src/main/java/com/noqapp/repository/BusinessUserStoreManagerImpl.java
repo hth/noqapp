@@ -84,11 +84,7 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public List<BusinessUserStoreEntity> getAllQueueManagers(String storeId) {
         return mongoTemplate.find(
-                query(where("BS").is(storeId)
-                        .andOperator(
-                            isActive(),
-                            isNotDeleted()
-                )),
+                query(where("BS").is(storeId).andOperator(isNotDeleted())),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
