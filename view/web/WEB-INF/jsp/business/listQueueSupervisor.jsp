@@ -109,10 +109,10 @@
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                                         <c:choose>
                                             <c:when test="${userProfile.active}">
-                                                X
+                                                X   <c:out value="${userProfile.active}" />
                                             </c:when>
                                             <c:otherwise>
-                                                Pending 
+                                                Pending <c:out value="${userProfile.active}" />
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
