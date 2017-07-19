@@ -149,7 +149,7 @@ public class AddQueueSupervisorFlowActions {
         businessUserStoreService.save(businessUserStore);
 
         /* Send personal notification. */
-        service.submit(() -> tokenQueueService.sendQueueSupervisorInviteMessageToUser(
+        service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
                 userProfile.getReceiptUserId(),
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
