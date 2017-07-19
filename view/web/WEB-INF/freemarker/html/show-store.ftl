@@ -70,8 +70,8 @@
 </p>
 <hr/>
 <span class="tm">
-    TM &trade; and Copyright &copy; 2017 Receiptofi Inc. Sunnyvale, CA 94085 USA. <br/>
-    All Rights Reserved / <a href="https://www.receiptofi.com/privacypolicy">Privacy Policy</a>
+    TM &trade; and Copyright &copy; 2017 NoQueue Inc. Sunnyvale, CA 94085 USA. <br/>
+    All Rights Reserved / <a href="https://www.noqapp.com/privacypolicy">Privacy Policy</a>
 </span>
 <br/>
 <span class="tm">

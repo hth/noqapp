@@ -72,13 +72,13 @@ ${from} (${fromEmail}) <br />
 	Email sent to ${to} on behalf of your known friend ${from}.
 </p>
 <p>
-	Receiptofi Customer Support would like to hear from you if you would not like to receive emails from us.
+	NoQueue Customer Support would like to hear from you if you would not like to receive emails from us.
 </p>
 <br/><br/><br/>
 <hr/>
 <span class="tm">
-    TM &trade; and Copyright &copy; 2017 Receiptofi Inc. Sunnyvale, CA 94085 USA. <br/>
-    All Rights Reserved / <a href="https://www.receiptofi.com/privacypolicy">Privacy Policy</a>
+    TM &trade; and Copyright &copy; 2017 NoQueue Inc. Sunnyvale, CA 94085 USA. <br/>
+    All Rights Reserved / <a href="https://www.noqapp.com/privacypolicy">Privacy Policy</a>
 </span>
 <br/>
 <span class="tm">
