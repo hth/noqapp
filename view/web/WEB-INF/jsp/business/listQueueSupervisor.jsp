@@ -107,7 +107,14 @@
                                         ${userProfile.email}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
-                                        X
+                                        <c:choose>
+                                            <c:when test="${userProfile.active}">
+                                                X
+                                            </c:when>
+                                            <c:otherwise>
+                                                Pending 
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                 </tr>
                             </c:forEach>
