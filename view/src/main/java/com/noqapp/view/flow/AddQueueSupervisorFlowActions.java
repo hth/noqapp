@@ -17,6 +17,7 @@ import org.springframework.webflow.context.ExternalContext;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
@@ -25,6 +26,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.Formatter;
 import com.noqapp.view.flow.exception.InviteSupervisorException;
@@ -47,6 +49,7 @@ public class AddQueueSupervisorFlowActions {
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
     private TokenQueueService tokenQueueService;
+    private MailService mailService;
 
     private ExecutorService service;
 
@@ -60,7 +63,8 @@ public class AddQueueSupervisorFlowActions {
             AccountService accountService,
             BusinessUserService businessUserService,
             BusinessUserStoreService businessUserStoreService,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            MailService mailService
     ) {
         this.queueLimit = queueLimit;
 
@@ -70,6 +74,7 @@ public class AddQueueSupervisorFlowActions {
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
         this.tokenQueueService = tokenQueueService;
+        this.mailService = mailService;
 
         this.service = newCachedThreadPool();
     }
@@ -129,7 +134,11 @@ public class AddQueueSupervisorFlowActions {
 
         userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
         accountService.save(userProfile);
-        accountService.changeAccountRolesToMatchUserLevel(userProfile.getReceiptUserId(), userProfile.getLevel());
+
+        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
+                userProfile.getReceiptUserId(),
+                userProfile.getLevel());
+        accountService.save(userAccount);
 
         BusinessUserEntity businessUser = BusinessUserEntity.newInstance(userProfile.getReceiptUserId(), userProfile.getLevel());
         if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getReceiptUserId().endsWith("mail.noqapp.com")) {
@@ -146,13 +155,26 @@ public class AddQueueSupervisorFlowActions {
                 bizStore.getBizName().getId(),
                 bizStore.getCodeQR());
 
+        /*
+         * Marked as inactive until user signs and agrees to be a queue supervisor.
+         * Will be active upon approval.
+         */
+        businessUserStore.inActive();
         businessUserStoreService.save(businessUserStore);
 
-        /* Send personal notification. */
+        /* Send personal FCM notification. */
         service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
                 userProfile.getReceiptUserId(),
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
+
+        /* Also send mail to the invitee. */
+        mailService.sendQueueSupervisorInvite(
+                userAccount.getUserId(),
+                userProfile.getName(),
+                bizStore.getBizName().getBusinessName(),
+                bizStore.getDisplayName()
+        );
 
         return inviteQueueSupervisor;
     }
