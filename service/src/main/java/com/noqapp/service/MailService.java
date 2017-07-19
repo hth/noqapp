@@ -243,4 +243,26 @@ public class MailService {
             return MailTypeEnum.FAILURE;
         }
     }
+
+    public MailTypeEnum sendQueueSupervisorInvite(String userId, String name, String businessName, String displayName) {
+        LOG.info("invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("businessName", businessName);
+        rootMap.put("displayName", displayName);
+
+        try {
+            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            MailEntity mail = new MailEntity()
+                    .setToMail(userId)
+                    .setToName(name)
+                    .setSubject(mailInviteSubject + " " + businessName)
+                    .setMessage(freemarkerService.freemarkerToString("mail/inviteAsQueueSupervisor.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Validation failure email for={}", userId, exception);
+            return MailTypeEnum.FAILURE;
+        }
+        return MailTypeEnum.SUCCESS;
+    }
 }

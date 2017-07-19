@@ -229,7 +229,7 @@ public class TokenQueueService {
      * @param displayName
      * @param businessName
      */
-    public void sendQueueSupervisorInviteMessageToUser(String rid, String displayName, String businessName) {
+    public void sendInviteToNewQueueSupervisor(String rid, String displayName, String businessName) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(rid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
@@ -255,7 +255,7 @@ public class TokenQueueService {
             }
         }
 
-        LOG.info("Sent invite count={} rid={} displayName={} businessName={}",
+        LOG.info("Sent FCM invite count={} rid={} displayName={} businessName={}",
                 registeredDevices.size(), rid, displayName, businessName);
     }
 
