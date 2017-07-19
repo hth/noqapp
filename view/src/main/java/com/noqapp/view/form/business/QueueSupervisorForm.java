@@ -1,6 +1,6 @@
 package com.noqapp.view.form.business;
 
-import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.helper.QueueSupervisor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class QueueSupervisorForm {
     private String bizStoreId;
     private String queueName;
-    private List<UserProfileEntity> userProfiles = new ArrayList<>();
+    private List<QueueSupervisor> queueSupervisors = new ArrayList<>();
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -30,11 +30,12 @@ public class QueueSupervisorForm {
         this.queueName = queueName;
     }
 
-    public List<UserProfileEntity> getUserProfiles() {
-        return userProfiles;
+    public List<QueueSupervisor> getQueueSupervisors() {
+        return queueSupervisors;
     }
 
-    public void setUserProfiles(List<UserProfileEntity> userProfiles) {
-        this.userProfiles = userProfiles;
+    public QueueSupervisorForm setQueueSupervisors(List<QueueSupervisor> queueSupervisors) {
+        this.queueSupervisors = queueSupervisors;
+        return this;
     }
 }

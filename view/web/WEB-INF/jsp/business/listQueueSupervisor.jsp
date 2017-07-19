@@ -79,7 +79,7 @@
         <div class="down_form" style="width: 96%;">
             <div class="down_form" style="width: 96%;">
                 <c:choose>
-                    <c:when test="${!empty queueSupervisorForm.userProfiles}">
+                    <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
                         <table width="100%" style="margin: 0 4px 0 4px">
                             <thead>
                             <tr>
@@ -91,28 +91,28 @@
                                 <th width="85px;">Remove</th>
                             </tr>
                             </thead>
-                            <c:forEach items="${queueSupervisorForm.userProfiles}" var="userProfile" varStatus="status">
+                            <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${userProfile.name}
+                                        ${queueSupervisor.name}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${userProfile.phone}
+                                        ${queueSupervisor.phone}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${userProfile.address}
+                                        ${queueSupervisor.address}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${userProfile.email}
+                                        ${queueSupervisor.email}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                                         <c:choose>
-                                            <c:when test="${userProfile.active}">
-                                                X   <c:out value="${userProfile.active}" />
+                                            <c:when test="${queueSupervisor.active}">
+                                                X
                                             </c:when>
                                             <c:otherwise>
-                                                Pending <c:out value="${userProfile.active}" />
+                                                Pending since ${queueSupervisor.created}
                                             </c:otherwise>
                                         </c:choose>
                                     </td>

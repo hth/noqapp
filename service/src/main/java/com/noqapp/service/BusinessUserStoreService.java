@@ -11,6 +11,7 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.repository.BusinessUserStoreManager;
 
@@ -93,15 +94,26 @@ public class BusinessUserStoreService {
      * @param storeId
      * @return
      */
-    public List<UserProfileEntity> getAllQueueManagers(String storeId) {
-        List<UserProfileEntity> userProfiles = new ArrayList<>();
+    public List<QueueSupervisor> getAllQueueManagers(String storeId) {
+        List<QueueSupervisor> queueSupervisors = new ArrayList<>();
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String rid = businessUserStore.getReceiptUserId();
             UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
-            userProfiles.add(userProfile);
+            QueueSupervisor queueSupervisor = new QueueSupervisor();
+            queueSupervisor.setStoreId(storeId)
+                    .setBusinessId(businessUserStore.getBizNameId())
+                    .setName(userProfile.getName())
+                    .setPhone(userProfile.getPhone())
+                    .setAddress(userProfile.getAddress())
+                    .setEmail(userProfile.getEmail())
+                    .setRid(rid)
+                    .setCreated(businessUserStore.getCreated())
+                    .setActive(businessUserStore.isActive());
+
+            queueSupervisors.add(queueSupervisor);
         }
 
-        return userProfiles;
+        return queueSupervisors;
     }
 }
