@@ -87,8 +87,9 @@
                                 <th width="200px;">Name</th>
                                 <th width="160px;">Phone</th>
                                 <th width="340px;">Address</th>
-                                <th width="260px;">Email</th>
-                                <th width="85px;">Remove</th>
+                                <th width="200px;">Email</th>
+                                <th width="150px;">Since</th>
+                                <th width="20px;"></th>
                             </tr>
                             </thead>
                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
@@ -106,13 +107,16 @@
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${queueSupervisor.email}
                                     </td>
+                                    <td style="padding: 10px; border: 1px solid #ccc;">
+                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd" />
+                                    </td>
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                                         <c:choose>
                                             <c:when test="${queueSupervisor.active}">
                                                 X
                                             </c:when>
                                             <c:otherwise>
-                                                Pending since ${queueSupervisor.created}
+                                                Pending
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
