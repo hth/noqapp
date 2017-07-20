@@ -164,7 +164,10 @@ public class ExternalService {
     public GeocodingResult[] getGeocodingResults(String address) {
         try {
             LOG.info("Google GeoCodingResults API called address={}", address);
-            Assert.hasText(address, "Address is empty");
+            if (StringUtils.isBlank(address)) {
+                throw new Exception("Blank address found");
+            }
+            
             GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
             if (geocodingResults.length != 0) {
                 return geocodingResults;
@@ -198,7 +201,7 @@ public class ExternalService {
 
     /**
      * Updates Biz Store time zone based on the address of the store. Asynchronous call.
-     * 
+     *
      * @param bizStore
      */
     public void updateTimezone(BizStoreEntity bizStore) {
@@ -242,7 +245,7 @@ public class ExternalService {
 
     /**
      * No call back. Synchronous call.
-     * 
+     *
      * @param latLng
      * @return
      */
