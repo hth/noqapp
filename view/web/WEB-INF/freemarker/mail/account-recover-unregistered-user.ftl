@@ -33,7 +33,7 @@
 	Hey,
 </p>
 <p>
-	Someone requested an account recovery on Receiptofi's ReceiptApp for ${contact_email}, but we don’t have an account
+	Someone requested an account recovery on NoQueue's NoQApp for ${contact_email}, but we don’t have an account
 	on this site that matches this email address.
 </p>
 <p>

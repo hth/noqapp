@@ -41,11 +41,11 @@
 </p>
 <p>
 	<a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">
-		ReceiptApp Sign Up >
+		NoQueue Sign Up >
 	</a>
 </p>
 <p>
-	Or sign up using social connection. Social signup will add me to your ReceiptApp
+	Or sign up using social connection. Social signup will add me to your NoQApp
 	friends list to split expenses.
 </p>
 <p>
@@ -54,7 +54,7 @@
 	<a href="${https}://${domain}/open/login.htm"><img src="cid:facebook.logo" alt="Facebook Signup" /></a>
 </p>
 <p>
-	They are mobile too. Download free ReceiptApp on device of your choice.
+	They are mobile too. Download free NoQApp on device of your choice.
 </p>
 <p>
 	<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8"><img src="cid:ios.logo" alt="iPhone App" /></a>

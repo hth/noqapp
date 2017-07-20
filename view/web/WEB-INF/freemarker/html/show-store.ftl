@@ -61,7 +61,7 @@
 </p>
 <br/><br/><br/>
 <p>
-	Download ReceiptApp to ...
+	Download NoQApp to ...
 </p>
 <p>
 	<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8"><img class="app_store"></a>
