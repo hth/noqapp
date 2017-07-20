@@ -33,21 +33,21 @@
 	Hey,
 </p>
 <p>
-	I found ReceiptApp to replace paper receipts, track and split expenses among friends. I have signed up and it's
+	I found NoQApp to replace paper receipts, track and split expenses among friends. I have signed up and it's
     amazing to see my expenses on Google Maps.
 </p>
 <p>
-    All you have to do is take a picture of your receipt and ReceiptApp does the rest. It's that simple.
+    All you have to do is take a picture of your receipt and NoQApp does the rest. It's that simple.
 </p>
 <p>
 	You are all set, just click on the link below. You will be asked to provide your first, and last name, and a
 	password to access.
 </p>
 <p>
-	<a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">ReceiptApp Sign Up ></a>
+	<a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">NoQApp Sign Up ></a>
 </p>
 <p>
-	Or sign up using social connection. Social signup will add me to your ReceiptApp friends list to split expenses.
+	Or sign up using social connection. Social signup will add me to your NoQApp friends list to split expenses.
 </p>
 <p>
 	<a href="${https}://${domain}/open/login.htm"><img src="cid:googlePlus.logo" alt="Google Signup" /></a>
@@ -55,7 +55,7 @@
 	<a href="${https}://${domain}/open/login.htm"><img src="cid:facebook.logo" alt="Facebook Signup" /></a>
 </p>
 <p>
-	They are mobile too. Download free ReceiptApp on device of your choice.
+	They are mobile too. Download free NoQApp on device of your choice.
 </p>
 <p>
 	<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8"><img src="cid:ios.logo" alt="iPhone App" /></a>

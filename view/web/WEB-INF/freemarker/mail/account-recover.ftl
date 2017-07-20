@@ -33,14 +33,14 @@
     Dear ${to},
 </p>
 <p>
-    To reset your ReceiptApp ID password, simply click the link below. That will take you to a web page where you can
+    To reset your NoQApp ID password, simply click the link below. That will take you to a web page where you can
     create a new password.
 </p>
 <p>
     This link will expire in three hours.
 </p>
 <p>
-    <a href="${https}://${domain}/open/forgot/authenticate.htm?authenticationKey=${link}">Reset your Receiptofi account password ></a>
+    <a href="${https}://${domain}/open/forgot/authenticate.htm?authenticationKey=${link}">Reset your NoQApp account password ></a>
 </p>
 <hr>
 <p>

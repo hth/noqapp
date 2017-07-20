@@ -33,11 +33,11 @@
 	Hey,
 </p>
 <p>
-	Someone requested an account recovery on Receiptofi's ReceiptApp for ${contact_email}, but we don’t have an account
+	Someone requested an account recovery on NoQueue's NoQApp for ${contact_email}, but we don’t have an account
 	on this site that matches this email address.
 </p>
 <p>
-	If you would like to create an account on Receiptofi just visit our sign-up page:
+	If you would like to create an account on NoQueue just visit our sign-up page:
 	<a href="${https}://${domain}/open/registration.htm">${https}://${domain}/open/registration.htm ></a>
 </p>
 <p>
