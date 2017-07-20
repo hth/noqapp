@@ -147,20 +147,30 @@ public class UserFlowValidator {
         LOG.info("Validate user profile rid={}", registerUser.getRid());
         String status = LandingController.SUCCESS;
 
-        GeocodingResult[] geocodingResults = externalService.getGeocodingResults(registerUser.getAddress());
-        if (null != geocodingResults) {
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
-            if (decodedAddress.isNotEmpty()) {
+        if (StringUtils.isBlank(registerUser.getAddress())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerUser.address")
+                            .defaultText("Your Address cannot be empty")
+                            .build());
+            status = "failure";
+        } else {
+            GeocodingResult[] geocodingResults = externalService.getGeocodingResults(registerUser.getAddress());
+            if (null != geocodingResults) {
+                DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
+                if (decodedAddress.isNotEmpty()) {
                 /* Reset to raw format before updating to new address and countryShortName. */
-                String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-                registerUser.setPhone(updatedPhone);
+                    String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+                    registerUser.setPhone(updatedPhone);
 
-                registerUser.setAddress(decodedAddress.getFormattedAddress());
-                registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+                    registerUser.setAddress(decodedAddress.getFormattedAddress());
+                    registerUser.setCountryShortName(decodedAddress.getCountryShortName());
 
-                LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-                String timeZone = externalService.findTimeZone(latLng);
-                registerUser.setTimeZone(timeZone);
+                    LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                    String timeZone = externalService.findTimeZone(latLng);
+                    registerUser.setTimeZone(timeZone);
+                }
             }
         }
 
@@ -210,16 +220,6 @@ public class UserFlowValidator {
                             .error()
                             .source("registerUser.lastName")
                             .defaultText("Last name is not a valid name: " + registerUser.getLastName())
-                            .build());
-            status = "failure";
-        }
-
-        if (StringUtils.isBlank(registerUser.getAddress())) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerUser.address")
-                            .defaultText("Your Address cannot be empty")
                             .build());
             status = "failure";
         }
