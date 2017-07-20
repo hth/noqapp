@@ -424,7 +424,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 userProfileManager.deleteHard(userProfile);
             }*/
 
-            throw new RuntimeException("Something went wrong and we failed to create or save userProfile. Please bear with us until an engineer looks into this issue.");
+            throw new RuntimeException("Something went wrong and we failed to create or save userProfile. " +
+                    "Please bear with us until an engineer looks into this issue.");
         }
     }
 

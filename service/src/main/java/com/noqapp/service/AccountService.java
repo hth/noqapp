@@ -532,7 +532,7 @@ public class AccountService {
      * @param registerUser
      */
     public void updateUserProfile(RegisterUser registerUser, String username) {
-        UserProfileEntity userProfile = null;
+        UserProfileEntity userProfile;
         if (!registerUser.getEmail().equalsIgnoreCase(username)) {
             updateUID(username, registerUser.getEmail());
             userProfile = doesUserExists(registerUser.getEmail());
