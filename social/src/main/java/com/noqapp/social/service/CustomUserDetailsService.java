@@ -405,7 +405,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
         } catch (Exception e) {
             LOG.error("Something went wrong in creating user profile email={} rid={} userAccount={} userProfile={} reason={}",
-                    userProfile.getEmail(), userAccount.getReceiptUserId(), userAccount.getId(), userProfile.getId(), e.getLocalizedMessage(), e);
+                    userProfile.getEmail(),
+                    userAccount.getReceiptUserId(),
+                    userAccount.getId(),
+                    userProfile.getId(),
+                    e.getLocalizedMessage(),
+                    e);
 
             /**
              * Keep this code commented out since we are not sure if this will happen how often. Note: If there is any
