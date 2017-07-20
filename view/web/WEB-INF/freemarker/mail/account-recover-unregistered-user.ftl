@@ -37,7 +37,7 @@
 	on this site that matches this email address.
 </p>
 <p>
-	If you would like to create an account on Receiptofi just visit our sign-up page:
+	If you would like to create an account on NoQueue just visit our sign-up page:
 	<a href="${https}://${domain}/open/registration.htm">${https}://${domain}/open/registration.htm ></a>
 </p>
 <p>
