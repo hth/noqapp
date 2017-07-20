@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.validator;
 
+import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 
 import org.apache.commons.lang3.StringUtils;
@@ -146,18 +147,21 @@ public class UserFlowValidator {
         LOG.info("Validate user profile rid={}", registerUser.getRid());
         String status = LandingController.SUCCESS;
 
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(registerUser.getAddress()), registerUser.getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            /* Reset to raw format before updating to new address and countryShortName. */
-            String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-            registerUser.setPhone(updatedPhone);
+        GeocodingResult[] geocodingResults = externalService.getGeocodingResults(registerUser.getAddress());
+        if (null != geocodingResults) {
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
+            if (decodedAddress.isNotEmpty()) {
+                /* Reset to raw format before updating to new address and countryShortName. */
+                String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+                registerUser.setPhone(updatedPhone);
 
-            registerUser.setAddress(decodedAddress.getFormattedAddress());
-            registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+                registerUser.setAddress(decodedAddress.getFormattedAddress());
+                registerUser.setCountryShortName(decodedAddress.getCountryShortName());
 
-            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-            String timeZone = externalService.findTimeZone(latLng);
-            registerUser.setTimeZone(timeZone);
+                LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                String timeZone = externalService.findTimeZone(latLng);
+                registerUser.setTimeZone(timeZone);
+            }
         }
 
         if (StringUtils.isBlank(registerUser.getFirstName())) {
