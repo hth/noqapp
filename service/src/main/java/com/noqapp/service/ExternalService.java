@@ -165,7 +165,7 @@ public class ExternalService {
         try {
             LOG.info("Google GeoCodingResults API called address={}", address);
             if (StringUtils.isBlank(address)) {
-                throw new Exception("Blank address found");
+                throw new RuntimeException("Blank address found");
             }
             
             GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
