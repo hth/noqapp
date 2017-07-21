@@ -85,10 +85,9 @@
                             <tr>
                                 <th></th>
                                 <th width="200px;">Name</th>
-                                <th width="160px;">Phone</th>
                                 <th width="340px;">Address</th>
                                 <th width="200px;">Email</th>
-                                <th width="200px;">Role</th>
+                                <th width="160px;">Role</th>
                                 <th width="150px;">Since</th>
                                 <th width="20px;"></th>
                             </tr>
@@ -97,10 +96,8 @@
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${queueSupervisor.name}
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ccc;">
-                                        ${queueSupervisor.phone}
+                                        ${queueSupervisor.name} <br/>
+                                        Phone: ${queueSupervisor.phone}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${queueSupervisor.address}
@@ -108,7 +105,7 @@
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         ${queueSupervisor.email}
                                     </td>
-                                    <td>
+                                    <td style="padding: 10px; border: 1px solid #ccc;">
                                         <form:select path="userLevel" cssClass="styled-select slate">
                                             <form:option value="0" label="Select Account Type" />
                                             <form:options itemLabel="description" />
