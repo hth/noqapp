@@ -1,6 +1,7 @@
 package com.noqapp.domain.flow;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
@@ -186,20 +187,23 @@ public class RegisterUser implements Serializable {
 
     @Override
     public String toString() {
-        return "RegisterUser{" +
-                "rid='" + rid + '\'' +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", emailValidated=" + emailValidated +
-                ", birthday='" + birthday + '\'' +
-                ", password='" + password + '\'' +
-                ", accountExists=" + accountExists +
-                ", acceptsAgreement=" + acceptsAgreement +
-                '}';
+        return new ToStringBuilder(this)
+                .append("rid", rid)
+                .append("email", email)
+                .append("firstName", firstName)
+                .append("lastName", lastName)
+                .append("address", address)
+                .append("countryShortName", countryShortName)
+                .append("phone", phone)
+                .append("timeZone", timeZone)
+                .append("emailValidated", emailValidated)
+                .append("phoneValidated", phoneValidated)
+                .append("gender", gender)
+                .append("birthday", birthday)
+                .append("password", password)
+                .append("accountExists", accountExists)
+                .append("acceptsAgreement", acceptsAgreement)
+                .toString();
     }
 }
 
