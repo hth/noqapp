@@ -41,7 +41,7 @@ public class MigrateToBusinessProfileValidator {
         TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = tokenUser.getRid();
 
-        LOG.info("Registered 2 user={}", registerUser);
+        LOG.info("Registered 2 user={} phoneWithCountryCode={}", registerUser, registerUser.getPhoneWithCountryCode());
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (!userProfile.getReceiptUserId().equalsIgnoreCase(rid)) {
