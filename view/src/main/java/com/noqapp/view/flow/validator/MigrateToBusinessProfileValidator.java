@@ -42,7 +42,12 @@ public class MigrateToBusinessProfileValidator {
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (null == userProfile) {
-            LOG.error("Could not find user with phone={} rid={}", registerUser.getPhoneWithCountryCode());
+            /* This should never happen. */
+            LOG.error("Could not find user with phone={} countryShortName={} rid={}",
+                    registerUser.getPhoneWithCountryCode(),
+                    registerUser.getCountryShortName(),
+                    rid);
+
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
