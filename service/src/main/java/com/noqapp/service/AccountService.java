@@ -546,10 +546,16 @@ public class AccountService {
         userProfile.setPhone(registerUser.getPhoneWithCountryCode());
         userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
         userProfile.setTimeZone(registerUser.getTimeZone());
+        userProfile.setBirthday(registerUser.getBirthday());
         save(userProfile);
 
-        if (!userProfile.getFirstName().equals(registerUser.getFirstName()) && !userProfile.getLastName().equals(registerUser.getLastName())) {
+        if (!userProfile.getFirstName().equals(registerUser.getFirstName()) || !userProfile.getLastName().equals(registerUser.getLastName())) {
             updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getRid());
+            LOG.info("Updated name of user from={} to firstName={} lastName={} for rid={}",
+                    userProfile.getName(),
+                    registerUser.getFirstName(),
+                    registerUser.getLastName(),
+                    registerUser.getRid());
         }
     }
 }

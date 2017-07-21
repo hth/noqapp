@@ -180,7 +180,8 @@ public class UserFlowValidator {
                                     new MessageBuilder()
                                             .error()
                                             .source("registerUser.address")
-                                            .defaultText("Your address does not match with the country of registered phone number.")
+                                            .defaultText("Your address does not match with the country of registered phone number. " +
+                                                    "Phone is registered to " + registerUser.getCountryShortName())
                                             .build());
                             status = "failure";
                         }
