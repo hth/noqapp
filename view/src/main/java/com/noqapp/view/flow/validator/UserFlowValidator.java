@@ -108,14 +108,17 @@ public class UserFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(registerUser.getPassword()) || registerUser.getPassword().length() < passwordLength) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerUser.password")
-                            .defaultText("Password minimum length of " + passwordLength + " characters")
-                            .build());
-            status = "failure";
+        /* Ask for password when email is not validated. */
+        if (!registerUser.isEmailValidated()) {
+            if (StringUtils.isBlank(registerUser.getPassword()) || registerUser.getPassword().length() < passwordLength) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerUser.password")
+                                .defaultText("Password minimum length of " + passwordLength + " characters")
+                                .build());
+                status = "failure";
+            }
         }
 
         if (!registerUser.isAcceptsAgreement()) {
