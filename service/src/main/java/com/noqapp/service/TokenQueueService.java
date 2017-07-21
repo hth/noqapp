@@ -236,7 +236,7 @@ public class TokenQueueService {
             JsonMessage jsonMessage = new JsonMessage(token);
             JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
 
-            if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+            if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                 jsonMessage.getNotification()
                         .setBody(businessName + " has sent an invite")
                         .setTitle("Invitation for Queue " + displayName);
@@ -292,7 +292,7 @@ public class TokenQueueService {
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */
-                    if (deviceType == DeviceTypeEnum.I) {
+                    if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
                                 .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
                                 .setTitle(tokenQueue.getDisplayName() + " Queue");
@@ -303,7 +303,7 @@ public class TokenQueueService {
                     }
                     break;
                 default:
-                    if (deviceType == DeviceTypeEnum.I) {
+                    if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
                                 .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                                 .setLocKey("serving")
