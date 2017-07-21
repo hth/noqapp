@@ -164,19 +164,15 @@ public final class Formatter {
     public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
         try {
             Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, countryShortName);
-            LOG.info("PhoneNumber with phone={} countryShortName={} countryCode={} nationalNumber={} leadingZeros={}",
+            LOG.info("PhoneNumber with phone={} countryShortName={} countryCode={} nationalNumber={} leadingZeros={} internationalNumber={}",
                     phone,
                     countryShortName,
                     phoneNumber.getCountryCode(),
                     phoneNumber.getNationalNumber(),
-                    phoneNumber.getNumberOfLeadingZeros());
+                    phoneNumber.getNumberOfLeadingZeros(),
+                    phoneInternationalFormat(String.valueOf(phoneNumber.getNationalNumber()), countryShortName));
 
-            if (phoneNumber.getNumberOfLeadingZeros() > 0 && phone.startsWith("0")) {
-                phone = phone.substring(phoneNumber.getNumberOfLeadingZeros());
-            }
-
-            return phoneNumber.getCountryCode() + phone;
-
+            return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
             LOG.error("Failed to parse phone={} countryShortName={} reason={}", phone, countryShortName, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed parsing country code");
