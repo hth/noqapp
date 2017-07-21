@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -34,6 +35,7 @@ public class BusinessUserStoreService {
 
     private int queueLimit;
     private BusinessUserStoreManager businessUserStoreManager;
+    private BusinessUserService businessUserService;
     private TokenQueueService tokenQueueService;
     private AccountService accountService;
 
@@ -43,11 +45,13 @@ public class BusinessUserStoreService {
             int queueLimit,
 
             BusinessUserStoreManager businessUserStoreManager,
+            BusinessUserService businessUserService,
             TokenQueueService tokenQueueService,
             AccountService accountService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
+        this.businessUserService = businessUserService;
         this.tokenQueueService = tokenQueueService;
         this.accountService = accountService;
     }
@@ -100,6 +104,7 @@ public class BusinessUserStoreService {
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String rid = businessUserStore.getReceiptUserId();
             UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
             queueSupervisor.setStoreId(storeId)
                     .setBusinessId(businessUserStore.getBizNameId())
@@ -110,7 +115,8 @@ public class BusinessUserStoreService {
                     .setRid(rid)
                     .setUserLevel(userProfile.getLevel())
                     .setCreated(businessUserStore.getCreated())
-                    .setActive(businessUserStore.isActive());
+                    .setActive(businessUserStore.isActive())
+                    .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
 
             queueSupervisors.add(queueSupervisor);
         }

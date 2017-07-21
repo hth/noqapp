@@ -1,5 +1,6 @@
 package com.noqapp.domain.helper;
 
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ public class QueueSupervisor {
     private UserLevelEnum userLevel;
     private boolean active;
     private Date created;
+    private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus;
 
     public String getStoreId() {
         return storeId;
@@ -108,6 +110,15 @@ public class QueueSupervisor {
 
     public QueueSupervisor setCreated(Date created) {
         this.created = created;
+        return this;
+    }
+
+    public BusinessUserRegistrationStatusEnum getBusinessUserRegistrationStatus() {
+        return businessUserRegistrationStatus;
+    }
+
+    public QueueSupervisor setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+        this.businessUserRegistrationStatus = businessUserRegistrationStatus;
         return this;
     }
 }
