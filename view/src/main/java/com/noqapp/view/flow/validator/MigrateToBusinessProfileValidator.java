@@ -35,12 +35,13 @@ public class MigrateToBusinessProfileValidator {
     }
 
     public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
+        LOG.info("Registered 1 user={}", registerUser);
         String status = userFlowValidator.validateUserProfileSignupDetails(registerUser, messageContext);
 
         TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = tokenUser.getRid();
 
-        LOG.info("Registered user={}", registerUser);
+        LOG.info("Registered 2 user={}", registerUser);
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (!userProfile.getReceiptUserId().equalsIgnoreCase(rid)) {
