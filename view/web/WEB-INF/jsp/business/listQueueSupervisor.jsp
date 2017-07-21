@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.UserLevelEnum" %>
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html>
 <html lang="en" ng-app="scroll" ng-controller="Main">
@@ -92,6 +93,7 @@
                                 <th width="20px;"></th>
                             </tr>
                             </thead>
+                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.values()%>"/>
                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
@@ -106,10 +108,11 @@
                                         ${queueSupervisor.email}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <form:select path="queueSupervisor.userLevel" cssClass="styled-select slate">
-                                            <form:option value="0" label="Select Account Type" />
-                                            <form:options itemLabel="description" />
-                                        </form:select>
+                                        <select path="userLevel" cssClass="styled-select slate">
+                                            <c:forEach var="item" items="${userLevelEnumValues}">
+                                                <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
+                                            </c:forEach>
+                                        </select>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd" />
@@ -120,7 +123,14 @@
                                                 X
                                             </c:when>
                                             <c:otherwise>
-                                                Pending
+                                                <c:choose>
+                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
+                                                        Approve
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Pending
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
