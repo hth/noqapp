@@ -164,13 +164,12 @@ public final class Formatter {
     public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
         try {
             Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, countryShortName);
-            LOG.info("PhoneNumber with phone={} countryShortName={} countryCode={} nationalNumber={} leadingZeros={} internationalNumber={}",
+            LOG.info("PhoneNumber with phone={} countryShortName={} countryCode={} nationalNumber={} leadingZeros={}",
                     phone,
                     countryShortName,
                     phoneNumber.getCountryCode(),
                     phoneNumber.getNationalNumber(),
-                    phoneNumber.getNumberOfLeadingZeros(),
-                    phoneInternationalFormat(String.valueOf(phoneNumber.getNationalNumber()), countryShortName));
+                    phoneNumber.getNumberOfLeadingZeros());
 
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
