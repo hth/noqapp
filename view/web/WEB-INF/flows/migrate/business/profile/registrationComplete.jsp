@@ -69,7 +69,7 @@
                         <c:when test="${businessUserRegistrationStatus eq 'C'}">
                             <h1 class="h1">Registration complete</h1>
                             <hr>
-                            Your details are being verified. Would notify you once verification is complete.
+                            Your details are being verified by Store Manager. Would notify you once verification is complete.
                         </c:when>
                         <c:otherwise>
                             <h1 class="h1">Registration not complete</h1>

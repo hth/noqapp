@@ -1,5 +1,7 @@
 package com.noqapp.domain.helper;
 
+import com.noqapp.domain.types.UserLevelEnum;
+
 import java.util.Date;
 
 /**
@@ -15,6 +17,7 @@ public class QueueSupervisor {
     private String address;
     private String email;
     private String rid;
+    private UserLevelEnum userLevel;
     private boolean active;
     private Date created;
 
@@ -78,6 +81,15 @@ public class QueueSupervisor {
 
     public QueueSupervisor setRid(String rid) {
         this.rid = rid;
+        return this;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
+
+    public QueueSupervisor setUserLevel(UserLevelEnum userLevel) {
+        this.userLevel = userLevel;
         return this;
     }
 
