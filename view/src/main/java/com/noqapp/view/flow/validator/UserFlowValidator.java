@@ -173,16 +173,31 @@ public class UserFlowValidator {
             if (null != geocodingResults) {
                 DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
                 if (decodedAddress.isNotEmpty()) {
-                /* Reset to raw format before updating to new address and countryShortName. */
-                    String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-                    registerUser.setPhone(updatedPhone);
+                    /* Make sure you are not over writing country short name when phone is already validated. */
+                    if (registerUser.isPhoneValidated()) {
+                        if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
+                            messageContext.addMessage(
+                                    new MessageBuilder()
+                                            .error()
+                                            .source("registerUser.address")
+                                            .defaultText("Your address does not match with the country of registered phone number.")
+                                            .build());
+                            status = "failure";
+                        }
+                    }
 
-                    registerUser.setAddress(decodedAddress.getFormattedAddress());
-                    registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+                    if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+                        /* Reset to raw format before updating to new address and countryShortName. */
+                        String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+                        registerUser.setPhone(updatedPhone);
 
-                    LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-                    String timeZone = externalService.findTimeZone(latLng);
-                    registerUser.setTimeZone(timeZone);
+                        registerUser.setAddress(decodedAddress.getFormattedAddress());
+                        registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+
+                        LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                        String timeZone = externalService.findTimeZone(latLng);
+                        registerUser.setTimeZone(timeZone);
+                    }
                 }
             }
         }
