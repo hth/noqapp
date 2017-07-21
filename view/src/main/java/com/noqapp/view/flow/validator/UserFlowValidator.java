@@ -68,6 +68,16 @@ public class UserFlowValidator {
         LOG.info("Validate user profile signup rid={}", registerUser.getRid());
         String status = validateUserProfileDetails(registerUser, messageContext);
 
+        if (StringUtils.isBlank(registerUser.getBirthday())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerUser.birthday")
+                            .defaultText("Data of birth cannot be empty. Should be of format yyyy-MM-dd.")
+                            .build());
+            status = "failure";
+        }
+
         if (StringUtils.isNotBlank(registerUser.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(registerUser.getBirthday()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
