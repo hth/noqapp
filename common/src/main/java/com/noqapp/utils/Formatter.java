@@ -165,7 +165,15 @@ public final class Formatter {
         try {
             int countryCode = PHONE_INSTANCE.getCountryCodeForRegion(countryShortName);
             if (countryCode != 0) {
-                return countryCode + phone;
+                Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, countryShortName);
+                LOG.info("PhoneNumber with country code phoneNumber={} countryCode={} nationalNumber={} rawInput={} leadingZeros={}",
+                        phoneNumber,
+                        phoneNumber.getCountryCode(),
+                        phoneNumber.clearNationalNumber(),
+                        phoneNumber.getRawInput(),
+                        phoneNumber.getNumberOfLeadingZeros());
+
+                return countryCode + String.valueOf(phoneNumber.getNationalNumber());
             }
             throw new RuntimeException("Failed parsing country code");
         } catch (Exception e) {
