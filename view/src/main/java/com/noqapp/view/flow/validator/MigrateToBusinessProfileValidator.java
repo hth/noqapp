@@ -35,16 +35,23 @@ public class MigrateToBusinessProfileValidator {
     }
 
     public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
-        LOG.info("Registered 1 user={}", registerUser);
         String status = userFlowValidator.validateUserProfileSignupDetails(registerUser, messageContext);
 
         TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = tokenUser.getRid();
 
-        LOG.info("Registered 2 user={} phoneWithCountryCode={}", registerUser, registerUser.getPhoneWithCountryCode());
-
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
-        if (!userProfile.getReceiptUserId().equalsIgnoreCase(rid)) {
+        if (null == userProfile) {
+            LOG.error("Could not find user with phone={} rid={}", registerUser.getPhoneWithCountryCode());
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerUser.phone")
+                            .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
+                            .build());
+
+            status = "failure";
+        } else if (!userProfile.getReceiptUserId().equalsIgnoreCase(rid)) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
