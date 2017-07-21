@@ -173,6 +173,7 @@ public class UserFlowValidator {
             if (null != geocodingResults) {
                 DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
                 if (decodedAddress.isNotEmpty()) {
+                    /* Make sure you are not over writing country short name when phone is already validated. */
                     if (registerUser.isPhoneValidated()) {
                         if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
                             messageContext.addMessage(
