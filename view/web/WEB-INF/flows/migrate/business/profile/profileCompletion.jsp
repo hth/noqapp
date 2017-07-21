@@ -114,11 +114,13 @@
                                 cssErrorClass="profile_label lb_error">Email Address</form:label>
                         <form:input path="email" size="30" cssClass="name_txt" required="required" />
                     </div>
+                    <c:if test="${!registerUser.emailValidated}">
                     <div class="row_field">
                         <form:label path="password" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Password</form:label>
                         <form:password path="password" size="20" cssClass="name_txt" />
                     </div>
+                    </c:if>
                     
                     <c:if test="${!registerUser.emailValidated}">
                         <div class="profile_label profile_label_note">
