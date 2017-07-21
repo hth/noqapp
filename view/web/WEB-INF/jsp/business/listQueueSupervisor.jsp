@@ -106,7 +106,7 @@
                                         ${queueSupervisor.email}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <form:select path="userLevel" cssClass="styled-select slate">
+                                        <form:select path="queueSupervisor.userLevel" cssClass="styled-select slate">
                                             <form:option value="0" label="Select Account Type" />
                                             <form:options itemLabel="description" />
                                         </form:select>
