@@ -108,6 +108,7 @@ public class BusinessUserStoreService {
                     .setAddress(userProfile.getAddress())
                     .setEmail(userProfile.getEmail())
                     .setRid(rid)
+                    .setUserLevel(userProfile.getLevel())
                     .setCreated(businessUserStore.getCreated())
                     .setActive(businessUserStore.isActive());
 
