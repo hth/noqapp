@@ -23,8 +23,87 @@
 
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
+    <link rel="stylesheet" href="//code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script defer src="//code.getmdl.io/1.1.3/material.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script src="//www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+    <script src="//www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+
     <title>Receiptofi | Receipt App to park your Receipts</title>
     <meta name="keywords" content="receiptapp, receipt app, scan receipts, receipt organizer, organize receipts, receipt detail, online bookkeeping, online expense reporting, receipt tracker, receipt scanning, itemized, tag expense, travel, business"/>
+
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCjItDxJb8bl_0pHTfis6xSv8tpRtoL4Do",
+            authDomain: "noq-app-inc.firebaseapp.com",
+            databaseURL: "https://noq-app-inc.firebaseio.com",
+            projectId: "noq-app-inc",
+            storageBucket: "noq-app-inc.appspot.com",
+            messagingSenderId: "129734883266"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <style type="text/css">
+        div.mdl-card,.mdl-shadow--2dp,.mdl-cell,.mdl-cell--12-col,.mdl-cell--12-col-tablet,.mdl-cell--12-col-desktop,.mdl-card__supporting-text,.mdl-color-text--grey-600{
+            width: 80%;
+            height: 10%;
+            text-align: center;
+            margin:auto;
+            box-sizing: border-box;
+        }
+        div.mdl-textfield,.mdl-js-textfield,.mdl-textfield--floating-label{
+            margin-top:100px;
+        }
+        div.verify-view-component{
+            width: 80%;
+            height: 10%;
+            border: solid 1px grey;
+            align-items: inline;
+            display: none;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+        input.mdl-textfield__input{
+            padding:2px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        button.active,.mdl-button,.mdl-js-button,.mdl-button--raised{
+            display: block;
+            margin-top:10px;
+            left: calc(50% - 40px);
+            font-size: 1.1em;
+            border-radius: 10px;
+            background: -webkit-linear-gradient(270deg, #3366ff, #2760ca);
+        }
+        #account-details{
+        }
+        .signin-view{
+            display: block;
+        }
+        .verify-view{
+            display: none;
+        }
+        .inactive{
+            display: none;
+        }
+        pre{
+            text-align: left;
+        }
+        input.digital-input{
+            width: 80%;
+            height: 10%;
+            margin: 1px 3px;
+            padding:2px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -54,37 +133,48 @@
         </fieldset>
 
         <fieldset class="cd-form floating-labels">
-            <legend>Social Sign In</legend>
+            <legend>Phone Sign In</legend>
 
-            <c:if test="${deniedSignup}">
-                <div class="error-message">
-                    <p>You have been registered, but we are currently not accepting new users.</p>
-                    <p>Will notify you through email when we start accepting new users and will automatically grant access to you.</p>
-                    <p>User: ${user}</p>
-                    <p>Registration: ${pid}</p>
-                </div>
-            </c:if>
+            <div class="cd-form floating-labels">
+                <label class="cd-label" for="emailId">Phone</label>
+                <input class="email" type="email" name="emailId" id="emailId" required>
 
-            <!-- FACEBOOK SIGNIN -->
-            <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
-                <input type="hidden" name="scope" value="email,public_profile,user_friends,user_birthday" />
-                <div style="float: left; margin: 5px 0 10px 0 !important;">
-                    <button type="submit" class="btn btn-success" style="background: #3B5998;">
-                        <i class="fa fa-facebook fa-2x social-awesome-icon"></i> <span class="social-text">Facebook</span>
-                    </button>
-                </div>
-            </form:form>
+                <%--<form:label for="emailId" path="emailId" cssClass="cd-label">Email</form:label>--%>
+                <%--<form:input path="emailId" cssClass="email" required="required" type="email" cssErrorClass="email error" />--%>
+            </div>
+            
 
-            <!-- GOOGLE SIGNIN -->
-            <form:form name="g_signin" id="g_signin" action="${pageContext.request.contextPath}/signin/google.htm" method="POST">
-                <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me" />
-                <input type="hidden" name="access_type" value="offline"/>
-                <div style="float: right; margin: 5px 0 10px 0 !important;">
-                    <button type="submit" class="btn btn-success" style="background: #dd4b39;">
-                        <i class="fa fa-google-plus fa-2x social-awesome-icon"></i> <span class="social-text">Google</span>
-                    </button>
+
+            <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+                    <div id="sign-in-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                            <!-- Input to enter the phone number -->
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input signin-view" type="text" pattern="\+[0-9\s\-\(\)]+" id="phone-number">
+                                <label class="mdl-textfield__label signin-view" for="phone-number">Enter your phone number...</label>
+                                <span class="mdl-textfield__error signin-view">Input is not an international phone number!</span>
+                                <input class="mdl-textfield__input verify-view" type="text" pattern="\+[0-9\s\-\(\)]+" id="verify-code">
+
+                                <div class="verify-view-component">
+                                    <input type="text" class="digital-input">
+                                    <input type="text" class="digital-input">
+                                    <input type="text" class="digital-input">
+                                    <input type="text" class="digital-input">
+                                    <input type="text" class="digital-input">
+                                    <input type="text" class="digital-input">
+                                </div>
+
+                                <label class="mdl-textfield__label verify-view" for="verify-code">Enter verify code</label>
+                                <span class="mdl-textfield__error verify-view">Do not copy or paste verify code!</span>
+                            </div>
+                            <button class="mdl-button mdl-js-button mdl-button--raised active sign-in-button" id="sign-in-button">Submit</button>
+                            <button class="mdl-button mdl-js-button mdl-button--raised verify-view" id="cancel_btn">cancel</button>
+                            <pre><code id="account-details"></code></pre>
+                        </div>
+                    </div>
                 </div>
-            </form:form>
+            </div>
         </fieldset>
 
         <form:form class="cd-form floating-labels"  method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
@@ -202,5 +292,210 @@
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
     ga('create','UA-101872684-1','auto');ga('send','pageview');
 </script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        function grecaptchafunc(){
+            if($('.verify-view-component').css('display')=='none'){
+                if(isPhoneNumberValid()){
+                    onSignInSubmit();
+                }
+                else{
+                    alert('Please check your type!');
+                    return;
+                }
+            }
+            else{
+                onVerifyCodeSubmit();
+            }
+        }
+
+        $(".sign-in-button").on('click',grecaptchafunc);
+        $(".digital-input").on('keydown',checkvalidate);
+    });
+
+    function checkvalidate(e){
+        e.preventDefault();
+        console.log(e.keyCode);
+        var ekey=e.keyCode;
+        if (ekey >= 48 && ekey <= 57) {
+            $(this).val(ekey-48);
+            var nextInput = $(this).next('input');
+            if (nextInput.length)
+                nextInput.focus();
+            else
+                $(this).blur();
+        }
+        else
+        {
+            switch(ekey){
+                case 39:
+                    var nextInput = $(this).next('input');
+                    if (nextInput.length)
+                        nextInput.focus();
+                    else
+                        $(this).blur();
+                    break;
+                case 37:
+                    var prevInput = $(this).prev('input');
+                    if (prevInput.length)
+                        prevInput.focus();
+                    else
+                        $(this).blur();
+                    break;
+                case 8:
+                    $(this).val('');
+                    var prevInput = $(this).prev('input');
+                    if (prevInput.length)
+                        prevInput.focus();
+                    else
+                        $(this).blur();
+                    break;
+                case 46:
+                    $(this).val('');
+            }
+
+        }
+    }
+
+    window.onload = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in.
+                var uid = user.uid;
+                var email = user.email;
+                var photoURL = user.photoURL;
+                var phoneNumber = user.phoneNumber;
+                var isAnonymous = user.isAnonymous;
+                var displayName = user.displayName;
+                var providerData = user.providerData;
+                var emailVerified = user.emailVerified;
+            }
+
+        });
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+            'size': 'invisible',
+            'callback': function(response) {
+                onSignInSubmit();
+            }
+        });
+
+
+        recaptchaVerifier.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+        });
+    };
+
+    function onSignInSubmit() {
+        if (isPhoneNumberValid())
+        {
+            window.signingIn = true;
+            //updateSignInButtonUI();
+            var phoneNumber = getPhoneNumberFromUserInput();
+            var appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then(function (confirmationResult) {
+                    window.confirmationResult = confirmationResult;
+                    window.signingIn = false;
+                    $('.signin-view').css('display','none');
+                    $('.verify-view-component').css('display','flex');
+                }).catch(function (error) {
+                console.error('Error during signInWithPhoneNumber', error);
+                window.signingIn = false;
+            });
+        }
+    }
+
+    function onVerifyCodeSubmit() {
+        if (!!getCodeFromUserInput()) {
+
+            window.verifyingCode = true;
+            var code = getCodeFromUserInput();
+            confirmationResult.confirm(code).then(function (result) {
+                var user = result.user;
+                window.verifyingCode = false;
+                window.confirmationResult = null;
+                displayinfo(user);
+            }).catch(function (error) {
+                window.verifyingCode = false;
+                alert('Wrong Verification code');
+                $('.digital-input').val();
+            });
+        }
+    }
+
+    function displayinfo(user){
+        document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
+    }
+    function cancelVerification(e) {
+        e.preventDefault();
+        window.confirmationResult = null;
+        updateVerificationCodeFormUI();
+        updateSignInFormUI();
+    }
+
+    function onSignOutClick() {
+        firebase.auth().signOut();
+    }
+
+    function getCodeFromUserInput() {
+        var verifystr='';
+        var items=$('.verify-view-component').children();
+        for(i in items){
+            verifystr+=items[i].value;
+        }
+        return verifystr;
+    }
+
+    function getPhoneNumberFromUserInput() {
+        return document.getElementById('phone-number').value;
+    }
+
+    function isPhoneNumberValid() {
+        var pattern = /^\+[0-9\s\-\(\)]+$/;
+        var phoneNumber = getPhoneNumberFromUserInput();
+        return phoneNumber.search(pattern) !== -1;
+    }
+
+    function resetReCaptcha() {
+        if (typeof grecaptcha !== 'undefined'
+            && typeof window.recaptchaWidgetId !== 'undefined') {
+            grecaptcha.reset(window.recaptchaWidgetId);
+        }
+    }
+
+    function updateSignInButtonUI() {
+        document.getElementById('sign-in-button').disabled =
+            !isPhoneNumberValid()
+            || !!window.signingIn;
+    }
+    function updateSignInFormUI() {
+        if (firebase.auth().currentUser || window.confirmationResult) {
+            document.getElementById('sign-in-form').style.display = 'none';
+        } else {
+            resetReCaptcha();
+            document.getElementById('sign-in-form').style.display = 'block';
+        }
+    }
+
+    function updateVerificationCodeFormUI() {
+        if (!firebase.auth().currentUser && window.confirmationResult) {
+            document.getElementById('verification-code-form').style.display = 'block';
+        } else {
+            // document.getElementById('verification-code-form').style.display = 'none';
+        }
+    }
+
+    function updateSignOutButtonUI() {
+        if (firebase.auth().currentUser) {
+            document.getElementById('sign-out-button').style.display = 'block';
+        } else {
+            // document.getElementById('sign-out-button').style.display = 'none';
+        }
+    }
+</script>
+
 </body>
 </html>
