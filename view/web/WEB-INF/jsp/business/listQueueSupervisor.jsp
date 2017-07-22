@@ -110,6 +110,7 @@
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <select path="userLevel" cssClass="styled-select slate">
                                             <c:forEach var="item" items="${userLevelEnumValues}">
+                                                <%--//TODO Add ajax call to change user role--%>
                                                 <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
                                             </c:forEach>
                                         </select>
