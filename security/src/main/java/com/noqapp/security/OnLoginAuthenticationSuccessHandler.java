@@ -48,10 +48,10 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${displayLanding:/display/landing.htm}")
     private String displayLanding;
 
-    @Value ("${queueSupervisorLanding:/business/bm/queue/landing.htm}")
+    @Value ("${queueSupervisorLanding:/business/store/queue/landing.htm}")
     private String queueSupervisorLanding;
 
-    @Value ("${storeManagerLanding:/business/bm/landing.htm}")
+    @Value ("${storeManagerLanding:/business/store/landing.htm}")
     private String storeManagerLanding;
 
     @Value ("${businessAdminLanding:/business/landing.htm}")

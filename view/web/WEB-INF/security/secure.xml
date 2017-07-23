@@ -122,10 +122,10 @@
         <intercept-url pattern="/display/**"
                        access="hasRole('ROLE_ANALYSIS')" />
 
-        <intercept-url pattern="/business/bm/queue/**"
+        <intercept-url pattern="/business/store/queue/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
 
-        <intercept-url pattern="/business/bm/**"
+        <intercept-url pattern="/business/store/**"
                        access="hasRole('ROLE_MER_MANAGER')" />
 
         <intercept-url pattern="/business/**"

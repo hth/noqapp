@@ -93,7 +93,7 @@
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <a href="/business/bm/store/${store.id}.htm">${store.address}</a>
+                                        <a href="/business/store/detail/${store.id}.htm">${store.address}</a>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>

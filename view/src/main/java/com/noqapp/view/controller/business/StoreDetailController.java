@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.business.bm;
+package com.noqapp.view.controller.business;
 
 import com.google.zxing.WriterException;
 
@@ -45,9 +45,9 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business/bm/store")
-public class StoreController {
-    private static final Logger LOG = LoggerFactory.getLogger(StoreController.class);
+@RequestMapping (value = "/business/store/detail")
+public class StoreDetailController {
+    private static final Logger LOG = LoggerFactory.getLogger(StoreDetailController.class);
 
     private String nextPage;
 
@@ -55,8 +55,8 @@ public class StoreController {
     private CodeQRGeneratorService codeQRGeneratorService;
 
     @Autowired
-    public StoreController(
-            @Value ("${nextPage:/business/bm/store}")
+    public StoreDetailController(
+            @Value ("${nextPage:/business/storeDetail}")
             String nextPage,
 
             BizService bizService,

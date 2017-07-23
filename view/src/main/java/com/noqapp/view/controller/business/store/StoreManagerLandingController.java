@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.business.bm;
+package com.noqapp.view.controller.business.store;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business/bm")
+@RequestMapping (value = "/business/store")
 public class StoreManagerLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(StoreManagerLandingController.class);
 
