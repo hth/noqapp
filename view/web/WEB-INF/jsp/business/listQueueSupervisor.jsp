@@ -127,9 +127,6 @@
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                                         <c:choose>
-                                            <c:when test="${!queueSupervisor.active}">
-                                                Deleted
-                                            </c:when>
                                             <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
                                                 <!-- Admin cannot delete itself -->
                                                 --
@@ -140,7 +137,14 @@
                                                         Awaiting Your Approval
                                                     </c:when>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                        Remove
+                                                        <c:choose>
+                                                            <c:when test="${!queueSupervisor.active}">
+                                                                Deleted
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                Remove
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:when>
                                                     <c:otherwise>
                                                         Pending
