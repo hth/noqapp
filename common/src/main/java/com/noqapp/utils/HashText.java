@@ -27,7 +27,7 @@ import java.util.Date;
 public final class HashText {
     private static final Logger LOG = LoggerFactory.getLogger(HashText.class);
 
-    // Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.
+    /* Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value. */
     private static final int WORKLOAD = 15;
 
     private static MessageDigest md1;
