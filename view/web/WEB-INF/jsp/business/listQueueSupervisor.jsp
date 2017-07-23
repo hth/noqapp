@@ -108,25 +108,39 @@
                                         ${queueSupervisor.email}
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
-                                        <select path="userLevel" cssClass="styled-select slate">
-                                            <c:forEach var="item" items="${userLevelEnumValues}">
-                                                <%--//TODO Add ajax call to change user role--%>
-                                                <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <c:choose>
+                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
+                                                <select path="userLevel" cssClass="styled-select slate">
+                                                    <c:forEach var="item" items="${userLevelEnumValues}">
+                                                        <%--//TODO Add ajax call to change user role--%>
+                                                        <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${queueSupervisor.userLevel.description}
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc;">
                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd" />
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                                         <c:choose>
-                                            <c:when test="${queueSupervisor.active}">
-                                                X
+                                            <c:when test="${!queueSupervisor.active}">
+                                                Deleted
+                                            </c:when>
+                                            <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
+                                                <!-- Admin cannot delete itself -->
+                                                --
                                             </c:when>
                                             <c:otherwise>
                                                 <c:choose>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                        Approve
+                                                        Awaiting Your Approval
+                                                    </c:when>
+                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
+                                                        Remove
                                                     </c:when>
                                                     <c:otherwise>
                                                         Pending
