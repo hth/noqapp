@@ -95,9 +95,37 @@ public class AddQueueSupervisorFlowActions {
 
     @SuppressWarnings ("unused")
     public InviteQueueSupervisor completeInvite(InviteQueueSupervisor inviteQueueSupervisor, MessageContext messageContext) {
-        String internationalFormat = Formatter.phoneInternationalFormat(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName());
+        String internationalFormat;
+        try {
+            internationalFormat = Formatter.phoneInternationalFormat(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName());
+        } catch (Exception e) {
+            LOG.error("Failed parsing international format phone={} countryShortName={}",
+                    inviteQueueSupervisor.getPhoneNumber(),
+                    inviteQueueSupervisor.getCountryShortName());
+
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("inviteQueueSupervisor.phoneNumber")
+                            .defaultText("Phone number " + inviteQueueSupervisor.getPhoneNumber() + " not valid.")
+                            .build());
+
+            throw new InviteSupervisorException("Phone number not valid");
+        }
+        LOG.info("International phone number={}", internationalFormat);
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(Formatter.phoneCleanup(internationalFormat));
+        if (null == userProfile) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("inviteQueueSupervisor.phoneNumber")
+                            .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
+                            .build());
+
+            throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+        }
+
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
             messageContext.addMessage(
                     new MessageBuilder()
