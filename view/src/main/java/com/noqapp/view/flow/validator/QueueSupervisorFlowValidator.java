@@ -27,6 +27,8 @@ public class QueueSupervisorFlowValidator {
      */
     @SuppressWarnings("unused")
     public String validatePhoneNumber(InviteQueueSupervisor inviteQueueSupervisor, MessageContext messageContext) {
+        LOG.info("validatePhoneNumber phone={}", inviteQueueSupervisor.getPhoneNumber());
+
         String status = "success";
         if (StringUtils.isBlank(inviteQueueSupervisor.getPhoneNumber())) {
             messageContext.addMessage(
@@ -58,6 +60,7 @@ public class QueueSupervisorFlowValidator {
             status = "failure";
         }
 
+        LOG.info("validatePhoneNumber status={}", status);
         return status;
     }
 }

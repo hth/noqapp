@@ -81,6 +81,7 @@ public class AddQueueSupervisorFlowActions {
 
     @SuppressWarnings ("all")
     public InviteQueueSupervisor inviteSupervisorStart(ExternalContext externalContext) {
+        LOG.info("InviteSupervisorStart");
         String bizStoreId = (String) webFlowUtils.getFlashAttribute(externalContext, "bizStoreId");
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 
