@@ -25,10 +25,10 @@ class AccountServiceTest {
     @Mock private UserPreferenceManager userPreferenceManager;
     @Mock private UserProfileManager userProfileManager;
     @Mock private GenerateUserIdService generateUserIdService;
-    @Mock private NotificationService notificationService;
     @Mock private EmailValidateService emailValidateService;
     @Mock private InviteService inviteService;
     @Mock private ForgotRecoverManager forgotRecoverManager;
+    @Mock private MailService mailService;
 
     private AccountService accountService;
 
@@ -41,10 +41,10 @@ class AccountServiceTest {
                 userPreferenceManager,
                 userProfileManager,
                 generateUserIdService,
-                notificationService,
                 emailValidateService,
                 inviteService,
-                forgotRecoverManager);
+                forgotRecoverManager,
+                mailService);
     }
 
     @Test
