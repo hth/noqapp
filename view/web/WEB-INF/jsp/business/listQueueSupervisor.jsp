@@ -130,10 +130,14 @@
                                             <c:when test="${!queueSupervisor.active}">
                                                 Deleted
                                             </c:when>
+                                            <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
+                                                <!-- Admin cannot delete itself -->
+                                                --
+                                            </c:when>
                                             <c:otherwise>
                                                 <c:choose>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                        Awaiting Your Approve
+                                                        Awaiting Your Approval
                                                     </c:when>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                         Remove
