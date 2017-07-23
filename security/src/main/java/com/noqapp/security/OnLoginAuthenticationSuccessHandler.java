@@ -120,9 +120,9 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return displayLanding;
             case ROLE_Q_SUPERVISOR:
                 return queueSupervisorLanding;
-            case ROLE_MER_MANAGER:
+            case ROLE_S_MANAGER:
                 return storeManagerLanding;
-            case ROLE_MER_ADMIN:
+            case ROLE_M_ADMIN:
                 return businessAdminLanding;
             case ROLE_TECHNICIAN:
                 return empTechLanding;
