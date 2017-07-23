@@ -93,7 +93,7 @@
                                 <th width="20px;"></th>
                             </tr>
                             </thead>
-                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.values()%>"/>
+                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.merchantLevels()%>"/>
                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ccc" rowspan="0">${status.count}&nbsp;</td>
