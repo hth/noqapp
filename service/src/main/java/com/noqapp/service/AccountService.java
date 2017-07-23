@@ -87,7 +87,7 @@ public class AccountService {
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
-        
+
         this.service = newCachedThreadPool();
     }
 
@@ -543,6 +543,7 @@ public class AccountService {
      * Update user profile info.
      *
      * @param registerUser
+     * @param username
      */
     public void updateUserProfile(RegisterUser registerUser, String username) {
         UserProfileEntity userProfile;
@@ -553,7 +554,7 @@ public class AccountService {
         } else {
             userProfile = doesUserExists(username);
         }
-        
+
         userProfile.setAddress(registerUser.getAddress());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         userProfile.setPhone(registerUser.getPhoneWithCountryCode());
@@ -572,6 +573,12 @@ public class AccountService {
         }
     }
 
+    /**
+     * Prefer to call it in a thread as it takes a while to encrypt password.
+     *
+     * @param password
+     * @param rid
+     */
     private void createAuthentication(String password, String rid) {
         UserAuthenticationEntity userAuthentication = generateUserAuthentication(password);
         UserAccountEntity userAccount = findByReceiptUserId(rid);

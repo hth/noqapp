@@ -1,5 +1,8 @@
 package com.noqapp.domain.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 11/18/16 9:58 AM
@@ -39,6 +42,10 @@ public enum UserLevelEnum {
 
     public int getValue() {
         return value;
+    }
+
+    public static List<UserLevelEnum> merchantLevels() {
+        return Arrays.asList(Q_SUPERVISOR, S_MANAGER, M_ADMIN);
     }
 
     @Override
