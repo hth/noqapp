@@ -65,66 +65,66 @@ public class AccountValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "field.required", new Object[]{"Phone"});
 
         if (!errors.hasErrors()) {
-            MerchantRegistrationForm userRegistration = (MerchantRegistrationForm) obj;
-            if (StringUtils.isNotBlank(userRegistration.getCountryShortName()) && userRegistration.getCountryShortName().length() != countryShortNameLength) {
+            MerchantRegistrationForm merchantRegistration = (MerchantRegistrationForm) obj;
+            if (StringUtils.isNotBlank(merchantRegistration.getCountryShortName()) && merchantRegistration.getCountryShortName().length() != countryShortNameLength) {
                 errors.rejectValue("countryShortName",
                         "field.length",
                         new Object[]{"Country Code", countryShortNameLength},
                         "Minimum length of " + countryShortNameLength + " characters");
-            } else if(!Formatter.isValidCountryCode(userRegistration.getCountryShortName())) {
+            } else if(!Formatter.isValidCountryCode(merchantRegistration.getCountryShortName())) {
                 errors.rejectValue("countryShortName",
                         "field.invalid",
-                        new Object[]{"Country Code", userRegistration.getCountryShortName()},
-                        "Country Code is not a valid name " + userRegistration.getCountryShortName());
+                        new Object[]{"Country Code", merchantRegistration.getCountryShortName()},
+                        "Country Code is not a valid name " + merchantRegistration.getCountryShortName());
             }
 
-            if (!Validate.isValidPhoneWithInternationalCode(userRegistration.getPhone())) {
+            if (!Validate.isValidPhoneWithInternationalCode(merchantRegistration.getPhone())) {
                 errors.rejectValue("phone",
                         "field.phone.international.invalid",
-                        new Object[]{userRegistration.getPhone()},
-                        "Phone number " + userRegistration.getPhone() + " should start with '+' followed by international code");
+                        new Object[]{merchantRegistration.getPhone()},
+                        "Phone number " + merchantRegistration.getPhone() + " should start with '+' followed by international code");
             }
 
-            if (!Validate.isValidName(userRegistration.getFirstName())) {
+            if (!Validate.isValidName(merchantRegistration.getFirstName())) {
                 errors.rejectValue("firstName",
                         "field.invalid",
-                        new Object[]{"First name", userRegistration.getFirstName()},
-                        "First name is not a valid name " + userRegistration.getFirstName());
+                        new Object[]{"First name", merchantRegistration.getFirstName()},
+                        "First name is not a valid name " + merchantRegistration.getFirstName());
             }
 
-            if (userRegistration.getFirstName().length() < nameLength) {
+            if (merchantRegistration.getFirstName().length() < nameLength) {
                 errors.rejectValue("firstName",
                         "field.length",
                         new Object[]{"First name", nameLength},
                         "Minimum length of " + nameLength + " characters");
             }
 
-            if (!Validate.isValidName(userRegistration.getLastName())) {
+            if (!Validate.isValidName(merchantRegistration.getLastName())) {
                 errors.rejectValue("lastName",
                         "field.invalid",
-                        new Object[]{"Last name", userRegistration.getLastName()},
-                        "Last name is not a valid name " + userRegistration.getLastName());
+                        new Object[]{"Last name", merchantRegistration.getLastName()},
+                        "Last name is not a valid name " + merchantRegistration.getLastName());
             }
 
-            if (!Validate.isValidMail(userRegistration.getMail())) {
+            if (!Validate.isValidMail(merchantRegistration.getMail())) {
                 errors.rejectValue("mail",
                         "field.email.address.not.valid",
-                        new Object[]{userRegistration.getMail()},
+                        new Object[]{merchantRegistration.getMail()},
                         "Email Address provided is not valid");
             }
 
-            if (StringUtils.isNotBlank(userRegistration.getGender())) {
+            if (StringUtils.isNotBlank(merchantRegistration.getGender())) {
                 try {
-                    GenderEnum.valueOf(userRegistration.getGender());
+                    GenderEnum.valueOf(merchantRegistration.getGender());
                 } catch (IllegalArgumentException e) {
                     errors.rejectValue("gender",
                             "field.invalid",
-                            new Object[]{"Gender", userRegistration.getGender()},
+                            new Object[]{"Gender", merchantRegistration.getGender()},
                             "Gender provided is not valid");
                 }
             }
 
-            if (userRegistration.getMail() != null && userRegistration.getMail().length() <= mailLength) {
+            if (merchantRegistration.getMail() != null && merchantRegistration.getMail().length() <= mailLength) {
                 errors.rejectValue(
                         "mail",
                         "field.length",
@@ -132,21 +132,21 @@ public class AccountValidator implements Validator {
                         "Email address has to be at least of size " + mailLength + " characters");
             }
 
-            if (userRegistration.getPassword().length() < passwordLength) {
+            if (merchantRegistration.getPassword().length() < passwordLength) {
                 errors.rejectValue("password",
                         "field.length",
                         new Object[]{"Password", passwordLength},
                         "Minimum length of " + passwordLength + " characters");
             }
 
-            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(userRegistration.getBirthday()).matches()) {
+            if (StringUtils.isNotBlank(merchantRegistration.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(merchantRegistration.getBirthday()).matches()) {
                 errors.rejectValue("birthday",
                         "field.birthday.not.valid",
-                        new Object[]{userRegistration.getBirthday()},
-                        "Date format not valid " + userRegistration.getBirthday());
+                        new Object[]{merchantRegistration.getBirthday()},
+                        "Date format not valid " + merchantRegistration.getBirthday());
             }
 
-            if (!userRegistration.isAcceptsAgreement()) {
+            if (!merchantRegistration.isAcceptsAgreement()) {
                 if (errors.hasErrors()) {
                     errors.rejectValue("acceptsAgreement",
                             "agreement.checkbox",
