@@ -97,7 +97,11 @@ public class AddQueueSupervisorFlowActions {
     public InviteQueueSupervisor completeInvite(InviteQueueSupervisor inviteQueueSupervisor, MessageContext messageContext) {
         String internationalFormat;
         try {
-            internationalFormat = Formatter.phoneInternationalFormat(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName());
+            internationalFormat = Formatter.phoneInternationalFormat(
+                    inviteQueueSupervisor.getPhoneNumber(),
+                    inviteQueueSupervisor.getCountryShortName());
+            
+            LOG.debug("International phone number={}", internationalFormat);
         } catch (Exception e) {
             LOG.error("Failed parsing international format phone={} countryShortName={}",
                     inviteQueueSupervisor.getPhoneNumber(),
@@ -112,7 +116,6 @@ public class AddQueueSupervisorFlowActions {
 
             throw new InviteSupervisorException("Phone number not valid");
         }
-        LOG.info("International phone number={}", internationalFormat);
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(Formatter.phoneCleanup(internationalFormat));
         if (null == userProfile) {
