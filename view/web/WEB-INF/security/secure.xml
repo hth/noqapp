@@ -65,7 +65,7 @@
         <intercept-url pattern="/migrate/**"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
-                       'ROLE_MER_ADMIN')" />
+                       'ROLE_M_ADMIN')" />
 
         <intercept-url pattern="/migrate/business/profile/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
@@ -73,8 +73,9 @@
         <intercept-url pattern="/access/signoff.htm"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
-                       'ROLE_MER_MANAGER',
-                       'ROLE_MER_ADMIN',
+                       'ROLE_Q_SUPERVISOR',
+                       'ROLE_S_MANAGER',
+                       'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
                        'ROLE_SUPERVISOR',
@@ -83,8 +84,9 @@
         <intercept-url pattern="/access/eval/**"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
-                       'ROLE_MER_MANAGER',
-                       'ROLE_MER_ADMIN',
+                       'ROLE_Q_SUPERVISOR',
+                       'ROLE_S_MANAGER',
+                       'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
                        'ROLE_SUPERVISOR')" />
@@ -92,8 +94,9 @@
         <intercept-url pattern="/access/userprofilepreference/**"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
-                       'ROLE_MER_MANAGER',
-                       'ROLE_MER_ADMIN',
+                       'ROLE_Q_SUPERVISOR',
+                       'ROLE_S_MANAGER',
+                       'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
                        'ROLE_SUPERVISOR')" />
@@ -108,28 +111,22 @@
         <intercept-url pattern="/ws/**"
                        access="hasAnyRole('ROLE_CLIENT', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
 
-        <!-- Note: narrowed interceptor has to be before broader interceptor, example '/emp/**' for ROLE_SUPERVISOR -->
-        <intercept-url pattern="/emp/receipt/**"
-                       access="hasRole('ROLE_TECHNICIAN')" />
-
-        <!-- Note: broader interceptor after narrowed interceptor, example '/emp/receipt/**' for ROLE_TECHNICIAN -->
-        <intercept-url pattern="/emp/**"
-                       access="hasRole('ROLE_SUPERVISOR')" />
-
         <intercept-url pattern="/admin/**"
                        access="hasRole('ROLE_ADMIN')" />
 
         <intercept-url pattern="/display/**"
                        access="hasRole('ROLE_ANALYSIS')" />
 
-        <intercept-url pattern="/business/bm/queue/**"
+        <!-- Note: narrowed interceptor has to be before broader interceptor, example '/business/**' for ROLE_SUPERVISOR -->
+        <intercept-url pattern="/business/store/queue/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
 
-        <intercept-url pattern="/business/bm/**"
-                       access="hasRole('ROLE_MER_MANAGER')" />
+        <intercept-url pattern="/business/store/**"
+                       access="hasRole('ROLE_S_MANAGER')" />
 
+        <!-- Note: broader interceptor after narrowed interceptor, example '/business/store/queue/**' for ROLE_TECHNICIAN -->
         <intercept-url pattern="/business/**"
-                       access="hasRole('ROLE_MER_ADMIN')" />
+                       access="hasRole('ROLE_M_ADMIN')" />
 
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.0/24') or hasIpAddress('10.0.0.0/24') or hasIpAddress('127.0.0.1')" />

@@ -22,10 +22,10 @@ public enum RoleEnum {
     ROLE_Q_SUPERVISOR,
 
     /** A Store manager. */
-    ROLE_MER_MANAGER,
+    ROLE_S_MANAGER,
 
-    /** A business admin. */
-    ROLE_MER_ADMIN,
+    /** A Merchant admin for a business. */
+    ROLE_M_ADMIN,
 
     /** Validate and process data. */
     ROLE_TECHNICIAN,

@@ -1,4 +1,4 @@
-<%@ include file="../../include.jsp"%>
+<%@ include file="../include.jsp"%>
 <!DOCTYPE html>
 <html lang="en" ng-app="scroll" ng-controller="Main">
 <head>
@@ -85,7 +85,7 @@
             </c:choose>
         </c:forEach>
 
-        <img src="/business/bm/store/i/${storeLandingForm.qrFileName}.htm" />
+        <img src="/business/store/detail/i/${storeLandingForm.qrFileName}.htm" />
     </div>
     <div class="footer-tooth clearfix">
         <div class="footer-tooth-middle"></div>

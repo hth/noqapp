@@ -48,10 +48,10 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${displayLanding:/display/landing.htm}")
     private String displayLanding;
 
-    @Value ("${queueSupervisorLanding:/business/bm/queue/landing.htm}")
+    @Value ("${queueSupervisorLanding:/business/store/queue/landing.htm}")
     private String queueSupervisorLanding;
 
-    @Value ("${storeManagerLanding:/business/bm/landing.htm}")
+    @Value ("${storeManagerLanding:/business/store/landing.htm}")
     private String storeManagerLanding;
 
     @Value ("${businessAdminLanding:/business/landing.htm}")
@@ -120,9 +120,9 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return displayLanding;
             case ROLE_Q_SUPERVISOR:
                 return queueSupervisorLanding;
-            case ROLE_MER_MANAGER:
+            case ROLE_S_MANAGER:
                 return storeManagerLanding;
-            case ROLE_MER_ADMIN:
+            case ROLE_M_ADMIN:
                 return businessAdminLanding;
             case ROLE_TECHNICIAN:
                 return empTechLanding;

@@ -29,7 +29,7 @@ public class AccessDeniedController {
      *
      * @return the name of the JSP page
      */
-    @PreAuthorize ("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR', 'ROLE_MER_MANAGER', 'ROLE_MER_ADMIN')")
+    @PreAuthorize ("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR', 'ROLE_Q_SUPERVISOR', 'ROLE_S_MANAGER', 'ROLE_M_ADMIN')")
     @RequestMapping (value = "/denied", method = RequestMethod.GET)
     public String getDeniedPage() {
         LOG.debug("Received request to show denied page");

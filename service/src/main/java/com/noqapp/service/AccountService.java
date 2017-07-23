@@ -448,14 +448,14 @@ public class AccountService {
             case S_MANAGER:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
-                roles.add(RoleEnum.ROLE_MER_MANAGER);
+                roles.add(RoleEnum.ROLE_S_MANAGER);
                 userAccount.setRoles(roles);
                 break;
             case M_ADMIN:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
-                roles.add(RoleEnum.ROLE_MER_MANAGER);
-                roles.add(RoleEnum.ROLE_MER_ADMIN);
+                roles.add(RoleEnum.ROLE_S_MANAGER);
+                roles.add(RoleEnum.ROLE_M_ADMIN);
                 userAccount.setRoles(roles);
                 break;
             default:

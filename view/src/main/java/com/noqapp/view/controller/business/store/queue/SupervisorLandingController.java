@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.business.bm.queue;
+package com.noqapp.view.controller.business.store.queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import com.noqapp.view.form.business.BusinessLandingForm;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business/bm/queue")
+@RequestMapping (value = "/business/store/queue")
 public class SupervisorLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(SupervisorLandingController.class);
 
@@ -38,7 +38,7 @@ public class SupervisorLandingController {
 
     @Autowired
     public SupervisorLandingController(
-            @Value ("${nextPage:/business/bm/queue}")
+            @Value ("${nextPage:/business/store/queue}")
             String nextPage,
 
             @Value ("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
