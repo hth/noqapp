@@ -58,7 +58,7 @@ public class NotificationService {
         notification.setNotificationMarkerEnum(notificationType.notificationMarker);
         notification.setNotificationGroup(notificationGroup);
         if (notificationType.notificationMarker != NotificationMarkerEnum.P) {
-            /** Defaults to success as its not going to be sent through Push Notification. */
+            /* Defaults to success as its not going to be sent through Push Notification. */
             notification.setNotificationStateToSuccess();
         }
         notification.setReferenceId(id);
