@@ -32,7 +32,7 @@ import java.util.List;
 })
 @Repository
 public class MailManagerImpl implements MailManager {
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MailManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             MailEntity.class,
             Document.class,

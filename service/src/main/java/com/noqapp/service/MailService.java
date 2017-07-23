@@ -47,7 +47,6 @@ public class MailService {
     private EmailValidateService emailValidateService;
     private FreemarkerService freemarkerService;
     private UserProfilePreferenceService userProfilePreferenceService;
-    private NotificationService notificationService;
     private MailManager mailManager;
 
     private String devSentTo;
@@ -105,7 +104,6 @@ public class MailService {
             FreemarkerService freemarkerService,
             EmailValidateService emailValidateService,
             UserProfilePreferenceService userProfilePreferenceService,
-            NotificationService notificationService,
             MailManager mailManager,
 
             @Value ("${MailService.inviteCachePeriod}")
@@ -128,7 +126,6 @@ public class MailService {
         this.freemarkerService = freemarkerService;
         this.emailValidateService = emailValidateService;
         this.userProfilePreferenceService = userProfilePreferenceService;
-        this.notificationService = notificationService;
         this.mailManager = mailManager;
 
         invitees = CacheBuilder.newBuilder()

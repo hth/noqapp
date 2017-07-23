@@ -22,8 +22,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
-import com.noqapp.domain.types.NotificationGroupEnum;
-import com.noqapp.domain.types.NotificationTypeEnum;
 import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -60,7 +58,6 @@ public class AccountService {
     private UserPreferenceManager userPreferenceManager;
     private UserProfileManager userProfileManager;
     private GenerateUserIdService generateUserIdService;
-    private NotificationService notificationService;
     private EmailValidateService emailValidateService;
     private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
@@ -74,7 +71,6 @@ public class AccountService {
             UserPreferenceManager userPreferenceManager,
             UserProfileManager userProfileManager,
             GenerateUserIdService generateUserIdService,
-            NotificationService notificationService,
             EmailValidateService emailValidateService,
             InviteService inviteService,
             ForgotRecoverManager forgotRecoverManager) {
@@ -83,7 +79,6 @@ public class AccountService {
         this.userPreferenceManager = userPreferenceManager;
         this.userProfileManager = userProfileManager;
         this.generateUserIdService = generateUserIdService;
-        this.notificationService = notificationService;
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
@@ -234,7 +229,6 @@ public class AccountService {
             }
 
             createPreferences(userProfile);
-            addWelcomeNotification(userAccount);
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
                 if (null != userProfileOfInvitee) {
@@ -367,14 +361,6 @@ public class AccountService {
         if (null != userProfile) {
             userProfileManager.deleteHard(userProfile);
         }
-    }
-
-    private void addWelcomeNotification(UserAccountEntity userAccount) {
-        notificationService.addNotification(
-                "Welcome " + userAccount.getName() + ". Next step, take a picture of your receipt from app to process it.",
-                NotificationTypeEnum.PUSH_NOTIFICATION,
-                NotificationGroupEnum.N,
-                userAccount.getReceiptUserId());
     }
 
     public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
