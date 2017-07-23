@@ -11,9 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -151,13 +151,17 @@ public class LoginController {
      */
     String continueLoginAfterRegistration(String rid) {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
-        Assert.notNull(userAccount, "UserAccount not found rid=" + rid);
+
+        if (null == userAccount) {
+            LOG.error("No user found with RID={}", rid);
+            throw new UsernameNotFoundException("User Not found");
+        }
 
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
         UserDetails userDetails = new TokenUser(
                 userProfile.getEmail(),
-                userAccount.getUserAuthentication().getPassword(),
+                "",
                 authorities,
                 rid,
                 userProfile.getProviderId(),
@@ -166,7 +170,12 @@ public class LoginController {
                 userAccount.isAccountValidated(),
                 userProfile.getCountryShortName()
         );
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userAccount.getUserAuthentication().getPassword(), authorities);
+
+        /*
+         * Blank password as Authentication object from thread is still being processed.
+         * For other TokenUser pass the password for BCryptPasswordEncoder.
+         */
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return onLoginAuthenticationSuccessHandler.determineTargetUrl(authentication);

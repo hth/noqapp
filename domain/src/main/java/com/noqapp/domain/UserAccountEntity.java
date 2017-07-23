@@ -124,15 +124,13 @@ public class UserAccountEntity extends BaseEntity {
             String receiptUserId,
             String userId,
             String firstName,
-            String lastName,
-            UserAuthenticationEntity userAuthentication
+            String lastName
     ) {
         this();
         this.receiptUserId = receiptUserId;
         this.userId = userId;
         this.firstName = WordUtils.capitalizeFully(firstName);
         this.lastName = WordUtils.capitalizeFully(lastName);
-        this.userAuthentication = userAuthentication;
         this.displayName = getName();
     }
 
@@ -140,10 +138,9 @@ public class UserAccountEntity extends BaseEntity {
             String receiptUserId,
             String userId,
             String firstName,
-            String lastName,
-            UserAuthenticationEntity userAuthentication
+            String lastName
     ) {
-        return new UserAccountEntity(receiptUserId, userId, firstName, lastName, userAuthentication);
+        return new UserAccountEntity(receiptUserId, userId, firstName, lastName);
     }
 
     public String getReceiptUserId() {

@@ -9,7 +9,6 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.social.annotation.Social;
 
@@ -70,8 +69,7 @@ public class ConnectionConverter {
                 receiptUserId,
                 userId,
                 "",
-                "",
-                UserAuthenticationEntity.blankInstance()
+                ""
         );
         userAccount.setProviderId(ProviderEnum.valueOf(data.getProviderId().toUpperCase()));
         userAccount.setProviderUserId(data.getProviderUserId());
