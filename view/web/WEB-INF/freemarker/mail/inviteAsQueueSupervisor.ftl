@@ -37,7 +37,6 @@
 	This invite will expire after 7 days from now.
 </p>
 <p>
-	<br/><br/>
 	Cheers, <br/>
 	${businessName}<br />
 </p>
