@@ -73,8 +73,7 @@ public class AccountService {
             GenerateUserIdService generateUserIdService,
             EmailValidateService emailValidateService,
             InviteService inviteService,
-            ForgotRecoverManager forgotRecoverManager,
-            MailService mailService
+            ForgotRecoverManager forgotRecoverManager
     ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
