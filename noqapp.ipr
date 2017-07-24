@@ -1333,12 +1333,13 @@
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
-    <list size="5">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="com.noqapp.domain.annotation.Mobile" />
       <item index="1" class="java.lang.String" itemvalue="org.springframework.context.annotation.Configuration" />
       <item index="2" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
       <item index="3" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
       <item index="4" class="java.lang.String" itemvalue="org.springframework.stereotype.Repository" />
+      <item index="5" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
     </list>
   </component>
   <component name="GradleSettings">

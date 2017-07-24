@@ -61,7 +61,6 @@ public class AccountService {
     private EmailValidateService emailValidateService;
     private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
-    private MailService mailService;
 
     private ExecutorService service;
 
@@ -85,7 +84,6 @@ public class AccountService {
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
-        this.mailService = mailService;
 
         this.service = newCachedThreadPool();
     }
@@ -246,31 +244,10 @@ public class AccountService {
                 InviteEntity invite = new InviteEntity(rid, null, null);
                 inviteService.save(invite);
             }
-
-            sendValidationMailOnAccountCreation(mail, userAccount);
-            LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
             return userAccount;
         } else {
             LOG.error("Account creation failed as it already exists for phone={}", phoneWithCountryCode);
             return null;
-        }
-    }
-
-    /**
-     * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
-     *
-     * @param mail
-     * @param userAccount
-     */
-    private void sendValidationMailOnAccountCreation(String mail, UserAccountEntity userAccount) {
-        if (StringUtils.isNotBlank(mail)) {
-            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                    userAccount.getReceiptUserId(),
-                    userAccount.getUserId());
-
-            String email = userAccount.getUserId();
-            String name = userAccount.getName();
-            service.submit(() -> mailService.accountValidationMail(email, name, accountValidate.getAuthenticationKey()));
         }
     }
 

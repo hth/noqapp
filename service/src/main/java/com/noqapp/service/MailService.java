@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -24,6 +26,7 @@ import freemarker.template.TemplateException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,8 +49,9 @@ public class MailService {
     private AccountService accountService;
     private EmailValidateService emailValidateService;
     private FreemarkerService freemarkerService;
-    private UserProfilePreferenceService userProfilePreferenceService;
     private MailManager mailManager;
+
+    private ExecutorService service;
 
     private String devSentTo;
     private String inviteeEmail;
@@ -62,7 +66,6 @@ public class MailService {
     private String accountNotFoundSubject;
 
     private final Cache<String, String> invitees;
-
 
     @Autowired
     public MailService(
@@ -103,7 +106,6 @@ public class MailService {
 
             FreemarkerService freemarkerService,
             EmailValidateService emailValidateService,
-            UserProfilePreferenceService userProfilePreferenceService,
             MailManager mailManager,
 
             @Value ("${MailService.inviteCachePeriod}")
@@ -125,9 +127,9 @@ public class MailService {
         this.accountService = accountService;
         this.freemarkerService = freemarkerService;
         this.emailValidateService = emailValidateService;
-        this.userProfilePreferenceService = userProfilePreferenceService;
         this.mailManager = mailManager;
 
+        this.service = newCachedThreadPool();
         invitees = CacheBuilder.newBuilder()
                 .maximumSize(SIZE_100)
                 .expireAfterWrite(inviteCachePeriod, TimeUnit.MINUTES)
@@ -199,7 +201,7 @@ public class MailService {
         }
 
         if (null != userAccount.getProviderId()) {
-            /** Cannot change password for social account. Well this condition is checked in Mobile Server too. */
+            /* Cannot change password for social account. Well this condition is checked in Mobile Server too. */
             LOG.warn("Social account user={} tried recovering password", userId);
             return MailTypeEnum.SOCIAL_ACCOUNT;
         }
@@ -266,5 +268,19 @@ public class MailService {
             return MailTypeEnum.FAILURE;
         }
         return MailTypeEnum.SUCCESS;
+    }
+
+    /**
+     * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
+     *
+     * @param userId
+     * @param rid
+     * @param name
+     */
+    public void sendValidationMailOnAccountCreation(String userId, String rid, String name) {
+        if (StringUtils.isNotBlank(userId) && !userId.endsWith("mail.noqapp.com")) {
+            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(rid, userId);
+            service.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
+        }
     }
 }
