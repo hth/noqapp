@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.MailService;
 import com.noqapp.utils.ParseJsonStringToMap;
 import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.MerchantRegistrationForm;
@@ -46,6 +47,7 @@ public class AccountRegistrationController {
 
     private AccountValidator accountValidator;
     private AccountService accountService;
+    private MailService mailService;
     private LoginController loginController;
 
     @Value ("${registrationPage:registrationMerchant}")
@@ -64,9 +66,12 @@ public class AccountRegistrationController {
     public AccountRegistrationController(
             AccountValidator accountValidator,
             AccountService accountService,
-            LoginController loginController) {
+            MailService mailService,
+            LoginController loginController
+    ) {
         this.accountValidator = accountValidator;
         this.accountService = accountService;
+        this.mailService = mailService;
         this.loginController = loginController;
     }
 
@@ -118,6 +123,12 @@ public class AccountRegistrationController {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
             return registrationPage;
         }
+
+        LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
+        mailService.sendValidationMailOnAccountCreation(
+                userAccount.getUserId(),
+                userAccount.getReceiptUserId(),
+                userAccount.getName());
 
         LOG.info("Account registered success");
         String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getReceiptUserId());
