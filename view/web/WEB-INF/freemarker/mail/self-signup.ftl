@@ -4,7 +4,7 @@
 	@import url('http://fonts.googleapis.com/css?family=Open+Sans');
 
 	body {
-		margin: 0;
+		margin: 0 20px 100px 20px;
 		mso-line-height-rule: exactly;
 		padding: 10px 30px 30px 30px;
 		min-width: 90%;

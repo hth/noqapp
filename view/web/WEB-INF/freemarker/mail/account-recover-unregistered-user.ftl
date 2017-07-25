@@ -4,7 +4,7 @@
 	@import url('http://fonts.googleapis.com/css?family=Open+Sans');
 
 	body {
-		margin: 0;
+		margin: 0 20px 100px 20px;
 		mso-line-height-rule: exactly;
 		padding: 10px 30px 30px 30px;
 		min-width: 90%;
@@ -38,7 +38,7 @@
 </p>
 <p>
 	If you would like to create an account on NoQueue just visit our sign-up page:
-	<a href="${https}://${domain}/open/registration.htm">${https}://${domain}/open/registration.htm ></a>
+	<a href="${https}://${domain}/open/registrationMerchant.htm">${https}://${domain}/open/registrationMerchant.htm ></a>
 </p>
 <p>
 	If you did not request this account recovery, just ignore this email. Your email address is safe.
