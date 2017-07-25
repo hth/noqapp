@@ -28,7 +28,7 @@
 	}
 </style>
 <body>
-<#include "../ReceiptApp.svg">
+<#include "../NoQApp.svg">
 <p>
 	Hey,
 </p>

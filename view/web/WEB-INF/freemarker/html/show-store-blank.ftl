@@ -29,7 +29,7 @@
 	}
 </style>
 <body>
-<#include "../ReceiptApp.svg">
+<#include "../NoQApp.svg">
 <p>
 	No store found.
 </p>
