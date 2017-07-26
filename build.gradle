@@ -727,6 +727,11 @@ task prepWar(dependsOn: [
         }
 
         copy {
+            from 'view/web/static2/**'
+            into "${warDir}/static2"
+        }
+
+        copy {
             from unzipLibDir
             into warLibDir
         }

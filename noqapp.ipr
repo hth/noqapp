@@ -1245,6 +1245,9 @@
         <element id="file-copy" path="$PROJECT_DIR$/view/web/favicon.ico" />
         <element id="file-copy" path="$PROJECT_DIR$/view/web/robots.txt" />
         <element id="file-copy" path="$PROJECT_DIR$/view/web/410.html" />
+        <element id="directory" name="static2">
+          <element id="dir-copy" path="$PROJECT_DIR$/view/web/static2" />
+        </element>
       </root>
     </artifact>
   </component>
@@ -1495,6 +1498,7 @@
     <dictionary name="hitender">
       <words>
         <w>fieldnames</w>
+        <w>intl</w>
       </words>
     </dictionary>
   </component>
