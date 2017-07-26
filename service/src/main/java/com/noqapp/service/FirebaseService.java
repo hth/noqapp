@@ -28,7 +28,6 @@ public class FirebaseService {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private String firebaseServerKey;
     private String authorizationKey;
     private OkHttpClient client;
 
@@ -37,7 +36,6 @@ public class FirebaseService {
             @Value ("${firebase.server.key}")
             String firebaseServerKey
     ) {
-        this.firebaseServerKey = firebaseServerKey;
         this.authorizationKey = "key=" + firebaseServerKey;
         client = new OkHttpClient();
     }
