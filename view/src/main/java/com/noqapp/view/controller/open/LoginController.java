@@ -53,7 +53,7 @@ public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     //@Value ("${loginPage:digits}")
-    @Value ("${loginPage:login5}")
+    @Value ("${loginPage:login}")
     private String loginPage;
 
     //private UserAgentStringParser parser;
