@@ -48,17 +48,18 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <h2>Login</h2>
-                    <form action="">
+
+                    <form id="sign-in-form" action="">
+                        <h2>Login</h2>
                         <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
                         <span class="mdl-textfield__error"> </span>
                         <input name="" id="sign-in-button" type="button"  class="form-btn" value="NEXT" onClick = "onSignInSubmit()"/>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
                     <div class="otp">
-                        <h2>OTP</h2>
-                        <form id="verification-code-form" action="" method="get">
 
+                        <form id="verification-code-form" action="" method="get" style="display: none;">
+                            <h2>OTP</h2>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
                                 <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
@@ -69,16 +70,18 @@
                                 <div class="clearFix"></div>
                             </ul>
                             <span class="mdl-textfield__error"> </span>
-                            <input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" onClick = "onVerifyCodeSubmit()"/>
-                            <button class="mdl-button mdl-js-button mdl-button--raised" id="cancel-verify-code-button">Cancel</button>
+                            <input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" style="width: 46%;" onClick = "onVerifyCodeSubmit()"/>
+                            <input id="cancel-verify-code-button"  name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>
+                            <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
 
                         </form>
 
                     </div>
 
-                    <div class="or">Or</div>
 
-                    <form action="" method="get">
+
+                    <form id="login-form" action="" method="get">
+                        <div class="or">Or</div>
                         <input name=""   type="text" class="form-field" placeholder="User name" />
                         <input name=""   type="password" class="form-field" placeholder="Password" />
                         <input name="" type="submit"  class="form-btn mT0" value="Login"/>
@@ -142,12 +145,14 @@
         // placeholderNumberType: "MOBILE",
         preferredCountries: ['in'],
         // separateDialCode: true,
-        utilsScript: "../../static/js/build/js/utils.js"
+        utilsScript: "${pageContext.request.contextPath}/js/build/js/utils.js"
     });
 
     //$("#next").onclick(window.location = "http://example.com/foo.php?option=500";);
 
     function onSignInSubmit() {
+        //$('sign-in-form').css('display','none');
+
         if (isPhoneNumberValid())
         {
             window.signingIn = true;
@@ -167,8 +172,15 @@
                     window.signingIn = false;
                     //alert('window.signingIn 1');
                     //$(location).attr('href', 'next.html');
-                    $('.signin-view').css('display','none');
+                    $('sign-in-form').css('display','none');
                     $('.verify-view-component').css('display','flex');
+
+                    //document.getElementById("sign-in-form").style.display="none";
+                    document.getElementById("sign-in-button").style.display="none";
+                    document.getElementById("login-form").style.display="none";
+                    document.getElementById("verification-code-form").style.display="block";  //login-form
+
+                    $(".mdl-textfield__error").text("");
 
                 }).catch(function (error) {
                 console.error('Error during signInWithPhoneNumber', error);
@@ -236,8 +248,8 @@
     function displayinfo(user){
         document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
     }
-    function cancelVerification(e) {
-        e.preventDefault();
+    function cancelVerification() {
+        //e.preventDefault();
         window.confirmationResult = null;
         updateVerificationCodeFormUI();
         updateSignInFormUI();
@@ -275,7 +287,7 @@
         var index = ccode.indexOf(':');
         var phone = document.getElementById('phone').value;
         if (phone == "") {
-            $(".mdl-textfield__error").text("Please enter valid phone");
+            $(".mdl-textfield__error").text("Please enter valid phone number");
             return;
         }
         return (ccode.substring(index+1) + phone);
