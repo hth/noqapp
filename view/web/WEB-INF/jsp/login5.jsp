@@ -13,9 +13,9 @@
 
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -80,13 +80,43 @@
 
 
 
-                    <form id="login-form" action="" method="get">
+                    <form:form id="login-form" method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
                         <div class="or">Or</div>
-                        <input name=""   type="text" class="form-field" placeholder="User name" />
-                        <input name=""   type="password" class="form-field" placeholder="Password" />
-                        <input name="" type="submit"  class="form-btn mT0" value="Login"/>
 
-                    </form>
+                        <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
+                            <div class="r-error" style="margin-left: 0; width: 100%">
+                                Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+                            </div>
+                            <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+                        </c:if>
+                        <c:if test="${!empty param.error and param.error eq 'provider'}">
+                            <div class="r-error" style="margin-left: 0; width: 100%">
+                                Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
+                            </div>
+                        </c:if>
+                        <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
+                            <div class="r-error" style="margin-left: 0; width: 100%">
+                                Login not successful. Reason: You seem to have exceed number of connections allowed.
+                                Please wait and try after some time.
+                            </div>
+                        </c:if>
+
+                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="email error" />
+                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="password error" />
+
+                        <div class="icon" style="text-align: right">
+                            <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
+                        </div>
+
+                        <ul class="cd-form-list">
+                            <li>
+                                <input type="checkbox" name="remember-me" id="cd-checkbox-1">
+                                <label for="cd-checkbox-1">Remember me on this device</label>
+                            </li>
+                        </ul>
+
+                        <input name="" type="submit" class="form-btn mT0" value="Login">
+                    </form:form>
 
                 </div>
             </div>
