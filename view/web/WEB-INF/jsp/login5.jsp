@@ -124,7 +124,7 @@
     });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="<img src="${pageContext.request.contextPath}/static/js/build/js/intlTelInput.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/build/js/intlTelInput.js"></script>
 <script>
     $("#phone").intlTelInput({
         // allowDropdown: false,
