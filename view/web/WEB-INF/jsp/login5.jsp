@@ -37,7 +37,7 @@
     <!-- header -->
     <div class="header">
         <div class="warp-inner">
-            <div class="logo"><img src="${pageContext.request.contextPath}/images/logo.png" /></div>
+            <div class="logo"><img src="${pageContext.request.contextPath}/static/images/logo.png" /></div>
         </div>
     </div>
     <!-- header end -->
@@ -145,7 +145,7 @@
         // placeholderNumberType: "MOBILE",
         preferredCountries: ['in'],
         // separateDialCode: true,
-        utilsScript: "${pageContext.request.contextPath}/js/build/js/utils.js"
+        utilsScript: "${pageContext.request.contextPath}/static/js/build/js/utils.js"
     });
 
     //$("#next").onclick(window.location = "http://example.com/foo.php?option=500";);
