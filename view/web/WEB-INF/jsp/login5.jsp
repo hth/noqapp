@@ -7,9 +7,9 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-    <link rel="stylesheet" href="../../static/css/new-style.css" type='text/css'  />
-    <link rel="stylesheet" href="../../static/css/phone-style.css" type='text/css' media="screen" />
-    <link rel="stylesheet" href="../../static/js/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/new-style.css" type='text/css'  />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/phone-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/build/css/intlTelInput.css">
 
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -37,7 +37,7 @@
     <!-- header -->
     <div class="header">
         <div class="warp-inner">
-            <div class="logo"><img src="images/logo.png" /></div>
+            <div class="logo"><img src="${pageContext.request.contextPath}/images/logo.png" /></div>
         </div>
     </div>
     <!-- header end -->
@@ -121,7 +121,7 @@
     });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="../../static/js/build/js/intlTelInput.js"></script>
+<script src="<img src="${pageContext.request.contextPath}/static/js/build/js/intlTelInput.js"></script>
 <script>
     $("#phone").intlTelInput({
         // allowDropdown: false,
