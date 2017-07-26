@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <title>NO QUEUE</title>
+    <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
 
@@ -103,7 +103,7 @@
 
         <div class="footer-dark">
             <div class="warp-inner">
-                <div class="f-left">&copy; 2017  NO QUEUE.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a></div>
+                <div class="f-left">&copy; 2017  NoQueue.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a></div>
 
                 <div class="clearFix"></div>
             </div>
