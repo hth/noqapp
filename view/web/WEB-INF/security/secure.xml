@@ -31,7 +31,8 @@
             <cache-control />
             <content-type-options />
             <hsts />
-            <frame-options />
+            <!-- Opening iframe is a security issue -->
+            <!--<frame-options />-->
             <xss-protection />
         </headers>
     </http>
