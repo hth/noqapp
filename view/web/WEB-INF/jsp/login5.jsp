@@ -13,9 +13,9 @@
 
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
     <script>
         // Initialize Firebase
         var config = {
