@@ -169,6 +169,7 @@
             <hsts />
             <!-- Opening iframe is a security issue -->
             <!--<frame-options />-->
+            <frame-options policy="SAMEORIGIN"/>
             <xss-protection />
         </headers>
     </http>
