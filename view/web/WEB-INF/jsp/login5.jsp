@@ -133,9 +133,12 @@
 
         <div class="footer-dark">
             <div class="warp-inner">
-                <div class="f-left">&copy; 2017  NoQueue.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a></div>
-
+                <div class="f-left">
+                    &copy; 2017  NoQueue.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a><br/>
+                    All other trademarks and logos belong to their respective owners. (<spring:eval expression="@environmentProperty.getProperty('build.version')" />.<spring:eval expression="@environmentProperty.getProperty('server')" />)
+                </div>
                 <div class="clearFix"></div>
+
             </div>
         </div>
 
