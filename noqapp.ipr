@@ -1157,7 +1157,6 @@
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:22.0" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.25" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.4.RELEASE" />
@@ -1217,6 +1216,7 @@
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M5" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.68.1" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.7.0" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0-rc1" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
