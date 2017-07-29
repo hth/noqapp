@@ -50,8 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping (value = "/open/login")
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
-
-    //@Value ("${loginPage:digits}")
+    
     @Value ("${loginPage:login5}")
     private String loginPage;
 
