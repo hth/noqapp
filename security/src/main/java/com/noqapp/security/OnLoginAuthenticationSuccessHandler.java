@@ -86,7 +86,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null &&
+        if (isAlwaysUseDefaultTargetUrl() || null != targetUrlParameter &&
                 StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
