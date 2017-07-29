@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +55,6 @@ public class LoginController {
     @Value ("${loginPage:login5}")
     private String loginPage;
 
-    //private UserAgentStringParser parser;
     private final CachedUserAgentStringParser parser;
 
     private LoginService loginService;
@@ -70,8 +68,6 @@ public class LoginController {
             OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
             AccountService accountService,
             CustomUserDetailsService customUserDetailsService) {
-        //Get an UserAgentStringParser and analyze the requesting client
-        //parser = UADetectorServiceFactory.getResourceModuleParser();
         this.parser = CachedUserAgentStringParser.getInstance();
 
         this.loginService = loginService;
@@ -95,7 +91,6 @@ public class LoginController {
      * <p>
      *
      * @param locale
-     * @param map
      * @param request
      * @return
      * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
@@ -109,7 +104,6 @@ public class LoginController {
             UserLoginForm userLoginForm,
 
             Locale locale,
-            ModelMap map,
             HttpServletRequest request
     ) {
         LOG.info("Locale Type={}", locale);
