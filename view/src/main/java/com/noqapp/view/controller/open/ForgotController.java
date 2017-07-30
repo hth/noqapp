@@ -140,9 +140,6 @@ public class ForgotController {
 
         // But we show success to user on failure. Not sure if we should show a failure message when mail fails.
         switch (mailType) {
-            case SOCIAL_ACCOUNT:
-                redirectAttrs.addFlashAttribute(SUCCESS_EMAIL, mailType);
-                break;
             case FAILURE:
             case ACCOUNT_NOT_VALIDATED:
             case ACCOUNT_NOT_FOUND:

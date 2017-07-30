@@ -1,37 +1,24 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
-import com.noqapp.domain.types.ProviderEnum;
-import com.noqapp.domain.types.RoleEnum;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * User: hitender
@@ -94,81 +81,12 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public UserAccountEntity findByProviderUserId(String providerUserId) {
-        return mongoTemplate.findOne(query(where("PUID").is(providerUserId)), UserAccountEntity.class, TABLE);
-    }
-
-    @Override
-    public UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode) {
-        return mongoTemplate.findOne(
-                query(where("PID").is(provider).and("AC").is(authorizationCode)),
-                UserAccountEntity.class, TABLE
-        );
-    }
-
-    @Override
-    public int inactiveNonValidatedAccount(Date pastActivationDate) {
-        WriteResult writeResult = mongoTemplate.updateMulti(
-                query(where("AV").is(false).and("AVD").lt(pastActivationDate).and("A").is(true)),
-                entityUpdate(update("A", false).set("AIR", AccountInactiveReasonEnum.ANV)),
-                UserAccountEntity.class
-        );
-
-        return writeResult.getN();
-    }
-
-    @Override
-    public List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit) {
-        return mongoTemplate.find(
-                query(where("RIO").exists(true).andOperator(where("RIO").is(true))).limit(registrationInviteDailyLimit),
-                UserAccountEntity.class
-        );
-    }
-
-    @Override
-    public void removeRegistrationIsOffFrom(String id) {
-        mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                entityUpdate(new Update().unset("RIO")),
-                UserAccountEntity.class
-        );
-    }
-
-    @Override
     public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AIR").is(air)),
                 entityUpdate(update("A", true).set("AV", true).unset("AIR")),
                 UserAccountEntity.class
         );
-    }
-
-    @Override
-    public List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit) {
-        return mongoTemplate.find(
-                query(isActive().andOperator(isNotDeleted())).with(new Sort(DESC, "RID")).skip(skipDocuments).limit(limit),
-                UserAccountEntity.class
-        );
-    }
-
-    @Override
-    public List<UserAccountEntity> findAllTechnician() {
-        return mongoTemplate.find(
-                query(where("RE").in(RoleEnum.ROLE_SUPERVISOR, RoleEnum.ROLE_TECHNICIAN)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )).with(new Sort(DESC, "RID")),
-                UserAccountEntity.class
-        );
-    }
-
-    @Override
-    public List<UserAccountEntity> getLastSoManyRecords(int limit) {
-        Query query = query(where("RID").exists(true)).limit(limit).with(new Sort(DESC, "RID"));
-        query.fields().include("RID");
-
-        return mongoTemplate.find(query, UserAccountEntity.class, TABLE);
     }
 }
 

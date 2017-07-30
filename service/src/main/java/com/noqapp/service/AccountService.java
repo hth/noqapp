@@ -22,7 +22,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
-import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -102,14 +101,6 @@ public class AccountService {
     @Mobile
     public UserAccountEntity findByUserId(String mail) {
         return userAccountManager.findByUserId(mail);
-    }
-
-    public UserAccountEntity findByProviderUserId(String providerUserId) {
-        return userAccountManager.findByProviderUserId(providerUserId);
-    }
-
-    public UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode) {
-        return userAccountManager.findByAuthorizationCode(provider, authorizationCode);
     }
 
     public void save(UserAccountEntity userAccount) {
@@ -253,22 +244,6 @@ public class AccountService {
     @Mobile
     public UserProfileEntity findProfileByInviteCode(String inviteCode) {
         return userProfileManager.inviteCodeExists(inviteCode);
-    }
-
-    /**
-     * Create new account using social login.
-     */
-    public void createNewMerchantAccount(UserAccountEntity userAccount) {
-        Assert.notNull(userAccount.getProviderId(), "Missing provider id for social login");
-        LOG.info("New account created using social user={} provider={}",
-                userAccount.getReceiptUserId(), userAccount.getProviderId());
-        /**
-         * UserAuthenticationEntity is not required but needed. Social user will not be able to reset the authentication
-         * since its a social account.
-         */
-        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity();
-        userAccount.setUserAuthentication(userAuthentication);
-        save(userAccount);
     }
 
     /**

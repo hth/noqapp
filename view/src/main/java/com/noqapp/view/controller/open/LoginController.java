@@ -157,7 +157,6 @@ public class LoginController {
                 "",
                 authorities,
                 rid,
-                userProfile.getProviderId(),
                 userProfile.getLevel(),
                 customUserDetailsService.isUserActive(userAccount),
                 userAccount.isAccountValidated(),

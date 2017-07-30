@@ -25,7 +25,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserProfileEntity;
 
 import java.util.Date;
@@ -99,14 +98,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         }
     }
 
-    @Override
-    public UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object) {
-        return mongoTemplate.findOne(
-                query(where("USER_AUTHENTICATION.$id").is(new ObjectId(object.getId()))),
-                UserProfileEntity.class,
-                TABLE);
-    }
-
     /**
      * Find any user matching with email; ignore active or not active
      *
@@ -134,36 +125,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         } else {
             return query(where("RID").is(receiptUserId));
         }
-    }
-
-    /**
-     * Find any user matching with provider user id; ignore active or not active profile.
-     *
-     * @param puid unique string from Google or Facebook
-     * @return
-     */
-    @Override
-    public UserProfileEntity findByProviderUserId(String puid) {
-        return mongoTemplate.findOne(query(where("PUID").is(puid)), UserProfileEntity.class, TABLE);
-    }
-
-    /**
-     * Find any user matching with provider user id and email; ignore active or not active profile.
-     *
-     * @param puid  unique string from Google or Facebook
-     * @param email unique email address
-     * @return
-     */
-    @Override
-    public UserProfileEntity findByProviderUserIdOrEmail(String puid, String email) {
-        Assert.hasLength(email, "Email should not be empty");
-        return mongoTemplate.findOne(
-                query(new Criteria()
-                        .orOperator(
-                                where("PUID").is(puid),
-                                where("EM").is(email))),
-                UserProfileEntity.class,
-                TABLE);
     }
 
     @Override

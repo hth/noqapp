@@ -200,12 +200,6 @@ public class MailService {
             return MailTypeEnum.ACCOUNT_NOT_FOUND;
         }
 
-        if (null != userAccount.getProviderId()) {
-            /* Cannot change password for social account. Well this condition is checked in Mobile Server too. */
-            LOG.warn("Social account user={} tried recovering password", userId);
-            return MailTypeEnum.SOCIAL_ACCOUNT;
-        }
-
         if (userAccount.isAccountValidated()) {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
                     userAccount.getReceiptUserId());

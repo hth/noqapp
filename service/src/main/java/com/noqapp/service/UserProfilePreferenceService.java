@@ -48,10 +48,6 @@ public class UserProfilePreferenceService {
         return userProfileManager.forProfilePreferenceFindByReceiptUserId(rid);
     }
 
-    public UserProfileEntity findByProviderUserId(String puid) {
-        return userProfileManager.findByProviderUserId(puid);
-    }
-
     public void updateProfile(UserProfileEntity userProfile) {
         userProfileManager.save(userProfile);
     }

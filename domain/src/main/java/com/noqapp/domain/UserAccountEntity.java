@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
-import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.utils.DateUtil;
 
@@ -35,11 +33,9 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "USER_ACCOUNT")
 @CompoundIndexes ({
-        @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'PID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex (name = "user_account_provider_user_idx", def = "{'UID': 1, 'PID': 1, 'PUID': 1}", unique = true),
+        @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'RE': 1}", unique = true),
         @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true),
-        @CompoundIndex (name = "user_account_uid_idx", def = "{'UID': 1}", unique = true),
-        @CompoundIndex (name = "user_account_ac_idx", def = "{'AC': 1}")
+        @CompoundIndex (name = "user_account_uid_idx", def = "{'UID': 1}", unique = true)
 })
 public class UserAccountEntity extends BaseEntity {
 
@@ -58,36 +54,8 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("UID")
     private String userId;
 
-    @Field ("PID")
-    private ProviderEnum providerId;
-
-    /** Provider User Id matches id's from social provider. */
-    @Field ("PUID")
-    private String providerUserId;
-
     @Field ("DN")
     private String displayName;
-
-    @Field ("PURL")
-    private String profileUrl;
-
-    @Field ("IURL")
-    private String imageUrl;
-
-    @Field ("AT")
-    private String accessToken;
-
-    @Field ("AC")
-    private String authorizationCode;
-
-    @Field ("SE")
-    private String secret;
-
-    @Field ("RT")
-    private String refreshToken;
-
-    @Field ("ET")
-    private Long expireTime;
 
     @Field ("FN")
     private String firstName;
@@ -97,10 +65,6 @@ public class UserAccountEntity extends BaseEntity {
 
     @Field ("RE")
     private Set<RoleEnum> roles;
-
-    @DBRef
-    @Field ("USER_AUTHENTICATION")
-    private UserAuthenticationEntity userAuthentication;
 
     @Field ("AV")
     private boolean accountValidated;
@@ -113,6 +77,10 @@ public class UserAccountEntity extends BaseEntity {
 
     @Field ("AIR")
     private AccountInactiveReasonEnum accountInactiveReason;
+    
+    @DBRef
+    @Field ("USER_AUTHENTICATION")
+    private UserAuthenticationEntity userAuthentication;
 
     private UserAccountEntity() {
         super();
@@ -159,84 +127,12 @@ public class UserAccountEntity extends BaseEntity {
         this.userId = userId;
     }
 
-    public ProviderEnum getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(ProviderEnum providerId) {
-        this.providerId = providerId;
-    }
-
-    public String getProviderUserId() {
-        return providerUserId;
-    }
-
-    public void setProviderUserId(String providerUserId) {
-        this.providerUserId = providerUserId;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getProfileUrl() {
-        return profileUrl;
-    }
-
-    public void setProfileUrl(String profileUrl) {
-        this.profileUrl = profileUrl;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getAuthorizationCode() {
-        return authorizationCode;
-    }
-
-    public void setAuthorizationCode(String authorizationCode) {
-        this.authorizationCode = authorizationCode;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public Long getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Long expireTime) {
-        this.expireTime = expireTime;
     }
 
     public String getFirstName() {
@@ -299,17 +195,6 @@ public class UserAccountEntity extends BaseEntity {
         this.accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
     }
 
-    /**
-     * Condition to check if account is not validated beyond validation expired period.
-     *
-     * @param mailValidationFailPeriod
-     * @return
-     */
-    public boolean isValidationExpired(int mailValidationFailPeriod) {
-        return accountValidated || !(new Duration(accountValidatedBeginDate.getTime(),
-                new Date().getTime()).getStandardDays() > mailValidationFailPeriod);
-    }
-
     public boolean isPhoneValidated() {
         return phoneValidated;
     }
@@ -345,15 +230,7 @@ public class UserAccountEntity extends BaseEntity {
         return "UserAccountEntity{" +
                 "receiptUserId='" + receiptUserId + '\'' +
                 ", userId='" + userId + '\'' +
-                ", providerId=" + providerId +
-                ", providerUserId='" + providerUserId + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", profileUrl='" + profileUrl + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", secret='" + secret + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", expireTime=" + expireTime +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", roles=" + roles +
