@@ -241,10 +241,12 @@ public final class Formatter {
             } else {
                 phoneNumber = PHONE_INSTANCE.parse(phone, formatToCountry);
             }
-            return PHONE_INSTANCE.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            String internationalFormat = PHONE_INSTANCE.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            LOG.info("International phone format={}", internationalFormat);
+            return internationalFormat;
         } catch (NumberParseException e) {
             LOG.warn("Failed parsing phoneNationalFormat number={} reason={}", phone, e.getLocalizedMessage(), e);
-            return StringUtils.EMPTY;
+            return "";
         }
     }
 

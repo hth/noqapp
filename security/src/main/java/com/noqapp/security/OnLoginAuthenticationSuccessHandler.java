@@ -86,7 +86,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || targetUrlParameter != null &&
+        if (isAlwaysUseDefaultTargetUrl() || null != targetUrlParameter &&
                 StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
@@ -116,14 +116,16 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         switch (getHighestRoleEnum(authorities)) {
             case ROLE_CLIENT:
                 return accessLanding;
-            case ROLE_ANALYSIS:
-                return displayLanding;
             case ROLE_Q_SUPERVISOR:
                 return queueSupervisorLanding;
             case ROLE_S_MANAGER:
                 return storeManagerLanding;
             case ROLE_M_ADMIN:
                 return businessAdminLanding;
+
+            /* All the above are for Client and Merchant Landing. */
+            case ROLE_ANALYSIS:
+                return displayLanding;
             case ROLE_TECHNICIAN:
                 return empTechLanding;
             case ROLE_SUPERVISOR:
