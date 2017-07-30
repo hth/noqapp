@@ -14,6 +14,5 @@ public enum MailTypeEnum {
     FAILURE,
     SUCCESS,
     ACCOUNT_NOT_VALIDATED,
-    ACCOUNT_NOT_FOUND,
-    SOCIAL_ACCOUNT
+    ACCOUNT_NOT_FOUND
 }

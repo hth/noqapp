@@ -1,6 +1,5 @@
 package com.noqapp.repository;
 
-import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 
@@ -14,17 +13,11 @@ import java.util.List;
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {
     UserProfileEntity getById(String id);
 
-    UserProfileEntity getObjectUsingUserAuthentication(UserAuthenticationEntity object);
-
     UserProfileEntity findByEmail(String email);
 
     UserProfileEntity findByReceiptUserId(String rid);
 
     UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid);
-
-    UserProfileEntity findByProviderUserId(String puid);
-
-    UserProfileEntity findByProviderUserIdOrEmail(String puid, String email);
 
     /**
      * Used for searching user based on name. Search could be based on First Name or Last Name.

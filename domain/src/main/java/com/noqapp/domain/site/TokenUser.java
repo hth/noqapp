@@ -3,7 +3,6 @@ package com.noqapp.domain.site;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.noqapp.domain.types.ProviderEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Collection;
@@ -22,7 +21,6 @@ public final class TokenUser extends User {
 
     /** rid is receiptUserId */
     private String rid;
-    private ProviderEnum pid;
     private UserLevelEnum userLevel;
     private boolean accountValidated;
     private String countryShortName;
@@ -40,7 +38,6 @@ public final class TokenUser extends User {
             String password,
             Collection<? extends GrantedAuthority> authorities,
             String rid,
-            ProviderEnum pid,
             UserLevelEnum userLevel,
             boolean active,
             boolean accountValidated,
@@ -48,7 +45,6 @@ public final class TokenUser extends User {
     ) {
         super(username, password, active, true, true, true, authorities);
         this.rid = rid;
-        this.pid = pid;
         this.userLevel = userLevel;
         this.accountValidated = accountValidated;
         this.countryShortName = countryShortName;
@@ -75,12 +71,10 @@ public final class TokenUser extends User {
             boolean accountNonLocked,
             Collection<? extends GrantedAuthority> authorities,
             String rid,
-            ProviderEnum pid,
             UserLevelEnum userLevel
     ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.rid = rid;
-        this.pid = pid;
         this.userLevel = userLevel;
     }
 
@@ -96,10 +90,6 @@ public final class TokenUser extends User {
         return userLevel;
     }
 
-    public ProviderEnum getPid() {
-        return pid;
-    }
-
     public boolean isAccountValidated() {
         return accountValidated;
     }
@@ -112,7 +102,6 @@ public final class TokenUser extends User {
     public String toString() {
         return "ReceiptUser{" +
                 "rid='" + rid + '\'' +
-                ", pid=" + pid +
                 ", userLevel=" + userLevel +
                 '}';
     }
