@@ -16,6 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
+    <script src="${pageContext.request.contextPath}/static2/internal/js/fire-trigger.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -153,7 +154,16 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        //alert('Please fill phone number');
+        $(".enter-f").keyup(function () {
+            if (this.value.length >= this.maxLength) {
+                var nextId = Number(this.name) + 1;
+                if ($(this).length)
+                {
+                    $("#code"+ nextId).focus();
+                    $(this).blur();
+                }
+            }
+        });
     });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -185,6 +195,9 @@
 
     function onSignInSubmit() {
         //$('sign-in-form').css('display','none');
+
+        //alert('Pass 1');
+        //noQAuthentication.doValidateUser();
 
         if (isPhoneNumberValid())
         {
@@ -233,6 +246,7 @@
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 alert('User signed in with Number'+ user.phoneNumber);
+                noQAuthentication.doValidateUser(user);
                 // User is signed in.
                 var uid = user.uid;
                 var email = user.email;
@@ -265,9 +279,12 @@
             alert('start getCodeFromUserInput code='+ code);
             confirmationResult.confirm(code).then(function (result) {
                 var user = result.user;
-                alert('Pass');
+
                 window.verifyingCode = false;
                 window.confirmationResult = null;
+                alert('Pass 1');
+
+                noQAuthentication.doValidateUser(user);
                 //displayinfo(user);
             }).catch(function (error) {
                 //alert('fail');
