@@ -3,7 +3,7 @@ var noQAuthentication = {
         console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
         $.ajax({
             //type: 'POST',
-            url: 'http://sandbox.noqapp.com',
+            url: 'https://sandbox.noqapp.com',
             contentType: "application/json; charset=utf-8",
             data: {
                 format: 'json',
