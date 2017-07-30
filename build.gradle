@@ -38,6 +38,10 @@ ext {
     passFileLocal = file('view/resources/conf/pass.properties')
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
+
+    firebaseFileLocal = file('view/resources/conf/noq-app-inc-firebase-adminsdk.json')
+    firebaseFileTest = file(firebaseAdminTestFileLocation)
+    firebaseFileProd = file(firebaseAdminProdFileLocation)
     
     dkimCertLocal = file('view/resources/dkim/dkim.der')
     dkimCertTest = file(dkimCertificateTestFileLocation)
@@ -231,9 +235,9 @@ subprojects {
         compile "net.markenwerk:utils-mail-dkim:$dkim"
         /** ------- */
 
-        compile 'com.squareup.okhttp3:okhttp:3.5.0'
-        compile 'com.google.zxing:core:3.3.0'
-        compile 'aopalliance:aopalliance:1.0'
+        compile "com.squareup.okhttp3:okhttp:$okhttp"
+        compile "com.google.zxing:core:$zxing"
+        compile "aopalliance:aopalliance:1.0"
         compile "org.apache.commons:commons-vfs2:$vfs2"
         compile "com.jcraft:jsch:$jsch"
 
@@ -441,7 +445,7 @@ project(':view') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+    gradleVersion = '4.0.2'
 }
 
 task copyJars(type: Copy) {
@@ -485,6 +489,12 @@ task setUpProfileForJunit() {
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
                 }
+
+                if (firebaseFileProd.exists()) {
+                    from firebaseAdminProdFileLocation
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileProd.canonicalPath")
+                }
             }
 
             if (env == 'sandbox') {
@@ -492,6 +502,12 @@ task setUpProfileForJunit() {
                     from passwordTestFileLocation
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+                }
+
+                if (firebaseFileTest.exists()) {
+                    from firebaseAdminTestFileLocation
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileTest.canonicalPath")
                 }
             }
 
@@ -501,6 +517,13 @@ task setUpProfileForJunit() {
                     from 'view/resources/conf/pass.properties'
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+                }
+
+                println "Development environment, getting local firebase file $firebaseFileLocal.canonicalPath"
+                if (firebaseFileLocal.exists()) {
+                    from 'view/resources/conf/noq-app-inc-firebase-adminsdk.json'
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileLocal.canonicalPath")
                 }
             }
 
@@ -654,6 +677,12 @@ task prepWar(dependsOn: [
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
                 }
+
+                if (firebaseFileProd.exists()) {
+                    from firebaseAdminProdFileLocation
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileProd.canonicalPath")
+                }
             }
 
             if (env == 'sandbox') {
@@ -661,6 +690,12 @@ task prepWar(dependsOn: [
                     from passwordTestFileLocation
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+                }
+
+                if (firebaseFileTest.exists()) {
+                    from firebaseAdminTestFileLocation
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileTest.canonicalPath")
                 }
             }
 
@@ -670,6 +705,13 @@ task prepWar(dependsOn: [
                     from 'view/resources/conf/pass.properties'
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+                }
+
+                println "Development environment, getting local firebase file $firebaseFileLocal.canonicalPath"
+                if (firebaseFileLocal.exists()) {
+                    from 'view/resources/conf/noq-app-inc-firebase-adminsdk.json'
+                } else {
+                    throw new Exception("Required firebase file does not exists: $firebaseFileLocal.canonicalPath")
                 }
             }
 

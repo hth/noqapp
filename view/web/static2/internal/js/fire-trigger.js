@@ -7,7 +7,7 @@ var noQAuthentication = {
             contentType: "application/json; charset=utf-8",
             data: {
                 format: 'json',
-                data: JSON.stringify(user, null, '  '),
+                data: JSON.stringify(user, null, '  ')
             },
             error: function (error) {
                 alert('In Error=' + JSON.stringify(error, null, '  '));
