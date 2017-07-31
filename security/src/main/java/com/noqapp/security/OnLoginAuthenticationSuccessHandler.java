@@ -72,7 +72,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
         }
 
         /*
-         * Refer: http://www.baeldung.com/2011/10/31/securing-a-restful-web-service-with-spring-security-3-1-part-3/
+         * Refer: http://www.baeldung.com/securing-a-restful-web-service-with-spring-security
          * To execute:
          * curl -i -X POST
          * -d emailId=some@mail.com
