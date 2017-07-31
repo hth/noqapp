@@ -78,7 +78,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         /* Always check user login with lower letter email case. */
         UserProfileEntity userProfile;
-        if (!email.contains("@")) {
+        if (email.contains("@")) {
             userProfile = userProfilePreferenceService.findByEmail(email);
         } else {
             userProfile = getUserWhenLoggedViaPhone(email);
