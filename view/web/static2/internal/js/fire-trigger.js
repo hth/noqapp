@@ -1,10 +1,13 @@
 var noQAuthentication = {
     doValidateUser: function (user) {
         console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
-        var jsonObject = JSON.parse(user);
+        console.log("User1" + user);
+        console.log("User2" + user.uid);
+        var jsonObject = $.parseJSON(user);
+        console.log("User3" + jsonObject['uid']);
         var formData = {
-            'emailId'  : jsonObject.uid,
-            'password' : jsonObject.phoneNumber
+            'emailId'  : jsonObject['uid'],
+            'password' : jsonObject['phoneNumber']
         };  
         $.ajax({
             type: 'POST',
