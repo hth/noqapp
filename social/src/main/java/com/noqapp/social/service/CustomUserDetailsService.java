@@ -41,14 +41,24 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private AccountService accountService;
-
-    @Value ("${CustomUserDetailsService.account.not.validated.message}")
+    private UserProfilePreferenceService userProfilePreferenceService;
+    private AccountService accountService;
+    
     private String accountNotValidatedMessage;
 
-    @Value ("${CustomUserDetailsService.account.signup.incomplete.message}")
-    private String accountSignupIncompleteMessage;
+    @Autowired
+    public CustomUserDetailsService(
+            @Value ("${CustomUserDetailsService.account.not.validated.message}")
+            String accountNotValidatedMessage,
+
+            UserProfilePreferenceService userProfilePreferenceService,
+            AccountService accountService
+    ) {
+        this.accountNotValidatedMessage = accountNotValidatedMessage;
+
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.accountService = accountService;
+    }
 
     /**
      * @param email - lower case string
@@ -90,8 +100,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * If registration is turned on then check if the account is validated and not beyond set number of days
-     * And, if registration is turned off then check is userAccount is active.
+     * Check if account has been marked inactive for a reason.
      *
      * @param userAccount
      * @return
