@@ -77,7 +77,17 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
          * curl -i -X POST
          * -d emailId=some@mail.com
          * -d password=realPassword
-         * http://localhost:8080/receipt/login
+         * http://localhost:8080/open/login
+         *
+         * curl  -X "POST" "https://sandbox.noqapp.com/open/login" \
+         *       -H "Cookie: JSESSIONID=A2ED915AA76A33010FC677F47BC624D6" \
+         *       -H "X-CSRF-TOKEN: 5595db91-2bdb-4f64-8c13-4e35d7aaa1fd" \
+         *       -H "Content-Type: application/json; charset=utf-8" \
+         *       -d $'{
+         *           "emailId": "dytvfGjc2nVShaVj6bnITulJSzx2",
+         *           "password": "testtest"
+         *       }'
+         *
          */
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
