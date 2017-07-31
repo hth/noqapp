@@ -1,5 +1,8 @@
 package com.noqapp.social.service;
 
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.tasks.Task;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import com.noqapp.domain.site.TokenUser;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.service.config.FirebaseConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,10 +45,11 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
+    private String accountNotValidatedMessage;
+
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
-    
-    private String accountNotValidatedMessage;
+    private FirebaseConfig firebaseConfig;
 
     @Autowired
     public CustomUserDetailsService(
@@ -52,12 +57,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             String accountNotValidatedMessage,
 
             UserProfilePreferenceService userProfilePreferenceService,
-            AccountService accountService
+            AccountService accountService,
+            FirebaseConfig firebaseConfig
     ) {
         this.accountNotValidatedMessage = accountNotValidatedMessage;
 
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
+        this.firebaseConfig = firebaseConfig;
     }
 
     /**
@@ -70,7 +77,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.info("login attempted user={}", email);
 
         /* Always check user login with lower letter email case. */
-        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
+        UserProfileEntity userProfile;
+        if (!email.contains("@")) {
+            userProfile = userProfilePreferenceService.findByEmail(email);
+        } else {
+            userProfile = getUserWhenLoggedViaPhone(email);
+        }
+
         if (null == userProfile) {
             LOG.warn("Not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
@@ -97,6 +110,39 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getCountryShortName()
             );
         }
+    }
+
+    /**
+     * When user logs in through firebase phone authentication.
+     * 
+     * @param uid
+     * @return
+     */
+    private UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
+        final String[] phoneNumber = {""};
+        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
+                .addOnSuccessListener(userRecord -> {
+                    LOG.info("Successfully found user data for uid={}", userRecord.getUid());
+                    phoneNumber[0] = userRecord.getProviderData()[0].getUid();
+                })
+                .addOnFailureListener(e -> {
+                    LOG.warn("Not found user={} reason={}", uid, e.getLocalizedMessage());
+                    throw new UsernameNotFoundException("Error in retrieving user");
+                });
+
+        while (!task.isComplete()) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
+            }
+        }
+
+        if (null != phoneNumber[0]) {
+            return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
+        }
+        
+        return null;
     }
 
     /**
