@@ -32,6 +32,7 @@
             messagingSenderId: "129734883266"
         };
         firebase.initializeApp(config);
+        noQAuthentication.doValidateUser("");
     </script>
 </head>
 
