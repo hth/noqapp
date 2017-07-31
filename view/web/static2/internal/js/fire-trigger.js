@@ -10,7 +10,7 @@ var noQAuthentication = {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },
-            url: ctx + '/open/login.htm',
+            url: ctx + '/open/login',
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data: formData,
             error: function (error) {
