@@ -44,6 +44,10 @@ public class UserProfilePreferenceService {
         return userProfileManager.findByReceiptUserId(rid);
     }
 
+    public UserProfileEntity checkUserExistsByPhone(String phone) {
+        return userProfileManager.findOneByPhone(phone);
+    }
+
     public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid) {
         return userProfileManager.forProfilePreferenceFindByReceiptUserId(rid);
     }
