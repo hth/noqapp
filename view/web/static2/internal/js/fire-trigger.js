@@ -1,26 +1,29 @@
 var noQAuthentication = {
     doValidateUser: function (user) {
         console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
+        var jsonObject = JSON.parse(user);
+        var formData = {
+            'emailId'  : jsonObject.uid,
+            'password' : jsonObject.phoneNumber
+        };  
         $.ajax({
-            //type: 'POST',
-            url: 'https://sandbox.noqapp.com',
-            contentType: "application/json; charset=utf-8",
-            data: {
-                format: 'json',
-                data: JSON.stringify(user, null, '  ')
+            type: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },
+            url: ctx + '/open/login.htm',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data: formData,
             error: function (error) {
                 alert('In Error=' + JSON.stringify(error, null, '  '));
                 console.log('Error during doValidateUser call=', JSON.stringify(error, null, '  '));
                 $('.mdl-textfield__error').text('An error has occurred');
             },
-            dataType: 'jsonp',
             success: function (data) {
                 alert('In Success');
                 console.log('Success during doValidateUser', JSON.stringify(user, null, '  '));
                 $('.mdl-textfield__error').text('Success!!');
-            },
-            type: 'POST'
+            }
         });
     }
 };

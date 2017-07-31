@@ -132,6 +132,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         while (!task.isComplete()) {
             try {
+                //TODO remove sleep method.
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
