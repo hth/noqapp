@@ -167,10 +167,7 @@
             <cache-control />
             <content-type-options />
             <hsts />
-            <!-- Opening iframe is a security issue -->
-            <!--<frame-options />-->
             <frame-options policy="SAMEORIGIN"/>
-            <!--<frame-options policy="ALLOW-FROM" strategy="whitelist" value="www.googleapis.com"/>-->
             <xss-protection />
         </headers>
     </http>
