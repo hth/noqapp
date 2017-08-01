@@ -155,7 +155,11 @@ public class QueueHistory {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}", bizStore.getId(), bizStore.getCodeQR(), e.getLocalizedMessage(), e);
+                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
+                            bizStore.getId(),
+                            bizStore.getCodeQR(),
+                            e.getLocalizedMessage(),
+                            e);
                 }
             }
         } catch (Exception e) {
@@ -234,6 +238,6 @@ public class QueueHistory {
         bizStoreDailyStat.setTotalCustomerRated(totalCustomerRated);
         bizStoreDailyStat.setTotalHoursSaved(totalHoursSaved);
         bizStoreDailyStatManager.save(bizStoreDailyStat);
-        LOG.debug("{}", bizStoreDailyStat);
+        LOG.debug("Saved daily stat={}", bizStoreDailyStat);
     }
 }
