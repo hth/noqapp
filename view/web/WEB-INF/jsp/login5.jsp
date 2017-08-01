@@ -25,7 +25,7 @@
         // Initialize Firebase
         var config = {
             apiKey: "AIzaSyCjItDxJb8bl_0pHTfis6xSv8tpRtoL4Do",
-            authDomain: "sandbox.noqapp.com",
+            authDomain: "${pageContext.request.serverName}",
             databaseURL: "https://noq-app-inc.firebaseio.com",
             projectId: "noq-app-inc",
             storageBucket: "noq-app-inc.appspot.com",
