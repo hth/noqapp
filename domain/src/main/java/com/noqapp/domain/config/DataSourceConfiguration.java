@@ -40,6 +40,8 @@ public class DataSourceConfiguration {
         ds.setMaxIdle(20);
         ds.setMaxWait(10000);
         ds.setRemoveAbandonedTimeout(300);
+        ds.setRemoveAbandoned(true);
+        ds.setLogAbandoned(true);
         return ds;
     }
 }
