@@ -1,4 +1,4 @@
-package com.noqapp.security.social.repository;
+package com.noqapp.security.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
