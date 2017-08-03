@@ -45,4 +45,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
 
     @Mobile
     void markFetchedSinceBeginningForDevice(String id);
+
+    @Mobile
+    void unsetRidForDevice(String id);
 }

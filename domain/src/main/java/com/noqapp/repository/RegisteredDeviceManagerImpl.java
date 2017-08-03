@@ -194,4 +194,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 TABLE);
 
     }
+
+    public void unsetRidForDevice(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(new Update().unset("RID")),
+                RegisteredDeviceEntity.class,
+                TABLE);
+    }
 }
