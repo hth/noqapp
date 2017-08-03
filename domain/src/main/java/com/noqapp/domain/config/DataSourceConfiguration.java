@@ -1,10 +1,10 @@
 package com.noqapp.domain.config;
 
-import org.apache.commons.dbcp.BasicDataSource;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
 
@@ -15,33 +15,38 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
-    @Value("${mysql-db-name}")
+    @Value ("${mysql-db-name}")
     private String mysql_db;
 
-    @Value("${mysql-host}")
+    @Value ("${mysql-host}")
     private String mysql_host;
 
-    @Value("${mysql.username}")
+    @Value ("${mysql.username}")
     private String mysqlUsername;
 
-    @Value("${mysql.password}")
+    @Value ("${mysql.password}")
     private String mysqlPassword;
 
     @Bean
     public DataSource dataSource() {
-        BasicDataSource ds = new BasicDataSource();
+        HikariDataSource ds = new HikariDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://" + mysql_host + ":3306/" + mysql_db);
+        ds.setJdbcUrl("jdbc:mysql://" + mysql_host + ":3306/" + mysql_db);
         ds.setUsername(mysqlUsername);
         ds.setPassword(mysqlPassword);
-        ds.setInitialSize(5);
-        ds.setMaxActive(100);
-        ds.setMinIdle(5);
-        ds.setMaxIdle(20);
-        ds.setMaxWait(10000);
-        ds.setRemoveAbandonedTimeout(300);
-        ds.setRemoveAbandoned(true);
-        ds.setLogAbandoned(true);
+        ds.addDataSourceProperty("cachePrepStmts", true);
+        ds.addDataSourceProperty("prepStmtCacheSize", 250);
+        ds.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
+        ds.addDataSourceProperty("useServerPrepStmts", true);
+        ds.addDataSourceProperty("useLocalSessionState", true);
+        ds.addDataSourceProperty("useLocalTransactionState", true);
+        ds.addDataSourceProperty("rewriteBatchedStatements", true);
+        ds.addDataSourceProperty("cacheResultSetMetadata", true);
+        ds.addDataSourceProperty("cacheServerConfiguration", true);
+        ds.addDataSourceProperty("elideSetAutoCommits", true);
+        ds.addDataSourceProperty("maintainTimeStats", false);
+        //ds.setMaximumPoolSize(100);
+        //ds.setMinimumIdle(5);
         return ds;
     }
 }
