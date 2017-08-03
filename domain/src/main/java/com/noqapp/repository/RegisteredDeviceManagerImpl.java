@@ -47,7 +47,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             Document.class,
             "collection");
 
-    @Value ("${device.lastAccessed.now:OFF}")
+    @Value ("${device.lastAccessed.now}")
     private String deviceLastAccessedNow;
 
     private MongoTemplate mongoTemplate;

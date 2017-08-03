@@ -170,6 +170,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> getByRid(String rid, Date lastAccessed) {
+        LOG.info("Fetch history by rid={} lastAccessed={}", rid, lastAccessed);
         return jdbcTemplate.query(findByRidAndByLastUpdated, new Object[]{rid, lastAccessed}, new QueueRowMapper());
     }
 
