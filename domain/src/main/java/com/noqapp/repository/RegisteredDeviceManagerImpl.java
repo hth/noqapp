@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -183,5 +184,14 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 RegisteredDeviceEntity.class,
                 TABLE
         ).getN() > 0;
+    }
+
+    public void markFetchedSinceBeginningForDevice(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("SB", false)),
+                RegisteredDeviceEntity.class,
+                TABLE);
+
     }
 }
