@@ -53,6 +53,9 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("TK")
     private String token;
 
+    @Field ("SB")
+    private boolean sinceBeginning = true;
+
     /** To keep bean happy. */
     private RegisteredDeviceEntity() {
         super();
@@ -107,6 +110,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
+    public RegisteredDeviceEntity setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
+        return this;
     }
 
     @Transient
