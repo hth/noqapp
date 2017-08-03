@@ -43,9 +43,19 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     @Mobile
     boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
 
+    /**
+     * When data is fetched since beginning. This helps set to prevent fetching from beginning going forward.
+     *
+     * @param id
+     */
     @Mobile
     void markFetchedSinceBeginningForDevice(String id);
 
+    /**
+     * Called when user logs out of the App.
+     *
+     * @param id
+     */
     @Mobile
     void unsetRidForDevice(String id);
 }

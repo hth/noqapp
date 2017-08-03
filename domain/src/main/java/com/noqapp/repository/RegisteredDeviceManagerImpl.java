@@ -192,7 +192,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 entityUpdate(update("SB", false)),
                 RegisteredDeviceEntity.class,
                 TABLE);
-
     }
 
     public void unsetRidForDevice(String id) {

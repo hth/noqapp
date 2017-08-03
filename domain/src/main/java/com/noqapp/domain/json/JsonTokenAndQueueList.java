@@ -32,6 +32,9 @@ import java.util.List;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueueList extends AbstractDomain {
 
+    @JsonProperty ("sb")
+    private boolean sinceBeginning;
+
     @JsonProperty ("tqs")
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
@@ -39,8 +42,14 @@ public class JsonTokenAndQueueList extends AbstractDomain {
         return tokenAndQueues;
     }
 
-    public void setTokenAndQueues(List<JsonTokenAndQueue> tokenAndQueues) {
+    public JsonTokenAndQueueList setTokenAndQueues(List<JsonTokenAndQueue> tokenAndQueues) {
         this.tokenAndQueues = tokenAndQueues;
+        return this;
+    }
+
+    public JsonTokenAndQueueList setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
+        return this;
     }
 
     @Override
