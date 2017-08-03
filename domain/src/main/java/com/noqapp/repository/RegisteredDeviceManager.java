@@ -42,4 +42,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @Mobile
     boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
+
+    @Mobile
+    void markFetchedSinceBeginningForDevice(String id);
 }
