@@ -47,6 +47,10 @@ public class JsonTokenAndQueueList extends AbstractDomain {
         return this;
     }
 
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
     public JsonTokenAndQueueList setSinceBeginning(boolean sinceBeginning) {
         this.sinceBeginning = sinceBeginning;
         return this;
