@@ -41,7 +41,7 @@
     <logger name="org.mongodb" level="WARN"/>
     <logger name="com.google.maps" level="OFF"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
-    <logger name="com.zaxxer.hikari" level="INFO" />
+    <!--<logger name="com.zaxxer.hikari" level="INFO" />-->
 
     <root level="INFO">
         <appender-ref ref="FILE" />
