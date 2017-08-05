@@ -164,7 +164,7 @@ public class ForgotController {
     @RequestMapping (method = RequestMethod.GET, value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
             @ModelAttribute (SUCCESS_EMAIL)
-                    String success,
+            String success,
 
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse

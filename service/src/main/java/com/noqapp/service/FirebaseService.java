@@ -1,14 +1,20 @@
 package com.noqapp.service;
 
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.tasks.Task;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
+import com.noqapp.service.config.FirebaseConfig;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,13 +36,21 @@ public class FirebaseService {
 
     private String authorizationKey;
     private OkHttpClient client;
+    private FirebaseConfig firebaseConfig;
+    private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
     public FirebaseService(
             @Value ("${firebase.server.key}")
-            String firebaseServerKey
+            String firebaseServerKey,
+
+            FirebaseConfig firebaseConfig,
+            UserProfilePreferenceService userProfilePreferenceService
     ) {
         this.authorizationKey = "key=" + firebaseServerKey;
+        this.firebaseConfig = firebaseConfig;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+
         client = new OkHttpClient();
     }
 
@@ -79,5 +93,39 @@ public class FirebaseService {
                 response.body());
 
         return response.isSuccessful();
+    }
+
+    /**
+     * When user logs in through firebase phone authentication.
+     *
+     * @param uid
+     * @return
+     */
+    public UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
+        final String[] phoneNumber = {""};
+        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
+                .addOnSuccessListener(userRecord -> {
+                    LOG.info("Successfully found user data for uid={}", userRecord.getUid());
+                    phoneNumber[0] = userRecord.getProviderData()[0].getUid();
+                })
+                .addOnFailureListener(e -> {
+                    LOG.warn("Not found user={} reason={}", uid, e.getLocalizedMessage());
+                    throw new UsernameNotFoundException("Error in retrieving user");
+                });
+
+        while (!task.isComplete()) {
+            try {
+                //TODO remove sleep method.
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
+            }
+        }
+
+        if (null != phoneNumber[0]) {
+            return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
+        }
+
+        return null;
     }
 }

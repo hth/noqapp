@@ -27,6 +27,7 @@ import com.noqapp.service.LoginService;
 import com.noqapp.social.service.CustomUserDetailsService;
 import com.noqapp.view.cache.CachedUserAgentStringParser;
 import com.noqapp.view.form.UserLoginForm;
+import com.noqapp.view.form.UserLoginPhoneForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
@@ -102,6 +103,9 @@ public class LoginController {
             @ModelAttribute ("userLoginForm")
             UserLoginForm userLoginForm,
 
+            @ModelAttribute ("userLoginPhoneForm")
+            UserLoginPhoneForm userLoginPhoneForm,
+
             Locale locale,
             HttpServletRequest request
     ) {
@@ -151,12 +155,16 @@ public class LoginController {
         }
 
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
+        return determineTargetUrlAfterLogin(userAccount, userProfile);
+    }
+
+    String determineTargetUrlAfterLogin(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
         UserDetails userDetails = new TokenUser(
                 userProfile.getEmail(),
                 "",
                 authorities,
-                rid,
+                userProfile.getReceiptUserId(),
                 userProfile.getLevel(),
                 customUserDetailsService.isUserActive(userAccount),
                 userAccount.isAccountValidated(),
