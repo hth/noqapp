@@ -45,8 +45,10 @@ public class DataSourceConfiguration {
         ds.addDataSourceProperty("cacheServerConfiguration", true);
         ds.addDataSourceProperty("elideSetAutoCommits", true);
         ds.addDataSourceProperty("maintainTimeStats", false);
-        //ds.setMaximumPoolSize(100);
-        //ds.setMinimumIdle(5);
+        ds.setMaximumPoolSize(25);
+        ds.setMinimumIdle(3);
+        /* 30 seconds. */
+        ds.setIdleTimeout(30000);
         return ds;
     }
 }
