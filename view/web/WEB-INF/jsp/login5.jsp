@@ -19,7 +19,6 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
-    <script src="${pageContext.request.contextPath}/static2/internal/js/fire-trigger.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -31,7 +30,6 @@
             messagingSenderId: "129734883266"
         };
         firebase.initializeApp(config);
-        noQAuthentication.doValidateUser("");
     </script>
 </head>
 
@@ -63,15 +61,15 @@
                     </form>
                     <div class="otp">
 
-                        <form id="verification-code-form" action="" method="get" style="display: none;">
+                        <form id="verification-code-form" action="" style="display: none;">
                             <h2>OTP</h2>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
                                 <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code3" name="3" type="text" class="enter-f"  maxlength="1"/></li>
-                                <li><input id="code4" name="4" type="text" class="enter-f"  maxlength="1"/></li>
-                                <li><input id="code5" name="5" type="text" class="enter-f"  maxlength="1"/></li>
-                                <li><input id="code6" name="6" type="text" class="enter-f"  maxlength="1"/></li>
+                                <li><input id="code3" name="3" type="text" class="enter-f" maxlength="1"/></li>
+                                <li><input id="code4" name="4" type="text" class="enter-f" maxlength="1"/></li>
+                                <li><input id="code5" name="5" type="text" class="enter-f" maxlength="1"/></li>
+                                <li><input id="code6" name="6" type="text" class="enter-f" maxlength="1"/></li>
                                 <div class="clearFix"></div>
                             </ul>
                             <span class="mdl-textfield__error"> </span>
@@ -81,6 +79,10 @@
 
                         </form>
 
+                        <form:form id="loginPhoneForm" method="post" modelAttribute="userLoginPhoneForm" action="/open/phone/login.htm">
+                            <form:hidden path="uid" cssClass="form-field" />
+                            <form:hidden path="phone" cssClass="form-field" />
+                        </form:form>
                     </div>
 
 
@@ -155,6 +157,7 @@
 
 
 </body>
+<script src="${pageContext.request.contextPath}/static2/internal/js/firebaseAuthenticate.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {

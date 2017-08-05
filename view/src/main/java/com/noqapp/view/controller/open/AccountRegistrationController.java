@@ -198,10 +198,16 @@ public class AccountRegistrationController {
     )
     @ResponseBody
     public String getAvailability(@RequestBody String body) throws IOException {
-        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("mail").getText());
-        AvailabilityStatus availabilityStatus;
+        String email;
+        try {
+            email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("mail").getText());
+        } catch (IOException e) {
+            LOG.error("Failed parsing mail reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        }
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
+        AvailabilityStatus availabilityStatus;
         if (null != userProfileEntity && userProfileEntity.getEmail().equals(email)) {
             LOG.info("Email={} provided during registration exists", email);
             availabilityStatus = AvailabilityStatus.notAvailable(email);
