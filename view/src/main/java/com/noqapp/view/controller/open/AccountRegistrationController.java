@@ -84,7 +84,9 @@ public class AccountRegistrationController {
         return registrationPage;
     }
 
-    @RequestMapping (method = RequestMethod.POST, params = {"signup"})
+    @RequestMapping (
+            method = RequestMethod.POST,
+            params = {"signup"})
     public String signup(
             @ModelAttribute ("merchantRegistrationForm")
             MerchantRegistrationForm merchantRegistrationForm,
@@ -144,7 +146,9 @@ public class AccountRegistrationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (method = RequestMethod.GET, value = "/success")
+    @RequestMapping (
+            method = RequestMethod.GET,
+            value = "/success")
     public String success(
             @ModelAttribute ("email")
             ScrubbedInput email,
@@ -166,7 +170,9 @@ public class AccountRegistrationController {
      * @param redirectAttrs
      * @return
      */
-    @RequestMapping (method = RequestMethod.POST, params = {"recover"})
+    @RequestMapping (
+            method = RequestMethod.POST,
+            params = {"recover"})
     public String recover(
             @ModelAttribute ("merchantRegistrationForm")
             MerchantRegistrationForm merchantRegistrationForm,
@@ -185,8 +191,8 @@ public class AccountRegistrationController {
      * @throws IOException
      */
     @RequestMapping (
-            value = "/availability",
             method = RequestMethod.POST,
+            value = "/availability",
             headers = "Accept=application/json",
             produces = "application/json"
     )
