@@ -83,6 +83,7 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -98,7 +99,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0-rc1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
@@ -151,6 +152,9 @@
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
+            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
+            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: javax.activation:activation:1.1" />
@@ -219,10 +223,6 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
-            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
-            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
-            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.6.3/b692d6402d093c746e460482010ebd63cabc031f/HikariCP-2.6.3.jar" />
           </element>
         </element>
       </root>
@@ -314,6 +314,7 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -329,7 +330,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0-rc1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
@@ -382,6 +383,9 @@
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
+            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
+            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: javax.activation:activation:1.1" />
@@ -450,11 +454,7 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
-            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
-            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
-            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.6.3/b692d6402d093c746e460482010ebd63cabc031f/HikariCP-2.6.3.jar" />
           </element>
         </element>
       </root>
@@ -550,6 +550,7 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -565,7 +566,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0-rc1" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
@@ -618,6 +619,9 @@
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
+            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
+            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: javax.activation:activation:1.1" />
@@ -686,9 +690,6 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
-            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
-            <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
-            <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="archive" name="com.noqapp-social.jar">
               <element id="module-output" name="social_main" />
@@ -702,7 +703,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.6.3/b692d6402d093c746e460482010ebd63cabc031f/HikariCP-2.6.3.jar" />
           </element>
         </element>
       </root>
@@ -909,7 +909,6 @@
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.0-M5" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.68.1" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.7.0" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0-rc1" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.8.1" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.6.RELEASE" />
@@ -946,6 +945,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.10.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.10.RELEASE" />
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -1579,15 +1579,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/cc6729ce0bc6cc29441cb3a04acad02aeeebb26e/guava-jdk5-17.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.google.guava:guava:23.0-rc1">
+    <library name="Gradle: com.google.guava:guava:23.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0-rc1/22c9de8424aaefed3687f17a576cfee925338d7c/guava-23.0-rc1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/c947004bb13d18182be60077ade044099e4f26f1/guava-23.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0-rc1/dd93926adae3155b4050c0811f93df74afbda994/guava-23.0-rc1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/2fa613f8f6125a8ad7c395396dc5852265ca70ef/guava-23.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0-rc1/a440d0036c9a275fce4bb2d8769fc5efb8fbb09a/guava-23.0-rc1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/ed233607c5c11e1a13a3fd760033ed5d9fe525c2/guava-23.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.http-client:google-http-client-gson:1.22.0">
