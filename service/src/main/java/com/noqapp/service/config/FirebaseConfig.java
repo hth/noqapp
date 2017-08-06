@@ -38,16 +38,12 @@ public class FirebaseConfig {
                     .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
                     .build();
 
+            LOG.info("Initialized firebaseApp");
             return FirebaseApp.initializeApp(options);
         } catch (IOException e) {
             LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
         }
         
         return null;
-    }
-
-    @Bean
-    public FirebaseAuth getFirebaseAuth() {
-        return FirebaseAuth.getInstance(firebaseConfigTemplate());
     }
 }
