@@ -2,7 +2,6 @@ package com.noqapp.service.config;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseCredentials;
 
 import org.slf4j.Logger;
@@ -28,9 +27,12 @@ import java.io.InputStream;
 public class FirebaseConfig {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseConfig.class);
 
+    private FirebaseApp firebaseApp;
+
     @Bean
     public FirebaseApp firebaseConfigTemplate() {
         try {
+            LOG.info("Initialized firebaseApp started");
             /* Downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
             InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
@@ -38,8 +40,9 @@ public class FirebaseConfig {
                     .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
                     .build();
 
-            LOG.info("Initialized firebaseApp");
-            return FirebaseApp.initializeApp(options);
+            firebaseApp = FirebaseApp.initializeApp(options);
+            LOG.info("Initialized firebaseApp with databaseUrl={}", firebaseApp.getOptions().getDatabaseUrl());
+            return firebaseApp;
         } catch (IOException e) {
             LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
         }
