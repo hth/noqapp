@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+
 /**
  * User: hitender
  * Date: 6/22/17 7:45 AM
@@ -28,7 +30,7 @@ public class FirebaseConfig {
     public FirebaseConfig() {
         LOG.info("Initialized firebaseApp started");
         /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-//        InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
+        InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
 //        try {
 //            FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
 //        } catch (IOException e) {
