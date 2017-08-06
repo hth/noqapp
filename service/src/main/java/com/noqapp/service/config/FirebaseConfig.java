@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import java.io.InputStream;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Configuration
+@Service
 public class FirebaseConfig {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseConfig.class);
 
@@ -47,20 +47,22 @@ public class FirebaseConfig {
         }
 
         /* Continue initialization. */
-        getFirebaseApp();
-        getFirebaseAuth();
+        //doInitializeFirebaseApp();
+        //getFirebaseAuth();
         LOG.info("Initialized firebaseApp with databaseUrl={}", options.getDatabaseUrl());
     }
 
-    private FirebaseApp getFirebaseApp() {
-        if (firebaseApp == null) {
-            return firebaseApp = FirebaseApp.initializeApp(options);
+    private void doInitializeFirebaseApp() {
+        if (null == firebaseApp) {
+            firebaseApp = FirebaseApp.initializeApp(options);
         }
-        return firebaseApp;
     }
 
     public FirebaseAuth getFirebaseAuth() {
-        if (firebaseAuth == null) {
+        if (null == firebaseApp ) {
+            doInitializeFirebaseApp();
+        }
+        if (null == firebaseAuth) {
             firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
         }
         return firebaseAuth;
