@@ -23,7 +23,7 @@ import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.CronStatsService;
-import com.noqapp.service.FirebaseService;
+import com.noqapp.service.FirebaseMessageService;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class ServicedPersonalFCM {
     private QueueManager queueManager;
     private TokenQueueManager tokenQueueManager;
     private RegisteredDeviceManager registeredDeviceManager;
-    private FirebaseService firebaseService;
+    private FirebaseMessageService firebaseMessageService;
     private CronStatsService cronStatsService;
 
     private CronStatsEntity cronStats;
@@ -61,7 +61,7 @@ public class ServicedPersonalFCM {
             QueueManager queueManager,
             TokenQueueManager tokenQueueManager,
             RegisteredDeviceManager registeredDeviceManager,
-            FirebaseService firebaseService,
+            FirebaseMessageService firebaseMessageService,
             CronStatsService cronStatsService
     ) {
         this.sendPersonalNotification = sendPersonalNotification;
@@ -69,7 +69,7 @@ public class ServicedPersonalFCM {
         this.queueManager = queueManager;
         this.tokenQueueManager = tokenQueueManager;
         this.registeredDeviceManager = registeredDeviceManager;
-        this.firebaseService = firebaseService;
+        this.firebaseMessageService = firebaseMessageService;
         this.cronStatsService = cronStatsService;
     }
 
@@ -99,7 +99,7 @@ public class ServicedPersonalFCM {
                 } else {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
                     JsonMessage jsonMessage = composeMessage(registeredDevice, tokenQueue.getTopic(), queue);
-                    if (firebaseService.messageToTopic(jsonMessage)) {
+                    if (firebaseMessageService.messageToTopic(jsonMessage)) {
                         queue.setNotifiedOnService(true);
                         queueManager.save(queue);
                         sent++;
