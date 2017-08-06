@@ -2,13 +2,14 @@ package com.noqapp.service.config;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseCredentials;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,14 +24,15 @@ import java.io.InputStream;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Configuration
+@Service
 public class FirebaseConfig {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseConfig.class);
 
     private FirebaseApp firebaseApp;
+    private FirebaseAuth firebaseAuth;
 
-    @Bean
-    public FirebaseApp firebaseConfigTemplate() {
+    @Autowired
+    public FirebaseConfig() {
         try {
             LOG.info("Initialized firebaseApp started");
             /* Downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
@@ -40,13 +42,19 @@ public class FirebaseConfig {
                     .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
                     .build();
 
-            firebaseApp = FirebaseApp.initializeApp(options);
+            this.firebaseApp = FirebaseApp.initializeApp(options);
+            this.firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
             LOG.info("Initialized firebaseApp with databaseUrl={}", firebaseApp.getOptions().getDatabaseUrl());
-            return firebaseApp;
         } catch (IOException e) {
             LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
         }
-        
-        return null;
+    }
+
+    public FirebaseApp getFirebaseApp() {
+        return firebaseApp;
+    }
+
+    public FirebaseAuth getFirebaseAuth() {
+        return firebaseAuth;
     }
 }
