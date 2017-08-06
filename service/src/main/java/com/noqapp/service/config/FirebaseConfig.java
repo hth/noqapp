@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
@@ -29,7 +30,8 @@ public class FirebaseConfig {
     private FirebaseApp firebaseApp;
     private FirebaseAuth firebaseAuth;
 
-    public FirebaseConfig() {
+    @Bean
+    public void FirebaseConfigTemplate() {
         try {
             /* Downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
             InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
