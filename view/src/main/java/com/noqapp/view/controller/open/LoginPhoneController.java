@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
-import com.noqapp.service.FirebaseService;
+import com.noqapp.service.FirebaseAuthenticateService;
 import com.noqapp.view.form.UserLoginPhoneForm;
 
 /**
@@ -33,18 +33,18 @@ import com.noqapp.view.form.UserLoginPhoneForm;
 public class LoginPhoneController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginPhoneController.class);
 
-    private FirebaseService firebaseService;
+    private FirebaseAuthenticateService firebaseAuthenticateService;
     private AccountService accountService;
     private LoginController loginController;
 
     @Autowired
     public LoginPhoneController(
-            FirebaseService firebaseService,
+            FirebaseAuthenticateService firebaseAuthenticateService,
             AccountService accountService,
             LoginController loginController
     ) {
         this.accountService = accountService;
-        this.firebaseService = firebaseService;
+        this.firebaseAuthenticateService = firebaseAuthenticateService;
         this.loginController = loginController;
     }
 
@@ -60,7 +60,7 @@ public class LoginPhoneController {
             BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
-        UserProfileEntity userProfile = firebaseService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
+        UserProfileEntity userProfile = firebaseAuthenticateService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
         if (null == userProfile) {
             LOG.warn("Failed to find user");
             throw new UsernameNotFoundException("User Not found");

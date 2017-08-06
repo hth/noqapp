@@ -18,14 +18,14 @@ import com.noqapp.service.config.FirebaseConfig;
  * Date: 12/28/16 10:56 PM
  */
 @Service
-public class FirebaseService {
-    private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
+public class FirebaseAuthenticateService {
+    private static final Logger LOG = LoggerFactory.getLogger(FirebaseAuthenticateService.class);
 
     private FirebaseConfig firebaseConfig;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
-    public FirebaseService(
+    public FirebaseAuthenticateService(
             FirebaseConfig firebaseConfig,
             UserProfilePreferenceService userProfilePreferenceService
     ) {
