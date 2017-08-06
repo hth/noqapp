@@ -1,5 +1,7 @@
 package com.noqapp.service.config;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,6 +71,7 @@ public class FirebaseConfig {
 
         try {
             if (null == firebaseAuth) {
+                assertNotNull(firebaseApp, "FirebaseApp should not be null");
                 firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
             }
         } catch (Exception e) {
