@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.tasks.Task;
 
@@ -21,7 +22,7 @@ import com.noqapp.service.config.FirebaseConfig;
 public class FirebaseAuthenticateService {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseAuthenticateService.class);
 
-    private FirebaseConfig firebaseConfig;
+    private FirebaseAuth firebaseAuth;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
@@ -29,7 +30,7 @@ public class FirebaseAuthenticateService {
             FirebaseConfig firebaseConfig,
             UserProfilePreferenceService userProfilePreferenceService
     ) {
-        this.firebaseConfig = firebaseConfig;
+        this.firebaseAuth = FirebaseAuth.getInstance(firebaseConfig.firebaseConfigTemplate());
         this.userProfilePreferenceService = userProfilePreferenceService;
     }
 
@@ -41,7 +42,7 @@ public class FirebaseAuthenticateService {
      */
     public UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
         final String[] phoneNumber = {""};
-        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
+        Task<UserRecord> task = firebaseAuth.getUser(uid)
                 .addOnSuccessListener(userRecord -> {
                     LOG.info("Successfully found user data for uid={}", userRecord.getUid());
                     phoneNumber[0] = userRecord.getProviderData()[0].getUid();
