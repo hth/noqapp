@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import java.io.InputStream;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Service
+@Configuration
 public class FirebaseConfig {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseConfig.class);
 
@@ -33,7 +33,7 @@ public class FirebaseConfig {
     private static FirebaseAuth firebaseAuth;
 
     public FirebaseConfig() {
-        LOG.info("Initialized firebaseApp started");
+        LOG.info("FirebaseApp initialization started");
         /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
         InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
         try {
@@ -46,10 +46,13 @@ public class FirebaseConfig {
             LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
         }
 
+        /* Continue initialization. */
+        getFirebaseApp();
+        getFirebaseAuth();
         LOG.info("Initialized firebaseApp with databaseUrl={}", options.getDatabaseUrl());
     }
 
-    public FirebaseApp getFirebaseApp() {
+    private FirebaseApp getFirebaseApp() {
         if (firebaseApp == null) {
             return firebaseApp = FirebaseApp.initializeApp(options);
         }
