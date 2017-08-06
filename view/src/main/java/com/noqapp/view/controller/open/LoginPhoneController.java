@@ -66,7 +66,7 @@ public class LoginPhoneController {
             throw new UsernameNotFoundException("User Not found");
         }
         UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
-        String redirect = "redirect:" + loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
+        String redirect = "forward:" + loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
         LOG.info("{}", redirect);
         return redirect;
     }
