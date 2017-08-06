@@ -28,8 +28,9 @@ import java.io.InputStream;
 public class FirebaseConfig {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseConfig.class);
 
-    private FirebaseApp firebaseApp;
-    private FirebaseAuth firebaseAuth;
+    private static FirebaseOptions options;
+    private static FirebaseApp firebaseApp;
+    private static FirebaseAuth firebaseAuth;
 
     public FirebaseConfig() {
         LOG.info("Initialized firebaseApp started");
@@ -37,25 +38,28 @@ public class FirebaseConfig {
         InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
         try {
             FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
+            options = new FirebaseOptions.Builder()
+                    .setCredential(firebaseCredential)
+                    .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
+                    .build();
         } catch (IOException e) {
             LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
         }
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredential(FirebaseCredentials.applicationDefault())
-                .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
-                .build();
-//
-//        this.firebaseApp = FirebaseApp.initializeApp(options);
-//        this.firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
         LOG.info("Initialized firebaseApp with databaseUrl={}", options.getDatabaseUrl());
     }
 
     public FirebaseApp getFirebaseApp() {
+        if (firebaseApp == null) {
+            return firebaseApp = FirebaseApp.initializeApp(options);
+        }
         return firebaseApp;
     }
 
     public FirebaseAuth getFirebaseAuth() {
+        if (firebaseAuth == null) {
+            firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
+        }
         return firebaseAuth;
     }
 }
