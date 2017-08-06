@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,7 +30,6 @@ public class FirebaseConfig {
     private FirebaseApp firebaseApp;
     private FirebaseAuth firebaseAuth;
 
-    @Autowired
     public FirebaseConfig() {
         try {
             LOG.info("Initialized firebaseApp started");
