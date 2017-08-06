@@ -1,9 +1,7 @@
 package com.noqapp.service.config;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseCredentials;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +35,14 @@ public class FirebaseConfig {
 //            LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
 //        }
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredential(FirebaseCredentials.applicationDefault())
-                .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
-                .build();
-
-        this.firebaseApp = FirebaseApp.initializeApp(options);
-        this.firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
-        LOG.info("Initialized firebaseApp with databaseUrl={}", firebaseApp.getOptions().getDatabaseUrl());
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredential(FirebaseCredentials.applicationDefault())
+//                .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
+//                .build();
+//
+//        this.firebaseApp = FirebaseApp.initializeApp(options);
+//        this.firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
+//        LOG.info("Initialized firebaseApp with databaseUrl={}", firebaseApp.getOptions().getDatabaseUrl());
     }
 
     public FirebaseApp getFirebaseApp() {
