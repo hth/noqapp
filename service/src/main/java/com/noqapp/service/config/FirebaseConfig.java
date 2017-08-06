@@ -2,12 +2,15 @@ package com.noqapp.service.config;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseCredential;
+import com.google.firebase.auth.FirebaseCredentials;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -31,11 +34,11 @@ public class FirebaseConfig {
         LOG.info("Initialized firebaseApp started");
         /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
         InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
-//        try {
-//            FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
-//        } catch (IOException e) {
-//            LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
-//        }
+        try {
+            FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
+        } catch (IOException e) {
+            LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
+        }
 
 //        FirebaseOptions options = new FirebaseOptions.Builder()
 //                .setCredential(FirebaseCredentials.applicationDefault())
