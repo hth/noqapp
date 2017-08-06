@@ -164,7 +164,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public UserProfileEntity findOneByPhone(String phone) {
         //TODO check to have or removed
         if (phone.startsWith("+")) {
-            LOG.warn("Found phone with + number={}", phone);
+            LOG.warn("Found phone number {} starting with +", phone);
             phone = phone.replace("+", "");
         }
         return mongoTemplate.findOne(query(where("PH").is(phone)), UserProfileEntity.class, TABLE);
