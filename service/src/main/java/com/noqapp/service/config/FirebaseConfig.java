@@ -53,17 +53,26 @@ public class FirebaseConfig {
     }
 
     private void doInitializeFirebaseApp() {
-        if (null == firebaseApp) {
-            firebaseApp = FirebaseApp.initializeApp(options);
+        try {
+            if (null == firebaseApp) {
+                firebaseApp = FirebaseApp.initializeApp(options);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed initialize FirebaseApp reason={}", e.getLocalizedMessage(), e);
         }
     }
 
     public FirebaseAuth getFirebaseAuth() {
-        if (null == firebaseApp ) {
+        if (null == firebaseApp) {
             doInitializeFirebaseApp();
         }
-        if (null == firebaseAuth) {
-            firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
+
+        try {
+            if (null == firebaseAuth) {
+                firebaseAuth = FirebaseAuth.getInstance(firebaseApp);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed initialize firebaseAuth reason={}", e.getLocalizedMessage(), e);
         }
         return firebaseAuth;
     }
