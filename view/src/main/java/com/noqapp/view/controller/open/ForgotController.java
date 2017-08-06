@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,8 +249,6 @@ public class ForgotController {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
                 UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getReceiptUserId());
-                Assert.notNull(userProfile);
-
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                         HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
