@@ -40,7 +40,7 @@ public class TokenQueueService {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueService.class);
 
     private TokenQueueManager tokenQueueManager;
-    private FirebaseService firebaseService;
+    private FirebaseMessageService firebaseMessageService;
     private QueueManager queueManager;
     private AccountService accountService;
     private RegisteredDeviceManager registeredDeviceManager;
@@ -50,13 +50,13 @@ public class TokenQueueService {
     @Autowired
     public TokenQueueService(
             TokenQueueManager tokenQueueManager,
-            FirebaseService firebaseService,
+            FirebaseMessageService firebaseMessageService,
             QueueManager queueManager,
             AccountService accountService,
             RegisteredDeviceManager registeredDeviceManager
     ) {
         this.tokenQueueManager = tokenQueueManager;
-        this.firebaseService = firebaseService;
+        this.firebaseMessageService = firebaseMessageService;
         this.queueManager = queueManager;
         this.accountService = accountService;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -247,7 +247,7 @@ public class TokenQueueService {
             }
 
             jsonMessage.setData(jsonData);
-            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
             } else {
@@ -317,7 +317,7 @@ public class TokenQueueService {
             }
 
             jsonMessage.setData(jsonData);
-            boolean fcmMessageBroadcast = firebaseService.messageToTopic(jsonMessage);
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
             } else {
