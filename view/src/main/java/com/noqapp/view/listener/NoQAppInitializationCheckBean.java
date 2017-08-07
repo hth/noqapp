@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.noqapp.service.config.FirebaseConfig;
+
 import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
@@ -26,10 +28,12 @@ public class NoQAppInitializationCheckBean {
     private static final Logger LOG = LoggerFactory.getLogger(NoQAppInitializationCheckBean.class);
 
     private DataSource dataSource;
+    private FirebaseConfig firebaseConfig;
 
     @Autowired
-    public NoQAppInitializationCheckBean(DataSource dataSource) {
+    public NoQAppInitializationCheckBean(DataSource dataSource, FirebaseConfig firebaseConfig) {
         this.dataSource = dataSource;
+        this.firebaseConfig = firebaseConfig;
     }
 
     @PostConstruct
@@ -39,5 +43,14 @@ public class NoQAppInitializationCheckBean {
             throw new RuntimeException("RDB could not be connected");
         }
         LOG.info("RDB connected");
+    }
+
+    @PostConstruct
+    public void checkFirebaseConnection() {
+        if (null == firebaseConfig.getFirebaseAuth()) {
+            LOG.error("Firebase could not be connected");
+            throw new RuntimeException("Firebase could not be connected");
+        }
+        LOG.info("Firebase connected db={}", firebaseConfig.getFirebaseApp().getOptions().getDatabaseUrl());
     }
 }
