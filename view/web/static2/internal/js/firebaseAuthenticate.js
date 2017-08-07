@@ -11,7 +11,7 @@ var noQAuthentication = {
                 window.location = data.next;
             },
             error: function (data, request) {
-                window.location = data.next;
+                window.location = "/open/login.htm?loginFailure=p--#";
             }
         });
     }
