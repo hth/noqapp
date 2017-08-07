@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
@@ -51,7 +50,6 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-
                     <form id="sign-in-form" action="">
                         <h2>Login</h2>
                         <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
@@ -59,8 +57,13 @@
                         <input name="" id="sign-in-button" type="button"  class="form-btn" value="NEXT" onClick = "onSignInSubmit()"/>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
-                    <div class="otp">
 
+                    <div class="otp">
+                        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
+                            <div class="r-error" style="margin-left: 0; width: 100%">
+                                User not registered with this number. <a href="/open/registrationMerchant.htm">Please click here to register</a>
+                            </div>
+                        </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <h2>OTP</h2>
                             <ul class="enter-code-box" id="verification-code">
@@ -76,7 +79,6 @@
                             <input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" style="width: 46%;" onClick = "onVerifyCodeSubmit()"/>
                             <input id="cancel-verify-code-button"  name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
-
                         </form>
 
                         <form:form id="loginPhoneForm" method="post" modelAttribute="userLoginPhoneForm" action="/open/phone/login.htm">
@@ -84,8 +86,6 @@
                             <form:hidden path="phone" cssClass="form-field" />
                         </form:form>
                     </div>
-
-
 
                     <form:form id="login-form" method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
                         <div class="or">Or</div>

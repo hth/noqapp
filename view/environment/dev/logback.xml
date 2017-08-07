@@ -53,7 +53,7 @@
     <logger name="com.google.maps" level="INFO"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
     <logger name="javax.el" level="ERROR" />
-    <logger name="com.zaxxer.hikari" level="DEBUG" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
 
     <root level="INFO">
         <appender-ref ref="FILE" />

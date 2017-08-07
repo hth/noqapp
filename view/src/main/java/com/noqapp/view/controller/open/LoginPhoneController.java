@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.noqapp.domain.UserAccountEntity;
@@ -17,6 +17,8 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FirebaseAuthenticateService;
 import com.noqapp.view.form.UserLoginPhoneForm;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender
@@ -53,21 +55,23 @@ public class LoginPhoneController {
             value = "/login",
             headers = "Accept=application/json",
             produces = "application/json")
+    @ResponseBody
     public String phoneLogin(
             @ModelAttribute ("userLoginPhoneForm")
             UserLoginPhoneForm userLoginPhoneForm,
 
             BindingResult result,
-            RedirectAttributes redirectAttrs
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse httpServletResponse
     ) {
         UserProfileEntity userProfile = firebaseAuthenticateService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
         if (null == userProfile) {
-            LOG.warn("Failed to find user");
-            throw new UsernameNotFoundException("User Not found");
+            LOG.warn("Failed to find user uid={} phone={}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone());
+            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
         }
         UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
-        String redirect = "redirect:" + loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
-        LOG.info("{}", redirect);
-        return redirect;
+        String redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
+        LOG.info("Redirecting user to link={}", redirect);
+        return String.format("{ \"next\" : \"%s\" }", redirect);
     }
 }
