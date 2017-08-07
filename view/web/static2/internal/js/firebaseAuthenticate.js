@@ -8,7 +8,6 @@ var noQAuthentication = {
             url: '/open/phone/login.htm',
             data: $("#loginPhoneForm").serialize(),
             success: function (data) {
-                alert("Success " + data.next);
                 window.location = data.next;
             },
             error: function (data, request) {
