@@ -38,7 +38,7 @@ public class SupervisorLandingController {
 
     @Autowired
     public SupervisorLandingController(
-            @Value ("${nextPage:/business/store/queue}")
+            @Value ("${nextPage:/business/queueLanding}")
             String nextPage,
 
             @Value ("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")

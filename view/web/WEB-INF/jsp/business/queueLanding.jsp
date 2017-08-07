@@ -11,6 +11,6 @@
     <title>Queue</title>
 </head>
 <body>
-        Its a queue
+        Its a queue for Supervisor
 </body>
 </html>
