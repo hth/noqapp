@@ -35,17 +35,21 @@ public class FirebaseConfig {
     private static FirebaseAuth firebaseAuth;
 
     private FirebaseConfig() {
-        LOG.info("FirebaseApp initialization started");
-        /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-        InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
-        try {
-            FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
-            options = new FirebaseOptions.Builder()
-                    .setCredential(firebaseCredential)
-                    .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
-                    .build();
-        } catch (IOException e) {
-            LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
+        if (null == options) {
+            LOG.info("FirebaseApp initialization started");
+            /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
+            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
+            try {
+                FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
+                options = new FirebaseOptions.Builder()
+                        .setCredential(firebaseCredential)
+                        .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
+                        .build();
+            } catch (IOException e) {
+                LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
+            }
+        } else {
+            LOG.warn("FirebaseApp options already initialized");
         }
 
         /* Continue initialization. */
@@ -80,9 +84,5 @@ public class FirebaseConfig {
 
     public FirebaseAuth getFirebaseAuth() {
         return firebaseAuth;
-    }
-
-    public FirebaseApp getFirebaseApp() {
-        return firebaseApp;
     }
 }
