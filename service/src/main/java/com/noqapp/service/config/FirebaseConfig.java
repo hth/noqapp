@@ -34,7 +34,7 @@ public class FirebaseConfig {
     private static FirebaseApp firebaseApp;
     private static FirebaseAuth firebaseAuth;
 
-    public FirebaseConfig() {
+    private FirebaseConfig() {
         LOG.info("FirebaseApp initialization started");
         /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
         InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
@@ -49,9 +49,8 @@ public class FirebaseConfig {
         }
 
         /* Continue initialization. */
-        //doInitializeFirebaseApp();
-        //getFirebaseAuth();
-        LOG.info("Initialized firebaseApp with databaseUrl={}", options.getDatabaseUrl());
+        doInitializeFirebaseAuth();
+        LOG.info("FirebaseApp with databaseUrl={} initialized", options.getDatabaseUrl());
     }
 
     private void doInitializeFirebaseApp() {
@@ -64,7 +63,7 @@ public class FirebaseConfig {
         }
     }
 
-    public FirebaseAuth getFirebaseAuth() {
+    private void doInitializeFirebaseAuth() {
         if (null == firebaseApp) {
             doInitializeFirebaseApp();
         }
@@ -77,6 +76,13 @@ public class FirebaseConfig {
         } catch (Exception e) {
             LOG.error("Failed initialize firebaseAuth reason={}", e.getLocalizedMessage(), e);
         }
+    }
+
+    public FirebaseAuth getFirebaseAuth() {
         return firebaseAuth;
+    }
+
+    public FirebaseApp getFirebaseApp() {
+        return firebaseApp;
     }
 }
