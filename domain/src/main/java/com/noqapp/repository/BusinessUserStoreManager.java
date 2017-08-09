@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface BusinessUserStoreManager extends RepositoryManager<BusinessUserStoreEntity> {
 
-    boolean hasAccess(String rid, String codeQR);
+    boolean hasAccess(String qid, String codeQR);
 
-    List<BusinessUserStoreEntity> getQueues(String rid, int limit);
+    List<BusinessUserStoreEntity> getQueues(String qid, int limit);
 
     long findNumberOfPeopleAssignedToQueue(String storeId);
 

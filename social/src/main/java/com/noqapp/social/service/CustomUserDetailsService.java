@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
@@ -67,16 +67,16 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        LOG.info("login attempted user={}", email);
+        LOG.info("login attempted email={}", email);
 
         /* Always check user login with lower letter email case. */
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (null == userProfile) {
-            LOG.warn("Not found user={}", email);
+            LOG.warn("Not found user with email={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
-            LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getQueueUserId());
+            LOG.info("qid={} accountValidated={}", userAccount.getQueueUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActive(userAccount);
             if (!condition) {
@@ -86,11 +86,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                         " when we start accepting new users.");
             }
 
-            return new TokenUser(
+            return new QueueUser(
                     userProfile.getEmail(),
                     userAccount.getUserAuthentication().getPassword(),
                     getAuthorities(userAccount.getRoles()),
-                    userProfile.getReceiptUserId(),
+                    userProfile.getQueueUserId(),
                     userProfile.getLevel(),
                     condition,
                     userAccount.isAccountValidated(),
@@ -112,7 +112,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     LOG.info("Account is inactive for reason={}", userAccount.getAccountInactiveReason());
                     throw new RuntimeException(accountNotValidatedMessage);
                 default:
-                    LOG.error("Reached condition for invalid account rid={}", userAccount.getReceiptUserId());
+                    LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
                     return false;
             }
         }

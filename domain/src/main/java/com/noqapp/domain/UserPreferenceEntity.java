@@ -22,7 +22,7 @@ public class UserPreferenceEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @DBRef
     @Indexed (unique = true)
@@ -41,11 +41,11 @@ public class UserPreferenceEntity extends BaseEntity {
     private UserPreferenceEntity(UserProfileEntity userProfile) {
         super();
         this.userProfile = userProfile;
-        this.receiptUserId = userProfile.getReceiptUserId();
+        this.queueUserId = userProfile.getQueueUserId();
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     /**

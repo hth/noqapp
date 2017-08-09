@@ -30,12 +30,12 @@ public class InviteEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     /* RJR maps to RID. */
     @NotNull
     @Field ("RJR")
-    private int remoteJoinForReceiptUserCount;
+    private int remoteJoinForQueueUserCount;
 
     @NotNull
     @Field ("IC")
@@ -50,9 +50,9 @@ public class InviteEntity extends BaseEntity {
     @Field ("RJI")
     private int remoteJoinForInviterCount;
 
-    public InviteEntity(String receiptUserId, String inviterId, String inviteeCode) {
-        this.receiptUserId = receiptUserId;
-        this.remoteJoinForReceiptUserCount = 2;
+    public InviteEntity(String queueUserId, String inviterId, String inviteeCode) {
+        this.queueUserId = queueUserId;
+        this.remoteJoinForQueueUserCount = 2;
         if (StringUtils.isNotBlank(inviteeCode)) {
             this.inviteeCode = inviteeCode;
             this.inviterId = inviterId;
@@ -60,16 +60,16 @@ public class InviteEntity extends BaseEntity {
         }
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public void setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
     }
 
-    public int getRemoteJoinForReceiptUserCount() {
-        return remoteJoinForReceiptUserCount;
+    public int getRemoteJoinForQueueUserCount() {
+        return remoteJoinForQueueUserCount;
     }
 
     public String getInviteeCode() {
@@ -93,8 +93,8 @@ public class InviteEntity extends BaseEntity {
     }
 
     public void deductRemoteJoinForReceiptUserCount() {
-        assertNotEquals(0, remoteJoinForReceiptUserCount);
-        this.remoteJoinForReceiptUserCount--;
+        assertNotEquals(0, remoteJoinForQueueUserCount);
+        this.remoteJoinForQueueUserCount--;
     }
 
     public void deductRemoteJoinForInviterCount() {

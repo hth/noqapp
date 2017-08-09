@@ -69,7 +69,7 @@ public class LoginPhoneController {
             LOG.warn("Failed to find user uid={} phone={}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone());
             return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
         }
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getQueueUserId());
         String redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
         LOG.info("Redirecting user to link={}", redirect);
         return String.format("{ \"next\" : \"%s\" }", redirect);

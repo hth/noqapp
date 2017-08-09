@@ -89,10 +89,10 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity findQueuedOne(String codeQR, String did, String rid) {
+    public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
-        if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("RID").is(rid).and("QS").is(QueueUserStateEnum.Q));
+        if (StringUtils.isNotBlank(qid)) {
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("RID").is(qid).and("QS").is(QueueUserStateEnum.Q));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
@@ -114,10 +114,10 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity findToAbort(String codeQR, String did, String rid) {
+    public QueueEntity findToAbort(String codeQR, String did, String qid) {
         Query query;
-        if (StringUtils.isNotBlank(rid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("RID").is(rid));
+        if (StringUtils.isNotBlank(qid)) {
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("RID").is(qid));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
@@ -203,9 +203,9 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllQueuedByRid(String rid) {
+    public List<QueueEntity> findAllQueuedByRid(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("QS").is(QueueUserStateEnum.Q)),
+                query(where("RID").is(qid).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
@@ -217,9 +217,9 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllNotQueuedByRid(String rid) {
+    public List<QueueEntity> findAllNotQueuedByRid(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("QS").ne(QueueUserStateEnum.Q)),
+                query(where("RID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
@@ -271,9 +271,9 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved) {
         Query query;
-        if (StringUtils.isNotBlank(rid)) {
+        if (StringUtils.isNotBlank(qid)) {
             query = query(
                     where("QR").is(codeQR)
                             .and("TN").is(token)
@@ -281,7 +281,7 @@ public class QueueManagerImpl implements QueueManager {
                             .and("QS").ne(QueueUserStateEnum.Q)
                             .and("RA").is(0)
                             .and("HR").is(0)
-                            .and("RID").is(rid));
+                            .and("RID").is(qid));
         } else {
             query = query(
                     where("QR").is(codeQR)

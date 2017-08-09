@@ -90,10 +90,10 @@ public class ServicedPersonalFCM {
             found = queues.size();
 
             for (QueueEntity queue : queues) {
-                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(queue.getRid(), queue.getDid());
+                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(queue.getQueueUserId(), queue.getDid());
                 /* TODO add cache Redis. */
                 if (StringUtils.isBlank(registeredDevice.getToken())) {
-                    LOG.info("Skipped sending message rid={} did={}", queue.getRid(), queue.getDid());
+                    LOG.info("Skipped sending message qid={} did={}", queue.getQueueUserId(), queue.getDid());
                     skipped++;
                     queueManager.increaseAttemptToSendNotificationCount(queue.getId());
                 } else {
@@ -113,7 +113,7 @@ public class ServicedPersonalFCM {
             LOG.error("Failed sending serviced FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            if (0 != found || 0 != failure || 0 != sent) {
+            if (0 != found || 0 != failure || 0 != sent || 0 != skipped) {
                 cronStats.addStats("found", found);
                 cronStats.addStats("failure", failure);
                 cronStats.addStats("skipped", skipped);
@@ -167,7 +167,7 @@ public class ServicedPersonalFCM {
                 }
                 break;
             default:
-                LOG.warn("Un-supported status reached. Skipping rid={} did={}", queue.getRid(), queue.getDid());
+                LOG.warn("Un-supported status reached. Skipping qid={} did={}", queue.getQueueUserId(), queue.getDid());
                 break;
         }
 

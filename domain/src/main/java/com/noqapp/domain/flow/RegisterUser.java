@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Date: 11/23/16 4:35 PM
  */
 public class RegisterUser implements Serializable {
-    private String rid;
+    private String queueUserId;
     private String email;
     private String firstName;
     private String lastName;
@@ -32,12 +32,12 @@ public class RegisterUser implements Serializable {
     private boolean accountExists;
     private boolean acceptsAgreement;
 
-    public String getRid() {
-        return rid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public RegisterUser setRid(String rid) {
-        this.rid = rid;
+    public RegisterUser setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -188,7 +188,7 @@ public class RegisterUser implements Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("rid", rid)
+                .append("queueUserId", queueUserId)
                 .append("email", email)
                 .append("firstName", firstName)
                 .append("lastName", lastName)

@@ -10,7 +10,7 @@ import com.noqapp.domain.types.AccountInactiveReasonEnum;
 public interface UserAccountManager extends RepositoryManager<UserAccountEntity> {
     UserAccountEntity getById(String id);
 
-    UserAccountEntity findByReceiptUserId(String rid);
+    UserAccountEntity findByReceiptUserId(String qid);
 
     UserAccountEntity findByUserId(String mail);
 

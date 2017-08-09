@@ -14,7 +14,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
@@ -65,17 +65,17 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
     @SuppressWarnings ("unused")
     public Register createBusinessRegistration() {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = tokenUser.getRid();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String qid = queueUser.getQueueUserId();
 
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
-            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.M_ADMIN);
+            businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(rid);
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(qid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(userProfile.getEmail())
                 .setGender(userProfile.getGender())
@@ -105,15 +105,15 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("unused")
     public Register completeRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
         try {
-            TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = tokenUser.getUsername();
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = queueUser.getUsername();
 
             accountService.updateUserProfile(register.getRegisterUser(), username);
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
-                BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
+                BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getQueueUserId());
                 if (businessUser == null) {
-                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), UserLevelEnum.M_ADMIN);
+                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getQueueUserId(), UserLevelEnum.M_ADMIN);
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }
                 businessUser
@@ -124,13 +124,13 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 register.getRegisterBusiness().setBusinessUser(businessUser);
                 return register;
             } catch (Exception e) {
-                LOG.error("Error adding business rid={} reason={}",
-                        register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
+                LOG.error("Error adding business qid={} reason={}",
+                        register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
                 throw new MigrateToBusinessRegistrationException("Error adding business", e);
             }
         } catch (Exception e) {
-            LOG.error("Error updating business user profile rid={} reason={}",
-                    register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
+            LOG.error("Error updating business user profile qid={} reason={}",
+                    register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }
@@ -147,8 +147,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         try {
             return registerBusinessDetails(registerBusiness);
         } catch (Exception e) {
-            LOG.error("Error adding business rid={} reason={}",
-                    registerBusiness.getBusinessUser().getReceiptUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Error adding business qid={} reason={}",
+                    registerBusiness.getBusinessUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error adding business", e);
         }
     }

@@ -47,9 +47,9 @@
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
         <c:choose>
-            <c:when test="${!empty forgotAuthenticateForm.receiptUserId}">
+            <c:when test="${!empty forgotAuthenticateForm.queueUserId}">
                 <form:form class="cd-form floating-labels" method="post" action="authenticate.htm" modelAttribute="forgotAuthenticateForm">
-                    <form:hidden path="receiptUserId" />
+                    <form:hidden path="queueUserId" />
                     <form:hidden path="authenticationKey" />
 
                     <fieldset class="cd-form floating-labels">

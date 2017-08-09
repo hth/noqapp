@@ -17,15 +17,15 @@ import java.util.Collection;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class TokenUser extends User {
+public final class QueueUser extends User {
 
-    /** rid is receiptUserId */
-    private String rid;
+    /** queueUserId is receiptUserId */
+    private String queueUserId;
     private UserLevelEnum userLevel;
     private boolean accountValidated;
     private String countryShortName;
 
-    public TokenUser(
+    public QueueUser(
             String username,
             String password,
             Collection<? extends GrantedAuthority> authorities
@@ -33,24 +33,24 @@ public final class TokenUser extends User {
         super(username, password, authorities);
     }
 
-    public TokenUser(
+    public QueueUser(
             String username,
             String password,
             Collection<? extends GrantedAuthority> authorities,
-            String rid,
+            String queueUserId,
             UserLevelEnum userLevel,
             boolean active,
             boolean accountValidated,
             String countryShortName
     ) {
         super(username, password, active, true, true, true, authorities);
-        this.rid = rid;
+        this.queueUserId = queueUserId;
         this.userLevel = userLevel;
         this.accountValidated = accountValidated;
         this.countryShortName = countryShortName;
     }
 
-    public TokenUser(
+    public QueueUser(
             String username,
             String password,
             boolean enabled,
@@ -62,7 +62,7 @@ public final class TokenUser extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public TokenUser(
+    public QueueUser(
             String username,
             String password,
             boolean enabled,
@@ -70,11 +70,11 @@ public final class TokenUser extends User {
             boolean credentialsNonExpired,
             boolean accountNonLocked,
             Collection<? extends GrantedAuthority> authorities,
-            String rid,
+            String queueUserId,
             UserLevelEnum userLevel
     ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.rid = rid;
+        this.queueUserId = queueUserId;
         this.userLevel = userLevel;
     }
 
@@ -82,8 +82,8 @@ public final class TokenUser extends User {
      * Gets receiptofi user id.
      * @return receiptUserId
      */
-    public String getRid() {
-        return rid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     public UserLevelEnum getUserLevel() {
@@ -100,8 +100,8 @@ public final class TokenUser extends User {
 
     @Override
     public String toString() {
-        return "ReceiptUser{" +
-                "rid='" + rid + '\'' +
+        return "QueueUser{" +
+                "queueUserId='" + queueUserId + '\'' +
                 ", userLevel=" + userLevel +
                 '}';
     }

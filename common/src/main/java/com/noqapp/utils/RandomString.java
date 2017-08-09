@@ -18,7 +18,7 @@ public final class RandomString {
 
     private static final int CHARACTER_SIZE = 32;
     private static final char[] SYMBOLS = new char[36];
-    private static final String RID_SHORTEN = "^10+(?!$)";
+    private static final String QID_SHORTEN = "^10+(?!$)";
     private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
 
     static {
@@ -56,28 +56,28 @@ public final class RandomString {
         return new String(buf);
     }
 
-    private static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
-        String shortenedRid = rid.replaceFirst(RID_SHORTEN, "");
+    private static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
+        String shortenedQid = qid.replaceFirst(QID_SHORTEN, "");
 
         if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
-            return StringUtils.lowerCase(firstName.getText()) + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedRid;
+            return StringUtils.lowerCase(firstName.getText()) + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
         } else if (StringUtils.isNotBlank(firstName.getText())) {
-            return StringUtils.lowerCase(firstName.getText()) + "." + shortenedRid;
+            return StringUtils.lowerCase(firstName.getText()) + "." + shortenedQid;
         } else if (StringUtils.isNotBlank(lastName.getText())) {
-            return StringUtils.lowerCase(lastName.getText()) + "." + shortenedRid;
+            return StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
         } else {
-            return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedRid;
+            return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedQid;
         }
     }
 
-    public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
-        return generateEmailAddress(firstName, lastName, rid) + "@mail.noqapp.com";
+    public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
+        return generateEmailAddress(firstName, lastName, qid) + "@mail.noqapp.com";
     }
 
-    public static String generateInviteCode(String firstName, String lastName, String rid) {
+    public static String generateInviteCode(String firstName, String lastName, String qid) {
         if (StringUtils.isBlank(lastName)) {
-            return StringUtils.lowerCase(firstName + rid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+            return StringUtils.lowerCase(firstName + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
         }
-        return StringUtils.lowerCase(firstName + lastName + rid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+        return StringUtils.lowerCase(firstName + lastName + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
     }
 }

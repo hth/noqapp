@@ -61,9 +61,9 @@ public class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public int getRemoteJoinCount(String rid) {
+    public int getRemoteJoinCount(String qid) {
         try {
-            Assert.hasLength(rid, "RID cannot be empty");
+            Assert.hasLength(qid, "QID cannot be empty");
 
             int sum = 0;
 
@@ -71,7 +71,7 @@ public class InviteManagerImpl implements InviteManager {
             GroupOperation groupByStateAndSumPop = group("RID")
                     .sum("RJR").as("summation");
 
-            MatchOperation filterStates = match(where("RID").is(rid).and("A").is(true));
+            MatchOperation filterStates = match(where("RID").is(qid).and("A").is(true));
             Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
             AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
             List<GroupedValue> groupedValues = result.getMappedResults();
@@ -82,7 +82,7 @@ public class InviteManagerImpl implements InviteManager {
             groupByStateAndSumPop = group("IID")
                     .sum("RJI").as("summation");
 
-            filterStates = match(where("IID").is(rid).and("A").is(true));
+            filterStates = match(where("IID").is(qid).and("A").is(true));
             aggregation = newAggregation(filterStates, groupByStateAndSumPop);
             result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
             groupedValues = result.getMappedResults();
@@ -97,30 +97,30 @@ public class InviteManagerImpl implements InviteManager {
         }
     }
 
-    public boolean deductRemoteJoinCount(String rid) {
+    public boolean deductRemoteJoinCount(String qid) {
         try {
-            Assert.hasLength(rid, "RID cannot be empty");
+            Assert.hasLength(qid, "QID cannot be empty");
 
             InviteEntity invite = mongoTemplate.findOne(
                     query(where("A").is(true)
                             .orOperator(
-                                    where("RID").is(rid).and("RJR").gt(0),
-                                    where("IID").is(rid).and("RJI").gt(0)
+                                    where("RID").is(qid).and("RJR").gt(0),
+                                    where("IID").is(qid).and("RJI").gt(0)
                             )
                     ),
                     InviteEntity.class,
                     TABLE);
 
             boolean updated = false;
-            if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
+            if (invite.getQueueUserId().equalsIgnoreCase(qid)) {
                 invite.deductRemoteJoinForReceiptUserCount();
                 updated = true;
-            } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
+            } else if (invite.getInviterId().equalsIgnoreCase(qid)) {
                 invite.deductRemoteJoinForInviterCount();
                 updated = true;
             }
 
-            if (0 == invite.getRemoteJoinForReceiptUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
+            if (0 == invite.getRemoteJoinForQueueUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
                 invite.inActive();
             }
 

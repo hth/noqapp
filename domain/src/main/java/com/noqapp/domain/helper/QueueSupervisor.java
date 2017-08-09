@@ -17,7 +17,7 @@ public class QueueSupervisor {
     private String phone;
     private String address;
     private String email;
-    private String rid;
+    private String queueUserId;
     private UserLevelEnum userLevel;
     private boolean active;
     private Date created;
@@ -77,12 +77,12 @@ public class QueueSupervisor {
         return this;
     }
 
-    public String getRid() {
-        return rid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public QueueSupervisor setRid(String rid) {
-        this.rid = rid;
+    public QueueSupervisor setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 

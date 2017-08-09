@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 
 /**
@@ -37,16 +37,16 @@ public class MigrateToBusinessProfileValidator {
     public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
         String status = userFlowValidator.validateUserProfileSignupDetails(registerUser, messageContext);
 
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = tokenUser.getRid();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String qid = queueUser.getQueueUserId();
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (null == userProfile) {
             /* This should never happen. */
-            LOG.error("Could not find user with phone={} countryShortName={} rid={}",
+            LOG.error("Could not find user with phone={} countryShortName={} qid={}",
                     registerUser.getPhoneWithCountryCode(),
                     registerUser.getCountryShortName(),
-                    rid);
+                    qid);
 
             messageContext.addMessage(
                     new MessageBuilder()
@@ -56,7 +56,7 @@ public class MigrateToBusinessProfileValidator {
                             .build());
 
             status = "failure";
-        } else if (!userProfile.getReceiptUserId().equalsIgnoreCase(rid)) {
+        } else if (!userProfile.getQueueUserId().equalsIgnoreCase(qid)) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

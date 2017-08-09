@@ -15,9 +15,9 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity findByEmail(String email);
 
-    UserProfileEntity findByReceiptUserId(String rid);
+    UserProfileEntity findByReceiptUserId(String qid);
 
-    UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid);
+    UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid);
 
     /**
      * Used for searching user based on name. Search could be based on First Name or Last Name.
@@ -39,10 +39,10 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     UserProfileEntity findOneByPhone(String phone);
 
     @Mobile
-    UserProfileEntity getProfileUpdateSince(String rid, Date since);
+    UserProfileEntity getProfileUpdateSince(String qid, Date since);
 
     @Mobile
-    void updateCountryShortName(String country, String rid);
+    void updateCountryShortName(String country, String qid);
 
     UserProfileEntity inviteCodeExists(String inviteCode);
 }

@@ -141,7 +141,7 @@ public class AddQueueSupervisorFlowActions {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(inviteQueueSupervisor.getBizStoreId());
-        int supervisorCount = businessUserStoreService.getQueues(userProfile.getReceiptUserId()).size();
+        int supervisorCount = businessUserStoreService.getQueues(userProfile.getQueueUserId()).size();
         if (supervisorCount > queueLimit) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -153,7 +153,7 @@ public class AddQueueSupervisorFlowActions {
             throw new InviteSupervisorException("User already manages " + queueLimit + " queues. Please ask user to un-subscribe from other queues.");
         }
 
-        boolean userExists = businessUserService.doesBusinessUserExists(userProfile.getReceiptUserId(), bizStore.getId());
+        boolean userExists = businessUserService.doesBusinessUserExists(userProfile.getQueueUserId(), bizStore.getId());
         if (userExists) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -168,12 +168,12 @@ public class AddQueueSupervisorFlowActions {
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getReceiptUserId(),
+                userProfile.getQueueUserId(),
                 userProfile.getLevel());
         accountService.save(userAccount);
 
-        BusinessUserEntity businessUser = BusinessUserEntity.newInstance(userProfile.getReceiptUserId(), userProfile.getLevel());
-        if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getReceiptUserId().endsWith("mail.noqapp.com")) {
+        BusinessUserEntity businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
+        if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith("mail.noqapp.com")) {
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
         } else {
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
@@ -182,7 +182,7 @@ public class AddQueueSupervisorFlowActions {
         businessUserService.save(businessUser);
 
         BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                userProfile.getReceiptUserId(),
+                userProfile.getQueueUserId(),
                 bizStore.getId(),
                 bizStore.getBizName().getId(),
                 bizStore.getCodeQR());
@@ -196,7 +196,7 @@ public class AddQueueSupervisorFlowActions {
 
         /* Send personal FCM notification. */
         service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
-                userProfile.getReceiptUserId(),
+                userProfile.getQueueUserId(),
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
 

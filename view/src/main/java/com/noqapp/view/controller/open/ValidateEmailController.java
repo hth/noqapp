@@ -80,15 +80,15 @@ public class ValidateEmailController {
             return null;
         }
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getQueueUserId());
         if (userAccount.isAccountValidated()) {
             redirectAttrs.addFlashAttribute("success", "false");
-            LOG.info("email address authentication failed for user={}", userAccount.getReceiptUserId());
+            LOG.info("email address authentication failed for qid={}", userAccount.getQueueUserId());
         } else {
             accountService.validateAccount(emailValidate, userAccount);
             redirectAttrs.addFlashAttribute("success", "true");
 
-            LOG.info("email address authentication success for user={}", userAccount.getReceiptUserId());
+            LOG.info("email address authentication success for qid={}", userAccount.getQueueUserId());
         }
         return validateResult;
     }

@@ -37,7 +37,7 @@ public class UserProfileEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @Field ("FN")
     private String firstName;
@@ -88,12 +88,12 @@ public class UserProfileEntity extends BaseEntity {
         super();
     }
 
-    private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId, String birthday) {
+    private UserProfileEntity(String email, String firstName, String lastName, String queueUserId, String birthday) {
         super();
         this.email = email;
         this.firstName = WordUtils.capitalizeFully(firstName);
         this.lastName = WordUtils.capitalizeFully(lastName);
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.birthday = birthday;
     }
 
@@ -108,12 +108,12 @@ public class UserProfileEntity extends BaseEntity {
         return new UserProfileEntity(email, firstName, lastName, receiptUserId, birthday);
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public void setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
     }
 
     @Transient

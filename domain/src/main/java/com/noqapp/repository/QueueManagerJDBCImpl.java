@@ -44,12 +44,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
-    private static final String findByRid =
+    private static final String findByQid =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ?";
 
-    private static final String findByRidAndByLastUpdated =
+    private static final String findByQidAndByLastUpdated =
             "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE RID = ? AND U >= ?";
@@ -88,7 +88,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("id", queue.getId());
                 namedParameters.addValue("qr", queue.getCodeQR());
                 namedParameters.addValue("did", queue.getDid());
-                namedParameters.addValue("rid", queue.getRid());
+                namedParameters.addValue("rid", queue.getQueueUserId());
                 namedParameters.addValue("tn", queue.getTokenNumber());
                 namedParameters.addValue("dn", queue.getDisplayName());
                 namedParameters.addValue("qs", queue.getQueueUserState().getName());
@@ -164,32 +164,32 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public List<QueueEntity> getByRid(String rid) {
-        return jdbcTemplate.query(findByRid, new Object[]{rid}, new QueueRowMapper());
+    public List<QueueEntity> getByQid(String qid) {
+        return jdbcTemplate.query(findByQid, new Object[]{qid}, new QueueRowMapper());
     }
 
     @Override
-    public List<QueueEntity> getByRid(String rid, Date lastAccessed) {
-        LOG.info("Fetch history by rid={} lastAccessed={}", rid, lastAccessed);
-        return jdbcTemplate.query(findByRidAndByLastUpdated, new Object[]{rid, lastAccessed}, new QueueRowMapper());
+    public List<QueueEntity> getByQid(String qid, Date lastAccessed) {
+        LOG.info("Fetch history by qid={} lastAccessed={}", qid, lastAccessed);
+        return jdbcTemplate.query(findByQidAndByLastUpdated, new Object[]{qid, lastAccessed}, new QueueRowMapper());
     }
 
     @Override
     @CustomTransactional
-    public boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved) {
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved) {
         try {
-            if (StringUtils.isNotBlank(rid)) {
+            if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
                         "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND RID = ? AND TN = ? AND RA <> 0",
-                        ratingCount, hoursSaved, codeQR, did, rid, token) > 0;
+                        ratingCount, hoursSaved, codeQR, did, qid, token) > 0;
             } else {
                 return this.jdbcTemplate.update(
                         "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
                         ratingCount, hoursSaved, codeQR, did, token) > 0;
             }
         } catch (Exception e) {
-            LOG.error("Failed review update codeQR={} token={} did={} rid={} ratingCount={} hoursSaved={} reason={}",
-                    codeQR, token, did, rid, ratingCount, hoursSaved, e.getLocalizedMessage(), e);
+            LOG.error("Failed review update codeQR={} token={} did={} qid={} ratingCount={} hoursSaved={} reason={}",
+                    codeQR, token, did, qid, ratingCount, hoursSaved, e.getLocalizedMessage(), e);
             throw e;
         }
     }

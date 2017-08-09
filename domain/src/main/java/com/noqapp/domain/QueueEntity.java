@@ -40,7 +40,7 @@ public class QueueEntity extends BaseEntity {
     private String did;
 
     @Field ("RID")
-    private String rid;
+    private String queueUserId;
 
     @NotNull
     @Field ("TN")
@@ -85,10 +85,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("SE")
     private Date serviceEndTime;
 
-    public QueueEntity(String codeQR, String did, String rid, int tokenNumber, String displayName) {
+    public QueueEntity(String codeQR, String did, String queueUserId, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
-        this.rid = rid;
+        this.queueUserId = queueUserId;
         this.tokenNumber = tokenNumber;
         this.displayName = displayName;
     }
@@ -101,8 +101,8 @@ public class QueueEntity extends BaseEntity {
         return did;
     }
 
-    public String getRid() {
-        return rid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     public int getTokenNumber() {
@@ -209,7 +209,7 @@ public class QueueEntity extends BaseEntity {
         return "QueueEntity{" +
                 "codeQR='" + codeQR + '\'' +
                 ", did='" + did + '\'' +
-                ", rid='" + rid + '\'' +
+                ", queueUserId='" + queueUserId + '\'' +
                 ", tokenNumber=" + tokenNumber +
                 ", displayName='" + displayName + '\'' +
                 ", queueUserState=" + queueUserState +

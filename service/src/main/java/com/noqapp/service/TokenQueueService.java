@@ -86,13 +86,13 @@ public class TokenQueueService {
      *
      * @param codeQR
      * @param did
-     * @param rid
+     * @param qid
      * @return
      */
     @Mobile
-    public JsonToken getNextToken(String codeQR, String did, String rid) {
+    public JsonToken getNextToken(String codeQR, String did, String qid) {
         try {
-            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
+            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
             LOG.info("next Token queue={}", queue);
 
             /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
@@ -116,9 +116,9 @@ public class TokenQueueService {
                 }
 
                 try {
-                    queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
-                    if (StringUtils.isNotBlank(rid)) {
-                        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+                    queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    if (StringUtils.isNotBlank(qid)) {
+                        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
                         queue.setCustomerName(userAccount.getDisplayName());
                     }
                     queueManager.insert(queue);
@@ -135,8 +135,8 @@ public class TokenQueueService {
             }
 
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-            LOG.info("Already registered token={} topic={} rid={} did={} queueStatus={}",
-                    queue.getTokenNumber(), tokenQueue.getTopic(), rid, did, tokenQueue.getQueueStatus());
+            LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
+                    queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
             switch (tokenQueue.getQueueStatus()) {
                 case D:
@@ -166,9 +166,9 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public JsonResponse abortQueue(String codeQR, String did, String rid) {
+    public JsonResponse abortQueue(String codeQR, String did, String qid) {
         try {
-            QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
+            QueueEntity queue = queueManager.findToAbort(codeQR, did, qid);
             LOG.info("abort queue={}", queue);
 
             if (queue == null) {
@@ -193,7 +193,7 @@ public class TokenQueueService {
         LOG.info("After sending message to merchant");
         QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
         if (queue != null && queue.getCustomerName() != null) {
-            LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
+            LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR)
                     .setQueueStatus(tokenQueue.getQueueStatus())
@@ -225,12 +225,12 @@ public class TokenQueueService {
     /**
      * Invite sent when business adds client as supervisor to a queue.
      *
-     * @param rid
+     * @param qid
      * @param displayName
      * @param businessName
      */
-    public void sendInviteToNewQueueSupervisor(String rid, String displayName, String businessName) {
-        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(rid);
+    public void sendInviteToNewQueueSupervisor(String qid, String displayName, String businessName) {
+        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
@@ -255,8 +255,8 @@ public class TokenQueueService {
             }
         }
 
-        LOG.info("Sent FCM invite count={} rid={} displayName={} businessName={}",
-                registeredDevices.size(), rid, displayName, businessName);
+        LOG.info("Sent FCM invite count={} qid={} displayName={} businessName={}",
+                registeredDevices.size(), qid, displayName, businessName);
     }
 
     /**

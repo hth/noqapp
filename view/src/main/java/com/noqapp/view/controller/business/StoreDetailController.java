@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.CodeQRGeneratorService;
 import com.noqapp.type.FileExtensionTypeEnum;
@@ -81,8 +81,8 @@ public class StoreDetailController {
             @ModelAttribute ("storeLandingForm")
             StoreLandingForm storeLandingForm
     ) {
-        TokenUser receiptUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
+        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
@@ -113,8 +113,8 @@ public class StoreDetailController {
 
             HttpServletResponse response
     ) {
-        TokenUser receiptUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
+        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
         InputStream inputStream = null;
         try {
             setContentType(fileName.getText(), response);
@@ -122,7 +122,7 @@ public class StoreDetailController {
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("PNG image retrieval error occurred for user={} reason={}",
-                    receiptUser.getRid(), e.getLocalizedMessage(), e);
+                    receiptUser.getQueueUserId(), e.getLocalizedMessage(), e);
         } finally {
             if (inputStream != null) {
                 IOUtils.closeQuietly(inputStream);

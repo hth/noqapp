@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 
 import java.io.IOException;
 
@@ -43,8 +43,8 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
 
         String receiptUserId = "Not Available";
         if (authentication.getPrincipal() != null) {
-            TokenUser receiptUser = (TokenUser) authentication.getPrincipal();
-            receiptUserId = receiptUser.getRid();
+            QueueUser receiptUser = (QueueUser) authentication.getPrincipal();
+            receiptUserId = receiptUser.getQueueUserId();
         }
 
         LOG.info("Logout user={} from={}", receiptUserId, request.getServletPath());

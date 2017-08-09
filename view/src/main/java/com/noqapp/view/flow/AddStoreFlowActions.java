@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
@@ -35,10 +35,10 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public RegisterBusiness createStoreRegistration() {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = tokenUser.getRid();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String qid = queueUser.getQueueUserId();
 
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
             return null;
         }

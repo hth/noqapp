@@ -11,7 +11,7 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
 
     UserPreferenceEntity getById(String id);
 
-    UserPreferenceEntity getByRid(String rid);
+    UserPreferenceEntity getByRid(String qid);
 
     UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
 }

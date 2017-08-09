@@ -65,7 +65,7 @@ public class UserFlowValidator {
      */
     @SuppressWarnings ("unused")
     public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
-        LOG.info("Validate user profile signup rid={}", registerUser.getRid());
+        LOG.info("Validate user profile signup qid={}", registerUser.getQueueUserId());
         String status = validateUserProfileDetails(registerUser, messageContext);
 
         if (StringUtils.isBlank(registerUser.getBirthday())) {
@@ -141,7 +141,7 @@ public class UserFlowValidator {
             }
         }
 
-        LOG.info("Validate user profile signup rid={} status={}", registerUser.getRid(), status);
+        LOG.info("Validate user profile signup qid={} status={}", registerUser.getQueueUserId(), status);
         return status;
     }
 
@@ -157,7 +157,7 @@ public class UserFlowValidator {
      */
     @SuppressWarnings ("unused")
     public String validateUserProfileDetails(RegisterUser registerUser, MessageContext messageContext) {
-        LOG.info("Validate user profile rid={}", registerUser.getRid());
+        LOG.info("Validate user profile qid={}", registerUser.getQueueUserId());
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(registerUser.getAddress())) {
@@ -275,7 +275,7 @@ public class UserFlowValidator {
             }
         }
 
-        LOG.info("Validate user profile rid={} status={}", registerUser.getRid(), status);
+        LOG.info("Validate user profile qid={} status={}", registerUser.getQueueUserId(), status);
         return status;
     }
 }

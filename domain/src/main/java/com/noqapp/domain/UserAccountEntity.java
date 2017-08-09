@@ -44,7 +44,7 @@ public class UserAccountEntity extends BaseEntity {
     /** Unique Id throughout the system. This will never change. */
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     /**
      * This is set by third party and cannot be relied on.
@@ -89,13 +89,13 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     private UserAccountEntity(
-            String receiptUserId,
+            String queueUserId,
             String userId,
             String firstName,
             String lastName
     ) {
         this();
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.userId = userId;
         this.firstName = WordUtils.capitalizeFully(firstName);
         this.lastName = WordUtils.capitalizeFully(lastName);
@@ -111,12 +111,12 @@ public class UserAccountEntity extends BaseEntity {
         return new UserAccountEntity(receiptUserId, userId, firstName, lastName);
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public void setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
     }
 
     public String getUserId() {
@@ -228,7 +228,7 @@ public class UserAccountEntity extends BaseEntity {
     @Override
     public String toString() {
         return "UserAccountEntity{" +
-                "receiptUserId='" + receiptUserId + '\'' +
+                "queueUserId='" + queueUserId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", firstName='" + firstName + '\'' +
