@@ -72,7 +72,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         } catch (OptimisticLockingFailureException e) {
             //TODO may be remove this condition in future. This is annoying temporary condition.
             if (ignoreOptimisticLockingFailureException) {
-                /** This will re-create user profile with same details every time when there is a failure. */
+                /* This will re-create user profile with same details every time when there is a failure. */
                 LOG.error("UserProfile saving optimistic locking failure, override optimistic locking qid={} reason={}",
                         object.getQueueUserId(), e.getLocalizedMessage(), e);
 
@@ -110,20 +110,20 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public UserProfileEntity findByReceiptUserId(String rid) {
-        return mongoTemplate.findOne(byReceiptUserId(rid, true), UserProfileEntity.class, TABLE);
+    public UserProfileEntity findByReceiptUserId(String qid) {
+        return mongoTemplate.findOne(byQueueUserId(qid, true), UserProfileEntity.class, TABLE);
     }
 
     @Override
-    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid) {
-        return mongoTemplate.findOne(byReceiptUserId(rid, false), UserProfileEntity.class, TABLE);
+    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid) {
+        return mongoTemplate.findOne(byQueueUserId(qid, false), UserProfileEntity.class, TABLE);
     }
 
-    private Query byReceiptUserId(String receiptUserId, boolean activeProfile) {
+    private Query byQueueUserId(String qid, boolean activeProfile) {
         if (activeProfile) {
-            return query(where("RID").is(receiptUserId).andOperator(isActive()));
+            return query(where("RID").is(qid).andOperator(isActive()));
         } else {
-            return query(where("RID").is(receiptUserId));
+            return query(where("RID").is(qid));
         }
     }
 
@@ -171,20 +171,20 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
+    public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
         return mongoTemplate.findOne(
-                query(where("RID").is(rid).and("U").gte(since)),
+                query(where("RID").is(qid).and("U").gte(since)),
                 UserProfileEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public void updateCountryShortName(String countryShortName, String rid) {
+    public void updateCountryShortName(String countryShortName, String qid) {
         Assert.isTrue(countryShortName.equals(countryShortName.toUpperCase()), "Country short name has to be upper case " + countryShortName);
 
         mongoTemplate.updateFirst(
-                query(where("RID").is(rid)),
+                query(where("RID").is(qid)),
                 entityUpdate(update("CS", countryShortName)),
                 UserProfileEntity.class,
                 TABLE

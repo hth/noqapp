@@ -61,13 +61,13 @@ public class BusinessUserStoreService {
     }
 
     @Mobile
-    public boolean hasAccess(String rid, String codeQR) {
-        return businessUserStoreManager.hasAccess(rid, codeQR);
+    public boolean hasAccess(String qid, String codeQR) {
+        return businessUserStoreManager.hasAccess(qid, codeQR);
     }
 
     @Mobile
-    public List<JsonTopic> getQueues(String rid) {
-        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(rid, queueLimit);
+    public List<JsonTopic> getQueues(String qid) {
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, queueLimit);
         LOG.info("Found user associated to business count={}", businessUserStores.size());
 
         String[] codes = new String[queueLimit];
@@ -102,9 +102,9 @@ public class BusinessUserStoreService {
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
-            String rid = businessUserStore.getQueueUserId();
-            UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+            String qid = businessUserStore.getQueueUserId();
+            UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
             queueSupervisor.setStoreId(storeId)
                     .setBusinessId(businessUserStore.getBizNameId())
@@ -112,7 +112,7 @@ public class BusinessUserStoreService {
                     .setPhone(userProfile.getPhone())
                     .setAddress(userProfile.getAddress())
                     .setEmail(userProfile.getEmail())
-                    .setQueueUserId(rid)
+                    .setQueueUserId(qid)
                     .setUserLevel(userProfile.getLevel())
                     .setCreated(businessUserStore.getCreated())
                     .setActive(businessUserStore.isActive())

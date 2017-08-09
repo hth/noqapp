@@ -36,9 +36,9 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
     @SuppressWarnings ("unused")
     public RegisterBusiness createStoreRegistration() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = queueUser.getQueueUserId();
+        String qid = queueUser.getQueueUserId();
 
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
             return null;
         }

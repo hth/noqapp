@@ -20,7 +20,7 @@ public class Validate {
     private static Pattern mailPattern = Pattern.compile("^[^@]+@[^@]+\\.[^@]+$");
     private static Pattern otherMailPattern = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
     private static Pattern namePattern = Pattern.compile("^[\\p{L} .'-]+$");
-    private static Pattern ridPattern = Pattern.compile("^1[0-9]{11}$");
+    private static Pattern qidPattern = Pattern.compile("^1[0-9]{11}$");
 
     private Validate() {
     }
@@ -40,9 +40,9 @@ public class Validate {
         return namePattern.matcher(text).matches();
     }
 
-    public static boolean isValidRid(String text) {
+    public static boolean isValidQid(String text) {
         Assert.hasText(text, "Not a valid text");
-        return ridPattern.matcher(text).matches();
+        return qidPattern.matcher(text).matches();
     }
 
     public static boolean isValidPhoneWithInternationalCode(String text) {

@@ -66,10 +66,10 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
     public RegisterUser loadProfile() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = queueUser.getQueueUserId();
+        String qid = queueUser.getQueueUserId();
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
 
         RegisterUser registerUser = new RegisterUser();
         registerUser.setQueueUserId(userAccount.getQueueUserId())

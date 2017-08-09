@@ -51,10 +51,10 @@ public class EmpLandingService {
         this.businessUserStoreService = businessUserStoreService;
     }
 
-    public void approveBusiness(String businessUserId, String rid) {
+    public void approveBusiness(String businessUserId, String qid) {
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
-                .setValidateByRid(rid)
+                .setValidateByRid(qid)
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
@@ -85,8 +85,8 @@ public class EmpLandingService {
             businessUserStoreService.save(businessUserStore);
             //End cron job code
 
-            LOG.info("added QR for rid={} bizName={} queueName={} topic={} bizStore={} ",
-                    rid,
+            LOG.info("added QR for qid={} bizName={} queueName={} topic={} bizStore={} ",
+                    qid,
                     businessUser.getBizName().getBusinessName(),
                     bizStore.getDisplayName(),
                     bizStore.getTopic(),
@@ -94,7 +94,7 @@ public class EmpLandingService {
         }
 
         if (1 < bizStores.size()) {
-            LOG.warn("Found stores more than 1, rid={} bizName={}", rid, businessUser.getBizName().getBusinessName());
+            LOG.warn("Found stores more than 1, qid={} bizName={}", qid, businessUser.getBizName().getBusinessName());
         }
     }
 

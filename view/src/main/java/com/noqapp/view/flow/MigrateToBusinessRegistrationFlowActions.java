@@ -66,16 +66,16 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("unused")
     public Register createBusinessRegistration() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = queueUser.getQueueUserId();
+        String qid = queueUser.getQueueUserId();
 
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
-            businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.M_ADMIN);
+            businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(rid);
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(qid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(userProfile.getEmail())
                 .setGender(userProfile.getGender())

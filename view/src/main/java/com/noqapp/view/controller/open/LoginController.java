@@ -143,18 +143,18 @@ public class LoginController {
     /**
      * Login user after successful registration.
      *
-     * @param rid
+     * @param qid
      * @return
      */
-    String continueLoginAfterRegistration(String rid) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+    String continueLoginAfterRegistration(String qid) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
 
         if (null == userAccount) {
-            LOG.error("No user found with RID={}", rid);
+            LOG.error("No user found with qid={}", qid);
             throw new UsernameNotFoundException("User Not found");
         }
 
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
+        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
         return determineTargetUrlAfterLogin(userAccount, userProfile);
     }
 

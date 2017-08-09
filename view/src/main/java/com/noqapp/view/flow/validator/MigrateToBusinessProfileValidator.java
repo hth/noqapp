@@ -38,15 +38,15 @@ public class MigrateToBusinessProfileValidator {
         String status = userFlowValidator.validateUserProfileSignupDetails(registerUser, messageContext);
 
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = queueUser.getQueueUserId();
+        String qid = queueUser.getQueueUserId();
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (null == userProfile) {
             /* This should never happen. */
-            LOG.error("Could not find user with phone={} countryShortName={} rid={}",
+            LOG.error("Could not find user with phone={} countryShortName={} qid={}",
                     registerUser.getPhoneWithCountryCode(),
                     registerUser.getCountryShortName(),
-                    rid);
+                    qid);
 
             messageContext.addMessage(
                     new MessageBuilder()
@@ -56,7 +56,7 @@ public class MigrateToBusinessProfileValidator {
                             .build());
 
             status = "failure";
-        } else if (!userProfile.getQueueUserId().equalsIgnoreCase(rid)) {
+        } else if (!userProfile.getQueueUserId().equalsIgnoreCase(qid)) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

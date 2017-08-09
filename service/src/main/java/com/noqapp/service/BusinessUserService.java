@@ -42,17 +42,17 @@ public class BusinessUserService {
     /**
      * Create, update business user.
      *
-     * @param rid
+     * @param qid
      * @param userLevel
      * @param active
      */
-    void saveUpdateBusinessUser(String rid, UserLevelEnum userLevel, boolean active) {
-        BusinessUserEntity businessUser = businessUserManager.findByRid(rid);
+    void saveUpdateBusinessUser(String qid, UserLevelEnum userLevel, boolean active) {
+        BusinessUserEntity businessUser = businessUserManager.findByRid(qid);
         switch (userLevel) {
             //TODO add Accountant and Enterprise
             case M_ADMIN:
                 if (null == businessUser) {
-                    businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.M_ADMIN);
+                    businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
                 }
 
                 if (active) {
@@ -74,16 +74,16 @@ public class BusinessUserService {
         }
     }
 
-    public BusinessUserEntity findBusinessUser(String rid) {
-        return businessUserManager.findBusinessUser(rid);
+    public BusinessUserEntity findBusinessUser(String qid) {
+        return businessUserManager.findBusinessUser(qid);
     }
 
     public BusinessUserEntity findById(String id) {
         return businessUserManager.findById(id);
     }
 
-    public boolean doesBusinessUserExists(String rid, String bizId) {
-        return businessUserManager.doesBusinessUserExists(rid, bizId);
+    public boolean doesBusinessUserExists(String qid, String bizId) {
+        return businessUserManager.doesBusinessUserExists(qid, bizId);
     }
 
     public void save(BusinessUserEntity businessUser) {

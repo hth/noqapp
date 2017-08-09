@@ -12,21 +12,21 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
     /**
      * Finds business user with any status like active or inactive.
      *
-     * @param rid
+     * @param qid
      * @return
      */
-    BusinessUserEntity findByRid(String rid);
+    BusinessUserEntity findByRid(String qid);
 
     /**
      * Finds active business user.
      *
-     * @param rid
+     * @param qid
      * @return
      */
-    BusinessUserEntity findBusinessUser(String rid);
+    BusinessUserEntity findBusinessUser(String qid);
 
     BusinessUserEntity findById(String id);
-    boolean doesBusinessUserExists(String rid, String bizId);
+    boolean doesBusinessUserExists(String qid, String bizId);
 
     long awaitingApprovalCount();
     List<BusinessUserEntity> awaitingApprovals();

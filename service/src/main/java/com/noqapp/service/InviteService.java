@@ -36,12 +36,12 @@ public class InviteService {
     }
 
     @Mobile
-    public int getRemoteJoinCount(String rid) {
-        return inviteManager.getRemoteJoinCount(rid);
+    public int getRemoteJoinCount(String qid) {
+        return inviteManager.getRemoteJoinCount(qid);
     }
 
     @Mobile
-    public boolean deductRemoteJoinCount(String rid) {
-        return inviteManager.deductRemoteJoinCount(rid);
+    public boolean deductRemoteJoinCount(String qid) {
+        return inviteManager.deductRemoteJoinCount(qid);
     }
 }

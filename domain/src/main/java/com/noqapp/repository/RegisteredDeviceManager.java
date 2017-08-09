@@ -22,26 +22,26 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     /**
      * Update the token for a particular device id. Update token every time the request comes in.
      *
-     * @param rid
+     * @param qid
      * @param did
      * @param token
      * @return
      */
     @SuppressWarnings ("unused")
     @Mobile
-    RegisteredDeviceEntity lastAccessed(String rid, String did, String token);
+    RegisteredDeviceEntity lastAccessed(String qid, String did, String token);
 
     /**
      * When existing did, update with latest info. This happens when one user logs out and another user
      * logs in without deleting the app.
      *
      * @param did
-     * @param rid
+     * @param qid
      * @param deviceType
      * @param token
      */
     @Mobile
-    boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token);
+    boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, String token);
 
     /**
      * When data is fetched since beginning. This helps set to prevent fetching from beginning going forward.

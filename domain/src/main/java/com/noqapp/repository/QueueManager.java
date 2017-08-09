@@ -26,14 +26,14 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      *
      * @param codeQR
      * @param did
-     * @param rid
+     * @param qid
      * @return
      */
-    QueueEntity findQueuedOne(String codeQR, String did, String rid);
+    QueueEntity findQueuedOne(String codeQR, String did, String qid);
 
     QueueEntity findOne(String codeQR, int tokenNumber);
 
-    QueueEntity findToAbort(String codeQR, String did, String rid);
+    QueueEntity findToAbort(String codeQR, String did, String qid);
 
     @Mobile
     QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo, String sid);
@@ -56,17 +56,17 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /**
      * Find all based on registered user.
      *
-     * @param rid
+     * @param qid
      * @return
      */
     @Mobile
-    List<QueueEntity> findAllQueuedByRid(String rid);
+    List<QueueEntity> findAllQueuedByRid(String qid);
 
     @Mobile
     List<QueueEntity> findAllNotQueuedByDid(String did);
 
     @Mobile
-    List<QueueEntity> findAllNotQueuedByRid(String rid);
+    List<QueueEntity> findAllNotQueuedByRid(String qid);
 
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
@@ -86,5 +86,5 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void increaseAttemptToSendNotificationCount(String id);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
 }

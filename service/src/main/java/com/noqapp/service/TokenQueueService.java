@@ -86,13 +86,13 @@ public class TokenQueueService {
      *
      * @param codeQR
      * @param did
-     * @param rid
+     * @param qid
      * @return
      */
     @Mobile
-    public JsonToken getNextToken(String codeQR, String did, String rid) {
+    public JsonToken getNextToken(String codeQR, String did, String qid) {
         try {
-            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, rid);
+            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
             LOG.info("next Token queue={}", queue);
 
             /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
@@ -116,9 +116,9 @@ public class TokenQueueService {
                 }
 
                 try {
-                    queue = new QueueEntity(codeQR, did, rid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
-                    if (StringUtils.isNotBlank(rid)) {
-                        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+                    queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    if (StringUtils.isNotBlank(qid)) {
+                        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
                         queue.setCustomerName(userAccount.getDisplayName());
                     }
                     queueManager.insert(queue);
@@ -135,8 +135,8 @@ public class TokenQueueService {
             }
 
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-            LOG.info("Already registered token={} topic={} rid={} did={} queueStatus={}",
-                    queue.getTokenNumber(), tokenQueue.getTopic(), rid, did, tokenQueue.getQueueStatus());
+            LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
+                    queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
             switch (tokenQueue.getQueueStatus()) {
                 case D:
@@ -166,9 +166,9 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public JsonResponse abortQueue(String codeQR, String did, String rid) {
+    public JsonResponse abortQueue(String codeQR, String did, String qid) {
         try {
-            QueueEntity queue = queueManager.findToAbort(codeQR, did, rid);
+            QueueEntity queue = queueManager.findToAbort(codeQR, did, qid);
             LOG.info("abort queue={}", queue);
 
             if (queue == null) {

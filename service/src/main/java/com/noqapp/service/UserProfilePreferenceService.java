@@ -40,16 +40,16 @@ public class UserProfilePreferenceService {
         return userProfileManager.findByEmail(email);
     }
 
-    public UserProfileEntity findByReceiptUserId(String rid) {
-        return userProfileManager.findByReceiptUserId(rid);
+    public UserProfileEntity findByReceiptUserId(String qid) {
+        return userProfileManager.findByReceiptUserId(qid);
     }
 
     public UserProfileEntity checkUserExistsByPhone(String phone) {
         return userProfileManager.findOneByPhone(phone);
     }
 
-    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid) {
-        return userProfileManager.forProfilePreferenceFindByReceiptUserId(rid);
+    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid) {
+        return userProfileManager.forProfilePreferenceFindByReceiptUserId(qid);
     }
 
     public void updateProfile(UserProfileEntity userProfile) {
@@ -62,8 +62,8 @@ public class UserProfilePreferenceService {
 
     @Mobile
     @SuppressWarnings ("unused")
-    public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
-        return userProfileManager.getProfileUpdateSince(rid, since);
+    public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
+        return userProfileManager.getProfileUpdateSince(qid, since);
     }
 
     public void deleteHard(UserProfileEntity userProfile) {

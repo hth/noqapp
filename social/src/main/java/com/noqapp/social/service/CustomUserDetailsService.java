@@ -112,7 +112,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     LOG.info("Account is inactive for reason={}", userAccount.getAccountInactiveReason());
                     throw new RuntimeException(accountNotValidatedMessage);
                 default:
-                    LOG.error("Reached condition for invalid account rid={}", userAccount.getQueueUserId());
+                    LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
                     return false;
             }
         }

@@ -268,12 +268,12 @@ public class MailService {
      * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
      *
      * @param userId
-     * @param rid
+     * @param qid
      * @param name
      */
-    public void sendValidationMailOnAccountCreation(String userId, String rid, String name) {
+    public void sendValidationMailOnAccountCreation(String userId, String qid, String name) {
         if (StringUtils.isNotBlank(userId) && !userId.endsWith("mail.noqapp.com")) {
-            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(rid, userId);
+            EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
             service.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
         }
     }

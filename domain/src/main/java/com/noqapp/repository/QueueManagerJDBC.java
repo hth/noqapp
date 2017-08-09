@@ -35,24 +35,24 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByDid(String did, Date lastAccessed);
 
     /**
-     * Get all for rid.
+     * Get all for qid.
      *
-     * @param rid
+     * @param qid
      * @return
      */
     @Mobile
-    List<QueueEntity> getByRid(String rid);
+    List<QueueEntity> getByQid(String qid);
 
     /**
      * Get all until lastAccessed date.
      *
-     * @param rid
+     * @param qid
      * @param lastAccessed
      * @return
      */
     @Mobile
-    List<QueueEntity> getByRid(String rid, Date lastAccessed);
+    List<QueueEntity> getByQid(String qid, Date lastAccessed);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String rid, int ratingCount, int hoursSaved);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
 }
