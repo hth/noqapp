@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.LandingForm;
 
@@ -69,8 +69,8 @@ public class LandingController {
             LandingForm landingForm
     ) {
         LOG.info("Landed on next page");
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(tokenUser.getRid());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
         if (null != businessUser) {
             landingForm.setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
             landingForm.setBusinessAccountSignedUp(businessUser.getUpdated());

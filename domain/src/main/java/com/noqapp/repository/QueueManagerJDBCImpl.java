@@ -88,7 +88,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("id", queue.getId());
                 namedParameters.addValue("qr", queue.getCodeQR());
                 namedParameters.addValue("did", queue.getDid());
-                namedParameters.addValue("rid", queue.getRid());
+                namedParameters.addValue("rid", queue.getQueueUserId());
                 namedParameters.addValue("tn", queue.getTokenNumber());
                 namedParameters.addValue("dn", queue.getDisplayName());
                 namedParameters.addValue("qs", queue.getQueueUserState().getName());

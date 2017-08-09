@@ -126,14 +126,14 @@ public class AccountRegistrationController {
             return registrationPage;
         }
 
-        LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
+        LOG.info("Registered new user qid={}", userAccount.getQueueUserId());
         mailService.sendValidationMailOnAccountCreation(
                 userAccount.getUserId(),
-                userAccount.getReceiptUserId(),
+                userAccount.getQueueUserId(),
                 userAccount.getName());
 
         LOG.info("Account registered success");
-        String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getReceiptUserId());
+        String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getQueueUserId());
         LOG.info("Redirecting user to {}", redirectTo);
         return "redirect:" + redirectTo;
     }

@@ -25,15 +25,15 @@ public class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private final String receiptUserId;
+    private final String queueUserId;
 
     @NotNull
     @Field ("AUTH")
     private final String authenticationKey;
 
-    private ForgotRecoverEntity(String receiptUserId, String authenticationKey) {
+    private ForgotRecoverEntity(String queueUserId, String authenticationKey) {
         super();
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.authenticationKey = authenticationKey;
     }
 
@@ -41,8 +41,8 @@ public class ForgotRecoverEntity extends BaseEntity {
         return new ForgotRecoverEntity(receiptUserId, authenticationKey);
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     public String getAuthenticationKey() {

@@ -54,7 +54,7 @@ public class BusinessFlowValidator {
      */
     @SuppressWarnings ("unused")
     public String validateBusinessDetails(Register register, MessageContext messageContext) {
-        LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
+        LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         String status = "success";
 
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
@@ -137,7 +137,7 @@ public class BusinessFlowValidator {
             status = validateStoreDetails(registerBusiness, messageContext);
         }
 
-        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
+        LOG.info("Validate business qid={} status={}", register.getRegisterUser().getQueueUserId(), status);
         return status;
     }
 
@@ -217,7 +217,7 @@ public class BusinessFlowValidator {
      */
     @SuppressWarnings ("unused")
     public String validateBusinessHours(Register register, MessageContext messageContext) {
-        LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
+        LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
         return validateBusinessHours(registerBusiness, messageContext);
     }
@@ -270,7 +270,7 @@ public class BusinessFlowValidator {
             }
         }
 
-        LOG.info("Validate business rid={} status={}", registerBusiness.getBusinessUser().getReceiptUserId(), status);
+        LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
         return status;
     }
 }

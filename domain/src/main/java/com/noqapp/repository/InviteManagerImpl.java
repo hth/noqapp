@@ -112,7 +112,7 @@ public class InviteManagerImpl implements InviteManager {
                     TABLE);
 
             boolean updated = false;
-            if (invite.getReceiptUserId().equalsIgnoreCase(rid)) {
+            if (invite.getQueueUserId().equalsIgnoreCase(rid)) {
                 invite.deductRemoteJoinForReceiptUserCount();
                 updated = true;
             } else if (invite.getInviterId().equalsIgnoreCase(rid)) {
@@ -120,7 +120,7 @@ public class InviteManagerImpl implements InviteManager {
                 updated = true;
             }
 
-            if (0 == invite.getRemoteJoinForReceiptUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
+            if (0 == invite.getRemoteJoinForQueueUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
                 invite.inActive();
             }
 

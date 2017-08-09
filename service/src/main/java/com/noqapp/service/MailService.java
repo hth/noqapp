@@ -202,7 +202,7 @@ public class MailService {
 
         if (userAccount.isAccountValidated()) {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
-                    userAccount.getReceiptUserId());
+                    userAccount.getQueueUserId());
 
             Map<String, String> rootMap = new HashMap<>();
             rootMap.put("to", userAccount.getName());
@@ -227,7 +227,7 @@ public class MailService {
         } else {
             /* Since account is not validated, send account validation email. */
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                    userAccount.getReceiptUserId(),
+                    userAccount.getQueueUserId(),
                     userAccount.getUserId());
 
             boolean status = accountValidationMail(

@@ -25,7 +25,7 @@ public class EmailValidateEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @NotNull
     @Field ("EM")
@@ -35,9 +35,9 @@ public class EmailValidateEntity extends BaseEntity {
     @Field ("AUTH")
     private String authenticationKey;
 
-    private EmailValidateEntity(String receiptUserId, String email, String authenticationKey) {
+    private EmailValidateEntity(String queueUserId, String email, String authenticationKey) {
         super();
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.email = email;
         this.authenticationKey = authenticationKey;
     }
@@ -46,8 +46,8 @@ public class EmailValidateEntity extends BaseEntity {
         return new EmailValidateEntity(receiptUserId, email, authenticationKey);
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     public String getEmail() {

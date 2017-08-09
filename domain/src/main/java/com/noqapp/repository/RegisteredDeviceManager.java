@@ -13,11 +13,11 @@ import java.util.List;
 public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDeviceEntity> {
 
     @Mobile
-    RegisteredDeviceEntity find(String rid, String did);
+    RegisteredDeviceEntity find(String qid, String did);
 
-    RegisteredDeviceEntity findFCMToken(String rid, String did);
+    RegisteredDeviceEntity findFCMToken(String qid, String did);
 
-    List<RegisteredDeviceEntity> findAll(String rid);
+    List<RegisteredDeviceEntity> findAll(String qid);
 
     /**
      * Update the token for a particular device id. Update token every time the request comes in.

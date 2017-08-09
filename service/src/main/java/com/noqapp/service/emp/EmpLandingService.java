@@ -58,12 +58,12 @@ public class EmpLandingService {
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getReceiptUserId());
+        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getReceiptUserId(),
+                userProfile.getQueueUserId(),
                 userProfile.getLevel()
         );
         accountService.save(userAccount);
@@ -78,7 +78,7 @@ public class EmpLandingService {
 
             /* Create relation for easy access. */
             BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                    businessUser.getReceiptUserId(),
+                    businessUser.getQueueUserId(),
                     bizStore.getId(),
                     bizStore.getBizName().getId(),
                     bizStore.getCodeQR());

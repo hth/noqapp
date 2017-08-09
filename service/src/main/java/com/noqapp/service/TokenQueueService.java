@@ -193,7 +193,7 @@ public class TokenQueueService {
         LOG.info("After sending message to merchant");
         QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
         if (queue != null && queue.getCustomerName() != null) {
-            LOG.info("Sending message to merchant, queue user={} did={}", queue.getRid(), queue.getDid());
+            LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR)
                     .setQueueStatus(tokenQueue.getQueueStatus())
@@ -225,12 +225,12 @@ public class TokenQueueService {
     /**
      * Invite sent when business adds client as supervisor to a queue.
      *
-     * @param rid
+     * @param qid
      * @param displayName
      * @param businessName
      */
-    public void sendInviteToNewQueueSupervisor(String rid, String displayName, String businessName) {
-        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(rid);
+    public void sendInviteToNewQueueSupervisor(String qid, String displayName, String businessName) {
+        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
@@ -255,8 +255,8 @@ public class TokenQueueService {
             }
         }
 
-        LOG.info("Sent FCM invite count={} rid={} displayName={} businessName={}",
-                registeredDevices.size(), rid, displayName, businessName);
+        LOG.info("Sent FCM invite count={} qid={} displayName={} businessName={}",
+                registeredDevices.size(), qid, displayName, businessName);
     }
 
     /**

@@ -15,7 +15,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -65,14 +65,14 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     public RegisterUser loadProfile() {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String rid = tokenUser.getRid();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String rid = queueUser.getQueueUserId();
 
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
 
         RegisterUser registerUser = new RegisterUser();
-        registerUser.setRid(userAccount.getReceiptUserId())
+        registerUser.setQueueUserId(userAccount.getQueueUserId())
                 .setGender(userProfile.getGender())
                 .setBirthday(userProfile.getBirthday())
                 .setEmail(userProfile.getEmail().endsWith("mail.noqapp.com") ? "" : userProfile.getEmail())
@@ -91,7 +91,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     public BusinessUserRegistrationStatusEnum registrationStatus(RegisterUser registerUser) {
-        return businessUserService.findBusinessUser(registerUser.getRid()).getBusinessUserRegistrationStatus();
+        return businessUserService.findBusinessUser(registerUser.getQueueUserId()).getBusinessUserRegistrationStatus();
     }
 
     public boolean isRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
@@ -100,20 +100,20 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
     public BusinessUserRegistrationStatusEnum completeRegistrationInformation(RegisterUser registerUser) {
         try {
-            TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = tokenUser.getUsername();
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = queueUser.getUsername();
 
             accountService.updateUserProfile(registerUser, username);
             service.submit(() -> updatePassword(registerUser));
             sendMailAndPhoneValidation(registerUser);
 
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(registerUser.getRid());
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(registerUser.getQueueUserId());
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
             businessUserService.save(businessUser);
 
             return businessUser.getBusinessUserRegistrationStatus();
         } catch(Exception e) {
-            LOG.error("Failed completing business profile rid={} reason={}", registerUser.getRid(), e.getLocalizedMessage(), e);
+            LOG.error("Failed completing business profile qid={} reason={}", registerUser.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessProfileException("Failed to migrate to business profile");
         }
     }
@@ -124,7 +124,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
 
-        UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(registerUser.getRid()).getUserAuthentication();
+        UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(registerUser.getQueueUserId()).getUserAuthentication();
         userAuthentication.setId(userAuthenticationLoaded.getId());
         userAuthentication.setVersion(userAuthenticationLoaded.getVersion());
         userAuthentication.setCreated(userAuthenticationLoaded.getCreated());
@@ -143,11 +143,11 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     private void sendEmail(RegisterUser registerUser) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(registerUser.getRid());
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(registerUser.getQueueUserId());
 
         /* Since account is not validated, send account validation email. */
         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                userAccount.getReceiptUserId(),
+                userAccount.getQueueUserId(),
                 userAccount.getUserId());
 
         mailService.accountValidationMail(

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.security.OnLoginAuthenticationSuccessHandler;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.LoginService;
@@ -160,11 +160,11 @@ public class LoginController {
 
     String determineTargetUrlAfterLogin(UserAccountEntity userAccount, UserProfileEntity userProfile) {
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
-        UserDetails userDetails = new TokenUser(
+        UserDetails userDetails = new QueueUser(
                 userProfile.getEmail(),
                 "",
                 authorities,
-                userProfile.getReceiptUserId(),
+                userProfile.getQueueUserId(),
                 userProfile.getLevel(),
                 customUserDetailsService.isUserActive(userAccount),
                 userAccount.isAccountValidated(),
@@ -173,7 +173,7 @@ public class LoginController {
 
         /*
          * Blank password as Authentication object from thread is still being processed.
-         * For other TokenUser pass the password for BCryptPasswordEncoder.
+         * For other QueueUser pass the password for BCryptPasswordEncoder.
          */
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);

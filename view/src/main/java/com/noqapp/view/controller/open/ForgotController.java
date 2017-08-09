@@ -224,7 +224,7 @@ public class ForgotController {
         ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key.getText());
         if (forgotRecoverEntity != null) {
             forgotAuthenticateForm.setAuthenticationKey(key.getText());
-            forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getReceiptUserId());
+            forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getQueueUserId());
         }
         return authenticatePage;
     }
@@ -248,20 +248,20 @@ public class ForgotController {
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getReceiptUserId());
+                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                         HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(userProfile.getReceiptUserId()).getUserAuthentication();
+                UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(userProfile.getQueueUserId()).getUserAuthentication();
                 userAuthentication.setId(userAuthenticationLoaded.getId());
                 userAuthentication.setVersion(userAuthenticationLoaded.getVersion());
                 userAuthentication.setCreated(userAuthenticationLoaded.getCreated());
                 userAuthentication.setUpdated();
                 try {
                     accountService.updateAuthentication(userAuthentication);
-                    accountService.invalidateAllEntries(forgotRecover.getReceiptUserId());
+                    accountService.invalidateAllEntries(forgotRecover.getQueueUserId());
                     modelMap.addAttribute(SUCCESS, true);
                 } catch (Exception e) {
                     LOG.error("Error during updating of the old authentication key message={}",

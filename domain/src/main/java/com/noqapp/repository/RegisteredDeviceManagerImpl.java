@@ -72,9 +72,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public RegisteredDeviceEntity find(String rid, String did) {
+    public RegisteredDeviceEntity find(String qid, String did) {
         Query query;
-        if (StringUtils.isBlank(rid)) {
+        if (StringUtils.isBlank(qid)) {
             query = query(where("DID").is(did));
         } else {
             /* Apply condition only if field exist. Solved using orOperator. */
@@ -82,7 +82,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                     where("DID").is(did)
                             .orOperator(
                                     where("RID").exists(false),
-                                    where("RID").is(rid)
+                                    where("RID").is(qid)
                             ));
         }
         return mongoTemplate.findOne(
@@ -92,12 +92,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public RegisteredDeviceEntity findFCMToken(String rid, String did) {
+    public RegisteredDeviceEntity findFCMToken(String qid, String did) {
         Query query;
-        if (StringUtils.isBlank(rid)) {
+        if (StringUtils.isBlank(qid)) {
             query = query(where("DID").is(did));
         } else {
-            query = query(where("RID").is(rid).and("DID").is(did));
+            query = query(where("RID").is(qid).and("DID").is(did));
         }
 
         RegisteredDeviceEntity registeredDevice = mongoTemplate.findOne(
@@ -107,7 +107,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         );
 
         if (registeredDevice == null) {
-            LOG.warn("Device not registered rid={} did={}", rid, did);
+            LOG.warn("Device not registered qid={} did={}", qid, did);
             return null;
         }
 
@@ -115,9 +115,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public List<RegisteredDeviceEntity> findAll(String rid) {
+    public List<RegisteredDeviceEntity> findAll(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).andOperator(
+                query(where("RID").is(qid).andOperator(
                         isActive(),
                         isNotDeleted()
                 )),
@@ -129,22 +129,22 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     /**
      * Returns old document with old date when last accessed. And updates with new date
      *
-     * @param rid
+     * @param qid
      * @param did
      * @param token
      * @return
      */
     @Override
-    public RegisteredDeviceEntity lastAccessed(String rid, String did, String token) {
+    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token) {
         return lastAccessed(
-                rid,
+                qid,
                 did,
                 update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()).set("TK", token));
     }
 
-    private RegisteredDeviceEntity lastAccessed(String rid, String did, Update update) {
+    private RegisteredDeviceEntity lastAccessed(String qid, String did, Update update) {
         Query query;
-        if (StringUtils.isBlank(rid)) {
+        if (StringUtils.isBlank(qid)) {
             query = query(where("DID").is(did));
         } else {
             /* Apply condition only if field exist. Solved using orOperator. */
@@ -152,7 +152,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                     where("DID").is(did)
                             .orOperator(
                                     where("RID").exists(false),
-                                    where("RID").is(rid)
+                                    where("RID").is(qid)
                             ));
         }
 
@@ -164,16 +164,16 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         );
     }
 
-    public boolean resetRegisteredDeviceWithNewDetails(String did, String rid, DeviceTypeEnum deviceType, String token) {
+    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, String token) {
         Update update;
-        if (StringUtils.isBlank(rid)) {
+        if (StringUtils.isBlank(qid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
                     .unset("RID")
                     .set("DT", deviceType)
                     .set("TK", token);
         } else {
             update = update("U", DateTime.now().minusYears(100).toDate())
-                    .set("RID", rid)
+                    .set("RID", qid)
                     .set("DT", deviceType)
                     .set("TK", token);
         }

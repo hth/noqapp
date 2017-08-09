@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.emp.EmpLandingService;
@@ -67,8 +67,8 @@ public class EmpLandingController {
             @ModelAttribute ("empLandingForm")
             EmpLandingForm empLandingForm
     ) {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Employee landed rid={}", tokenUser.getRid());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
 
         empLandingForm
                 .setAwaitingApprovalCount(businessUserService.awaitingApprovalCount())
@@ -85,13 +85,13 @@ public class EmpLandingController {
             @ModelAttribute ("businessAwaitingApprovalForm")
             BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Business user={} loaded by rid={}", businessUserId.getText(), tokenUser.getRid());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Business user={} loaded by qid={}", businessUserId.getText(), queueUser.getQueueUserId());
 
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId.getText());
         businessAwaitingApprovalForm
                 .setBusinessUser(businessUser)
-                .setUserProfile(accountService.findProfileByReceiptUserId(businessUser.getReceiptUserId()));
+                .setUserProfile(accountService.findProfileByReceiptUserId(businessUser.getQueueUserId()));
 
         return businessAwaitingApproval;
     }
@@ -104,14 +104,14 @@ public class EmpLandingController {
             @ModelAttribute ("businessAwaitingApprovalForm")
             BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
-        TokenUser tokenUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Approved Business user={} loaded by rid={}",
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Approved Business user={} loaded by qid={}",
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
-                tokenUser.getRid());
+                queueUser.getQueueUserId());
 
         empLandingService.approveBusiness(
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
-                tokenUser.getRid());
+                queueUser.getQueueUserId());
         return empLanding;
     }
 }

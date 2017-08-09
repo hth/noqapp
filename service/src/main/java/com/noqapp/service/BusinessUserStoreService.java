@@ -102,7 +102,7 @@ public class BusinessUserStoreService {
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
-            String rid = businessUserStore.getReceiptUserId();
+            String rid = businessUserStore.getQueueUserId();
             UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
@@ -112,7 +112,7 @@ public class BusinessUserStoreService {
                     .setPhone(userProfile.getPhone())
                     .setAddress(userProfile.getAddress())
                     .setEmail(userProfile.getEmail())
-                    .setRid(rid)
+                    .setQueueUserId(rid)
                     .setUserLevel(userProfile.getLevel())
                     .setCreated(businessUserStore.getCreated())
                     .setActive(businessUserStore.isActive())

@@ -28,7 +28,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @NotNull
     @Field ("BS")
@@ -42,15 +42,15 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
-    public BusinessUserStoreEntity(String receiptUserId, String bizStoreId, String bizNameId, String codeQR) {
-        this.receiptUserId = receiptUserId;
+    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR) {
+        this.queueUserId = queueUserId;
         this.bizStoreId = bizStoreId;
         this.bizNameId = bizNameId;
         this.codeQR = codeQR;
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
     public String getBizStoreId() {

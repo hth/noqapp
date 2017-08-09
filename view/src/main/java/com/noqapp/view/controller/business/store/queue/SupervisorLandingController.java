@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.TokenUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.BusinessLandingForm;
 
@@ -68,9 +68,9 @@ public class SupervisorLandingController {
             @ModelAttribute ("businessLandingForm")
             BusinessLandingForm businessLandingForm
     ) {
-        TokenUser receiptUser = (TokenUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
-        return nextPage(businessUserService.findBusinessUser(receiptUser.getRid()), businessLandingForm);
+        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
+        return nextPage(businessUserService.findBusinessUser(receiptUser.getQueueUserId()), businessLandingForm);
     }
 
     private String nextPage(
@@ -83,7 +83,7 @@ public class SupervisorLandingController {
             case C:
             case I:
             case N:
-                LOG.info("Migrate to business registration rid={} level={}", businessUser.getReceiptUserId(), businessUser.getUserLevel());
+                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessProfileFlow;
             default:
                 LOG.error("Reached unsupported condition={}", businessUser.getBusinessUserRegistrationStatus());

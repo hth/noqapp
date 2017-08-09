@@ -29,7 +29,7 @@ public class BusinessUserEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @NotNull
     @Field ("RS")
@@ -52,9 +52,9 @@ public class BusinessUserEntity extends BaseEntity {
         super();
     }
 
-    private BusinessUserEntity(String receiptUserId, UserLevelEnum userLevel) {
+    private BusinessUserEntity(String queueUserId, UserLevelEnum userLevel) {
         super();
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.userLevel = userLevel;
 
         /* When creating this record we are defaulting to Incomplete status. */
@@ -65,12 +65,12 @@ public class BusinessUserEntity extends BaseEntity {
         return new BusinessUserEntity(receiptUserId, userLevel);
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public BusinessUserEntity setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public BusinessUserEntity setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 

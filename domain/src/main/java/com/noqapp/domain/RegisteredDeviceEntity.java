@@ -39,7 +39,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     @NotNull
     @Field ("RID")
-    private String receiptUserId;
+    private String queueUserId;
 
     @NotNull
     @Field ("DID")
@@ -61,9 +61,9 @@ public class RegisteredDeviceEntity extends BaseEntity {
         super();
     }
 
-    private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
+    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
         super();
-        this.receiptUserId = receiptUserId;
+        this.queueUserId = queueUserId;
         this.deviceId = deviceId;
         this.deviceType = deviceType;
         this.token = token;
@@ -84,12 +84,12 @@ public class RegisteredDeviceEntity extends BaseEntity {
         }
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public void setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
     }
 
     public String getDeviceId() {

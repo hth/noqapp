@@ -94,8 +94,8 @@ public class AccountService {
         return userProfileManager.findOneByPhone(phone);
     }
 
-    public UserAccountEntity findByReceiptUserId(String rid) {
-        return userAccountManager.findByReceiptUserId(rid);
+    public UserAccountEntity findByReceiptUserId(String qid) {
+        return userAccountManager.findByReceiptUserId(qid);
     }
 
     @Mobile
@@ -110,7 +110,7 @@ public class AccountService {
             LOG.error("Duplicate record entry for UserAccountEntity={}", e.getLocalizedMessage(), e);
             throw e;
         } catch (Exception e) {
-            LOG.error("Saving UserAccount rid={} reason={}", userAccount.getReceiptUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Saving UserAccount qid={} reason={}", userAccount.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user account");
         }
     }
@@ -209,7 +209,7 @@ public class AccountService {
                 //Roll back
                 UserAuthenticationEntity userAuthentication = null;
                 if (null != userAccount) {
-                    userAccount = findByReceiptUserId(userAccount.getReceiptUserId());
+                    userAccount = findByReceiptUserId(userAccount.getQueueUserId());
                     userAuthentication = userAccount.getUserAuthentication();
                     userAccountManager.deleteHard(userAccount);
                 }
@@ -224,7 +224,7 @@ public class AccountService {
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
                 if (null != userProfileOfInvitee) {
-                    InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getReceiptUserId(), inviteCode);
+                    InviteEntity invite = new InviteEntity(rid, userProfileOfInvitee.getQueueUserId(), inviteCode);
                     inviteService.save(invite);
                 } else {
                     InviteEntity invite = new InviteEntity(rid, null, null);
@@ -252,12 +252,12 @@ public class AccountService {
     public void save(UserProfileEntity userProfile) {
         try {
             userProfileManager.save(userProfile);
-            LOG.debug("Saved UserProfile={} id={}", userProfile.getReceiptUserId(), userProfile.getId());
+            LOG.debug("Saved UserProfile qid={} id={}", userProfile.getQueueUserId(), userProfile.getId());
         } catch (DataIntegrityViolationException e) {
             LOG.error("Duplicate record entry for UserProfileEntity={}", e.getLocalizedMessage(), e);
             throw e;
         } catch (Exception e) {
-            LOG.error("Saving UserProfile rid={} reason={}", userProfile.getReceiptUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Saving UserProfile qid={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user profile");
         }
     }
@@ -309,9 +309,9 @@ public class AccountService {
         try {
             UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
             userPreferenceManager.save(userPreferenceEntity);
-            LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getReceiptUserId());
+            LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getQueueUserId());
         } catch (Exception e) {
-            LOG.error("Saving UserPreferenceEntity rid={} reason={}", userProfile.getReceiptUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Saving UserPreferenceEntity qid={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
     }
@@ -328,12 +328,12 @@ public class AccountService {
         userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
         userAccountManager.deleteHard(userAccount);
 
-        UserPreferenceEntity userPreference = userPreferenceManager.getByRid(userAccount.getReceiptUserId());
+        UserPreferenceEntity userPreference = userPreferenceManager.getByRid(userAccount.getQueueUserId());
         if (null != userPreference) {
             userPreferenceManager.deleteHard(userPreference);
         }
 
-        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
+        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getQueueUserId());
         if (null != userProfile) {
             userProfileManager.deleteHard(userProfile);
         }
@@ -371,8 +371,8 @@ public class AccountService {
                     updateAccountToValidated(userAccount.getId(), AccountInactiveReasonEnum.ANV);
                     break;
                 default:
-                    LOG.error("Reached unreachable condition, rid={}", userAccount.getReceiptUserId());
-                    throw new RuntimeException("Reached unreachable condition " + userAccount.getReceiptUserId());
+                    LOG.error("Reached unreachable condition, qid={}", userAccount.getQueueUserId());
+                    throw new RuntimeException("Reached unreachable condition " + userAccount.getQueueUserId());
             }
         } else {
             userAccount.setAccountValidated(true);
@@ -463,7 +463,7 @@ public class AccountService {
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
         UserAccountEntity userAccount = findByUserId(existingUserId);
         if (!userAccount.isAccountValidated()) {
-            emailValidateService.invalidateAllEntries(userAccount.getReceiptUserId());
+            emailValidateService.invalidateAllEntries(userAccount.getQueueUserId());
         }
         userAccount.setUserId(newUserId);
         userAccount.setAccountValidated(false);
@@ -534,12 +534,12 @@ public class AccountService {
         save(userProfile);
 
         if (!userProfile.getFirstName().equals(registerUser.getFirstName()) || !userProfile.getLastName().equals(registerUser.getLastName())) {
-            updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getRid());
+            updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getQueueUserId());
             LOG.info("Updated name of user from={} to firstName={} lastName={} for rid={}",
                     userProfile.getName(),
                     registerUser.getFirstName(),
                     registerUser.getLastName(),
-                    registerUser.getRid());
+                    registerUser.getQueueUserId());
         }
     }
 
@@ -554,6 +554,6 @@ public class AccountService {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         userAccount.setUserAuthentication(userAuthentication);
         save(userAccount);
-        LOG.info("Updated with authentication rid={}", rid);
+        LOG.info("Updated with authentication qid={}", rid);
     }
 }
