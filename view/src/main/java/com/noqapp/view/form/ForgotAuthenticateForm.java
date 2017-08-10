@@ -14,7 +14,7 @@ public final class ForgotAuthenticateForm {
 
     private String password;
     private String passwordSecond;
-    private String receiptUserId;
+    private String queueUserId;
     private String authenticationKey;
 
     private ForgotAuthenticateForm() {
@@ -40,12 +40,12 @@ public final class ForgotAuthenticateForm {
         this.passwordSecond = passwordSecond;
     }
 
-    public String getReceiptUserId() {
-        return receiptUserId;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public ForgotAuthenticateForm setReceiptUserId(String receiptUserId) {
-        this.receiptUserId = receiptUserId;
+    public ForgotAuthenticateForm setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 

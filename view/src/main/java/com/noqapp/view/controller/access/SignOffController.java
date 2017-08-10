@@ -41,13 +41,13 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
             Authentication authentication
     ) throws IOException, ServletException {
 
-        String receiptUserId = "Not Available";
+        String queueUserId = "Not Available";
         if (authentication.getPrincipal() != null) {
-            QueueUser receiptUser = (QueueUser) authentication.getPrincipal();
-            receiptUserId = receiptUser.getQueueUserId();
+            QueueUser queueUser = (QueueUser) authentication.getPrincipal();
+            queueUserId = queueUser.getQueueUserId();
         }
 
-        LOG.info("Logout user={} from={}", receiptUserId, request.getServletPath());
+        LOG.info("Logout qid={} from={}", queueUserId, request.getServletPath());
         super.onLogoutSuccess(request, response, authentication);
     }
 }

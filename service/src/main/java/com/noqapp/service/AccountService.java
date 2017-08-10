@@ -339,8 +339,8 @@ public class AccountService {
         }
     }
 
-    public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
-        return userProfileManager.findByReceiptUserId(receiptUserId);
+    public UserProfileEntity findProfileByReceiptUserId(String queueUserId) {
+        return userProfileManager.findByReceiptUserId(queueUserId);
     }
 
     public void updateName(String firstName, String lastName, String qid) {
@@ -482,18 +482,18 @@ public class AccountService {
     /**
      * Used in for sending authentication link to recover account in case of the lost password
      *
-     * @param receiptUserId
+     * @param queueUserId
      * @return
      */
-    ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
+    ForgotRecoverEntity initiateAccountRecovery(String queueUserId) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(receiptUserId, authenticationKey);
+        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(queueUserId, authenticationKey);
         forgotRecoverManager.save(forgotRecoverEntity);
         return forgotRecoverEntity;
     }
 
-    public void invalidateAllEntries(String receiptUserId) {
-        forgotRecoverManager.invalidateAllEntries(receiptUserId);
+    public void invalidateAllEntries(String queueUserId) {
+        forgotRecoverManager.invalidateAllEntries(queueUserId);
     }
 
     public ForgotRecoverEntity findByAuthenticationKey(String key) {

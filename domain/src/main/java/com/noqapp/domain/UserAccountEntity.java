@@ -103,12 +103,12 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public static UserAccountEntity newInstance(
-            String receiptUserId,
+            String queueUserId,
             String userId,
             String firstName,
             String lastName
     ) {
-        return new UserAccountEntity(receiptUserId, userId, firstName, lastName);
+        return new UserAccountEntity(queueUserId, userId, firstName, lastName);
     }
 
     public String getQueueUserId() {

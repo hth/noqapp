@@ -221,10 +221,10 @@ public class ForgotController {
 
             ForgotAuthenticateForm forgotAuthenticateForm
     ) {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key.getText());
-        if (forgotRecoverEntity != null) {
+        ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(key.getText());
+        if (forgotRecover != null) {
             forgotAuthenticateForm.setAuthenticationKey(key.getText());
-            forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getQueueUserId());
+            forgotAuthenticateForm.setQueueUserId(forgotRecover.getQueueUserId());
         }
         return authenticatePage;
     }

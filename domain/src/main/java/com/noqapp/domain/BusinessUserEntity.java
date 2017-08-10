@@ -61,8 +61,8 @@ public class BusinessUserEntity extends BaseEntity {
         this.businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
     }
 
-    public static BusinessUserEntity newInstance(String receiptUserId, UserLevelEnum userLevel) {
-        return new BusinessUserEntity(receiptUserId, userLevel);
+    public static BusinessUserEntity newInstance(String queueUserId, UserLevelEnum userLevel) {
+        return new BusinessUserEntity(queueUserId, userLevel);
     }
 
     public String getQueueUserId() {

@@ -81,8 +81,8 @@ public class StoreDetailController {
             @ModelAttribute ("storeLandingForm")
             StoreLandingForm storeLandingForm
     ) {
-        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
@@ -113,8 +113,8 @@ public class StoreDetailController {
 
             HttpServletResponse response
     ) {
-        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         InputStream inputStream = null;
         try {
             setContentType(fileName.getText(), response);
@@ -122,7 +122,7 @@ public class StoreDetailController {
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("PNG image retrieval error occurred for user={} reason={}",
-                    receiptUser.getQueueUserId(), e.getLocalizedMessage(), e);
+                    queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
         } finally {
             if (inputStream != null) {
                 IOUtils.closeQuietly(inputStream);

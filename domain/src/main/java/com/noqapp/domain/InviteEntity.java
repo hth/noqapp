@@ -32,9 +32,9 @@ public class InviteEntity extends BaseEntity {
     @Field ("RID")
     private String queueUserId;
 
-    /* RJR maps to RID. */
+    /* RJQ maps to QID. */
     @NotNull
-    @Field ("RJR")
+    @Field ("RJQ")
     private int remoteJoinForQueueUserCount;
 
     @NotNull

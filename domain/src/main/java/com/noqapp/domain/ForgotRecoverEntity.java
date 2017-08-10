@@ -37,8 +37,8 @@ public class ForgotRecoverEntity extends BaseEntity {
         this.authenticationKey = authenticationKey;
     }
 
-    public static ForgotRecoverEntity newInstance(String receiptUserId, String authenticationKey) {
-        return new ForgotRecoverEntity(receiptUserId, authenticationKey);
+    public static ForgotRecoverEntity newInstance(String queueUserId, String authenticationKey) {
+        return new ForgotRecoverEntity(queueUserId, authenticationKey);
     }
 
     public String getQueueUserId() {

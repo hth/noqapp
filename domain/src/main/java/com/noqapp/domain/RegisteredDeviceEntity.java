@@ -76,11 +76,11 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.token = token;
     }
 
-    public static RegisteredDeviceEntity newInstance(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
-        if (StringUtils.isBlank(receiptUserId)) {
+    public static RegisteredDeviceEntity newInstance(String queueUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
+        if (StringUtils.isBlank(queueUserId)) {
             return new RegisteredDeviceEntity(deviceId, deviceType, token);
         } else {
-            return new RegisteredDeviceEntity(receiptUserId, deviceId, deviceType, token);
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, token);
         }
     }
 

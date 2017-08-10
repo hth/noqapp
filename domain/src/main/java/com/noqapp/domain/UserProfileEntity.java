@@ -104,8 +104,8 @@ public class UserProfileEntity extends BaseEntity {
      * @param lastName
      * @return
      */
-    public static UserProfileEntity newInstance(String email, String firstName, String lastName, String receiptUserId, String birthday) {
-        return new UserProfileEntity(email, firstName, lastName, receiptUserId, birthday);
+    public static UserProfileEntity newInstance(String email, String firstName, String lastName, String queueUserId, String birthday) {
+        return new UserProfileEntity(email, firstName, lastName, queueUserId, birthday);
     }
 
     public String getQueueUserId() {

@@ -42,8 +42,8 @@ public class EmailValidateEntity extends BaseEntity {
         this.authenticationKey = authenticationKey;
     }
 
-    public static EmailValidateEntity newInstance(String receiptUserId, String email, String authenticationKey) {
-        return new EmailValidateEntity(receiptUserId, email, authenticationKey);
+    public static EmailValidateEntity newInstance(String queueUserId, String email, String authenticationKey) {
+        return new EmailValidateEntity(queueUserId, email, authenticationKey);
     }
 
     public String getQueueUserId() {
