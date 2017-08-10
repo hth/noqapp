@@ -13,9 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -25,7 +23,6 @@ import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 /** Define all singleton here */
 enum FormatterSingleton {
@@ -70,27 +67,6 @@ public final class Formatter {
     private static Map<String, Locale> localeMap;
 
     private Formatter() {
-    }
-
-    //Refer bug #3
-    //TODO(hth) may be change this method to support just item format and net format.
-    //TODO(hth) Means have two method with scale of 2 and 4. 2 scale for total; and 4 scale for
-    public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
-        BigDecimal d;
-        try {
-            try {
-                Object object = SCRIPT_INSTANCE.eval(value);
-                d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
-            } catch (ScriptException se) {
-                LOG.warn("Failed parsing number value={} reason={}", value, se.getLocalizedMessage(), se);
-                throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
-            }
-            //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);\
-            return d;
-        } catch (NumberFormatException nfe) {
-            LOG.warn("Failed parsing number value={} reason={}", value, nfe.getLocalizedMessage(), nfe);
-            throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + nfe);
-        }
     }
 
     /**

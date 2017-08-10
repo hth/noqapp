@@ -74,7 +74,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(qid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(userProfile.getEmail())

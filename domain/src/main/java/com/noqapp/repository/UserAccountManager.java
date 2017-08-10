@@ -10,9 +10,9 @@ import com.noqapp.domain.types.AccountInactiveReasonEnum;
 public interface UserAccountManager extends RepositoryManager<UserAccountEntity> {
     UserAccountEntity getById(String id);
 
-    UserAccountEntity findByReceiptUserId(String qid);
+    UserAccountEntity findByQueueUserId(String qid);
 
-    UserAccountEntity findByUserId(String mail);
+    UserAccountEntity findByUserId(String userId);
 
     void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
 }

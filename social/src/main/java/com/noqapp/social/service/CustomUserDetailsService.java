@@ -75,7 +75,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("Not found user with email={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getQueueUserId());
+            UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
             LOG.info("qid={} accountValidated={}", userAccount.getQueueUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActive(userAccount);

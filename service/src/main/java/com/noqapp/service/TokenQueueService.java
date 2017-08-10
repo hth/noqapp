@@ -118,7 +118,7 @@ public class TokenQueueService {
                 try {
                     queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (StringUtils.isNotBlank(qid)) {
-                        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+                        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
                         queue.setCustomerName(userAccount.getDisplayName());
                     }
                     queueManager.insert(queue);

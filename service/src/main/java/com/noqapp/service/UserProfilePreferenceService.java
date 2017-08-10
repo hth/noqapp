@@ -41,7 +41,7 @@ public class UserProfilePreferenceService {
     }
 
     public UserProfileEntity findByReceiptUserId(String qid) {
-        return userProfileManager.findByReceiptUserId(qid);
+        return userProfileManager.findByQueueUserId(qid);
     }
 
     public UserProfileEntity checkUserExistsByPhone(String phone) {
@@ -49,7 +49,7 @@ public class UserProfilePreferenceService {
     }
 
     public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid) {
-        return userProfileManager.forProfilePreferenceFindByReceiptUserId(qid);
+        return userProfileManager.forProfilePreferenceFindByQueueUserId(qid);
     }
 
     public void updateProfile(UserProfileEntity userProfile) {

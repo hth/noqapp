@@ -110,12 +110,12 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public UserProfileEntity findByReceiptUserId(String qid) {
+    public UserProfileEntity findByQueueUserId(String qid) {
         return mongoTemplate.findOne(byQueueUserId(qid, true), UserProfileEntity.class, TABLE);
     }
 
     @Override
-    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid) {
+    public UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid) {
         return mongoTemplate.findOne(byQueueUserId(qid, false), UserProfileEntity.class, TABLE);
     }
 

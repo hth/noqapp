@@ -49,6 +49,6 @@ class AccountServiceTest {
     @DisplayName ("Find When User Does Not Exists")
     void testFindIfUser_Does_Not_Exists() throws Exception {
         when(userProfileManager.findOneByMail(anyString())).thenReturn(null);
-        assertNull(accountService.findByReceiptUserId("user_community_3@noqapp.com"));
+        assertNull(accountService.findByQueueUserId("user_community_3@noqapp.com"));
     }
 }

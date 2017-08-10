@@ -34,7 +34,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${accessLanding:/access/landing.htm}")
     private String accessLanding;
 
-    /** For receipt techs. */
+    /** For NoQueue techs. */
     @Value ("${empTechLanding:/emp/receipt/landing.htm}")
     private String empTechLanding;
 
