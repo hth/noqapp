@@ -23,12 +23,12 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BUSINESS_USER")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "business_user_idx", def = "{'RID': -1}", unique = true),
+        @CompoundIndex (name = "business_user_idx", def = "{'QID': -1}", unique = true),
 })
 public class BusinessUserEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @NotNull

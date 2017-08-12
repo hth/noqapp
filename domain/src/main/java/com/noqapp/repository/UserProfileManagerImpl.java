@@ -77,7 +77,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                         object.getQueueUserId(), e.getLocalizedMessage(), e);
 
                 WriteResult writeResult = mongoTemplate.remove(
-                        query(where("RID").is(object.getQueueUserId())),
+                        query(where("QID").is(object.getQueueUserId())),
                         UserProfileEntity.class,
                         TABLE);
                 if (writeResult.getN() > 0) {
@@ -121,9 +121,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     private Query byQueueUserId(String qid, boolean activeProfile) {
         if (activeProfile) {
-            return query(where("RID").is(qid).andOperator(isActive()));
+            return query(where("QID").is(qid).andOperator(isActive()));
         } else {
-            return query(where("RID").is(qid));
+            return query(where("QID").is(qid));
         }
     }
 
@@ -173,7 +173,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
         return mongoTemplate.findOne(
-                query(where("RID").is(qid).and("U").gte(since)),
+                query(where("QID").is(qid).and("U").gte(since)),
                 UserProfileEntity.class,
                 TABLE
         );
@@ -184,7 +184,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         Assert.isTrue(countryShortName.equals(countryShortName.toUpperCase()), "Country short name has to be upper case " + countryShortName);
 
         mongoTemplate.updateFirst(
-                query(where("RID").is(qid)),
+                query(where("QID").is(qid)),
                 entityUpdate(update("CS", countryShortName)),
                 UserProfileEntity.class,
                 TABLE

@@ -23,13 +23,13 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "INVITE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "invite_rid_iid_idx", def = "{'RID': 1, 'IID' : 1}", background = true, unique = true),
+        @CompoundIndex (name = "invite_qid_iid_idx", def = "{'QID': 1, 'IID' : 1}", background = true, unique = true),
         @CompoundIndex (name = "invite_ic_idx", def = "{'IC': 1}", background = true)
 })
 public class InviteEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     /* RJQ maps to QID. */

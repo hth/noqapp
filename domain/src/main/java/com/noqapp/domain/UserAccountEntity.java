@@ -34,16 +34,16 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "USER_ACCOUNT")
 @CompoundIndexes ({
         @CompoundIndex (name = "user_account_role_idx", def = "{'UID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex (name = "user_account_rid_idx", def = "{'RID': 1}", unique = true),
+        @CompoundIndex (name = "user_account_qid_idx", def = "{'QID': 1}", unique = true),
         @CompoundIndex (name = "user_account_uid_idx", def = "{'UID': 1}", unique = true)
 })
 public class UserAccountEntity extends BaseEntity {
 
     public static final String BLANK_SPACE = " ";
 
-    /** Unique Id throughout the system. This will never change. */
+    /** Unique Queue User Id throughout the system. This will never change. */
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     /**

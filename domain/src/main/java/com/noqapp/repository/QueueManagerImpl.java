@@ -92,7 +92,7 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("RID").is(qid).and("QS").is(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QID").is(qid).and("QS").is(QueueUserStateEnum.Q));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
@@ -117,7 +117,7 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findToAbort(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("RID").is(qid));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("QID").is(qid));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
@@ -205,7 +205,7 @@ public class QueueManagerImpl implements QueueManager {
 
     public List<QueueEntity> findAllQueuedByRid(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(qid).and("QS").is(QueueUserStateEnum.Q)),
+                query(where("QID").is(qid).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
@@ -219,7 +219,7 @@ public class QueueManagerImpl implements QueueManager {
 
     public List<QueueEntity> findAllNotQueuedByRid(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
+                query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
                 QueueEntity.class,
                 TABLE);
     }
@@ -281,7 +281,7 @@ public class QueueManagerImpl implements QueueManager {
                             .and("QS").ne(QueueUserStateEnum.Q)
                             .and("RA").is(0)
                             .and("HR").is(0)
-                            .and("RID").is(qid));
+                            .and("QID").is(qid));
         } else {
             query = query(
                     where("QR").is(codeQR)

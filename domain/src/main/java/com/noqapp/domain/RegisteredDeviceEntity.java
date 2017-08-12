@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "registered_device_did_idx", def = "{'DID': -1}", unique = true),
         @CompoundIndex (name = "registered_device_token_idx", def = "{'TK': -1}", unique = false),
-        @CompoundIndex (name = "registered_device_rid_idx", def = "{'RID': -1}", unique = false, sparse = true)
+        @CompoundIndex (name = "registered_device_qid_idx", def = "{'QID': -1}", unique = false, sparse = true)
 })
 public class RegisteredDeviceEntity extends BaseEntity {
 
@@ -38,7 +38,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private static final String SEPARATOR = File.separator;
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @NotNull

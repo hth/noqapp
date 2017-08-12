@@ -67,7 +67,7 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
     @Override
     public void invalidateAllEntries(String queueUserId) {
         mongoTemplate.updateMulti(
-                query(where("RID").is(queueUserId)),
+                query(where("QID").is(queueUserId)),
                 entityUpdate(update("A", false)),
                 EmailValidateEntity.class
         );

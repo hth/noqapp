@@ -19,12 +19,12 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "FORGOT_RECOVER")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': -1, 'AUTH' : -1}", unique = true, background = true)
+        @CompoundIndex (name = "forgot_recover_idx", def = "{'QID': -1, 'AUTH' : -1}", unique = true, background = true)
 })
 public class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private final String queueUserId;
 
     @NotNull

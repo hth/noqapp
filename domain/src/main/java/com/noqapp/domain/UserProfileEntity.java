@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "USER_PROFILE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "user_profile_rid_em_idx", def = "{'RID': -1, 'EM' : 1}", unique = true),
+        @CompoundIndex (name = "user_profile_qid_em_idx", def = "{'QID': -1, 'EM' : 1}", unique = true),
         @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
         @CompoundIndex (name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
         @CompoundIndex (name = "user_profile_ic_idx", def = "{'IC': 1}", unique = true),
@@ -36,7 +36,7 @@ import javax.validation.constraints.NotNull;
 public class UserProfileEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @Field ("FN")

@@ -72,7 +72,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
     @Override
     public UserAccountEntity findByQueueUserId(String qid) {
-        return mongoTemplate.findOne(query(where("RID").is(qid)), UserAccountEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("QID").is(qid)), UserAccountEntity.class, TABLE);
     }
 
     @Override

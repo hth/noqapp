@@ -50,7 +50,7 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public void invalidateAllEntries(String queueUserId) {
         mongoTemplate.updateMulti(
-                query(where("RID").is(queueUserId)),
+                query(where("QID").is(queueUserId)),
                 entityUpdate(update("A", false)),
                 ForgotRecoverEntity.class);
     }

@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 public class EmailValidateEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @NotNull

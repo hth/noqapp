@@ -67,11 +67,11 @@ public class InviteManagerImpl implements InviteManager {
 
             int sum = 0;
 
-            /* To group additional field add next to RID with comma separated like "RID", "XYZ" */
-            GroupOperation groupByStateAndSumPop = group("RID")
+            /* To group additional field add next to QID with comma separated like "QID", "XYZ" */
+            GroupOperation groupByStateAndSumPop = group("QID")
                     .sum("RJQ").as("summation");
 
-            MatchOperation filterStates = match(where("RID").is(qid).and("A").is(true));
+            MatchOperation filterStates = match(where("QID").is(qid).and("A").is(true));
             Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
             AggregationResults<GroupedValue> result = mongoTemplate.aggregate(aggregation, TABLE, GroupedValue.class);
             List<GroupedValue> groupedValues = result.getMappedResults();
@@ -104,7 +104,7 @@ public class InviteManagerImpl implements InviteManager {
             InviteEntity invite = mongoTemplate.findOne(
                     query(where("A").is(true)
                             .orOperator(
-                                    where("RID").is(qid).and("RJQ").gt(0),
+                                    where("QID").is(qid).and("RJQ").gt(0),
                                     where("IID").is(qid).and("RJI").gt(0)
                             )
                     ),
