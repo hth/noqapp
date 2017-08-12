@@ -60,7 +60,7 @@ public class AdminLandingController {
 
     @Autowired
     public AdminLandingController(
-            @Value ("${nextPage:/business/landing}")
+            @Value ("${nextPage:/business/landing2}")
             String nextPage,
 
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
