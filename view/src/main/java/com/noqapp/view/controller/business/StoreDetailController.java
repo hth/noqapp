@@ -56,7 +56,7 @@ public class StoreDetailController {
 
     @Autowired
     public StoreDetailController(
-            @Value ("${nextPage:/business/storeDetail}")
+            @Value ("${nextPage:/business/storeDetail2}")
             String nextPage,
 
             BizService bizService,
