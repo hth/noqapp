@@ -80,7 +80,7 @@ public class ValidateEmailController {
             return null;
         }
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getQueueUserId());
+        UserAccountEntity userAccount = accountService.findByQueueUserId(emailValidate.getQueueUserId());
         if (userAccount.isAccountValidated()) {
             redirectAttrs.addFlashAttribute("success", "false");
             LOG.info("email address authentication failed for qid={}", userAccount.getQueueUserId());

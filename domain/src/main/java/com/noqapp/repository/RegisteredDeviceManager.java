@@ -57,5 +57,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param id
      */
     @Mobile
-    void unsetRidForDevice(String id);
+    void unsetQidForDevice(String id);
 }

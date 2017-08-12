@@ -6,7 +6,8 @@
 Added user to this schema
 
 #### Add Account limit to the user
-Set default from 0 to 1000
+Set default from `0` to `1000` to limit queries for a user. For `system user` if you set `0` 
+as a value, then it gets endless connections.  
     
 #### Create Table     
 
@@ -15,7 +16,7 @@ Set default from 0 to 1000
         ID VARCHAR(30)      NOT NULL,
         QR VARCHAR(30)      NOT NULL,
         DID VARCHAR(50)     NOT NULL,
-        RID VARCHAR(13),
+        QID VARCHAR(13),
         TN INT(10)          NOT NULL,
         DN VARCHAR(100)     NOT NULL,
         QS VARCHAR(1)       NOT NULL,
@@ -43,9 +44,8 @@ Set default from 0 to 1000
 #### Alter Table
     
     ALTER TABLE `noqapp_test`.`QUEUE` 
-    ADD COLUMN `RA` TINYINT(1) NULL DEFAULT NULL AFTER `NS`,
-    ADD COLUMN `HR` TINYINT(1) NULL DEFAULT NULL AFTER `RA`,
-    ADD COLUMN `ST` DATETIME NULL DEFAULT NULL AFTER `HR`;
+    ADD COLUMN `XX` TINYINT(1) NULL DEFAULT NULL AFTER `XY`,
+    ADD COLUMN `XA` DATETIME NULL DEFAULT NULL AFTER `XX`;
     
 #### Insert System Date
     

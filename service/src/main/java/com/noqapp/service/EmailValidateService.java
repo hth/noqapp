@@ -28,9 +28,9 @@ public class EmailValidateService {
         this.emailValidateManager = emailValidateManager;
     }
 
-    public EmailValidateEntity saveAccountValidate(String receiptUserId, String userId) {
+    public EmailValidateEntity saveAccountValidate(String queueUserId, String userId) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-        EmailValidateEntity emailValidate = EmailValidateEntity.newInstance(receiptUserId, userId, authenticationKey);
+        EmailValidateEntity emailValidate = EmailValidateEntity.newInstance(queueUserId, userId, authenticationKey);
         saveEmailValidateEntity(emailValidate);
         return emailValidate;
     }
@@ -43,7 +43,7 @@ public class EmailValidateService {
         return emailValidateManager.findByAuthenticationKey(key);
     }
 
-    void invalidateAllEntries(String receiptUserId) {
-        emailValidateManager.invalidateAllEntries(receiptUserId);
+    void invalidateAllEntries(String queueUserId) {
+        emailValidateManager.invalidateAllEntries(queueUserId);
     }
 }

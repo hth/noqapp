@@ -96,27 +96,27 @@ public final class HashText {
     /**
      * This condition is used through Ajax call to validated if a receipt of similar value exist in db.
      *
-     * @param receiptUserId
+     * @param queueUserId
      * @param date
      * @param total
      * @return
      */
-    public static String calculateChecksumForNotDeleted(String receiptUserId, Date date, Double total) {
-        return calculateChecksum(receiptUserId, date, total, false);
+    public static String calculateChecksumForNotDeleted(String queueUserId, Date date, Double total) {
+        return calculateChecksum(queueUserId, date, total, false);
     }
 
     /**
-     * @param receiptUserId
+     * @param queueUserId
      * @param date
      * @param total
      * @param deleted
      * @return
      */
-    public static String calculateChecksum(String receiptUserId, Date date, Double total, boolean deleted) {
+    public static String calculateChecksum(String queueUserId, Date date, Double total, boolean deleted) {
         //This is considered to be thread safe
         HashFunction hf = Hashing.md5();
         HashCode hc = hf.newHasher()
-                .putString(receiptUserId, Charsets.UTF_8)
+                .putString(queueUserId, Charsets.UTF_8)
                 .putString(date.toString(), Charsets.UTF_8)
                 .putDouble(total)
                 .putBoolean(deleted)

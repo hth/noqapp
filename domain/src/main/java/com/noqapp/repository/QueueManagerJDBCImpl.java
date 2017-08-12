@@ -38,29 +38,29 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-            "INSERT INTO QUEUE (ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D)" +
+            "INSERT INTO QUEUE (ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D)" +
                     " VALUES " +
-                    "(:id,:qr,:did,:rid,:tn,:dn,:qs,:ns,:ra,:hr,:sn,:sb,:se,:v,:u,:c,:a,:d)";
+                    "(:id,:qr,:did,:qid,:tn,:dn,:qs,:ns,:ra,:hr,:sn,:sb,:se,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE RID = ?";
+                    "QUEUE WHERE QID = ?";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE RID = ? AND U >= ?";
+                    "QUEUE WHERE QID = ? AND U >= ?";
 
     private static final String findByDid =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ?";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, RID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? AND U >= ?";
 
@@ -88,7 +88,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("id", queue.getId());
                 namedParameters.addValue("qr", queue.getCodeQR());
                 namedParameters.addValue("did", queue.getDid());
-                namedParameters.addValue("rid", queue.getQueueUserId());
+                namedParameters.addValue("qid", queue.getQueueUserId());
                 namedParameters.addValue("tn", queue.getTokenNumber());
                 namedParameters.addValue("dn", queue.getDisplayName());
                 namedParameters.addValue("qs", queue.getQueueUserState().getName());
@@ -180,7 +180,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         try {
             if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
-                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND RID = ? AND TN = ? AND RA <> 0",
+                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
                         ratingCount, hoursSaved, codeQR, did, qid, token) > 0;
             } else {
                 return this.jdbcTemplate.update(

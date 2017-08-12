@@ -221,10 +221,10 @@ public class ForgotController {
 
             ForgotAuthenticateForm forgotAuthenticateForm
     ) {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key.getText());
-        if (forgotRecoverEntity != null) {
+        ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(key.getText());
+        if (forgotRecover != null) {
             forgotAuthenticateForm.setAuthenticationKey(key.getText());
-            forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getQueueUserId());
+            forgotAuthenticateForm.setQueueUserId(forgotRecover.getQueueUserId());
         }
         return authenticatePage;
     }
@@ -254,7 +254,7 @@ public class ForgotController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(userProfile.getQueueUserId()).getUserAuthentication();
+                UserAuthenticationEntity userAuthenticationLoaded = accountService.findByQueueUserId(userProfile.getQueueUserId()).getUserAuthentication();
                 userAuthentication.setId(userAuthenticationLoaded.getId());
                 userAuthentication.setVersion(userAuthenticationLoaded.getVersion());
                 userAuthentication.setCreated(userAuthenticationLoaded.getCreated());

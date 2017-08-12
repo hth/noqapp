@@ -63,8 +63,8 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public UserPreferenceEntity getByRid(String qid) {
-        return mongoTemplate.findOne(query(where("RID").is(qid)), UserPreferenceEntity.class, TABLE);
+    public UserPreferenceEntity getByQueueUserId(String qid) {
+        return mongoTemplate.findOne(query(where("QID").is(qid)), UserPreferenceEntity.class, TABLE);
     }
 
     @Override

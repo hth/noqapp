@@ -19,7 +19,7 @@ import java.util.Collection;
 })
 public final class QueueUser extends User {
 
-    /** queueUserId is receiptUserId */
+    /** queueUserId is queueUserId */
     private String queueUserId;
     private UserLevelEnum userLevel;
     private boolean accountValidated;
@@ -79,8 +79,8 @@ public final class QueueUser extends User {
     }
 
     /**
-     * Gets receiptofi user id.
-     * @return receiptUserId
+     * Gets NoQueue user id.
+     * @return queueUserId
      */
     public String getQueueUserId() {
         return queueUserId;

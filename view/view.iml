@@ -872,19 +872,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/c947004bb13d18182be60077ade044099e4f26f1/guava-23.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -892,6 +879,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/ed233607c5c11e1a13a3fd760033ed5d9fe525c2/guava-23.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -2410,19 +2410,6 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/463f8378feba44df7ba7cd9272d01837dad62b36/guava-jdk5-17.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/f19b5a04a186a7ced053e5f23e0473a4e7decbaf/guava-jdk5-17.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/cc6729ce0bc6cc29441cb3a04acad02aeeebb26e/guava-jdk5-17.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.apache.xmlbeans/xmlbeans/2.6.0/29e80d2dd51f9dcdef8f9ffaee0d4dc1c9bbfc87/xmlbeans-2.6.0.jar!/"/>
         </CLASSES>
         <JAVADOC/>
@@ -3366,19 +3353,6 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/c947004bb13d18182be60077ade044099e4f26f1/guava-23.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -3386,6 +3360,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/ed233607c5c11e1a13a3fd760033ed5d9fe525c2/guava-23.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -4891,19 +4878,6 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/463f8378feba44df7ba7cd9272d01837dad62b36/guava-jdk5-17.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/f19b5a04a186a7ced053e5f23e0473a4e7decbaf/guava-jdk5-17.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/cc6729ce0bc6cc29441cb3a04acad02aeeebb26e/guava-jdk5-17.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.apache.xmlbeans/xmlbeans/2.6.0/29e80d2dd51f9dcdef8f9ffaee0d4dc1c9bbfc87/xmlbeans-2.6.0.jar!/"/>
         </CLASSES>
         <JAVADOC/>
@@ -5873,19 +5847,6 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/c947004bb13d18182be60077ade044099e4f26f1/guava-23.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -5893,6 +5854,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/ed233607c5c11e1a13a3fd760033ed5d9fe525c2/guava-23.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/fd9858767c8f82b4b117619083fcbb6035423bb3/firebase-admin-5.2.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5b597e81947886b0fb3e5a6c61b5968972868613/firebase-admin-5.2.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.2.0/5419735886c0aeecd967ae8805cf485e23a1a2e0/firebase-admin-5.2.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -7419,19 +7393,6 @@
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/463f8378feba44df7ba7cd9272d01837dad62b36/guava-jdk5-17.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/f19b5a04a186a7ced053e5f23e0473a4e7decbaf/guava-jdk5-17.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/17.0/cc6729ce0bc6cc29441cb3a04acad02aeeebb26e/guava-jdk5-17.0-sources.jar!/"/>
-        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">

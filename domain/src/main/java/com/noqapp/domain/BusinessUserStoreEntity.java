@@ -21,13 +21,13 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BUSINESS_USER_STORE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "business_user_store_idx", def = "{'RID': -1, 'BS': -1, 'BN' : -1}", unique = true, background = true),
-        @CompoundIndex (name = "business_user_store_qr_idx", def = "{'RID': -1, 'QR': -1}", unique = true, background = true)
+        @CompoundIndex (name = "business_user_store_idx", def = "{'QID': -1, 'BS': -1, 'BN' : -1}", unique = true, background = true),
+        @CompoundIndex (name = "business_user_store_qr_idx", def = "{'QID': -1, 'QR': -1}", unique = true, background = true)
 })
 public class BusinessUserStoreEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @NotNull

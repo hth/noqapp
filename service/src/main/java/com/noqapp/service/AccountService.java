@@ -94,13 +94,13 @@ public class AccountService {
         return userProfileManager.findOneByPhone(phone);
     }
 
-    public UserAccountEntity findByReceiptUserId(String qid) {
-        return userAccountManager.findByReceiptUserId(qid);
+    public UserAccountEntity findByQueueUserId(String qid) {
+        return userAccountManager.findByQueueUserId(qid);
     }
 
     @Mobile
-    public UserAccountEntity findByUserId(String mail) {
-        return userAccountManager.findByUserId(mail);
+    public UserAccountEntity findByUserId(String userId) {
+        return userAccountManager.findByUserId(userId);
     }
 
     public void save(UserAccountEntity userAccount) {
@@ -209,7 +209,7 @@ public class AccountService {
                 //Roll back
                 UserAuthenticationEntity userAuthentication = null;
                 if (null != userAccount) {
-                    userAccount = findByReceiptUserId(userAccount.getQueueUserId());
+                    userAccount = findByQueueUserId(userAccount.getQueueUserId());
                     userAuthentication = userAccount.getUserAuthentication();
                     userAccountManager.deleteHard(userAccount);
                 }
@@ -328,24 +328,24 @@ public class AccountService {
         userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
         userAccountManager.deleteHard(userAccount);
 
-        UserPreferenceEntity userPreference = userPreferenceManager.getByRid(userAccount.getQueueUserId());
+        UserPreferenceEntity userPreference = userPreferenceManager.getByQueueUserId(userAccount.getQueueUserId());
         if (null != userPreference) {
             userPreferenceManager.deleteHard(userPreference);
         }
 
-        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getQueueUserId());
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(userAccount.getQueueUserId());
         if (null != userProfile) {
             userProfileManager.deleteHard(userProfile);
         }
     }
 
-    public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
-        return userProfileManager.findByReceiptUserId(receiptUserId);
+    public UserProfileEntity findProfileByReceiptUserId(String queueUserId) {
+        return userProfileManager.findByQueueUserId(queueUserId);
     }
 
     public void updateName(String firstName, String lastName, String qid) {
-        UserAccountEntity userAccount = findByReceiptUserId(qid);
-        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(qid);
+        UserAccountEntity userAccount = findByQueueUserId(qid);
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
 
         userAccount.setFirstName(firstName);
         userAccount.setLastName(lastName);
@@ -392,7 +392,7 @@ public class AccountService {
      * @return
      */
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String qid, UserLevelEnum userLevel) {
-        UserAccountEntity userAccount = findByReceiptUserId(qid);
+        UserAccountEntity userAccount = findByQueueUserId(qid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
             case TECHNICIAN:
@@ -482,18 +482,18 @@ public class AccountService {
     /**
      * Used in for sending authentication link to recover account in case of the lost password
      *
-     * @param receiptUserId
+     * @param queueUserId
      * @return
      */
-    ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
+    ForgotRecoverEntity initiateAccountRecovery(String queueUserId) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
-        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(receiptUserId, authenticationKey);
+        ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(queueUserId, authenticationKey);
         forgotRecoverManager.save(forgotRecoverEntity);
         return forgotRecoverEntity;
     }
 
-    public void invalidateAllEntries(String receiptUserId) {
-        forgotRecoverManager.invalidateAllEntries(receiptUserId);
+    public void invalidateAllEntries(String queueUserId) {
+        forgotRecoverManager.invalidateAllEntries(queueUserId);
     }
 
     public ForgotRecoverEntity findByAuthenticationKey(String key) {
@@ -551,7 +551,7 @@ public class AccountService {
      */
     private void createAuthentication(String password, String qid) {
         UserAuthenticationEntity userAuthentication = generateUserAuthentication(password);
-        UserAccountEntity userAccount = findByReceiptUserId(qid);
+        UserAccountEntity userAccount = findByQueueUserId(qid);
         userAccount.setUserAuthentication(userAuthentication);
         save(userAccount);
         LOG.info("Updated with authentication qid={}", qid);

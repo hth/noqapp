@@ -68,7 +68,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
 
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
 
         RegisterUser registerUser = new RegisterUser();
@@ -124,7 +124,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
 
-        UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(registerUser.getQueueUserId()).getUserAuthentication();
+        UserAuthenticationEntity userAuthenticationLoaded = accountService.findByQueueUserId(registerUser.getQueueUserId()).getUserAuthentication();
         userAuthentication.setId(userAuthenticationLoaded.getId());
         userAuthentication.setVersion(userAuthenticationLoaded.getVersion());
         userAuthentication.setCreated(userAuthenticationLoaded.getCreated());
@@ -143,7 +143,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     private void sendEmail(RegisterUser registerUser) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(registerUser.getQueueUserId());
+        UserAccountEntity userAccount = accountService.findByQueueUserId(registerUser.getQueueUserId());
 
         /* Since account is not validated, send account validation email. */
         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(

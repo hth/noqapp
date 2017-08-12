@@ -147,7 +147,7 @@ public class LoginController {
      * @return
      */
     String continueLoginAfterRegistration(String qid) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(qid);
+        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
 
         if (null == userAccount) {
             LOG.error("No user found with qid={}", qid);

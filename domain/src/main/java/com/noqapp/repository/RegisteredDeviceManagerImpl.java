@@ -81,8 +81,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             query = query(
                     where("DID").is(did)
                             .orOperator(
-                                    where("RID").exists(false),
-                                    where("RID").is(qid)
+                                    where("QID").exists(false),
+                                    where("QID").is(qid)
                             ));
         }
         return mongoTemplate.findOne(
@@ -97,7 +97,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         if (StringUtils.isBlank(qid)) {
             query = query(where("DID").is(did));
         } else {
-            query = query(where("RID").is(qid).and("DID").is(did));
+            query = query(where("QID").is(qid).and("DID").is(did));
         }
 
         RegisteredDeviceEntity registeredDevice = mongoTemplate.findOne(
@@ -117,7 +117,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public List<RegisteredDeviceEntity> findAll(String qid) {
         return mongoTemplate.find(
-                query(where("RID").is(qid).andOperator(
+                query(where("QID").is(qid).andOperator(
                         isActive(),
                         isNotDeleted()
                 )),
@@ -151,8 +151,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             query = query(
                     where("DID").is(did)
                             .orOperator(
-                                    where("RID").exists(false),
-                                    where("RID").is(qid)
+                                    where("QID").exists(false),
+                                    where("QID").is(qid)
                             ));
         }
 
@@ -168,12 +168,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         Update update;
         if (StringUtils.isBlank(qid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
-                    .unset("RID")
+                    .unset("QID")
                     .set("DT", deviceType)
                     .set("TK", token);
         } else {
             update = update("U", DateTime.now().minusYears(100).toDate())
-                    .set("RID", qid)
+                    .set("QID", qid)
                     .set("DT", deviceType)
                     .set("TK", token);
         }
@@ -194,10 +194,10 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 TABLE);
     }
 
-    public void unsetRidForDevice(String id) {
+    public void unsetQidForDevice(String id) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(new Update().unset("RID")),
+                entityUpdate(new Update().unset("QID")),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

@@ -54,14 +54,14 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
     @Override
     public boolean hasAccess(String qid, String codeQR) {
-        return mongoTemplate.exists(query(where("RID").is(qid).and("QR").is(codeQR)), BusinessUserStoreEntity.class, TABLE);
+        return mongoTemplate.exists(query(where("QID").is(qid).and("QR").is(codeQR)), BusinessUserStoreEntity.class, TABLE);
     }
 
     //TODO support pagination
     @Override
     public List<BusinessUserStoreEntity> getQueues(String qid, int limit) {
         return mongoTemplate.find(
-            query(where("RID").is(qid)
+            query(where("QID").is(qid)
                     .andOperator(
                         isActive(),
                         isNotDeleted()

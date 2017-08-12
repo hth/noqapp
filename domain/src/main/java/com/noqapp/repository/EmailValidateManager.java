@@ -9,7 +9,7 @@ import com.noqapp.domain.EmailValidateEntity;
 public interface EmailValidateManager extends RepositoryManager<EmailValidateEntity> {
     EmailValidateEntity findByAuthenticationKey(String auth);
 
-    void invalidateAllEntries(String receiptUserId);
+    void invalidateAllEntries(String queueUserId);
 
     EmailValidateEntity find(String email);
 }

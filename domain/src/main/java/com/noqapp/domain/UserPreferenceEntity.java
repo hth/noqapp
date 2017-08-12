@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 public class UserPreferenceEntity extends BaseEntity {
 
     @NotNull
-    @Field ("RID")
+    @Field ("QID")
     private String queueUserId;
 
     @DBRef

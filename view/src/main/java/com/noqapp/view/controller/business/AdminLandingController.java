@@ -107,9 +107,9 @@ public class AdminLandingController {
             @ModelAttribute ("businessLandingForm")
             BusinessLandingForm businessLandingForm
     ) {
-        QueueUser receiptUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on business page qid={} level={}", receiptUser.getQueueUserId(), receiptUser.getUserLevel());
-        return nextPage(businessUserService.findBusinessUser(receiptUser.getQueueUserId()), businessLandingForm);
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        return nextPage(businessUserService.findBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
     }
 
     private String nextPage(

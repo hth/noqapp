@@ -47,7 +47,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public BusinessUserEntity findByRid(String qid) {
         return mongoTemplate.findOne(
-                query(where("RID").is(qid)),
+                query(where("QID").is(qid)),
                 BusinessUserEntity.class,
                 TABLE);
     }
@@ -63,7 +63,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public BusinessUserEntity findBusinessUser(String qid) {
         return mongoTemplate.findOne(
-                query(where("RID").is(qid)
+                query(where("QID").is(qid)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -76,7 +76,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public boolean doesBusinessUserExists(String qid, String bizId) {
         return mongoTemplate.exists(
-                query(where("RID").is(qid).and("B_N.$id").is(new ObjectId(bizId))
+                query(where("QID").is(qid).and("B_N.$id").is(new ObjectId(bizId))
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
