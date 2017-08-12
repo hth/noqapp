@@ -8,7 +8,7 @@
 /* Styles */
 .warp-inner{ width:92%; margin:0 auto;}
 .warp-inner-content{width:92%; margin:0 auto; padding:0;}
-  
+ .admin-main{ width:100%; }
 }
  
  
@@ -17,11 +17,45 @@
 /* iPads (portrait and landscape) ----------- */
 @media (max-width : 1024px) {
 /* Styles */
-   
+/* admin style */
+.add-new{ width:98%; margin:0 auto}
 	 
 }
 
 @media only all and  (max-width : 850px) {
+/* Admin style */
+.top-menu-right2{ float:none; padding:10px 0 0 0}
+.admin-content{  padding:25px 10px;}
+
+
+
+
+.site-nav .navBars { display: none; }
+
+.site-nav .container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.site-nav .logo { margin: 10px 0; }
+
+.site-nav .menu {
+  display: block;
+  box-shadow: none;
+  border: none;
+  float: right;
+  /*POSITION*/
+  position: static;
+}
+
+.site-nav .menu li { display: inline-block; }
+
+.site-nav .menu a {
+  border: none;
+  padding: 20px 10px;
+}	
+	
+	
 .left-content-PT{ float:left; width:58%;}
 #sidebar{width:200px; float:right; 
 } 
@@ -32,14 +66,29 @@
 .sign-up-form{ position: static; top:0px; right:0; display:none} 
 .mobile-sign-up{ float:right; display:block; }
 .form-signup{ width:350px; background:#f9f7f7; border-top:2px solid #333; border-bottom:2px solid #333;padding:10px 10px 10px 10px; margin:0;}
+
+.logo{ text-align:center; padding:8px 0}
+.logo img{ text-align:center; width:150px;}
+
 }
 
-@media only all and  (max-width : 768px) {
- 
+@media only all and  (max-width : 768px) { 
+.store-table th{ font-size:16px;}
+.store-table td{ font-size:14px;}
+
+.details-box{ float:left; width:50%; }
+.qr-store-box{ float:right; width:45%; text-align:center}
+.qr-store-box img{ width:90%;}
+
 }
 
 
 @media only all and  (max-width : 700px) { 
+ .store-table{ padding:20px 0; width:100%; overflow:scroll;}
+.store-table table{ width:700px; border-bottom:1px solid #808080; border-left:1px solid #808080}
+
+.menu-left{  margin:15px 0 0 0}
+
 ul.col3{ width:360px; margin: auto}
 ul.col3 li{ margin:30px  auto; padding:0 ; float:none; display:block; width:100%; }
 
@@ -54,6 +103,21 @@ ul.col3 li{ margin:30px  auto; padding:0 ; float:none; display:block; width:100%
 }
 
 @media only all and  (max-width : 640px) {
+	
+/* ADMIN STYLE*/
+.admin-title h2{ margin:15px 0; padding:0; font-size:25px; line-height:30px; }
+.col-lable3{ float:none; width:100%; text-align:left; padding:0px 0 3px 0; color:#222}
+.col-fields{ float:none; width:100%; }	
+.left-btn{ float:none; width:100%; margin:0; padding:0}
+.right-btn{ float:none; width:100%; margin:0; padding:0}	
+span.info-txt{ font-size:13px;}
+
+.details-box{ float:left; width:100%; }
+.qr-store-box{ float:right; width:100%; text-align:center; padding:0 0 30px 0}
+.qr-store-box img{ width:230px;}
+.store-details-row{ background:#fff; padding:20px 10px}
+
+
 .left-content-PT{ float:none; width:100%; margin-top:40px;  }
 #sidebar{ width:100%; float:none; background:#333;  float:none; margin:0 auto; padding:0;} 
  .fixed {
@@ -63,22 +127,22 @@ ul.col3 li{ margin:30px  auto; padding:0 ; float:none; display:block; width:100%
 .sticky-scroll-box{	padding:0px; width:100%;  margin:0 auto;  float:none; display:block; 
 }	
 	
-.main-warp{ padding:76px 0 0 0}	
+.main-warp{ padding:68px 0 0 0}	
 .banner-txt h2{ margin:0 0 0 0px; text-align:center; font-size:30px; }
 .banner{ margin-bottom:20px}	
    /* login */
 .form-style{ width:96%; margin:0 auto;}
 
 /* header */
-.menu-left{ float:left; margin:18px 0 0 0}
-.logo-left{ float:left; margin:0 0 0 5px}
- .logo-left img{ width:73px;}
+.menu-left{  margin:12px 0 0 0}	
+.logo-left{ float:left; margin:0 0 0 10px; width:140px;}
+ 
 .top-menu-right{ float:right; padding:0px 0 0 0}
 
 span.help-btn{ margin:0; padding:0; display:block; text-align:right }
 span.help-btn a{ margin:0 2px; padding:0px 0px; font-size:13px; color:#222222; font-weight:300}
 span.become-btn{margin:0; padding:2px 0 0 0;  color:#fff; display:inline-block}
-span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-size:13px; color:#fff; background:#e92270; font-weight:300; border-radius:6px;}	
+span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-size:12px; color:#fff; background:#e92270; font-weight:300; border-radius:6px;}	
  }
 
 
@@ -86,6 +150,9 @@ span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-
 	
 /* Smartphones (portrait and landscape) ----------- */
 @media (max-width : 480px) {
+.new-account-form{ width:90%; background:#f9f7f7; float:none;  padding:15px; margin:0px auto 0;}
+ .merchant-form{ padding:60px 0 30px 0;}
+	.new-account-form h2{ font-size:20px;}
 /* FOOTER */ 
 .footer-dark{ text-align:center}
  .footer1 a{ display:block; margin:0 auto; float:none; text-align:center; padding:20px 00px; background:#e92270; color:#fff; font-size:24px; text-transform: uppercase; }
@@ -106,11 +173,23 @@ span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-
 ul.col3{ width:100%; margin: auto} 
 .mobile-sign-up{ right:5%px; left:5%;  position:absolute; bottom:-30px; width:90%; }	
 .mobile-sign-up a{ display:block; width:100%; padding:15px 0}
+ 
+.left-remember{ font-size:14px; float:none; display:block; padding:5px 0; text-align:center}
+.right-forgot{font-size:14px; float:none;display:block;  padding:5px 0; text-align:center}   
+   
    
 }
 
 /* Smartphones (landscape) ----------- */
 @media (max-width : 420px) {
+/* ADMIN */
+.details-box td{ padding:3px; vertical-align:top; font-size:14px;}	
+	
+/* header */
+.menu-left{  margin:12px 0 0 0}	
+.logo-left{  margin:10px 0 0 10px; width:80px;}	
+	
+	
 	.footer2 img{ width:130px; } 
 
 .f-left{ float:none; font-size:14px;}  

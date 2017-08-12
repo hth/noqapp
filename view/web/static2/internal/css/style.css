@@ -79,6 +79,7 @@ a{ text-decoration: none;}
 .mT30{ margin-top:30px!important;}
 .mT40{ margin-top:40px!important;}
 
+.mB0{ margin-bottom:0px!important;}
 .mB5{ margin-bottom:5px!important;}
 .mB10{ margin-bottom:10px !important}
 .mB15{ margin-bottom:15px!important;}
@@ -103,12 +104,14 @@ a{ text-decoration: none;}
 .pL15{ padding-left:15px!important;}
 .pL20{ padding-left:20px!important;}
 
+.pR0{ padding-right:0px!important;}
 .pR5{ padding-right:5px!important;}
 .pR6{ padding-right:6px!important;}
 .pR10{padding-right:10px !important}
 .pR15{ padding-right:15px!important;}
 .pR20{ padding-right:20px!important;}
 
+.pB0{ padding-bottom:0px!important;}
 .pB5{ padding-bottom:5px!important;}
 .pB6{ padding-bottom:6px!important;}
 .pB10{padding-bottom:10px!important;}
@@ -146,24 +149,30 @@ a{ text-decoration: none;}
  div{ margin:0; padding:0} 
   
 /***** WARP *****/	
-.main-warp{ margin:0; padding:83px 0 0 0;}
+.main-warp{ margin:0; padding:74px 0 0 0;}
 .warp-inner{ width:1280px; margin:0 auto; padding:0; }
 .warp-inner-content{width:1280px; margin:0 auto; padding:0;}
 .warp-row{ margin-left: -1.5%; margin-right: -1.5%;}
 
 
+
+
 /* header */
 .header{ background:#f5f5f5; padding:5px 0; position:fixed; top:0; z-index:99990; width:100%; left:0;}
-.logo{ text-align:center}
+.logo{ text-align:center; padding:8px 0}
+.logo img{ text-align:center; width:200px;}
 .menu-left{ float:left; margin:24px 0 0 0}
-.logo-left{ float:left; margin:0 0 0 15px}
-.top-menu-right{ float:right; padding:15px 0 0 0}
+.logo-left{ float:left; margin:0 0 0 15px; width:170px; padding:10px 0}
+.top-menu-right{ float:right; padding:10px 0 0 0}
+.top-menu-right2{ float:right; padding:10px 0 0 0}
+
+.logo-left img{ width:100%}
 
 span.help-btn{ margin:0; padding:0; font-size:17px;}
 span.help-btn a{ margin:0 5px; padding:10px 0px; font-size:17px; color:#222222; font-weight:300}
 span.become-btn{margin:0; padding:0; font-size:17px; color:#fff;}
-span.become-btn a{margin:0 0 0 5px; text-transform: uppercase; display:inline-block; padding:10px 15px; font-size:17px; color:#fff; background:#e92270; font-weight:300; border-radius:6px;}
-span.become-btn a:hover{background:#e2035a;}
+span.become-btn a{margin:0 0 0 5px; text-transform: uppercase; display:inline-block; padding:10px 15px; font-size:17px; color:#fff; background:#000; font-weight:300; border-radius:6px;}
+span.become-btn a:hover{background:#1c1c1c;}
 .header-banner{}
 .header-banner img{ width:100%}
 
@@ -298,12 +307,16 @@ ul.col3 li{ margin:0 1.5%; padding:0 ; float:left; display:block; width:30.33%; 
 /* login */
 .login-box{/* background:#f5f5f5;*/ padding:1% 3%;  margin:50px auto }
 .login-box h2{ margin:0 0 30px 0; padding:0; text-transform:uppercase;  font-family: 'Roboto', sans-serif; font-weight:300; font-size:30px; color:#232323; text-align:center}
+.left-remember{ font-size:14px; float:left; padding:5px 0}
+.right-forgot{font-size:14px; float:right;  padding:5px 0}
+.right-forgot a{}
+.right-forgot a:hover{ color:#ff1c79}
 
 .form-style{ width:500px; margin:0 auto;}
 .form-fe{font-family: 'Roboto', font-weight:300; sans-serif; width:100%; padding:10px 0; font-size:16px; margin:5px 0 10px 0; border:1px solid #CCC}
 .intl-tel-input { width:100%;}
-input.form-btn{ border:0; width:100%; border:1px solid #8339ff; background:#8339ff url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
-input.form-btn:hover{ background:#6916f4 url(../img/arrow.png) 98% 10px no-repeat}
+input.form-btn{ border:0; width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
+input.form-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
 input,select{ border-radius:4px;  font-family: 'Roboto', sans-serif; font-weight:300;}
 .form-field{font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
 .form-field-left{ width:44%; float:left; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
@@ -340,8 +353,8 @@ ul.enter-code-box li{ margin:0 4px; padding:10px 0; float:left; width:15%; displ
 .footer-dark{ background:#1c1c1c; padding:0px 0 0 0; color:#f3f3f3; font-size:13px; font-weight:300;}
 .footer-dark a{ color:#f3f3f3; margin:0 5px;}
 .footer1{ margin:0; padding:20px 0; }
-.footer1 a{ display:inline-block; float:right; padding:20px 40px; background:#e92270; color:#fff; font-size:24px; text-transform: uppercase; }
-.footer1 a:hover{ background:#e2035a}
+.footer1 a{ display:inline-block; float:right; padding:20px 40px; background:#ff217c; color:#fff; font-size:24px; text-transform: uppercase; }
+.footer1 a:hover{ background:#fc0a6d}
 .footer2{ margin:0; text-align:right;  padding:20px 0; border-top:1px solid #404040; border-bottom:1px solid #404040}
 
 
@@ -357,3 +370,65 @@ ul.enter-code-box li{ margin:0 4px; padding:10px 0; float:left; width:15%; displ
 .f-right{ float:right} 
 .f-right a{ margin:0; padding:0}
 .f-right a:hover{ opacity:0.6}
+
+
+
+
+
+/* admin style */
+.admin-main{ width:1000px; margin:50px auto; padding:0}
+.admin-content{ background:#e5e5e5; padding:25px; margin:0}
+
+.admin-title{ text-align:center}
+.admin-title h2{ margin:15px 0 25px 0; padding:0; font-size:30px; font-weight:400; text-transform: uppercase; color:#222}
+
+.add-new{ width:800px; margin:0 auto}
+
+.list-form ul{ margin:0; padding:0}
+.list-form li{ margin:0 0 10px 0; padding:0 0 0px 0; list-style: none; display:block; clear:both}
+
+.col-lable3{ float:left; width:30%; text-align:right; padding:9px 0 0 0; color:#222}
+.col-fields{ float:right; width:65%; }
+
+.form-field-admin{font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
+span.info-txt{ font-size:14px; display:block; text-align:right; line-height:16px;}
+
+/* NEXT BTN */  
+.left-btn{ float:left; width:47%;}
+.right-btn{ float:right; width:47%;}
+input.next-btn{ border:0; width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 0px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
+input.next-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
+
+input.cancel-btn{ border:0; width:100%; border:1px solid #222; background:#222 url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 0px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
+input.cancel-btn:hover{ background:#000 url(../img/arrow.png) 98% 10px no-repeat}
+
+/* Store */
+.store{}
+.store h3{ font-size:25px; line-height:30px; padding:15px; margin:0; font-weight: 400; color:#222; border-bottom:1px solid #c6c6c6;  display:block}
+.store h3 span{ color:#ff1c79; font-weight:500}
+
+
+.add-btn{border:0; border:1px solid #ff217c; background:#ff217c; text-transform: uppercase;  margin:15px 0 0px 0; padding:8px 10px; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
+.add-btn:hover{ background:#fc0a6d;}
+
+.add-store{}
+.addbtn-store{ text-align:right}
+
+.store-table{ padding:20px 0}
+.store-table table{ width:100%; border-bottom:1px solid #808080; border-left:1px solid #808080}
+
+.store-table td{ background:#fff; padding:9px 6px; margin:0; border:1px solid #808080; border-left:0px solid #808080; border-bottom:0px solid #808080}
+.store-table th{ background:#222222; color:#fff; font-size:18px; padding:9px 6px; margin:0;  border:1px solid #808080; border-left:0px solid #808080; border-bottom:0px solid #808080}
+
+.store-details-row{ background:#fff; padding:40px 20px}
+.details-box{ float:left; width:50%; }
+.qr-store-box{ float:right; width:45%; text-align:center}
+
+.details-box table{}
+.details-box td{ padding:4px; vertical-align:top}
+.store-hours p{ font-size:18px; font-weight:300; color:#222; padding:10px 5px; margin:0}
+
+
+
+
+
