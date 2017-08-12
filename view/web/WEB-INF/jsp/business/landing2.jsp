@@ -7,9 +7,9 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-    <link rel="stylesheet" href="static2/internal/css/style.css" type='text/css'  />
-    <link rel="stylesheet" href="static2/internal/css/phone-style.css" type='text/css' media="screen" />
-    <link rel="stylesheet" href="static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'  />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen" />
 </head>
 
 <body>
@@ -18,10 +18,10 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><img src="static2/internal/img/logo.png" /></div>
+        <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" /></div>
         <div class="top-menu-right2">
             <div class="menu-wrap">
-                <div class="txt-tight mobile-icon"><a class="toggleMenu" href="#"><img src="static2/internal/img/menu-icon.png" /></a></div>
+                <div class="txt-tight mobile-icon"><a class="toggleMenu" href="#"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-icon.png" /></a></div>
                 <div class="clearFix"></div>
 
                 <ul class="nav">
@@ -98,7 +98,7 @@
     <!-- Foote -->
     <div class="footer">
         <div class="warp-inner ">
-            <img src="static2/internal/img/footer-img.jpg" class="img100" />
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100" />
         </div>
         <div class="footer-dark">
             <div class="footer4">
@@ -119,6 +119,6 @@
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="static2/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
 </html>
