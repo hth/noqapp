@@ -46,7 +46,6 @@
 </header>
 
 <spring:eval expression="success_email eq T(com.noqapp.domain.types.MailTypeEnum).SUCCESS" var="mailSentType" />
-<spring:eval expression="success_email eq T(com.noqapp.domain.types.MailTypeEnum).SOCIAL_ACCOUNT" var="socialAccount" />
 
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
@@ -55,14 +54,6 @@
                 <c:when test="${mailSentType}">
                     <legend>Confirmation Page</legend>
                     <p>An email has been sent with information regarding recovering your account password</p>
-                    <p>&nbsp;</p>
-                    <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
-                </c:when>
-                <c:when test="${socialAccount}">
-                    <legend>Found Social Account</legend>
-                    <p>Hmmmm... You are registered through social provider like Facebook or Google+.</p><br>
-                    <p>Hence we cannot change the password. Please use these providers to login.</p><br>
-                    <p>If you are having difficulties login, please contact us on support.</p>
                     <p>&nbsp;</p>
                     <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
                 </c:when>
