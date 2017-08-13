@@ -85,7 +85,7 @@
                             <li>
                                 <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
                                 <div class="col-fields">
-                                    <form:input path="inviteeCode" cssClass="form-field-admin" placeholder="Abc" />
+                                    <form:input path="inviteeCode" cssClass="form-field-admin" />
                                     <span class="info-txt">(Supervisor's invitee code found on Invite screen)</span>
                                 </div>
                                 <div class="clearFix"></div>
@@ -139,5 +139,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+
+<script>
+    $("#phoneNumber").intlTelInput({
+        // allowDropdown: false,
+        // autoHideDialCode: false,
+        // autoPlaceholder: "off",
+        // dropdownContainer: "body",
+        // excludeCountries: ["us"],
+        // formatOnDisplay: false,
+        // geoIpLookup: function(callback) {
+        //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+        //     var countryCode = (resp && resp.country) ? resp.country : "";
+        //     callback(countryCode);
+        //   });
+        // },
+        // initialCountry: "auto",
+        // nationalMode: false,
+        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        // placeholderNumberType: "MOBILE",
+        preferredCountries: ['in'],
+        // separateDialCode: true,
+        utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
+    });
+</script>
 
 </html>
