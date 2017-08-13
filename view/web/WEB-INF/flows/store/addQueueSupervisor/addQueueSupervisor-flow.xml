@@ -11,7 +11,7 @@
                   result="flowScope.inviteQueueSupervisor" />
     </on-start>
 
-    <view-state id="inviteSupervisorStart" model="inviteQueueSupervisor">
+    <view-state id="inviteSupervisorStart2" model="inviteQueueSupervisor">
         <transition on="submit" to="validatePhoneNumber" />
         <transition on="cancel" to="invitationCancel" />
     </view-state>

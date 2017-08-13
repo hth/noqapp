@@ -200,6 +200,14 @@ public class UserFlowValidator {
                         registerUser.setTimeZone(timeZone);
                     }
                 }
+            } else {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerUser.address")
+                                .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                                .build());
+                status = "failure";
             }
         }
 
