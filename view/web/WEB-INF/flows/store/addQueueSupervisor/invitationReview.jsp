@@ -29,7 +29,14 @@
                     <li><a href="#"><sec:authentication property="principal.username" /></a></li>
                     <li><a href="login.html">Account</a></li>
                     <li><a href="login.html">Feedback</a></li>
-                    <li><a href="login.html">Sign In</a></li>
+                    <li>
+                        <a href="#">
+                            <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                                <input type="submit" value="LOG OUT" class="logout_btn"/>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
+                        </a>
+                    </li>
 
                     <div class="clearFix"></div>
                 </ul>
