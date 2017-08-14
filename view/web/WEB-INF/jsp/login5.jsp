@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
 
-    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
+    <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -158,7 +158,7 @@
 
 
 </body>
-<script src="${pageContext.request.contextPath}/static2/internal/js/firebaseAuthenticate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/firebaseAuthenticate.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -178,7 +178,7 @@
         </c:if>
     });
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
 <script>
     $("#phone").intlTelInput({
@@ -288,13 +288,13 @@
         if (!!getCodeFromUserInput()) {
             window.verifyingCode = true;
             var code = getCodeFromUserInput();
-            alert('start getCodeFromUserInput code='+ code);
+//            alert('start getCodeFromUserInput code='+ code);
             confirmationResult.confirm(code).then(function (result) {
                 var user = result.user;
 
                 window.verifyingCode = false;
                 window.confirmationResult = null;
-                alert('Pass 1');
+//                alert('Pass 1');
 
                 noQAuthentication.doValidateUser(user);
                 //displayinfo(user);

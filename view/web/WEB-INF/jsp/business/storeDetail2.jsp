@@ -1,6 +1,6 @@
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta charset="utf-8">
     <title>NoQueue</title>
@@ -25,9 +25,7 @@
                 <div class="clearFix"></div>
 
                 <ul class="nav">
-                    <li><a href="#">b@r.com </a></li>
-                    <li><a href="login.html"> Split Exenses</a></li>
-                    <li><a href="login.html">Report & Analysis </a></li>
+                    <li><a href="#"><sec:authentication property="principal.username" /></a></li>
                     <li><a href="login.html">Account</a></li>
                     <li><a href="login.html">Feedback</a></li>
                     <li><a href="login.html">Sign In</a></li>
@@ -60,19 +58,16 @@
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td width="100">Address :</td>
-                                        <td >${storeLandingForm.address}</td>
-
+                                        <td width="100">Address:</td>
+                                        <td>${storeLandingForm.address}</td>
                                     </tr>
                                     <tr>
-                                        <td>Phone :</td>
+                                        <td>Phone:</td>
                                         <td>${storeLandingForm.phone}</td>
-
                                     </tr>
                                     <tr>
-                                        <td>Queue Name :</td>
+                                        <td>Queue Name:</td>
                                         <td>${storeLandingForm.displayName}</td>
-
                                     </tr>
                                     <tr>
                                         <td>&nbsp;</td>
@@ -140,7 +135,7 @@
 
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
 </html>

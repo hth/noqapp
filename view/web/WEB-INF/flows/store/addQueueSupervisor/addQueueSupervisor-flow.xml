@@ -22,7 +22,7 @@
         <transition on="failure" to="inviteSupervisorStart" />
     </action-state>
 
-    <view-state id="invitationReview">
+    <view-state id="invitationReview2">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeInvite" history="invalidate"/>
         <transition on="revise" to="inviteSupervisorStart" />

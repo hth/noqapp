@@ -52,57 +52,58 @@
             <div class="admin-main">
                 <sec:authorize access="hasRole('ROLE_M_ADMIN')">
 
-                <div class="admin-title">
-                    <h2>Add New Supervisor</h2>
-                </div>
-
-                <form:form commandName="inviteQueueSupervisor">
-                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-
-                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                <li>${message.text}</li>
-                            </c:forEach>
-                        </ul>
+                    <div class="admin-title">
+                        <h2>Add New Supervisor</h2>
                     </div>
-                </c:if>
 
-                <div class="admin-content">
-                    <div class="add-new">
-                        <ul class="list-form">
-                            <li>
-                                <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="profile_label lb_error">Phone Number</form:label></div>
-                                <div class="col-fields">
-                                    <form:input path="phoneNumber" cssClass="form-fe" />
-                                    <span class="info-txt">(Must be a registered users)</span>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
+                    <form:form commandName="inviteQueueSupervisor">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                            <li>
-                                <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
-                                <div class="col-fields">
-                                    <form:input path="inviteeCode" cssClass="form-field-admin" />
-                                    <span class="info-txt">(Supervisor's invitee code found on Invite screen)</span>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
+                        <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                            <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                        <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </c:if>
 
-                            <li class="mB0">
-                                <div class="col-lable3"> </div>
-                                <div class="col-fields">
-                                    <div class="left-btn"><input name="_eventId_submit" class="next-btn" value="NEXT" type="submit"></div>
-                                    <div class="right-btn"><input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit"></div>
-                                    <div class="clearFix"></div>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                </form:form>
+                        <div class="admin-content">
+                            <div class="add-new">
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="profile_label lb_error">Phone Number</form:label></div>
+                                        <div class="col-fields">
+                                            <form:input path="phoneNumber" cssClass="form-fe" readonly="true" />
+                                            <span class="info-txt">(Must be a registered users)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
+                                        <div class="col-fields">
+                                            <form:input path="inviteeCode" cssClass="form-field-admin" readonly="true" />
+                                            <span class="info-txt">(Supervisor's invitee code found on Invite screen)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li class="mB0">
+                                        <div class="col-lable3"> </div>
+                                        <div class="col-fields">
+                                            <div class="left-btn"><input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit"></div>
+                                            <div class="right-btn"><input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit"></div>
+                                            <div class="right-btn"><input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit"></div>
+                                            <div class="clearFix"></div>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form:form>
                 </sec:authorize>
             </div>
             <!-- Add New Supervisor -->
