@@ -1,5 +1,6 @@
 <%@ include file="include.jsp"%>
 <!doctype html>
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -171,6 +172,10 @@
                 }
             }
         });
+
+        <c:if test="${!empty param.logoutSuccess and param.logoutSuccess eq 's--'}">
+        onSignOutClick();
+        </c:if>
     });
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -314,6 +319,7 @@
 
     function onSignOutClick() {
         firebase.auth().signOut();
+        console.log("Logged out complete");
     }
 
     function getCodeFromUserInput() {
