@@ -11,7 +11,7 @@
                   result="flowScope.inviteQueueSupervisor" />
     </on-start>
 
-    <view-state id="inviteSupervisorStart2" model="inviteQueueSupervisor">
+    <view-state id="inviteSupervisorStart" model="inviteQueueSupervisor">
         <transition on="submit" to="validatePhoneNumber" />
         <transition on="cancel" to="invitationCancel" />
     </view-state>
@@ -22,7 +22,7 @@
         <transition on="failure" to="inviteSupervisorStart" />
     </action-state>
 
-    <view-state id="invitationReview2">
+    <view-state id="invitationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeInvite" history="invalidate"/>
         <transition on="revise" to="inviteSupervisorStart" />
