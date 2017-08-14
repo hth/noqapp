@@ -1,137 +1,173 @@
 <%@ include file="../../../jsp/include.jsp"%>
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <meta charset="utf-8">
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'  />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen" />
 </head>
+
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
+
+<!-- header -->
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" /></div>
+        <div class="top-menu-right2">
+            <div class="menu-wrap">
+                <div class="txt-tight mobile-icon"><a class="toggleMenu" href="#"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-icon.png" /></a></div>
+                <div class="clearFix"></div>
+
+                <ul class="nav">
+                    <li><a href="#"><sec:authentication property="principal.username" /></a></li>
+                    <li><a href="login.html">Account</a></li>
+                    <li><a href="login.html">Feedback</a></li>
+                    <li>
+                        <a href="#">
+                            <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                                <input type="submit" value="LOG OUT" class="logout_btn"/>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
+                        </a>
+                    </li>
+
+                    <div class="clearFix"></div>
+                </ul>
+                <div class="clearFix"></div>
+            </div>
+
+
+        </div>
+
+        <div class="clearFix"></div>
+    </div>
+</div>
+<!-- header end -->
+<!-- header end -->
+<div class="main-warp">
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- Add New Supervisor -->
+            <div class="admin-main">
+                <sec:authorize access="hasRole('ROLE_M_ADMIN')">
+
+                <div class="admin-title">
+                    <h2>Add New Supervisor</h2>
+                </div>
+
+                <form:form commandName="inviteQueueSupervisor">
+                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+
+                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                        <ul>
+                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                <li>${message.text}</li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </c:if>
+
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="profile_label lb_error">Phone Number</form:label></div>
+                                <div class="col-fields">
+                                    <form:input path="phoneNumber" cssClass="form-fe" />
+                                    <span class="info-txt">(Must be a registered users)</span>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
+                                <div class="col-fields">
+                                    <form:input path="inviteeCode" cssClass="form-field-admin" />
+                                    <span class="info-txt">(Supervisor's invitee code found on Invite screen)</span>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li class="mB0">
+                                <div class="col-lable3"> </div>
+                                <div class="col-fields">
+                                    <div class="left-btn"><input name="_eventId_submit" class="next-btn" value="NEXT" type="submit"></div>
+                                    <div class="right-btn"><input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit"></div>
+                                    <div class="clearFix"></div>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </form:form>
+                </sec:authorize>
+            </div>
+            <!-- Add New Supervisor -->
+
+        </div>
+    </div>
+    <!-- content end -->
+
+
+    <!-- Foote -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100" />
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017  NoQueue.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
                 </div>
             </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
         </div>
-    </div>
-</div>
-<header>
-</header>
-<div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_M_ADMIN')">
-        <div class="business_reg">
-            <div class="down_form" style="width: 90%">
-                <form:form commandName="inviteQueueSupervisor">
-                    <h1 class="h1">Add New Supervisor</h1>
-                    <hr>
 
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-
-                    <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                        <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                            <ul>
-                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </c:if>
-
-                    <div class="row_field">
-                        <form:label path="countryShortName" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Country Short Name</form:label>
-                        <form:input path="countryShortName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="countryCode" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Country Code</form:label>
-                        <form:input path="countryCode" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="phoneNumber" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Phone Number</form:label>
-                        <form:input path="phoneNumber" size="20" cssClass="name_txt" />
-                        &nbsp; (Must be a registered users)
-                    </div>
-                    <div class="row_field">
-                        <form:label path="inviteeCode" cssClass="profile_label" cssStyle="width: 155px;"
-                                cssErrorClass="profile_label lb_error">Invitee Code</form:label>
-                        <form:input path="inviteeCode" size="20" cssClass="name_txt" />
-                        &nbsp; (Supervisor's invitee code found on Invite screen)
-                    </div>
-
-                    <div class="full">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;" formnovalidate>
-                    </div>
-                </form:form>
-            </div>
-        </div>
-        </sec:authorize>
     </div>
+    <!-- Foote End -->
+
 </div>
-<div class="footer-tooth clearfix">
-    <div class="footer-tooth-middle"></div>
-    <div class="footer-tooth-right"></div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
-    </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
-</div>
+
+
+
 </body>
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
+<script>
+    $("#phoneNumber").intlTelInput({
+        // allowDropdown: false,
+        // autoHideDialCode: false,
+        // autoPlaceholder: "off",
+        // dropdownContainer: "body",
+        // excludeCountries: ["us"],
+        // formatOnDisplay: false,
+        // geoIpLookup: function(callback) {
+        //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+        //     var countryCode = (resp && resp.country) ? resp.country : "";
+        //     callback(countryCode);
+        //   });
+        // },
+        // initialCountry: "auto",
+        // nationalMode: false,
+        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        // placeholderNumberType: "MOBILE",
+        preferredCountries: ['in'],
+        // separateDialCode: true,
+        utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
     });
 </script>
+
 </html>

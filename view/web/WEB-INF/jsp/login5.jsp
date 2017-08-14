@@ -111,19 +111,9 @@
 
                         <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="email error" />
                         <form:password path="password" cssClass="form-field" required="required" cssErrorClass="password error" />
-
-                        <div class="icon" style="text-align: right">
-                            <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
-                        </div>
-
-                        <ul class="cd-form-list">
-                            <li>
-                                <input type="checkbox" name="remember-me" id="cd-checkbox-1">
-                                <label for="cd-checkbox-1">Remember me on this device</label>
-                            </li>
-                        </ul>
-
                         <input name="" type="submit" class="form-btn mT0" value="Login">
+                        <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
+                        <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password</a></span>
                     </form:form>
 
                 </div>
