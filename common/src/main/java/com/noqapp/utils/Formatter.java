@@ -59,7 +59,7 @@ public final class Formatter {
     private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
     private static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
-    private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mma");
+    private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a");
 
     private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();
     private static final NumberFormat CURRENCY_INSTANCE = FormatterSingleton.INSTANCE.currencyInstance();
@@ -266,7 +266,7 @@ public final class Formatter {
     }
 
     /**
-     * Converts military time like '10' to 12:10AM' and '1000' to '10:00AM' and '2345' to '11:45PM'.
+     * Converts military time like '10' to 12:10 AM' and '1000' to '10:00 AM' and '2345' to '11:45 PM'.
      *
      * @param rawTimestamp
      * @return
