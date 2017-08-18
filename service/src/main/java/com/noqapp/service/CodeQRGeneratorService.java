@@ -22,7 +22,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -34,26 +36,50 @@ import javax.imageio.ImageIO;
 public class CodeQRGeneratorService {
     private static final Logger LOG = LoggerFactory.getLogger(CodeQRGeneratorService.class);
 
-    @Value ("${size:300}")
-    private int size;
+    private int imageSize;
+
+    private Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<>();
+    private BufferedImage overlay;
+
+    public CodeQRGeneratorService(
+            @Value ("${imageSize:300}")
+            int imageSize,
+
+            @Value ("${overlayFileLocation:conf/300x300_overlay_code_qr.png}")
+            String overlayFileLocation
+    ) {
+        this.imageSize = imageSize;
+
+        /* Create the ByteMatrix for the QR-Code that encodes the given String. */
+        hintMap = new HashMap<>();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
+        try {
+            
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(overlayFileLocation);
+            this.overlay = ImageIO.read(inputStream);
+        } catch (IOException e) {
+            LOG.error("Failed to load image={} reason={}", "300x300_overlay_code_qr", e.getLocalizedMessage(), e);
+        }
+    }
 
     public String createQRImage(String qrCodeText) throws WriterException, IOException {
         File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PNG.name());
-
-        // Create the ByteMatrix for the QR-Code that encodes the given String
-        Hashtable hintMap = new Hashtable();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
-        // Make the BufferedImage that are to hold the QRCode
-        int matrixWidth = byteMatrix.getWidth();
-        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
-        image.createGraphics();
+        BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, imageSize, imageSize, hintMap);
 
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        /* Make the BufferedImage that are to hold the QRCode. */
+        int matrixWidth = byteMatrix.getWidth();
+        int matrixHeight = byteMatrix.getHeight();
+        BufferedImage imageOfCodeQR = new BufferedImage(matrixWidth, matrixHeight, BufferedImage.TYPE_INT_RGB);
+        imageOfCodeQR.createGraphics();
+
+        Graphics2D graphics = (Graphics2D) imageOfCodeQR.getGraphics();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, matrixWidth, matrixWidth);
-        // Paint and save the image using the ByteMatrix
+        graphics.fillRect(0, 0, matrixWidth, matrixHeight);
+        /* Paint and save the image using the ByteMatrix. */
+        //graphics.setColor(new Color(233, 34, 112));
         graphics.setColor(Color.BLACK);
 
         for (int i = 0; i < matrixWidth; i++) {
@@ -63,7 +89,21 @@ public class CodeQRGeneratorService {
                 }
             }
         }
-        ImageIO.write(image, FileExtensionTypeEnum.PNG.name(), toFile);
+        ImageIO.write(getQRCodeWithOverlay(imageOfCodeQR), FileExtensionTypeEnum.PNG.name(), toFile);
         return FilenameUtils.getBaseName(toFile.getName());
+    }
+
+    private BufferedImage getQRCodeWithOverlay(BufferedImage imageOfCodeQR) {
+        float overlayTransparency = 1f;
+
+        Integer deltaHeight = imageOfCodeQR.getHeight() - overlay.getHeight();
+        Integer deltaWidth = imageOfCodeQR.getWidth() - overlay.getWidth();
+
+        BufferedImage combined = new BufferedImage(imageOfCodeQR.getWidth(), imageOfCodeQR.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = (Graphics2D) combined.getGraphics();
+        g2.drawImage(imageOfCodeQR, 0, 0, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, overlayTransparency));
+        g2.drawImage(overlay, Math.round(deltaWidth / 2), Math.round(deltaHeight / 2), null);
+        return combined;
     }
 }

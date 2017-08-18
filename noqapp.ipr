@@ -734,6 +734,7 @@
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/config.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/pass.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/noq-app-inc-firebase-adminsdk.json" />
+              <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/300x300_overlay_code_qr.png" />
             </element>
             <element id="directory" name="dkim">
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/dkim/dkim.der" />
