@@ -32,7 +32,7 @@ import java.io.InputStream;
         "PMD.LongVariable"
 })
 public class FileUtil {
-    public static final String TEMP_FILE_START_WITH = "Receiptofi";
+    public static final String TEMP_FILE_START_WITH = "NoQueue";
     public static final String DOT = ".";
     public static final String DASH = "-";
 

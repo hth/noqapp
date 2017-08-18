@@ -471,6 +471,7 @@ task setUpProfileForJunit() {
             from 'view/resources/conf/application-messages.properties'
             from 'view/resources/conf/config.properties'
             from 'view/resources/conf/redis.properties'
+            from 'view/resources/conf/300x300_overlay_code_qr.png'
 
             if (env == 'prod') {
                 if (passFileProd.exists()) {
@@ -659,6 +660,7 @@ task prepWar(dependsOn: [
             from 'view/resources/conf/application-messages.properties'
             from 'view/resources/conf/config.properties'
             from 'view/resources/conf/redis.properties'
+            from 'view/resources/conf/300x300_overlay_code_qr.png'
 
             if (env == 'prod') {
                 if (passFileProd.exists()) {
