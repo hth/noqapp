@@ -168,7 +168,8 @@ public class LoginController {
                 userProfile.getLevel(),
                 customUserDetailsService.isUserActive(userAccount),
                 userAccount.isAccountValidated(),
-                userProfile.getCountryShortName()
+                userProfile.getCountryShortName(),
+                userAccount.getDisplayName()
         );
 
         /*

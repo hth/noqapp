@@ -38,7 +38,7 @@ public class CodeQRGeneratorService {
 
     private int imageSize;
 
-    private Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<>();
+    private Map<EncodeHintType, Object> hintMap = new HashMap<>();
     private BufferedImage overlay;
 
     public CodeQRGeneratorService(
@@ -52,14 +52,14 @@ public class CodeQRGeneratorService {
 
         /* Create the ByteMatrix for the QR-Code that encodes the given String. */
         hintMap = new HashMap<>();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 
         try {
             
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(overlayFileLocation);
             this.overlay = ImageIO.read(inputStream);
         } catch (IOException e) {
-            LOG.error("Failed to load image={} reason={}", "300x300_overlay_code_qr", e.getLocalizedMessage(), e);
+            LOG.error("Failed to load image={} reason={}", overlayFileLocation, e.getLocalizedMessage(), e);
         }
     }
 

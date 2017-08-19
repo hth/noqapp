@@ -1,5 +1,7 @@
 package com.noqapp.domain.site;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -24,6 +26,7 @@ public final class QueueUser extends User {
     private UserLevelEnum userLevel;
     private boolean accountValidated;
     private String countryShortName;
+    private String userShortName;
 
     public QueueUser(
             String username,
@@ -41,13 +44,15 @@ public final class QueueUser extends User {
             UserLevelEnum userLevel,
             boolean active,
             boolean accountValidated,
-            String countryShortName
+            String countryShortName,
+            String userShortName
     ) {
         super(username, password, active, true, true, true, authorities);
         this.queueUserId = queueUserId;
         this.userLevel = userLevel;
         this.accountValidated = accountValidated;
         this.countryShortName = countryShortName;
+        this.userShortName = WordUtils.initials(userShortName);
     }
 
     public QueueUser(
@@ -96,6 +101,10 @@ public final class QueueUser extends User {
 
     public String getCountryShortName() {
         return countryShortName;
+    }
+
+    public String getUserShortName() {
+        return userShortName;
     }
 
     @Override

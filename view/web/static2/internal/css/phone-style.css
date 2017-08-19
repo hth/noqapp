@@ -24,8 +24,7 @@
 
 @media only all and  (max-width : 850px) {
 /* Admin style */
-.top-menu-right2{ float:none; padding:10px 0 0 0}
-.admin-content{  padding:25px 10px;}
+ .admin-content{  padding:25px 10px;}
 
 
 
@@ -84,6 +83,8 @@
 
 
 @media only all and  (max-width : 700px) { 
+.col2-grid li{ margin:10px 0%; padding:0 0 0px 0; float:left; width:100%; list-style: none; display:block; }
+
  .store-table{ padding:20px 0; width:100%; overflow:scroll;}
 .store-table table{ width:700px; border-bottom:1px solid #808080; border-left:1px solid #808080}
 
@@ -103,11 +104,23 @@ ul.col3 li{ margin:30px  auto; padding:0 ; float:none; display:block; width:100%
 }
 
 @media only all and  (max-width : 640px) {
+.btn-hours{ width:100%; margin:0 auto}	
+
 	
+.col2-grid table td{ padding-left:5px; vertical-align:top; } 
+td.lable-td{ padding-top:2px; font-size:15px; line-height:18px;}
+.col2-grid table td span{ font-size:13px; }
+
+
 /* ADMIN STYLE*/
 .admin-title h2{ margin:15px 0; padding:0; font-size:25px; line-height:30px; }
 .col-lable3{ float:none; width:100%; text-align:left; padding:0px 0 3px 0; color:#222}
 .col-fields{ float:none; width:100%; }	
+
+.first-btn{ float:none; width:100%; margin:0; padding:0}
+.center-btn{ float:none; width:100%; margin:0; padding:0}
+.last-btn{float:none; width:100%; margin:0; padding:0}
+
 .left-btn{ float:none; width:100%; margin:0; padding:0}
 .right-btn{ float:none; width:100%; margin:0; padding:0}	
 span.info-txt{ font-size:13px;}
@@ -150,6 +163,7 @@ span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-
 	
 /* Smartphones (portrait and landscape) ----------- */
 @media (max-width : 480px) {
+	
 .new-account-form{ width:90%; background:#f9f7f7; float:none;  padding:15px; margin:0px auto 0;}
  .merchant-form{ padding:60px 0 30px 0;}
 	.new-account-form h2{ font-size:20px;}

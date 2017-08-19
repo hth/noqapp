@@ -94,7 +94,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getLevel(),
                     condition,
                     userAccount.isAccountValidated(),
-                    userProfile.getCountryShortName()
+                    userProfile.getCountryShortName(),
+                    userAccount.getDisplayName()
             );
         }
     }
