@@ -21,29 +21,21 @@
     <div class="warp-inner">
         <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" /></div>
         <div class="top-menu-right2">
-            <div class="menu-wrap">
-                <div class="txt-tight mobile-icon"><a class="toggleMenu" href="#"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-icon.png" /></a></div>
-                <div class="clearFix"></div>
-
-                <ul class="nav">
-                    <li><a href="#"><sec:authentication property="principal.username" /></a></li>
-                    <li><a href="login.html">Account</a></li>
-                    <li><a href="login.html">Feedback</a></li>
-                    <li>
-                        <a href="#">
-                            <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                <input type="submit" value="LOG OUT" class="logout_btn"/>
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            </form>
-                        </a>
-                    </li>
-
-                    <div class="clearFix"></div>
-                </ul>
-                <div class="clearFix"></div>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="dropdown-inner">
+                        <a href="#">Account</a>
+                        <a href="#">Feedback</a>
+                        <a href="#">Sign In</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-
         </div>
 
         <div class="clearFix"></div>
