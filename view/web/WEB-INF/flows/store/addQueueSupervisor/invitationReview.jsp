@@ -59,12 +59,14 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                         <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                            <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                            <div class="error-box">
+                                <div class="error-txt">
                                 <ul>
                                     <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
                                         <li>${message.text}</li>
                                     </c:forEach>
                                 </ul>
+                                </div>
                             </div>
                         </c:if>
 
