@@ -52,7 +52,7 @@ public class CodeQRGeneratorService {
 
         /* Create the ByteMatrix for the QR-Code that encodes the given String. */
         hintMap = new HashMap<>();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.Q);
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
         try {
             
