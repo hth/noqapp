@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.utils.Formatter;
 
 import java.util.Date;
 import java.util.List;
@@ -162,11 +163,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     @Override
     public UserProfileEntity findOneByPhone(String phone) {
-        //TODO check to have or removed
-        String changedPhone = phone;
+        //TODO check to have or removed all conditions
+        String changedPhone = Formatter.phoneCleanup(phone);
         if (phone.startsWith("+")) {
-            changedPhone = phone.replace("+", "");
-            changedPhone = changedPhone.replace(" ", "");
             LOG.warn("Found phone number {} starting with + and now changedPhone={}", phone, changedPhone);
         }
         return mongoTemplate.findOne(query(where("PH").is(changedPhone)), UserProfileEntity.class, TABLE);
