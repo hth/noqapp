@@ -77,7 +77,7 @@
                                 <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="profile_label lb_error">Phone Number</form:label></div>
                                 <div class="col-fields">
                                     <form:input path="phoneNumber" cssClass="form-fe" />
-                                    <span class="info-txt">(Must be a registered users)</span>
+                                    <span class="info-txt">(Must be a registered user)</span>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
@@ -86,7 +86,7 @@
                                 <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
                                 <div class="col-fields">
                                     <form:input path="inviteeCode" cssClass="form-field-admin" />
-                                    <span class="info-txt">(Supervisor's invitee code found on Invite screen)</span>
+                                    <span class="info-txt">(Invitee code of Phone Number above found on Invite screen of this user)</span>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
