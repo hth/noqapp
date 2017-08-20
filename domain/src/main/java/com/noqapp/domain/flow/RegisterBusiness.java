@@ -228,12 +228,12 @@ public class RegisterBusiness implements Serializable {
     public String computeWebLocation(String town, String stateShortName) {
         return countryShortNameStore.toLowerCase()
                 + "/"
-                + name.toLowerCase().replace(" ", "-")
+                + name.trim().toLowerCase().replace(" ", "-")
                 + "/"
-                + town.toLowerCase().replace(" ", "-")
+                + town.trim().toLowerCase().replace(" ", "-")
                 + "-"
-                + stateShortName.toLowerCase()
+                + stateShortName.trim().toLowerCase()
                 + "/"
-                + displayName.toLowerCase().replace(" ", "-");
+                + displayName.trim().toLowerCase().replace(" ", "-");
     }
 }
