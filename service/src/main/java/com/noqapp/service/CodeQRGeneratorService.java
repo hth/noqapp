@@ -53,7 +53,7 @@ public class CodeQRGeneratorService {
 
         /* Create the ByteMatrix for the QR-Code that encodes the given String. */
         hintMap = new HashMap<>();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(overlayFileLocation);
@@ -90,8 +90,8 @@ public class CodeQRGeneratorService {
                 }
             }
         }
-        ImageIO.write(imageOfCodeQR, FileExtensionTypeEnum.PNG.name(), toFile);
-        //ImageIO.write(getQRCodeWithOverlay(imageOfCodeQR), FileExtensionTypeEnum.PNG.name(), toFile);
+        //ImageIO.write(imageOfCodeQR, FileExtensionTypeEnum.PNG.name(), toFile);
+        ImageIO.write(getQRCodeWithOverlay(imageOfCodeQR), FileExtensionTypeEnum.PNG.name(), toFile);
         return FilenameUtils.getBaseName(toFile.getName());
     }
 
