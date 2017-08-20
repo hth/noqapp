@@ -38,9 +38,7 @@ public class QueueSupervisorFlowValidator {
                             .defaultText("Phone Number cannot be empty")
                             .build());
             status = "failure";
-        }
-
-        if (!Formatter.isValidPhone(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName())) {
+        } else if (!Formatter.isValidPhone(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
