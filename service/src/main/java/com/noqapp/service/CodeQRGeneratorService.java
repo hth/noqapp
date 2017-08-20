@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 /**
+ * Creates Code QR image.
  * User: hitender
  * Date: 11/21/16 8:57 AM
  */
@@ -55,7 +56,6 @@ public class CodeQRGeneratorService {
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
         try {
-            
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(overlayFileLocation);
             this.overlay = ImageIO.read(inputStream);
         } catch (IOException e) {
@@ -66,7 +66,7 @@ public class CodeQRGeneratorService {
     public String createQRImage(String qrCodeText) throws WriterException, IOException {
         LOG.info("QR Code={}", qrCodeText);
         File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PNG.name());
-        
+
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, imageSize, imageSize, hintMap);
 
@@ -95,6 +95,12 @@ public class CodeQRGeneratorService {
         return FilenameUtils.getBaseName(toFile.getName());
     }
 
+    /**
+     * Overlays logo on top of QRCode.
+     *
+     * @param imageOfCodeQR
+     * @return
+     */
     private BufferedImage getQRCodeWithOverlay(BufferedImage imageOfCodeQR) {
         float overlayTransparency = 1f;
 
