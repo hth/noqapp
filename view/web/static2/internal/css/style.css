@@ -368,7 +368,7 @@ ul.col3 li{ margin:0 1.5%; padding:0 ; float:left; display:block; width:30.33%; 
 .right-forgot a:hover{ color:#ff1c79}
 
 .form-style{ width:500px; margin:0 auto;}
-.form-fe{font-family: 'Roboto', font-weight:300; sans-serif; width:100%; padding:10px 0; font-size:16px; margin:5px 0 10px 0; border:1px solid #CCC}
+.form-fe{font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 0; font-size:16px; margin:5px 0 10px 0; border:1px solid #CCC}
 .intl-tel-input { width:100%;}
 input.form-btn{ border:0; width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
 input.form-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
