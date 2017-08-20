@@ -51,13 +51,21 @@ public class EmpLandingService {
         this.businessUserStoreService = businessUserStoreService;
     }
 
+    /**
+     * Approve new business after validating all the details.
+     * 
+     * @param businessUserId
+     * @param qid
+     */
     public void approveBusiness(String businessUserId, String qid) {
+        LOG.info("Approve Business Clicked businessUserId={} qid={}", businessUserId, qid);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
                 .setValidateByRid(qid)
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
+        /* Change profile user level on approval of business. */
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
         accountService.save(userProfile);
@@ -98,8 +106,18 @@ public class EmpLandingService {
         }
     }
 
-    //TODO
-    public void rejectBusiness() {
-
+    /**
+     * Decline approval of business when validation fails.
+     *
+     * @param businessUserId
+     * @param qid
+     */
+    public void declineBusiness(String businessUserId, String qid) {
+        LOG.info("Decline Business Clicked businessUserId={} qid={}", businessUserId, qid);
+        BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
+        businessUser
+                .setValidateByRid(qid)
+                .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
+        businessUserService.save(businessUser);
     }
 }
