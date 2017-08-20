@@ -112,6 +112,7 @@ public class EmpLandingController {
         empLandingService.approveBusiness(
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
                 queueUser.getQueueUserId());
-        return empLanding;
+
+        return "redirect:" + "/emp/landing.htm";
     }
 }
