@@ -18,7 +18,7 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" /></div>
+        <div class="logo-left"><a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
         <div class="top-menu-right2">
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
@@ -53,7 +53,10 @@
                         <h3>Business Name: <span>${businessLandingForm.bizName}</span></h3>
 
                         <div class="add-store">
-                            <div class="addbtn-store"><input name="" class="add-btn" value="Add new store" type="submit"></div>
+                            <div class="addbtn-store">
+                                <input name="" class="add-btn" value="Add new store" type="submit">
+                                <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                            </div>
                             <div class="store-table">
                             <c:choose>
                                 <c:when test="${!empty businessLandingForm.bizStores}">
