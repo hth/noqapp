@@ -47,7 +47,7 @@ public class EmpLandingController {
             @Value ("${empLanding:/emp/landing2}")
             String empLanding,
 
-            @Value ("${businessAwaitingApproval:/emp/businessAwaitingApproval}")
+            @Value ("${businessAwaitingApproval:/emp/businessAwaitingApproval2}")
             String businessAwaitingApproval,
 
             BusinessUserService businessUserService,
