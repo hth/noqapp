@@ -66,7 +66,7 @@
             <div class="business_reg">
                 <div class="down_form" style="width: 90%">
                     <form:form commandName="registerBusiness">
-                        <h1 class="h1">Add Store Hours For Each Day</h1>
+                        <h1 class="h1">Add Open & Closed Hours For Each Day</h1>
                         <hr>
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 

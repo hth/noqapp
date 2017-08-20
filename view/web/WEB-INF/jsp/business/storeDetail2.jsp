@@ -75,7 +75,7 @@
                                 </table>
 
                                 <div class="store-hours">
-                                    <p><strong>Store Hours</strong></p>
+                                    <p><strong>Open & Closed Hours</strong></p>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
                                             <c:choose>

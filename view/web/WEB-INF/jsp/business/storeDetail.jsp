@@ -73,7 +73,7 @@
         Phone : ${storeLandingForm.phone} <br>
         Queue Name : ${storeLandingForm.displayName} <br><br><br>
 
-        Store Hours <br>
+        Open & Closed Hours <br>
         <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
             <c:choose>
                 <c:when test="${storeHour.dayClosed}">
