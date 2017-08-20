@@ -115,4 +115,24 @@ public class EmpLandingController {
 
         return "redirect:" + "/emp/landing.htm";
     }
+
+    @RequestMapping (
+            value = "/approval",
+            method = RequestMethod.POST,
+            params = "business-user-decline")
+    public String decline(
+            @ModelAttribute ("businessAwaitingApprovalForm")
+            BusinessAwaitingApprovalForm businessAwaitingApprovalForm
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Decline Business user={} loaded by qid={}",
+                businessAwaitingApprovalForm.getBusinessUser().getId(),
+                queueUser.getQueueUserId());
+
+        empLandingService.declineBusiness(
+                businessAwaitingApprovalForm.getBusinessUser().getId(),
+                queueUser.getQueueUserId());
+
+        return "redirect:" + "/emp/landing.htm";
+    }
 }
