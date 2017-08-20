@@ -163,11 +163,12 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity findOneByPhone(String phone) {
         //TODO check to have or removed
+        String changedPhone = phone;
         if (phone.startsWith("+")) {
-            LOG.warn("Found phone number {} starting with +", phone);
-            phone = phone.replace("+", "");
+            changedPhone = phone.replace("[+ ]", "");
+            LOG.warn("Found phone number {} starting with + and now changedPhone={}", phone, changedPhone);
         }
-        return mongoTemplate.findOne(query(where("PH").is(phone)), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("PH").is(changedPhone)), UserProfileEntity.class, TABLE);
     }
 
     @Override
