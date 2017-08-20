@@ -44,7 +44,7 @@ public class EmpLandingController {
 
     @Autowired
     public EmpLandingController(
-            @Value ("${empLanding:/emp/landing}")
+            @Value ("${empLanding:/emp/landing2}")
             String empLanding,
 
             @Value ("${businessAwaitingApproval:/emp/businessAwaitingApproval}")
