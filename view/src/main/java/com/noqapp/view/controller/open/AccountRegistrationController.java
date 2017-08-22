@@ -121,6 +121,11 @@ public class AccountRegistrationController {
                     merchantRegistrationForm.getPassword(),
                     null,
                     false);
+
+            if (null == userAccount) {
+                LOG.error("Failed creating account for phone={}", merchantRegistrationForm.getPhone());
+                return registrationPage;
+            }
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
             return registrationPage;
