@@ -1,100 +1,98 @@
 <%@ include file="../../../../jsp/include.jsp" %>
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <meta charset="utf-8">
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
 </head>
+
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1>
-                        <img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a>
-                    </h1>
+
+<!-- header -->
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left">
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+        </div>
+        <div class="top-menu-right2">
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">
+                    <sec:authentication property="principal.userShortName"/></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow">
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="dropdown-inner">
+                        <a href="#">Account</a>
+                        <a href="#">Feedback</a>
+                        <a href="#">Sign In</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username"/>
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username"/>
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
         </div>
+
+        <div class="clearFix"></div>
     </div>
 </div>
-<header>
-</header>
-<div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_CLIENT')">
-            <div class="business_reg">
-                <div class="down_form" style="width: 90%">
+<!-- header end -->
+<!-- header end -->
+<div class="main-warp">
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- Add New Supervisor -->
+            <sec:authorize access="hasRole('ROLE_CLIENT')">
+                <div class="admin-main">
                     <c:choose>
                         <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
-                            <h1 class="h1">Registration complete</h1>
-                            <hr>
-                            Your details are being verified. Would notify you once verification is complete.
+                            <h3>Registration complete</h3>
+                            <div class="no-approve">Your details are being verified. Would notify you once verification is complete.</div>
                         </c:when>
                         <c:otherwise>
-                            <h1 class="h1">Registration not complete</h1>
-                            <hr>
-                            We could not verify your details. Please contact us or update profile.
+                            <h3>Registration not complete</h3>
+                            <div class="no-approve">We could not verify your details. Please contact us or update profile.</div>
                         </c:otherwise>
                     </c:choose>
                 </div>
+                <!-- Add New Supervisor -->
+            </sec:authorize>
+        </div>
+    </div>
+    <!-- content end -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="static2/internal/img/footer-img.jpg" class="img100"/>
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
+                </div>
             </div>
-        </sec:authorize>
+        </div>
+
     </div>
+    <!-- Footer End -->
+
 </div>
-<div class="footer-tooth clearfix">
-    <div class="footer-tooth-middle"></div>
-    <div class="footer-tooth-right"></div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
-    </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
-</div>
+
+
 </body>
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 </html>
