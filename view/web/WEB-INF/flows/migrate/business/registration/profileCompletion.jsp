@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -18,12 +18,16 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="logo-left">
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+        </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <button onclick="myFunction()" class="dropbtn">
+                    <sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="menu-top-arrow">
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="#">Account</a>
                         <a href="#">Feedback</a>
@@ -48,122 +52,123 @@
         <div class="warp-inner">
             <!-- Complete profile -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
-            <div class="admin-main">
-                <form:form commandName="register.registerUser">
-                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <div class="admin-title">
-                    <h2>Please complete your profile</h2>
+                <div class="admin-main">
+                    <form:form commandName="register.registerUser">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <div class="admin-title">
+                            <h2>Please complete your profile</h2>
+                        </div>
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                            <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
+                            </div>
+                        </div>
+                        <div class="admin-content">
+                            <div class="add-new">
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
+                                        </div>
+                                        <div class="col-fields pT10 pB10">
+                                            <form:radiobutton path="gender" value="M" label="Male"/> &nbsp; &nbsp;
+                                            <form:radiobutton path="gender" value="F" label="Female"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${register.registerUser.phoneValidated}"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <c:if test="${!register.registerUser.emailValidated}">
+                                        <li>
+                                            <div class="alert-info">
+                                                <p>
+                                                    Your email address
+                                                    <a href="#" class="txt-red">${register.registerUser.email}</a>
+                                                    has not been validated. Please validated email address to continue merchant
+                                                    account registration.
+                                                </p>
+                                                <p>To resend account validation email, <a href="">click here.</a></p>
+                                            </div>
+                                        </li>
+                                    </c:if>
+
+                                    <c:if test="${!register.registerUser.phoneValidated}">
+                                        <li>
+                                            <div class="alert-info">
+                                                <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
+                                            </div>
+                                        </li>
+                                    </c:if>
+
+                                    <c:if test="${register.registerUser.emailValidated}">
+                                        <li class="mB0">
+                                            <div class="col-lable3"></div>
+                                            <div class="col-fields">
+                                                <input type="submit" value="NEXT" class="next-btn" name="_eventId_submit">
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </div>
+                        </div>
+                    </form:form>
                 </div>
-                <div class="error-box">
-                    <div class="error-txt">
-                        <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                        <ul>
-                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                            <li>${message.text}</li>
-                            </c:forEach>
-                        </ul>
-                        </c:if>
-                    </div>
-                </div>
-                <div class="admin-content">
-                    <div class="add-new">
-                        <ul class="list-form">
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
-                                </div>
-                                <div class="col-fields pT10 pB10">
-                                    <form:radiobutton path="gender" value="M" label="Male" /> &nbsp; &nbsp;
-                                    <form:radiobutton path="gender" value="F" label="Female" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${register.registerUser.phoneValidated}"/>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <c:if test="${!register.registerUser.emailValidated}">
-                            <li>
-                                <div class="alert-info">
-                                    <p>
-                                        Your email address <a href="#" class="txt-red">${register.registerUser.email}</a>
-                                        has not been validated. Please validated email address to continue merchant
-                                        account registration.
-                                    </p>
-                                    <p>To resend account validation email, <a href="">click here.</a></p>
-                                </div>
-                            </li>
-                            </c:if>
-
-                            <c:if test="${!register.registerUser.phoneValidated}">
-                            <li>
-                                <div class="alert-info">
-                                    <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
-                                </div>
-                            </li>
-                            </c:if>
-
-                            <c:if test="${register.registerUser.emailValidated}">
-                            <li class="mB0">
-                                <div class="col-lable3"></div>
-                                <div class="col-fields">
-                                    <input type="submit" value="NEXT" class="next-btn" name="_eventId_submit">
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            </c:if>
-                        </ul>
-                    </div>
-                </div>
-                </form:form>
-            </div>
-            <!-- Complete profile -->
+                <!-- Complete profile -->
             </sec:authorize>
         </div>
     </div>

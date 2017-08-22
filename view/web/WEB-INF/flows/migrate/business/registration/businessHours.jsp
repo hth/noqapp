@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -18,12 +18,16 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="logo-left">
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+        </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <button onclick="myFunction()" class="dropbtn">
+                    <sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="menu-top-arrow">
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="#">Account</a>
                         <a href="#">Feedback</a>
@@ -48,94 +52,98 @@
         <div class="warp-inner">
             <!-- Add New Supervisor -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
-            <div class="admin-main">
-                <form:form commandName="register.registerBusiness">
-                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <div class="admin-title">
-                    <h2>Add Store Hours For Each Day</h2>
-                </div>
-                <div class="error-box">
-                    <div class="error-txt">
-                        <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                        <ul>
-                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                            <li>${message.text}</li>
-                            </c:forEach>
-                        </ul>
-                        </c:if>
-                    </div>
-                </div>
-                <div class="admin-content">
-                    <div class="full">
-
-                        <ul class="col2-grid">
-                            <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
-                            <li>
-                                <h4><strong><c:out value="${businessHour.dayOfWeek}" /></strong></h4>
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td width="39%" class="lable-td">
-                                            <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
-                                        </td>
-                                        <td width="61%">
-                                            <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" />
-                                            <span>(As 1800 for 6:00 PM)</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="lable-td">
-                                            <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">Store Start Time</form:label>
-                                        </td>
-                                        <td>
-                                            <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" />
-                                            <span>(As 1000 for 10:00 AM)</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="lable-td">
-                                            <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
-                                        </td>
-                                        <td>
-                                            <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" />
-                                            <span>(As 1800 for 6:00 PM)</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="lable-td">
-                                            <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">Store Close Time</form:label>
-                                        </td>
-                                        <td>
-                                            <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" />
-                                            <span>(As 1800 for 6:00 PM)</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="lable-td pT0">Store Closed</td>
-                                        <td><input name="" type="checkbox" value=""/></td>
-                                    </tr>
-                                </table>
-                            </li>
-                            </c:forEach>
-
-                            <div class="clearFix"></div>
-                        </ul>
-
-                        <div class="btn-hours">
-                            <c:if test="${register.registerUser.emailValidated}">
-                            <div class="left-btn"><input name="_eventId_submit" class="next-btn" value="NEXT" type="submit"></div>
-                            </c:if>
-                            <div class="right-btn"><input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit"></div>
-                            <div class="clearFix"></div>
+                <div class="admin-main">
+                    <form:form commandName="register.registerBusiness">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <div class="admin-title">
+                            <h2>Add Store Hours For Each Day</h2>
                         </div>
-                        <div class="clearFix"></div>
-                    </div>
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                            <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
+                            </div>
+                        </div>
+                        <div class="admin-content">
+                            <div class="full">
+
+                                <ul class="col2-grid">
+                                    <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
+                                        <li>
+                                            <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td width="39%" class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
+                                                    </td>
+                                                    <td width="61%">
+                                                        <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">Store Start Time</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1000 for 10:00 AM)</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">Store Close Time</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="lable-td pT0">Store Closed</td>
+                                                    <td><input name="" type="checkbox" value=""/></td>
+                                                </tr>
+                                            </table>
+                                        </li>
+                                    </c:forEach>
+
+                                    <div class="clearFix"></div>
+                                </ul>
+
+                                <div class="btn-hours">
+                                    <c:if test="${register.registerUser.emailValidated}">
+                                        <div class="left-btn">
+                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+                                        </div>
+                                    </c:if>
+                                    <div class="right-btn">
+                                        <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </div>
+                                <div class="clearFix"></div>
+                            </div>
+                        </div>
+                    </form:form>
                 </div>
-                </form:form>
-            </div>
-            <!-- Add New Supervisor -->
+                <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>

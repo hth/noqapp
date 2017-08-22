@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -18,12 +18,16 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="logo-left">
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+        </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <button onclick="myFunction()" class="dropbtn">
+                    <sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="menu-top-arrow">
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="#">Account</a>
                         <a href="#">Feedback</a>
@@ -48,150 +52,150 @@
         <div class="warp-inner">
             <!-- Add New Supervisor -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
-            <div class="admin-main">
-                <form:form commandName="register.registerBusiness">
-                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <div class="admin-title">
-                    <h2>Add Business Details</h2>
-                </div>
-                <div class="error-box">
-                    <div class="error-txt">
-                        <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                        <ul>
-                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                            <li>${message.text}</li>
-                            </c:forEach>
-                        </ul>
-                        </c:if>
-                    </div>
-                </div>
-                <div class="admin-content">
-                    <div class="add-new">
-
-                        <ul class="list-form">
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="name" cssErrorClass="lb_error">Business Name</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="businessTypes" cssErrorClass="lb_error">Business Type</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
-                                        <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" />
-                                    </form:select>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="address" cssErrorClass="lb_error">Business Address</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="phone" cssErrorClass="lb_error">Business Phone</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:checkbox path="multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
-                                    <span style="display:block; font-size:14px;">(Select for franchise or stores at multiple locations)</span>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                        </ul>
-
-                        <div id="storeDetail">
-                        <div class="admin-title pT30">
-                            <h2>Add Store details</h2>
+                <div class="admin-main">
+                    <form:form commandName="register.registerBusiness">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <div class="admin-title">
+                            <h2>Add Business Details</h2>
                         </div>
-                        <ul class="list-form">
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="businessSameAsStore" cssErrorClass="lb_error">Same as Business Address</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:checkbox path="businessSameAsStore" size="5" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="displayName" cssErrorClass="lb_error">Queue Name</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="displayName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:input path="phoneStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-
-                            <li>
-                                <div class="col-lable3">
-                                    <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
-                                </div>
-                                <div class="col-fields">
-                                    <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
-                                    <span style="display:block; font-size:14px;">(Will limit joining this queue to registered users)</span>
-                                </div>
-                                <div class="clearFix"></div>
-                            </li>
-                        </ul>
-                        </div>              
-
-                        <div class="col-lable3"></div>
-                        <div class="col-fields">
-                            <c:if test="${register.registerUser.emailValidated}">
-                            <div class="left-btn">
-                                <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                            <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
                             </div>
-                            </c:if>
-                            <div class="right-btn">
-                                <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
-                            </div>
-                            <div class="clearFix"></div>
                         </div>
-                        <div class="clearFix"></div>
-                    </div>
+                        <div class="admin-content">
+                            <div class="add-new">
+
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="name" cssErrorClass="lb_error">Business Name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="businessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="address" cssErrorClass="lb_error">Business Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="phone" cssErrorClass="lb_error">Business Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(Select for franchise or stores at multiple locations)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                </ul>
+
+                                <div id="storeDetail">
+                                    <div class="admin-title pT30">
+                                        <h2>Add Store details</h2>
+                                    </div>
+                                    <ul class="list-form">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="businessSameAsStore" cssErrorClass="lb_error">Same as Business Address</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:checkbox path="businessSameAsStore" size="5" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="displayName" cssErrorClass="lb_error">Queue Name</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="displayName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="phoneStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                                <span style="display:block; font-size:14px;">(Will limit joining this queue to registered users)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-lable3"></div>
+                                <div class="col-fields">
+                                    <c:if test="${register.registerUser.emailValidated}">
+                                        <div class="left-btn">
+                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+                                        </div>
+                                    </c:if>
+                                    <div class="right-btn">
+                                        <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </div>
+                                <div class="clearFix"></div>
+                            </div>
+                        </div>
+                    </form:form>
                 </div>
-                </form:form>
-            </div>
-            <!-- Add New Supervisor -->
+                <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>

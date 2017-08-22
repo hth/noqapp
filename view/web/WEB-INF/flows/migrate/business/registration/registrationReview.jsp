@@ -46,219 +46,225 @@
 <!-- header end -->
 <!-- header end -->
 <div class="main-warp">
-<!-- content -->
-<div class="content">
-<div class="warp-inner">
-<!-- Add New Supervisor -->
-<sec:authorize access="hasRole('ROLE_CLIENT')">
-<div class="admin-main">
-<form:form commandName="register">
-<input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-<div class="admin-title">
-    <h2>Confirm your personal and business details</h2>
-</div>
-<div class="admin-content">
-    <div class="add-new">
-        <ul class="list-form">
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerUser.firstName" cssErrorClass="lb_error">First name</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerUser.firstName" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- Add New Supervisor -->
+            <sec:authorize access="hasRole('ROLE_CLIENT')">
+                <div class="admin-main">
+                    <form:form commandName="register">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <div class="admin-title">
+                            <h2>Confirm your personal and business details</h2>
+                        </div>
+                        <div class="admin-content">
+                            <div class="add-new">
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerUser.firstName" cssErrorClass="lb_error">First name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerUser.firstName" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
 
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerUser.lastName" cssErrorClass="lb_error">Last name</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerUser.lastName" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerUser.lastName" cssErrorClass="lb_error">Last name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerUser.lastName" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
 
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerUser.address" cssErrorClass="lb_error">Your Address</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:textarea path="registerUser.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerUser.address" cssErrorClass="lb_error">Your Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="registerUser.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
 
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerUser.phone" cssErrorClass="lb_error">Your Phone</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerUser.phone" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.name" cssErrorClass="lb_error">Business Name</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerBusiness.name" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.businessTypes" cssErrorClass="lb_error">Business Type</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:select path="registerBusiness.businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
-                        <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
-                    </form:select>
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.address" cssErrorClass="lb_error">Business Address</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:textarea path="registerBusiness.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerBusiness.phone" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerUser.phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerUser.phone" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.name" cssErrorClass="lb_error">Business Name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.name" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.businessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="registerBusiness.businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.address" cssErrorClass="lb_error">Business Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="registerBusiness.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.phone" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
 
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:checkbox path="registerBusiness.multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true" />
-                    <c:choose>
-                        <c:when test="${register.registerBusiness.multiStore eq false}">
-                            <span style="display:block; font-size:14px;">You have answered 'NO'. You can always change this later.</span>
-                        </c:when>
-                        <c:otherwise>
-                            <span style="display:block; font-size:14px;">You have answered 'YES'</span>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div class="clearFix"></div>
-            </li>
-        </ul>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="registerBusiness.multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"/>
+                                            <c:choose>
+                                                <c:when test="${register.registerBusiness.multiStore eq false}">
+                                                    <span style="display:block; font-size:14px;">You have answered 'NO'. You can always change this later.</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:14px;">You have answered 'YES'</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                </ul>
 
-        <div id="storeDetail">
-        <div class="admin-title pT30">
-            <h2>Add Store details</h2>
+                                <div id="storeDetail">
+                                    <div class="admin-title pT30">
+                                        <h2>Add Store details</h2>
+                                    </div>
+                                    <ul class="list-form">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.displayName" cssErrorClass="lb_error">Queue Name</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="registerBusiness.displayName" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.addressStore" cssErrorClass="lb_error">Store Address</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:textarea path="registerBusiness.addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="registerBusiness.phoneStore" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <ul class="col2-grid">
+                                        <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
+                                            <li>
+                                                <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td>Token Available Time</td>
+                                                        <td><c:out value="${businessHour.tokenAvailableFrom}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Store Start Time</td>
+                                                        <td><c:out value="${businessHour.startHourStore}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Token Not Available After</td>
+                                                        <td><c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Store Close Time</td>
+                                                        <td><c:out value="${businessHour.endHourStore}"/></td>
+                                                    </tr>
+                                                </table>
+                                            </li>
+                                        </c:forEach>
+
+                                        <div class="clearFix"></div>
+                                    </ul>
+
+                                    <div class="btn-hours">
+                                        <c:if test="${register.registerUser.emailValidated}">
+                                            <div class="first-btn">
+                                                <input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">
+                                            </div>
+                                        </c:if>
+                                        <div class="center-btn">
+                                            <input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">
+                                        </div>
+                                        <div class="last-btn">
+                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form:form>
+                </div>
+                <!-- Add New Supervisor -->
+            </sec:authorize>
         </div>
-        <ul class="list-form">
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.displayName" cssErrorClass="lb_error">Queue Name</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerBusiness.displayName" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.addressStore" cssErrorClass="lb_error">Store Address</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:textarea path="registerBusiness.addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
-            <li>
-                <div class="col-lable3">
-                    <form:label path="registerBusiness.phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
-                </div>
-                <div class="col-fields">
-                    <form:input path="registerBusiness.phoneStore" cssClass="form-field-admin" readonly="true" />
-                </div>
-                <div class="clearFix"></div>
-            </li>
+    </div>
+    <!-- content end -->
 
-        </ul>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="static2/internal/img/footer-img.jpg" class="img100"/>
         </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
 
-        <div>
-            <ul class="col2-grid">
-                <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
-                <li>
-                    <h4><strong><c:out value="${businessHour.dayOfWeek}" /></strong></h4>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td>Token Available Time</td>
-                            <td><c:out value="${businessHour.tokenAvailableFrom}" /></td>
-                        </tr>
-                        <tr>
-                            <td>Store Start Time</td>
-                            <td><c:out value="${businessHour.startHourStore}" /></td>
-                        </tr>
-                        <tr>
-                            <td>Token Not Available After</td>
-                            <td><c:out value="${businessHour.tokenNotAvailableFrom}" /></td>
-                        </tr>
-                        <tr>
-                            <td>Store Close Time</td>
-                            <td><c:out value="${businessHour.endHourStore}" /></td>
-                        </tr>
-                    </table>
-                </li>
-                </c:forEach>
-
-                <div class="clearFix"></div>
-            </ul>
-
-            <div class="btn-hours">
-                <c:if test="${register.registerUser.emailValidated}">
-                <div class="first-btn"><input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit"></div>
-                </c:if>
-                <div class="center-btn"><input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit"></div>
-                <div class="last-btn"><input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit"></div>
-                <div class="clearFix"></div>
+                    <div class="clearFix"></div>
+                </div>
             </div>
         </div>
+
     </div>
-</div>
-</form:form>
-</div>
-<!-- Add New Supervisor -->
-</sec:authorize>
-</div>
-</div>
-<!-- content end -->
-
-
-<!-- Footer -->
-<div class="footer">
-    <div class="warp-inner ">
-        <img src="static2/internal/img/footer-img.jpg" class="img100"/>
-    </div>
-    <div class="footer-dark">
-        <div class="footer4">
-            <div class="warp-inner">
-                <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
-
-                <div class="clearFix"></div>
-            </div>
-        </div>
-    </div>
-
-</div>
-<!-- Footer End -->
+    <!-- Footer End -->
 
 </div>
 
