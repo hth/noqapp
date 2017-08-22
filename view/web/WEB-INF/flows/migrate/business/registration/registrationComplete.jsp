@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +26,9 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
+                    <h1>
+                        <img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a>
+                    </h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -42,13 +44,13 @@
                 <c:choose>
                     <c:when test="${!validated}">
                         <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
+                            <sec:authentication property="principal.username"/>
                             <span class="notification-counter">1</span>
                         </a>
                     </c:when>
                     <c:otherwise>
                         <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
+                            <sec:authentication property="principal.username"/>
                         </a>
                     </c:otherwise>
                 </c:choose>
@@ -63,22 +65,22 @@
     </div>
     <div class="rightside-content">
         <sec:authorize access="hasRole('ROLE_CLIENT')">
-        <div class="business_reg">
-            <div class="down_form" style="width: 90%">
-                <c:choose>
-                    <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
-                        <h1 class="h1">Registration complete</h1>
-                        <hr>
-                        Your details are being verified. Would notify you once verification is complete.
-                    </c:when>
-                    <c:otherwise>
-                        <h1 class="h1">Registration not complete</h1>
-                        <hr>
-                        We could not verify your details. Please contact us or update profile.
-                    </c:otherwise>
-                </c:choose>
+            <div class="business_reg">
+                <div class="down_form" style="width: 90%">
+                    <c:choose>
+                        <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
+                            <h1 class="h1">Registration complete</h1>
+                            <hr>
+                            Your details are being verified. Would notify you once verification is complete.
+                        </c:when>
+                        <c:otherwise>
+                            <h1 class="h1">Registration not complete</h1>
+                            <hr>
+                            We could not verify your details. Please contact us or update profile.
+                        </c:otherwise>
+                    </c:choose>
+                </div>
             </div>
-        </div>
         </sec:authorize>
     </div>
 </div>

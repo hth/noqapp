@@ -189,15 +189,41 @@ public class UserFlowValidator {
 
                     if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
                         /* Reset to raw format before updating to new address and countryShortName. */
-                        String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-                        registerUser.setPhone(updatedPhone);
+                        try {
+                            if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
+                                messageContext.addMessage(
+                                        new MessageBuilder()
+                                                .error()
+                                                .source("registerUser.phone")
+                                                .defaultText("Your Phone number cannot be empty")
+                                                .build());
+                                status = "failure";
+                                return status;
+                            } else {
+                                String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+                                registerUser.setPhone(updatedPhone);
+                            }
+                        } catch (Exception e) {
+                            LOG.error("Failed parsing phone number reason={}", e.getLocalizedMessage(), e);
+                            messageContext.addMessage(
+                                    new MessageBuilder()
+                                            .error()
+                                            .source("registerUser.phone")
+                                            .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
+                                            .build());
+                            status = "failure";
+                            return status;
+                        }
 
-                        registerUser.setAddress(decodedAddress.getFormattedAddress());
-                        registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+                        /* No need to call Lat and Lng when validation has already failed. */
+                        if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+                            registerUser.setAddress(decodedAddress.getFormattedAddress());
+                            registerUser.setCountryShortName(decodedAddress.getCountryShortName());
 
-                        LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-                        String timeZone = externalService.findTimeZone(latLng);
-                        registerUser.setTimeZone(timeZone);
+                            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                            String timeZone = externalService.findTimeZone(latLng);
+                            registerUser.setTimeZone(timeZone);
+                        }
                     }
                 }
             } else {
