@@ -1,160 +1,198 @@
 <%@ include file="../../../../jsp/include.jsp"%>
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <meta charset="utf-8">
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
 </head>
+
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
+
+<!-- header -->
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="top-menu-right2">
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="dropdown-inner">
+                        <a href="#">Account</a>
+                        <a href="#">Feedback</a>
+                        <a href="#">Sign In</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
         </div>
+
+        <div class="clearFix"></div>
     </div>
 </div>
-<header>
-</header>
-<div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_CLIENT')">
-        <div class="business_reg">
-            <div class="down_form" style="width: 90%">
+<!-- header end -->
+<!-- header end -->
+<div class="main-warp">
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- Complete profile -->
+            <sec:authorize access="hasRole('ROLE_CLIENT')">
+            <div class="admin-main">
                 <form:form commandName="register.registerUser">
-                    <h1 class="h1">Please complete your profile</h1>
-                    <hr>
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-
-                    <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                <div class="admin-title">
+                    <h2>Please complete your profile</h2>
+                </div>
+                <div class="error-box">
+                    <div class="error-txt">
+                        <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                         <ul>
                             <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
                             <li>${message.text}</li>
                             </c:forEach>
                         </ul>
-                    </div>
-                    </c:if>
-
-                    <div class="row_field">
-                        <form:label path="firstName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">First name</form:label>
-                        <form:input path="firstName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="lastName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Last name</form:label>
-                        <form:input path="lastName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="birthday" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Date of Birth</form:label>
-                        <form:input path="birthday" cssClass="name_txt" cssErrorClass="user error" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="gender" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Gender</form:label>
-                        <form:input path="gender" cssClass="name_txt" cssErrorClass="user error" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="address" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Address</form:label>
-                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="phone" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                        <form:input path="phone" size="20" cssClass="name_txt" readonly="${register.registerUser.phoneValidated}"/>
-                    </div>
-
-
-                    <c:if test="${!register.registerUser.emailValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                        Your email address <span style="color: red; font-weight: bold">${register.registerUser.email}</span>
-                        has not been validated. Please validated email address to continue merchant account registration.
-                        </p>
-                        <p style="padding-top: 10px; padding-bottom: 20px;">
-                        To resend account validation email, click here.
-                        </p>
-                    </div>
-                    </c:if>
-
-                    <c:if test="${!register.registerUser.phoneValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                            Your phone number has not been validated. Login through NoQApp to validate phone using OTP.
-                        </p>
-                    </div>
-                    </c:if>
-
-                    <div class="full">
-                        <c:if test="${register.registerUser.emailValidated}">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
                     </div>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field" />
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
+                                </div>
+                                <div class="col-fields pT10 pB10">
+                                    <form:radiobutton path="gender" value="M" label="Male" /> &nbsp; &nbsp;
+                                    <form:radiobutton path="gender" value="F" label="Female" />
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${register.registerUser.phoneValidated}"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <c:if test="${!register.registerUser.emailValidated}">
+                            <li>
+                                <div class="alert-info">
+                                    <p>
+                                        Your email address <a href="#" class="txt-red">${register.registerUser.email}</a>
+                                        has not been validated. Please validated email address to continue merchant
+                                        account registration.
+                                    </p>
+                                    <p>To resend account validation email, <a href="">click here.</a></p>
+                                </div>
+                            </li>
+                            </c:if>
+
+                            <c:if test="${!register.registerUser.phoneValidated}">
+                            <li>
+                                <div class="alert-info">
+                                    <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
+                                </div>
+                            </li>
+                            </c:if>
+
+                            <c:if test="${register.registerUser.emailValidated}">
+                            <li class="mB0">
+                                <div class="col-lable3"></div>
+                                <div class="col-fields">
+                                    <input type="submit" value="NEXT" class="next-btn" name="_eventId_submit">
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
                 </form:form>
             </div>
+            <!-- Complete profile -->
+            </sec:authorize>
         </div>
-        </sec:authorize>
     </div>
-</div>
-<div class="footer-tooth clearfix">
-    <div class="footer-tooth-middle"></div>
-    <div class="footer-tooth-right"></div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
+    <!-- content end -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
+    <!-- Footer End -->
+
 </div>
+
+
 </body>
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+
 </html>

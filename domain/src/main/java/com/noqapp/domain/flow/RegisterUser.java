@@ -144,6 +144,12 @@ public class RegisterUser implements Serializable {
         return Formatter.phoneCleanup(phone);
     }
 
+    /* Return phone as is. */
+    @Transient
+    public String getPhoneAsIs() {
+        return phone;
+    }
+
     @Transient
     public String getPhoneWithCountryCode() {
         Assert.notNull(countryShortName, "Country code cannot be null");
