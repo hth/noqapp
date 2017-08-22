@@ -205,7 +205,7 @@
     <!-- Footer -->
     <div class="footer">
         <div class="warp-inner ">
-            <img src="static2/internal/img/footer-img.jpg" class="img100"/>
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
         </div>
         <div class="footer-dark">
             <div class="footer4">
