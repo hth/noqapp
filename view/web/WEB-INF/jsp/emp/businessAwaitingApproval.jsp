@@ -1,155 +1,202 @@
 <%@ include file="../include.jsp"%>
-<!DOCTYPE html>
-<html lang="en" ng-app="scroll" ng-controller="Main">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <meta charset="utf-8">
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel='stylesheet' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.print.css' media='print'/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.0/highcharts.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
 </head>
+
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1><a href="/access/landing.htm"><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/>Receiptofi</a></h1>
+
+<!-- header -->
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="top-menu-right2">
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="dropdown-inner">
+                        <a href="#">Account</a>
+                        <a href="#">Feedback</a>
+                        <a href="#">Sign In</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
-                        </a>
-                    </c:otherwise>
-                </c:choose>
+        </div>
+
+        <div class="clearFix"></div>
+    </div>
+</div>
+<!-- header end -->
+<!-- header end -->
+<div class="main-warp">
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <sec:authorize access="hasRole('ROLE_SUPERVISOR')">
+            <!-- Add New Supervisor -->
+            <div class="admin-main">
+                <div class="admin-title">
+                    <h2>Confirm personal and business details</h2>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <form:form method="POST" action="./approval.htm" modelAttribute="businessAwaitingApprovalForm">
+                            <form:hidden path="businessUser.id"/>
+                            <ul class="list-form">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="userProfile.firstName" cssErrorClass="lb_error">First name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="userProfile.firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="userProfile.lastName" cssErrorClass="lb_error">Last name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="userProfile.lastName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="userProfile.address" cssErrorClass="lb_error">Your Address</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:textarea path="userProfile.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="userProfile.phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="userProfile.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="businessUser.bizName.businessName" cssErrorClass="lb_error">Business Name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="businessUser.bizName.businessName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="businessUser.bizName.businessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="businessUser.bizName.businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                            <form:options items="${businessAwaitingApprovalForm.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
+                                        </form:select>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="businessUser.bizName.address" cssErrorClass="lb_error">Business Address</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:textarea path="businessUser.bizName.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="businessUser.bizName.phone" cssErrorClass="lb_error">Business Phone</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="businessUser.bizName.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+
+                                <li class="mB0">
+                                    <div class="col-lable3"></div>
+                                    <c:choose>
+                                    <c:when test="${businessAwaitingApprovalForm.businessUser.businessUserRegistrationStatus eq 'C'}">
+                                    <div class="col-fields">
+                                        <div class="left-btn">
+                                            <input type="submit" value="APPROVE" class="next-btn" name="business-user-approve">
+                                        </div>
+                                        <div class="right-btn">
+                                            <input type="submit" value="DECLINE" class="cancel-btn" name="business-user-decline">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <div class="col-fields">
+                                        <div class="right-btn">
+                                        <input type="submit" value="CANCEL" class="cancel-btn" name="_eventId_cancel"
+                                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </div>
+                                    </c:otherwise>
+                                    </c:choose>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+                        </form:form>
+                    </div>
+                </div>
+            </div>
+            <!-- Add New Supervisor -->
+            </sec:authorize>
+
+        </div>
+    </div>
+    <!-- content end -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
+                </div>
             </div>
         </div>
+
     </div>
+    <!-- Footer End -->
+
 </div>
 
-<header>
-</header>
-<div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-    <sec:authorize access="hasRole('ROLE_SUPERVISOR')">
-    <div class="business_reg">
-        <div class="down_form" style="width: 90%">
-            <form:form method="POST" action="./approval.htm" modelAttribute="businessAwaitingApprovalForm">
-                <form:hidden path="businessUser.id"/>
-                <h1 class="h1">Confirm personal and business details</h1>
-                <hr>
-                <div class="row_field">
-                    <form:label path="userProfile.firstName" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">First name</form:label>
-                    <form:input path="userProfile.firstName" size="20" cssClass="name_txt" readonly="true" />
-                </div>
-                <div class="row_field">
-                    <form:label path="userProfile.lastName" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Last name</form:label>
-                    <form:input path="userProfile.lastName" size="20" cssClass="name_txt" readonly="true" />
-                </div>
-                <div class="row_field">
-                    <form:label path="userProfile.address" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Your Address</form:label>
-                    <form:input path="userProfile.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
-                </div>
-                <div class="row_field">
-                    <form:label path="userProfile.phone" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                    <form:input path="userProfile.phone" size="20" cssClass="name_txt" readonly="true" />
-                </div>
-                <div class="row_field">
-                    <form:label path="businessUser.bizName.businessName" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Business Name</form:label>
-                    <form:input path="businessUser.bizName.businessName" size="20" cssClass="name_txt" readonly="true" />
-                </div>
-                <div class="row_field">
-                    <form:label path="businessUser.bizName.businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Business Type</form:label>
 
-                    <form:select path="businessUser.bizName.businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
-                        <form:options items="${businessAwaitingApprovalForm.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
-                    </form:select>
-                </div>
-                <div class="row_field">
-                    <form:label path="businessUser.bizName.address" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Business Address</form:label>
-                    <form:input path="businessUser.bizName.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
-                </div>
-                <div class="row_field">
-                    <form:label path="businessUser.bizName.phone" cssClass="profile_label" cssStyle="width: 145px;"
-                            cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                    <form:input path="businessUser.bizName.phone" size="20" cssClass="name_txt" readonly="true" />
-                </div>
-
-                <c:choose>
-                    <c:when test="${businessAwaitingApprovalForm.businessUser.businessUserRegistrationStatus eq 'C'}">
-                        <input type="submit" value="APPROVE" class="read_btn" name="business-user-approve"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="DECLINE" class="read_btn" name="business-user-decline"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </c:when>
-                    <c:otherwise>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                    </c:otherwise>
-                </c:choose>
-            </form:form>
-        </div>
-    </div>
-    </sec:authorize>
-    </div>
-    <div class="footer-tooth clearfix">
-        <div class="footer-tooth-middle"></div>
-        <div class="footer-tooth-right"></div>
-    </div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
-    </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
-</div>
 </body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+
 </html>
