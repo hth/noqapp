@@ -227,13 +227,13 @@ span.become-btn a:hover{background:#1c1c1c;}
     min-width: 160px;
     z-index: 1; margin:3px 0 0 -100px; left:0;
 }
-.dropdown-inner{ background-color: #222;}
+.dropdown-inner{ background-color: #222; padding:4px 0 8px 0}
 
 /* Links inside the dropdown */
 .dropdown-content{ color:#fff}
 .dropdown-content a {
     color: #fff;
-    padding: 8px 10px;
+    padding: 5px 10px;
     text-decoration: none; font-size:15px;
     display: block;
 }
@@ -245,7 +245,7 @@ span.become-btn a:hover{background:#1c1c1c;}
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;} 
 
-.button-txt{ border:0; background:none; border-radius:0; text-align:left; width:100%; display:block;  color: #fff;   padding: 8px 10px; cursor:pointer; text-decoration: none; font-size:15px;}
+.button-txt{ border:0; background:none; border-radius:0; text-align:left; width:100%; display:block;  color: #fff; font-family: 'Roboto', sans-serif; font-weight:400; padding: 5px 10px; cursor:pointer; text-decoration: none; font-size:15px;}
 .button-txt:hover{color:#ccc}
 
 .button-txt-black{ border:0; background:none; border-radius:0; width:100%; text-align:left;  display:block;  color: #222;  padding: 8px 10px; cursor:pointer; text-decoration: none; font-size:15px;}
@@ -368,7 +368,7 @@ ul.col3 li{ margin:0 1.5%; padding:0 ; float:left; display:block; width:30.33%; 
 .right-forgot a:hover{ color:#ff1c79}
 
 .form-style{ width:500px; margin:0 auto;}
-.form-fe{font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 0; font-size:16px; margin:5px 0 10px 0; border:1px solid #CCC}
+.form-fe{font-family: 'Roboto', font-weight:300; sans-serif; width:100%; padding:10px 0; font-size:16px; margin:5px 0 10px 0; border:1px solid #CCC}
 .intl-tel-input { width:100%;}
 input.form-btn{ border:0; width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
 input.form-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
@@ -434,6 +434,7 @@ ul.enter-code-box li{ margin:0 4px; padding:10px 0; float:left; width:15%; displ
 .error-txt li{ margin:0; padding:0; line-height:25px; font-size:14px; text-align:center; list-style: none}
 
 .error-field{border:1px solid #f50606 !important}
+.lable-error{ color:#f50606 !important}
 
 .alert-info{ padding:15px; background:#fff0f0; margin:25px auto 15px }
 .alert-info p{ margin:12px 0; font-size:14px;}
@@ -464,9 +465,8 @@ td.lable-td{ padding-top:8px}
 .list-form ul{ margin:0; padding:0}
 .list-form li{ margin:0 0 10px 0; padding:0 0 0px 0; list-style: none; display:block; clear:both}
 
-.col-lable3{ float:left; width:30%; text-align:right; padding:9px 0 0 0; color:#222}
-.col-fields{ float:right; width:65%; }
-.lb_error { color: red !important;}
+.col-lable3{ float:left; width:25%; margin:0 2% 0px 0; text-align:right; padding:9px 0 0 0; color:#222}
+.col-fields{ float:left; width:65%; }
 
 .form-field-select{resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
 .form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
@@ -497,10 +497,10 @@ input.cancel-btn:hover{ background:#000 url(../img/arrow.png) 98% 10px no-repeat
 .store h3 span{ color:#ff1c79; font-weight:500}
 
 
-a.add-btn{border:0; border:1px solid #ff217c; background:#ff217c; text-transform: uppercase;  margin:15px 0 0px 0; padding:6px 10px; font-size: 14px; color:#fff; text-align:left; cursor: pointer; display:inline-block}
+a.add-btn{border:0; border:1px solid #ff217c; background:#ff217c; text-transform: uppercase;  margin:15px 0 0px 0; padding:4px 10px; font-size: 14px; color:#fff; text-align:left; cursor: pointer; display:inline-block}
 a.add-btn:hover{ background:#fc0a6d;}
 
-.add-btn{border:0; border:1px solid #ff217c; background:#ff217c; text-transform: uppercase;  margin:15px 0 0px 0; padding:6px 10px; font-size: 14px; color:#fff; text-align:left; cursor: pointer;}
+.add-btn{  border:1px solid #ff217c; background:#ff217c; border-radius:0; font-weight:400; text-transform: uppercase;  margin:15px 0 0px 0; padding:6px 10px; font-size: 14px; color:#fff; text-align:left; cursor: pointer;}
 .add-btn:hover{ background:#fc0a6d;}
 
 .add-store{}
