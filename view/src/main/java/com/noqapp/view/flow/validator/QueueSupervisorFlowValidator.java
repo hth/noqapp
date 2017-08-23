@@ -34,7 +34,7 @@ public class QueueSupervisorFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
+                            .source("phoneNumber")
                             .defaultText("Phone Number cannot be empty")
                             .build());
             status = "failure";
@@ -42,7 +42,7 @@ public class QueueSupervisorFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
+                            .source("phoneNumber")
                             .defaultText("Phone Number " + inviteQueueSupervisor.getPhoneNumber() + " is not valid")
                             .build());
             status = "failure";
@@ -52,7 +52,7 @@ public class QueueSupervisorFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("inviteQueueSupervisor.inviteeCode")
+                            .source("inviteeCode")
                             .defaultText("Invitee code cannot be empty")
                             .build());
             status = "failure";

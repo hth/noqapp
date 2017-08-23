@@ -74,18 +74,18 @@
                             <div class="add-new">
                                 <ul class="list-form">
                                     <li>
-                                        <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="profile_label lb_error">Phone Number</form:label></div>
+                                        <div class="col-lable3"><form:label path="phoneNumber" cssErrorClass="lb_error">Phone Number</form:label></div>
                                         <div class="col-fields">
-                                            <form:input path="phoneNumber" cssClass="form-fe" readonly="true" />
+                                            <form:input path="phoneNumber" cssClass="form-fe" cssErrorClass="form-fe lb_error" readonly="true" />
                                             <span class="info-txt">(Must be a registered user)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
 
                                     <li>
-                                        <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="profile_label lb_error">Invitee Code</form:label></div>
+                                        <div class="col-lable3"><form:label path="inviteeCode" cssErrorClass="lb_error">Invitee Code</form:label></div>
                                         <div class="col-fields">
-                                            <form:input path="inviteeCode" cssClass="form-field-admin" readonly="true" />
+                                            <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true" />
                                             <span class="info-txt">(Invitee code of Phone Number above found on Invite screen of this user)</span>
                                         </div>
                                         <div class="clearFix"></div>
