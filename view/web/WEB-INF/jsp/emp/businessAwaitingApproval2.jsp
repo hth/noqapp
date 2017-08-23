@@ -59,58 +59,58 @@
                             <ul class="list-form">
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.firstName" cssErrorClass="profile_label lb_error">First name</form:label>
+                                        <form:label path="userProfile.firstName" cssErrorClass="lb_error">First name</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="userProfile.firstName" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="userProfile.firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
 
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.lastName" cssErrorClass="profile_label lb_error">Last name</form:label>
+                                        <form:label path="userProfile.lastName" cssErrorClass="lb_error">Last name</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="userProfile.lastName" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="userProfile.lastName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
 
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.address" cssErrorClass="profile_label lb_error">Your Address</form:label>
+                                        <form:label path="userProfile.address" cssErrorClass="lb_error">Your Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="userProfile.address" cols="" rows="3" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:textarea path="userProfile.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
 
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.phone" cssErrorClass="profile_label lb_error">Your Phone</form:label>
+                                        <form:label path="userProfile.phone" cssErrorClass="lb_error">Your Phone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="userProfile.phone" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="userProfile.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="businessUser.bizName.businessName" cssErrorClass="profile_label lb_error">Business Name</form:label>
+                                        <form:label path="businessUser.bizName.businessName" cssErrorClass="lb_error">Business Name</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="businessUser.bizName.businessName" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="businessUser.bizName.businessName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="businessUser.bizName.businessTypes" cssErrorClass="profile_label lb_error">Business Type</form:label>
+                                        <form:label path="businessUser.bizName.businessTypes" cssErrorClass="lb_error">Business Type</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="businessUser.bizName.businessTypes" cssClass="form-field-select" multiple="true">
+                                        <form:select path="businessUser.bizName.businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
                                             <form:options items="${businessAwaitingApprovalForm.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
                                         </form:select>
                                     </div>
@@ -118,19 +118,19 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="businessUser.bizName.address" cssErrorClass="profile_label lb_error">Business Name</form:label>
+                                        <form:label path="businessUser.bizName.address" cssErrorClass="lb_error">Business Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="businessUser.bizName.address" cols="" rows="3" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:textarea path="businessUser.bizName.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="businessUser.bizName.phone" cssErrorClass="profile_label lb_error">Business Phone</form:label>
+                                        <form:label path="businessUser.bizName.phone" cssErrorClass="lb_error">Business Phone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="businessUser.bizName.phone" cssClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="businessUser.bizName.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
