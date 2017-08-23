@@ -239,7 +239,7 @@ public class BusinessFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerBusiness.startHourStore")
+                                .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
                                 .defaultText("Specify Store Start Time for "
                                         + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
@@ -250,7 +250,7 @@ public class BusinessFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerBusiness.endHourStore")
+                                .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
                                 .defaultText("Specify Store Close Time for "
                                         + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                 .build());
@@ -261,7 +261,7 @@ public class BusinessFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerBusiness.tokenAvailableFrom")
+                                .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom"    )
                                 .defaultText("Specify Token Available Time for "
                                         + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                         + ". This is the time from when Token would be available to users.")
