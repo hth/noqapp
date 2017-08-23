@@ -235,38 +235,40 @@ public class BusinessFlowValidator {
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
 
         for (BusinessHour businessHour : businessHours) {
-            if (businessHour.getStartHourStore() == 0) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.startHourStore")
-                                .defaultText("Specify Store Start Time for "
-                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
-                                .build());
-                status = "failure";
-            }
+            if (!businessHour.isDayClosed()) {
+                if (businessHour.getStartHourStore() == 0) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                                    .defaultText("Specify Store Start Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
+                                    .build());
+                    status = "failure";
+                }
 
-            if (businessHour.getEndHourStore() == 0) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.endHourStore")
-                                .defaultText("Specify Store Close Time for "
-                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
-                                .build());
-                status = "failure";
-            }
+                if (businessHour.getEndHourStore() == 0) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                                    .defaultText("Specify Store Close Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
+                                    .build());
+                    status = "failure";
+                }
 
-            if (businessHour.getTokenAvailableFrom() == 0) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.tokenAvailableFrom")
-                                .defaultText("Specify Token Available Time for "
-                                        + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                        + ". This is the time from when Token would be available to users.")
-                                .build());
-                status = "failure";
+                if (businessHour.getTokenAvailableFrom() == 0) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                                    .defaultText("Specify Token Available Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + ". This is the time from when Token would be available to users.")
+                                    .build());
+                    status = "failure";
+                }
             }
         }
 

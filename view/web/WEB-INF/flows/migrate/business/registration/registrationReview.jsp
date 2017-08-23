@@ -198,24 +198,35 @@
                                         <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
                                             <li>
                                                 <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
-                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td>Token Available Time</td>
-                                                        <td><c:out value="${businessHour.tokenAvailableFrom}"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Store Start Time</td>
-                                                        <td><c:out value="${businessHour.startHourStore}"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Token Not Available After</td>
-                                                        <td><c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Store Close Time</td>
-                                                        <td><c:out value="${businessHour.endHourStore}"/></td>
-                                                    </tr>
-                                                </table>
+                                                <c:choose>
+                                                    <c:when test="${businessHour.dayClosed}">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tr>
+                                                                <td>Closed for the day</td>
+                                                            </tr>
+                                                        </table>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tr>
+                                                                <td>Token Available Time</td>
+                                                                <td><c:out value="${businessHour.tokenAvailableFrom}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Store Start Time</td>
+                                                                <td><c:out value="${businessHour.startHourStore}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Token Not Available After</td>
+                                                                <td><c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Store Close Time</td>
+                                                                <td><c:out value="${businessHour.endHourStore}"/></td>
+                                                            </tr>
+                                                        </table>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </li>
                                         </c:forEach>
 
@@ -251,7 +262,7 @@
     <!-- Footer -->
     <div class="footer">
         <div class="warp-inner ">
-            <img src="static2/internal/img/footer-img.jpg" class="img100"/>
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
         </div>
         <div class="footer-dark">
             <div class="footer4">
@@ -271,7 +282,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="static2/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         if ($('[name="registerBusiness.multiStore"]').is(':checked')) {

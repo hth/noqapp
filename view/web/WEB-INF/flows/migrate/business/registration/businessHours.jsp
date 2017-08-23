@@ -117,8 +117,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="lable-td pT0">Store Closed</td>
-                                                    <td><input name="" type="checkbox" value=""/></td>
+                                                    <td class="lable-td pT0">
+                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">Store Closed</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </li>
