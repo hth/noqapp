@@ -134,7 +134,7 @@ public class BusinessFlowValidator {
 
         /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
-            status = validateStoreDetails(registerBusiness, messageContext);
+            status = validateStoreDetails(registerBusiness, "registerBusiness.", messageContext);
         }
 
         LOG.info("Validate business qid={} status={}", register.getRegisterUser().getQueueUserId(), status);
@@ -145,16 +145,17 @@ public class BusinessFlowValidator {
      * Validate store.
      *
      * @param registerBusiness
+     * @param source            adaptable source based on where this validation is being called from
      * @param messageContext
      * @return
      */
-    public String validateStoreDetails(RegisterBusiness registerBusiness, MessageContext messageContext) {
+    public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = "success";
         if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.addressStore")
+                            .source(source + "addressStore")
                             .defaultText("Store Address cannot be empty")
                             .build());
             status = "failure";
@@ -177,7 +178,7 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.displayName")
+                            .source(source + "displayName")
                             .defaultText("Queue Name cannot be empty. " +
                                     "Queue Names can be like: Pharmacy, Driving License, Dinner Registration")
                             .build());
@@ -188,7 +189,7 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.phoneStore")
+                            .source(source + "phoneStore")
                             .defaultText("Store Phone cannot be empty")
                             .build());
             status = "failure";
@@ -197,7 +198,7 @@ public class BusinessFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerBusiness.phoneStore")
+                                .source(source + "phoneStore")
                                 .defaultText("Store already registered with this phone number '"
                                         + registerBusiness.getPhoneStore()
                                         + "'. Please email us at contact@noqapp.com.")
@@ -219,7 +220,7 @@ public class BusinessFlowValidator {
     public String validateBusinessHours(Register register, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
-        return validateBusinessHours(registerBusiness, messageContext);
+        return validateBusinessHours(registerBusiness, "registerBusiness.", messageContext);
     }
 
 
@@ -227,10 +228,11 @@ public class BusinessFlowValidator {
      * Validate store hours.
      *
      * @param registerBusiness
+     * @param source            adaptable source based on where this validation is being called from
      * @param messageContext
      * @return
      */
-    public String validateBusinessHours(RegisterBusiness registerBusiness, MessageContext messageContext) {
+    public String validateBusinessHours(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = "success";
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
 
@@ -240,7 +242,7 @@ public class BusinessFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
                                     .defaultText("Specify Store Start Time for "
                                             + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                     .build());
@@ -251,7 +253,7 @@ public class BusinessFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
                                     .defaultText("Specify Store Close Time for "
                                             + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
                                     .build());
@@ -262,7 +264,7 @@ public class BusinessFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerBusiness.businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
                                     .defaultText("Specify Token Available Time for "
                                             + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                             + ". This is the time from when Token would be available to users.")
