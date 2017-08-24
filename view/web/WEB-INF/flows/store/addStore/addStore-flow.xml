@@ -17,7 +17,7 @@
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, messageContext)" />
+        <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, '', messageContext)" />
         <transition on="success" to="businessHours" />
         <transition on="failure" to="registrationStart" />
     </action-state>
@@ -28,7 +28,7 @@
     </view-state>
 
     <action-state id="validateBusinessHours">
-        <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, messageContext)" />
+        <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, '', messageContext)" />
         <transition on="success" to="registrationReview">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)" />
         </transition>
