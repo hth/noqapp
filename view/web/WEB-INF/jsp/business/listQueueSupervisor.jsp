@@ -79,7 +79,9 @@
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>${queueSupervisor.name}</td>
-                                                    <td>${queueSupervisor.address}<p>Phone: ${queueSupervisor.phone}</p></td>
+                                                    <td>${queueSupervisor.address}
+                                                        <p>Phone: ${queueSupervisor.phone}</p>
+                                                    </td>
                                                     <td>${queueSupervisor.email}</td>
                                                     <td>
                                                         <c:choose>
