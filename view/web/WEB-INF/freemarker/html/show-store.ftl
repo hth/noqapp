@@ -52,7 +52,7 @@
 						<p>Download NoQApp to</p>
 						<div>
 							<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8""><img src="/static2/internal/img/apple-store.png"/></a>
-							<a href="https://play.google.com/store/apps/details?id=com.receiptofi.receiptapp"><img src="/static2/internal/img/google-plya.png"/></a>
+							<a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client"><img src="/static2/internal/img/google-plya.png"/></a>
 						</div>
 					</div>
 
