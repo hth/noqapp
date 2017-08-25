@@ -19,8 +19,8 @@
 	<div class="header">
 		<div class="warp-inner">
 			<div class="logo">
-                <a href="/"><img src="/static2/internal/img/logo.png"/></a>
-            </div>
+				<a href="/"><img src="/static2/internal/img/logo.png"/></a>
+			</div>
 		</div>
 	</div>
 	<!-- header end -->
@@ -33,7 +33,7 @@
 				<div class="qr-data">
 					<div class="qr-address">
 						<h3>${bizName}</h3>
-                        <p>${storeAddress}</p>
+						<p>${storeAddress}</p>
 						<p>&nbsp;</p>
 						<p>${phone}</p>
 					</div>
@@ -50,16 +50,19 @@
 
 					<div class="download-app-icon">
 						<p>Download NoQApp to</p>
-						<div><a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8""><img src="/static2/internal/img/apple-store.png" /></a> <a href="https://play.google.com/store/apps/details?id=com.receiptofi.receiptapp"><img src="/static2/internal/img/google-plya.png" /></a></div>
+						<div>
+							<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8""><img src="/static2/internal/img/apple-store.png"/></a>
+							<a href="https://play.google.com/store/apps/details?id=com.receiptofi.receiptapp"><img src="/static2/internal/img/google-plya.png"/></a>
+						</div>
 					</div>
-                    
+
 					<div class="qr-footer">
 						<p>TM and Copyright &copy; 2017 NoQueue Inc.</p>
 						<p>All Rights Reserved &nbsp; | &nbsp; <a href="#">Privacy Policy</a></p>
 						<p class="tm">S:${ftlDateTime?iso("PST")}</p>
 					</div>
 				</div>
-            </div>
+			</div>
 
 			<!-- login-box -->
 
