@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -56,10 +56,10 @@
                     <div class="register-c">
                         <sec:authorize access="hasRole('ROLE_Q_SUPERVISOR')">
                             <c:choose>
-                            <c:when test="${businessUserRegistrationStatus eq 'C'}">
-                        <h3>Registration Complete</h3>
-                        <p>Your details are being verified. Would notify you once verification is complete</p>
-                            </c:when>
+                                <c:when test="${businessUserRegistrationStatus eq 'C'}">
+                                    <h3>Registration Complete</h3>
+                                    <p>Your details are being verified. Would notify you once verification is complete</p>
+                                </c:when>
                                 <c:otherwise>
                                     <h3>Registration not complete</h3>
                                     <p>We could not verify your details. Please contact us or update profile.</p>
