@@ -54,8 +54,9 @@
 					</div>
                     
 					<div class="qr-footer">
-						<p>TM and Copyright &copy; 2017 NoQueue Inc. Sunnyvale, CA 94085, USA.</p>
+						<p>TM and Copyright &copy; 2017 NoQueue Inc.</p>
 						<p>All Rights Reserved &nbsp; | &nbsp; <a href="#">Privacy Policy</a></p>
+						<p class="tm">S:${ftlDateTime?iso("PST")}</p>
 					</div>
 				</div>
             </div>
