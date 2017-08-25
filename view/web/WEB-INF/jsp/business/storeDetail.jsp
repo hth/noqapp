@@ -1,103 +1,140 @@
 <%@ include file="../include.jsp"%>
-<!DOCTYPE html>
-<html lang="en" ng-app="scroll" ng-controller="Main">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <meta charset="utf-8">
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel='stylesheet' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css'/>
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.print.css' media='print'/>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.0/highcharts.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'  />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen" />
 </head>
+
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1><a href="/access/landing.htm"><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/>Receiptofi</a></h1>
+
+<!-- header -->
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a></div>
+        <div class="top-menu-right2">
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName" /></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png" /></div>
+                    <div class="dropdown-inner">
+                        <a href="#">Account</a>
+                        <a href="#">Feedback</a>
+                        <a href="#">Sign In</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
-                        </a>
-                    </c:otherwise>
-                </c:choose>
+        </div>
+
+        <div class="clearFix"></div>
+    </div>
+</div>
+<!-- header end -->
+<!-- header end -->
+<div class="main-warp">
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- Add New Store -->
+            <div class="admin-main">
+                <div class="admin-content">
+                    <div class="store">
+                        <div class="store-details-row">
+                            <div class="qr-store-box">
+                                <img src="/business/store/detail/i/${storeLandingForm.qrFileName}.htm" />
+                            </div>
+                            <div class="details-box">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td width="100">Address:</td>
+                                        <td>${storeLandingForm.address}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td>${storeLandingForm.phone}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Queue Name:</td>
+                                        <td>${storeLandingForm.displayName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+
+                                <div class="store-hours">
+                                    <p><strong>Open & Closed Hours</strong></p>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
+                                            <c:choose>
+                                                <c:when test="${storeHour.dayClosed}">
+                                                    <tr>
+                                                    <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
+                                                    <td>Closed</td>
+                                                    </tr>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr>
+                                                    <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
+                                                    <td>${storeHour.storeStartHourAsString} - ${storeHour.storeEndHourAsString}</td>
+                                                    </tr>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                            <div class="clearFix"></div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
+            <!-- Add New Store -->
+
         </div>
     </div>
+    <!-- content end -->
+
+
+    <!-- Foote -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100" />
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017  NoQueue Inc.   |  <a href="#">Privacy</a>    |    <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Foote End -->
+
 </div>
 
-<header>
-</header>
-<div class="main clearfix">
-    <div class="down_form" style="width: 90%">
-        Address : ${storeLandingForm.address} <br>
-        Phone : ${storeLandingForm.phone} <br>
-        Queue Name : ${storeLandingForm.displayName} <br><br><br>
 
-        Open & Closed Hours <br>
-        <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
-            <c:choose>
-                <c:when test="${storeHour.dayClosed}">
-                    ${storeHour.dayOfTheWeekAsString}: Closed <br>
-                </c:when>
-                <c:otherwise>
-                    ${storeHour.dayOfTheWeekAsString}: ${storeHour.storeStartHourAsString} - ${storeHour.storeEndHourAsString} <br>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
 
-        <img src="/business/store/detail/i/${storeLandingForm.qrFileName}.htm" />
-    </div>
-    <div class="footer-tooth clearfix">
-        <div class="footer-tooth-middle"></div>
-        <div class="footer-tooth-right"></div>
-    </div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
-    </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
-</div>
 </body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+
 </html>
