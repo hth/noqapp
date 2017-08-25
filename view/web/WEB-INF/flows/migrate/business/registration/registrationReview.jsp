@@ -210,7 +210,8 @@
                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                             <tr>
                                                                 <td>Token Available Time</td>
-                                                                <td><c:out value="${businessHour.tokenAvailableFrom}"/></td>
+                                                                <td>
+                                                                    <c:out value="${businessHour.tokenAvailableFrom}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Start Time</td>
@@ -218,7 +219,8 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Token Not Available After</td>
-                                                                <td><c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
+                                                                <td>
+                                                                    <c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Close Time</td>

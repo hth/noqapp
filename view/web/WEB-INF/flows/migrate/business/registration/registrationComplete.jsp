@@ -53,16 +53,20 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
                 <div class="admin-main">
-                    <c:choose>
-                        <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
-                            <h3>Registration complete</h3>
-                            <div class="no-approve">Your details are being verified. Would notify you once verification is complete.</div>
-                        </c:when>
-                        <c:otherwise>
-                            <h3>Registration not complete</h3>
-                            <div class="no-approve">We could not verify your details. Please contact us or update profile.</div>
-                        </c:otherwise>
-                    </c:choose>
+                    <div class="admin-content">
+                        <div class="register-c">
+                            <c:choose>
+                                <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
+                                    <h3>Registration Complete</h3>
+                                    <p>Your details are being verified. Would notify you once verification is complete.</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <h3>Registration not complete</h3>
+                                    <p>We could not verify your details. Please contact us or update profile.</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
                 </div>
                 <!-- Add New Supervisor -->
             </sec:authorize>
@@ -95,4 +99,5 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+
 </html>
