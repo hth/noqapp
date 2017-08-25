@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flow xmlns="http://www.springframework.org/schema/webflow"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_M_ADMIN" match="any" />
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
 
     <on-start>
         <evaluate expression="addStoreFlowActions.createStoreRegistration()"
-                  result="flowScope.registerBusiness" />
+                  result="flowScope.registerBusiness"/>
     </on-start>
 
     <view-state id="registrationStart" model="registerBusiness">
-        <transition on="submit" to="validateBusinessProfile" />
-        <transition on="cancel" to="logout" />
+        <transition on="submit" to="validateBusinessProfile"/>
+        <transition on="cancel" to="logout"/>
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, '', messageContext)" />
-        <transition on="success" to="businessHours" />
-        <transition on="failure" to="registrationStart" />
+        <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, '', messageContext)"/>
+        <transition on="success" to="businessHours"/>
+        <transition on="failure" to="registrationStart"/>
     </action-state>
 
     <view-state id="businessHours" model="registerBusiness">
-        <transition on="submit" to="validateBusinessHours" />
-        <transition on="cancel" to="logout" />
+        <transition on="submit" to="validateBusinessHours"/>
+        <transition on="cancel" to="logout"/>
     </view-state>
 
     <action-state id="validateBusinessHours">
-        <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, '', messageContext)" />
+        <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, '', messageContext)"/>
         <transition on="success" to="registrationReview">
-            <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)" />
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)"/>
         </transition>
-        <transition on="failure" to="businessHours" />
+        <transition on="failure" to="businessHours"/>
     </action-state>
 
     <view-state id="registrationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
-        <transition on="revise" to="profileCompletion" />
-        <transition on="cancel" to="logout" />
+        <transition on="revise" to="profileCompletion"/>
+        <transition on="cancel" to="logout"/>
     </view-state>
 
     <action-state id="completeRegistrationInformation">
@@ -48,16 +48,16 @@
                   expression="migrateToBusinessRegistrationFlowActions.completeRegistrationInformation(registerBusiness)"/>
 
         <transition on-exception="com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException"
-                    to="validateBusinessProfile" />
+                    to="validateBusinessProfile"/>
 
         <transition to="registrationComplete"/>
     </action-state>
 
-    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm" />
-    <end-state id="logout" />
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <end-state id="logout"/>
 
     <global-transitions>
-        <transition on="cancel" to="logout" />
+        <transition on="cancel" to="logout"/>
     </global-transitions>
 
 </flow>

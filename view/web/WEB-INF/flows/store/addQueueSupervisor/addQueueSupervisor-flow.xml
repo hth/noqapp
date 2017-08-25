@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flow xmlns="http://www.springframework.org/schema/webflow"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_M_ADMIN" match="any" />
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
 
     <on-start>
         <evaluate expression="addQueueSupervisorFlowActions.inviteSupervisorStart(externalContext)"
-                  result="flowScope.inviteQueueSupervisor" />
+                  result="flowScope.inviteQueueSupervisor"/>
     </on-start>
 
     <view-state id="inviteSupervisorStart" model="inviteQueueSupervisor">
-        <transition on="submit" to="validatePhoneNumber" />
-        <transition on="cancel" to="invitationCancel" />
+        <transition on="submit" to="validatePhoneNumber"/>
+        <transition on="cancel" to="invitationCancel"/>
     </view-state>
 
     <action-state id="validatePhoneNumber">
-        <evaluate expression="queueSupervisorFlowValidator.validatePhoneNumber(inviteQueueSupervisor, messageContext)" />
-        <transition on="success" to="invitationReview" />
-        <transition on="failure" to="inviteSupervisorStart" />
+        <evaluate expression="queueSupervisorFlowValidator.validatePhoneNumber(inviteQueueSupervisor, messageContext)"/>
+        <transition on="success" to="invitationReview"/>
+        <transition on="failure" to="inviteSupervisorStart"/>
     </action-state>
 
     <view-state id="invitationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeInvite" history="invalidate"/>
-        <transition on="revise" to="inviteSupervisorStart" />
-        <transition on="cancel" to="invitationCancel" />
+        <transition on="revise" to="inviteSupervisorStart"/>
+        <transition on="cancel" to="invitationCancel"/>
     </view-state>
 
     <action-state id="completeInvite">
@@ -35,11 +35,13 @@
                   expression="addQueueSupervisorFlowActions.completeInvite(inviteQueueSupervisor, messageContext)"/>
 
         <transition on-exception="com.noqapp.view.flow.exception.InviteSupervisorException"
-                    to="inviteSupervisorStart" />
+                    to="inviteSupervisorStart"/>
 
         <transition to="invitationComplete"/>
     </action-state>
 
-    <view-state id="invitationCancel" view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm" />
-    <view-state id="invitationComplete" view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm" />
+    <view-state id="invitationCancel"
+                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm"/>
+    <view-state id="invitationComplete"
+                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm"/>
 </flow>

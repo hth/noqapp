@@ -77,7 +77,7 @@
                                             <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                            <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -151,16 +151,18 @@
                                         </li>
                                     </c:if>
 
-                                    <%--//TODO add note when email address is different--%>
+                                        <%--//TODO add note when email address is different--%>
 
                                     <c:if test="${!registerUser.emailValidated}">
                                         <li>
                                             <div class="alert-info">
                                                 <p>
-                                                    Your email address <span class="txt-red">${registerUser.email}</span>
+                                                    Your email address
+                                                    <span class="txt-red">${registerUser.email}</span>
                                                     has not been validated. Please validated email address to continue merchant account registration.
                                                 </p>
-                                                <p>To resend account validation email, <a href="txt-red">click here.</a></p>
+                                                <p>To resend account validation email, <a href="txt-red">click here.</a>
+                                                </p>
                                             </div>
                                         </li>
                                     </c:if>
