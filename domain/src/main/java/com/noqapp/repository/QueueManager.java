@@ -59,7 +59,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @param qid
      * @return
      */
-    @Mobile
     List<QueueEntity> findAllQueuedByQid(String qid);
 
     /**
@@ -77,7 +76,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @param qid
      * @return
      */
-    @Mobile
     List<QueueEntity> findAllNotQueuedByQid(String qid);
 
     @Mobile
