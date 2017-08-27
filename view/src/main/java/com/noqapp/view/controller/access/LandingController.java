@@ -15,6 +15,7 @@ import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.QueueService;
 import com.noqapp.view.form.LandingForm;
@@ -80,13 +81,14 @@ public class LandingController {
                     .setBusinessAccountSignedUp(businessUser.getUpdated());
         }
 
-//        if (queueUser.getUserLevel() != UserLevelEnum.M_ADMIN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.M_ADMIN) {
             landingForm.setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                     .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()));
-//        }
+        }
 
-        LOG.info("Current size={}", landingForm.getCurrentQueues().size());
-        LOG.info("Historical size={}", landingForm.getHistoricalQueues().size());
+        LOG.info("Current size={} and Historical size={}",
+                landingForm.getCurrentQueues().size(),
+                landingForm.getHistoricalQueues().size());
 
         return nextPage;
     }
