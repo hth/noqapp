@@ -84,7 +84,6 @@
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -102,7 +101,6 @@
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.7.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.3" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
@@ -149,7 +147,6 @@
             <element id="library" level="project" name="Gradle: net.iharder:base64:2.3.9" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
-            <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
@@ -222,6 +219,8 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/9f298a2c935cd98918e0ff98de5e6ede17f7c607/google-maps-services-0.2.2.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/2a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0/gson-2.8.1.jar" />
           </element>
         </element>
       </root>
@@ -314,7 +313,6 @@
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -332,7 +330,6 @@
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.7.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.3" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
@@ -379,7 +376,6 @@
             <element id="library" level="project" name="Gradle: net.iharder:base64:2.3.9" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
-            <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
@@ -453,6 +449,8 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/9f298a2c935cd98918e0ff98de5e6ede17f7c607/google-maps-services-0.2.2.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/2a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0/gson-2.8.1.jar" />
           </element>
         </element>
       </root>
@@ -549,7 +547,6 @@
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.6.3" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
@@ -567,7 +564,6 @@
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
-            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.7.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.3" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
@@ -614,7 +610,6 @@
             <element id="library" level="project" name="Gradle: net.iharder:base64:2.3.9" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
-            <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
@@ -700,6 +695,8 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/9f298a2c935cd98918e0ff98de5e6ede17f7c607/google-maps-services-0.2.2.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/2a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0/gson-2.8.1.jar" />
           </element>
         </element>
       </root>
@@ -762,7 +759,6 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
-            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.2.0" />
             <element id="library" level="project" name="Gradle: com.google.guava:guava:23.0" />
@@ -770,7 +766,6 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
-            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.22" />
             <element id="library" level="project" name="Gradle: com.google.oauth-client:google-oauth-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java:2.5.0" />
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.0" />
@@ -788,7 +783,6 @@
             <element id="library" level="project" name="Gradle: com.rometools:rome-utils:1.5.1" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.8.1" />
-            <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP-java6:2.3.13" />
@@ -943,6 +937,8 @@
             <element id="library" level="project" name="Gradle: org.tallison:jmatio:1.2" />
             <element id="library" level="project" name="Gradle: org.tukaani:xz:1.5" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.1" />
+            <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.2" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -1535,15 +1531,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.google.code.gson:gson:2.8.0">
+    <library name="Gradle: com.google.code.gson:gson:2.8.1">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/2a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0/gson-2.8.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/4791230388bf03457c7e235b69479b46a5931861/gson-2.8.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/826a4f336b856f2d4077b396ecfe354765c43547/gson-2.8.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.1/c10732c97eccba635e20596a02c3824fef0605bf/gson-2.8.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18">
@@ -1623,15 +1619,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/1efdf5b737b02f9b72ebdec4f72c37ec411302ff/j2objc-annotations-1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.google.maps:google-maps-services:0.1.22">
+    <library name="Gradle: com.google.maps:google-maps-services:0.2.2">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.22/78ae97d058d393fc276a236d353c083ba79860a0/google-maps-services-0.1.22.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/9f298a2c935cd98918e0ff98de5e6ede17f7c607/google-maps-services-0.2.2.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.22/e30ff2e171916e6428e08e9463d028f0f19716b0/google-maps-services-0.1.22-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/eda77032f83980f4755ce9a291a0bab9a2dcff7a/google-maps-services-0.2.2-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.1.22/1785210aa820f4eb35bd36ac9f6ff5537ca57f5b/google-maps-services-0.1.22-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.maps/google-maps-services/0.2.2/5803bc9fbb405ae203e66897e5f73e111d9593e5/google-maps-services-0.2.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.oauth-client:google-oauth-client:1.22.0">
@@ -1819,17 +1815,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.1/fc70ffa234e7e77741867d38b341d162ec1ec01e/okhttp-3.8.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.squareup.okhttp:okhttp:2.7.5">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/7a15a7db50f86c4b64aa3367424a60e3a325b8f1/okhttp-2.7.5.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/87d10b7ccfeceee1878ef642caa98a6c338d2533/okhttp-2.7.5-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.5/6b16ea4e0a54f9eada97779ae33cb4d3223f5d35/okhttp-2.7.5-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.squareup.okio:okio:1.13.0">
