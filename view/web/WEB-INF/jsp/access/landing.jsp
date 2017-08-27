@@ -69,8 +69,80 @@
                                 </c:otherwise>
                             </c:choose>
                         </sec:authorize>
+                    </div>
 
-                        
+                    <div class="store">
+                        <h3>Current Queue</h3>
+
+                        <div class="add-store">
+                            <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty businessLandingForm.currentQueues}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Queue Name</th>
+                                                <th>Status</th>
+                                                <th>Token Number</th>
+                                            </tr>
+                                            <c:forEach items="${businessLandingForm.currentQueues}" var="store" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}&nbsp;</td>
+                                                    <td>
+                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                    </td>
+                                                    <td>
+                                                        ${store.queueUserState.description}
+                                                    </td>
+                                                    <td>
+                                                        ${store.tokenNumber}
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        No queue joined for today. 
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                        </div>
+                        <h3>Historical Queue</h3>
+
+                        <div class="add-store">
+                            <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty businessLandingForm.historicalQueues}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Queue Name</th>
+                                                <th>Hour Saved</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                            <c:forEach items="${businessLandingForm.historicalQueues}" var="store" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}&nbsp;</td>
+                                                    <td>
+                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                    </td>
+                                                    <td>
+                                                        ${store.hoursSaved}
+                                                    </td>
+                                                    <td>
+                                                        ${store.ratingCount}
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        You don't have any recent history.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
