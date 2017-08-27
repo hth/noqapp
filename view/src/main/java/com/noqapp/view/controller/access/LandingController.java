@@ -16,6 +16,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.QueueService;
 import com.noqapp.view.form.LandingForm;
 
 /**
@@ -36,12 +37,13 @@ public class LandingController {
     public static final String SUCCESS = "success";
 
     /**
-     * Refers to landing.jsp
+     * Refers to landing.jsp.
      */
     private String nextPage;
     private String migrateToBusinessRegistrationFlowActions;
 
     private BusinessUserService businessUserService;
+    private QueueService queueService;
 
     @Autowired
     public LandingController(
@@ -51,11 +53,13 @@ public class LandingController {
             @Value ("${migrateToBusinessRegistrationFlowActions:redirect:/migrate/business/registration.htm}")
             String migrateToBusinessRegistrationFlowActions,
 
-            BusinessUserService businessUserService
-    ) {
+            BusinessUserService businessUserService,
+            QueueService queueService) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
+
         this.businessUserService = businessUserService;
+        this.queueService = queueService;
     }
 
     @Timed
@@ -72,9 +76,12 @@ public class LandingController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
         if (null != businessUser) {
-            landingForm.setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
-            landingForm.setBusinessAccountSignedUp(businessUser.getUpdated());
+            landingForm.setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus())
+                    .setBusinessAccountSignedUp(businessUser.getUpdated());
         }
+
+        landingForm.setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
+                .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()));
 
         return nextPage;
     }
