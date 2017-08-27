@@ -65,9 +65,7 @@
                                     </c:if>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="rightside-title">
-                                        <a href="/access/landing/business/migrate.htm">Do you own a business which you would like to register?</a>
-                                    </div>
+                                    <a href="/access/landing/business/migrate.htm">Do you own a business which you would like to register?</a>
                                 </c:otherwise>
                             </c:choose>
                         </sec:authorize>
