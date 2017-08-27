@@ -203,7 +203,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllQueuedByRid(String qid) {
+    public List<QueueEntity> findAllQueuedByQid(String qid) {
         return mongoTemplate.find(
                 query(where("QID").is(qid).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
@@ -217,7 +217,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllNotQueuedByRid(String qid) {
+    public List<QueueEntity> findAllNotQueuedByQid(String qid) {
         return mongoTemplate.find(
                 query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
                 QueueEntity.class,
