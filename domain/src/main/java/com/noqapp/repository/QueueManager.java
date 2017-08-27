@@ -60,13 +60,25 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      * @return
      */
     @Mobile
-    List<QueueEntity> findAllQueuedByRid(String qid);
+    List<QueueEntity> findAllQueuedByQid(String qid);
 
+    /**
+     * Get all the queues that have been serviced for today.
+     *
+     * @param did
+     * @return
+     */
     @Mobile
     List<QueueEntity> findAllNotQueuedByDid(String did);
 
+    /**
+     * Get all the queues that have been serviced for today.
+     *
+     * @param qid
+     * @return
+     */
     @Mobile
-    List<QueueEntity> findAllNotQueuedByRid(String qid);
+    List<QueueEntity> findAllNotQueuedByQid(String qid);
 
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
