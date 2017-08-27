@@ -131,7 +131,7 @@
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                                     </td>
                                                     <td>
-                                                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.serviceEndTime}"/>
+                                                        <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${store.serviceEndTime}"/>
                                                     </td>
                                                     <td>
                                                         ${store.hoursSaved}
