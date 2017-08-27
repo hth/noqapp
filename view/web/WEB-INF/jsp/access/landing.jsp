@@ -71,6 +71,8 @@
                         </sec:authorize>
                     </div>
 
+                    <p>&nbsp;</p>
+
                     <div class="store">
                         <h3>Current Queue</h3>
 
@@ -82,6 +84,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Queue Name</th>
+                                                <th>Date Serviced</th>
                                                 <th>Status</th>
                                                 <th>Token Number</th>
                                             </tr>
@@ -90,6 +93,9 @@
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                    </td>
+                                                    <td>
+                                                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.serviceEndTime}"/>
                                                     </td>
                                                     <td>
                                                         ${store.queueUserState.description}
