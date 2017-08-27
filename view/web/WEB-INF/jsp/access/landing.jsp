@@ -77,7 +77,7 @@
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty businessLandingForm.currentQueues}">
+                                    <c:when test="${!empty landingForm.currentQueues}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
@@ -85,7 +85,7 @@
                                                 <th>Status</th>
                                                 <th>Token Number</th>
                                             </tr>
-                                            <c:forEach items="${businessLandingForm.currentQueues}" var="store" varStatus="status">
+                                            <c:forEach items="${landingForm.currentQueues}" var="store" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
@@ -113,7 +113,7 @@
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty businessLandingForm.historicalQueues}">
+                                    <c:when test="${!empty landingForm.historicalQueues}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
@@ -121,7 +121,7 @@
                                                 <th>Hour Saved</th>
                                                 <th>Rating</th>
                                             </tr>
-                                            <c:forEach items="${businessLandingForm.historicalQueues}" var="store" varStatus="status">
+                                            <c:forEach items="${landingForm.historicalQueues}" var="store" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
