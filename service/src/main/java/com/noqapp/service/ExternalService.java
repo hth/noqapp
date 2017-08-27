@@ -62,10 +62,11 @@ public class ExternalService {
 
             BizStoreManager bizStoreManager
     ) {
-        this.context = new GeoApiContext()
-                .setApiKey(googleServerApiKey)
-                .setMaxRetries(maxRetries)
-                .disableRetries();
+        this.context = new GeoApiContext.Builder()
+                .apiKey(googleServerApiKey)
+                .maxRetries(maxRetries)
+                .disableRetries()
+                .build();
 
         this.bizStoreManager = bizStoreManager;
     }
