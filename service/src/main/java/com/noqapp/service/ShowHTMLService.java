@@ -28,7 +28,7 @@ import java.util.TimeZone;
  */
 @Service
 public class ShowHTMLService {
-    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ShowHTMLService.class);
 
     private BizService bizService;
     private FreemarkerService freemarkerService;
