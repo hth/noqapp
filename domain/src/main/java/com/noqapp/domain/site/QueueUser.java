@@ -21,7 +21,6 @@ import java.util.Collection;
 })
 public final class QueueUser extends User {
 
-    /** queueUserId is queueUserId */
     private String queueUserId;
     private UserLevelEnum userLevel;
     private boolean accountValidated;
