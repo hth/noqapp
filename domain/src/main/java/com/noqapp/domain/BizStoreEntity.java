@@ -92,7 +92,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PR")
     private String phoneRaw;
 
-    /** Format Longitude and then Latitude. */
+    /* Format Longitude and then Latitude. */
     @Field ("COR")
     private double[] coordinate;
 
@@ -131,7 +131,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QH")
     private Date queueHistory = new Date();
 
-    //TODO Change to false after sending notification of change
+    //TODO(hth) Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
 
