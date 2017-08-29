@@ -180,11 +180,11 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         try {
             if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
-                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
+                        "UPDATE QUEUE SET RA = ?, HR = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
                         ratingCount, hoursSaved, codeQR, did, qid, token) > 0;
             } else {
                 return this.jdbcTemplate.update(
-                        "UPDATE QUEUE SET RA = ?, HA = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
+                        "UPDATE QUEUE SET RA = ?, HR = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
                         ratingCount, hoursSaved, codeQR, did, token) > 0;
             }
         } catch (Exception e) {
