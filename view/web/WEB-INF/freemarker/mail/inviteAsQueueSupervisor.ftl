@@ -1,58 +1,74 @@
 <#assign ftlDateTime = .now>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<style type="text/css">
-	@import url('http://fonts.googleapis.com/css?family=Open+Sans');
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Email</title>
 
-	body {
-		margin: 0 20px 100px 20px;
-		mso-line-height-rule: exactly;
-		padding: 10px 30px 30px 30px;
-		min-width: 90%;
-		font-size: 13px;
-		font-family: "Open Sans", sans-serif;
-		letter-spacing: 0.02em;
-		color: black;
-	}
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,400i,500,700,900');
 
-	.tm {
-		letter-spacing: 0.05em;
-		font-size: 8px !important;
-		color: #4b5157;
-		vertical-align: super;
-	}
-
-	@media only screen and (min-width: 368px) {
-		.tm {
-			font-size: 10px !important;
+		body {
+			background: #f1f1f1;
+			font-size: 14px;
+			font-family: 'Roboto', sans-serif;
+			color: #222;
 		}
-	}
-</style>
+
+		.email-style {
+			background: #f1f1f1;
+			padding: 10px 5px;
+		}
+
+		.content-txt {
+			font-size: 16px;
+		}
+
+		@media only screen and (max-width: 368px) {
+			.content-txt {
+				font-size: 14px;
+			}
+
+			.content-txt p {
+				font-size: 14px;
+			}
+		}
+	</style>
+
+</head>
+
 <body>
-<#include "../NoQApp.svg">
-<p>
-	Hey,
-</p>
-<p>
-	You have been invited to manage queue ${displayName}. Please log in your account and complete the invitation process.
-	This invite will expire after 7 days from now.
-</p>
-<p>
-	Cheers, <br/>
-	${businessName}<br />
-</p>
-<br/>
-<p>
-	NoQueue Customer Support would like to hear from you if you would not like to receive emails from us.
-</p>
-<br/><br/><br/>
-<hr/>
-<span class="tm">
-    TM &trade; and Copyright &copy; 2017 NoQueue Inc. Sunnyvale, CA 94085 USA. <br/>
-    All Rights Reserved / <a href="https://www.noqapp.com/privacypolicy">Privacy Policy</a>
-</span>
-<br/>
-<span class="tm">
-    S:${ftlDateTime?iso("PST")}
-</span>
+
+<div class="email-style" style="background:#f1f1f1;  font-size: 14px; padding:10px 5px; font-family: 'Roboto', sans-serif; color: #222">
+
+	<div class="content-txt" style="font-size:16px; padding:0 15px; font-family: 'Roboto', sans-serif;">
+		<div class="logo" style="width:220px; padding:15px 0 10px 0">
+        <#include "../NoQApp.svg">
+		</div>
+
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Hey,</strong></p>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+			You have been invited to manage queue ${displayName}. Please log in your account and complete the invitation process.
+			This invite will expire after 7 days from now.
+		</p>
+		<p style="font-family: 'Roboto', sans-serif;">
+			Cheers, <br/>
+			<strong>${businessName}</strong>
+		</p>
+		<br/>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+			NoQueue Customer Support would like to hear from you if you would not like to receive emails from us.
+		</p>
+		<br/><br/><br/>
+	</div>
+
+	<div class="qr-footer" style="font-size:12px; background:#dadada; padding:15px;">
+		TM and Copyright &copy; 2017 NoQueue Inc. Sunnyvale, CA 94089, USA.<br/>
+		All Rights Reserved &nbsp; | &nbsp; <a href="#" style="color:#222; text-decoration:none">Privacy Policy</a><br/>
+		S:${ftlDateTime?iso("PST")}
+	</div>
+</div>
+
+
 </body>
 </html>
