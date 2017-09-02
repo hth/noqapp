@@ -119,14 +119,49 @@ public class AddQueueSupervisorFlowActions {
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(Formatter.phoneCleanup(internationalFormat));
         if (null == userProfile) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
-                            .build());
+            /* Find based on invitee code, in case the numbers don't match. */
+            userProfile = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+            if (null != userProfile) {
+                if (!userProfile.getCountryShortName().equalsIgnoreCase(inviteQueueSupervisor.getCountryShortName())) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("inviteQueueSupervisor.phoneNumber")
+                                    .defaultText("Store Located in "
+                                            + inviteQueueSupervisor.getCountryShortName()
+                                            + " and Invitee Located in "
+                                            + userProfile.getCountryShortName()
+                                            + ". Please contact customer support since they are in different countries.")
+                                    .build());
 
-            throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+                    LOG.warn("Store Located={} and Invitee={} are from two different countries storeId={}",
+                            inviteQueueSupervisor.getCountryShortName(),
+                            userProfile.getCountryShortName(),
+                            inviteQueueSupervisor.getBizStoreId());
+
+                    throw new InviteSupervisorException("Store Location and Invitee are from two different countries");
+                } else {
+                    /* If they have same country, then we still show this error because the phone number did not match. */
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("inviteQueueSupervisor.phoneNumber")
+                                    .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
+                                    .build());
+
+                    throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+                }
+            } else {
+                /* Show when phone number and invitee code both did not match. */
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("inviteQueueSupervisor.phoneNumber")
+                                .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
+                                .build());
+
+                throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+            }
         }
 
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
@@ -161,6 +196,7 @@ public class AddQueueSupervisorFlowActions {
                             .source("inviteQueueSupervisor.phoneNumber")
                             .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already a Supervisor for this queue.")
                             .build());
+
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
 
@@ -193,10 +229,11 @@ public class AddQueueSupervisorFlowActions {
          */
         businessUserStore.inActive();
         businessUserStoreService.save(businessUserStore);
+        final String qid = userProfile.getQueueUserId();
 
         /* Send personal FCM notification. */
         service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
-                userProfile.getQueueUserId(),
+                qid,
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
 
