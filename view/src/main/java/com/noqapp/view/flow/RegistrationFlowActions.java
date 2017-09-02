@@ -208,9 +208,12 @@ class RegistrationFlowActions {
                 addTimezone(bizStore);
                 return bizStore;
             } catch (Exception e) {
-                LOG.error("Error saving store name={}, starting rollback...", bizName.getBusinessName());
-                bizService.deleteBizName(bizName);
-                LOG.info("Rollback successful");
+                LOG.error("Error saving store for  bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
+                if (bizService.getAllBizStores(bizName.getId()).size() == 0) {
+                    LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
+                    bizService.deleteBizName(bizName);
+                    LOG.info("Rollback successful");
+                }
                 throw new RuntimeException("Error saving store");
             }
         }
