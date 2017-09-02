@@ -2,6 +2,9 @@ package com.noqapp.domain.flow;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 
@@ -19,6 +22,7 @@ import java.util.List;
  * Date: 11/23/16 4:36 PM
  */
 public class RegisterBusiness implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(RegisterBusiness.class);
 
     private String name;
     /** Business types are initialized in flow. Why? Show off. */
@@ -226,14 +230,28 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public String computeWebLocation(String town, String stateShortName) {
-        return countryShortNameStore.toLowerCase()
-                + "/"
-                + name.trim().toLowerCase().replace(" ", "-")
-                + "/"
-                + town.trim().toLowerCase().replace(" ", "-")
-                + "-"
-                + stateShortName.trim().toLowerCase()
-                + "/"
-                + displayName.trim().toLowerCase().replace(" ", "-");
+        try {
+            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
+            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
+
+            String webLocation = countryShortNameStore.toLowerCase()
+                    + "/"
+                    + name.trim().toLowerCase().replace(" ", "-")
+                    + "/"
+                    + townString
+                    + "-"
+                    + stateShortNameString
+                    + "/"
+                    + displayName.trim().toLowerCase().replace(" ", "-");
+
+            /*
+             * Since empty townString and stateShortNameString can contain '-',
+             * hence replacing two consecutive '-' with a blank.
+             */
+            return webLocation.replaceAll("--", "");
+        } catch (Exception e) {
+            LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
+            throw e;
+        }
     }
 }
