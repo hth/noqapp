@@ -61,7 +61,7 @@ public class EmpLandingService {
         LOG.info("Approve Business Clicked businessUserId={} qid={}", businessUserId, qid);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
-                .setValidateByRid(qid)
+                .setValidateByQid(qid)
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
@@ -116,7 +116,7 @@ public class EmpLandingService {
         LOG.info("Decline Business Clicked businessUserId={} qid={}", businessUserId, qid);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
-                .setValidateByRid(qid)
+                .setValidateByQid(qid)
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
         businessUserService.save(businessUser);
     }
