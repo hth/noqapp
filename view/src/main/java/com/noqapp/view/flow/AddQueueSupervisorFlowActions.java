@@ -28,6 +28,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.Formatter;
 import com.noqapp.view.flow.exception.InviteSupervisorException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
@@ -119,14 +120,25 @@ public class AddQueueSupervisorFlowActions {
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(Formatter.phoneCleanup(internationalFormat));
         if (null == userProfile) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
-                            .build());
+            /* Find based on invitee code, in case the numbers don't match. */
+            userProfile = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+            if (null != userProfile) {
+                /* Check if invitee and store are not in the same country. */
+                if (!userProfile.getCountryShortName().equalsIgnoreCase(inviteQueueSupervisor.getCountryShortName())) {
+                    return messageWhenStoreAndInviteeAreFromDifferentCountry(inviteQueueSupervisor, messageContext, userProfile);
+                } else {
+                    /* If they have same country, then we still show this error because the phone number did not match. */
+                    return messageWhenCannotFindInviteeWithPhoneNumber(messageContext);
+                }
+            } else {
+                /* Show when phone number and invitee code both did not match. */
+                return messageWhenCannotFindInviteeWithPhoneNumber(messageContext);
+            }
+        }
 
-            throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+        /* Check if invitee and store are not in the same country. */
+        if (!userProfile.getCountryShortName().equalsIgnoreCase(inviteQueueSupervisor.getCountryShortName())) {
+            return messageWhenStoreAndInviteeAreFromDifferentCountry(inviteQueueSupervisor, messageContext, userProfile);
         }
 
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
@@ -161,6 +173,7 @@ public class AddQueueSupervisorFlowActions {
                             .source("inviteQueueSupervisor.phoneNumber")
                             .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already a Supervisor for this queue.")
                             .build());
+
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
 
@@ -193,10 +206,11 @@ public class AddQueueSupervisorFlowActions {
          */
         businessUserStore.inActive();
         businessUserStoreService.save(businessUserStore);
+        final String qid = userProfile.getQueueUserId();
 
         /* Send personal FCM notification. */
         service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
-                userProfile.getQueueUserId(),
+                qid,
                 bizStore.getDisplayName(),
                 bizStore.getBizName().getBusinessName()));
 
@@ -209,5 +223,43 @@ public class AddQueueSupervisorFlowActions {
         );
 
         return inviteQueueSupervisor;
+    }
+
+    private InviteQueueSupervisor messageWhenCannotFindInviteeWithPhoneNumber(MessageContext messageContext) {
+        messageContext.addMessage(
+                new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
+                        .build());
+
+        throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+    }
+
+    private InviteQueueSupervisor messageWhenStoreAndInviteeAreFromDifferentCountry(
+            InviteQueueSupervisor inviteQueueSupervisor,
+            MessageContext messageContext,
+            UserProfileEntity userProfile
+    ) {
+        String storeCountry = CommonUtil.getCountryNameFromIsoCode(inviteQueueSupervisor.getCountryShortName());
+        String inviteeCountry = CommonUtil.getCountryNameFromIsoCode(userProfile.getCountryShortName());
+
+        messageContext.addMessage(
+                new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("Store Located in "
+                                + storeCountry
+                                + " and Invitee Located in "
+                                + inviteeCountry
+                                + ". As they are in different countries, please contact customer support.")
+                        .build());
+
+        LOG.warn("Store Located={} and Invitee={} are from two different countries storeId={}",
+                storeCountry,
+                inviteeCountry,
+                inviteQueueSupervisor.getBizStoreId());
+
+        throw new InviteSupervisorException("Store Location and Invitee are from two different countries");
     }
 }

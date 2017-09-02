@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -87,5 +88,10 @@ public final class CommonUtil {
         }
 
         return null;
+    }
+
+    public static String getCountryNameFromIsoCode(String isoCode) {
+        Locale l = new Locale("", isoCode);
+        return l.getDisplayCountry();
     }
 }
