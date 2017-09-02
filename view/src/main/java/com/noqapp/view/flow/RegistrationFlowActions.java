@@ -209,7 +209,7 @@ class RegistrationFlowActions {
                 return bizStore;
             } catch (Exception e) {
                 LOG.error("Error saving store for  bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
-                if (bizService.getAllBizStores(bizName.getId()).size() == 0) {
+                if (0 == bizService.getAllBizStores(bizName.getId()).size()) {
                     LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
                     bizService.deleteBizName(bizName);
                     LOG.info("Rollback successful");
