@@ -114,7 +114,7 @@
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                                         <c:choose>
                                                                             <c:when test="${!queueSupervisor.active}">
-                                                                                Deleted
+                                                                                Delete
                                                                             </c:when>
                                                                             <c:otherwise>
                                                                                 Remove
