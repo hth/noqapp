@@ -106,7 +106,8 @@ public class BusinessUserStoreService {
             UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
-            queueSupervisor.setStoreId(storeId)
+            queueSupervisor.setBusinessUserId(businessUser.getId())
+                    .setStoreId(storeId)
                     .setBusinessId(businessUserStore.getBizNameId())
                     .setName(userProfile.getName())
                     .setPhone(userProfile.getPhone())

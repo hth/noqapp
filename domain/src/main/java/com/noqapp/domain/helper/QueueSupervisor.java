@@ -11,6 +11,7 @@ import java.util.Date;
  */
 public class QueueSupervisor {
 
+    private String businessUserId;
     private String storeId;
     private String businessId;
     private String name;
@@ -22,6 +23,15 @@ public class QueueSupervisor {
     private boolean active;
     private Date created;
     private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus;
+
+    public String getBusinessUserId() {
+        return businessUserId;
+    }
+
+    public QueueSupervisor setBusinessUserId(String businessUserId) {
+        this.businessUserId = businessUserId;
+        return this;
+    }
 
     public String getStoreId() {
         return storeId;
