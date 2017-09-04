@@ -2,9 +2,6 @@ package com.noqapp.service;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -27,7 +24,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender
@@ -54,38 +50,23 @@ public class MailService {
     private ExecutorService service;
 
     private String devSentTo;
-    private String inviteeEmail;
-    private String emailAddressName;
     private String domain;
     private String https;
-    private String mailInviteSubject;
     private String mailInviteQueueSupervisorSubject;
     private String mailRecoverSubject;
     private String mailValidateSubject;
-    private String mailRegistrationActiveSubject;
     private String accountNotFoundSubject;
-
-    private final Cache<String, String> invitees;
 
     @Autowired
     public MailService(
             @Value ("${dev.sent.to}")
             String devSentTo,
 
-            @Value ("${invitee.email}")
-            String inviteeEmail,
-
-            @Value ("${email.address.name}")
-            String emailAddressName,
-
             @Value ("${domain}")
             String domain,
 
             @Value ("${https}")
             String https,
-
-            @Value ("${mail.invite.subject}")
-            String mailInviteSubject,
 
             @Value ("${mail.invite.queue.supervisor.subject}")
             String mailInviteQueueSupervisorSubject,
@@ -96,9 +77,6 @@ public class MailService {
             @Value ("${mail.validate.subject}")
             String mailValidateSubject,
 
-            @Value ("${mail.registration.active.subject}")
-            String mailRegistrationActiveSubject,
-
             @Value ("${mail.account.not.found.subject}")
             String accountNotFoundSubject,
 
@@ -106,22 +84,15 @@ public class MailService {
 
             FreemarkerService freemarkerService,
             EmailValidateService emailValidateService,
-            MailManager mailManager,
-
-            @Value ("${MailService.inviteCachePeriod}")
-            int inviteCachePeriod
+            MailManager mailManager
     ) {
 
         this.devSentTo = devSentTo;
-        this.inviteeEmail = inviteeEmail;
-        this.emailAddressName = emailAddressName;
         this.domain = domain;
         this.https = https;
-        this.mailInviteSubject = mailInviteSubject;
         this.mailInviteQueueSupervisorSubject = mailInviteQueueSupervisorSubject;
         this.mailRecoverSubject = mailRecoverSubject;
         this.mailValidateSubject = mailValidateSubject;
-        this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
         this.accountNotFoundSubject = accountNotFoundSubject;
 
         this.accountService = accountService;
@@ -130,10 +101,6 @@ public class MailService {
         this.mailManager = mailManager;
 
         this.service = newCachedThreadPool();
-        invitees = CacheBuilder.newBuilder()
-                .maximumSize(SIZE_100)
-                .expireAfterWrite(inviteCachePeriod, TimeUnit.MINUTES)
-                .build();
     }
 
     /**
