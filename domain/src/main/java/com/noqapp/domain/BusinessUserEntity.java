@@ -37,7 +37,7 @@ public class BusinessUserEntity extends BaseEntity {
 
     @NotNull
     @Field ("VB")
-    private String validateByRid;
+    private String validateByQid;
 
     @DBRef
     @Field ("B_N")
@@ -83,12 +83,12 @@ public class BusinessUserEntity extends BaseEntity {
         return this;
     }
 
-    public String getValidateByRid() {
-        return validateByRid;
+    public String getValidateByQid() {
+        return validateByQid;
     }
 
-    public BusinessUserEntity setValidateByRid(String validateByRid) {
-        this.validateByRid = validateByRid;
+    public BusinessUserEntity setValidateByQid(String validateByQid) {
+        this.validateByQid = validateByQid;
         return this;
     }
 

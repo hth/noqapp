@@ -95,7 +95,7 @@ public class StoreDetailController {
         try {
             storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));
         } catch (WriterException | IOException e) {
-            LOG.error("error generating code={}", e.getLocalizedMessage());
+            LOG.error("Failed generating image for codeQR reason={}", e.getLocalizedMessage());
         }
 
         return nextPage;
@@ -121,7 +121,7 @@ public class StoreDetailController {
             inputStream = new FileInputStream(FileUtil.getFileFromTmpDir(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
-            LOG.error("PNG image retrieval error occurred for user={} reason={}",
+            LOG.error("Failed PNG image retrieval error occurred for user={} reason={}",
                     queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
         } finally {
             if (inputStream != null) {
