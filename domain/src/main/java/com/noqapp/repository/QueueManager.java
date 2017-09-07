@@ -97,4 +97,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
+
+    @Mobile
+    List<QueueEntity> findAllClientToBeServiced(String codeQR);
 }

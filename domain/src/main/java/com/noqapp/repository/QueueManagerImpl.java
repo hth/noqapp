@@ -1,6 +1,8 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -298,5 +300,21 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE
         ).getN() > 0;
+    }
+
+    @Override
+    public List<QueueEntity> findAllClientToBeServiced(String codeQR) {
+        return mongoTemplate.find(
+                query(where("QR").is(codeQR)
+                        .and("QS").is(QueueUserStateEnum.Q)
+                        .andOperator(
+                                //TODO(hth) do we need to add this andOperator
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                QueueEntity.class,
+                TABLE
+        );
     }
 }
