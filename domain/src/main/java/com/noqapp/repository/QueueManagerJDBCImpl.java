@@ -50,9 +50,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE QID = ? GROUP BY QR";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? AND U >= ?";
+                    "QUEUE WHERE QID = ? AND U >= ? GROUP BY QR";
 
     private static final String findByDid =
             "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
@@ -60,9 +60,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE DID = ? GROUP BY QR";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? AND U >= ?";
+                    "QUEUE WHERE DID = ? AND U >= ? GROUP BY QR";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
