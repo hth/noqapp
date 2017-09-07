@@ -45,24 +45,44 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid =
-            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
+                    "QUEUE WHERE QID = ? " +
+                    "AND " +
+                    "C IN (SELECT max(C) " +
+                    "FROM QUEUE " +
+                    "WHERE QID = ?" +
+                    "GROUP BY QR)";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? AND U >= ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
+                    "QUEUE WHERE QID = ? AND U >= ?" +
+                    "AND " +
+                    "C IN (SELECT max(C) " +
+                    "FROM QUEUE " +
+                    "WHERE QID = ?" +
+                    "GROUP BY QR)";
 
     private static final String findByDid =
-            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
+                    "QUEUE WHERE DID = ?" +
+                    "AND " +
+                    "C IN (SELECT max(C) " +
+                    "FROM QUEUE " +
+                    "WHERE DID = ?" +
+                    "GROUP BY QR)";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? AND U >= ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
+                    "QUEUE WHERE DID = ? AND U >= ?" +
+                    "AND " +
+                    "C IN (SELECT max(C) " +
+                    "FROM QUEUE " +
+                    "WHERE DID = ?" +
+                    "GROUP BY QR)";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -145,7 +165,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public List<QueueEntity> getByDid(String did) {
         LOG.info("Fetch history by did={}", did);
         try {
-            return jdbcTemplate.query(findByDid, new Object[]{did}, new QueueRowMapper());
+            return jdbcTemplate.query(findByDid, new Object[]{did, did}, new QueueRowMapper());
         } catch(Exception e) {
             LOG.error("Error did={} reason={}", did, e.getLocalizedMessage(), e);
             return new ArrayList<>();
@@ -156,7 +176,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public List<QueueEntity> getByDid(String did, Date lastAccessed) {
         LOG.info("Fetch history by did={} lastAccessed={}", did, lastAccessed);
         try {
-            return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed}, new QueueRowMapper());
+            return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed, did}, new QueueRowMapper());
         } catch(Exception e) {
             LOG.error("Error did={} lastAccessed={} reason={}", did, lastAccessed, e.getLocalizedMessage(), e);
             return new ArrayList<>();
@@ -165,13 +185,13 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> getByQid(String qid) {
-        return jdbcTemplate.query(findByQid, new Object[]{qid}, new QueueRowMapper());
+        return jdbcTemplate.query(findByQid, new Object[]{qid, qid}, new QueueRowMapper());
     }
 
     @Override
     public List<QueueEntity> getByQid(String qid, Date lastAccessed) {
         LOG.info("Fetch history by qid={} lastAccessed={}", qid, lastAccessed);
-        return jdbcTemplate.query(findByQidAndByLastUpdated, new Object[]{qid, lastAccessed}, new QueueRowMapper());
+        return jdbcTemplate.query(findByQidAndByLastUpdated, new Object[]{qid, lastAccessed, qid}, new QueueRowMapper());
     }
 
     @Override
