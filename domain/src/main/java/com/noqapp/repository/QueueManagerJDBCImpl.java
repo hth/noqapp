@@ -47,22 +47,22 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String findByQid =
             "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? GROUP BY QR";
+                    "QUEUE WHERE QID = ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
 
     private static final String findByQidAndByLastUpdated =
             "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? AND U >= ? GROUP BY QR";
+                    "QUEUE WHERE QID = ? AND U >= ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
 
     private static final String findByDid =
             "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? GROUP BY QR";
+                    "QUEUE WHERE DID = ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
 
     private static final String findByDidAndByLastUpdated =
             "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? AND U >= ? GROUP BY QR";
+                    "QUEUE WHERE DID = ? AND U >= ? GROUP BY ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
