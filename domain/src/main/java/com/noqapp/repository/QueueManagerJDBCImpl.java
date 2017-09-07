@@ -45,22 +45,22 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid =
-            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE QID = ? GROUP BY QR";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE QID = ? AND U >= ? GROUP BY QR";
 
     private static final String findByDid =
-            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? GROUP BY QR";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, MAX('QR') AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, MAX(QR) AS QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? AND U >= ? GROUP BY QR";
 
