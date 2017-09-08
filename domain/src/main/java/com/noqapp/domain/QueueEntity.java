@@ -184,14 +184,14 @@ public class QueueEntity extends BaseEntity {
     public Date getServiceEndTime() {
         switch (queueUserState) {
             case Q:
-                LOG.info("{} insert date {}", queueUserState, getCreated());
+                LOG.info("QueueUserStateEnum={} create date={}", queueUserState, getCreated());
                 return getCreated();
             case A:
             case N:
             case S:
                 return serviceEndTime;
             default:
-                LOG.error("Reached un-supported condition queueUserState={}", queueUserState);
+                LOG.error("Reached un-supported condition QueueUserStateEnum={}", queueUserState);
                 return getCreated();
         }
     }
