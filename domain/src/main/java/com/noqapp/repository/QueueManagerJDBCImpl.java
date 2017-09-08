@@ -52,7 +52,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
                     "WHERE QID = ? " +
-                    "GROUP BY QR)";
+                    "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByQidAndByLastUpdated =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
@@ -62,7 +62,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
                     "WHERE QID = ? " +
-                    "GROUP BY QR)";
+                    "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDid =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
@@ -72,7 +72,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
                     "WHERE DID = ? " +
-                    "GROUP BY QR)";
+                    "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
@@ -82,7 +82,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
                     "WHERE DID = ? " +
-                    "GROUP BY QR)";
+                    "GROUP BY QR) ORDER BY C DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
