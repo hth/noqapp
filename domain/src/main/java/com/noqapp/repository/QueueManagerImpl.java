@@ -220,6 +220,10 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     public List<QueueEntity> findAllNotQueuedByQid(String qid) {
+        //todo (hth) Add distinct
+//        DBObject query = QueryBuilder.start("QID").is(qid).and("QS").notEquals(QueueUserStateEnum.Q).and("C").get();
+//        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
+
         return mongoTemplate.find(
                 query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
                 QueueEntity.class,

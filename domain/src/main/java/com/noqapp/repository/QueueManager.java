@@ -62,7 +62,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findAllQueuedByQid(String qid);
 
     /**
-     * Get all the queues that have been serviced for today.
+     * Get all the queues that have been serviced for today by DID.
      *
      * @param did
      * @return
@@ -71,11 +71,12 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findAllNotQueuedByDid(String did);
 
     /**
-     * Get all the queues that have been serviced for today.
+     * Get all the queues that have been serviced for today by QID.
      *
      * @param qid
      * @return
      */
+    @Mobile
     List<QueueEntity> findAllNotQueuedByQid(String qid);
 
     @Mobile
