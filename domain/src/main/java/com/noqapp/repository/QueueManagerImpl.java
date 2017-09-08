@@ -4,6 +4,7 @@ import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -200,21 +201,21 @@ public class QueueManagerImpl implements QueueManager {
 
     public List<QueueEntity> findAllQueuedByDid(String did) {
         return mongoTemplate.find(
-                query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)),
+                query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
 
     public List<QueueEntity> findAllQueuedByQid(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("QS").is(QueueUserStateEnum.Q)),
+                query(where("QID").is(qid).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
 
     public List<QueueEntity> findAllNotQueuedByDid(String did) {
         return mongoTemplate.find(
-                query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)),
+                query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)).with(new Sort(DESC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -225,7 +226,7 @@ public class QueueManagerImpl implements QueueManager {
 //        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
 
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)),
+                query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)).with(new Sort(DESC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
