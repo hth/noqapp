@@ -57,7 +57,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String findByQidAndByLastUpdated =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE QID = ? AND U >= ?" +
+                    "QUEUE WHERE QID = ? AND U >= ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
@@ -67,7 +67,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String findByDid =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ?" +
+                    "QUEUE WHERE DID = ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
@@ -77,7 +77,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String findByDidAndByLastUpdated =
             "SELECT ID, QR, DID, QID, TN, DN, QS, NS, RA, HR, SN, SB, SE, V, U, C, A, D" +
                     " FROM " +
-                    "QUEUE WHERE DID = ? AND U >= ?" +
+                    "QUEUE WHERE DID = ? AND U >= ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
                     "FROM QUEUE " +
