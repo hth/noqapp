@@ -1,8 +1,13 @@
 package com.noqapp.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.google.maps.model.GeocodingResult;
+
 import com.noqapp.repository.BizStoreManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,13 +27,31 @@ class ExternalServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        externalService = new ExternalService("", 0, bizStoreManager);
+        externalService = new ExternalService("AIzaSyDUM3yIIrwrx3ciwZ57O9YamC4uISWAlAk", 0, bizStoreManager);
     }
 
     @Test
     void computeNextRunTimeAtUTC_Match_Time() {
         Date nyc = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0);
         Date pst = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0);
-        Assertions.assertEquals(nyc, pst, "Both dates should be same");
+        assertEquals(nyc, pst, "Both dates should be same");
+    }
+
+    @Test
+    @DisplayName ("Null when address supplied is empty")
+    void getGeocodingResults_EmptyAddress() {
+        assertNull(externalService.getGeocodingResults(""), "Null when address is empty");
+    }                                           
+
+    @Test
+    void getGeocodingResults_InvalidAddress_Without_Commas() {
+        GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit Sunnyvale CA 94089");
+        assertEquals(2, geocodingResults.length);
+    }
+
+    @Test
+    void getGeocodingResults_InvalidAddress_With_Commas() {
+        GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit, Sunnyvale, CA 94089");
+        assertEquals(1, geocodingResults.length);
     }
 }

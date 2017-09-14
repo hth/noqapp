@@ -77,6 +77,6 @@ class AccountServiceTest {
         doThrow(DataIntegrityViolationException.class).when(userAccountManager).save(userAccount);
         Throwable exception = assertThrows(DataIntegrityViolationException.class,
                 ()-> accountService.save(userAccount));
-        assertNull(exception.getMessage());
+        assertNull(exception.getMessage(), "No message is set when data integrity violation happens");
     }
 }
