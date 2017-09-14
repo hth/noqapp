@@ -54,4 +54,11 @@ class ExternalServiceTest {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit, Sunnyvale, CA 94089");
         assertEquals(1, geocodingResults.length);
     }
+
+    @Test
+    @DisplayName("Break of a loop if the address could not be shortened")
+    void getGeocodingResults_InvalidAddress_Break_Loop() {
+        GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234TestCircuitSunnyvaleCA94089");
+        assertNull(geocodingResults);
+    }
 }
