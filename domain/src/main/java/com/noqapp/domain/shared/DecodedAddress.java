@@ -26,12 +26,12 @@ public class DecodedAddress {
     private String country;
     private String countryShortName;
 
-    /** Format Longitude and then Latitude. */
+    /* Format Longitude and then Latitude. */
     private double[] coordinate;
     private String placeId;
     private boolean empty = true;
 
-    /** Based on size of the address, the bigger address is selected. */
+    /* Based on size of the address, the bigger address is selected. */
     private DecodedAddress(GeocodingResult[] results, String address) {
         if (null != results && results.length > 0) {
             empty = false;
@@ -100,7 +100,7 @@ public class DecodedAddress {
         return address;
     }
 
-    /** Address sourced from third party. External source. */
+    /* Address sourced from third party. External source. */
     public String getFormattedAddress() {
         return formattedAddress;
     }
