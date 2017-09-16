@@ -1,6 +1,5 @@
 package com.noqapp.view.flow.validator;
 
-import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 
 import org.apache.commons.lang3.StringUtils;
@@ -16,12 +15,16 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocoding;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.DateUtil;
 import com.noqapp.utils.Formatter;
 import com.noqapp.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
+
+import java.util.Map;
 
 /**
  * User: hitender
@@ -169,71 +172,97 @@ public class UserFlowValidator {
                             .build());
             status = "failure";
         } else {
-            GeocodingResult[] geocodingResults = externalService.getGeocodingResults(registerUser.getAddress());
-            if (null != geocodingResults) {
-                DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, registerUser.getAddress());
+            DecodedAddress decodedAddress;
+            if (registerUser.isSelectFoundAddress()) {
+                decodedAddress = registerUser.getFoundAddresses().get(registerUser.getFoundAddressPlaceId());
+                registerUser.setAddress(decodedAddress.getFormattedAddress());
+                registerUser.setAddressOrigin(AddressOriginEnum.G);
+            } else if(registerUser.getFoundAddresses().isEmpty()) {
+                Geocoding geocoding = Geocoding.newInstance(
+                        externalService.getGeocodingResults(registerUser.getAddress()),
+                        registerUser.getAddress());
+                registerUser.setFoundAddresses(geocoding.getFoundAddresses());
+                decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+
                 if (decodedAddress.isNotEmpty()) {
-                    /* Make sure you are not over writing country short name when phone is already validated. */
-                    if (registerUser.isPhoneValidated()) {
-                        if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
-                            messageContext.addMessage(
-                                    new MessageBuilder()
-                                            .error()
-                                            .source("registerUser.address")
-                                            .defaultText("Your address does not match with the country of registered phone number. " +
-                                                    "Phone is registered to " + registerUser.getCountryShortName())
-                                            .build());
-                            status = "failure";
-                        }
+                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                        messageContext.addMessage(
+                                new MessageBuilder()
+                                        .error()
+                                        .source("registerUser.address")
+                                        .defaultText("Found other matching address(es). Please select 'Best Matching Address' or if you choose 'Your Address' then click Next.")
+                                        .build());
+                        status = "failure";
                     }
-
-                    if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
-                        /* Reset to raw format before updating to new address and countryShortName. */
-                        try {
-                            if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
-                                messageContext.addMessage(
-                                        new MessageBuilder()
-                                                .error()
-                                                .source("registerUser.phone")
-                                                .defaultText("Your Phone number cannot be empty")
-                                                .build());
-                                status = "failure";
-                                return status;
-                            } else {
-                                String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-                                registerUser.setPhone(updatedPhone);
-                            }
-                        } catch (Exception e) {
-                            LOG.error("Failed parsing phone number reason={}", e.getLocalizedMessage(), e);
-                            messageContext.addMessage(
-                                    new MessageBuilder()
-                                            .error()
-                                            .source("registerUser.phone")
-                                            .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
-                                            .build());
-                            status = "failure";
-                            return status;
-                        }
-
-                        /* No need to call Lat and Lng when validation has already failed. */
-                        if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
-                            registerUser.setAddress(decodedAddress.getFormattedAddress());
-                            registerUser.setCountryShortName(decodedAddress.getCountryShortName());
-
-                            LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-                            String timeZone = externalService.findTimeZone(latLng);
-                            registerUser.setTimeZone(timeZone);
-                        }
-                    }
+                } else {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerUser.address")
+                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                                    .build());
+                    status = "failure";
                 }
             } else {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerUser.address")
-                                .defaultText("Failed decoding your address. Please contact support if this error persists.")
-                                .build());
-                status = "failure";
+                /*
+                 * Since user has choose to select the address entered by user, we take what we found and
+                 * replace the other parameter with decoded address and keep the original address same.
+                 */
+                Map.Entry<String, DecodedAddress> entry = registerUser.getFoundAddresses().entrySet().iterator().next();
+                decodedAddress = entry.getValue();
+                registerUser.setAddressOrigin(AddressOriginEnum.S);
+            }
+
+            /* Make sure you are not over writing country short name when phone is already validated. */
+            if (registerUser.isPhoneValidated()) {
+                if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerUser.address")
+                                    .defaultText("Your address does not match with the country of registered phone number. " +
+                                            "Phone is registered to " + registerUser.getCountryShortName())
+                                    .build());
+                    status = "failure";
+                }
+            }
+
+            if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+                /* Reset to raw format before updating to new address and countryShortName. */
+                try {
+                    if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
+                        messageContext.addMessage(
+                                new MessageBuilder()
+                                        .error()
+                                        .source("registerUser.phone")
+                                        .defaultText("Your Phone number cannot be empty")
+                                        .build());
+                        status = "failure";
+                        return status;
+                    } else {
+                        String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
+                        registerUser.setPhone(updatedPhone);
+                    }
+                } catch (Exception e) {
+                    LOG.error("Failed parsing phone number reason={}", e.getLocalizedMessage(), e);
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerUser.phone")
+                                    .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
+                                    .build());
+                    status = "failure";
+                    return status;
+                }
+
+                /* No need to call Lat and Lng when validation has already failed. */
+                if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+                    registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+
+                    LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                    String timeZone = externalService.findTimeZone(latLng);
+                    registerUser.setTimeZone(timeZone);
+                }
             }
         }
 

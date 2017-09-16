@@ -6,9 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.utils.Formatter;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * User: hitender
@@ -25,12 +29,19 @@ public class RegisterUser implements Serializable {
     private String timeZone;
     private boolean emailValidated;
     private boolean phoneValidated;
+    private AddressOriginEnum addressOrigin;
 
     private String gender;
     private String birthday;
     private String password;
     private boolean accountExists;
     private boolean acceptsAgreement;
+
+    /* Are just place holders for data setup for address provided. */
+    private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
+    private String foundAddressPlaceId;
+    private boolean selectFoundAddress;
+    /* End of place holder of data. */
 
     public String getQueueUserId() {
         return queueUserId;
@@ -188,6 +199,42 @@ public class RegisterUser implements Serializable {
 
     public RegisterUser setPhoneValidated(boolean phoneValidated) {
         this.phoneValidated = phoneValidated;
+        return this;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public RegisterUser setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
+    }
+
+    public HashMap<String, DecodedAddress> getFoundAddresses() {
+        return foundAddresses;
+    }
+
+    public RegisterUser setFoundAddresses(HashMap<String, DecodedAddress> foundAddresses) {
+        this.foundAddresses = foundAddresses;
+        return this;
+    }
+
+    public String getFoundAddressPlaceId() {
+        return foundAddressPlaceId;
+    }
+
+    public RegisterUser setFoundAddressPlaceId(String foundAddressPlaceId) {
+        this.foundAddressPlaceId = foundAddressPlaceId;
+        return this;
+    }
+
+    public boolean isSelectFoundAddress() {
+        return selectFoundAddress;
+    }
+
+    public RegisterUser setSelectFoundAddress(boolean selectFoundAddress) {
+        this.selectFoundAddress = selectFoundAddress;
         return this;
     }
 

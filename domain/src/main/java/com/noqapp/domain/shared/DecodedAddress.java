@@ -9,14 +9,15 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 11/23/16 4:30 PM
  */
-public class DecodedAddress {
+public class DecodedAddress implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(DecodedAddress.class);
 
-    private String address;
     private String formattedAddress;
     private String town;
     private String district;
@@ -32,16 +33,15 @@ public class DecodedAddress {
     private boolean empty = true;
 
     /* Based on size of the address, the bigger address is selected. */
-    private DecodedAddress(GeocodingResult[] results, String address) {
+    private DecodedAddress(GeocodingResult[] results, int counter) {
         if (null != results && results.length > 0) {
             empty = false;
-            Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
-            Assert.notNull(results[0].geometry.location, "Geometry is null hence location is null");
+            Assert.notNull(results[counter].geometry, "Address is null hence geometry is null");
+            Assert.notNull(results[counter].geometry.location, "Geometry is null hence location is null");
 
-            this.address = address;
-            formattedAddress = results[0].formattedAddress;
+            formattedAddress = results[counter].formattedAddress;
 
-            for (AddressComponent addressComponent : results[0].addressComponents) {
+            for (AddressComponent addressComponent : results[counter].addressComponents) {
                 for (AddressComponentType addressComponentType : addressComponent.types) {
                     switch (addressComponentType) {
                         case COUNTRY:
@@ -72,32 +72,20 @@ public class DecodedAddress {
                 }
             }
 
-            if (null != results[0].geometry) {
+            if (null != results[counter].geometry) {
                 this.coordinate = new double[]{
-                        /** Mongo: Specify coordinates in this order: “longitude, latitude.” */
-                        results[0].geometry.location.lng,
-                        results[0].geometry.location.lat
+                        /* Mongo: Specify coordinates in this order: “longitude, latitude.” */
+                        results[counter].geometry.location.lng,
+                        results[counter].geometry.location.lat
                 };
             }
 
-            placeId = results[0].placeId;
+            placeId = results[counter].placeId;
         }
     }
 
-    public static DecodedAddress newInstance(GeocodingResult[] results, String address) {
-        return new DecodedAddress(results, address);
-    }
-
-    /**
-     * Address entered, searched or as on receipt.
-     * Example:
-     *  Lot F7, 1st Floor, Bangsar Shopping Centre, No 1, Jln Tetawi 1, Bangsar Baru 59700 K Lumpur
-     *  OR Tambo Airport Rd, Level 2, Domtex Building, OR Tambo International Airport, Johannesburg, 1627, South Africa
-     *
-     * External source could not locate these address. So to preserve whats entered (as un-altered) we save the address.
-     */
-    public String getAddress() {
-        return address;
+    public static DecodedAddress newInstance(GeocodingResult[] results, int counter) {
+        return new DecodedAddress(results, counter);
     }
 
     /* Address sourced from third party. External source. */

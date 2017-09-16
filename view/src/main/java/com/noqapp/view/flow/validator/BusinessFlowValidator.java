@@ -18,11 +18,14 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocoding;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -78,21 +81,8 @@ public class BusinessFlowValidator {
                             .build());
             status = "failure";
         }
-
-        if (StringUtils.isNotBlank(registerBusiness.getAddress())) {
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(
-                    externalService.getGeocodingResults(registerBusiness.getAddress()),
-                    registerBusiness.getAddress());
-
-            if (decodedAddress.isNotEmpty()) {
-                registerBusiness.setAddress(decodedAddress.getFormattedAddress());
-                registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
-
-                LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
-                String timeZone = externalService.findTimeZone(latLng);
-                registerBusiness.setTimeZone(timeZone);
-            }
-        } else {
+        
+        if (StringUtils.isBlank(registerBusiness.getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -100,6 +90,55 @@ public class BusinessFlowValidator {
                             .defaultText("Business Address cannot be empty")
                             .build());
             status = "failure";
+        } else {
+            DecodedAddress decodedAddress;
+            if (registerBusiness.isSelectFoundAddress()) {
+                decodedAddress = registerBusiness.getFoundAddresses().get(registerBusiness.getFoundAddressPlaceId());
+                registerBusiness.setAddress(decodedAddress.getFormattedAddress());
+                registerBusiness.setAddressOrigin(AddressOriginEnum.G);
+            } else if(registerBusiness.getFoundAddresses().isEmpty()) {
+                Geocoding geocoding = Geocoding.newInstance(
+                        externalService.getGeocodingResults(registerBusiness.getAddress()),
+                        registerBusiness.getAddress());
+                registerBusiness.setFoundAddresses(geocoding.getFoundAddresses());
+                decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+
+                if (decodedAddress.isNotEmpty()) {
+                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                        messageContext.addMessage(
+                                new MessageBuilder()
+                                        .error()
+                                        .source("registerBusiness.address")
+                                        .defaultText("Found other matching address(es). Please select 'Best Matching Business Address' or if you choose 'Business Address' then click Next.")
+                                        .build());
+                        status = "failure";
+                    }
+                } else {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.address")
+                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                                    .build());
+                    status = "failure";
+                }
+            } else {
+                /*
+                 * Since user has choose to select the address entered by user, we take what we found and
+                 * replace the other parameter with decoded address and keep the original address same.
+                 */
+                Map.Entry<String, DecodedAddress> entry = registerBusiness.getFoundAddresses().entrySet().iterator().next();
+                decodedAddress = entry.getValue();
+                registerBusiness.setAddressOrigin(AddressOriginEnum.S);
+            }
+            
+            if (decodedAddress.isNotEmpty()) {
+                registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
+
+                LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
+                String timeZone = externalService.findTimeZone(latLng);
+                registerBusiness.setTimeZone(timeZone);
+            }
         }
 
         if (StringUtils.isBlank(registerBusiness.getPhoneNotFormatted())) {
@@ -160,12 +199,48 @@ public class BusinessFlowValidator {
                             .build());
             status = "failure";
         } else {
-            DecodedAddress decodedAddressStore = DecodedAddress.newInstance(
-                    externalService.getGeocodingResults(registerBusiness.getAddressStore()),
-                    registerBusiness.getAddressStore());
+            DecodedAddress decodedAddressStore;
+            if (registerBusiness.isSelectFoundAddressStore()) {
+                decodedAddressStore = registerBusiness.getFoundAddressStores().get(registerBusiness.getFoundAddressStorePlaceId());
+                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
+                registerBusiness.setAddressStoreOrigin(AddressOriginEnum.G);
+            } else if(registerBusiness.getFoundAddressStores().isEmpty()) {
+                Geocoding geocoding = Geocoding.newInstance(
+                        externalService.getGeocodingResults(registerBusiness.getAddressStore()),
+                        registerBusiness.getAddressStore());
+                registerBusiness.setFoundAddressStores(geocoding.getFoundAddresses());
+                decodedAddressStore = DecodedAddress.newInstance(geocoding.getResults(), 0);
+
+                if (decodedAddressStore.isNotEmpty()) {
+                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                        messageContext.addMessage(
+                                new MessageBuilder()
+                                        .error()
+                                        .source("registerBusiness.addressStore")
+                                        .defaultText("Found other matching address(es). Please select 'Best Matching Store Address' or if you choose 'Store Address' then click Next.")
+                                        .build());
+                        status = "failure";
+                    }
+                } else {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.addressStore")
+                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                                    .build());
+                    status = "failure";
+                }
+            } else {
+                /*
+                 * Since user has choose to select the address entered by user, we take what we found and
+                 * replace the other parameter with decoded address and keep the original address same.
+                 */
+                Map.Entry<String, DecodedAddress> entry = registerBusiness.getFoundAddressStores().entrySet().iterator().next();
+                decodedAddressStore = entry.getValue();
+                registerBusiness.setAddressStoreOrigin(AddressOriginEnum.S);
+            }
 
             if (decodedAddressStore.isNotEmpty()) {
-                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
                 registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
 
                 LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());

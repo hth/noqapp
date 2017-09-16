@@ -9,11 +9,15 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,12 +29,13 @@ public class RegisterBusiness implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RegisterBusiness.class);
 
     private String name;
-    /** Business types are initialized in flow. Why? Show off. */
+    /* Business types are initialized in flow. Why? Show off. */
     private List<BusinessTypeEnum> businessTypes;
     private String address;
     private String countryShortName;
     private String phone;
     private String timeZone;
+    private AddressOriginEnum addressOrigin;
     private BusinessUserEntity businessUser;
 
     private boolean multiStore = false;
@@ -41,8 +46,17 @@ public class RegisterBusiness implements Serializable {
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
+    private AddressOriginEnum addressStoreOrigin;
     private boolean allowLoggedInUser;
     private List<BusinessHour> businessHours = new LinkedList<>();
+
+    private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
+    private String foundAddressPlaceId;
+    private boolean selectFoundAddress;
+
+    private HashMap<String, DecodedAddress> foundAddressStores = new LinkedHashMap<>();
+    private String foundAddressStorePlaceId;
+    private boolean selectFoundAddressStore;
 
     public RegisterBusiness() {
         for (int i = 1; i <= 7; i++) {
@@ -119,6 +133,15 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public RegisterBusiness setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
     }
 
     public BusinessUserEntity getBusinessUser() {
@@ -212,6 +235,15 @@ public class RegisterBusiness implements Serializable {
         this.timeZoneStore = timeZoneStore;
     }
 
+    public AddressOriginEnum getAddressStoreOrigin() {
+        return addressStoreOrigin;
+    }
+
+    public RegisterBusiness setAddressStoreOrigin(AddressOriginEnum addressStoreOrigin) {
+        this.addressStoreOrigin = addressStoreOrigin;
+        return this;
+    }
+
     public boolean isAllowLoggedInUser() {
         return allowLoggedInUser;
     }
@@ -226,6 +258,60 @@ public class RegisterBusiness implements Serializable {
 
     public void setBusinessHours(List<BusinessHour> businessHours) {
         this.businessHours = businessHours;
+    }
+
+    public HashMap<String, DecodedAddress> getFoundAddresses() {
+        return foundAddresses;
+    }
+
+    public RegisterBusiness setFoundAddresses(HashMap<String, DecodedAddress> foundAddresses) {
+        this.foundAddresses = foundAddresses;
+        return this;
+    }
+
+    public String getFoundAddressPlaceId() {
+        return foundAddressPlaceId;
+    }
+
+    public RegisterBusiness setFoundAddressPlaceId(String foundAddressPlaceId) {
+        this.foundAddressPlaceId = foundAddressPlaceId;
+        return this;
+    }
+
+    public boolean isSelectFoundAddress() {
+        return selectFoundAddress;
+    }
+
+    public RegisterBusiness setSelectFoundAddress(boolean selectFoundAddress) {
+        this.selectFoundAddress = selectFoundAddress;
+        return this;
+    }
+
+    public HashMap<String, DecodedAddress> getFoundAddressStores() {
+        return foundAddressStores;
+    }
+
+    public RegisterBusiness setFoundAddressStores(HashMap<String, DecodedAddress> foundAddressStores) {
+        this.foundAddressStores = foundAddressStores;
+        return this;
+    }
+
+    public String getFoundAddressStorePlaceId() {
+        return foundAddressStorePlaceId;
+    }
+
+    public RegisterBusiness setFoundAddressStorePlaceId(String foundAddressStorePlaceId) {
+        this.foundAddressStorePlaceId = foundAddressStorePlaceId;
+        return this;
+    }
+
+    public boolean isSelectFoundAddressStore() {
+        return selectFoundAddressStore;
+    }
+
+    public RegisterBusiness setSelectFoundAddressStore(boolean selectFoundAddressStore) {
+        this.selectFoundAddressStore = selectFoundAddressStore;
+        return this;
     }
 
     @Transient

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
 
@@ -49,10 +50,6 @@ public class BizNameEntity extends BaseEntity {
     @NotNull
     @Field ("AD")
     private String address;
-
-    @NotNull
-    @Field ("FA")
-    private String formattedAddress;
 
     @Field ("TO")
     private String town;
@@ -107,6 +104,10 @@ public class BizNameEntity extends BaseEntity {
 
     @Field ("MS")
     private boolean multiStore = false;
+
+    @NotNull
+    @Field ("AO")
+    private AddressOriginEnum addressOrigin;
 
     public static BizNameEntity newInstance() {
         return new BizNameEntity();
@@ -183,14 +184,6 @@ public class BizNameEntity extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = StringUtils.strip(address);
-    }
-
-    public String getFormattedAddress() {
-        return formattedAddress;
-    }
-
-    public void setFormattedAddress(String formattedAddress) {
-        this.formattedAddress = formattedAddress;
     }
 
     public String getTown() {
@@ -337,6 +330,15 @@ public class BizNameEntity extends BaseEntity {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public BizNameEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
     }
 
     @Override

@@ -1101,6 +1101,7 @@
   </component>
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/view" libraries="{firebase, firebase-app, firebase-auth, material}" />
+    <file url="PROJECT" libraries="{jquery, jquery-ui}" />
   </component>
   <component name="Palette2">
     <group name="Swing">
