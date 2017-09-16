@@ -11,6 +11,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.utils.ScrubbedInput;
 
 /**
  * User: hitender
@@ -45,7 +46,7 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
 
         RegisterBusiness registerBusiness = new RegisterBusiness();
         registerBusiness.setBusinessUser(businessUser);
-        registerBusiness.setName(businessUser.getBizName().getBusinessName());
+        registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
 
         return registerBusiness;
     }

@@ -23,6 +23,7 @@ import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
+import com.noqapp.utils.ScrubbedInput;
 
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class BusinessFlowValidator {
             DecodedAddress decodedAddress;
             if (registerBusiness.isSelectFoundAddress()) {
                 decodedAddress = registerBusiness.getFoundAddresses().get(registerBusiness.getFoundAddressPlaceId());
-                registerBusiness.setAddress(decodedAddress.getFormattedAddress());
+                registerBusiness.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerBusiness.setAddressOrigin(AddressOriginEnum.G);
             } else if(registerBusiness.getFoundAddresses().isEmpty()) {
                 Geocoding geocoding = Geocoding.newInstance(
@@ -133,11 +134,11 @@ public class BusinessFlowValidator {
             }
             
             if (decodedAddress.isNotEmpty()) {
-                registerBusiness.setCountryShortName(decodedAddress.getCountryShortName());
+                registerBusiness.setCountryShortName(new ScrubbedInput(decodedAddress.getCountryShortName()));
 
                 LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
                 String timeZone = externalService.findTimeZone(latLng);
-                registerBusiness.setTimeZone(timeZone);
+                registerBusiness.setTimeZone(new ScrubbedInput(timeZone));
             }
         }
 
@@ -202,7 +203,7 @@ public class BusinessFlowValidator {
             DecodedAddress decodedAddressStore;
             if (registerBusiness.isSelectFoundAddressStore()) {
                 decodedAddressStore = registerBusiness.getFoundAddressStores().get(registerBusiness.getFoundAddressStorePlaceId());
-                registerBusiness.setAddressStore(decodedAddressStore.getFormattedAddress());
+                registerBusiness.setAddressStore(new ScrubbedInput(decodedAddressStore.getFormattedAddress()));
                 registerBusiness.setAddressStoreOrigin(AddressOriginEnum.G);
             } else if(registerBusiness.getFoundAddressStores().isEmpty()) {
                 Geocoding geocoding = Geocoding.newInstance(
@@ -241,11 +242,11 @@ public class BusinessFlowValidator {
             }
 
             if (decodedAddressStore.isNotEmpty()) {
-                registerBusiness.setCountryShortNameStore(decodedAddressStore.getCountryShortName());
+                registerBusiness.setCountryShortNameStore(new ScrubbedInput(decodedAddressStore.getCountryShortName()));
 
                 LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
                 String timeZone = externalService.findTimeZone(latLng);
-                registerBusiness.setTimeZoneStore(timeZone);
+                registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
             }
         }
 

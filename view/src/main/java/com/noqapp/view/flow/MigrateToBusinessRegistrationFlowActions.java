@@ -24,6 +24,7 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException;
 
 import java.util.Set;
@@ -77,14 +78,14 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(qid);
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
-        register.getRegisterUser().setEmail(userProfile.getEmail())
-                .setGender(userProfile.getGender())
-                .setBirthday(userProfile.getBirthday())
-                .setFirstName(userProfile.getFirstName())
-                .setLastName(userProfile.getLastName())
-                .setAddress(userProfile.getAddress())
-                .setCountryShortName(userProfile.getCountryShortName())
-                .setPhone(userProfile.getPhoneRaw())
+        register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
+                .setGender(new ScrubbedInput(userProfile.getGender()))
+                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
         return register;

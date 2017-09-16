@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.utils.ScrubbedInput;
 
 import java.io.Serializable;
 
@@ -20,14 +21,14 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
         getRegisterBusiness().setBusinessUser(businessUser);
         getRegisterUser().setQueueUserId(businessUser.getQueueUserId());
         if (null != businessUser.getBizName()) {
-            getRegisterBusiness().setName(businessUser.getBizName().getBusinessName());
+            getRegisterBusiness().setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
             getRegisterBusiness().setBusinessTypes(businessUser.getBizName().getBusinessTypes());
         }
 
         if (null != bizStore) {
-            getRegisterBusiness().setAddress(bizStore.getAddress());
-            getRegisterBusiness().setPhone(bizStore.getPhone());
-            getRegisterBusiness().setCountryShortName(bizStore.getCountryShortName());
+            getRegisterBusiness().setAddress(new ScrubbedInput(bizStore.getAddress()));
+            getRegisterBusiness().setPhone(new ScrubbedInput(bizStore.getPhone()));
+            getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()));
         }
     }
 

@@ -16,6 +16,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.Formatter;
+import com.noqapp.utils.ScrubbedInput;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,12 +44,12 @@ class RegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(Register register) {
-        register.getRegisterUser().setPhone(register.getRegisterUser().getPhoneNotFormatted());
+        register.getRegisterUser().setPhone(new ScrubbedInput(register.getRegisterUser().getPhoneNotFormatted()));
     }
 
     @SuppressWarnings ("unused")
     public void updateBusiness(Register register) {
-        register.getRegisterBusiness().setPhone(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone()));
+        register.getRegisterBusiness().setPhone(new ScrubbedInput(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone())));
 
         if (register.getRegisterBusiness().isMultiStore()) {
             register.getRegisterBusiness().setAddressStore(null);
@@ -73,7 +74,7 @@ class RegistrationFlowActions {
      */
     @SuppressWarnings ("unused")
     public void fillWithBusinessHour(RegisterBusiness registerBusiness) {
-        registerBusiness.setPhone(Formatter.phoneCleanup(registerBusiness.getPhone()));
+        registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneCleanup(registerBusiness.getPhone())));
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
         for (BusinessHour businessHour : businessHours) {
             if (0 == businessHour.getTokenNotAvailableFrom()) {

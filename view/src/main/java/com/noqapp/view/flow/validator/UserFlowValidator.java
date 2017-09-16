@@ -21,6 +21,7 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.DateUtil;
 import com.noqapp.utils.Formatter;
+import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
 
@@ -175,7 +176,7 @@ public class UserFlowValidator {
             DecodedAddress decodedAddress;
             if (registerUser.isSelectFoundAddress()) {
                 decodedAddress = registerUser.getFoundAddresses().get(registerUser.getFoundAddressPlaceId());
-                registerUser.setAddress(decodedAddress.getFormattedAddress());
+                registerUser.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerUser.setAddressOrigin(AddressOriginEnum.G);
             } else if(registerUser.getFoundAddresses().isEmpty()) {
                 Geocoding geocoding = Geocoding.newInstance(
@@ -241,7 +242,7 @@ public class UserFlowValidator {
                         return status;
                     } else {
                         String updatedPhone = Formatter.resetPhoneToRawFormat(registerUser.getPhone(), registerUser.getCountryShortName());
-                        registerUser.setPhone(updatedPhone);
+                        registerUser.setPhone(new ScrubbedInput(updatedPhone));
                     }
                 } catch (Exception e) {
                     LOG.error("Failed parsing phone number reason={}", e.getLocalizedMessage(), e);
@@ -257,11 +258,11 @@ public class UserFlowValidator {
 
                 /* No need to call Lat and Lng when validation has already failed. */
                 if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
-                    registerUser.setCountryShortName(decodedAddress.getCountryShortName());
+                    registerUser.setCountryShortName(new ScrubbedInput(decodedAddress.getCountryShortName()));
 
                     LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
                     String timeZone = externalService.findTimeZone(latLng);
-                    registerUser.setTimeZone(timeZone);
+                    registerUser.setTimeZone(new ScrubbedInput(timeZone));
                 }
             }
         }
