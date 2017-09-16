@@ -52,9 +52,9 @@ class RegistrationFlowActions {
         register.getRegisterBusiness().setPhone(new ScrubbedInput(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone())));
 
         if (register.getRegisterBusiness().isMultiStore()) {
-            register.getRegisterBusiness().setAddressStore(null);
-            register.getRegisterBusiness().setPhoneStore(null);
-            register.getRegisterBusiness().setCountryShortNameStore(null);
+            register.getRegisterBusiness().setAddressStore(new ScrubbedInput(""));
+            register.getRegisterBusiness().setPhoneStore(new ScrubbedInput(""));
+            register.getRegisterBusiness().setCountryShortNameStore(new ScrubbedInput(""));
         } else {
             List<BusinessHour> businessHours = register.getRegisterBusiness().getBusinessHours();
             for (BusinessHour businessHour : businessHours) {
