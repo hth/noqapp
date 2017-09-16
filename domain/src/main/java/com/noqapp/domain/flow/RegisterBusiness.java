@@ -90,6 +90,7 @@ public class RegisterBusiness implements Serializable {
     }
 
     public void setAddress(ScrubbedInput address) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
         this.address = address.getText().replaceAll("\\R", " ");
     }
 
@@ -190,6 +191,7 @@ public class RegisterBusiness implements Serializable {
     }
 
     public void setAddressStore(ScrubbedInput addressStore) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
         this.addressStore = addressStore.getText().replaceAll("\\R", " ");
     }
 

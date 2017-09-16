@@ -85,6 +85,7 @@ public class RegisterUser implements Serializable {
     }
 
     public RegisterUser setAddress(ScrubbedInput address) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
         this.address = address.getText().replaceAll("\\R", " ");
         return this;
     }
