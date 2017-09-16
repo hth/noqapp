@@ -30,7 +30,7 @@ public class DataSourceConfiguration {
     @Bean
     public DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setJdbcUrl("jdbc:mysql://" + mysql_host + ":3306/" + mysql_db);
         ds.setUsername(mysqlUsername);
         ds.setPassword(mysqlPassword);
@@ -45,6 +45,11 @@ public class DataSourceConfiguration {
         ds.addDataSourceProperty("cacheServerConfiguration", true);
         ds.addDataSourceProperty("elideSetAutoCommits", true);
         ds.addDataSourceProperty("maintainTimeStats", false);
+        /* Since the time new driver class is com.mysql.cj.jdbc.Driver. */
+        ds.addDataSourceProperty("verifyServerCertificate", false);
+        ds.addDataSourceProperty("useSSL", false);
+        ds.addDataSourceProperty("serverTimezone", "UTC");
+        /* End of changes since new driver class. */
         ds.setMaximumPoolSize(10);
         ds.setMinimumIdle(2);
         /* 30 seconds. */
