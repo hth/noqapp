@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.utils.Formatter;
 
@@ -82,6 +83,9 @@ public class UserProfileEntity extends BaseEntity {
     @NotNull
     @Field ("IC")
     private String inviteCode;
+
+    @Field ("AO")
+    private AddressOriginEnum addressOrigin;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -246,5 +250,14 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public UserProfileEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
     }
 }

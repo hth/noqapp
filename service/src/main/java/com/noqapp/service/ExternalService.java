@@ -22,6 +22,8 @@ import org.springframework.util.Assert;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocoding;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.repository.BizStoreManager;
 
 import java.text.DateFormat;
@@ -78,10 +80,14 @@ public class ExternalService {
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
+            Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
             if (decodedAddress.isNotEmpty()) {
-                bizStore.setAddress(decodedAddress.getAddress());
-                bizStore.setFormattedAddress(decodedAddress.getFormattedAddress());
+                if(bizStore.getAddressOrigin() != AddressOriginEnum.S) {
+                    bizStore.setAddress(decodedAddress.getFormattedAddress());
+                } else {
+                    bizStore.setAddress(geocoding.getAddress());
+                }
                 bizStore.setTown(decodedAddress.getTown());
                 bizStore.setDistrict(decodedAddress.getDistrict());
                 bizStore.setState(decodedAddress.getState());
@@ -121,10 +127,14 @@ public class ExternalService {
      */
     public void decodeAddress(BizNameEntity bizName) {
         try {
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
+            Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
             if (decodedAddress.isNotEmpty()) {
-                bizName.setAddress(decodedAddress.getAddress());
-                bizName.setFormattedAddress(decodedAddress.getFormattedAddress());
+                if(bizName.getAddressOrigin() != AddressOriginEnum.S) {
+                    bizName.setAddress(decodedAddress.getFormattedAddress());
+                } else {
+                    bizName.setAddress(geocoding.getAddress());
+                }
                 bizName.setTown(decodedAddress.getTown());
                 bizName.setDistrict(decodedAddress.getDistrict());
                 bizName.setState(decodedAddress.getState());

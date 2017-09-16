@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.util.Assert;
 
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.Formatter;
 
@@ -55,10 +56,6 @@ public class BizStoreEntity extends BaseEntity {
     @NotNull
     @Field ("AD")
     private String address;
-
-    @NotNull
-    @Field ("FA")
-    private String formattedAddress;
 
     @Field ("TO")
     private String town;
@@ -135,6 +132,10 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("CQ")
     private boolean changedCodeQR = false;
 
+    @NotNull
+    @Field ("AO")
+    private AddressOriginEnum addressOrigin;
+
     @Field ("WL")
     private String webLocation;
 
@@ -183,14 +184,6 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = StringUtils.strip(address);
-    }
-
-    public String getFormattedAddress() {
-        return formattedAddress;
-    }
-
-    public void setFormattedAddress(String formattedAddress) {
-        this.formattedAddress = formattedAddress;
     }
 
     public String getTown() {
@@ -394,6 +387,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAllowLoggedInUser(boolean allowLoggedInUser) {
         this.allowLoggedInUser = allowLoggedInUser;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public BizStoreEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
     }
 
     @Transient

@@ -141,6 +141,7 @@ class RegistrationFlowActions {
         bizName.setPhoneRaw(registerBusiness.getPhoneNotFormatted());
         bizName.setAddress(registerBusiness.getAddress());
         bizName.setTimeZone(registerBusiness.getTimeZone());
+        bizName.setAddressOrigin(registerBusiness.getAddressOrigin());
         bizName.setMultiStore(registerBusiness.isMultiStore());
         validateAddress(bizName);
 
@@ -176,6 +177,7 @@ class RegistrationFlowActions {
             bizStore.setAddress(registerBusiness.getAddressStore());
             bizStore.setTimeZone(registerBusiness.getTimeZoneStore());
             bizStore.setCodeQR(ObjectId.get().toString());
+            bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
             bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
 
             //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.

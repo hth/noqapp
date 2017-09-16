@@ -531,6 +531,7 @@ public class AccountService {
         userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
         userProfile.setTimeZone(registerUser.getTimeZone());
         userProfile.setBirthday(registerUser.getBirthday());
+        userProfile.setAddressOrigin(registerUser.getAddressOrigin());
         save(userProfile);
 
         if (!userProfile.getFirstName().equals(registerUser.getFirstName()) || !userProfile.getLastName().equals(registerUser.getLastName())) {

@@ -102,6 +102,30 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <c:if test="${!empty register.registerBusiness.foundAddresses}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="foundAddressPlaceId" cssErrorClass="lb_error">Best Matching Business Addresses</form:label>
+                                        </div>
+                                        <div class="col-fields pT10 pB10">
+                                            <c:forEach items="${register.registerBusiness.foundAddresses}" var="mapElement">
+                                                <form:radiobutton path="foundAddressPlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"
+                                                        onclick="handleFoundAddressClick();"/> <br />
+                                            </c:forEach>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="selectFoundAddress" cssErrorClass="lb_error">I choose Best Matching Business Address</form:label>
+                                        </div>
+                                        <div id="addressCheckBox" class="col-fields">
+                                            <form:checkbox path="selectFoundAddress" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"
+                                                    onclick="handleFoundAddressCheckboxUncheck()" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="phone" cssErrorClass="lb_error">Business Phone</form:label>
@@ -155,6 +179,30 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <c:if test="${!empty register.registerBusiness.foundAddressStores}">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="foundAddressStorePlaceId" cssErrorClass="lb_error">Best Matching Store Addresses</form:label>
+                                            </div>
+                                            <div class="col-fields pT10 pB10">
+                                                <c:forEach items="${register.registerBusiness.foundAddressStores}" var="mapElement">
+                                                    <form:radiobutton path="foundAddressStorePlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"
+                                                            onclick="handleFoundAddressStoreClick();"/> <br />
+                                                </c:forEach>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="selectFoundAddressStore" cssErrorClass="lb_error">I choose Best Matching Store Address</form:label>
+                                            </div>
+                                            <div id="addressStoreCheckBox" class="col-fields">
+                                                <form:checkbox path="selectFoundAddressStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"
+                                                        onclick="handleFoundAddressStoreCheckboxUncheck()" />
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        </c:if>
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
@@ -224,8 +272,9 @@
 
 
 </body>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
