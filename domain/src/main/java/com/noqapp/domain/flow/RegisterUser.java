@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.utils.Formatter;
+import com.noqapp.utils.ScrubbedInput;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -56,8 +57,8 @@ public class RegisterUser implements Serializable {
         return email;
     }
 
-    public RegisterUser setEmail(String email) {
-        this.email = email;
+    public RegisterUser setEmail(ScrubbedInput email) {
+        this.email = email.getText();
         return this;
     }
 
@@ -65,8 +66,8 @@ public class RegisterUser implements Serializable {
         return firstName;
     }
 
-    public RegisterUser setFirstName(String firstName) {
-        this.firstName = firstName;
+    public RegisterUser setFirstName(ScrubbedInput firstName) {
+        this.firstName = firstName.getText();
         return this;
     }
 
@@ -74,8 +75,8 @@ public class RegisterUser implements Serializable {
         return lastName;
     }
 
-    public RegisterUser setLastName(String lastName) {
-        this.lastName = lastName;
+    public RegisterUser setLastName(ScrubbedInput lastName) {
+        this.lastName = lastName.getText();
         return this;
     }
 
@@ -83,8 +84,9 @@ public class RegisterUser implements Serializable {
         return address;
     }
 
-    public RegisterUser setAddress(String address) {
-        this.address = address;
+    public RegisterUser setAddress(ScrubbedInput address) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
+        this.address = address.getText().replaceAll("\\R", " ");
         return this;
     }
 
@@ -92,8 +94,8 @@ public class RegisterUser implements Serializable {
         return gender;
     }
 
-    public RegisterUser setGender(String gender) {
-        this.gender = gender;
+    public RegisterUser setGender(ScrubbedInput gender) {
+        this.gender = gender.getText();
         return this;
     }
 
@@ -101,8 +103,8 @@ public class RegisterUser implements Serializable {
         return birthday;
     }
 
-    public RegisterUser setBirthday(String birthday) {
-        this.birthday = birthday;
+    public RegisterUser setBirthday(ScrubbedInput birthday) {
+        this.birthday = birthday.getText();
         return this;
     }
 
@@ -110,8 +112,8 @@ public class RegisterUser implements Serializable {
         return password;
     }
 
-    public RegisterUser setPassword(String password) {
-        this.password = password;
+    public RegisterUser setPassword(ScrubbedInput password) {
+        this.password = password.getText();
         return this;
     }
 
@@ -137,8 +139,8 @@ public class RegisterUser implements Serializable {
         return countryShortName;
     }
 
-    public RegisterUser setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
+    public RegisterUser setCountryShortName(ScrubbedInput countryShortName) {
+        this.countryShortName = countryShortName.getText();
         return this;
     }
 
@@ -171,8 +173,8 @@ public class RegisterUser implements Serializable {
         return null;
     }
 
-    public RegisterUser setPhone(String phone) {
-        this.phone = phone;
+    public RegisterUser setPhone(ScrubbedInput phone) {
+        this.phone = phone.getText();
         return this;
     }
 
@@ -180,8 +182,8 @@ public class RegisterUser implements Serializable {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+    public void setTimeZone(ScrubbedInput timeZone) {
+        this.timeZone = timeZone.getText();
     }
 
     public boolean isEmailValidated() {

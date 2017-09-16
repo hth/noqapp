@@ -26,6 +26,7 @@ import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.HashText;
 import com.noqapp.utils.RandomString;
+import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.flow.exception.MigrateToBusinessProfileException;
 
 import java.util.concurrent.ExecutorService;
@@ -73,14 +74,14 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
         RegisterUser registerUser = new RegisterUser();
         registerUser.setQueueUserId(userAccount.getQueueUserId())
-                .setGender(userProfile.getGender())
-                .setBirthday(userProfile.getBirthday())
-                .setEmail(userProfile.getEmail().endsWith("mail.noqapp.com") ? "" : userProfile.getEmail())
-                .setFirstName(userProfile.getFirstName())
-                .setLastName(userProfile.getLastName())
-                .setAddress(userProfile.getAddress())
-                .setCountryShortName(userProfile.getCountryShortName())
-                .setPhone(userProfile.getPhoneRaw())
+                .setGender(new ScrubbedInput(userProfile.getGender()))
+                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                .setEmail(userProfile.getEmail().endsWith("mail.noqapp.com") ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
+                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated())
                 /* Since user has already agreed to this agreement when they signed up. */

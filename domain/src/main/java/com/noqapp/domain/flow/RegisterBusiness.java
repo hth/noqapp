@@ -13,6 +13,7 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
+import com.noqapp.utils.ScrubbedInput;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
@@ -72,8 +73,8 @@ public class RegisterBusiness implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(ScrubbedInput name) {
+        this.name = name.getText();
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
@@ -88,16 +89,17 @@ public class RegisterBusiness implements Serializable {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(ScrubbedInput address) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
+        this.address = address.getText().replaceAll("\\R", " ");
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
+    public void setCountryShortName(ScrubbedInput countryShortName) {
+        this.countryShortName = countryShortName.getText();
     }
 
     public String getPhone() {
@@ -123,16 +125,16 @@ public class RegisterBusiness implements Serializable {
         return null;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhone(ScrubbedInput phone) {
+        this.phone = phone.getText();
     }
 
     public String getTimeZone() {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+    public void setTimeZone(ScrubbedInput timeZone) {
+        this.timeZone = timeZone.getText();
     }
 
     public AddressOriginEnum getAddressOrigin() {
@@ -180,16 +182,17 @@ public class RegisterBusiness implements Serializable {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setDisplayName(ScrubbedInput displayName) {
+        this.displayName = displayName.getText();
     }
 
     public String getAddressStore() {
         return addressStore;
     }
 
-    public void setAddressStore(String addressStore) {
-        this.addressStore = addressStore;
+    public void setAddressStore(ScrubbedInput addressStore) {
+        /* Java 8 regex engine supports \R which represents any line separator. */
+        this.addressStore = addressStore.getText().replaceAll("\\R", " ");
     }
 
     public String getPhoneStore() {
@@ -205,8 +208,8 @@ public class RegisterBusiness implements Serializable {
         return Formatter.phoneCleanup(phoneStore);
     }
 
-    public void setPhoneStore(String phoneStore) {
-        this.phoneStore = phoneStore;
+    public void setPhoneStore(ScrubbedInput phoneStore) {
+        this.phoneStore = phoneStore.getText();
     }
 
     @Transient
@@ -223,16 +226,16 @@ public class RegisterBusiness implements Serializable {
         return countryShortNameStore;
     }
 
-    public void setCountryShortNameStore(String countryShortNameStore) {
-        this.countryShortNameStore = countryShortNameStore;
+    public void setCountryShortNameStore(ScrubbedInput countryShortNameStore) {
+        this.countryShortNameStore = countryShortNameStore.getText();
     }
 
     public String getTimeZoneStore() {
         return timeZoneStore;
     }
 
-    public void setTimeZoneStore(String timeZoneStore) {
-        this.timeZoneStore = timeZoneStore;
+    public void setTimeZoneStore(ScrubbedInput timeZoneStore) {
+        this.timeZoneStore = timeZoneStore.getText();
     }
 
     public AddressOriginEnum getAddressStoreOrigin() {
