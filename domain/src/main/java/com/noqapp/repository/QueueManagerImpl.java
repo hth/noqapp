@@ -177,6 +177,46 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE);
 
+        if (updateWhenNextInQueueAcquired(codeQR, goTo, sid, queue)) {
+            return getNext(codeQR, goTo, sid);
+        }
+
+        return queue;
+    }
+
+    @Override
+    public QueueEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
+
+        QueueEntity queue = mongoTemplate.findOne(
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber)
+                        .orOperator(
+                                where("QS").is(QueueUserStateEnum.Q).and("SN").exists(false),
+                                /*
+                                 * Second or condition will get you any of the skipped
+                                 * clients by the same server device id.
+                                 */
+                                where("QS").is(QueueUserStateEnum.Q).and("SE").exists(false).and("SID").is(sid)
+                        )
+                ),
+                QueueEntity.class,
+                TABLE);
+
+        if (updateWhenNextInQueueAcquired(codeQR, goTo, sid, queue)) {
+            /*
+             * Since could not get the specific token, going back to regular
+             * cycle to acquire one in the descending order.
+             */
+            return getNext(codeQR, goTo, sid);
+        }
+
+        return queue;
+    }
+
+    private boolean updateWhenNextInQueueAcquired(String codeQR, String goTo, String sid, QueueEntity queue) {
         if (null != queue) {
             /* Mark as being served. */
             WriteResult writeConcern = mongoTemplate.updateFirst(
@@ -192,11 +232,10 @@ public class QueueManagerImpl implements QueueManager {
                 LOG.info("Could not lock since its already modified codeQR={} token={}, going to next in queue",
                         codeQR, queue.getTokenNumber());
 
-                return getNext(codeQR, goTo, sid);
+                return true;
             }
         }
-        
-        return queue;
+        return false;
     }
 
     public List<QueueEntity> findAllQueuedByDid(String did) {

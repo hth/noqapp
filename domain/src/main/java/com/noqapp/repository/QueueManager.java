@@ -51,6 +51,18 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      */
     @Mobile
     QueueEntity getNext(String codeQR, String goTo, String sid);
+    
+    /**
+     * Gets a specific token as next. Used when serving NOT in sequence.
+     *
+     * @param codeQR
+     * @param goTo          go to counter name
+     * @param sid           server device id
+     * @param tokenNumber   asking for serving a specific token in queue
+     * @return
+     */
+    @Mobile
+    QueueEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber);
 
     /**
      * Find all based on device id, this is when user is not registered.
