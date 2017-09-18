@@ -95,7 +95,7 @@ public class TokenQueueService {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
             LOG.info("next Token queue={}", queue);
 
-            /* When not Queued or has been serviced which will not show anyway in the above querry, get a new token. */
+            /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
 
@@ -223,14 +223,15 @@ public class TokenQueueService {
     @Mobile
     public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
         /*
          * Do not inform anyone other than the person with the
          * token who is being served. This is personal message.
          * of being served out of order/sequence.
          */
-        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
+        sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving);
 
-        LOG.info("After sending message to merchant");
+        LOG.info("After sending message to merchant and personal message to user of token");
         QueueEntity queue = queueManager.findOne(codeQR, serving);
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
@@ -260,6 +261,19 @@ public class TokenQueueService {
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         service.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+    }
+
+    /**
+     * Send FCM message to person with specific token number asynchronously.
+     *
+     * @param codeQR
+     * @param queueStatus
+     * @param tokenQueue
+     * @param goTo
+     * @param tokenNumber
+     */
+    public void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
+        service.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
     }
 
     /**
@@ -313,7 +327,7 @@ public class TokenQueueService {
             TokenQueueEntity tokenQueue,
             String goTo
     ) {
-        LOG.info("sending message codeQR={} goTo={}", codeQR, goTo);
+        LOG.info("Sending message codeQR={} goTo={}", codeQR, goTo);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
@@ -365,6 +379,75 @@ public class TokenQueueService {
             boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+            }
+        }
+    }
+
+    /**
+     * When servicing token that's out of order or sequence. Send message as the selected token is being served
+     * and mark it Personal.
+     * 
+     * @param codeQR
+     * @param queueStatus
+     * @param tokenQueue
+     * @param goTo
+     * @param tokenNumber
+     */
+    private void invokeThreadSendMessageToSelectedTokenUser(
+            String codeQR,
+            QueueStatusEnum queueStatus,
+            TokenQueueEntity tokenQueue,
+            String goTo,
+            int tokenNumber
+    ) {
+        LOG.info("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
+
+        QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
+        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
+        for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
+            LOG.info("Personal message of being served is sent to qid={} deviceId={} deviceType={}",
+                    registeredDevice.getQueueUserId(),
+                    registeredDevice.getDeviceId(),
+                    registeredDevice.getDeviceType());
+
+            JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
+                    .setLastNumber(tokenQueue.getLastNumber())
+                    .setCurrentlyServing(tokenNumber)
+                    .setCodeQR(codeQR)
+                    .setQueueStatus(queueStatus)
+                    .setGoTo(goTo);
+
+            /*
+             * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
+             * As this is a personal message when server is planning to serve a spacific token.
+             */
+            switch (queueStatus) {
+                case S:
+                case R:
+                case D:
+                    LOG.warn("Skipped sending peronsal message as queue status is not 'Next' but queueStatus={}", queueStatus);
+                    break;
+                default:
+                    if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+                        jsonMessage.getNotification()
+                                .setBody("Now Serving " + tokenNumber)
+                                .setLocKey("serving")
+                                .setLocArgs(new String[]{String.valueOf(tokenNumber)})
+                                .setTitle(tokenQueue.getDisplayName());
+                    } else {
+                        jsonMessage.setNotification(null);
+                        jsonData.setBody("Now Serving " + tokenNumber)
+                                .setTitle(tokenQueue.getDisplayName());
+                    }
+            }
+
+            jsonMessage.setData(jsonData);
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
             } else {
                 LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
