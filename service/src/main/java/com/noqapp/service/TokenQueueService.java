@@ -281,9 +281,9 @@ public class TokenQueueService {
                     .setGoTo(goTo);
 
             /*
-            Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
-            Otherwise we will have to manage more number of topic.
-            */
+             * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
+             * Otherwise we will have to manage more number of topic.
+             */
             switch (queueStatus) {
                 case S:
                 case R:
