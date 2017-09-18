@@ -211,6 +211,46 @@ public class TokenQueueService {
     }
 
     /**
+     * This acquires the record of the person being served by server. No one gets informed when the record is
+     * acquired other than the person who's record is acquired to be served next.
+     *
+     * @param codeQR
+     * @param queueStatus
+     * @param serving
+     * @param goTo
+     * @return
+     */
+    @Mobile
+    public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        /*
+         * Do not inform anyone other than the person with the
+         * token who is being served. This is personal message.
+         * of being served out of order/sequence.
+         */
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
+
+        LOG.info("After sending message to merchant");
+        QueueEntity queue = queueManager.findOne(codeQR, serving);
+        if (queue != null && queue.getCustomerName() != null) {
+            LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
+
+            return new JsonToken(codeQR)
+                    .setQueueStatus(tokenQueue.getQueueStatus())
+                    .setServingNumber(serving)
+                    .setDisplayName(tokenQueue.getDisplayName())
+                    .setToken(tokenQueue.getLastNumber())
+                    .setCustomerName(queue.getCustomerName());
+        }
+
+        return new JsonToken(codeQR)
+                .setQueueStatus(tokenQueue.getQueueStatus())
+                .setServingNumber(serving)
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setToken(tokenQueue.getLastNumber());
+    }
+
+    /**
      * Send FCM message to Topic asynchronously.
      *
      * @param codeQR
