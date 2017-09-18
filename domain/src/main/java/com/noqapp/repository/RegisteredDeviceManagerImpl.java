@@ -92,6 +92,29 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
+    public List<RegisteredDeviceEntity> findAll(String qid, String did) {
+        Query query;
+        if (StringUtils.isBlank(qid)) {
+            query = query(where("DID").is(did));
+        } else {
+            /* Apply condition only if field exist. Solved using orOperator. */
+            query = query(
+                    where("DID").is(did)
+                            .orOperator(
+                                    where("QID").exists(false),
+                                    where("QID").is(qid)
+                            ).andOperator(
+                                isActive(),
+                                isNotDeleted()
+                            ));
+        }
+        return mongoTemplate.find(
+                query,
+                RegisteredDeviceEntity.class,
+                TABLE);
+    }
+
+    @Override
     public RegisteredDeviceEntity findFCMToken(String qid, String did) {
         Query query;
         if (StringUtils.isBlank(qid)) {
