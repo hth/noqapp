@@ -41,6 +41,14 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     @Mobile
     boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid);
 
+    /**
+     * Gets next token. By default this gets the next token in sequence/order of ascending .
+     * 
+     * @param codeQR
+     * @param goTo      go tp counter name
+     * @param sid       server device id
+     * @return
+     */
     @Mobile
     QueueEntity getNext(String codeQR, String goTo, String sid);
 
