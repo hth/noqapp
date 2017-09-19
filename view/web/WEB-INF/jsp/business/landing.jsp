@@ -70,7 +70,7 @@
                                                 <th>Name</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
-                                                <th>Since</th>
+                                                <th nowrap>Create Date</th>
                                             </tr>
                                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
                                                 <tr>
