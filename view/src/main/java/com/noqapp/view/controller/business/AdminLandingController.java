@@ -1,5 +1,9 @@
 package com.noqapp.view.controller.business;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
+import com.google.gson.JsonObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
@@ -20,8 +26,10 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -30,7 +38,11 @@ import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender
@@ -146,8 +158,12 @@ public class AdminLandingController {
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
-            long assignedToQueue  = businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId());
-            businessLandingForm.addAssignedQueueManagers(bizStore.getId(), assignedToQueue);
+            QueueDetail queueDetail = new QueueDetail()
+                    .setId(bizStore.getId())
+                    .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
+                    .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
+
+            businessLandingForm.addQueueDetail(queueDetail);
         }
     }
 

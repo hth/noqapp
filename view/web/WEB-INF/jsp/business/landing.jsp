@@ -68,7 +68,8 @@
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
                                                 <th>Queue Name</th>
-                                                <th># Assigned</th>
+                                                <th>Pending</th>
+                                                <th>Assigned</th>
                                                 <th>Since</th>
                                             </tr>
                                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
@@ -81,7 +82,10 @@
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.assignedQueueManagers.get(store.id)}</a>
+                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
                                                     </td>
                                                     <td>
                                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/></td>

@@ -1,6 +1,7 @@
 package com.noqapp.view.form.business;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.helper.QueueDetail;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ public class BusinessLandingForm {
 
     private String bizName;
     private List<BizStoreEntity> bizStores;
-    private Map<String, Long> assignedQueueManagers = new HashMap<>();
+    private Map<String, QueueDetail> queueDetails = new HashMap<>();
 
     public String getBizName() {
         return bizName;
@@ -34,11 +35,12 @@ public class BusinessLandingForm {
         return this;
     }
 
-    public Map<String, Long> getAssignedQueueManagers() {
-        return assignedQueueManagers;
+    public Map<String, QueueDetail> getQueueDetails() {
+        return queueDetails;
     }
 
-    public void addAssignedQueueManagers(String id, Long assignedToQueue) {
-        this.assignedQueueManagers.put(id, assignedToQueue);
+    public BusinessLandingForm addQueueDetail(QueueDetail queueDetail) {
+        this.queueDetails.put(queueDetail.getId(), queueDetail);
+        return this;
     }
 }
