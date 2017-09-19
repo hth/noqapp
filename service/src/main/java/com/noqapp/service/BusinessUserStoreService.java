@@ -92,6 +92,10 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.findNumberOfPeopleAssignedToQueue(businessStoreId);
     }
 
+    public long findNumberOfPeoplePendingApprovalToQueue(String businessStoreId) {
+        return businessUserStoreManager.findNumberOfPeoplePendingApprovalToQueue(businessStoreId);
+    }
+
     /**
      * Gets all the profile information of queue manager for a specific store associated.
      *

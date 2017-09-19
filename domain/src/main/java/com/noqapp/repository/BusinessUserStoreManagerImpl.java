@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -75,7 +76,26 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public long findNumberOfPeopleAssignedToQueue(String storeId) {
         return mongoTemplate.count(
-                query(where("BS").is(storeId)),
+                query(where("BS").is(storeId)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public long findNumberOfPeoplePendingApprovalToQueue(String storeId) {
+        return mongoTemplate.count(
+                query(where("BS").is(storeId)
+                        .andOperator(
+                                isNotActive(),
+                                isNotDeleted()
+                        )
+                ),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
