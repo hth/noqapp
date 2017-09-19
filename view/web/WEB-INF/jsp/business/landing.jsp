@@ -67,7 +67,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th>Queue Name</th>
+                                                <th>Name</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th>Since</th>
@@ -87,8 +87,9 @@
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
                                                     </td>
-                                                    <td>
-                                                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${store.created}"/></td>
+                                                    <td nowrap>
+                                                        <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </table>
