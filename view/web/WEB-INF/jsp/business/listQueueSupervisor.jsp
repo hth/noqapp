@@ -109,10 +109,20 @@
                                                             <c:otherwise>
                                                                 <c:choose>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                                    <div id="${queueSupervisor.businessUserId}">
-                                                                        <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Approve</a>
+                                                                    <div>
+                                                                        <form:form action="${pageContext.request.contextPath}/business/approveRejectQueueSupervisor.htm" modelAttribute="queueSupervisorApproveRejectForm" method="post">
+                                                                            <form:hidden path="approveOrReject" value="approve" />
+                                                                            <form:hidden path="referenceId" value="${queueSupervisor.businessUserId}" />
+                                                                            <form:hidden path="storeId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                            <input class="cancel-btn" value="Approve" type="submit">
+                                                                        </form:form>
                                                                         <br />
-                                                                        <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Reject</a>
+                                                                        <form:form action="${pageContext.request.contextPath}/business/approveRejectQueueSupervisor.htm" modelAttribute="queueSupervisorApproveRejectForm" method="post">
+                                                                            <form:hidden path="approveOrReject" value="reject" />
+                                                                            <form:hidden path="referenceId" value="${queueSupervisor.businessUserId}" />
+                                                                            <form:hidden path="storeId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                            <input class="cancel-btn" value="Reject" type="submit">
+                                                                        </form:form>
                                                                     </div>
                                                                     </c:when>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
