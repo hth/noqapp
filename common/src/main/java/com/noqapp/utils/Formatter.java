@@ -199,6 +199,7 @@ public final class Formatter {
 
     /**
      * Format phoneNationalFormat to international.
+     * Formats phone 14080000004 to +1 408-000-0004
      *
      * @param phone
      * @param formatToCountry
