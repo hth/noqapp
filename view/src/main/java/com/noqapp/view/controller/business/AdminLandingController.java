@@ -2,8 +2,6 @@ package com.noqapp.view.controller.business;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
-import com.google.gson.JsonObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
@@ -35,6 +31,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.view.form.QueueSupervisorApproveRejectForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
 
@@ -176,6 +173,9 @@ public class AdminLandingController {
             @ModelAttribute ("queueSupervisorForm")
             QueueSupervisorForm queueSupervisorForm,
 
+            @ModelAttribute ("queueSupervisorApproveRejectForm")
+            QueueSupervisorApproveRejectForm queueSupervisorApproveRejectForm,
+
             @PathVariable ("storeId")
             ScrubbedInput storeId
     ) {
@@ -216,5 +216,57 @@ public class AdminLandingController {
         LOG.info("Add queue manager to bizStoreId={} {}", bizStoreId.getText(), addQueueSupervisorFlow);
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
         return addQueueSupervisorFlow;
+    }
+
+    /**
+     * Approve or reject new supervisor.
+     *
+     * @return
+     * @throws IOException
+     */
+    @Timed
+    @ExceptionMetered
+    @RequestMapping (
+            value = "/approveRejectQueueSupervisor",
+            method = RequestMethod.POST
+    )
+    public String approveRejectQueueSupervisor(
+            @ModelAttribute ("queueSupervisorApproveRejectForm")
+            QueueSupervisorApproveRejectForm queueSupervisorApproveRejectForm,
+
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        try {
+            BusinessUserEntity businessUser = businessUserService.findById(queueSupervisorApproveRejectForm.getReferenceId().getText());
+            if (null == businessUser) {
+                LOG.warn("Could not find businessUser={}", queueSupervisorApproveRejectForm.getReferenceId().getText());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
+
+            if (queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("approve")) {
+                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
+            } else if(queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("reject")) {
+                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
+            } else {
+                LOG.warn("Reached un-reachable condition {}", queueSupervisorApproveRejectForm.getApproveOrReject());
+                throw new RuntimeException("Failed to update as the value supplied is invalid");
+            }
+            businessUser.setValidateByQid(queueUser.getQueueUserId());
+            businessUserService.save(businessUser);
+            
+            return "redirect:/business/" + queueSupervisorApproveRejectForm.getStoreId().getText() + "/listQueueSupervisor.htm";
+        } catch (Exception e) {
+            LOG.error("Failed updated status for id={} status={} reason={}",
+                    queueSupervisorApproveRejectForm.getReferenceId().getText(),
+                    queueSupervisorApproveRejectForm.getApproveOrReject().getText(),
+                    e.getLocalizedMessage(),
+                    e);
+
+            return "redirect:/business/" + queueSupervisorApproveRejectForm.getStoreId().getText() + "/listQueueSupervisor.htm";
+        }
     }
 }
