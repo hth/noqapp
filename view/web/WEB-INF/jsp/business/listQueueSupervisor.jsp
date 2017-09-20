@@ -100,7 +100,7 @@
                                                     </td>
                                                     <td nowrap>
                                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></td>
-                                                    <td class="Tcenter" nowrap>
+                                                    <td class="Tleft" nowrap>
                                                         <c:choose>
                                                             <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
                                                                 <!-- Admin cannot delete self -->
@@ -110,11 +110,13 @@
                                                                 <c:choose>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
                                                                     <div id="${queueSupervisor.businessUserId}">
-                                                                        Awaiting Your Approval
+                                                                        <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Approve</a>
+                                                                        <br />
+                                                                        <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Reject</a>
                                                                     </div>
                                                                     </c:when>
-                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'N'}">
-                                                                        Marked Incomplete
+                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
+                                                                        In progress
                                                                     </c:when>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                                         <c:choose>
