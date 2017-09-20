@@ -115,6 +115,7 @@ public class BusinessUserStoreService {
                     .setBusinessId(businessUserStore.getBizNameId())
                     .setName(userProfile.getName())
                     .setPhone(userProfile.getPhone())
+                    .setCountryShortName(userProfile.getCountryShortName())
                     .setAddress(userProfile.getAddress())
                     .setEmail(userProfile.getEmail())
                     .setQueueUserId(qid)
