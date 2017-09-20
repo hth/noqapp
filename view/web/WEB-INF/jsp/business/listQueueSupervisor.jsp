@@ -78,12 +78,12 @@
                                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
-                                                    <td>${queueSupervisor.name}</td>
+                                                    <td nowrap>${queueSupervisor.name}</td>
                                                     <td>${queueSupervisor.address}
                                                         <p>Phone: ${queueSupervisor.phone}</p>
                                                     </td>
                                                     <td>${queueSupervisor.email}</td>
-                                                    <td>
+                                                    <td nowrap>
                                                         <c:choose>
                                                             <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                                 <select path="userLevel" cssClass="form-field-select">
@@ -98,26 +98,31 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td>
+                                                    <td nowrap>
                                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></td>
-                                                    <td class="Tcenter">
+                                                    <td class="Tcenter" nowrap>
                                                         <c:choose>
                                                             <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
-                                                                <!-- Admin cannot delete itself -->
+                                                                <!-- Admin cannot delete self -->
                                                                 --
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <c:choose>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
+                                                                    <div id="${queueSupervisor.businessUserId}">
                                                                         Awaiting Your Approval
+                                                                    </div>
+                                                                    </c:when>
+                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'N'}">
+                                                                        Marked Incomplete
                                                                     </c:when>
                                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                                         <c:choose>
-                                                                            <c:when test="${!queueSupervisor.active}">
-                                                                                Delete
+                                                                            <c:when test="${queueSupervisor.active}">
+                                                                                Remove
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                Remove
+                                                                                Delete
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                     </c:when>
