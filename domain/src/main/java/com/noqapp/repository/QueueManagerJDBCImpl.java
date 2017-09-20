@@ -50,7 +50,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE QID = ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
+                    "FROM QUEUE " +
                     "WHERE QID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
@@ -60,7 +60,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE QID = ? AND U >= ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
+                    "FROM QUEUE " +
                     "WHERE QID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
@@ -70,7 +70,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE DID = ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
+                    "FROM QUEUE " +
                     "WHERE DID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
@@ -80,7 +80,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "QUEUE WHERE DID = ? AND U >= ? " +
                     "AND " +
                     "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
+                    "FROM QUEUE " +
                     "WHERE DID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
