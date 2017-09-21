@@ -52,7 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
     
-    @Value ("${loginPage:login5}")
+    @Value ("${loginPage:login}")
     private String loginPage;
 
     private final CachedUserAgentStringParser parser;
