@@ -120,7 +120,7 @@ public class MailService {
         rootMap.put("https", https);
 
         try {
-            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(name)
@@ -216,7 +216,7 @@ public class MailService {
         rootMap.put("displayName", displayName);
 
         try {
-            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(name)

@@ -104,7 +104,7 @@ public class ExternalService {
                 if (null != placeDetails) {
                     bizStore.setPlaceType(placeDetails.types);
                     bizStore.setRating(placeDetails.rating);
-                    if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
+                    if (StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         bizStore.setPhone(placeDetails.formattedPhoneNumber);
                     }
                 }
@@ -150,7 +150,7 @@ public class ExternalService {
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
                     bizName.setPlaceType(placeDetails.types);
-                    if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
+                    if (StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         bizName.setPhone(placeDetails.formattedPhoneNumber);
                     }
                 }

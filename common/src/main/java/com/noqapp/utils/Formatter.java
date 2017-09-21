@@ -117,7 +117,7 @@ public final class Formatter {
      * @return
      */
     public static String phoneCleanup(String phone) {
-        if (StringUtils.isNotEmpty(phone)) {
+        if (StringUtils.isNotBlank(phone)) {
             return phone.replaceAll("[^0-9]", "");
         }
         return phone;

@@ -103,14 +103,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             BizNameEntity bizName
     ) {
         Criteria criteriaA = new Criteria();
-        if (StringUtils.isNotEmpty(bizAddress)) {
+        if (StringUtils.isNotBlank(bizAddress)) {
             criteriaA.and("AD").regex(bizAddress, "i");
         }
-        if (StringUtils.isNotEmpty(bizPhone)) {
+        if (StringUtils.isNotBlank(bizPhone)) {
             criteriaA.and("PH").regex(bizPhone, "i");
         }
 
-        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+        if (bizName != null && StringUtils.isNotBlank(bizName.getId())) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             return mongoTemplate.find(
                     query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
@@ -143,7 +143,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query = query(where("PH").regex("^" + bizPhone, "i"));
         }
 
-        if (bizName != null && StringUtils.isNotEmpty(bizName.getId())) {
+        if (bizName != null && StringUtils.isNotBlank(bizName.getId())) {
             Criteria criteriaA = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             if (null == query) {
                 query = query(criteriaA);

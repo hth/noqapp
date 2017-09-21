@@ -136,7 +136,7 @@ public class MailProcess {
 
         List<MailEntity> mails = mailManager.pendingMails();
         if (mails.isEmpty()) {
-            /** No documents to upload. */
+            /* No documents to upload. */
             return;
         } else {
             LOG.info("Mail to send, count={}", mails.size());
@@ -253,7 +253,7 @@ public class MailProcess {
             helper.setFrom(new InternetAddress(mail.getFromMail(), mail.getFromName()));
         }
 
-        String sentTo = StringUtils.isEmpty(devSentTo) ? mail.getToMail() : devSentTo;
+        String sentTo = StringUtils.isBlank(devSentTo) ? mail.getToMail() : devSentTo;
         if (sentTo.equalsIgnoreCase(devSentTo)) {
             helper.setTo(new InternetAddress(devSentTo, emailAddressName));
         } else {
