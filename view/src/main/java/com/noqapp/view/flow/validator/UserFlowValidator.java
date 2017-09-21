@@ -185,7 +185,7 @@ public class UserFlowValidator {
                 registerUser.setFoundAddresses(geocoding.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
 
-                if (decodedAddress.isNotBlank()) {
+                if (decodedAddress.isNotEmpty()) {
                     if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
