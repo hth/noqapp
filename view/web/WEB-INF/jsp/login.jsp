@@ -68,7 +68,7 @@
                     <div class="otp">
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
                             <div class="r-error" style="margin-left: 0; width: 100%">
-                                User not registered with this number. <a href="/open/registrationMerchant.htm">Please click here to register</a>
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Please click here to register</a>
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
