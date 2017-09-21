@@ -107,7 +107,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
             String username = queueUser.getUsername();
 
             accountService.updateUserProfile(registerUser, username);
-            if (StringUtils.isNotEmpty(registerUser.getPassword())) {
+            if (StringUtils.isNotBlank(registerUser.getPassword())) {
                 //TODO(hth) add condition to set password on web page when profile is being modified as user could be registered via Phone and not through email
                 service.submit(() -> updatePassword(registerUser));
             }
@@ -125,7 +125,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     private void updatePassword(RegisterUser registerUser) {
-        if (StringUtils.isEmpty(registerUser.getPassword()))  {
+        if (StringUtils.isBlank(registerUser.getPassword()))  {
             LOG.error("No password supplied for updating credentials");
             throw new RuntimeException("Failed to update credentials when password is empty");
         }
