@@ -80,7 +80,7 @@ public class BizService {
     public Set<BizStoreEntity> bizSearch(String businessName, String bizAddress, String bizPhone) {
         Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
 
-        if (StringUtils.isNotEmpty(businessName)) {
+        if (StringUtils.isNotBlank(businessName)) {
             List<BizNameEntity> bizNameEntities = bizNameManager.findAllBizWithMatchingName(businessName);
             for (BizNameEntity bizName : bizNameEntities) {
                 List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(

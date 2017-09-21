@@ -204,7 +204,7 @@ public class ForgotController {
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("Recover password process initiated for user={}", merchantRegistrationForm.getMail());
-        if (StringUtils.isEmpty(merchantRegistrationForm.getMail())) {
+        if (StringUtils.isBlank(merchantRegistrationForm.getMail())) {
             httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
             return null;
         }
