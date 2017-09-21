@@ -30,12 +30,14 @@ public class DecodedAddress implements Serializable {
     /* Format Longitude and then Latitude. */
     private double[] coordinate;
     private String placeId;
-    private boolean empty = true;
+
+    /* Naming convention is similar to StringUtils isBlank. */
+    private boolean blank = true;
 
     /* Based on size of the address, the bigger address is selected. */
     private DecodedAddress(GeocodingResult[] results, int counter) {
         if (null != results && results.length > 0) {
-            empty = false;
+            blank = false;
             Assert.notNull(results[counter].geometry, "Address is null hence geometry is null");
             Assert.notNull(results[counter].geometry.location, "Geometry is null hence location is null");
 
@@ -129,12 +131,12 @@ public class DecodedAddress implements Serializable {
         return placeId;
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public boolean isBlank() {
+        return blank;
     }
 
-    public boolean isNotEmpty() {
-        return !empty;
+    public boolean isNotBlank() {
+        return !blank;
     }
 }
 

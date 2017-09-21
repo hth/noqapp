@@ -104,7 +104,7 @@ public class BusinessFlowValidator {
                 registerBusiness.setFoundAddresses(geocoding.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
 
-                if (decodedAddress.isNotEmpty()) {
+                if (decodedAddress.isNotBlank()) {
                     if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
@@ -133,7 +133,7 @@ public class BusinessFlowValidator {
                 registerBusiness.setAddressOrigin(AddressOriginEnum.S);
             }
             
-            if (decodedAddress.isNotEmpty()) {
+            if (decodedAddress.isNotBlank()) {
                 registerBusiness.setCountryShortName(new ScrubbedInput(decodedAddress.getCountryShortName()));
 
                 LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
@@ -212,7 +212,7 @@ public class BusinessFlowValidator {
                 registerBusiness.setFoundAddressStores(geocoding.getFoundAddresses());
                 decodedAddressStore = DecodedAddress.newInstance(geocoding.getResults(), 0);
 
-                if (decodedAddressStore.isNotEmpty()) {
+                if (decodedAddressStore.isNotBlank()) {
                     if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
@@ -241,7 +241,7 @@ public class BusinessFlowValidator {
                 registerBusiness.setAddressStoreOrigin(AddressOriginEnum.S);
             }
 
-            if (decodedAddressStore.isNotEmpty()) {
+            if (decodedAddressStore.isNotBlank()) {
                 registerBusiness.setCountryShortNameStore(new ScrubbedInput(decodedAddressStore.getCountryShortName()));
 
                 LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
