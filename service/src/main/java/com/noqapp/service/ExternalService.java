@@ -82,7 +82,7 @@ public class ExternalService {
         try {
             Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
             DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
-            if (decodedAddress.isNotEmpty()) {
+            if (decodedAddress.isNotBlank()) {
                 if(bizStore.getAddressOrigin() != AddressOriginEnum.S) {
                     bizStore.setAddress(decodedAddress.getFormattedAddress());
                 } else {
@@ -129,7 +129,7 @@ public class ExternalService {
         try {
             Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
             DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
-            if (decodedAddress.isNotEmpty()) {
+            if (decodedAddress.isNotBlank()) {
                 if(bizName.getAddressOrigin() != AddressOriginEnum.S) {
                     bizName.setAddress(decodedAddress.getFormattedAddress());
                 } else {
