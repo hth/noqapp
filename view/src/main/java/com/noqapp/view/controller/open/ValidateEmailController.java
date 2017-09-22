@@ -76,6 +76,7 @@ public class ValidateEmailController {
             return null;
         } else if(!emailValidate.isActive()) {
             LOG.info("Email address authentication previously validated for auth={}", key);
+            /* Expired link after validation. */
             httpServletResponse.sendError(HttpServletResponse.SC_GONE);
             return null;
         }
