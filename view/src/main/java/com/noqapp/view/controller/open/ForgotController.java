@@ -141,7 +141,7 @@ public class ForgotController {
             LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getMail());
         }
 
-        // But we show success to user on failure. Not sure if we should show a failure message when mail fails.
+        /* But we show success to user on failure. Not sure if we should show a failure message when mail fails. */
         switch (mailType) {
             case FAILURE:
             case ACCOUNT_NOT_VALIDATED:
@@ -160,7 +160,10 @@ public class ForgotController {
 
     /**
      * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
-     *
+     * 
+     * @param success
+     * @param httpServletRequest
+     * @param httpServletResponse
      * @return
      * @throws IOException
      */
@@ -194,7 +197,11 @@ public class ForgotController {
      * Its redirected from RequestMethod.POST form.
      *
      * @param merchantRegistrationForm
+     * @param forgotRecoverForm
+     * @param httpServletResponse
      * @return
+     * @throws IOException
+     *
      * @see AccountRegistrationController#recover(MerchantRegistrationForm, RedirectAttributes)
      */
     @RequestMapping (method = RequestMethod.GET, value = "recover")
