@@ -128,7 +128,11 @@ public class ForgotController {
     ) throws IOException {
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation fail");
+            LOG.warn("Failed validation mail={} captcha={}", forgotRecoverForm.getMail(), forgotRecoverForm.getCaptcha());
+            if ("recover".equalsIgnoreCase(forgotRecoverForm.getOrigin().getText())) {
+                return recoverPage;
+            }
+
             return passwordPage;
         }
 
@@ -210,7 +214,6 @@ public class ForgotController {
         }
 
         forgotRecoverForm.setMail(new ScrubbedInput(merchantRegistrationForm.getMail()));
-        forgotRecoverForm.setCaptcha(merchantRegistrationForm.getMail());
         return recoverPage;
     }
 
