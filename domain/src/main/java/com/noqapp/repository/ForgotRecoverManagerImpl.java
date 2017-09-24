@@ -7,6 +7,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteResult;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 /**
  * User: hitender
@@ -66,6 +72,23 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
                 ),
                 ForgotRecoverEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public int markInActiveAllOlderThanThreeHours() {
+        Date date = Date.from(Instant.now().minus(Duration.ofHours(3)));
+        WriteResult writeResult = mongoTemplate.updateMulti(
+                query(where("C").lte(date)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                entityUpdate(update("A", false)),
+                ForgotRecoverEntity.class,
+                TABLE);
+
+        return writeResult.getN();
     }
 
     @Override

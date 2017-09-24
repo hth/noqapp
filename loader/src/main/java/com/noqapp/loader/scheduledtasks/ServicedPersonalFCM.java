@@ -121,7 +121,7 @@ public class ServicedPersonalFCM {
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
+                LOG.info("Complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
             }
         }
     }
