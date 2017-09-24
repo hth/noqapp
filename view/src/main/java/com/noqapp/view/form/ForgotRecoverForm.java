@@ -16,6 +16,7 @@ public final class ForgotRecoverForm {
 
     private ScrubbedInput mail;
     private String captcha;
+    private ScrubbedInput origin;
 
     private ForgotRecoverForm() {
     }
@@ -38,5 +39,14 @@ public final class ForgotRecoverForm {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public ScrubbedInput getOrigin() {
+        return origin;
+    }
+
+    public ForgotRecoverForm setOrigin(ScrubbedInput origin) {
+        this.origin = origin;
+        return this;
     }
 }

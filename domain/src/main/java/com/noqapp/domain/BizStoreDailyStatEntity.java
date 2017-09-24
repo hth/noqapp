@@ -1,7 +1,5 @@
 package com.noqapp.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +19,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BIZ_STORE_DAILY_STAT")
 @CompoundIndexes (value = {
-        /** Business name with address and phone makes it a unique store. */
+        /* Business name with address and phone makes it a unique store. */
         @CompoundIndex (name = "biz_store_daily_stat_bs_bn_idx", def = "{'BS': 1, 'BN': 1}", unique = false)
 })
 public class BizStoreDailyStatEntity extends BaseEntity {
@@ -113,14 +111,14 @@ public class BizStoreDailyStatEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("bizStoreId", bizStoreId)
-                .append("bizNameId", bizNameId)
-                .append("totalServiceTime", totalServiceTime)
-                .append("totalCustomerServed", totalCustomerServed)
-                .append("totalRating", totalRating)
-                .append("totalCustomerRated", totalCustomerRated)
-                .append("totalHoursSaved", totalHoursSaved)
-                .toString();
+        return "BizStoreDailyStatEntity{" +
+                "bizStoreId='" + bizStoreId + '\'' +
+                ", bizNameId='" + bizNameId + '\'' +
+                ", totalServiceTime=" + totalServiceTime +
+                ", totalCustomerServed=" + totalCustomerServed +
+                ", totalRating=" + totalRating +
+                ", totalCustomerRated=" + totalCustomerRated +
+                ", totalHoursSaved=" + totalHoursSaved +
+                '}';
     }
 }

@@ -1,141 +1,116 @@
-<%@ include file="../include.jsp"%>
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<%@ include file="../include.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-
-    <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
-
-    <title>Receiptofi - ReceiptApp to park your Receipts</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
 </head>
+
 <body>
-<!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
-<header class="cd-header">
-    <div id="cd-logo">
-        <a href="${pageContext.request.contextPath}/open/login.htm"><div id="cd-logo-img"></div></a>
+
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></div>
+        <div class="top-menu-right">
+            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Merchant Register</a></span>
+        </div>
+
+        <div class="clearFix"></div>
     </div>
+</div>
+<!-- header end -->
+<div class="main-warp">
 
-    <h3>Receiptofi</h3>
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <c:choose>
+                <c:when test="${!empty forgotAuthenticateForm.queueUserId}">
+                    <!-- login-box -->
+                    <div class="login-box">
+                        <div class="form-style">
+                            <h2><fmt:message key="password.update.heading"/></h2>
+                            <form:form method="post" modelAttribute="forgotAuthenticateForm" action="authenticate.htm">
+                                <form:hidden path="queueUserId"/>
+                                <form:hidden path="authenticationKey"/>
 
-    <nav class="cd-main-nav">
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></li>
-            <li><a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Merchant Register</a></li>
-        </ul>
-    </nav> <!-- cd-main-nav -->
-</header>
+                                <spring:hasBindErrors name="forgotAuthenticateForm">
+                                    <div class="error-box">
+                                        <div class="error-txt">
+                                            <ul>
+                                                <c:if test="${errors.hasFieldErrors('password')}">
+                                                    <li><form:errors path="password"/></li>
+                                                </c:if>
+                                                <c:if test="${errors.hasFieldErrors('passwordSecond')}">
+                                                    <li><form:errors path="passwordSecond"/></li>
+                                                </c:if>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </spring:hasBindErrors>
 
-<section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
-    <div class="cd-content">
-        <c:choose>
-            <c:when test="${!empty forgotAuthenticateForm.queueUserId}">
-                <form:form class="cd-form floating-labels" method="post" action="authenticate.htm" modelAttribute="forgotAuthenticateForm">
-                    <form:hidden path="queueUserId" />
-                    <form:hidden path="authenticationKey" />
-
-                    <fieldset class="cd-form floating-labels">
-                        <legend><fmt:message key="password.update.heading" /></legend>
-
-                        <spring:hasBindErrors name="forgotAuthenticateForm">
-                            <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                                <ul>
-                                    <c:if test="${errors.hasFieldErrors('password')}">
-                                        <li><form:errors path="password" /></li>
-                                    </c:if>
-                                    <c:if test="${errors.hasFieldErrors('passwordSecond')}">
-                                        <li><form:errors path="passwordSecond" /></li>
-                                    </c:if>
-                                </ul>
+                                <div class="admin-content" style="background:white;">
+                                    <form:password path="password" cssClass="form-field" required="required" placeholder="Password" cssErrorClass="form-field error-field"/>
+                                    <form:password path="passwordSecond" cssClass="form-field" required="required" placeholder="Retype Password" cssErrorClass="form-field error-field"/>
+                                    <input type="submit" value="Reset Password" name="update_password" class="form-btn mT0">
+                                </div>
+                            </form:form>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="admin-main">
+                        <div class="admin-content">
+                            <div class="register-c">
+                                <h3>Invalid Link</h3>
+                                <p>We apologize, but we are unable to verify the link you used to access this page.
+                                    <sup>(404)</sup></p>
+                                <p>Please
+                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">click here</a> to return to the main page to start over.
+                                </p>
                             </div>
-                        </spring:hasBindErrors>
-
-                        <div class="icon">
-                            <form:label for="password" path="password" cssClass="cd-label">Password</form:label>
-                            <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                         </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
-                        <div class="icon">
-                            <form:label for="passwordSecond" path="passwordSecond" cssClass="cd-label">Retype Password</form:label>
-                            <form:password path="passwordSecond" cssClass="password" required="required" cssErrorClass="password error" />
-                        </div>
+            <!-- login-box -->
 
-                        <div>
-                            <input type="submit" value="Reset Password" name="update_password" />
-                        </div>
-                    </fieldset>
-                </form:form>
-            </c:when>
-            <c:otherwise>
-                <fieldset class="cd-form floating-labels">
-                    <legend>Invalid Link</legend>
-                    <p>We apologize, but we are unable to verify the link you used to access this page. <sup>(404)</sup></p>
-                    <p>&nbsp;</p>
-                    <p>Please <span class="cd-link"><a href="/open/login.htm">click here</a></span> to return to the main page to start over.</p>
-                </fieldset>
-            </c:otherwise>
-        </c:choose>
+        </div>
     </div>
-</section>
+    <!-- content end -->
 
-<div class="footer-container">
-    <footer class="wrapper fine-print">
-        &#169; 2017 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
-        All other trademarks and logos belong to their respective owners.<br>
-    </footer>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">&copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a></div>
+
+                    <div class="clearFix"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Footer End -->
+
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script>
-    jQuery(document).ready(function ($) {
-        if ($('.floating-labels').length > 0) {
-            floatLabels();
-        }
 
-        function floatLabels() {
-            var inputFields = $('.floating-labels .cd-label').next();
-            inputFields.each(function() {
-                var singleInput = $(this);
-                // check if user is filling one of the form fields
-                checkVal(singleInput);
-                singleInput.on('change keyup', function() {
-                    checkVal(singleInput);
-                });
-            });
-        }
-
-        function checkVal(inputField) {
-            (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
-        }
-    });
-</script>
-<script src="//receiptofi.com/js/main.min.js"></script>
-
-<script>
-    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-    ga('create','UA-101872684-1','auto');ga('send','pageview');
-</script>
 </body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
 </html>

@@ -159,7 +159,7 @@ span.info-txt{ font-size:13px;}
 span.help-btn{ margin:0; padding:0; display:block; text-align:right }
 span.help-btn a{ margin:0 2px; padding:0px 0px; font-size:13px; color:#222222; font-weight:300}
 span.become-btn{margin:0; padding:2px 0 0 0;  color:#fff; display:inline-block}
-span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-size:12px; color:#fff; background:#e92270; font-weight:300; border-radius:6px;}	
+span.become-btn a{margin:0px 0 2px; display:inline-block; padding:4px 8px; font-size:12px;  font-weight:300; border-radius:6px;}	
  }
 
 
