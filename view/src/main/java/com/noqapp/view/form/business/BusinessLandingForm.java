@@ -2,6 +2,7 @@ package com.noqapp.view.form.business;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.helper.QueueDetail;
+import com.noqapp.domain.json.JsonTopic;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,9 @@ public class BusinessLandingForm {
     private String bizName;
     private List<BizStoreEntity> bizStores;
     private Map<String, QueueDetail> queueDetails = new HashMap<>();
+
+    /* Used when Queue Supervisor logs in. */
+    private List<JsonTopic> jsonTopics;
 
     public String getBizName() {
         return bizName;
@@ -41,6 +45,15 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm addQueueDetail(QueueDetail queueDetail) {
         this.queueDetails.put(queueDetail.getId(), queueDetail);
+        return this;
+    }
+
+    public List<JsonTopic> getJsonTopics() {
+        return jsonTopics;
+    }
+
+    public BusinessLandingForm setJsonTopics(List<JsonTopic> jsonTopics) {
+        this.jsonTopics = jsonTopics;
         return this;
     }
 }

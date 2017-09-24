@@ -121,9 +121,11 @@ public class AdminLandingController {
         return nextPage(businessUserService.findBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
     }
 
+    @SuppressWarnings("Duplicates")
     private String nextPage(
             BusinessUserEntity businessUser,
-            BusinessLandingForm businessLandingForm) {
+            BusinessLandingForm businessLandingForm
+    ) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
             case V:
                 populateLandingForm(businessLandingForm, businessUser);
@@ -131,7 +133,9 @@ public class AdminLandingController {
             case N:
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
                 businessUserService.save(businessUser);
-                /* After setting status as incomplete, continue to call migrateBusinessProfileFlow. */
+                /* After setting status as incomplete, continue to call migrateBusinessRegistrationFlow. */
+                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                return migrateBusinessRegistrationFlow;
             case C:
             case I:
                 LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());

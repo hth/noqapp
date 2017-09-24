@@ -7,15 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.view.form.business.BusinessLandingForm;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -36,6 +42,7 @@ public class QueueSupervisorLandingController {
     private String migrateBusinessProfileFlow;
 
     private BusinessUserService businessUserService;
+    private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
     public QueueSupervisorLandingController(
@@ -45,12 +52,14 @@ public class QueueSupervisorLandingController {
             @Value ("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
             String migrateBusinessProfileFlow,
 
-            BusinessUserService businessUserService
+            BusinessUserService businessUserService,
+            BusinessUserStoreService businessUserStoreService
     ) {
         this.nextPage = nextPage;
         this.migrateBusinessProfileFlow = migrateBusinessProfileFlow;
 
         this.businessUserService = businessUserService;
+        this.businessUserStoreService = businessUserStoreService;
     }
 
     /**
@@ -74,17 +83,21 @@ public class QueueSupervisorLandingController {
         return nextPage(businessUserService.findBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
     }
 
+    @SuppressWarnings("Duplicates")
     private String nextPage(
             BusinessUserEntity businessUser,
-            BusinessLandingForm businessLandingForm) {
+            BusinessLandingForm businessLandingForm
+    ) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
             case V:
-                //populateLandingForm(businessLandingForm, businessUser);
+                populateLandingForm(businessLandingForm, businessUser);
                 return nextPage;
             case N:
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
                 businessUserService.save(businessUser);
                 /* After setting status as incomplete, continue to call migrateBusinessProfileFlow. */
+                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                return migrateBusinessProfileFlow;
             case C:
             case I:
                 LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
@@ -95,24 +108,11 @@ public class QueueSupervisorLandingController {
         }
     }
 
-//    private void populateLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
-//        Assert.notNull(businessUser, "Business user should not be null");
-//        BizNameEntity bizName = businessUser.getBizName();
-//        String bizNameId = bizName.getId();
-//        LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
-//
-//        BizDimensionEntity bizDimension = bizDimensionService.findBy(bizNameId);
-//        if (null != bizDimension) {
-//            businessLandingForm.setBizName(bizDimension.getBizName());
-//        } else {
-//            businessLandingForm.setBizName(bizName.getBusinessName());
-//        }
-//
-//        List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
-//        businessLandingForm.setBizStores(bizStores);
-//        for (BizStoreEntity bizStore : bizStores) {
-//            long assignedToQueue  = businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId());
-//            businessLandingForm.addAssignedQueueManagers(bizStore.getId(), assignedToQueue);
-//        }
-//    }
+    private void populateLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
+        Assert.notNull(businessUser, "Business user should not be null");
+        BizNameEntity bizName = businessUser.getBizName();
+        LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
+        List<JsonTopic> jsonTopics = businessUserStoreService.getQueues(businessUser.getQueueUserId());
+        businessLandingForm.setJsonTopics(jsonTopics);
+    }
 }
