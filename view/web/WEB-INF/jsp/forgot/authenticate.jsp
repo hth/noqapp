@@ -32,11 +32,11 @@
     <!-- content -->
     <div class="content">
         <div class="warp-inner">
-            <!-- login-box -->
-            <div class="login-box">
-                <div class="form-style">
-                    <c:choose>
-                        <c:when test="${!empty forgotAuthenticateForm.queueUserId}">
+            <c:choose>
+                <c:when test="${!empty forgotAuthenticateForm.queueUserId}">
+                    <!-- login-box -->
+                    <div class="login-box">
+                        <div class="form-style">
                             <h2><fmt:message key="password.update.heading"/></h2>
                             <form:form method="post" modelAttribute="forgotAuthenticateForm" action="authenticate.htm">
                                 <form:hidden path="queueUserId"/>
@@ -58,23 +58,29 @@
                                 </spring:hasBindErrors>
 
                                 <div class="admin-content" style="background:white;">
-                                    <form:input path="password" cssClass="form-field" required="required" placeholder="Password" cssErrorClass="form-field error-field"/>
-                                    <form:input path="passwordSecond" cssClass="form-field" required="required" placeholder="Retype Password" cssErrorClass="form-field error-field"/>
+                                    <form:password path="password" cssClass="form-field" required="required" placeholder="Password" cssErrorClass="form-field error-field"/>
+                                    <form:password path="passwordSecond" cssClass="form-field" required="required" placeholder="Retype Password" cssErrorClass="form-field error-field"/>
                                     <input type="submit" value="Reset Password" name="update_password" class="form-btn mT0">
                                 </div>
                             </form:form>
-                        </c:when>
-                        <c:otherwise>
-                            <h3>Invalid Link</h3>
-                            <p>We apologize, but we are unable to verify the link you used to access this page.
-                                <sup>(404)</sup></p>
-                            <p>Please
-                                <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">click here</a> to return to the main page to start over.
-                            </p>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="admin-main">
+                        <div class="admin-content">
+                            <div class="register-c">
+                                <h3>Invalid Link</h3>
+                                <p>We apologize, but we are unable to verify the link you used to access this page.
+                                    <sup>(404)</sup></p>
+                                <p>Please
+                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">click here</a> to return to the main page to start over.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
             <!-- login-box -->
 
