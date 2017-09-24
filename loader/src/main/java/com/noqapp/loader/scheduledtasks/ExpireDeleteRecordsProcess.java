@@ -23,8 +23,8 @@ import com.noqapp.service.CronStatsService;
         "PMD.LongVariable"
 })
 @Component
-public class ExpireRecordsProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(ExpireRecordsProcess.class);
+public class ExpireDeleteRecordsProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(ExpireDeleteRecordsProcess.class);
 
     private final String forgotPasswordSwitch;
 
@@ -32,8 +32,8 @@ public class ExpireRecordsProcess {
     private CronStatsService cronStatsService;
 
     @Autowired
-    public ExpireRecordsProcess(
-            @Value ("${ExpireRecordsProcess.forgotPasswordSwitch}")
+    public ExpireDeleteRecordsProcess(
+            @Value ("${ExpireDeleteRecordsProcess.forgotPasswordSwitch}")
             String forgotPasswordSwitch,
 
             ForgotRecoverManager forgotRecoverManager,
@@ -48,10 +48,10 @@ public class ExpireRecordsProcess {
     /**
      * Expires the password reset link after stipulated time.
      */
-    @Scheduled (fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
+    @Scheduled (fixedDelayString = "${loader.ExpireDeleteRecordsProcess.markExpiredForgotPassword}")
     public void markExpiredForgotPassword() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                ExpireRecordsProcess.class.getName(),
+                ExpireDeleteRecordsProcess.class.getName(),
                 "MarkExpiredForgotPassword",
                 forgotPasswordSwitch);
 
