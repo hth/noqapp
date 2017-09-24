@@ -105,6 +105,10 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("rc")
     private int ratingCount;
 
+    //TODO(hth) add this field to App iOS and Android
+    @JsonProperty ("rj")
+    private boolean remoteJoin = false;
+
     @JsonProperty ("lu")
     private boolean allowLoggedInUser = false;
 
@@ -301,6 +305,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public boolean isRemoteJoin() {
+        return remoteJoin;
+    }
+
+    public JsonQueue setRemoteJoin(boolean remoteJoin) {
+        this.remoteJoin = remoteJoin;
         return this;
     }
 

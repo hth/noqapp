@@ -179,6 +179,7 @@ class RegistrationFlowActions {
             bizStore.setTimeZone(registerBusiness.getTimeZoneStore());
             bizStore.setCodeQR(ObjectId.get().toString());
             bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
+            bizStore.setRemoteJoin(registerBusiness.isRemoteJoin());
             bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
 
             //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.

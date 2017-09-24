@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.BusinessLandingForm;
 
