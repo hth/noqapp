@@ -2,8 +2,8 @@ package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;

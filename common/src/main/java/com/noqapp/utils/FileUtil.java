@@ -2,8 +2,8 @@ package com.noqapp.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -40,8 +40,10 @@ public class FileUtil {
 
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
+    private static RandomStringGenerator randomStringGenerator;
 
     private FileUtil() {
+        randomStringGenerator = new RandomStringGenerator.Builder().build();
     }
 
     private static String getTmpDir() {
@@ -68,7 +70,7 @@ public class FileUtil {
     }
 
     public static String createRandomFilename() {
-        return RandomStringUtils.randomAlphanumeric(16);
+        return randomStringGenerator.generate(16);
     }
 
     /**

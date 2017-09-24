@@ -1,6 +1,7 @@
 package com.noqapp.domain.site;
 
-import org.apache.commons.lang3.text.WordUtils;
+
+import org.apache.commons.text.WordUtils;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
