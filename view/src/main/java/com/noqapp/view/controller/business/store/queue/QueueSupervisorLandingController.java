@@ -28,8 +28,8 @@ import com.noqapp.view.form.business.BusinessLandingForm;
 })
 @Controller
 @RequestMapping (value = "/business/store/queue")
-public class SupervisorLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(SupervisorLandingController.class);
+public class QueueSupervisorLandingController {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueSupervisorLandingController.class);
 
     private String nextPage;
     private String migrateBusinessProfileFlow;
@@ -37,7 +37,7 @@ public class SupervisorLandingController {
     private BusinessUserService businessUserService;
 
     @Autowired
-    public SupervisorLandingController(
+    public QueueSupervisorLandingController(
             @Value ("${nextPage:/business/queueLanding}")
             String nextPage,
 
