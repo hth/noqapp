@@ -137,7 +137,7 @@ public class GenerateStoreQueueHTML {
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} generateHTMLPages={}", found, failure, generated);
+                LOG.info("Complete found={} failure={} generateHTMLPages={}", found, failure, generated);
             }
         }
     }

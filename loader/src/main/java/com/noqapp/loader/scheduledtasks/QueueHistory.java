@@ -172,7 +172,7 @@ public class QueueHistory {
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete found={} failure={} success={}", found, failure, success);
+                LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
         }
     }

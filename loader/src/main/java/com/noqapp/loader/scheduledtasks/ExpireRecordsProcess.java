@@ -70,7 +70,7 @@ public class ExpireRecordsProcess {
                 cronStatsService.save(cronStats);
 
                 /* Without if condition its too noisy. */
-                LOG.info("complete recordsModified={} failure={}", recordsModified, failure);
+                LOG.info("Complete recordsModified={} failure={}", recordsModified, failure);
             }
         }
     }
