@@ -2,8 +2,11 @@ package com.noqapp.domain;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -30,6 +33,12 @@ public class ForgotRecoverEntity extends BaseEntity {
     @NotNull
     @Field ("AUTH")
     private final String authenticationKey;
+
+    /* This is redundant field just for the sake of removing records after stipulated time of 7 days. */
+    @NotNull
+    @Indexed (name = "remove_after_seconds_index", expireAfterSeconds = 604800)
+    @Field ("CD")
+    private Date createDate = getCreated();
 
     private ForgotRecoverEntity(String queueUserId, String authenticationKey) {
         super();
