@@ -34,7 +34,10 @@ public class ForgotRecoverEntity extends BaseEntity {
     @Field ("AUTH")
     private final String authenticationKey;
 
-    /* This is redundant field just for the sake of removing records after stipulated time of 7 days. */
+    /*
+     * Field "CD" is redundant field on which index exists to just for the sake of
+     * removing records after stipulated time of 7 days.
+     */
     @NotNull
     @Indexed (name = "remove_after_seconds_index", expireAfterSeconds = 604800)
     @Field ("CD")
