@@ -189,6 +189,26 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:checkbox path="registerBusiness.remoteJoin" cssClass="form-field-admin" readonly="true"/>
+                                                <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:checkbox path="registerBusiness.allowLoggedInUser" cssClass="form-field-admin" readonly="true"/>
+                                                <span style="display:block; font-size:14px;">(Will limit registered users joining this queue)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
 
                                     </ul>
                                 </div>

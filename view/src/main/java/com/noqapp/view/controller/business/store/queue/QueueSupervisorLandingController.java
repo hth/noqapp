@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.BusinessLandingForm;
 
@@ -80,9 +81,12 @@ public class QueueSupervisorLandingController {
             case V:
                 //populateLandingForm(businessLandingForm, businessUser);
                 return nextPage;
+            case N:
+                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
+                businessUserService.save(businessUser);
+                /* After setting status as incomplete, continue to call migrateBusinessProfileFlow. */
             case C:
             case I:
-            case N:
                 LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessProfileFlow;
             default:

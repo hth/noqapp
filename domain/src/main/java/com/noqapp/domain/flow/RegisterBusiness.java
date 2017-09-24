@@ -48,6 +48,7 @@ public class RegisterBusiness implements Serializable {
     private String phoneStore;
     private String timeZoneStore;
     private AddressOriginEnum addressStoreOrigin;
+    private boolean remoteJoin;
     private boolean allowLoggedInUser;
     private List<BusinessHour> businessHours = new LinkedList<>();
 
@@ -244,6 +245,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setAddressStoreOrigin(AddressOriginEnum addressStoreOrigin) {
         this.addressStoreOrigin = addressStoreOrigin;
+        return this;
+    }
+
+    public boolean isRemoteJoin() {
+        return remoteJoin;
+    }
+
+    public RegisterBusiness setRemoteJoin(boolean remoteJoin) {
+        this.remoteJoin = remoteJoin;
         return this;
     }
 
