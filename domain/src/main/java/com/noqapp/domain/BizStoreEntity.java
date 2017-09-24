@@ -139,6 +139,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("WL")
     private String webLocation;
 
+    @Field ("RJ")
+    private boolean remoteJoin = false;
+
     @Field ("LU")
     private boolean allowLoggedInUser = false;
 
@@ -379,6 +382,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+    }
+
+    public boolean isRemoteJoin() {
+        return remoteJoin;
+    }
+
+    public BizStoreEntity setRemoteJoin(boolean remoteJoin) {
+        this.remoteJoin = remoteJoin;
+        return this;
     }
 
     public boolean isAllowLoggedInUser() {
