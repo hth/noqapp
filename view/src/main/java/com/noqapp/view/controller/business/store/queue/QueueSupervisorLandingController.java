@@ -111,6 +111,7 @@ public class QueueSupervisorLandingController {
     private void populateLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
         Assert.notNull(businessUser, "Business user should not be null");
         BizNameEntity bizName = businessUser.getBizName();
+        businessLandingForm.setBizName(bizName.getBusinessName());
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
         List<JsonTopic> jsonTopics = businessUserStoreService.getQueues(businessUser.getQueueUserId());
         businessLandingForm.setJsonTopics(jsonTopics);
