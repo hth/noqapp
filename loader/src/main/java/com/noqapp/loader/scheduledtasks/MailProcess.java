@@ -177,12 +177,12 @@ public class MailProcess {
             MimeMessage message,
             MimeMessageHelper helper
     ) throws MessagingException {
-        /** Use the true flag to indicate the text included is HTML. */
+        /* Use the true flag to indicate the text included is HTML. */
         helper.setText(mail.getMessage(), true);
         helper.setSubject(mail.getSubject());
 
         if (mail.getSubject().startsWith(mailInviteSubject)) {
-            /** Attach image always at the end. */
+            /* Attach image always at the end. */
             helper.addInline("googlePlus.logo", getFileSystemResource(googleSmall));
             helper.addInline("facebook.logo", getFileSystemResource(facebookSmall));
             helper.addInline("ios.logo", getFileSystemResource(appStore));
@@ -244,7 +244,7 @@ public class MailProcess {
     }
 
     private MimeMessageHelper populateMessageBody(MailEntity mail, MimeMessage message) throws MessagingException, UnsupportedEncodingException {
-        /** Use the true flag to indicate you need a multipart message. */
+        /* Use the true flag to indicate you need a multipart message. */
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         if (StringUtils.isBlank(mail.getFromMail())) {
