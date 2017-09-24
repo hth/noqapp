@@ -45,6 +45,9 @@ public class ExpireRecordsProcess {
         this.cronStatsService = cronStatsService;
     }
 
+    /**
+     * Expires the password reset link after stipulated time.
+     */
     @Scheduled (fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
     public void markExpiredForgotPassword() {
         CronStatsEntity cronStats = new CronStatsEntity(
