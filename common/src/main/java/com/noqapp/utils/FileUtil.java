@@ -40,10 +40,9 @@ public class FileUtil {
 
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
-    private static RandomStringGenerator randomStringGenerator;
+    private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
 
     private FileUtil() {
-        randomStringGenerator = new RandomStringGenerator.Builder().build();
     }
 
     private static String getTmpDir() {
@@ -111,7 +110,7 @@ public class FileUtil {
      * @return
      */
     public static String getFileExtension(String filename) {
-        Assert.isTrue(filename.contains("."));
+        Assert.isTrue(filename.contains("."), "Filename should contain .");
 
         String extension = FilenameUtils.getExtension(filename);
         if (extension.endsWith("jpeg")) {
