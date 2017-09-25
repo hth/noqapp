@@ -10,11 +10,21 @@ import java.util.List;
  */
 public class StoreLandingForm {
 
+    private String businessName;
     private String address;
     private String phone;
     private String displayName;
     private String qrFileName;
     List<StoreHourEntity> storeHours;
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public StoreLandingForm setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
 
     public String getAddress() {
         return address;

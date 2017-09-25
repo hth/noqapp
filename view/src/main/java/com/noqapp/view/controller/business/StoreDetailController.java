@@ -87,8 +87,9 @@ public class StoreDetailController {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
         storeLandingForm
+                .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setAddress(bizStore.getAddress())
-                .setPhone(bizStore.getPhone())
+                .setPhone(bizStore.getPhoneFormatted())
                 .setDisplayName(bizStore.getDisplayName())
                 .setStoreHours(storeHours);
 

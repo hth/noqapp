@@ -61,6 +61,9 @@
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
+                                        <td colspan="2">${storeLandingForm.businessName}</td>
+                                    </tr>
+                                    <tr>
                                         <td width="100">Address:</td>
                                         <td>${storeLandingForm.address}</td>
                                     </tr>
