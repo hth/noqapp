@@ -61,19 +61,19 @@
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td colspan="2">${storeLandingForm.businessName}</td>
+                                        <td colspan="2"><h3><span>${storeLandingForm.businessName}</span></h3></td>
                                     </tr>
                                     <tr>
-                                        <td width="100">Address:</td>
+                                        <td width="100">Queue Name:</td>
+                                        <td>${storeLandingForm.displayName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:</td>
                                         <td>${storeLandingForm.address}</td>
                                     </tr>
                                     <tr>
                                         <td>Phone:</td>
                                         <td>${storeLandingForm.phone}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Queue Name:</td>
-                                        <td>${storeLandingForm.displayName}</td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp;</td>
