@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.validator;
 
+import com.noqapp.domain.shared.DecodedAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,28 +35,51 @@ public class MigrateToBusinessProfileValidator {
         this.accountService = accountService;
     }
 
-    public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
-        String status = userFlowValidator.validateUserProfileSignupDetails(registerUser, messageContext);
+    /**
+     * Migrating user profile to business queue supervisor profile.
+     *
+     * @param registerUser
+     * @param messageContext
+     * @return
+     */
+    @SuppressWarnings("unused")
+    public String validateUserProfileSignUpDetails(RegisterUser registerUser, MessageContext messageContext) {
+        String status = userFlowValidator.validateUserProfileSignUpDetails(registerUser, messageContext);
 
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
 
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(registerUser.getPhoneWithCountryCode());
         if (null == userProfile) {
-            /* This should never happen. */
+            /*
+             * This should not happen and the possible reason could be the
+             * address and phone are from different countries. Or user does not exists.
+             */
             LOG.error("Could not find user with phone={} countryShortName={} qid={}",
                     registerUser.getPhoneWithCountryCode(),
                     registerUser.getCountryShortName(),
                     qid);
 
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerUser.phone")
-                            .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
-                            .build());
+            if (!queueUser.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerUser.address")
+                                .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
+                                .build());
 
-            status = "failure";
+                status = "failure";
+            } else {
+
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerUser.phone")
+                                .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
+                                .build());
+
+                status = "failure";
+            }
         } else if (!userProfile.getQueueUserId().equalsIgnoreCase(qid)) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -65,6 +89,24 @@ public class MigrateToBusinessProfileValidator {
                             .build());
             
             status = "failure";
+        }
+
+        if (!registerUser.getFoundAddresses().isEmpty()) {
+            for (String decodedAddressId : registerUser.getFoundAddresses().keySet()) {
+                DecodedAddress decodedAddress = registerUser.getFoundAddresses().get(decodedAddressId);
+                if (!decodedAddress.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerUser.address")
+                                    .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
+                                    .build());
+
+                    status = "failure";
+                    break;
+                }
+            }
+
         }
 
         return status;
