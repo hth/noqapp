@@ -39,11 +39,12 @@ public class MigrateToBusinessProfileValidator {
      * Migrating user profile to business queue supervisor profile.
      *
      * @param registerUser
+     * @param source         Identify label correctly in jsp. Matches error message with input with error css.
      * @param messageContext
      * @return
      */
     @SuppressWarnings("unused")
-    public String validateUserProfileSignUpDetails(RegisterUser registerUser, MessageContext messageContext) {
+    public String validateUserProfileSignUpDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
         String status = userFlowValidator.validateUserProfileSignUpDetails(registerUser, messageContext);
 
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -64,7 +65,7 @@ public class MigrateToBusinessProfileValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.address")
+                                .source(source + "address")
                                 .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
                                 .build());
 
@@ -74,7 +75,7 @@ public class MigrateToBusinessProfileValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.phone")
+                                .source(source + "phone")
                                 .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
                                 .build());
 
@@ -84,7 +85,7 @@ public class MigrateToBusinessProfileValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.phone")
+                            .source(source + "phone")
                             .defaultText("User already exists with this number. Please try to recover account before proceeding.")
                             .build());
             
@@ -98,7 +99,7 @@ public class MigrateToBusinessProfileValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerUser.address")
+                                    .source(source + "address")
                                     .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
                                     .build());
 
