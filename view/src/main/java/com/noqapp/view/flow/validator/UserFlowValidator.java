@@ -64,19 +64,20 @@ public class UserFlowValidator {
      * Validate business user profile.
      *
      * @param registerUser
+     * @param source            Identify label correctly in jsp. Matches error message with input with error css.
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileSignUpDetails(RegisterUser registerUser, MessageContext messageContext) {
+    public String validateUserProfileSignUpDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
         LOG.info("Validate user profile signUp qid={}", registerUser.getQueueUserId());
-        String status = validateUserProfileDetails(registerUser, messageContext);
+        String status = validateUserProfileDetails(registerUser, source, messageContext);
 
         if (StringUtils.isBlank(registerUser.getBirthday())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.birthday")
+                            .source(source + "birthday")
                             .defaultText("Data of birth cannot be empty. Should be of format yyyy-MM-dd.")
                             .build());
             status = "failure";
@@ -86,7 +87,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.birthday")
+                            .source(source + "birthday")
                             .defaultText("Data of birth not valid. Should be of format yyyy-MM-dd.")
                             .build());
             status = "failure";
@@ -96,7 +97,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.email")
+                            .source(source + "email")
                             .defaultText("Email Address provided is not valid")
                             .build());
             status = "failure";
@@ -106,7 +107,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.email")
+                            .source(source + "email")
                             .defaultText("Email address has to be at least of size " + mailLength + " characters")
                             .build());
             status = "failure";
@@ -118,7 +119,7 @@ public class UserFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.password")
+                                .source(source + "password")
                                 .defaultText("Password minimum length of " + passwordLength + " characters")
                                 .build());
                 status = "failure";
@@ -130,7 +131,7 @@ public class UserFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.acceptsAgreement")
+                                .source(source + "acceptsAgreement")
                                 .defaultText("To continue, please check accept to terms")
                                 .build());
                 status = "failure";
@@ -138,7 +139,7 @@ public class UserFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.acceptsAgreement")
+                                .source(source + "acceptsAgreement")
                                 .defaultText("To continue, please check accept to terms")
                                 .build());
                 status = "failure";
@@ -156,11 +157,12 @@ public class UserFlowValidator {
      * Validate signed up user info.
      *
      * @param registerUser
+     * @param source            Identify label correctly in jsp. Matches error message with input with error css.
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileDetails(RegisterUser registerUser, MessageContext messageContext) {
+    public String validateUserProfileDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
         LOG.info("Validate user profile qid={}", registerUser.getQueueUserId());
         String status = LandingController.SUCCESS;
 
@@ -168,7 +170,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.address")
+                            .source(source + "address")
                             .defaultText("Your Address cannot be empty")
                             .build());
             status = "failure";
@@ -178,7 +180,10 @@ public class UserFlowValidator {
                 decodedAddress = registerUser.getFoundAddresses().get(registerUser.getFoundAddressPlaceId());
                 registerUser.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerUser.setAddressOrigin(AddressOriginEnum.G);
-            } else if(registerUser.getFoundAddresses().isEmpty()) {
+            } else if (registerUser.getFoundAddresses().isEmpty() || registerUser.hasUserEnteredAddressChanged()) {
+                /* This code would track if the address entered by user has changed. */
+                registerUser.setPlaceHolderAddress(registerUser.getAddress());
+
                 Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerUser.getAddress()),
                         registerUser.getAddress());
@@ -190,7 +195,7 @@ public class UserFlowValidator {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()
-                                        .source("registerUser.address")
+                                        .source(source + "address")
                                         .defaultText("Found other matching address(es). Please select 'Best Matching Address' or if you choose 'Your Address' then click Next.")
                                         .build());
                         status = "failure";
@@ -199,7 +204,7 @@ public class UserFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerUser.address")
+                                    .source(source + "address")
                                     .defaultText("Failed decoding your address. Please contact support if this error persists.")
                                     .build());
                     status = "failure";
@@ -214,13 +219,30 @@ public class UserFlowValidator {
                 registerUser.setAddressOrigin(AddressOriginEnum.S);
             }
 
+            if (!registerUser.getFoundAddresses().isEmpty()) {
+                for (String decodedAddressId : registerUser.getFoundAddresses().keySet()) {
+                    DecodedAddress foundAddress = registerUser.getFoundAddresses().get(decodedAddressId);
+                    if (!foundAddress.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
+                        messageContext.addMessage(
+                                new MessageBuilder()
+                                        .error()
+                                        .source(source + "address")
+                                        .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
+                                        .build());
+
+                        status = "failure";
+                        break;
+                    }
+                }
+            }
+
             /* Make sure you are not over writing country short name when phone is already validated. */
             if (registerUser.isPhoneValidated()) {
                 if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerUser.address")
+                                    .source(source + "address")
                                     .defaultText("Your address does not match with the country of registered phone number. " +
                                             "Phone is registered to " + registerUser.getCountryShortName())
                                     .build());
@@ -235,7 +257,7 @@ public class UserFlowValidator {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()
-                                        .source("registerUser.phone")
+                                        .source(source + "phone")
                                         .defaultText("Your Phone number cannot be empty")
                                         .build());
                         status = "failure";
@@ -249,7 +271,7 @@ public class UserFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerUser.phone")
+                                    .source(source + "phone")
                                     .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
                                     .build());
                     status = "failure";
@@ -271,7 +293,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.firstName")
+                            .source(source + "firstName")
                             .defaultText("First name cannot be empty")
                             .build());
             status = "failure";
@@ -281,7 +303,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.firstName")
+                            .source(source + "firstName")
                             .defaultText("First name is not a valid name: " + registerUser.getFirstName())
                             .build());
             status = "failure";
@@ -291,7 +313,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.firstName")
+                            .source(source + "firstName")
                             .defaultText("First name minimum length of " + nameLength + " characters")
                             .build());
             status = "failure";
@@ -301,7 +323,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.lastName")
+                            .source(source + "lastName")
                             .defaultText("Last name cannot be empty")
                             .build());
             status = "failure";
@@ -311,7 +333,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.lastName")
+                            .source(source + "lastName")
                             .defaultText("Last name is not a valid name: " + registerUser.getLastName())
                             .build());
             status = "failure";
@@ -321,7 +343,7 @@ public class UserFlowValidator {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerUser.phone")
+                            .source(source + "phone")
                             .defaultText("Your Phone number cannot be empty")
                             .build());
             status = "failure";
@@ -332,7 +354,7 @@ public class UserFlowValidator {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
-                                .source("registerUser.phone")
+                                .source(source + "phone")
                                 .defaultText("Your Phone number '" + registerUser.getPhoneNotFormatted() + "' is not valid")
                                 .build());
                 status = "failure";

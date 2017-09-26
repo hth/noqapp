@@ -45,7 +45,7 @@ public class MigrateToBusinessProfileValidator {
      */
     @SuppressWarnings("unused")
     public String validateUserProfileSignUpDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
-        String status = userFlowValidator.validateUserProfileSignUpDetails(registerUser, messageContext);
+        String status = userFlowValidator.validateUserProfileSignUpDetails(registerUser, source, messageContext);
 
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
@@ -90,24 +90,6 @@ public class MigrateToBusinessProfileValidator {
                             .build());
             
             status = "failure";
-        }
-
-        if (!registerUser.getFoundAddresses().isEmpty()) {
-            for (String decodedAddressId : registerUser.getFoundAddresses().keySet()) {
-                DecodedAddress decodedAddress = registerUser.getFoundAddresses().get(decodedAddressId);
-                if (!decodedAddress.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
-                    messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "address")
-                                    .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
-                                    .build());
-
-                    status = "failure";
-                    break;
-                }
-            }
-
         }
 
         return status;
