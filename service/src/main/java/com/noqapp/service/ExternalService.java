@@ -9,6 +9,7 @@ import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.PlaceDetails;
 
+import com.noqapp.domain.shared.Geocode;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -22,7 +23,6 @@ import org.springframework.util.Assert;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.DecodedAddress;
-import com.noqapp.domain.shared.Geocoding;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.repository.BizStoreManager;
 
@@ -80,13 +80,13 @@ public class ExternalService {
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+            Geocode geocode = Geocode.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
             if (decodedAddress.isNotBlank()) {
                 if(bizStore.getAddressOrigin() != AddressOriginEnum.S) {
                     bizStore.setAddress(decodedAddress.getFormattedAddress());
                 } else {
-                    bizStore.setAddress(geocoding.getAddress());
+                    bizStore.setAddress(geocode.getAddress());
                 }
                 bizStore.setTown(decodedAddress.getTown());
                 bizStore.setDistrict(decodedAddress.getDistrict());
@@ -111,7 +111,7 @@ public class ExternalService {
 
                 bizStore.setValidatedUsingExternalAPI(true);
             } else {
-                LOG.warn("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
+                LOG.warn("Geocode result from address is empty for bizStoreId={} bizStoreAddress={}",
                         bizStore.getId(), bizStore.getAddress());
             }
         } catch (Exception e) {
@@ -127,13 +127,13 @@ public class ExternalService {
      */
     public void decodeAddress(BizNameEntity bizName) {
         try {
-            Geocoding geocoding = Geocoding.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+            Geocode geocode = Geocode.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
             if (decodedAddress.isNotBlank()) {
                 if(bizName.getAddressOrigin() != AddressOriginEnum.S) {
                     bizName.setAddress(decodedAddress.getFormattedAddress());
                 } else {
-                    bizName.setAddress(geocoding.getAddress());
+                    bizName.setAddress(geocode.getAddress());
                 }
                 bizName.setTown(decodedAddress.getTown());
                 bizName.setDistrict(decodedAddress.getDistrict());
@@ -157,7 +157,7 @@ public class ExternalService {
 
                 bizName.setValidatedUsingExternalAPI(true);
             } else {
-                LOG.warn("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
+                LOG.warn("Geocode result from address is empty for bizStoreId={} bizStoreAddress={}",
                         bizName.getId(), bizName.getAddress());
             }
         } catch (Exception e) {

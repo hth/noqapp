@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
  * User: hitender
  * Date: 9/15/17 4:21 AM
  */
-public class Geocoding {
+public class Geocode {
 
     private GeocodingResult[] results;
     private String address;
@@ -17,7 +17,7 @@ public class Geocoding {
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
     private boolean addressMisMatch;
 
-    private Geocoding(GeocodingResult[] results, String address) {
+    private Geocode(GeocodingResult[] results, String address) {
         this.results = results;
         this.address = address;
 
@@ -32,8 +32,8 @@ public class Geocoding {
         }
     }
 
-    public static Geocoding newInstance(GeocodingResult[] results, String address) {
-        return new Geocoding(results, address);
+    public static Geocode newInstance(GeocodingResult[] results, String address) {
+        return new Geocode(results, address);
     }
 
     public GeocodingResult[] getResults() {
