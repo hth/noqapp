@@ -26,7 +26,7 @@
 
     <action-state id="validateUserProfile">
         <evaluate
-                expression="migrateToBusinessProfileValidator.validateUserProfileSignupDetails(registerUser, messageContext)"/>
+                expression="migrateToBusinessProfileValidator.validateUserProfileSignUpDetails(registerUser, messageContext)"/>
         <transition on="success" to="registrationReview"/>
         <transition on="failure" to="profileCompletion"/>
     </action-state>

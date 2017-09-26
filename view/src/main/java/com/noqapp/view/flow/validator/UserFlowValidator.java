@@ -68,8 +68,8 @@ public class UserFlowValidator {
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileSignupDetails(RegisterUser registerUser, MessageContext messageContext) {
-        LOG.info("Validate user profile signup qid={}", registerUser.getQueueUserId());
+    public String validateUserProfileSignUpDetails(RegisterUser registerUser, MessageContext messageContext) {
+        LOG.info("Validate user profile signUp qid={}", registerUser.getQueueUserId());
         String status = validateUserProfileDetails(registerUser, messageContext);
 
         if (StringUtils.isBlank(registerUser.getBirthday())) {
