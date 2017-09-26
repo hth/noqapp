@@ -25,6 +25,9 @@ public class RegisterUser implements Serializable {
     private String firstName;
     private String lastName;
     private String address;
+
+    /* Just to keep track of older address supplied against the new address. */
+    private String placeHolderAddress;
     private String countryShortName;
     private String phone;
     private String timeZone;
@@ -88,6 +91,14 @@ public class RegisterUser implements Serializable {
         /* Java 8 regex engine supports \R which represents any line separator. */
         this.address = address.getText().replaceAll("\\R", " ");
         return this;
+    }
+
+    public String getPlaceHolderAddress() {
+        return placeHolderAddress;
+    }
+
+    public void setPlaceHolderAddress(String placeHolderAddress) {
+        this.placeHolderAddress = placeHolderAddress;
     }
 
     public String getGender() {
@@ -238,6 +249,11 @@ public class RegisterUser implements Serializable {
     public RegisterUser setSelectFoundAddress(boolean selectFoundAddress) {
         this.selectFoundAddress = selectFoundAddress;
         return this;
+    }
+
+    @Transient
+    public boolean hasUserEnteredAddressChanged() {
+        return !address.equalsIgnoreCase(placeHolderAddress);
     }
 
     @Override

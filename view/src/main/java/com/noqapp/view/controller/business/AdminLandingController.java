@@ -256,8 +256,10 @@ public class AdminLandingController {
 
             if (queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("approve")) {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
+                businessUser.active();
             } else if(queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("reject")) {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
+                businessUser.inActive();
             } else {
                 LOG.warn("Reached un-reachable condition {}", queueSupervisorApproveRejectForm.getApproveOrReject());
                 throw new RuntimeException("Failed to update as the value supplied is invalid");
