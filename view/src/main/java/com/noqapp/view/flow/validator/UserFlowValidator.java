@@ -2,6 +2,7 @@ package com.noqapp.view.flow.validator;
 
 import com.google.maps.model.LatLng;
 
+import com.noqapp.domain.shared.Geocode;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.shared.DecodedAddress;
-import com.noqapp.domain.shared.Geocoding;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
@@ -179,14 +179,14 @@ public class UserFlowValidator {
                 registerUser.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerUser.setAddressOrigin(AddressOriginEnum.G);
             } else if(registerUser.getFoundAddresses().isEmpty()) {
-                Geocoding geocoding = Geocoding.newInstance(
+                Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerUser.getAddress()),
                         registerUser.getAddress());
-                registerUser.setFoundAddresses(geocoding.getFoundAddresses());
-                decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+                registerUser.setFoundAddresses(geocode.getFoundAddresses());
+                decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
 
                 if (decodedAddress.isNotBlank()) {
-                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                    if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()

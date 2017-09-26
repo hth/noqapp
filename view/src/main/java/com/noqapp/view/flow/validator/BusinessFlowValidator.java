@@ -2,6 +2,7 @@ package com.noqapp.view.flow.validator;
 
 import com.google.maps.model.LatLng;
 
+import com.noqapp.domain.shared.Geocode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -18,7 +19,6 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
-import com.noqapp.domain.shared.Geocoding;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
@@ -98,14 +98,14 @@ public class BusinessFlowValidator {
                 registerBusiness.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerBusiness.setAddressOrigin(AddressOriginEnum.G);
             } else if(registerBusiness.getFoundAddresses().isEmpty()) {
-                Geocoding geocoding = Geocoding.newInstance(
+                Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerBusiness.getAddress()),
                         registerBusiness.getAddress());
-                registerBusiness.setFoundAddresses(geocoding.getFoundAddresses());
-                decodedAddress = DecodedAddress.newInstance(geocoding.getResults(), 0);
+                registerBusiness.setFoundAddresses(geocode.getFoundAddresses());
+                decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
 
                 if (decodedAddress.isNotBlank()) {
-                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                    if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()
@@ -206,14 +206,14 @@ public class BusinessFlowValidator {
                 registerBusiness.setAddressStore(new ScrubbedInput(decodedAddressStore.getFormattedAddress()));
                 registerBusiness.setAddressStoreOrigin(AddressOriginEnum.G);
             } else if(registerBusiness.getFoundAddressStores().isEmpty()) {
-                Geocoding geocoding = Geocoding.newInstance(
+                Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerBusiness.getAddressStore()),
                         registerBusiness.getAddressStore());
-                registerBusiness.setFoundAddressStores(geocoding.getFoundAddresses());
-                decodedAddressStore = DecodedAddress.newInstance(geocoding.getResults(), 0);
+                registerBusiness.setFoundAddressStores(geocode.getFoundAddresses());
+                decodedAddressStore = DecodedAddress.newInstance(geocode.getResults(), 0);
 
                 if (decodedAddressStore.isNotBlank()) {
-                    if (geocoding.getResults().length > 1 || geocoding.isAddressMisMatch()) {
+                    if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()
