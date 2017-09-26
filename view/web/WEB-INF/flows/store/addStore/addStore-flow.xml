@@ -54,7 +54,7 @@
     </action-state>
 
     <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
-    <end-state id="logout"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/business/landing.htm"/>
 
     <global-transitions>
         <transition on="cancel" to="logout"/>
