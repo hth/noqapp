@@ -95,7 +95,7 @@
                                         </table>
                                     </c:when>
                                     <c:otherwise>
-                                        There are no new business to approve.
+                                        There are no stores associated with business.
                                     </c:otherwise>
                                 </c:choose>
                             </div>
