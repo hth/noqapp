@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.validator;
 
+import com.noqapp.view.controller.access.LandingController;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class QueueSupervisorFlowValidator {
     public String validatePhoneNumber(InviteQueueSupervisor inviteQueueSupervisor, MessageContext messageContext) {
         LOG.info("validatePhoneNumber phone={}", inviteQueueSupervisor.getPhoneNumber());
 
-        String status = "success";
+        String status = LandingController.SUCCESS;
         if (StringUtils.isBlank(inviteQueueSupervisor.getPhoneNumber())) {
             messageContext.addMessage(
                     new MessageBuilder()

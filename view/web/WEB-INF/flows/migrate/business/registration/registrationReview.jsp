@@ -55,7 +55,7 @@
                     <form:form commandName="register">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Confirm your personal and business details</h2>
+                            <h2>Review your personal and business details</h2>
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
@@ -157,9 +157,10 @@
                                     </li>
                                 </ul>
 
+                                <c:if test="${!register.registerBusiness.multiStore}">
                                 <div id="storeDetail">
                                     <div class="admin-title pT30">
-                                        <h2>Add Store details</h2>
+                                        <h2>Review Store details</h2>
                                     </div>
                                     <ul class="list-form">
                                         <li>
@@ -255,20 +256,22 @@
                                         <div class="clearFix"></div>
                                     </ul>
 
-                                    <div class="btn-hours">
-                                        <c:if test="${register.registerUser.emailValidated}">
-                                            <div class="first-btn">
-                                                <input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">
-                                            </div>
-                                        </c:if>
-                                        <div class="center-btn">
-                                            <input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">
+                                </div>
+                                </c:if>
+
+                                <div class="btn-hours">
+                                    <c:if test="${register.registerUser.emailValidated}">
+                                        <div class="first-btn">
+                                            <input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">
                                         </div>
-                                        <div class="last-btn">
-                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
-                                        </div>
-                                        <div class="clearFix"></div>
+                                    </c:if>
+                                    <div class="center-btn">
+                                        <input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">
                                     </div>
+                                    <div class="last-btn">
+                                        <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                    </div>
+                                    <div class="clearFix"></div>
                                 </div>
                             </div>
                         </div>
