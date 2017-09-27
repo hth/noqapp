@@ -153,7 +153,6 @@ public class BizService {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 
-    @Mobile
     public List<StoreHourEntity> findAllStoreHours(String bizStoreId) {
         return storeHourManager.findAll(bizStoreId);
     }
