@@ -242,10 +242,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                                .andOperator(isNotDeleted())
-                ),
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())),
                 BizStoreEntity.class
         );
     }
