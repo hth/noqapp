@@ -58,7 +58,6 @@ public class LoginService {
                 browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
                 browserManager.save(browserEntity);
             } else {
-                browserEntity.setUpdated();
                 browserManager.save(browserEntity);
             }
         } catch (Exception e) {
