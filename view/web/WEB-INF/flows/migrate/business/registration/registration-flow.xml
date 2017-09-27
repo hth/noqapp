@@ -42,6 +42,8 @@
     <action-state id="validateBusinessProfile">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)"/>
         <transition on="success" to="businessHours"/>
+        <!-- When selected multiStore then jump to review -->
+        <transition on="skipStoreHours" to="registrationReview"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 

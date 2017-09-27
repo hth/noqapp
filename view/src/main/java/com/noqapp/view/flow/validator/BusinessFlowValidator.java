@@ -178,6 +178,12 @@ public class BusinessFlowValidator {
         /* When not a multi store then fetch store address. */
         if (!registerBusiness.isMultiStore()) {
             status = validateStoreDetails(registerBusiness, "registerBusiness.", messageContext);
+        } else {
+            if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+                /* When selected multiStore then jump to review on success. */
+                LOG.info("Skipped store hours as selected multiStore={}", registerBusiness.isMultiStore());
+                status = "skipStoreHours";
+            }
         }
 
         LOG.info("Validate business qid={} status={}", register.getRegisterUser().getQueueUserId(), status);

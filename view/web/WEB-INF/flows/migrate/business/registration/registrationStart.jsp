@@ -309,6 +309,18 @@
                 $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
             }
         });
+
+        $(document).ready(function() {
+            if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+                $('#storeDetail').hide();
+            } else {
+                $('#storeDetail').show();
+                $('[name="registerBusiness.displayName"]').val("");
+                $('[name="registerBusiness.addressStore"]').val("");
+                $('[name="registerBusiness.phoneStore"]').val("");
+                $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
+            }
+        });
     });
 </script>
 </html>
