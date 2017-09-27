@@ -1,5 +1,6 @@
 package com.noqapp.view.flow;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.Formatter;
 import com.noqapp.utils.ScrubbedInput;
 
+import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -124,19 +127,24 @@ class RegistrationFlowActions {
     }
 
     /**
-     * For registering new business.
+     * For registering new or for editing business.
      * 
      * @param register
      * @return
      */
     BizNameEntity registerBusinessDetails(Register register) {
         RegisterBusiness registerBusiness = register.getRegisterBusiness();
-        BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
+        BizNameEntity bizName;
+        if (StringUtils.isNotBlank(registerBusiness.getBizId())) {
+            bizName = bizService.getByBizNameId(registerBusiness.getBizId());
+        } else {
+            bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
+        }
 
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
-            bizName.setBusinessName(registerBusiness.getName());
         }
+        bizName.setBusinessName(registerBusiness.getName());
         bizName.setBusinessTypes(registerBusiness.getBusinessTypes());
         bizName.setPhone(registerBusiness.getPhoneWithCountryCode());
         bizName.setPhoneRaw(registerBusiness.getPhoneNotFormatted());
@@ -161,68 +169,89 @@ class RegistrationFlowActions {
     }
 
     /**
-     * Does store registration.
+     * Create new or edit existing store registration.
      *
      * @param registerBusiness
      * @param bizName
      * @return
      */
     private BizStoreEntity registerStore(RegisterBusiness registerBusiness, BizNameEntity bizName) {
-        BizStoreEntity bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
-        if (null == bizStore) {
-            bizStore = BizStoreEntity.newInstance();
-            bizStore.setBizName(bizName);
-            bizStore.setDisplayName(registerBusiness.getDisplayName());
-            bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
-            bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
-            bizStore.setAddress(registerBusiness.getAddressStore());
-            bizStore.setTimeZone(registerBusiness.getTimeZoneStore());
-            bizStore.setCodeQR(ObjectId.get().toString());
-            bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
-            bizStore.setRemoteJoin(registerBusiness.isRemoteJoin());
-            bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
-
-            //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
-            validateAddress(bizStore);
-            try {
-                bizStore.setWebLocation(registerBusiness.computeWebLocation(bizStore.getTown(), bizStore.getStateShortName()));
-                bizService.saveStore(bizStore);
-
-                String bizStoreId = bizStore.getId();
-                List<StoreHourEntity> storeHours = new LinkedList<>();
-                for (BusinessHour businessHour : registerBusiness.getBusinessHours()) {
-                    StoreHourEntity storeHour = new StoreHourEntity(bizStoreId, businessHour.getDayOfWeek().getValue());
-                    if (businessHour.isDayClosed()) {
-                        storeHour.setDayClosed(businessHour.isDayClosed());
-                    } else {
-                        storeHour.setStartHour(businessHour.getStartHourStore());
-                        storeHour.setEndHour(businessHour.getEndHourStore());
-                        storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
-                        storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
-                    }
-
-                    storeHours.add(storeHour);
-                }
-
-                /* Add store hours. */
-                bizService.insertAll(storeHours);
-                bizStore.setStoreHours(storeHours);
-
-                /* Add timezone later as its missing id. */
-                addTimezone(bizStore);
-                return bizStore;
-            } catch (Exception e) {
-                LOG.error("Error saving store for  bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
-                if (0 == bizService.getAllBizStores(bizName.getId()).size()) {
-                    LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
-                    bizService.deleteBizName(bizName);
-                    LOG.info("Rollback successful");
-                }
-                throw new RuntimeException("Error saving store");
-            }
+        BizStoreEntity bizStore;
+        if (StringUtils.isNotBlank(registerBusiness.getBizStoreId())) {
+            LOG.info("Updating existing store id={}", registerBusiness.getBizStoreId());
+            bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
+        } else {
+            bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
         }
 
-        return bizStore;
+        if (null == bizStore) {
+            bizStore = BizStoreEntity.newInstance();
+        }
+        return saveStoreAndHours(registerBusiness, bizName, bizStore);
+    }
+
+    /**
+     * Saves to database.
+     *
+     * @param registerBusiness
+     * @param bizName
+     * @param bizStore
+     * @return
+     */
+    private BizStoreEntity saveStoreAndHours(
+            RegisterBusiness registerBusiness,
+            BizNameEntity bizName,
+            BizStoreEntity bizStore
+    ) {
+        bizStore.setBizName(bizName);
+        bizStore.setDisplayName(registerBusiness.getDisplayName());
+        bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
+        bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
+        bizStore.setAddress(registerBusiness.getAddressStore());
+        bizStore.setTimeZone(registerBusiness.getTimeZoneStore());
+        bizStore.setCodeQR(ObjectId.get().toString());
+        bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
+        bizStore.setRemoteJoin(registerBusiness.isRemoteJoin());
+        bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
+
+        //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
+        validateAddress(bizStore);
+        try {
+            bizStore.setWebLocation(registerBusiness.computeWebLocation(bizStore.getTown(), bizStore.getStateShortName()));
+            bizService.saveStore(bizStore);
+
+            String bizStoreId = bizStore.getId();
+            List<StoreHourEntity> storeHours = new LinkedList<>();
+            for (BusinessHour businessHour : registerBusiness.getBusinessHours()) {
+                StoreHourEntity storeHour = new StoreHourEntity(bizStoreId, businessHour.getDayOfWeek().getValue());
+                if (businessHour.isDayClosed()) {
+                    storeHour.setDayClosed(businessHour.isDayClosed());
+                } else {
+                    storeHour.setStartHour(businessHour.getStartHourStore());
+                    storeHour.setEndHour(businessHour.getEndHourStore());
+                    storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
+                    storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
+                }
+
+                storeHours.add(storeHour);
+            }
+
+            /* Add store hours. */
+            bizService.insertAll(storeHours);
+            bizStore.setStoreHours(storeHours);
+
+            /* Add timezone later as its missing id. */
+            addTimezone(bizStore);
+            return bizStore;
+        } catch (Exception e) {
+            LOG.error("Error saving store for  bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
+            if (0 == bizService.getAllBizStores(bizName.getId()).size()) {
+                LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
+                bizService.deleteBizName(bizName);
+                LOG.info("Rollback successful");
+            }
+            throw new RuntimeException("Error saving store");
+        }
     }
 
     boolean isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
@@ -236,5 +265,27 @@ class RegistrationFlowActions {
                 LOG.error("Reached unsupported condition={}", businessUserRegistrationStatus);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUserRegistrationStatus);
         }
+    }
+
+    /**
+     * Populate BusinessHours from StoreHour when editing existing records.
+     *
+     * @param storeHours
+     * @return
+     */
+    List<BusinessHour> convertToBusinessHours(List<StoreHourEntity> storeHours) {
+        List<BusinessHour> businessHours = new ArrayList<>();
+        for (StoreHourEntity storeHour : storeHours) {
+            BusinessHour businessHour = new BusinessHour(DayOfWeek.of(storeHour.getDayOfWeek()));
+            businessHour.setStartHourStore(storeHour.getStartHour());
+            businessHour.setEndHourStore(storeHour.getEndHour());
+            businessHour.setTokenAvailableFrom(storeHour.getTokenAvailableFrom());
+            businessHour.setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom());
+            businessHour.setDayClosed(storeHour.isDayClosed());
+
+            businessHours.add(businessHour);
+        }
+
+        return businessHours;
     }
 }

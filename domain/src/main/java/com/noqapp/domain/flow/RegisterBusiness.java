@@ -29,6 +29,7 @@ import java.util.List;
 public class RegisterBusiness implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RegisterBusiness.class);
 
+    private String bizId;
     private String name;
     /* Business types are initialized in flow. Why? Show off. */
     private List<BusinessTypeEnum> businessTypes;
@@ -42,6 +43,7 @@ public class RegisterBusiness implements Serializable {
     private boolean multiStore = false;
     private boolean businessSameAsStore = false;
 
+    private String bizStoreId;
     private String displayName;
     private String addressStore;
     private String countryShortNameStore;
@@ -69,6 +71,14 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
+
+    public String getBizId() {
+        return bizId;
+    }
+
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
+    }
 
     public String getName() {
         return name;
@@ -177,6 +187,14 @@ public class RegisterBusiness implements Serializable {
 
     public void setBusinessSameAsStore(boolean businessSameAsStore) {
         this.businessSameAsStore = businessSameAsStore;
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public void setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
     }
 
     public String getDisplayName() {

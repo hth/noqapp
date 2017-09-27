@@ -153,23 +153,25 @@ public class BusinessFlowValidator {
         }
 
         if (status.equalsIgnoreCase("success")) {
-            Set<BizStoreEntity> bizStores = bizService.bizSearch(
-                    registerBusiness.getName(),
-                    registerBusiness.getAddress(),
-                    registerBusiness.getPhoneWithCountryCode());
+            /* Ignore finding business when editing. */
+            if (StringUtils.isBlank(registerBusiness.getBizId())) {
+                Set<BizStoreEntity> bizStores = bizService.bizSearch(
+                        registerBusiness.getName(),
+                        registerBusiness.getAddress(),
+                        registerBusiness.getPhoneWithCountryCode());
 
-            if (bizStores.size() != 0) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.name")
-                                .defaultText(
-                                        "Business Name already exist wth this name or address or phone. " +
-                                                "Please email us at contact@noqapp.com.")
-                                .build());
-                status = "failure";
+                if (bizStores.size() != 0) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("registerBusiness.name")
+                                    .defaultText(
+                                            "Business Name already exist wth this name or address or phone. " +
+                                                    "Please email us at contact@noqapp.com.")
+                                    .build());
+                    status = "failure";
+                }
             }
-
         }
 
         /* When not a multi store then fetch store address. */
@@ -270,16 +272,19 @@ public class BusinessFlowValidator {
                             .build());
             status = "failure";
         } else {
-            if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
-                messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "phoneStore")
-                                .defaultText("Store already registered with this phone number '"
-                                        + registerBusiness.getPhoneStore()
-                                        + "'. Please email us at contact@noqapp.com.")
-                                .build());
-                status = "failure";
+            /* Ignore finding stores when editing. */
+            if (StringUtils.isBlank(registerBusiness.getBizStoreId())) {
+                if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "phoneStore")
+                                    .defaultText("Store already registered with this phone number '"
+                                            + registerBusiness.getPhoneStore()
+                                            + "'. Please email us at contact@noqapp.com.")
+                                    .build());
+                    status = "failure";
+                }
             }
         }
         return status;

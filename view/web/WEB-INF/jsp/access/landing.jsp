@@ -63,6 +63,10 @@
                                         Awaiting approval for business account. <br/>
                                         Since: ${landingForm.businessAccountSignedUp}
                                     </c:if>
+                                    <c:if test="${landingForm.businessUserRegistrationStatus eq 'N'}">
+                                        Application marked as not complete.
+                                        <a href="/access/landing/business/migrate.htm" class="add-btn">Please modify your application for approval</a>
+                                    </c:if>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="/access/landing/business/migrate.htm" class="add-btn">Do you own a business which you would like to register?</a>

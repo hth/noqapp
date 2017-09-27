@@ -10,6 +10,8 @@ import com.noqapp.utils.ScrubbedInput;
 import java.io.Serializable;
 
 /**
+ * Populates flow for business registration.
+ *
  * User: hitender
  * Date: 12/9/16 1:31 PM
  */
@@ -21,13 +23,21 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
         getRegisterBusiness().setBusinessUser(businessUser);
         getRegisterUser().setQueueUserId(businessUser.getQueueUserId());
         if (null != businessUser.getBizName()) {
+            getRegisterBusiness().setBizId(businessUser.getBizName().getId());
             getRegisterBusiness().setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
+            getRegisterBusiness().setAddress(new ScrubbedInput(businessUser.getBizName().getAddress()));
+            getRegisterBusiness().setPhone(new ScrubbedInput(businessUser.getBizName().getPhone()));
             getRegisterBusiness().setBusinessTypes(businessUser.getBizName().getBusinessTypes());
+            getRegisterBusiness().setMultiStore(businessUser.getBizName().isMultiStore());
         }
 
         if (null != bizStore) {
-            getRegisterBusiness().setAddress(new ScrubbedInput(bizStore.getAddress()));
-            getRegisterBusiness().setPhone(new ScrubbedInput(bizStore.getPhone()));
+            getRegisterBusiness().setBizStoreId(bizStore.getId());
+            getRegisterBusiness().setDisplayName(new ScrubbedInput(bizStore.getDisplayName()));
+            getRegisterBusiness().setAddressStore(new ScrubbedInput(bizStore.getAddress()));
+            getRegisterBusiness().setPhoneStore(new ScrubbedInput(bizStore.getPhone()));
+            getRegisterBusiness().setRemoteJoin(bizStore.isRemoteJoin());
+            getRegisterBusiness().setAllowLoggedInUser(bizStore.isAllowLoggedInUser());
             getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()));
         }
     }

@@ -1,5 +1,6 @@
 package com.noqapp.view.flow;
 
+import com.noqapp.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,10 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
@@ -27,6 +24,7 @@ import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,6 +39,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
+    private BizService bizService;
 
     @SuppressWarnings ("all")
     @Autowired
@@ -58,6 +57,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
+        this.bizService = bizService;
     }
 
     public Set<String> findAllDistinctBizName(String bizName) {
@@ -69,15 +69,42 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
 
+        BizStoreEntity bizStore = null;
+        List<StoreHourEntity> storeHours = null;
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
+            businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
+        } else if (businessUser.getBusinessUserRegistrationStatus() == BusinessUserRegistrationStatusEnum.N) {
+            LOG.info("Editing business details by user={} businessId={}",
+                    queueUser.getQueueUserId(),
+                    businessUser.getBizName().getId());
+
+            BizNameEntity bizName = businessUser.getBizName();
+            if (!bizName.isMultiStore()) {
+                List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
+                if (!bizStores.isEmpty()) {
+                    bizStore = bizStores.get(0);
+                    storeHours = bizService.findAllStoreHours(bizStore.getId());
+                }
+            }
+        } else {
+            /* Should never reach here. */
+            LOG.error("Reached unexpected condition for user={}", queueUser.getQueueUserId());
+            throw new UnsupportedOperationException("Failed loading Business");
         }
-        businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
+
+        Register register;
+        if (null == bizStore) {
+            register = MigrateToBusinessRegistration.newInstance(businessUser, null);
+        } else {
+            register = MigrateToBusinessRegistration.newInstance(businessUser, bizStore);
+            /* When store exists, then store hours should also exists. */
+            register.getRegisterBusiness().setBusinessHours(convertToBusinessHours(storeHours));
+        }
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(qid);
-        Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
                 .setGender(new ScrubbedInput(userProfile.getGender()))
                 .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
