@@ -3,6 +3,7 @@ package com.noqapp.view.flow.validator;
 import com.google.maps.model.LatLng;
 
 import com.noqapp.domain.shared.Geocode;
+import com.noqapp.view.controller.access.LandingController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -59,7 +60,7 @@ public class BusinessFlowValidator {
     @SuppressWarnings ("unused")
     public String validateBusinessDetails(Register register, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
-        String status = "success";
+        String status = LandingController.SUCCESS;
 
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
 
@@ -192,7 +193,7 @@ public class BusinessFlowValidator {
      * @return
      */
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
-        String status = "success";
+        String status = LandingController.SUCCESS;
         if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -314,7 +315,7 @@ public class BusinessFlowValidator {
      * @return
      */
     public String validateBusinessHours(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
-        String status = "success";
+        String status = LandingController.SUCCESS;
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
 
         for (BusinessHour businessHour : businessHours) {
