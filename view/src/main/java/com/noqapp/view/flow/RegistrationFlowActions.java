@@ -156,11 +156,14 @@ class RegistrationFlowActions {
 
         try {
             bizService.saveName(bizName);
-
-            /* Add a store. */
             if (!registerBusiness.isMultiStore()) {
+                /* Add a store when its not a multi store. */
                 registerStore(registerBusiness, bizName);
+            } else if(StringUtils.isNotBlank(registerBusiness.getBizStoreId())) {
+                /* Delete store when changed to multi store option. */
+                deleteExistingStore(registerBusiness);
             }
+
             return bizName;
         } catch(Exception e) {
             LOG.error("Error saving business");
@@ -188,6 +191,12 @@ class RegistrationFlowActions {
             bizStore = BizStoreEntity.newInstance();
         }
         return saveStoreAndHours(registerBusiness, bizName, bizStore);
+    }
+
+    private void deleteExistingStore(RegisterBusiness registerBusiness) {
+        bizService.removeAll(registerBusiness.getBizStoreId());
+        BizStoreEntity bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
+        bizService.deleteBizStore(bizStore);
     }
 
     /**
