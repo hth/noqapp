@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.BizStoreDailyStatEntity;
+import com.noqapp.domain.StatsBizStoreDailyEntity;
 
 import java.util.List;
 
@@ -32,22 +32,22 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
-    private static final Logger LOG = LoggerFactory.getLogger(BizStoreDailyStatManagerImpl.class);
+public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager {
+    private static final Logger LOG = LoggerFactory.getLogger(StatsBizStoreDailyManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BizStoreDailyStatEntity.class,
+            StatsBizStoreDailyEntity.class,
             Document.class,
             "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public BizStoreDailyStatManagerImpl(MongoTemplate mongoTemplate) {
+    public StatsBizStoreDailyManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(BizStoreDailyStatEntity object) {
+    public void save(StatsBizStoreDailyEntity object) {
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -55,13 +55,13 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
     }
 
     @Override
-    public void deleteHard(BizStoreDailyStatEntity object) {
+    public void deleteHard(StatsBizStoreDailyEntity object) {
         mongoTemplate.remove(object);
     }
 
     @Override
-    public BizStoreDailyStatEntity computeRatingForEachQueue(String bizStoreId) {
-        TypedAggregation<BizStoreDailyStatEntity> agg = newAggregation(BizStoreDailyStatEntity.class,
+    public StatsBizStoreDailyEntity computeRatingForEachQueue(String bizStoreId) {
+        TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
                 match(where("BS").is(bizStoreId).and("TR").gt(0)
                         .andOperator(
                                 isActive(),
@@ -73,7 +73,7 @@ public class BizStoreDailyStatManagerImpl implements BizStoreDailyStatManager {
                         .sum("totalCustomerRated").as("CR")
         );
         /* Above totalCustomerRated in group is used as a place holder to count the number of records that has TR > 0. */
-        List<BizStoreDailyStatEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, BizStoreDailyStatEntity.class).getMappedResults();
+        List<StatsBizStoreDailyEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
         if (bizStoreDailyStats.size() > 0) {
             LOG.info("{}", bizStoreDailyStats.get(0));
             return bizStoreDailyStats.get(0);

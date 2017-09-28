@@ -17,13 +17,13 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "BIZ_STORE_DAILY_STAT")
+@Document (collection = "STATS_BIZ_STORE_DAILY")
 @CompoundIndexes (value = {
         /* Business name with address and phone makes it a unique store. */
-        @CompoundIndex (name = "biz_store_daily_stat_bs_bn_idx", def = "{'BS': 1, 'BN': 1}", unique = false),
-        @CompoundIndex (name = "biz_store_daily_stat_qr_idx", def = "{'QR': -1}", unique = false, background = true)
+        @CompoundIndex (name = "stats_biz_store_daily_bs_bn_idx", def = "{'BS': 1, 'BN': 1}", unique = false),
+        @CompoundIndex (name = "stats_biz_store_daily_qr_idx", def = "{'QR': -1}", unique = false, background = true)
 })
-public class BizStoreDailyStatEntity extends BaseEntity {
+public class StatsBizStoreDailyEntity extends BaseEntity {
 
     @NotNull
     @Field ("BS")
@@ -73,7 +73,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return bizStoreId;
     }
 
-    public BizStoreDailyStatEntity setBizStoreId(String bizStoreId) {
+    public StatsBizStoreDailyEntity setBizStoreId(String bizStoreId) {
         this.bizStoreId = bizStoreId;
         return this;
     }
@@ -82,7 +82,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return bizNameId;
     }
 
-    public BizStoreDailyStatEntity setBizNameId(String bizNameId) {
+    public StatsBizStoreDailyEntity setBizNameId(String bizNameId) {
         this.bizNameId = bizNameId;
         return this;
     }
@@ -91,7 +91,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return codeQR;
     }
 
-    public BizStoreDailyStatEntity setCodeQR(String codeQR) {
+    public StatsBizStoreDailyEntity setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
     }
@@ -100,7 +100,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalServiced;
     }
 
-    public BizStoreDailyStatEntity setTotalServiced(int totalServiced) {
+    public StatsBizStoreDailyEntity setTotalServiced(int totalServiced) {
         this.totalServiced = totalServiced;
         return this;
     }
@@ -109,7 +109,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalNoShow;
     }
 
-    public BizStoreDailyStatEntity setTotalNoShow(int totalNoShow) {
+    public StatsBizStoreDailyEntity setTotalNoShow(int totalNoShow) {
         this.totalNoShow = totalNoShow;
         return this;
     }
@@ -118,7 +118,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalAbort;
     }
 
-    public BizStoreDailyStatEntity setTotalAbort(int totalAbort) {
+    public StatsBizStoreDailyEntity setTotalAbort(int totalAbort) {
         this.totalAbort = totalAbort;
         return this;
     }
@@ -127,7 +127,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalClient;
     }
 
-    public BizStoreDailyStatEntity setTotalClient(int totalClient) {
+    public StatsBizStoreDailyEntity setTotalClient(int totalClient) {
         this.totalClient = totalClient;
         return this;
     }
@@ -136,7 +136,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalServiceTime;
     }
 
-    public BizStoreDailyStatEntity setTotalServiceTime(long totalServiceTime) {
+    public StatsBizStoreDailyEntity setTotalServiceTime(long totalServiceTime) {
         this.totalServiceTime = totalServiceTime;
         return this;
     }
@@ -145,7 +145,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return averageServiceTime;
     }
 
-    public BizStoreDailyStatEntity setAverageServiceTime(long averageServiceTime) {
+    public StatsBizStoreDailyEntity setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
         return this;
     }
@@ -154,7 +154,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalRating;
     }
 
-    public BizStoreDailyStatEntity setTotalRating(int totalRating) {
+    public StatsBizStoreDailyEntity setTotalRating(int totalRating) {
         this.totalRating = totalRating;
         return this;
     }
@@ -163,7 +163,7 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalCustomerRated;
     }
 
-    public BizStoreDailyStatEntity setTotalCustomerRated(int totalCustomerRated) {
+    public StatsBizStoreDailyEntity setTotalCustomerRated(int totalCustomerRated) {
         this.totalCustomerRated = totalCustomerRated;
         return this;
     }
@@ -172,14 +172,14 @@ public class BizStoreDailyStatEntity extends BaseEntity {
         return totalHoursSaved;
     }
 
-    public BizStoreDailyStatEntity setTotalHoursSaved(long totalHoursSaved) {
+    public StatsBizStoreDailyEntity setTotalHoursSaved(long totalHoursSaved) {
         this.totalHoursSaved = totalHoursSaved;
         return this;
     }
 
     @Override
     public String toString() {
-        return "BizStoreDailyStatEntity{" +
+        return "StatsBizStoreDailyEntity{" +
                 "bizStoreId='" + bizStoreId + '\'' +
                 ", bizNameId='" + bizNameId + '\'' +
                 ", codeQR='" + codeQR + '\'' +
