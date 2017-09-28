@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -22,7 +22,7 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.service.CronStatsService;
+import com.noqapp.service.StatsCronService;
 import com.noqapp.service.FirebaseMessageService;
 
 import java.util.List;
@@ -49,9 +49,9 @@ public class ServicedPersonalFCM {
     private TokenQueueManager tokenQueueManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseMessageService firebaseMessageService;
-    private CronStatsService cronStatsService;
+    private StatsCronService statsCronService;
 
-    private CronStatsEntity cronStats;
+    private StatsCronEntity statsCron;
 
     @Autowired
     public ServicedPersonalFCM(
@@ -62,7 +62,7 @@ public class ServicedPersonalFCM {
             TokenQueueManager tokenQueueManager,
             RegisteredDeviceManager registeredDeviceManager,
             FirebaseMessageService firebaseMessageService,
-            CronStatsService cronStatsService
+            StatsCronService statsCronService
     ) {
         this.sendPersonalNotification = sendPersonalNotification;
 
@@ -70,12 +70,12 @@ public class ServicedPersonalFCM {
         this.tokenQueueManager = tokenQueueManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseMessageService = firebaseMessageService;
-        this.cronStatsService = cronStatsService;
+        this.statsCronService = statsCronService;
     }
 
     @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
     public void sendPersonalNotificationOnService() {
-        cronStats = new CronStatsEntity(
+        statsCron = new StatsCronEntity(
                 ServicedPersonalFCM.class.getName(),
                 "Serviced_Client_FCM",
                 sendPersonalNotification);
@@ -114,11 +114,11 @@ public class ServicedPersonalFCM {
             failure++;
         } finally {
             if (0 != found || 0 != failure || 0 != sent || 0 != skipped) {
-                cronStats.addStats("found", found);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("skipped", skipped);
-                cronStats.addStats("sentServicedClientFCM", sent);
-                cronStatsService.save(cronStats);
+                statsCron.addStats("found", found);
+                statsCron.addStats("failure", failure);
+                statsCron.addStats("skipped", skipped);
+                statsCron.addStats("sentServicedClientFCM", sent);
+                statsCronService.save(statsCron);
 
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
