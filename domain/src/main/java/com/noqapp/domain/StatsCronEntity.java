@@ -23,11 +23,11 @@ import java.util.Map;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "CRON_STATS")
+@Document (collection = "STATS_CRON")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "cron_stats_idx", def = "{'C': -1}", background = true)
+        @CompoundIndex (name = "stats_cron_idx", def = "{'C': -1}", background = true)
 })
-public class CronStatsEntity extends BaseEntity {
+public class StatsCronEntity extends BaseEntity {
 
     @Field ("CN")
     private String className;
@@ -45,7 +45,7 @@ public class CronStatsEntity extends BaseEntity {
     @Field ("ST")
     private Map<String, String> stats = new LinkedHashMap<>();
 
-    public CronStatsEntity(String className, String taskName, String processStatus) {
+    public StatsCronEntity(String className, String taskName, String processStatus) {
         this.className = className;
         this.taskName = taskName;
         this.processStatus = processStatus;

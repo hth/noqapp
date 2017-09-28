@@ -11,9 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.service.CronStatsService;
+import com.noqapp.service.StatsCronService;
 import com.noqapp.service.ShowHTMLService;
 
 import java.io.IOException;
@@ -39,11 +39,11 @@ public class GenerateStoreQueueHTML {
 
     private BizStoreManager bizStoreManager;
     private ShowHTMLService showHTMLService;
-    private CronStatsService cronStatsService;
+    private StatsCronService statsCronService;
     private String staticHTMLSwitch;
     private String baseDirectory;
 
-    private CronStatsEntity cronStats;
+    private StatsCronEntity statsCron;
 
     @Autowired
     public GenerateStoreQueueHTML(
@@ -55,19 +55,19 @@ public class GenerateStoreQueueHTML {
 
             BizStoreManager bizStoreManager,
             ShowHTMLService showHTMLService,
-            CronStatsService cronStatsService
+            StatsCronService statsCronService
     ) {
         this.staticHTMLSwitch = staticHTMLSwitch;
         this.baseDirectory = baseDirectory;
 
         this.bizStoreManager = bizStoreManager;
         this.showHTMLService = showHTMLService;
-        this.cronStatsService = cronStatsService;
+        this.statsCronService = statsCronService;
     }
 
     @Scheduled (cron = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
     public void generateHTMLPages() {
-        cronStats = new CronStatsEntity(
+        statsCron = new StatsCronEntity(
                 GenerateStoreQueueHTML.class.getName(),
                 "Generate_Store_Queue_HTML",
                 staticHTMLSwitch);
@@ -130,11 +130,11 @@ public class GenerateStoreQueueHTML {
             failure++;
         } finally {
             if (0 != found || 0 != failure || 0 != generated) {
-                cronStats.addStats("found", found);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("skipped", skipped);
-                cronStats.addStats("generateHTMLPages", generated);
-                cronStatsService.save(cronStats);
+                statsCron.addStats("found", found);
+                statsCron.addStats("failure", failure);
+                statsCron.addStats("skipped", skipped);
+                statsCron.addStats("generateHTMLPages", generated);
+                statsCronService.save(statsCron);
 
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} generateHTMLPages={}", found, failure, generated);

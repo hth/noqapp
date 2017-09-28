@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 
 import java.util.List;
 
@@ -28,27 +28,27 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public class CronStatsManagerImpl implements CronStatsManager {
-    private static final Logger LOG = LoggerFactory.getLogger(CronStatsManagerImpl.class);
+public class StatsCronManagerImpl implements StatsCronManager {
+    private static final Logger LOG = LoggerFactory.getLogger(StatsCronManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            CronStatsEntity.class,
+            StatsCronEntity.class,
             Document.class,
             "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public CronStatsManagerImpl(MongoTemplate mongoTemplate) {
+    public StatsCronManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(CronStatsEntity object) {
+    public void save(StatsCronEntity object) {
         mongoTemplate.save(object, TABLE);
     }
 
     @Override
-    public void deleteHard(CronStatsEntity object) {
+    public void deleteHard(StatsCronEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
     }
 
@@ -59,10 +59,10 @@ public class CronStatsManagerImpl implements CronStatsManager {
     }
 
     @Override
-    public List<CronStatsEntity> getHistoricalData(String task, int limit) {
+    public List<StatsCronEntity> getHistoricalData(String task, int limit) {
         return mongoTemplate.find(
                 query(where("TN").is(task)).with(new Sort(Sort.Direction.DESC, "C")).limit(10),
-                CronStatsEntity.class,
+                StatsCronEntity.class,
                 TABLE
         );
     }

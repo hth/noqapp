@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.ForgotRecoverManager;
-import com.noqapp.service.CronStatsService;
+import com.noqapp.service.StatsCronService;
 
 /**
  * User: hitender
@@ -29,7 +29,7 @@ public class ExpireRecordsProcess {
     private final String forgotPasswordSwitch;
 
     private ForgotRecoverManager forgotRecoverManager;
-    private CronStatsService cronStatsService;
+    private StatsCronService statsCronService;
 
     @Autowired
     public ExpireRecordsProcess(
@@ -37,12 +37,12 @@ public class ExpireRecordsProcess {
             String forgotPasswordSwitch,
 
             ForgotRecoverManager forgotRecoverManager,
-            CronStatsService cronStatsService
+            StatsCronService statsCronService
     ) {
         this.forgotPasswordSwitch = forgotPasswordSwitch;
 
         this.forgotRecoverManager = forgotRecoverManager;
-        this.cronStatsService = cronStatsService;
+        this.statsCronService = statsCronService;
     }
 
     /**
@@ -50,7 +50,7 @@ public class ExpireRecordsProcess {
      */
     @Scheduled (fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
     public void markExpiredForgotPassword() {
-        CronStatsEntity cronStats = new CronStatsEntity(
+        StatsCronEntity statsCron = new StatsCronEntity(
                 ExpireRecordsProcess.class.getName(),
                 "MarkExpiredForgotPassword",
                 forgotPasswordSwitch);
@@ -68,9 +68,9 @@ public class ExpireRecordsProcess {
             failure++;
         } finally {
             if (0 != recordsModified || 0 !=  failure) {
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("success", recordsModified);
-                cronStatsService.save(cronStats);
+                statsCron.addStats("failure", failure);
+                statsCron.addStats("success", recordsModified);
+                statsCronService.save(statsCron);
 
                 /* Without if condition its too noisy. */
                 LOG.info("Complete recordsModified={} failure={}", recordsModified, failure);

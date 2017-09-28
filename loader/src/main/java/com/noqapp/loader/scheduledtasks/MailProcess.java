@@ -16,11 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.MailEntity;
 import com.noqapp.domain.types.MailStatusEnum;
 import com.noqapp.repository.MailManager;
-import com.noqapp.service.CronStatsService;
+import com.noqapp.service.StatsCronService;
 import net.markenwerk.utils.mail.dkim.Canonicalization;
 import net.markenwerk.utils.mail.dkim.DkimMessage;
 import net.markenwerk.utils.mail.dkim.DkimSigner;
@@ -65,7 +65,7 @@ public class MailProcess {
 
     private JavaMailSenderImpl mailSender;
     private MailManager mailManager;
-    private CronStatsService cronStatsService;
+    private StatsCronService statsCronService;
 
     @Autowired
     public MailProcess(
@@ -104,7 +104,7 @@ public class MailProcess {
 
             JavaMailSenderImpl mailSender,
             MailManager mailManager,
-            CronStatsService cronStatsService
+            StatsCronService statsCronService
     ) {
         this.doNotReplyEmail = doNotReplyEmail;
         this.emailAddressName = emailAddressName;
@@ -120,12 +120,12 @@ public class MailProcess {
 
         this.mailSender = mailSender;
         this.mailManager = mailManager;
-        this.cronStatsService = cronStatsService;
+        this.statsCronService = statsCronService;
     }
 
     @Scheduled (fixedDelayString = "${loader.MailProcess.sendMail}")
     public void sendMail() {
-        CronStatsEntity cronStats = new CronStatsEntity(
+        StatsCronEntity statsCron = new StatsCronEntity(
                 MailProcess.class.getName(),
                 "SendMail",
                 emailSwitch);
@@ -168,7 +168,7 @@ public class MailProcess {
             if (0 < skipped) {
                 LOG.error("Skipped sending mail. Number of attempts exceeded. Take a look.");
             }
-            saveUploadStats(cronStats, success, failure, skipped, mails.size());
+            saveUploadStats(statsCron, success, failure, skipped, mails.size());
         }
     }
 
@@ -287,12 +287,12 @@ public class MailProcess {
         return this.getClass().getClassLoader().getResourceAsStream(dkimPath);
     }
 
-    private void saveUploadStats(CronStatsEntity cronStats, int success, int failure, int skipped, int size) {
-        cronStats.addStats("success", success);
-        cronStats.addStats("skipped", skipped);
-        cronStats.addStats("failure", failure);
-        cronStats.addStats("found", size);
-        cronStatsService.save(cronStats);
+    private void saveUploadStats(StatsCronEntity statsCron, int success, int failure, int skipped, int size) {
+        statsCron.addStats("success", success);
+        statsCron.addStats("skipped", skipped);
+        statsCron.addStats("failure", failure);
+        statsCron.addStats("found", size);
+        statsCronService.save(statsCron);
 
         LOG.info("Mail sent success={} skipped={} failure={} total={}", success, skipped, failure, size);
     }

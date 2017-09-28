@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BizStoreDailyStatEntity;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.CronStatsEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreDailyStatManager;
@@ -20,7 +20,7 @@ import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
-import com.noqapp.service.CronStatsService;
+import com.noqapp.service.StatsCronService;
 import com.noqapp.service.ExternalService;
 
 import java.time.Instant;
@@ -51,11 +51,11 @@ public class QueueHistory {
     private QueueManager queueManager;
     private TokenQueueManager tokenQueueManager;
     private QueueManagerJDBC queueManagerJDBC;
-    private CronStatsService cronStatsService;
+    private StatsCronService statsCronService;
     private ExternalService externalService;
     private BizService bizService;
 
-    private CronStatsEntity cronStats;
+    private StatsCronEntity statsCron;
 
     @Autowired
     public QueueHistory(
@@ -67,7 +67,7 @@ public class QueueHistory {
             QueueManager queueManager,
             TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
-            CronStatsService cronStatsService,
+            StatsCronService statsCronService,
             ExternalService externalService,
             BizService bizService
     ) {
@@ -77,14 +77,14 @@ public class QueueHistory {
         this.queueManager = queueManager;
         this.tokenQueueManager = tokenQueueManager;
         this.queueManagerJDBC = queueManagerJDBC;
-        this.cronStatsService = cronStatsService;
+        this.statsCronService = statsCronService;
         this.externalService = externalService;
         this.bizService = bizService;
     }
 
     @Scheduled (fixedDelayString = "${loader.QueueHistory.queuePastData}")
     public void queuePastData() {
-        cronStats = new CronStatsEntity(
+        statsCron = new StatsCronEntity(
                 QueueHistory.class.getName(),
                 "QueueHistory",
                 moveToRDBS);
@@ -166,10 +166,10 @@ public class QueueHistory {
             LOG.error("Failed to execute QueueHistory move to RDB");
         } finally {
             if (0 != found || 0 != failure || 0 != success) {
-                cronStats.addStats("found", found);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("success", success);
-                cronStatsService.save(cronStats);
+                statsCron.addStats("found", found);
+                statsCron.addStats("failure", failure);
+                statsCron.addStats("success", success);
+                statsCronService.save(statsCron);
 
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
