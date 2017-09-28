@@ -9,12 +9,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.BizStoreDailyStatEntity;
+import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.repository.BizStoreDailyStatManager;
+import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -47,7 +47,7 @@ public class QueueHistory {
     private String moveToRDBS;
 
     private BizStoreManager bizStoreManager;
-    private BizStoreDailyStatManager bizStoreDailyStatManager;
+    private StatsBizStoreDailyManager statsBizStoreDailyManager;
     private QueueManager queueManager;
     private TokenQueueManager tokenQueueManager;
     private QueueManagerJDBC queueManagerJDBC;
@@ -63,7 +63,7 @@ public class QueueHistory {
             String moveToRDBS,
 
             BizStoreManager bizStoreManager,
-            BizStoreDailyStatManager bizStoreDailyStatManager,
+            StatsBizStoreDailyManager statsBizStoreDailyManager,
             QueueManager queueManager,
             TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
@@ -73,7 +73,7 @@ public class QueueHistory {
     ) {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
-        this.bizStoreDailyStatManager = bizStoreDailyStatManager;
+        this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.queueManager = queueManager;
         this.tokenQueueManager = tokenQueueManager;
         this.queueManagerJDBC = queueManagerJDBC;
@@ -135,14 +135,14 @@ public class QueueHistory {
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
-                    BizStoreDailyStatEntity bizStoreDailyStat = bizStoreDailyStatManager.computeRatingForEachQueue(bizStore.getId());
-                    if (bizStoreDailyStat != null) {
+                    StatsBizStoreDailyEntity statsBizStoreDaily = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
+                    if (statsBizStoreDaily != null) {
                         bizStoreManager.updateNextRunAndRating(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
                                 nextDay,
-                                (float) bizStoreDailyStat.getTotalRating() / bizStoreDailyStat.getTotalCustomerRated(),
-                                bizStoreDailyStat.getTotalCustomerRated());
+                                (float) statsBizStoreDaily.getTotalRating() / statsBizStoreDaily.getTotalCustomerRated(),
+                                statsBizStoreDaily.getTotalCustomerRated());
                     } else {
                         bizStoreManager.updateNextRun(
                                 bizStore.getId(),
@@ -236,16 +236,16 @@ public class QueueHistory {
                     break;
             }
         }
-        BizStoreDailyStatEntity bizStoreDailyStat = new BizStoreDailyStatEntity();
+        StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
 
         /* Store meta data. */
-        bizStoreDailyStat
+        statsBizStoreDaily
                 .setBizStoreId(bizStoreId)
                 .setBizNameId(bizNameId)
                 .setCodeQR(codeQR);
 
         /* Service time and number of clients. */
-        bizStoreDailyStat
+        statsBizStoreDaily
                 .setTotalServiceTime(totalServiceTime)
                 .setTotalServiced(totalServiced)
                 .setTotalAbort(totalAbort)
@@ -254,12 +254,12 @@ public class QueueHistory {
                 .setAverageServiceTime(totalServiceTime/totalServiced);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
-        bizStoreDailyStat
+        statsBizStoreDaily
                 .setTotalRating(totalRating)
                 .setTotalCustomerRated(totalCustomerRated)
                 .setTotalHoursSaved(totalHoursSaved);
 
-        bizStoreDailyStatManager.save(bizStoreDailyStat);
-        LOG.debug("Saved daily stat={}", bizStoreDailyStat);
+        statsBizStoreDailyManager.save(statsBizStoreDaily);
+        LOG.debug("Saved daily stat={}", statsBizStoreDaily);
     }
 }
