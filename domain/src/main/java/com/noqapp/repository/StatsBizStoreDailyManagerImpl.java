@@ -73,10 +73,10 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
                         .sum("totalCustomerRated").as("CR")
         );
         /* Above totalCustomerRated in group is used as a place holder to count the number of records that has TR > 0. */
-        List<StatsBizStoreDailyEntity> bizStoreDailyStats = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
-        if (bizStoreDailyStats.size() > 0) {
-            LOG.info("{}", bizStoreDailyStats.get(0));
-            return bizStoreDailyStats.get(0);
+        List<StatsBizStoreDailyEntity> statsBizStores = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
+        if (statsBizStores.size() > 0) {
+            LOG.info("Computing rating for each queue {}", statsBizStores.get(0));
+            return statsBizStores.get(0);
         }
 
         return null;

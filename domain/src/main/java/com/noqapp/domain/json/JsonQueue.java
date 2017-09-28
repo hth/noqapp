@@ -106,6 +106,10 @@ public class JsonQueue extends AbstractDomain {
     private int ratingCount;
 
     //TODO(hth) add this field to App iOS and Android
+    @JsonProperty ("as")
+    private long averageServiceTime;
+
+    //TODO(hth) add this field to App iOS and Android
     @JsonProperty ("rj")
     private boolean remoteJoin = false;
 
@@ -305,6 +309,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public long getAverageServiceTime() {
+        return averageServiceTime;
+    }
+
+    public JsonQueue setAverageServiceTime(long averageServiceTime) {
+        this.averageServiceTime = averageServiceTime;
         return this;
     }
 

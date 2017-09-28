@@ -109,8 +109,9 @@ public class QueueHistory {
                 try {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
+                    StatsBizStoreDailyEntity todaysStat;
                     try {
-                        saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
+                        todaysStat = saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
                         LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -137,12 +138,14 @@ public class QueueHistory {
 
                     StatsBizStoreDailyEntity statsBizStoreDaily = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (statsBizStoreDaily != null) {
-                        bizStoreManager.updateNextRunAndRating(
+                        bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
                                 nextDay,
                                 (float) statsBizStoreDaily.getTotalRating() / statsBizStoreDaily.getTotalCustomerRated(),
-                                statsBizStoreDaily.getTotalCustomerRated());
+                                statsBizStoreDaily.getTotalCustomerRated(),
+                                //TODO(hth) should we compute with yesterday average time or overall average time?
+                                todaysStat.getAverageServiceTime());
                     } else {
                         bizStoreManager.updateNextRun(
                                 bizStore.getId(),
@@ -184,7 +187,7 @@ public class QueueHistory {
      * @param bizNameId
      * @param queues
      */
-    private void saveDailyStat(String bizStoreId, String bizNameId, String codeQR, List<QueueEntity> queues) {
+    private StatsBizStoreDailyEntity saveDailyStat(String bizStoreId, String bizNameId, String codeQR, List<QueueEntity> queues) {
         long totalServiceTime = 0, totalHoursSaved = 0;
         int totalServiced = 0, totalNoShow = 0, totalAbort = 0, totalRating = 0, totalCustomerRated = 0;
         for (QueueEntity queue : queues) {
@@ -260,6 +263,7 @@ public class QueueHistory {
                 .setTotalHoursSaved(totalHoursSaved);
 
         statsBizStoreDailyManager.save(statsBizStoreDaily);
-        LOG.debug("Saved daily stat={}", statsBizStoreDaily);
+        LOG.info("Saved daily store stat={}", statsBizStoreDaily);
+        return statsBizStoreDaily;
     }
 }

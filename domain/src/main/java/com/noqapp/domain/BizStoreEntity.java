@@ -105,6 +105,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("RC")
     private int ratingCount;
 
+    @Field("AS")
+    private long averageServiceTime;
+
     @DBRef
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
@@ -328,6 +331,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+    }
+
+    public long getAverageServiceTime() {
+        return averageServiceTime;
+    }
+
+    public BizStoreEntity setAverageServiceTime(long averageServiceTime) {
+        this.averageServiceTime = averageServiceTime;
+        return this;
     }
 
     public int getValidationCount() {

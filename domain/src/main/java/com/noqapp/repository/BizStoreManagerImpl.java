@@ -260,17 +260,34 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
         LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
-        return updateNextRunAndRating(id, zoneId, queueHistoryNextRun, 0 ,0);
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, 0 ,0, 0);
     }
 
     @Override
-    public boolean updateNextRunAndRating(String id, String zoneId, Date queueHistoryNextRun, float rating, int ratingCount) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={}", id, zoneId, queueHistoryNextRun, rating);
+    public boolean updateNextRunAndRatingWithAverageServiceTime(
+            String id,
+            String zoneId,
+            Date queueHistoryNextRun,
+            float rating,
+            int ratingCount,
+            long averageServiceTime
+    ) {
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={} averageServiceTime={}",
+                id,
+                zoneId,
+                queueHistoryNextRun,
+                rating,
+                averageServiceTime);
+
         Update update;
         if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun));
         } else {
-            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun).set("RA", rating).set("RC", ratingCount));
+            update = entityUpdate(update("TZ", zoneId)
+                    .set("QH", queueHistoryNextRun)
+                    .set("RA", rating)
+                    .set("RC", ratingCount)
+                    .set("AS", averageServiceTime));
         }
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
