@@ -110,7 +110,7 @@ public class QueueHistory {
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     try {
-                        saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), queues);
+                        saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
                         LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -184,9 +184,9 @@ public class QueueHistory {
      * @param bizNameId
      * @param queues
      */
-    private void saveDailyStat(String bizStoreId, String bizNameId, List<QueueEntity> queues) {
+    private void saveDailyStat(String bizStoreId, String bizNameId, String codeQR, List<QueueEntity> queues) {
         long totalServiceTime = 0, totalHoursSaved = 0;
-        int totalCustomerServed = 0, totalRating = 0, totalCustomerRated = 0;
+        int totalServiced = 0, totalNoShow = 0, totalAbort = 0, totalRating = 0, totalCustomerRated = 0;
         for (QueueEntity queue : queues) {
             switch (queue.getQueueUserState()) {
                 case S:
@@ -195,7 +195,7 @@ public class QueueHistory {
                         totalRating += queue.getRatingCount();
                         totalCustomerRated++;
                     }
-                    totalCustomerServed++;
+                    totalServiced++;
                     int hours;
                     switch (queue.getHoursSaved()) {
                         case 1:
@@ -225,18 +225,40 @@ public class QueueHistory {
 
                     totalHoursSaved += hours * 60 * 1000;
                     break;
+                case A:
+                    totalAbort += 1;
+                    break;
+                case N:
+                    totalNoShow += 1;
+                    break;
+                case Q:
+                    LOG.warn("Cannot be queued at this stage. Anyhow should be computed NoShow");
+                    break;
             }
         }
         BizStoreDailyStatEntity bizStoreDailyStat = new BizStoreDailyStatEntity();
-        bizStoreDailyStat.setBizStoreId(bizStoreId);
-        bizStoreDailyStat.setBizNameId(bizNameId);
-        /* Service time is auto calculated. */
-        bizStoreDailyStat.setTotalServiceTime(totalServiceTime);
-        bizStoreDailyStat.setTotalCustomerServed(totalCustomerServed);
+
+        /* Store meta data. */
+        bizStoreDailyStat
+                .setBizStoreId(bizStoreId)
+                .setBizNameId(bizNameId)
+                .setCodeQR(codeQR);
+
+        /* Service time and number of clients. */
+        bizStoreDailyStat
+                .setTotalServiceTime(totalServiceTime)
+                .setTotalServiced(totalServiced)
+                .setTotalAbort(totalAbort)
+                .setTotalNoShow(totalNoShow)
+                .setTotalClient(totalServiced + totalAbort + totalNoShow)
+                .setAverageServiceTime(totalServiceTime/totalServiced);
+
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
-        bizStoreDailyStat.setTotalRating(totalRating);
-        bizStoreDailyStat.setTotalCustomerRated(totalCustomerRated);
-        bizStoreDailyStat.setTotalHoursSaved(totalHoursSaved);
+        bizStoreDailyStat
+                .setTotalRating(totalRating)
+                .setTotalCustomerRated(totalCustomerRated)
+                .setTotalHoursSaved(totalHoursSaved);
+
         bizStoreDailyStatManager.save(bizStoreDailyStat);
         LOG.debug("Saved daily stat={}", bizStoreDailyStat);
     }
