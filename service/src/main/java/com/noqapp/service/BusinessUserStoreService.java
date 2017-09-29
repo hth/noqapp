@@ -69,6 +69,12 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.hasAccess(qid, codeQR);
     }
 
+    /**
+     * Used for queue supervisor role, store manager has little different view.
+     *
+     * @param qid
+     * @return
+     */
     @Mobile
     public List<JsonTopic> getQueues(String qid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, queueLimit);
@@ -90,6 +96,16 @@ public class BusinessUserStoreService {
 
         LOG.info("Found queues count={}", jsonTopics.size());
         return jsonTopics;
+    }
+
+    /**
+     * Gets all the queues associated with qid.
+     *
+     * @param qid
+     * @return
+     */
+    public List<BusinessUserStoreEntity> findAllStoreQueueAssociated(String qid) {
+        return businessUserStoreManager.getQueues(qid, 0);
     }
 
     public long findNumberOfPeopleAssignedToQueue(String businessStoreId) {
