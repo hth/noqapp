@@ -107,11 +107,17 @@ public class QueueHistory {
         try {
             for (BizStoreEntity bizStore : bizStores) {
                 try {
+                    LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
+                            bizStore.getDisplayName(),
+                            bizStore.getQueueHistory(),
+                            bizStore.getBizName().getBusinessName(),
+                            bizStore.getId());
+
                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
-                    StatsBizStoreDailyEntity todaysStat;
+                    StatsBizStoreDailyEntity statsBizStoreDaily;
                     try {
-                        todaysStat = saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
+                        statsBizStoreDaily = saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
                         LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
@@ -136,16 +142,16 @@ public class QueueHistory {
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
-                    StatsBizStoreDailyEntity statsBizStoreDaily = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
-                    if (statsBizStoreDaily != null) {
+                    StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
+                    if (bizStoreRating != null) {
                         bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
                                 nextDay,
-                                (float) statsBizStoreDaily.getTotalRating() / statsBizStoreDaily.getTotalCustomerRated(),
-                                statsBizStoreDaily.getTotalCustomerRated(),
+                                (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
+                                bizStoreRating.getTotalCustomerRated(),
                                 //TODO(hth) should we compute with yesterday average time or overall average time?
-                                todaysStat.getAverageServiceTime());
+                                statsBizStoreDaily.getAverageServiceTime());
                     } else {
                         bizStoreManager.updateNextRun(
                                 bizStore.getId(),
