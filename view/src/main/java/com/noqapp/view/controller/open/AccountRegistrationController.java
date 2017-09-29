@@ -126,8 +126,8 @@ public class AccountRegistrationController {
                 LOG.error("Failed creating account for phone={}", merchantRegistrationForm.getPhone());
                 return registrationPage;
             }
-        } catch (RuntimeException exce) {
-            LOG.error("failure in registering user reason={}", exce.getLocalizedMessage(), exce);
+        } catch (RuntimeException e) {
+            LOG.error("failure in registering user reason={}", e.getLocalizedMessage(), e);
             return registrationPage;
         }
 
