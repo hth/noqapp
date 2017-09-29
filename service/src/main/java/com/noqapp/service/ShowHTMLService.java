@@ -55,8 +55,7 @@ public class ShowHTMLService {
     }
 
     public String showStoreByCodeQR(String codeQR) {
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-        return showStoreByWebLocation(bizStore);
+        return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
     }
 
     public String showStoreByWebLocation(BizStoreEntity bizStore) {

@@ -5,6 +5,8 @@ import com.noqapp.domain.StoreHourEntity;
 import java.util.List;
 
 /**
+ * Used to display store details on web page.
+ *
  * User: hitender
  * Date: 12/15/16 9:11 AM
  */
