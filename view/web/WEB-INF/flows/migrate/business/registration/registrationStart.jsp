@@ -287,40 +287,42 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('[name="registerBusiness.businessSameAsStore"]').click(function () {
-            if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
-                $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
-                $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
-            } else {
-                //Clear on un-check
-                $('[name="registerBusiness.addressStore"]').val("");
-                $('[name="registerBusiness.phoneStore"]').val("");
-            }
-        });
+        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+            $('#storeDetail').hide();
+            $('[name="registerBusiness.displayName"]').val("");
+            $('[name="registerBusiness.addressStore"]').val("");
+            $('[name="registerBusiness.phoneStore"]').val("");
+            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
+            $('[name="registerBusiness.remoteJoin"]').prop('checked', false);
+            $('[name="registerBusiness.allowLoggedInUser"]').prop('checked', false);
+        } else {
+            $('#storeDetail').show();
+        }
+    });
 
-        $('[name="registerBusiness.multiStore"]').click(function () {
-            if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-                $('#storeDetail').hide();
-            } else {
-                $('#storeDetail').show();
-                $('[name="registerBusiness.displayName"]').val("");
-                $('[name="registerBusiness.addressStore"]').val("");
-                $('[name="registerBusiness.phoneStore"]').val("");
-                $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
-            }
-        });
+    $('[name="registerBusiness.businessSameAsStore"]').click(function () {
+        if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
+            $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
+            $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
+        } else {
+            //Clear on un-check
+            $('[name="registerBusiness.addressStore"]').val("");
+            $('[name="registerBusiness.phoneStore"]').val("");
+        }
+    });
 
-        $(document).ready(function() {
-            if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-                $('#storeDetail').hide();
-            } else {
-                $('#storeDetail').show();
-                $('[name="registerBusiness.displayName"]').val("");
-                $('[name="registerBusiness.addressStore"]').val("");
-                $('[name="registerBusiness.phoneStore"]').val("");
-                $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
-            }
-        });
+    $('[name="registerBusiness.multiStore"]').click(function () {
+        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
+            $('#storeDetail').hide();
+            $('[name="registerBusiness.displayName"]').val("");
+            $('[name="registerBusiness.addressStore"]').val("");
+            $('[name="registerBusiness.phoneStore"]').val("");
+            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
+            $('[name="registerBusiness.remoteJoin"]').prop('checked', false);
+            $('[name="registerBusiness.allowLoggedInUser"]').prop('checked', false);
+        } else {
+            $('#storeDetail').show();
+        }
     });
 </script>
 </html>

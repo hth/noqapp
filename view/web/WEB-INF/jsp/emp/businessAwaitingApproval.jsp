@@ -89,10 +89,10 @@
 
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                        <form:label path="userProfile.phoneFormatted" cssErrorClass="lb_error">Your Phone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="userProfile.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="userProfile.phoneFormatted" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -127,10 +127,10 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="businessUser.bizName.phone" cssErrorClass="lb_error">Business Phone</form:label>
+                                        <form:label path="businessUser.bizName.phoneFormatted" cssErrorClass="lb_error">Business Phone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="businessUser.bizName.phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                        <form:input path="businessUser.bizName.phoneFormatted" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
