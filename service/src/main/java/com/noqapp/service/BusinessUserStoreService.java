@@ -60,7 +60,7 @@ public class BusinessUserStoreService {
         businessUserStoreManager.save(businessUserStore);
     }
 
-    public BusinessUserStoreEntity activateAccount(String qid, String bizNameId) {
+    public void activateAccount(String qid, String bizNameId) {
         businessUserStoreManager.activateAccount(qid, bizNameId);
     }
 
