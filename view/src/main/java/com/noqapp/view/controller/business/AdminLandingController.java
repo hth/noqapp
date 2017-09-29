@@ -266,6 +266,7 @@ public class AdminLandingController {
             }
             businessUser.setValidateByQid(queueUser.getQueueUserId());
             businessUserService.save(businessUser);
+            businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
             
             return "redirect:/business/" + queueSupervisorApproveRejectForm.getStoreId().getText() + "/listQueueSupervisor.htm";
         } catch (Exception e) {
