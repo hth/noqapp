@@ -54,7 +54,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business Name: <span>${businessLandingForm.bizName}</span></h3>
+                        <h3>Business Name: <span>${storeManagerForm.bizName}</span></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">

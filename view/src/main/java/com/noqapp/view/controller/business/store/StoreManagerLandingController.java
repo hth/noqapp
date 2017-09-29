@@ -79,6 +79,7 @@ public class StoreManagerLandingController {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
 
             storeManagerForm
+                    //TODO(hth) added biz name multiple times
                     .setBizName(bizStore.getBizName().getBusinessName())
                     .addBizStore(bizStore)
                     .addTokenQueue(codeQR, tokenQueue);
