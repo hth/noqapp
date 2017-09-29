@@ -60,6 +60,10 @@ public class BusinessUserStoreService {
         businessUserStoreManager.save(businessUserStore);
     }
 
+    public BusinessUserStoreEntity activateAccount(String qid, String bizNameId) {
+        businessUserStoreManager.activateAccount(qid, bizNameId);
+    }
+
     @Mobile
     public boolean hasAccess(String qid, String codeQR) {
         return businessUserStoreManager.hasAccess(qid, codeQR);

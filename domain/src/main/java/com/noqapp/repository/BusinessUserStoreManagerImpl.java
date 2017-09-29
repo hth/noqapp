@@ -1,14 +1,15 @@
 package com.noqapp.repository;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static com.noqapp.repository.util.AppendAdditionalFields.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.noqapp.domain.BaseEntity;
@@ -61,16 +62,17 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     //TODO support pagination
     @Override
     public List<BusinessUserStoreEntity> getQueues(String qid, int limit) {
-        return mongoTemplate.find(
-            query(where("QID").is(qid)
-                    .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                    )
-            ).limit(10),
-            BusinessUserStoreEntity.class,
-            TABLE
+        Query query = query(where("QID").is(qid)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
         );
+
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+        return mongoTemplate.find(query, BusinessUserStoreEntity.class, TABLE);
     }
 
     @Override
@@ -105,6 +107,16 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     public List<BusinessUserStoreEntity> getAllQueueManagers(String storeId) {
         return mongoTemplate.find(
                 query(where("BS").is(storeId).andOperator(isNotDeleted())),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void activateAccount(String qid, String bizNameId) {
+        mongoTemplate.updateFirst(
+                query(where("QID").is(qid).and("BN").is(bizNameId)),
+                entityUpdate(update("A", true)),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
