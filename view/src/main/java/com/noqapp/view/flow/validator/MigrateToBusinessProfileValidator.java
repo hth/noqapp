@@ -1,6 +1,5 @@
 package com.noqapp.view.flow.validator;
 
-import com.noqapp.domain.shared.DecodedAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

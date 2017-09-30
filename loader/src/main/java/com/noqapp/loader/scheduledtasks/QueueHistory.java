@@ -9,19 +9,19 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.StatsBizStoreDailyEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
-import com.noqapp.service.StatsCronService;
 import com.noqapp.service.ExternalService;
+import com.noqapp.service.StatsCronService;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;

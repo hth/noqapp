@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.service.StatsCronService;
 import com.noqapp.service.ShowHTMLService;
+import com.noqapp.service.StatsCronService;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
