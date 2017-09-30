@@ -432,7 +432,7 @@ public class TokenQueueService {
                     LOG.warn("Skipped sending personal message as queue status is not 'Next' but queueStatus={}", queueStatus);
                     break;
                 default:
-                    LOG.info("Personal device is of type{}", registeredDevice.getDeviceType());
+                    LOG.info("Personal device is of type={}", registeredDevice.getDeviceType());
                     if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                         jsonMessage.getNotification()
                                 .setBody("Now Serving " + tokenNumber)
