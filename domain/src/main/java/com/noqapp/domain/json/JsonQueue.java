@@ -110,8 +110,8 @@ public class JsonQueue extends AbstractDomain {
     private long averageServiceTime;
 
     //TODO(hth) add this field to App iOS and Android
-    @JsonProperty ("rj")
-    private boolean remoteJoin = false;
+    @JsonProperty ("ra")
+    private boolean remoteJoinAvailable = false;
 
     @JsonProperty ("lu")
     private boolean allowLoggedInUser = false;
@@ -321,12 +321,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public boolean isRemoteJoin() {
-        return remoteJoin;
+    public boolean isRemoteJoinAvailable() {
+        return remoteJoinAvailable;
     }
 
-    public JsonQueue setRemoteJoin(boolean remoteJoin) {
-        this.remoteJoin = remoteJoin;
+    public JsonQueue setRemoteJoinAvailable(boolean remoteJoinAvailable) {
+        this.remoteJoinAvailable = remoteJoinAvailable;
         return this;
     }
 
