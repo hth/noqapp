@@ -407,10 +407,11 @@ public class TokenQueueService {
         QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
-            LOG.info("Personal message of being served is sent to qid={} deviceId={} deviceType={}",
+            LOG.info("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
                     registeredDevice.getQueueUserId(),
                     registeredDevice.getDeviceId(),
-                    registeredDevice.getDeviceType());
+                    registeredDevice.getDeviceType(),
+                    tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
             JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
@@ -428,9 +429,10 @@ public class TokenQueueService {
                 case S:
                 case R:
                 case D:
-                    LOG.warn("Skipped sending peronsal message as queue status is not 'Next' but queueStatus={}", queueStatus);
+                    LOG.warn("Skipped sending personal message as queue status is not 'Next' but queueStatus={}", queueStatus);
                     break;
                 default:
+                    LOG.info("Personal device is of type{}", registeredDevice.getDeviceType());
                     if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                         jsonMessage.getNotification()
                                 .setBody("Now Serving " + tokenNumber)
