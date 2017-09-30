@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonClientData;
@@ -22,8 +22,8 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.service.StatsCronService;
 import com.noqapp.service.FirebaseMessageService;
+import com.noqapp.service.StatsCronService;
 
 import java.util.List;
 
