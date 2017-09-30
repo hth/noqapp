@@ -15,6 +15,7 @@ import java.util.List;
 })
 public enum UserLevelEnum {
     CLIENT("Client", 10),
+    /* Maintain the order otherwise there could be bug. Client is always less than Queue Supervisor. */
     Q_SUPERVISOR("Queue Supervisor", 22),
     S_MANAGER("Store Manager", 24),
     M_ADMIN("Merchant Admin", 29),
@@ -40,6 +41,7 @@ public enum UserLevelEnum {
         return description;
     }
 
+    /* Maintain the order. */
     public int getValue() {
         return value;
     }
