@@ -102,7 +102,7 @@ public class AddQueueSupervisorFlowActions {
                     inviteQueueSupervisor.getPhoneNumber(),
                     inviteQueueSupervisor.getCountryShortName());
             
-            LOG.debug("International phone number={}", internationalFormat);
+            LOG.info("International phone number={}", internationalFormat);
         } catch (Exception e) {
             LOG.error("Failed parsing international format phone={} countryShortName={}",
                     inviteQueueSupervisor.getPhoneNumber(),
@@ -177,7 +177,9 @@ public class AddQueueSupervisorFlowActions {
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
 
-        userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+        if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
+            userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+        }
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
@@ -185,14 +187,18 @@ public class AddQueueSupervisorFlowActions {
                 userProfile.getLevel());
         accountService.save(userAccount);
 
-        BusinessUserEntity businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
-        if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith("mail.noqapp.com")) {
-            businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
-        } else {
-            businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(userProfile.getQueueUserId());
+        if (null == businessUser) {
+            LOG.info("Creating new businessUser qid={}", userProfile.getQueueUserId());
+            businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
+            if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith("mail.noqapp.com")) {
+                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
+            } else {
+                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+            }
+            businessUser.setBizName(bizStore.getBizName());
+            businessUserService.save(businessUser);
         }
-        businessUser.setBizName(bizStore.getBizName());
-        businessUserService.save(businessUser);
 
         BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
                 userProfile.getQueueUserId(),
@@ -204,10 +210,16 @@ public class AddQueueSupervisorFlowActions {
          * Marked as inactive until user signs and agrees to be a queue supervisor.
          * Will be active upon approval.
          */
-        businessUserStore.inActive();
+        if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
+            /* If business user has been validated already then no need to mark it in-active. */
+            businessUserStore.active();
+        } else {
+            businessUserStore.inActive();
+        }
         businessUserStoreService.save(businessUserStore);
         final String qid = userProfile.getQueueUserId();
 
+        //TODO(hth) switch between send Invitee when not approved, and send notification if has already been approved.
         /* Send personal FCM notification. */
         service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
                 qid,
