@@ -534,7 +534,10 @@ public class AccountService {
         userProfile.setAddressOrigin(registerUser.getAddressOrigin());
         save(userProfile);
 
-        if (!userProfile.getFirstName().equals(registerUser.getFirstName()) || !userProfile.getLastName().equals(registerUser.getLastName())) {
+        if (!userProfile.getFirstName().equals(registerUser.getFirstName())
+                || (StringUtils.isBlank(userProfile.getLastName()) && StringUtils.isNotBlank(registerUser.getLastName()))
+                || !userProfile.getLastName().equals(registerUser.getLastName())) {
+            
             updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getQueueUserId());
             LOG.info("Updated name of user from={} to firstName={} lastName={} for qid={}",
                     userProfile.getName(),
