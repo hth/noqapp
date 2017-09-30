@@ -16,8 +16,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.MailEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.types.MailStatusEnum;
 import com.noqapp.repository.MailManager;
 import com.noqapp.service.StatsCronService;

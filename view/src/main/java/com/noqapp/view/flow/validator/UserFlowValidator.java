@@ -2,7 +2,6 @@ package com.noqapp.view.flow.validator;
 
 import com.google.maps.model.LatLng;
 
-import com.noqapp.domain.shared.Geocode;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;

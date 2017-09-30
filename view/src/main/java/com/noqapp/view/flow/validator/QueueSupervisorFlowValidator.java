@@ -1,6 +1,5 @@
 package com.noqapp.view.flow.validator;
 
-import com.noqapp.view.controller.access.LandingController;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.utils.Formatter;
+import com.noqapp.view.controller.access.LandingController;
 
 /**
  * User: hitender

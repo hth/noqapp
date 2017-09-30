@@ -2,8 +2,6 @@ package com.noqapp.view.flow.validator;
 
 import com.google.maps.model.LatLng;
 
-import com.noqapp.domain.shared.Geocode;
-import com.noqapp.view.controller.access.LandingController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -20,11 +18,13 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.view.controller.access.LandingController;
 
 import java.util.List;
 import java.util.Map;

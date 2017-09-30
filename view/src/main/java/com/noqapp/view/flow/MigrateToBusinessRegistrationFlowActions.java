@@ -1,6 +1,5 @@
 package com.noqapp.view.flow;
 
-import com.noqapp.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;

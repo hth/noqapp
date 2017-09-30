@@ -9,7 +9,6 @@ import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.PlaceDetails;
 
-import com.noqapp.domain.shared.Geocode;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import org.springframework.util.Assert;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.repository.BizStoreManager;
 
