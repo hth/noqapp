@@ -81,7 +81,7 @@
                                                     <td>
                                                         <a href="/business/store/detail/${store.id}.htm">${store.address}</a>
                                                     </td>
-                                                    <td>
+                                                    <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                                     </td>
                                                     <td>
@@ -96,7 +96,7 @@
                                                     <td>
                                                         ${store.ratingCount}
                                                     </td>
-                                                    <td>
+                                                    <td nowrap>
                                                         ${store.averageServiceTimeFormatted}
                                                     </td>
                                                     <td nowrap>
