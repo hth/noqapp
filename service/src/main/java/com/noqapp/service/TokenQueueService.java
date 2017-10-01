@@ -277,13 +277,13 @@ public class TokenQueueService {
     }
 
     /**
-     * Invite sent when business adds client as supervisor to a queue.
-     *
+     * Sends any message to a specific user. 
+     * 
      * @param qid
-     * @param displayName
-     * @param businessName
+     * @param title
+     * @param body
      */
-    public void sendInviteToNewQueueSupervisor(String qid, String displayName, String businessName) {
+    public void sendMessageToSpecificUser(String title, String body, String qid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
@@ -292,12 +292,12 @@ public class TokenQueueService {
 
             if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                 jsonMessage.getNotification()
-                        .setBody(businessName + " has sent an invite")
-                        .setTitle("Invitation for Queue " + displayName);
+                        .setTitle(title)
+                        .setBody(body);
             } else {
                 jsonMessage.setNotification(null);
-                jsonData.setBody(businessName + " has sent an invite")
-                        .setTitle("Invitation for Queue " + displayName);
+                jsonData.setTitle(title)
+                        .setBody(body);
             }
 
             jsonMessage.setData(jsonData);
@@ -305,12 +305,11 @@ public class TokenQueueService {
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
             } else {
-                LOG.info("Sent message={}", jsonMessage.asJson());
+                LOG.info("Sent supervisor invite message={}", jsonMessage.asJson());
             }
         }
 
-        LOG.info("Sent FCM invite count={} qid={} displayName={} businessName={}",
-                registeredDevices.size(), qid, displayName, businessName);
+        LOG.info("Sent FCM supervisor invite deviceCount={} qid={}", registeredDevices.size(), qid);
     }
 
     /**

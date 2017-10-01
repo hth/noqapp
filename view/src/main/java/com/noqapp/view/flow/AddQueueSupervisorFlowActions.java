@@ -219,20 +219,38 @@ public class AddQueueSupervisorFlowActions {
         businessUserStoreService.save(businessUserStore);
         final String qid = userProfile.getQueueUserId();
 
-        //TODO(hth) switch between send Invitee when not approved, and send notification if has already been approved.
-        /* Send personal FCM notification. */
-        service.submit(() -> tokenQueueService.sendInviteToNewQueueSupervisor(
-                qid,
-                bizStore.getDisplayName(),
-                bizStore.getBizName().getBusinessName()));
+        if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
+            /* Send FCM notification. */
+            service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
+                    "Added to supervise Queue " + bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue",
+                    qid));
 
-        /* Also send mail to the invitee. */
-        mailService.sendQueueSupervisorInvite(
-                userAccount.getUserId(),
-                userProfile.getName(),
-                bizStore.getBizName().getBusinessName(),
-                bizStore.getDisplayName()
-        );
+            /*
+             * Send mail to the supervisor after adding them to queue
+             * as the supervisor has already been validated.
+             */
+            mailService.addedAsQueueSupervisorNotifyMail(
+                    userAccount.getUserId(),
+                    userProfile.getName(),
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getDisplayName()
+            );
+        } else {
+            /* Send FCM notification. */
+            service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
+                    "Invitation for Queue " + bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName() + " has sent an invite",
+                    qid));
+
+            /* Also send mail to the invitee. */
+            mailService.sendQueueSupervisorInvite(
+                    userAccount.getUserId(),
+                    userProfile.getName(),
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getDisplayName()
+            );
+        }
 
         return inviteQueueSupervisor;
     }
