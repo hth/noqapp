@@ -351,7 +351,8 @@ public class RegisterBusiness implements Serializable {
             String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
 
-            String webLocation = countryShortNameStore.toLowerCase()
+            String webLocation = "/"
+                    + countryShortNameStore.toLowerCase()
                     + "/"
                     + name.trim().toLowerCase().replace(" ", "-")
                     + "/"

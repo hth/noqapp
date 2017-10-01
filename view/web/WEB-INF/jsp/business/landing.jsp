@@ -67,7 +67,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th>Name</th>
+                                                <th nowrap>Name</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th nowrap>Create Date</th>
