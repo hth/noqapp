@@ -6,6 +6,8 @@ import com.noqapp.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -44,6 +46,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";
@@ -484,6 +487,7 @@ public class BizStoreEntity extends BaseEntity {
             }
         }
 
+        LOG.info("Average Service time {} in milliSeconds={}", time, averageServiceTime);
         return time;
     }
 }
