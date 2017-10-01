@@ -479,9 +479,9 @@ public class BizStoreEntity extends BaseEntity {
             long seconds = averageServiceTime / 1000;
             if (seconds > 60) {
                 time = String.valueOf(seconds / 60) + " minute(s)";
+            } else {
+                time = String.valueOf(seconds) + " seconds";
             }
-
-            time = String.valueOf(seconds) + " seconds";
         }
 
         return time;
