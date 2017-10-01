@@ -231,20 +231,20 @@
                                                             <tr>
                                                                 <td>Token Available Time</td>
                                                                 <td>
-                                                                    <c:out value="${businessHour.tokenAvailableFrom}"/></td>
+                                                                    <c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Start Time</td>
-                                                                <td><c:out value="${businessHour.startHourStore}"/></td>
+                                                                <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Token Not Available After</td>
                                                                 <td>
-                                                                    <c:out value="${businessHour.tokenNotAvailableFrom}"/></td>
+                                                                    <c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Close Time</td>
-                                                                <td><c:out value="${businessHour.endHourStore}"/></td>
+                                                                <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
                                                             </tr>
                                                         </table>
                                                     </c:otherwise>
