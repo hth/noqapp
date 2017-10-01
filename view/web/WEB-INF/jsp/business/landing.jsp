@@ -67,7 +67,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th nowrap>Name</th>
+                                                <th>Name</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th nowrap>Create Date</th>
@@ -78,7 +78,7 @@
                                                     <td>
                                                         <a href="/business/store/detail/${store.id}.htm">${store.address}</a>
                                                     </td>
-                                                    <td>
+                                                    <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                                     </td>
                                                     <td>
