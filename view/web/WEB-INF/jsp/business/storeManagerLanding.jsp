@@ -67,7 +67,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th>Name</th>
+                                                <th>Queue Name</th>
                                                 <th>Serving</th>
                                                 <th>In Queue</th>
                                                 <th>Rating</th>
