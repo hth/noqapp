@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
 
+import com.noqapp.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -462,5 +463,27 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     public int getEndHour(DayOfWeek dayOfWeek) {
         return storeHours.get(dayOfWeek.getValue() - 1).getEndHour();
+    }
+
+    @Transient
+    public float getRatingFormatted() {
+        return MathUtil.roundFloat(rating);
+    }
+
+    @Transient
+    public String getAverageServiceTimeFormatted() {
+        String time;
+        if (averageServiceTime <= 0) {
+            time = "N/A";
+        } else {
+            long seconds = averageServiceTime / 1000;
+            if (seconds > 60) {
+                time = String.valueOf(seconds / 60) + " minute(s)";
+            }
+
+            time = String.valueOf(seconds) + " seconds";
+        }
+
+        return time;
     }
 }
