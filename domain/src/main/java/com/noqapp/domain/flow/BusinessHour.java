@@ -1,5 +1,9 @@
 package com.noqapp.domain.flow;
 
+import org.springframework.data.annotation.Transient;
+
+import com.noqapp.utils.Formatter;
+
 import java.io.Serializable;
 import java.time.DayOfWeek;
 
@@ -65,5 +69,46 @@ public class BusinessHour implements Serializable {
 
     public void setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
+    }
+    
+    /**
+     * Used for displaying store hours on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getStartHourStoreAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(startHourStore);
+    }
+
+    /**
+     * Used for displaying store hours on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getEndHourStoreAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(endHourStore);
+    }
+
+
+    /**
+     * Used for displaying store hours on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getTokenAvailableFromAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(tokenAvailableFrom);
+    }
+
+    /**
+     * Used for displaying store hours on JSP.
+     *
+     * @return
+     */
+    @Transient
+    public String getTokenNotAvailableFromAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(tokenNotAvailableFrom);
     }
 }
