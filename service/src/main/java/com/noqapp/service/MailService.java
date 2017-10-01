@@ -210,7 +210,7 @@ public class MailService {
     }
 
     public MailTypeEnum sendQueueSupervisorInvite(String userId, String name, String businessName, String displayName) {
-        LOG.info("invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
+        LOG.info("Invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
@@ -222,6 +222,28 @@ public class MailService {
                     .setToName(name)
                     .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for " + displayName)
                     .setMessage(freemarkerService.freemarkerToString("mail/inviteAsQueueSupervisor.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Validation failure email for={}", userId, exception);
+            return MailTypeEnum.FAILURE;
+        }
+        return MailTypeEnum.SUCCESS;
+    }
+
+    public MailTypeEnum addedAsQueueSupervisorNotifyMail(String userId, String name, String businessName, String displayName) {
+        LOG.info("Added to supervise notify mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("businessName", businessName);
+        rootMap.put("displayName", displayName);
+
+        try {
+            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
+            MailEntity mail = new MailEntity()
+                    .setToMail(userId)
+                    .setToName(name)
+                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising " + displayName)
+                    .setMessage(freemarkerService.freemarkerToString("mail/addedAsQueueSupervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
