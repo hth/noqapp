@@ -260,7 +260,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun, DayOfWeek tomorrow) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} tomorrow={}", id, zoneId, queueHistoryNextRun, tomorrow);
         return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, tomorrow, 0, 0, 0);
     }
 
@@ -274,10 +274,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             int ratingCount,
             long averageServiceTime
     ) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={} averageServiceTime={}",
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} tomorrow={} rating={} averageServiceTime={}",
                 id,
                 zoneId,
                 queueHistoryNextRun,
+                tomorrow,
                 rating,
                 averageServiceTime);
 
