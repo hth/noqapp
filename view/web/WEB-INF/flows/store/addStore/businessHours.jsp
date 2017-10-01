@@ -79,40 +79,40 @@
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                 <tr>
                                                     <td width="39%" class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenAvailableFromAsString" cssErrorClass="lb_error">Token Available Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
                                                     </td>
                                                     <td width="61%">
-                                                        <form:input path="businessHours[${status.index}].tokenAvailableFromAsString" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].startHourStoreAsString" cssErrorClass="lb_error">Store Start Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">Store Start Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].startHourStoreAsString" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1000 for 10:00 AM)</span>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenNotAvailableFromAsString" cssErrorClass="lb_error">Token Not Available After</form:label>
+                                                        <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].tokenNotAvailableFromAsString" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].endHourStoreAsString" cssErrorClass="lb_error">Store Close Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">Store Close Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].endHourStoreAsString" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
                                                     </td>
                                                 </tr>
