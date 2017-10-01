@@ -83,6 +83,7 @@ public class ShowHTMLService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
         if (null == tokenQueue) {
+            /* This can happen when the business is awaiting approval. */
             LOG.warn("Could not find tokenQueue for codeQR={}", bizStore.getCodeQR());
             return false;
         }
@@ -137,7 +138,7 @@ public class ShowHTMLService {
     }
 
     private void computeQueueStatus(Map<String, String> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
-        //TODO(hth) check 0-23 or 1-24 hour format
+        /* Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM. */
         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
         if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
             LOG.debug("{} > {}", storeHour.getTokenNotAvailableFrom(), currentZoneTime);

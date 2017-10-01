@@ -30,6 +30,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.utils.Formatter;
 
+import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.List;
 
@@ -258,9 +259,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
+    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun, DayOfWeek tomorrow) {
         LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, 0 ,0, 0);
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, tomorrow, 0, 0, 0);
     }
 
     @Override
@@ -268,6 +269,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             String id,
             String zoneId,
             Date queueHistoryNextRun,
+            DayOfWeek tomorrow,
             float rating,
             int ratingCount,
             long averageServiceTime
@@ -285,6 +287,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         } else {
             update = entityUpdate(update("TZ", zoneId)
                     .set("QH", queueHistoryNextRun)
+                    .set("ND", tomorrow.getValue())
                     .set("RA", rating)
                     .set("RC", ratingCount)
                     .set("AS", averageServiceTime));
@@ -298,9 +301,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
+    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now, DayOfWeek today) {
         return mongoTemplate.find(
-                query(where("QH").lte(now).and("A").is(true)),
+                query(where("QH").lte(now)
+                        .orOperator(
+                                /* ND will be set by default going forward, just for now we need it. */
+                                where("ND").exists(false),
+                                where("ND").is(today.getValue())
+                        ).and("A").is(true)),
                 BizStoreEntity.class,
                 TABLE
         );

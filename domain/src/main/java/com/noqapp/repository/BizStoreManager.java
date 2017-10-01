@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 
+import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.List;
 
@@ -105,16 +106,17 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @param queueHistoryNextRun
      * @return
      */
-    boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun);
+    boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun, DayOfWeek tomorrow);
 
     boolean updateNextRunAndRatingWithAverageServiceTime(
             String id,
             String zoneId,
             Date queueHistoryNextRun,
+            DayOfWeek tomorrow,
             float rating,
             int ratingCount,
             long averageServiceTime);
 
-    List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
+    List<BizStoreEntity> findAllQueueEndedForTheDay(Date now, DayOfWeek today);
 }
 
