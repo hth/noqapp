@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.utils.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,9 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.StatsCronService;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -100,7 +103,8 @@ public class QueueHistory {
          * Added lag of 5 minutes.
          */
         Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
-        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
+        DayOfWeek today = date.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
+        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date, today);
         found = bizStores.size();
         LOG.info("found={} date={}", found, date);
 
@@ -142,12 +146,14 @@ public class QueueHistory {
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
+                    DayOfWeek tomorrow = nextDay.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (bizStoreRating != null) {
                         bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
                                 nextDay,
+                                tomorrow,
                                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                                 bizStoreRating.getTotalCustomerRated(),
                                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -156,7 +162,8 @@ public class QueueHistory {
                         bizStoreManager.updateNextRun(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
-                                nextDay);
+                                nextDay,
+                                tomorrow);
                     }
 
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());

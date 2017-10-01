@@ -69,7 +69,7 @@ public final class CommonUtil {
      * @param dayOfWeek
      * @return
      */
-    public DayOfWeek getNextDayOfWeek(DayOfWeek dayOfWeek) {
+    public static DayOfWeek getNextDayOfWeek(DayOfWeek dayOfWeek) {
         switch (dayOfWeek) {
             case MONDAY:
                 return DayOfWeek.TUESDAY;

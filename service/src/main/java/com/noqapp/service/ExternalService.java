@@ -28,6 +28,7 @@ import com.noqapp.repository.BizStoreManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -241,7 +242,8 @@ public class ExternalService {
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
-                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, queueHistoryNextRun);
+                            DayOfWeek tomorrow = queueHistoryNextRun.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
+                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, queueHistoryNextRun, tomorrow);
                             if (status) {
                                 LOG.info("Successful next run set UTC time={} for store={} address={}",
                                         queueHistoryNextRun,
