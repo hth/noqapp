@@ -74,7 +74,7 @@
                                             <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
-                                                    <td nowrap>${jsonTopic.displayName}</td>
+                                                    <td nowrap><a href="/${jsonTopic.codeQR}/q.htm" target="_blank">${jsonTopic.displayName}</a></td>
                                                     <td nowrap>${jsonTopic.queueStatus.description}</td>
                                                     <td nowrap>${jsonTopic.token - jsonTopic.servingNumber}</td>
                                                     <td nowrap>${jsonTopic.servingNumber}</td>
