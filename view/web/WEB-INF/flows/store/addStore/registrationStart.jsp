@@ -123,7 +123,16 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
