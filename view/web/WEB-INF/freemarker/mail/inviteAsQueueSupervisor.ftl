@@ -46,9 +46,9 @@
         <#include "../NoQApp.svg">
 		</div>
 
-		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Hey,</strong></p>
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Hi ${profileName},</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			You have been invited to manage queue ${displayName}. Please log in your account and complete the invitation process.
+			You have been invited to manage queue ${displayName} at ${businessName}. Please log in your account and complete the invitation process.
 			This invite will expire after 7 days from now.
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">

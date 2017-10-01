@@ -46,9 +46,9 @@
         <#include "../NoQApp.svg">
 		</div>
 
-		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Hey,</strong></p>
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Hi ${profileName},</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			You have been added to manage queue ${displayName}.
+			You have been added to manage queue ${displayName} at ${businessName}.
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			Cheers, <br/>

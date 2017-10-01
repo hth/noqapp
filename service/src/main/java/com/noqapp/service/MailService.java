@@ -209,18 +209,19 @@ public class MailService {
         }
     }
 
-    public MailTypeEnum sendQueueSupervisorInvite(String userId, String name, String businessName, String displayName) {
+    public MailTypeEnum sendQueueSupervisorInvite(String userId, String profileName, String businessName, String displayName) {
         LOG.info("Invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
+        rootMap.put("profileName", profileName);
 
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
-                    .setToName(name)
-                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for " + displayName)
+                    .setToName(profileName)
+                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for supervising queue " + displayName)
                     .setMessage(freemarkerService.freemarkerToString("mail/inviteAsQueueSupervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
@@ -231,18 +232,19 @@ public class MailService {
         return MailTypeEnum.SUCCESS;
     }
 
-    public MailTypeEnum addedAsQueueSupervisorNotifyMail(String userId, String name, String businessName, String displayName) {
+    public MailTypeEnum addedAsQueueSupervisorNotifyMail(String userId, String profileName, String businessName, String displayName) {
         LOG.info("Added to supervise notify mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
+        rootMap.put("profileName", profileName);
 
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
-                    .setToName(name)
-                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising " + displayName)
+                    .setToName(profileName)
+                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising queue " + displayName)
                     .setMessage(freemarkerService.freemarkerToString("mail/addedAsQueueSupervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
