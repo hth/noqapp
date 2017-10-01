@@ -66,9 +66,9 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Name</th>
-                                                <th>Queue Status</th>
-                                                <th>In Queue</th>
+                                                <th nowrap>Queue Name</th>
+                                                <th nowrap>Queue Status</th>
+                                                <th nowrap>In Queue</th>
                                                 <th>Serving</th>
                                             </tr>
                                             <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
