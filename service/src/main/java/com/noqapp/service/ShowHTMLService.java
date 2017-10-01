@@ -83,6 +83,7 @@ public class ShowHTMLService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
         if (null == tokenQueue) {
+            /* This can happen when the business is awaiting approval. */
             LOG.warn("Could not find tokenQueue for codeQR={}", bizStore.getCodeQR());
             return false;
         }
