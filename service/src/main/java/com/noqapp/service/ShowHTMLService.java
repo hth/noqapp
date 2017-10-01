@@ -12,7 +12,6 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.utils.DateFormatter;
-import com.noqapp.utils.MathUtil;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
@@ -98,7 +97,7 @@ public class ShowHTMLService {
         rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
         rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
         rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
-        rootMap.put("rating", String.valueOf(MathUtil.roundFloat(bizStore.getRating())));
+        rootMap.put("rating", String.valueOf(bizStore.getRatingFormatted()));
         rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
 

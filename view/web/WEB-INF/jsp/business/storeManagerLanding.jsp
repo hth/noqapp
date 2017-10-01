@@ -54,7 +54,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business Name: <span>${storeManagerForm.bizName}</span></h3>
+                        <h3><span>${storeManagerForm.bizName}</span></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
@@ -70,6 +70,9 @@
                                                 <th>Name</th>
                                                 <th>Serving</th>
                                                 <th>In Queue</th>
+                                                <th>Rating</th>
+                                                <th>Rating Count</th>
+                                                <th>Average Service Time</th>
                                                 <th nowrap>Create Date</th>
                                             </tr>
                                             <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
@@ -86,6 +89,15 @@
                                                     </td>
                                                     <td>
                                                         ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
+                                                    </td>
+                                                    <td>
+                                                        ${store.ratingFormatted}
+                                                    </td>
+                                                    <td>
+                                                        ${store.ratingCount}
+                                                    </td>
+                                                    <td>
+                                                        ${store.averageServiceTimeFormatted}
                                                     </td>
                                                     <td nowrap>
                                                         <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
