@@ -90,6 +90,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
                 //TODO why no accept agreement when business profile is created
                 .setAcceptsAgreement(true);
 
+        LOG.info("Registered User={}", registerUser);
         return registerUser;
     }
 

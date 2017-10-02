@@ -372,4 +372,38 @@ public class RegisterBusiness implements Serializable {
             throw e;
         }
     }
+
+    @Override
+    public String toString() {
+        return "RegisterBusiness{" +
+                "bizId='" + bizId + '\'' +
+                ", name='" + name + '\'' +
+                ", businessTypes=" + businessTypes +
+                ", address='" + address + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", timeZone='" + timeZone + '\'' +
+                ", addressOrigin=" + addressOrigin +
+                ", businessUser=" + businessUser +
+                ", multiStore=" + multiStore +
+                ", businessSameAsStore=" + businessSameAsStore +
+                ", bizStoreId='" + bizStoreId + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", addressStore='" + addressStore + '\'' +
+                ", countryShortNameStore='" + countryShortNameStore + '\'' +
+                ", phoneStore='" + phoneStore + '\'' +
+                ", timeZoneStore='" + timeZoneStore + '\'' +
+                ", addressStoreOrigin=" + addressStoreOrigin +
+                ", remoteJoin=" + remoteJoin +
+                ", allowLoggedInUser=" + allowLoggedInUser +
+                ", businessHours=" + businessHours +
+                ", foundAddresses=" + foundAddresses +
+                ", foundAddressPlaceId='" + foundAddressPlaceId + '\'' +
+                ", selectFoundAddress=" + selectFoundAddress +
+                ", foundAddressStores=" + foundAddressStores +
+                ", foundAddressStorePlaceId='" + foundAddressStorePlaceId + '\'' +
+                ", selectFoundAddressStore=" + selectFoundAddressStore +
+                ", availableBusinessTypes=" + availableBusinessTypes +
+                '}';
+    }
 }
