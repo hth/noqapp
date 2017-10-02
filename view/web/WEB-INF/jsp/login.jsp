@@ -72,6 +72,7 @@
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
+                            <span><br></span>
                             <h2>OTP</h2>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
