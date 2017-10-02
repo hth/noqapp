@@ -39,8 +39,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BIZ_STORE")
 @CompoundIndexes (value = {
-        /** Business name with address and phone makes it a unique store. */
-        @CompoundIndex (name = "biz_store_ph_idx", def = "{'PH': 1}", unique = true),
+        /* Business name with address and phone makes it a unique store. */
+        @CompoundIndex (name = "biz_store_ph_idx", def = "{'PH': 1}", unique = false),
         @CompoundIndex (name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
         @CompoundIndex (name = "biz_store_wl_idx", def = "{'WL': 1}", unique = false),
         @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
