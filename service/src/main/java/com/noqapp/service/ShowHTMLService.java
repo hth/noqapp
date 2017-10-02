@@ -68,8 +68,10 @@ public class ShowHTMLService {
             if (populateStore(rootMap, bizStore)) {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
+                /* This can happen when the business is awaiting approval. */
                 LOG.warn("Skipped creating store html bizStore={} bizName={}",
-                        bizStore.getId(), bizStore.getBizName().getId());
+                        bizStore.getId(),
+                        bizStore.getBizName().getId());
             }
 
             return showStoreBlank;
@@ -79,7 +81,11 @@ public class ShowHTMLService {
         }
     }
 
-    private boolean populateStore(Map<String, String> rootMap, BizStoreEntity bizStore) throws IOException, TemplateException {
+    private boolean populateStore(
+            Map<String, String> rootMap,
+            BizStoreEntity bizStore
+    ) throws IOException, TemplateException {
+        
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
         if (null == tokenQueue) {
@@ -137,17 +143,34 @@ public class ShowHTMLService {
         return true;
     }
 
-    private void computeQueueStatus(Map<String, String> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
+    private void computeQueueStatus(
+            Map<String, String> rootMap,
+            ZonedDateTime zonedDateTime,
+            StoreHourEntity storeHour
+    ) {
         /* Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM. */
         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
         if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
-            LOG.debug("{} > {}", storeHour.getTokenNotAvailableFrom(), currentZoneTime);
+            LOG.debug("{} > {}",
+                    storeHour.getTokenNotAvailableFrom(),
+                    currentZoneTime);
+
             rootMap.put("queueStatus", "Open");
+
         } else if (storeHour.getEndHour() < currentZoneTime) {
-            LOG.debug("{} < {}", storeHour.getEndHour(), currentZoneTime);
+            LOG.debug("{} < {}",
+                    storeHour.getEndHour(),
+                    currentZoneTime);
+
             rootMap.put("queueStatus", "Closed");
+
         } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
-            LOG.debug("{} < {} & {} > {}", storeHour.getTokenNotAvailableFrom(), currentZoneTime, storeHour.getEndHour(), currentZoneTime);
+            LOG.debug("{} < {} & {} > {}",
+                    storeHour.getTokenNotAvailableFrom(),
+                    currentZoneTime,
+                    storeHour.getEndHour(),
+                    currentZoneTime);
+
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         }
     }
