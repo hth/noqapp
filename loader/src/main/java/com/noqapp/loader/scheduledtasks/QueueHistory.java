@@ -1,15 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import com.noqapp.utils.CommonUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
@@ -23,6 +13,13 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.StatsCronService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -37,7 +34,7 @@ import java.util.TimeZone;
  * User: hitender
  * Date: 3/10/17 2:57 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -62,7 +59,7 @@ public class QueueHistory {
 
     @Autowired
     public QueueHistory(
-            @Value ("${QueueHistory.moveToRDBS}")
+            @Value("${QueueHistory.moveToRDBS}")
             String moveToRDBS,
 
             BizStoreManager bizStoreManager,
@@ -85,7 +82,7 @@ public class QueueHistory {
         this.bizService = bizService;
     }
 
-    @Scheduled (fixedDelayString = "${loader.QueueHistory.queuePastData}")
+    @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
     public void queuePastData() {
         statsCron = new StatsCronEntity(
                 QueueHistory.class.getName(),
@@ -267,7 +264,7 @@ public class QueueHistory {
                 .setTotalAbort(totalAbort)
                 .setTotalNoShow(totalNoShow)
                 .setTotalClient(totalServiced + totalAbort + totalNoShow)
-                .setAverageServiceTime(totalServiced == 0 ? 0 : totalServiceTime/totalServiced);
+                .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTime / totalServiced);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         statsBizStoreDaily
