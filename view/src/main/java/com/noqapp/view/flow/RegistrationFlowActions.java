@@ -102,7 +102,7 @@ class RegistrationFlowActions {
     }
 
     private void addTimezone(BizStoreEntity bizStore) {
-        if (bizStore.getCoordinate() != null && bizStore.isValidatedUsingExternalAPI()) {
+        if (null != bizStore.getCoordinate() && bizStore.isValidatedUsingExternalAPI()) {
             externalService.updateTimezone(bizStore);
         }
     }

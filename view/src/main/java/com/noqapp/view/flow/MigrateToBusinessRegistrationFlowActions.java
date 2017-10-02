@@ -147,7 +147,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
                 BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getQueueUserId());
-                if (businessUser == null) {
+                if (null == businessUser) {
                     businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getQueueUserId(), UserLevelEnum.M_ADMIN);
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }

@@ -38,7 +38,7 @@
     <view-state id="registrationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
-        <transition on="revise" to="profileCompletion"/>
+        <transition on="revise" to="registrationStart"/>
         <transition on="cancel" to="logout"/>
     </view-state>
 
