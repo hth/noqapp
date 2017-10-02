@@ -172,6 +172,9 @@ public class ShowHTMLService {
                     currentZoneTime);
 
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
+        } else {
+            LOG.error("QueueStatus={} bizStoreId={}", currentZoneTime, storeHour.getBizStoreId());
+            throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
 }
