@@ -16,9 +16,9 @@
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
-    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase-app.js"></script>
-    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.1.5/firebase-auth.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.4.0/firebase-app.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.4.0/firebase-auth.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -72,6 +72,7 @@
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
+                            <span><br></span>
                             <h2>OTP</h2>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>

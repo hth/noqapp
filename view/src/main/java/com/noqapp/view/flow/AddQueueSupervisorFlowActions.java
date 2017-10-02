@@ -222,8 +222,8 @@ public class AddQueueSupervisorFlowActions {
         if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
             /* Send FCM notification. */
             service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
-                    "Added to supervise Queue " + bizStore.getDisplayName(),
-                    bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue",
+                    "Added to supervise Queue: " + bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue.",
                     qid));
 
             /*
@@ -239,8 +239,8 @@ public class AddQueueSupervisorFlowActions {
         } else {
             /* Send FCM notification. */
             service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
-                    "Invitation for Queue " + bizStore.getDisplayName(),
-                    bizStore.getBizName().getBusinessName() + " has sent an invite",
+                    "Invitation to supervise: " + bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName() + " has sent an invite. Please login at https://noqapp.com to complete your profile.",
                     qid));
 
             /* Also send mail to the invitee. */
