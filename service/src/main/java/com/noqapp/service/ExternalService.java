@@ -104,7 +104,15 @@ public class ExternalService {
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
                     bizStore.setPlaceType(placeDetails.types);
-                    bizStore.setRating(placeDetails.rating);
+
+                    if (AddressOriginEnum.S != bizStore.getAddressOrigin()) {
+                        /*
+                         * When origin is other than self, then do not add rating from third party site like Google.
+                         * This can be removed as third party site and our reviews can be independent
+                         */
+                        bizStore.setRating(placeDetails.rating);
+                    }
+
                     if (StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         bizStore.setPhone(placeDetails.formattedPhoneNumber);
                     }
