@@ -245,15 +245,17 @@ public class ExternalService {
                             DayOfWeek tomorrow = queueHistoryNextRun.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
                             boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, queueHistoryNextRun, tomorrow);
                             if (status) {
-                                LOG.info("Successful next run set UTC time={} for store={} address={}",
+                                LOG.info("Successful next run set UTC time={} for store={} address={} tomorrow={}",
                                         queueHistoryNextRun,
                                         bizStore.getId(),
-                                        bizStore.getAddress());
+                                        bizStore.getAddress(),
+                                        tomorrow);
                             } else {
-                                LOG.error("Failed update next run UTC time={} for store={} address={}",
+                                LOG.error("Failed update next run UTC time={} for store={} address={} tomorrow={}",
                                         queueHistoryNextRun,
                                         bizStore.getId(),
-                                        bizStore.getAddress());
+                                        bizStore.getAddress(),
+                                        tomorrow);
                             }
                         }
 
