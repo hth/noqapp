@@ -104,6 +104,10 @@ class RegistrationFlowActions {
     private void addTimezone(BizStoreEntity bizStore) {
         if (null != bizStore.getCoordinate() && bizStore.isValidatedUsingExternalAPI()) {
             externalService.updateTimezone(bizStore);
+        } else {
+            LOG.info("Found no coordinates={} validateUsingAPI={}",
+                    bizStore.getCoordinate(),
+                    bizStore.isValidatedUsingExternalAPI());
         }
     }
 
@@ -250,7 +254,7 @@ class RegistrationFlowActions {
             bizService.insertAll(storeHours);
             bizStore.setStoreHours(storeHours);
 
-            /* Add timezone later as its missing id. */
+            /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
             return bizStore;
         } catch (Exception e) {
