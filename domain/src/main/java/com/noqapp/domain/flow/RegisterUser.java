@@ -258,23 +258,28 @@ public class RegisterUser implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("queueUserId", queueUserId)
-                .append("email", email)
-                .append("firstName", firstName)
-                .append("lastName", lastName)
-                .append("address", address)
-                .append("countryShortName", countryShortName)
-                .append("phone", phone)
-                .append("timeZone", timeZone)
-                .append("emailValidated", emailValidated)
-                .append("phoneValidated", phoneValidated)
-                .append("gender", gender)
-                .append("birthday", birthday)
-                .append("password", password)
-                .append("accountExists", accountExists)
-                .append("acceptsAgreement", acceptsAgreement)
-                .toString();
+        return "RegisterUser{" +
+                "queueUserId='" + queueUserId + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", placeHolderAddress='" + placeHolderAddress + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", timeZone='" + timeZone + '\'' +
+                ", emailValidated=" + emailValidated +
+                ", phoneValidated=" + phoneValidated +
+                ", addressOrigin=" + addressOrigin +
+                ", gender='" + gender + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", password='" + password + '\'' +
+                ", accountExists=" + accountExists +
+                ", acceptsAgreement=" + acceptsAgreement +
+                ", foundAddresses=" + foundAddresses +
+                ", foundAddressPlaceId='" + foundAddressPlaceId + '\'' +
+                ", selectFoundAddress=" + selectFoundAddress +
+                '}';
     }
 }
 

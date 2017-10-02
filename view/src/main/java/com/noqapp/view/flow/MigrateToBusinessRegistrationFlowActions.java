@@ -120,6 +120,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
+
+        LOG.info("Register={}", register);
         return register;
     }
 

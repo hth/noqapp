@@ -18,4 +18,12 @@ public class Register implements Serializable {
     public RegisterBusiness getRegisterBusiness() {
         return registerBusiness;
     }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "registerUser=" + registerUser +
+                ", registerBusiness=" + registerBusiness +
+                '}';
+    }
 }
