@@ -105,7 +105,7 @@ class RegistrationFlowActions {
         if (null != bizStore.getCoordinate() && bizStore.isValidatedUsingExternalAPI()) {
             externalService.updateTimezone(bizStore);
         } else {
-            LOG.info("Found no coordinates={} validateUsingAPI={}",
+            LOG.warn("Found no coordinates={} validateUsingAPI={}",
                     bizStore.getCoordinate(),
                     bizStore.isValidatedUsingExternalAPI());
         }
