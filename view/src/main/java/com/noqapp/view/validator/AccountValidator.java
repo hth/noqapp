@@ -21,7 +21,7 @@ import com.noqapp.view.form.MerchantRegistrationForm;
  * User: hitender
  * Date: 11/24/16 3:36 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -31,19 +31,19 @@ import com.noqapp.view.form.MerchantRegistrationForm;
 public class AccountValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(AccountValidator.class);
 
-    @Value ("${AccountValidator.mailLength}")
+    @Value("${AccountValidator.mailLength}")
     private int mailLength;
 
-    @Value ("${AccountValidator.nameLength}")
+    @Value("${AccountValidator.nameLength}")
     private int nameLength;
 
-    @Value ("${AccountValidator.genderLength}")
+    @Value("${AccountValidator.genderLength}")
     private int genderLength;
 
-    @Value ("${AccountValidator.countryShortNameLength}")
+    @Value("${AccountValidator.countryShortNameLength}")
     private int countryShortNameLength;
 
-    @Value ("${AccountValidator.passwordLength}")
+    @Value("${AccountValidator.passwordLength}")
     private int passwordLength;
 
     @Override
@@ -71,7 +71,7 @@ public class AccountValidator implements Validator {
                         "field.length",
                         new Object[]{"Country Code", countryShortNameLength},
                         "Minimum length of " + countryShortNameLength + " characters");
-            } else if(!Formatter.isValidCountryCode(merchantRegistration.getCountryShortName())) {
+            } else if (!Formatter.isValidCountryCode(merchantRegistration.getCountryShortName())) {
                 errors.rejectValue("countryShortName",
                         "field.invalid",
                         new Object[]{"Country Code", merchantRegistration.getCountryShortName()},

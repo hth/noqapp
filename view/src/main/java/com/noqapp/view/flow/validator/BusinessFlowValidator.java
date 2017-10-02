@@ -226,7 +226,7 @@ public class BusinessFlowValidator {
                         messageContext.addMessage(
                                 new MessageBuilder()
                                         .error()
-                                        .source("registerBusiness.addressStore")
+                                        .source(source + "addressStore")
                                         .defaultText("Found other matching address(es). Please select 'Best Matching Store Address' or if you choose 'Store Address' then click Next.")
                                         .build());
                         status = "failure";
@@ -235,7 +235,7 @@ public class BusinessFlowValidator {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
-                                    .source("registerBusiness.addressStore")
+                                    .source(source + "addressStore")
                                     .defaultText("Failed decoding your address. Please contact support if this error persists.")
                                     .build());
                     status = "failure";
