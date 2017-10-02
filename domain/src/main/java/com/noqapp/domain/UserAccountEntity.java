@@ -234,8 +234,11 @@ public class UserAccountEntity extends BaseEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", roles=" + roles +
-                ", userAuthentication=" + userAuthentication +
                 ", accountValidated=" + accountValidated +
+                ", accountValidatedBeginDate=" + accountValidatedBeginDate +
+                ", phoneValidated=" + phoneValidated +
+                ", accountInactiveReason=" + accountInactiveReason +
+                ", userAuthentication=" + userAuthentication +
                 '}';
     }
 }
