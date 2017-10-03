@@ -28,9 +28,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.PaginationEnum;
-import com.noqapp.utils.Formatter;
 
-import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.List;
 
@@ -255,9 +253,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun, DayOfWeek tomorrow) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} tomorrow={}", id, zoneId, queueHistoryNextRun, tomorrow);
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, tomorrow, 0, 0, 0);
+    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, 0, 0, 0);
     }
 
     @Override
@@ -265,29 +263,28 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             String id,
             String zoneId,
             Date queueHistoryNextRun,
-            DayOfWeek tomorrow,
             float rating,
             int ratingCount,
             long averageServiceTime
     ) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} tomorrow={} rating={} averageServiceTime={}",
+        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={} averageServiceTime={}",
                 id,
                 zoneId,
                 queueHistoryNextRun,
-                tomorrow,
                 rating,
                 averageServiceTime);
 
         Update update;
         if (rating == 0 && ratingCount == 0) {
-            update = entityUpdate(update("TZ", zoneId).set("QH", queueHistoryNextRun));
+            update = entityUpdate(update("TZ", zoneId)
+                    .set("QH", queueHistoryNextRun)
+                    .set("AS", averageServiceTime));
         } else {
             update = entityUpdate(update("TZ", zoneId)
                     .set("QH", queueHistoryNextRun)
-                    .set("ND", tomorrow.getValue())
-                    .set("RA", rating)
+                    .set("AS", averageServiceTime)
                     .set("RC", ratingCount)
-                    .set("AS", averageServiceTime));
+                    .set("RA", rating));
         }
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
@@ -298,14 +295,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now, DayOfWeek today) {
+    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
         return mongoTemplate.find(
-                query(where("QH").lte(now)
-                        .orOperator(
-                                /* ND will be set by default going forward, just for now we need it. */
-                                where("ND").exists(false),
-                                where("ND").is(today.getValue())
-                        ).and("A").is(true)),
+                query(where("QH").lte(now).and("A").is(true)),
                 BizStoreEntity.class,
                 TABLE
         );

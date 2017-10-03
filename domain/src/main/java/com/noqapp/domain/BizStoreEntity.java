@@ -135,9 +135,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("QH")
     private Date queueHistory = new Date();
 
-    @Field ("ND")
-    private int nextDayToQueueHistory;
-
     //TODO(hth) Change to false after sending notification of change
     @Field ("CQ")
     private boolean changedCodeQR = false;
@@ -393,15 +390,6 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setQueueHistory(Date queueHistory) {
         this.queueHistory = queueHistory;
-    }
-
-    public int getNextDayToQueueHistory() {
-        return nextDayToQueueHistory;
-    }
-
-    public BizStoreEntity setNextDayToQueueHistory(int nextDayToQueueHistory) {
-        this.nextDayToQueueHistory = nextDayToQueueHistory;
-        return this;
     }
 
     public String getWebLocation() {
