@@ -249,16 +249,17 @@ public class ExternalService {
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
+                            ZonedDateTime firstRun = queueHistoryNextRun.minusDays(1);
                             /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(queueHistoryNextRun.toInstant()));
+                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(firstRun.toInstant()));
                             if (status) {
-                                LOG.info("Successful next run set UTC time={} for store={} address={}",
-                                        queueHistoryNextRun,
+                                LOG.info("Successful first run set UTC time={} for store={} address={}",
+                                        firstRun,
                                         bizStore.getId(),
                                         bizStore.getAddress());
                             } else {
-                                LOG.error("Failed update next run UTC time={} for store={} address={}",
-                                        queueHistoryNextRun,
+                                LOG.error("Failed setting first run UTC time={} for store={} address={}",
+                                        firstRun,
                                         bizStore.getId(),
                                         bizStore.getAddress());
                             }
