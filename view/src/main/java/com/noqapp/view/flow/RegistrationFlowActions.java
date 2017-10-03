@@ -184,12 +184,10 @@ class RegistrationFlowActions {
      * @return
      */
     private BizStoreEntity registerStore(RegisterBusiness registerBusiness, BizNameEntity bizName) {
-        BizStoreEntity bizStore;
+        BizStoreEntity bizStore = null;
         if (StringUtils.isNotBlank(registerBusiness.getBizStoreId())) {
             LOG.info("Updating existing store id={}", registerBusiness.getBizStoreId());
             bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
-        } else {
-            bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
         }
 
         if (null == bizStore) {

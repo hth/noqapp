@@ -93,10 +93,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         return mongoTemplate.findOne(query(where("AD").is("")), BizStoreEntity.class);
     }
 
-    public BizStoreEntity findByPhone(String phone) {
-        return mongoTemplate.findOne(query(where("PH").is(Formatter.phoneCleanup(phone))), BizStoreEntity.class);
-    }
-
     @Override
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(
             String bizAddress,

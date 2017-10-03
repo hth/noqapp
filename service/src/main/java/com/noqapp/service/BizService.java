@@ -107,10 +107,6 @@ public class BizService {
         bizNameManager.deleteHard(bizName);
     }
 
-    public BizStoreEntity findStoreByPhone(String phone) {
-        return bizStoreManager.findByPhone(phone);
-    }
-
     public BizNameEntity findByPhone(String phone) {
         return bizNameManager.findByPhone(phone);
     }
