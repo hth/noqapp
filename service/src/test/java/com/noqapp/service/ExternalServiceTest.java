@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -32,8 +33,8 @@ class ExternalServiceTest {
 
     @Test
     void computeNextRunTimeAtUTC_Match_Time() {
-        Date nyc = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0);
-        Date pst = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0);
+        ZonedDateTime nyc = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0);
+        ZonedDateTime pst = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0);
         assertEquals(nyc, pst, "Both dates should be same");
     }
 

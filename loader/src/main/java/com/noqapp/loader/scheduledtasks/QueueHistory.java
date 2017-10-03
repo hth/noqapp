@@ -21,9 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -86,7 +84,7 @@ public class QueueHistory {
     public void queuePastData() {
         statsCron = new StatsCronEntity(
                 QueueHistory.class.getName(),
-                "QueueHistory",
+                "QueuePastData",
                 moveToRDBS);
 
         int found, failure = 0, success = 0;
@@ -97,11 +95,11 @@ public class QueueHistory {
         /*
          * Date is based on UTC time of the System.
          * Hence its important to run on UTC time.
+         *
          * Added lag of 5 minutes.
          */
         Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
-        DayOfWeek today = date.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
-        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date, today);
+        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
         LOG.info("found={} date={}", found, date);
 
@@ -135,22 +133,20 @@ public class QueueHistory {
                         LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
-                    TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
                     StoreHourEntity storeHour = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
-                    Date nextDay = externalService.computeNextRunTimeAtUTC(
-                            timeZone,
+                    ZonedDateTime queueHistoryNextRun = externalService.computeNextRunTimeAtUTC(
+                            TimeZone.getTimeZone(bizStore.getTimeZone()),
                             /* When closed set hour to 23 and minute to 59. */
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
-                    DayOfWeek tomorrow = nextDay.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
-                    if (bizStoreRating != null) {
+                    if (null != bizStoreRating) {
                         bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
-                                nextDay,
-                                tomorrow,
+                                /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
+                                Date.from(queueHistoryNextRun.toInstant()),
                                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                                 bizStoreRating.getTotalCustomerRated(),
                                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -159,8 +155,7 @@ public class QueueHistory {
                         bizStoreManager.updateNextRun(
                                 bizStore.getId(),
                                 bizStore.getTimeZone(),
-                                nextDay,
-                                tomorrow);
+                                Date.from(queueHistoryNextRun.toInstant()));
                     }
 
                     tokenQueueManager.resetForNewDay(bizStore.getCodeQR());

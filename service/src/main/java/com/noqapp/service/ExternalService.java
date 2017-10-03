@@ -28,7 +28,6 @@ import com.noqapp.repository.BizStoreManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -245,25 +244,23 @@ public class ExternalService {
                         @Override
                         public void onResult(TimeZone timeZone) {
                             String zoneId = timeZone.toZoneId().getId();
-                            Date queueHistoryNextRun = computeNextRunTimeAtUTC(
+                            ZonedDateTime queueHistoryNextRun = computeNextRunTimeAtUTC(
                                     timeZone,
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
 
-                            DayOfWeek tomorrow = queueHistoryNextRun.toInstant().atZone(ZoneOffset.UTC).getDayOfWeek();
-                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, queueHistoryNextRun, tomorrow);
+                            /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
+                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(queueHistoryNextRun.toInstant()));
                             if (status) {
-                                LOG.info("Successful next run set UTC time={} for store={} address={} tomorrow={}",
+                                LOG.info("Successful next run set UTC time={} for store={} address={}",
                                         queueHistoryNextRun,
                                         bizStore.getId(),
-                                        bizStore.getAddress(),
-                                        tomorrow);
+                                        bizStore.getAddress());
                             } else {
-                                LOG.error("Failed update next run UTC time={} for store={} address={} tomorrow={}",
+                                LOG.error("Failed update next run UTC time={} for store={} address={}",
                                         queueHistoryNextRun,
                                         bizStore.getId(),
-                                        bizStore.getAddress(),
-                                        tomorrow);
+                                        bizStore.getAddress());
                             }
                         }
 
@@ -296,23 +293,24 @@ public class ExternalService {
     }
 
     /**
-     * Compute local time with zone id at UTC.
+     * Compute UTC based DateTime.
      *
      * @param timeZone
      * @param hourOfDay
      * @param minuteOfDay
      * @return
      */
-    public Date computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
+    public ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
             String str = df.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
             /* Compute next run. New Date technically gives us today's run date. */
             LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
-            ZonedDateTime utcDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
-            /* Note: Nothing UTC when converted to date. Hence the System time should always be on UTC. */
-            return Date.from(utcDate.toInstant());
+            LocalDateTime tomorrow = localDateTime.plusDays(1);
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
+
+            /* Note: Nothing is UTC when converted to date. Hence the System time should always be on UTC. */
+            return zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
         } catch (Exception e) {
             LOG.error("Failed to compute next run time reason={}", e.getLocalizedMessage(), e);
             return null;
