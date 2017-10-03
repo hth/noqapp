@@ -24,14 +24,14 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 8/5/17 6:09 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/phone")
+@RequestMapping(value = "/open/phone")
 public class LoginPhoneController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginPhoneController.class);
 
@@ -50,14 +50,14 @@ public class LoginPhoneController {
         this.loginController = loginController;
     }
 
-    @RequestMapping (
+    @RequestMapping(
             method = RequestMethod.POST,
             value = "/login",
             headers = "Accept=application/json",
             produces = "application/json")
     @ResponseBody
     public String phoneLogin(
-            @ModelAttribute ("userLoginPhoneForm")
+            @ModelAttribute("userLoginPhoneForm")
             UserLoginPhoneForm userLoginPhoneForm,
 
             BindingResult result,
@@ -70,6 +70,10 @@ public class LoginPhoneController {
             return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
         }
         UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
+        if (!userAccount.isPhoneValidated()) {
+            userAccount.setPhoneValidated(true);
+            accountService.save(userAccount);
+        }
         String redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
         LOG.info("Redirecting user to link={}", redirect);
         return String.format("{ \"next\" : \"%s\" }", redirect);
