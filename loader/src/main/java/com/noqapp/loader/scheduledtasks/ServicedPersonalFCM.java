@@ -92,7 +92,7 @@ public class ServicedPersonalFCM {
             for (QueueEntity queue : queues) {
                 RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(queue.getQueueUserId(), queue.getDid());
                 /* TODO add cache Redis. */
-                if (StringUtils.isBlank(registeredDevice.getToken())) {
+                if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
                     LOG.info("Skipped sending message qid={} did={}", queue.getQueueUserId(), queue.getDid());
                     skipped++;
                     queueManager.increaseAttemptToSendNotificationCount(queue.getId());
