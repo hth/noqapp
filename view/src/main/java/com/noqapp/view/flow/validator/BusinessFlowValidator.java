@@ -278,21 +278,6 @@ public class BusinessFlowValidator {
                             .defaultText("Store Phone cannot be empty")
                             .build());
             status = "failure";
-        } else {
-            /* Ignore finding stores when editing. */
-            if (StringUtils.isBlank(registerBusiness.getBizStoreId())) {
-                if (bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode()) != null) {
-                    messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "phoneStore")
-                                    .defaultText("Store already registered with this phone number '"
-                                            + registerBusiness.getPhoneStore()
-                                            + "'. Please email us at contact@noqapp.com.")
-                                    .build());
-                    status = "failure";
-                }
-            }
         }
         return status;
     }

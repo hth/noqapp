@@ -184,12 +184,10 @@ class RegistrationFlowActions {
      * @return
      */
     private BizStoreEntity registerStore(RegisterBusiness registerBusiness, BizNameEntity bizName) {
-        BizStoreEntity bizStore;
+        BizStoreEntity bizStore = null;
         if (StringUtils.isNotBlank(registerBusiness.getBizStoreId())) {
             LOG.info("Updating existing store id={}", registerBusiness.getBizStoreId());
             bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
-        } else {
-            bizStore = bizService.findStoreByPhone(registerBusiness.getPhoneStoreWithCountryCode());
         }
 
         if (null == bizStore) {
@@ -258,7 +256,12 @@ class RegistrationFlowActions {
             addTimezone(bizStore);
             return bizStore;
         } catch (Exception e) {
-            LOG.error("Error saving store for  bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
+            LOG.error("Error saving store for  bizName={} bizId={} reason={}",
+                    bizName.getBusinessName(),
+                    bizName.getId(),
+                    e.getLocalizedMessage(),
+                    e);
+
             if (0 == bizService.getAllBizStores(bizName.getId()).size()) {
                 LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
                 bizService.deleteBizName(bizName);
