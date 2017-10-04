@@ -148,7 +148,10 @@ public class ShowHTMLService {
             ZonedDateTime zonedDateTime,
             StoreHourEntity storeHour
     ) {
-        /* Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM. */
+        /*
+         * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
+         * Hence matches ZonedDateTime Hour and Minutes
+         */
         int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
         if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
             LOG.debug("{} > {}",

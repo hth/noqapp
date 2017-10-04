@@ -29,9 +29,6 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="#">Account</a>
-                        <a href="#">Feedback</a>
-                        <a href="#">Sign In</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
