@@ -152,4 +152,18 @@ public class StoreHourEntity extends BaseEntity {
     public String getDayOfTheWeekAsString() {
         return WordUtils.capitalizeFully(DayOfWeek.of(dayOfWeek).name());
     }
+
+    @Override
+    public String toString() {
+        return "StoreHourEntity{" +
+                "bizStoreId='" + bizStoreId + '\'' +
+                ", dayOfWeek=" + dayOfWeek +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+                ", endHour=" + endHour +
+                ", preventJoining=" + preventJoining +
+                ", dayClosed=" + dayClosed +
+                '}';
+    }
 }
