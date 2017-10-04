@@ -157,7 +157,7 @@ public class ShowHTMLService {
 
             rootMap.put("queueStatus", "Open");
 
-        } else if (storeHour.getEndHour() < currentZoneTime) {
+        } else if (storeHour.getEndHour() <= currentZoneTime) {
             LOG.debug("{} < {}",
                     storeHour.getEndHour(),
                     currentZoneTime);
@@ -173,7 +173,11 @@ public class ShowHTMLService {
 
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         } else {
-            LOG.error("QueueStatus computed currentZoneTime={} bizStoreId={}", currentZoneTime, storeHour.getBizStoreId());
+            LOG.error("QueueStatus computed currentZoneTime={} bizStoreId={} storeHour={}",
+                    currentZoneTime,
+                    storeHour.getBizStoreId(),
+                    storeHour);
+
             throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
