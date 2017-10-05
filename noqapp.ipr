@@ -1300,6 +1300,8 @@
         <w>firebasejs</w>
         <w>gstatic</w>
         <w>intl</w>
+        <w>noqapp</w>
+        <w>webflow</w>
       </words>
     </dictionary>
   </component>
