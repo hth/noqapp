@@ -72,7 +72,7 @@
         <evaluate result="register"
                   expression="migrateToBusinessRegistrationFlowActions.completeRegistrationInformation(register)"/>
 
-        <transition on-exception="com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException"
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException"
                     to="profileCompletion"/>
 
         <transition to="registrationComplete"/>

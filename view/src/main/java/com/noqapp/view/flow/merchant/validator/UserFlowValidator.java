@@ -1,4 +1,4 @@
-package com.noqapp.view.flow.validator;
+package com.noqapp.view.flow.merchant.validator;
 
 import com.google.maps.model.LatLng;
 

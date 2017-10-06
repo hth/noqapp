@@ -1,4 +1,4 @@
-package com.noqapp.view.flow.exception;
+package com.noqapp.view.flow.merchant.exception;
 
 /**
  * User: hitender

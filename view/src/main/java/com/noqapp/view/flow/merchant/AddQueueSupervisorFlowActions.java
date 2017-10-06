@@ -1,4 +1,4 @@
-package com.noqapp.view.flow;
+package com.noqapp.view.flow.merchant;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -30,7 +30,7 @@ import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.Formatter;
-import com.noqapp.view.flow.exception.InviteSupervisorException;
+import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
 
 import java.util.concurrent.ExecutorService;

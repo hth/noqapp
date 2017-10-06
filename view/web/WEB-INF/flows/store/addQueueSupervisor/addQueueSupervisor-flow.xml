@@ -34,7 +34,7 @@
         <evaluate result="inviteQueueSupervisor"
                   expression="addQueueSupervisorFlowActions.completeInvite(inviteQueueSupervisor, messageContext)"/>
 
-        <transition on-exception="com.noqapp.view.flow.exception.InviteSupervisorException"
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.InviteSupervisorException"
                     to="inviteSupervisorStart"/>
 
         <transition to="invitationComplete"/>

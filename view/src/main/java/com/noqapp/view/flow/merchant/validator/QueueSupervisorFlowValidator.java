@@ -1,4 +1,4 @@
-package com.noqapp.view.flow.validator;
+package com.noqapp.view.flow.merchant.validator;
 
 import org.apache.commons.lang3.StringUtils;
 
