@@ -48,7 +48,6 @@
     <div class="cd-content">
         <fieldset class="cd-form floating-labels" id="login-title-fieldset">
             <h2><fmt:message key="account.register.title" /></h2>
-            <p><fmt:message key="account.register.sub.title" /></p>
         </fieldset>
 
         <fieldset class="cd-form floating-labels">
