@@ -22,7 +22,7 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
 
-    @SuppressWarnings ("all")
+    @SuppressWarnings ("unused")
     @Autowired
     public AddStoreFlowActions(
             ExternalService externalService,
