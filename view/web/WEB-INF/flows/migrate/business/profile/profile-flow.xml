@@ -42,7 +42,7 @@
         <!-- Need the result to show correct message on JSP -->
         <evaluate result="businessUserRegistrationStatus"
                   expression="migrateToBusinessProfileFlowActions.completeRegistrationInformation(registerUser)"/>
-        <transition on-exception="com.noqapp.view.flow.exception.MigrateToBusinessProfileException"
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException"
                     to="profileCompletion"/>
 
         <transition to="registrationComplete"/>

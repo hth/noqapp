@@ -1,4 +1,4 @@
-package com.noqapp.view.flow;
+package com.noqapp.view.flow.merchant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package com.noqapp.view.flow;
+package com.noqapp.view.flow.merchant;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -29,7 +29,7 @@ import com.noqapp.service.TokenQueueService;
 import com.noqapp.utils.HashText;
 import com.noqapp.utils.RandomString;
 import com.noqapp.utils.ScrubbedInput;
-import com.noqapp.view.flow.exception.MigrateToBusinessProfileException;
+import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
 
 import java.util.concurrent.ExecutorService;
 

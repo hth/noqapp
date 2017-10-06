@@ -1,4 +1,4 @@
-package com.noqapp.view.flow;
+package com.noqapp.view.flow.merchant;
 
 import org.apache.commons.lang3.StringUtils;
 

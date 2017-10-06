@@ -1,4 +1,4 @@
-package com.noqapp.view.flow;
+package com.noqapp.view.flow.merchant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import com.noqapp.service.FetcherService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.utils.ScrubbedInput;
-import com.noqapp.view.flow.exception.MigrateToBusinessRegistrationException;
+import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
 
 import java.util.List;
 import java.util.Set;
