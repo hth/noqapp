@@ -334,7 +334,7 @@
         //alert('getCodeFromUserInput 2' + verifystr);
         var verifystr = document.getElementById('code1').value + document.getElementById('code2').value + document.getElementById('code3').value
             + document.getElementById('code4').value + document.getElementById('code5').value + document.getElementById('code6').value;
-        if(verifystr.length != 6 )
+        if(verifystr.length !== 6 )
         {
             //alert('Please fill valid code');
             $(".mdl-textfield__error").text("Please enter valid code");
@@ -351,7 +351,7 @@
         var ccode= $('.selected-flag').attr('title');
         var index = ccode.indexOf(':');
         var phone = document.getElementById('phone').value;
-        if (phone == "") {
+        if (phone === "") {
             $(".mdl-textfield__error").text("Please enter valid phone number");
             return;
         }
