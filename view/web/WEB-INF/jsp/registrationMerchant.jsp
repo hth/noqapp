@@ -172,7 +172,7 @@
     </footer>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     jQuery(document).ready(function ($) {
         if ($('.floating-labels').length > 0) {
