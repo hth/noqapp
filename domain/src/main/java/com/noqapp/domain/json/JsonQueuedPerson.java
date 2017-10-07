@@ -38,7 +38,7 @@ public class JsonQueuedPerson extends AbstractDomain {
     private String customerName = "";
 
     @JsonProperty ("sid")
-    private String serverDeviceId;
+    private String serverDeviceId = "";
 
     public int getToken() {
         return token;
