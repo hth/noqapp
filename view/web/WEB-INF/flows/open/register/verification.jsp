@@ -1,4 +1,4 @@
-<%@ include file="include.jsp"%>
+<%@ include file="../../../jsp/include.jsp" %>
 <!doctype html>
 <html>
 <head>
@@ -57,20 +57,15 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <form id="sign-in-form" action="">
-                        <h2>Login</h2>
-                        <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
+                    <form:form id="sign-in-form" modelAttribute="merchantRegistrationForm" action="">
+                        <h2>Enter Phone Number</h2>
+                        <input id="phone" name="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please re-enter phone number" />
                         <span class="mdl-textfield__error"> </span>
-                        <input name="" id="sign-in-button" type="button"  class="form-btn" value="NEXT" onClick = "onSignInSubmit()"/>
+                        <input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
-                    </form>
+                    </form:form>
 
                     <div class="otp">
-                        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Please click here to register</a>
-                            </div>
-                        </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <span><br></span>
                             <span><br></span>
@@ -90,39 +85,17 @@
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 
-                        <form:form id="loginPhoneForm" method="post" modelAttribute="userLoginPhoneForm" action="/open/phone/login.htm">
-                            <form:hidden path="uid" cssClass="form-field" />
-                            <form:hidden path="phone" cssClass="form-field" />
+                        <form:form id="merchantRegistrationForm" method="post" modelAttribute="merchantRegistrationForm">
+                            <form:hidden path="firstName" />
+                            <form:hidden path="lastName" />
+                            <form:hidden path="birthday" />
+                            <form:hidden path="gender" />
+                            <form:hidden path="mail" />
+                            <form:hidden path="password" />
+                            <form:hidden path="phone" />
+                            <form:hidden path="acceptsAgreement" />
                         </form:form>
                     </div>
-
-                    <form:form id="login-form" method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
-                        <div class="or">Or</div>
-
-                        <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
-                            </div>
-                            <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
-                        </c:if>
-                        <c:if test="${!empty param.error and param.error eq 'provider'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
-                            </div>
-                        </c:if>
-                        <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: You seem to have exceed number of connections allowed.
-                                Please wait and try after some time.
-                            </div>
-                        </c:if>
-
-                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="email error" />
-                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="password error" />
-                        <input name="" type="submit" class="form-btn mT0" value="Login">
-                        <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
-                        <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password</a></span>
-                    </form:form>
 
                 </div>
             </div>
@@ -298,7 +271,7 @@
                 window.confirmationResult = null;
 //                alert('Pass 1');
 
-                noQAuthentication.doValidateUser(user);
+                noQSignUp.doSignUpUser(user);
                 //displayinfo(user);
             }).catch(function (error) {
                 //alert('fail');
