@@ -1,0 +1,103 @@
+<%@ include file="../../../jsp/include.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    <title>NoQueue</title>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
+
+    <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<!-- header -->
+<div class="header">
+    <div class="warp-inner">
+        <div class="logo"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></div>
+    </div>
+</div>
+<!-- header end -->
+<div class="main-warp">
+
+    <!-- content -->
+    <div class="content">
+        <div class="warp-inner">
+            <!-- login-box -->
+            <div class="login-box">
+                <div class="form-style">
+                    <h2><fmt:message key="account.register.title" /></h2>
+                    <form:form commandName="merchantRegistrationForm">
+                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                            <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="admin-content" style="background:white;">
+                            <form:input path="firstName" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="First Name"/>
+                            <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-left error-field" placeholder="Last Name"/>
+                            <form:input path="birthday" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="Date of Birth"/>
+                            <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-left error-field" placeholder="M-F"/>
+
+                            <div class="clearFix"></div>
+
+                            <form:input path="mail" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Email ID"/>
+                            <form:password path="password" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Password"/>
+                            <span class="left-remember"><form:checkbox path="acceptsAgreement" value="" />Agree to NoQueue Terms</span>
+                            <input name="_eventId_submit" class="next-btn" value="Sign Up" type="submit">
+                        </div>
+                    </form:form>
+                </div>
+            </div>
+
+            <!-- login-box -->
+
+        </div>
+    </div>
+    <!-- content end -->
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="warp-inner ">
+            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+        </div>
+        <div class="footer-dark">
+            <div class="footer4">
+                <div class="warp-inner">
+                    <div class="f-left">
+                        &copy; 2017 NoQueue Inc. | <a href="#">Privacy</a> | <a href="#">Terms</a><br/>
+                        All other trademarks and logos belong to their respective owners. (<spring:eval expression="@environmentProperty.getProperty('build.version')" />.<spring:eval expression="@environmentProperty.getProperty('server')" />)
+                    </div>
+
+                    <div class="clearFix"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Footer End -->
+
+</div>
+
+
+</body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</html>

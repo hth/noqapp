@@ -2,6 +2,8 @@ package com.noqapp.view.form;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 11/25/16 8:56 AM
@@ -12,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public final class MerchantRegistrationForm {
+public final class MerchantRegistrationForm implements Serializable {
 
     private String phone;
     private String firstName;

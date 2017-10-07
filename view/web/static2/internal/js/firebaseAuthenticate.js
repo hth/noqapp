@@ -16,3 +16,22 @@ var noQAuthentication = {
         });
     }
 };
+
+var noQSignUp = {
+    doSignUpUser: function (user) {
+        // console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
+        $('#merchantRegistrationForm #phone').val(user.phoneNumber);
+        $.ajax({
+            type: 'POST',
+            url: '/open/registrationMerchant.htm',
+            data: $("#merchantRegistrationForm").serialize(),
+            success: function (data) {
+                window.location = data.next;
+            },
+            error: function (data, request) {
+                window.location = "/open/login.htm?loginFailure=p--#";
+            }
+        });
+    }
+};
+
