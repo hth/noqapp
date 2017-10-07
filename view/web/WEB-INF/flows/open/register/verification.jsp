@@ -57,13 +57,13 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <form:form id="sign-in-form" modelAttribute="merchantRegistrationForm" action="">
+                    <form id="sign-in-form" action="">
                         <h2>Enter Phone Number</h2>
                         <input id="phone" name="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please re-enter phone number" />
                         <span class="mdl-textfield__error"> </span>
                         <input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
-                    </form:form>
+                    </form>
 
                     <div class="otp">
                         <form id="verification-code-form" action="" style="display: none;">
@@ -86,14 +86,14 @@
                         </form>
 
                         <form:form id="merchantRegistrationForm" method="post" modelAttribute="merchantRegistrationForm">
-                            <form:hidden path="firstName" />
-                            <form:hidden path="lastName" />
-                            <form:hidden path="birthday" />
-                            <form:hidden path="gender" />
-                            <form:hidden path="mail" />
-                            <form:hidden path="password" />
-                            <form:hidden path="phone" />
-                            <form:hidden path="acceptsAgreement" />
+                            <form:hidden path="firstName" cssClass="form-field" />
+                            <form:hidden path="lastName" cssClass="form-field" />
+                            <form:hidden path="birthday" cssClass="form-field" />
+                            <form:hidden path="gender" cssClass="form-field" />
+                            <form:hidden path="mail" cssClass="form-field" />
+                            <form:hidden path="password" cssClass="form-field" />
+                            <form:hidden path="phone" cssClass="form-field" />
+                            <form:hidden path="acceptsAgreement" cssClass="form-field" />
                         </form:form>
                     </div>
 
