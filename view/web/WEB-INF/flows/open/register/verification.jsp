@@ -215,7 +215,6 @@
 
                     //document.getElementById("sign-in-form").style.display="none";
                     document.getElementById("sign-in-button").style.display="none";
-                    document.getElementById("login-form").style.display="none";
                     document.getElementById("verification-code-form").style.display="block";  //login-form
 
                     $(".mdl-textfield__error").text("");
