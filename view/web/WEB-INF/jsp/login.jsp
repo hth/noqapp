@@ -90,9 +90,9 @@
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 
-                        <form:form id="loginPhoneForm" method="post" modelAttribute="userLoginPhoneForm" action="/open/phone/login.htm">
-                            <form:hidden path="uid" cssClass="form-field" />
-                            <form:hidden path="phone" cssClass="form-field" />
+                        <form:form id="loginPhoneForm" method="post" modelAttribute="userLoginPhoneForm">
+                            <form:hidden path="uid" />
+                            <form:hidden path="phone" />
                         </form:form>
                     </div>
 
