@@ -91,14 +91,14 @@
                         </form>
 
                         <form:form id="merchantRegistrationForm" method="post" modelAttribute="merchantRegistrationForm">
-                            <form:hidden path="firstName" cssClass="form-field" />
-                            <form:hidden path="lastName" cssClass="form-field" />
-                            <form:hidden path="birthday" cssClass="form-field" />
-                            <form:hidden path="gender" cssClass="form-field" />
-                            <form:hidden path="mail" cssClass="form-field" />
-                            <form:hidden path="password" cssClass="form-field" />
-                            <form:hidden path="phone" cssClass="form-field" />
-                            <form:hidden path="acceptsAgreement" cssClass="form-field" />
+                            <form:hidden path="firstName" />
+                            <form:hidden path="lastName" />
+                            <form:hidden path="birthday" />
+                            <form:hidden path="gender" />
+                            <form:hidden path="mail" />
+                            <form:hidden path="password" />
+                            <form:hidden path="phone" />
+                            <form:hidden path="acceptsAgreement" />
                         </form:form>
                     </div>
 
