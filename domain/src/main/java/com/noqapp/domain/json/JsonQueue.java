@@ -105,11 +105,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("rc")
     private int ratingCount;
 
-    //TODO(hth) add this field to App iOS and Android
     @JsonProperty ("as")
     private long averageServiceTime;
 
-    //TODO(hth) add this field to App iOS and Android
     @JsonProperty ("ja")
     private boolean remoteJoinAvailable = false;
 
