@@ -59,13 +59,18 @@
                 <div class="form-style">
                     <form id="sign-in-form" action="">
                         <h2>Enter Phone Number</h2>
-                        <input id="phone" name="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please re-enter phone number" />
+                        <input name="phone" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
                         <span class="mdl-textfield__error"> </span>
                         <input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
 
                     <div class="otp">
+                        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
+                            <div class="r-error" style="margin-left: 0; width: 100%">
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Please click here to register</a>
+                            </div>
+                        </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <span><br></span>
                             <span><br></span>
@@ -233,7 +238,7 @@
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 //alert('User signed in with Number'+ user.phoneNumber);
-                noQAuthentication.doValidateUser(user);
+                noQSignUp.doSignUpUser(user);
                 // User is signed in.
                 var uid = user.uid;
                 var email = user.email;
