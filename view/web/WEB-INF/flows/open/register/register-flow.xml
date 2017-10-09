@@ -19,19 +19,5 @@
         <transition on="failure" to="details"/>
     </action-state>
 
-    <view-state id="verification">
-        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
-        <transition on="confirm" to="completeSignUp" history="invalidate"/>
-        <transition on="cancel" to="invitationCancel"/>
-    </view-state>
-
-    <action-state id="completeInvite">
-    </action-state>
-
-    <end-state id="logout" view="externalRedirect:contextRelative:/open/login.htm"/>
-
-    <global-transitions>
-        <transition on="cancel" to="logout"/>
-    </global-transitions>
-
+    <view-state id="verification" />
 </flow>
