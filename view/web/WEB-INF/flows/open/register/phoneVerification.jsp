@@ -280,7 +280,7 @@
 
                 window.verifyingCode = false;
                 window.confirmationResult = null;
-                alert('Pass 1');
+//                alert('Pass 1');
 
                 noQAuthentication.doSignUpUser(user);
                 //displayinfo(user);
