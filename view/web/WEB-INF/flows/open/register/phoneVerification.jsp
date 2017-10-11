@@ -59,6 +59,7 @@
                 <div class="form-style">
                     <form id="sign-in-form" action="">
                         <h2>Enter Phone Number</h2>
+                        <p class="mB20 Tcenter">Please enter a valid phone number to continue sign up</p>
                         <input name="phone" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
                         <span class="mdl-textfield__error"> </span>
                         <input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>
