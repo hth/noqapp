@@ -80,6 +80,7 @@ public class RegistrationController {
                     StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
                     merchantRegistration.getGender().getText(),
                     merchantRegistration.findCountryShortFromPhone(),
+                    null,
                     merchantRegistration.getPassword().getText(),
                     null,
                     false);

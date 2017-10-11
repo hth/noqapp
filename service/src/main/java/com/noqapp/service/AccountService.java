@@ -129,6 +129,7 @@ public class AccountService {
      * @param birthday
      * @param gender
      * @param countryShortName
+     * @param timeZone
      * @param password
      * @param inviteCode
      * @return
@@ -141,6 +142,7 @@ public class AccountService {
             String birthday,
             String gender,
             String countryShortName,
+            String timeZone,
             String password,
             String inviteCode,
             boolean phoneValidated
@@ -194,6 +196,7 @@ public class AccountService {
                 userProfile.setPhoneRaw(phoneRaw);
                 userProfile.setGender(gender);
                 userProfile.setCountryShortName(countryShortName);
+                userProfile.setTimeZone(timeZone);
                 String generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, qid);
                 while (null != userProfileManager.inviteCodeExists(generatedInviteCode)) {
                     generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, qid);
