@@ -54,7 +54,7 @@
                         <div class="admin-content" style="background:white;">
                             <form:input path="firstName" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="First Name"/>
                             <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="Last Name"/>
-                            <form:input path="birthday" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="Date of Birth"/>
+                            <form:input path="birthday" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="Date of Birth YYYY-MM-DD"/>
                             <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="M/F"/>
 
                             <div class="clearFix"></div>
