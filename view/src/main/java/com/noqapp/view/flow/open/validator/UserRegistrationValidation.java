@@ -1,13 +1,22 @@
 package com.noqapp.view.flow.open.validator;
 
-import com.noqapp.domain.flow.Register;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.service.AccountService;
+import com.noqapp.utils.DateUtil;
+import com.noqapp.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.flow.merchant.validator.MigrateToBusinessProfileValidator;
 import com.noqapp.view.form.MerchantRegistrationForm;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
 
 /**
  * User: hitender
@@ -17,11 +26,194 @@ import org.springframework.stereotype.Component;
 public class UserRegistrationValidation {
     private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessProfileValidator.class);
 
-    public String validateUserDetails(MerchantRegistrationForm merchantRegistrationForm, MessageContext messageContext) {
-        LOG.info("validatePhoneNumber phone={}", merchantRegistrationForm.getPhone());
+    @Value("${AccountValidator.mailLength}")
+    private int mailLength;
 
+    @Value("${AccountValidator.nameLength}")
+    private int nameLength;
+
+    @Value("${AccountValidator.genderLength}")
+    private int genderLength;
+
+    @Value("${AccountValidator.countryShortNameLength}")
+    private int countryShortNameLength;
+
+    @Value("${AccountValidator.passwordLength}")
+    private int passwordLength;
+
+    private AccountService accountService;
+
+    @Autowired
+    public UserRegistrationValidation(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    public String validateUserDetails(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
+        LOG.info("New user signUp validation mail={}", merchantRegistration.getMail());
         String status = LandingController.SUCCESS;
 
+        if (StringUtils.isBlank(merchantRegistration.getFirstName().getText())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("firstName")
+                            .defaultText("First Name cannot be empty")
+                            .build());
+            status = "failure";
+        } else {
+            if (!Validate.isValidName(merchantRegistration.getFirstName().getText())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("firstName")
+                                .defaultText("First Name is not a valid name " + merchantRegistration.getFirstName())
+                                .build());
+                status = "failure";
+            }
+
+            if (merchantRegistration.getFirstName().getText().length() < nameLength) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("firstName")
+                                .defaultText("First Name minimum length of " + nameLength + " characters")
+                                .build());
+                status = "failure";
+            }
+        }
+
+        if (StringUtils.isNotBlank(merchantRegistration.getLastName().getText())
+                && !Validate.isValidName(merchantRegistration.getLastName().getText())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("lastName")
+                            .defaultText("Last Name is not a valid name " + merchantRegistration.getLastName())
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isNotBlank(merchantRegistration.getBirthday().getText())
+                && !DateUtil.DOB_PATTERN.matcher(merchantRegistration.getBirthday().getText()).matches()) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("birthday")
+                            .defaultText("Date format not valid " + merchantRegistration.getBirthday())
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isNotBlank(merchantRegistration.getGender().getText())) {
+            try {
+                GenderEnum.valueOf(merchantRegistration.getGender().getText());
+            } catch (IllegalArgumentException e) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("gender")
+                                .defaultText("Gender provided is not valid")
+                                .build());
+                status = "failure";
+            }
+        }
+
+        status = validateMail(merchantRegistration, messageContext, status);
+
+        if (StringUtils.isBlank(merchantRegistration.getPassword().getText())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("password")
+                            .defaultText("Password cannot be empty")
+                            .build());
+            status = "failure";
+        } else if (merchantRegistration.getPassword().getText().length() < passwordLength) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("password")
+                            .defaultText("Password minimum length of " + passwordLength + " characters")
+                            .build());
+            status = "failure";
+        }
+
+        if (!merchantRegistration.isAcceptsAgreement()) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("acceptsAgreement")
+                            .defaultText("To continue, please check accept to terms")
+                            .build());
+            status = "failure";
+        }
+
+        UserProfileEntity userProfile = accountService.doesUserExists(merchantRegistration.getMail().getText());
+        if (null != userProfile) {
+            LOG.warn("Account already exists with phone={}", merchantRegistration.getMail());
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("mail")
+                            .defaultText("Account with this email address is already registered.")
+                            .build());
+
+            merchantRegistration.setAccountExists(true);
+            status = "failure";
+        }
+
+        return status;
+    }
+
+    public String passwordRecover(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
+        LOG.info("New user signUp validation mail={}", merchantRegistration.getMail());
+        String status = LandingController.SUCCESS;
+        status = validateMail(merchantRegistration, messageContext, status);
+
+        if (StringUtils.isNotBlank(merchantRegistration.getCaptcha())) {
+            LOG.warn("Found captcha populated");
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("mail")
+                            .defaultText("Entered value does not match")
+                            .build());
+            status = "failure";
+        }
+
+        return status;
+    }
+
+    private String validateMail(MerchantRegistrationForm merchantRegistration, MessageContext messageContext, String status) {
+        if (StringUtils.isBlank(merchantRegistration.getMail().getText())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("mail")
+                            .defaultText("Mail cannot be empty")
+                            .build());
+            status = "failure";
+        } else {
+            if (!Validate.isValidMail(merchantRegistration.getMail().getText())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("mail")
+                                .defaultText("Email Address provided is not valid")
+                                .build());
+                status = "failure";
+            }
+
+            if (merchantRegistration.getMail() != null && merchantRegistration.getMail().getText().length() <= mailLength) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("mail")
+                                .defaultText("Email Address has to be at least of size " + mailLength + " characters")
+                                .build());
+                status = "failure";
+            }
+        }
         return status;
     }
 }

@@ -6,18 +6,36 @@
 
     <on-start>
         <evaluate expression="userRegistrationFlowActions.createUserRegistration()"
-                  result="flowScope.merchantRegistrationForm"/>
+                  result="flowScope.merchantRegistration"/>
     </on-start>
 
-    <view-state id="details" model="merchantRegistrationForm">
+    <view-state id="details" model="merchantRegistration">
         <transition on="submit" to="validateUserDetails"/>
+        <transition on="recover" to="passwordRecover"/>
     </view-state>
 
     <action-state id="validateUserDetails">
-        <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistrationForm, messageContext)"/>
-        <transition on="success" to="verification"/>
+        <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistration, messageContext)"/>
+        <transition on="success" to="phoneVerification"/>
         <transition on="failure" to="details"/>
     </action-state>
 
-    <view-state id="verification" />
+    <!-- Load the verification page. This page then takes over and continues the registration process. -->
+    <view-state id="phoneVerification"/>
+
+    <view-state id="passwordRecover" model="merchantRegistration">
+        <transition on="sendRecoveryMail" to="sendRecoveryMailValidate" history="invalidate"/>
+    </view-state>
+
+    <action-state id="sendRecoveryMailValidate">
+        <evaluate expression="userRegistrationValidation.passwordRecover(merchantRegistration, messageContext)"/>
+        <transition on="success" to="passwordRecoverSuccess"/>
+        <transition on="failure" to="passwordRecover"/>
+    </action-state>
+
+    <view-state id="passwordRecoverSuccess">
+        <on-entry>
+            <evaluate expression="userRegistrationFlowActions.sendPasswordRecoveryMail(merchantRegistration)"/>
+        </on-entry>
+    </view-state>
 </flow>

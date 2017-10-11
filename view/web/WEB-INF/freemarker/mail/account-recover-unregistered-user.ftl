@@ -53,7 +53,7 @@
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			If you would like to create an account on NoQueue just visit our sign-up page:
-			<a href="${https}://${domain}/open/registrationMerchant.htm" style="padding:8px 15px; background:#ff1c79; color:#fff; text-decoration: none">Register</a>
+			<a href="${https}://${domain}/open/register.htm" style="padding:8px 15px; background:#ff1c79; color:#fff; text-decoration: none">Register</a>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			If you did not request this account recovery, just ignore this email. Your email address is safe.

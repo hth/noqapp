@@ -68,13 +68,15 @@
                     <div class="otp">
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
                             <div class="r-error" style="margin-left: 0; width: 100%">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/registrationMerchant.htm">Please click here to register</a>
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <span><br></span>
                             <span><br></span>
                             <h2>OTP</h2>
+                            <span>One time password has been sent to your phone number above. Please enter the password here.</span>
+                            <span><br></span>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
                                 <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
@@ -90,7 +92,7 @@
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 
-                        <form:form id="merchantRegistrationForm" method="post" modelAttribute="merchantRegistrationForm">
+                        <form:form id="merchantRegistration" method="post" modelAttribute="merchantRegistration">
                             <form:hidden path="firstName" />
                             <form:hidden path="lastName" />
                             <form:hidden path="birthday" />
@@ -154,6 +156,10 @@
         });
 
         <c:if test="${!empty param.logoutSuccess and param.logoutSuccess eq 's--'}">
+        onSignOutClick();
+        </c:if>
+
+        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
         onSignOutClick();
         </c:if>
     });
@@ -237,7 +243,7 @@
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 //alert('User signed in with Number'+ user.phoneNumber);
-                noQSignUp.doSignUpUser(user);
+                //noQAuthentication.doSignUpUser(user);
                 // User is signed in.
                 var uid = user.uid;
                 var email = user.email;
@@ -273,9 +279,9 @@
 
                 window.verifyingCode = false;
                 window.confirmationResult = null;
-//                alert('Pass 1');
+                alert('Pass 1');
 
-                noQSignUp.doSignUpUser(user);
+                noQAuthentication.doSignUpUser(user);
                 //displayinfo(user);
             }).catch(function (error) {
                 //alert('fail');
