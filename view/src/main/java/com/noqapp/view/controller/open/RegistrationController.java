@@ -80,6 +80,7 @@ public class RegistrationController {
                     StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
                     merchantRegistration.getGender().getText(),
                     merchantRegistration.findCountryShortFromPhone(),
+                    /* Timezone from website is difficult to compute, hence passing null. */
                     null,
                     merchantRegistration.getPassword().getText(),
                     null,
