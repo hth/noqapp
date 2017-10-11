@@ -190,7 +190,14 @@ public class ForgotController {
         return null;
     }
 
-    @Deprecated
+
+    /**
+     * Used for resetting password.
+     *
+     * @param key
+     * @param forgotAuthenticateForm
+     * @return
+     */
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String whenClickedOnEmailLink(
             @RequestParam ("authenticationKey")

@@ -264,7 +264,7 @@
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 //alert('User signed in with Number'+ user.phoneNumber);
-                noQAuthentication.doValidateUser(user);
+                //noQAuthentication.doValidateUser(user);
                 // User is signed in.
                 var uid = user.uid;
                 var email = user.email;
