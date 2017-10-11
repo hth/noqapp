@@ -102,9 +102,9 @@ public class RegistrationController {
                 userAccount.getName());
 
         LOG.info("Account registered success");
-        String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getQueueUserId());
-        LOG.info("Redirecting user to {}", redirectTo);
-        return "redirect:" + redirectTo;
+        String redirect = loginController.continueLoginAfterRegistration(userAccount.getQueueUserId());
+        LOG.info("Redirecting user to link={}", redirect);
+        return String.format("{ \"next\" : \"%s\" }", redirect);
     }
 
     /**
