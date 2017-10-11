@@ -43,5 +43,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-tx:4.3.11.RELEASE" level="project" />
+    <orderEntry type="module" module-name="security_main" />
+    <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-core:4.2.3.RELEASE" level="project" />
+    <orderEntry type="module" module-name="domain_main" />
   </component>
 </module>

@@ -29,7 +29,7 @@ Disallow: /500.html
 Disallow: /receipt-mobile/
 Disallow: /*?*
 Allow: /open/login.htm
-Allow: /open/registration.htm
+Allow: /open/register.htm
 Allow: /open/forgot/password.htm
 Disallow: /
 
@@ -52,7 +52,7 @@ Disallow: /500.html
 Disallow: /receipt-mobile/
 Disallow: /*?*
 Allow: /open/login.htm
-Allow: /open/registration.htm
+Allow: /open/register.htm
 Allow: /open/forgot/password.htm
 Disallow: /
 

@@ -1,4 +1,4 @@
-<%@ include file="../include.jsp" %>
+<%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -29,44 +29,35 @@
 <!-- header end -->
 <div class="main-warp">
 
+    <spring:eval expression="merchantRegistration.mailSendState eq T(com.noqapp.domain.types.MailTypeEnum).SUCCESS" var="mailSentType"/>
+
     <!-- content -->
     <div class="content">
         <div class="warp-inner">
-            <!-- login-box -->
-            <div class="login-box">
-                <h2><fmt:message key="account.recover.title"/></h2>
-                <p class="mB20 Tcenter"><fmt:message key="account.recover.sub.title"/></p>
-                <div class="form-style">
-                    <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-                        <form:hidden path="mail"/>
-                        <form:hidden path="origin" value="recover"/>
-                        <spring:hasBindErrors name="forgotRecoverForm">
-                            <div class="error-box">
-                                <div class="error-txt">
-                                    <ul>
-                                        <c:if test="${errors.hasFieldErrors('mail')}">
-                                            <li><form:errors path="mail"/></li>
-                                        </c:if>
-                                        <c:if test="${errors.hasFieldErrors('captcha')}">
-                                            <li><form:errors path="captcha"/></li>
-                                        </c:if>
-                                    </ul>
-                                </div>
-                            </div>
-                        </spring:hasBindErrors>
-
-                        <div class="admin-content" style="background:white;">
-                            <p style="display:none;visibility:hidden;">
-                                <form:input path="captcha" cssClass="form-field" cssErrorClass="form-field error-field"/>
-                            </p>
-                            <form:input path="mail" cssClass="form-field" required="required" type="email" disabled="true" cssErrorClass="form-field error-field"/>
-                            <input type="submit" value="Send Recovery Email" name="forgot_password" class="form-btn mT0">
-                        </div>
-                    </form:form>
+            <div class="admin-main">
+                <div class="admin-content">
+                    <div class="register-c">
+                        <c:choose>
+                            <c:when test="${mailSentType}">
+                                <h3>Confirmation Page</h3>
+                                <p>An email has been sent with information regarding recovering your account password.</p>
+                                <p>Click here for
+                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                </p>
+                            </c:when>
+                            <c:otherwise>
+                                <h3>Confirmation Page</h3>
+                                <p>Since your email address has not being verified, we have sent verification email.</p>
+                                <p>Follow directions in email to validated your account and then resubmit new password reset request.</p>
+                                <p>Click here for
+                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                </p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
 
-            <!-- login-box -->
 
         </div>
     </div>
@@ -97,4 +88,5 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
+
 </html>

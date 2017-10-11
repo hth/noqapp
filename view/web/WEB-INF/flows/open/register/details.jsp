@@ -36,7 +36,7 @@
             <div class="login-box">
                 <div class="form-style">
                     <h2><fmt:message key="account.register.title" /></h2>
-                    <form:form commandName="merchantRegistrationForm">
+                    <form:form commandName="merchantRegistration">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                         <div class="error-box">
@@ -53,16 +53,25 @@
 
                         <div class="admin-content" style="background:white;">
                             <form:input path="firstName" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="First Name"/>
-                            <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-left error-field" placeholder="Last Name"/>
+                            <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="Last Name"/>
                             <form:input path="birthday" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="Date of Birth"/>
-                            <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-left error-field" placeholder="M-F"/>
+                            <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="M/F"/>
 
                             <div class="clearFix"></div>
 
                             <form:input path="mail" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Email ID"/>
                             <form:password path="password" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Password"/>
                             <span class="left-remember"><form:checkbox path="acceptsAgreement" value="" />Agree to NoQueue Terms</span>
-                            <input name="_eventId_submit" class="next-btn" value="Sign Up" type="submit">
+                            <span class="left-remember"><div id="mailErrors"></div></span>
+                            <c:choose>
+                                <c:when test="${merchantRegistration.accountExists}">
+                                    <input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" class="form-btn mT10" />
+                                </c:when>
+                                <c:otherwise>
+                                    <input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" style="display: none;" class="form-btn mT10" />
+                                </c:otherwise>
+                            </c:choose>
+                            <input name="_eventId_submit" class="form-btn mT10" value="Sign Up" type="submit">
                         </div>
                     </form:form>
                 </div>
@@ -100,4 +109,65 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        // check name availability on focus lost
+        $('#mail').blur(function() {
+            if ($('#mail').val()) {
+                checkAvailability();
+            } else {
+                $("#recover_btn_id").css({'display': 'none'});
+            }
+        });
+    });
+
+    function checkAvailability() {
+        $.ajax({
+            type: "POST",
+            url: '${pageContext. request. contextPath}/open/registrationMerchant/availability.htm',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            },
+            data: JSON.stringify({
+                mail: $('#mail').val()
+            }),
+            contentType: 'application/json;charset=UTF-8',
+            mimeType: 'application/json',
+            dataType:'json',
+            success: function (data) {
+                console.log('response=', data);
+                fieldValidated(data);
+            }
+        });
+    }
+
+    function fieldValidated(result) {
+        if (result.valid === true) {
+            $("#mailErrors")
+                .html("Email to activate account will be sent to above email address")
+                .removeClass("r-error")
+                .addClass("r-info");
+
+            $("#recover_btn_id")
+                .css({'display': 'none', 'float': 'left'});
+            $('#firstName').prop('required',true);
+            $('#lastName').prop('required',true);
+            $('#password').prop('required',true);
+        } else {
+            $("#mailErrors")
+                .html(result.message)
+                .removeClass("r-info")
+                .addClass("r-error");
+
+            //Add the button for recovery and hide button for SignUp
+            $("#recover_btn_id")
+                .css({'display': 'inline'});
+
+            $('#firstName').removeAttr('required');
+            $('#lastName').removeAttr('required');
+            $('#password').removeAttr('required');
+        }
+    }
+</script>
 </html>

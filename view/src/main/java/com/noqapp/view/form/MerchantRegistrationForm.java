@@ -1,7 +1,11 @@
 package com.noqapp.view.form;
 
-import org.apache.commons.lang3.StringUtils;
+import com.noqapp.domain.types.MailTypeEnum;
+import com.noqapp.utils.Formatter;
+import com.noqapp.utils.ScrubbedInput;
+import org.junit.jupiter.api.Assertions;
 
+import java.beans.Transient;
 import java.io.Serializable;
 
 /**
@@ -17,16 +21,19 @@ import java.io.Serializable;
 public final class MerchantRegistrationForm implements Serializable {
 
     private String phone;
-    private String firstName;
-    private String lastName;
-    private String mail;
-    private String birthday;
-    private String gender;
-    private String countryShortName;
-    private String timeZone;
-    private String password;
+    private ScrubbedInput firstName;
+    private ScrubbedInput lastName;
+    private ScrubbedInput mail;
+    private ScrubbedInput birthday;
+    private ScrubbedInput gender;
+    private ScrubbedInput password;
     private boolean accountExists;
     private boolean acceptsAgreement;
+
+    private String captcha;
+
+    /* After mail has been sent when user requested password recover. */
+    private MailTypeEnum mailSendState;
 
     private MerchantRegistrationForm() {
     }
@@ -43,73 +50,58 @@ public final class MerchantRegistrationForm implements Serializable {
         this.phone = phone;
     }
 
-    public String getFirstName() {
+    public ScrubbedInput getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public MerchantRegistrationForm setFirstName(ScrubbedInput firstName) {
         this.firstName = firstName;
+        return this;
     }
 
-    public String getLastName() {
+    public ScrubbedInput getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public MerchantRegistrationForm setLastName(ScrubbedInput lastName) {
         this.lastName = lastName;
+        return this;
     }
 
-    /**
-     * During registration make sure all the email ids are lowered case.
-     *
-     * @return
-     */
-    public String getMail() {
-        return StringUtils.lowerCase(mail);
+    public ScrubbedInput getMail() {
+        return mail;
     }
 
-    public void setMail(String mail) {
+    public MerchantRegistrationForm setMail(ScrubbedInput mail) {
         this.mail = mail;
+        return this;
     }
 
-    public String getBirthday() {
+    public ScrubbedInput getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public MerchantRegistrationForm setBirthday(ScrubbedInput birthday) {
         this.birthday = birthday;
+        return this;
     }
 
-    public String getGender() {
+    public ScrubbedInput getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public MerchantRegistrationForm setGender(ScrubbedInput gender) {
         this.gender = gender;
+        return this;
     }
 
-    public String getCountryShortName() {
-        return countryShortName;
-    }
-
-    public void setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public String getPassword() {
+    public ScrubbedInput getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public MerchantRegistrationForm setPassword(ScrubbedInput password) {
         this.password = password;
+        return this;
     }
 
     public boolean isAccountExists() {
@@ -126,6 +118,30 @@ public final class MerchantRegistrationForm implements Serializable {
 
     public void setAcceptsAgreement(boolean acceptsAgreement) {
         this.acceptsAgreement = acceptsAgreement;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public MerchantRegistrationForm setCaptcha(String captcha) {
+        this.captcha = captcha;
+        return this;
+    }
+
+    public MailTypeEnum getMailSendState() {
+        return mailSendState;
+    }
+
+    public MerchantRegistrationForm setMailSendState(MailTypeEnum mailSendState) {
+        this.mailSendState = mailSendState;
+        return this;
+    }
+
+    @Transient
+    public String findCountryShortFromPhone() {
+        Assertions.assertNotNull(phone, "Phone should be not null and contain +");
+        return Formatter.getCountryShortNameFromCountryCode(Formatter.findCountryCode(phone));
     }
 
     @Override

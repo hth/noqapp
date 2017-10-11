@@ -190,40 +190,7 @@ public class ForgotController {
         return null;
     }
 
-    /**
-     * Called during registration when user is registered in the system.
-     * Method just for changing the URL, hence have to use re-direct.
-     * This could be an expensive call because of redirect.
-     * Its redirected from RequestMethod.POST form.
-     *
-     * @param merchantRegistrationForm
-     * @param forgotRecoverForm
-     * @param httpServletResponse
-     * @return
-     * @throws IOException
-     *
-     * @see AccountRegistrationController#recover(MerchantRegistrationForm, RedirectAttributes)
-     */
-    @RequestMapping (method = RequestMethod.GET, value = "recover")
-    public String whenAccountAlreadyExists(
-            @ModelAttribute ("merchantRegistrationForm")
-            MerchantRegistrationForm merchantRegistrationForm,
-
-            @ModelAttribute ("forgotRecoverForm")
-            ForgotRecoverForm forgotRecoverForm,
-
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        LOG.info("Recover password process initiated for user={}", merchantRegistrationForm.getMail());
-        if (StringUtils.isBlank(merchantRegistrationForm.getMail())) {
-            httpServletResponse.sendError(SC_FORBIDDEN, "Cannot access recover directly");
-            return null;
-        }
-
-        forgotRecoverForm.setMail(new ScrubbedInput(merchantRegistrationForm.getMail()));
-        return recoverPage;
-    }
-
+    @Deprecated
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String whenClickedOnEmailLink(
             @RequestParam ("authenticationKey")
@@ -231,6 +198,7 @@ public class ForgotController {
 
             ForgotAuthenticateForm forgotAuthenticateForm
     ) {
+        LOG.info("Email link clicked on for password reset");
         ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(key.getText());
         if (forgotRecover != null) {
             forgotAuthenticateForm.setAuthenticationKey(key.getText());

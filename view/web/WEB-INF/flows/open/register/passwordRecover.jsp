@@ -1,4 +1,4 @@
-<%@ include file="../include.jsp" %>
+<%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -37,9 +37,8 @@
                 <h2><fmt:message key="account.recover.title"/></h2>
                 <p class="mB20 Tcenter"><fmt:message key="account.recover.sub.title"/></p>
                 <div class="form-style">
-                    <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
+                    <form:form method="post" modelAttribute="merchantRegistration">
                         <form:hidden path="mail"/>
-                        <form:hidden path="origin" value="recover"/>
                         <spring:hasBindErrors name="forgotRecoverForm">
                             <div class="error-box">
                                 <div class="error-txt">
@@ -60,7 +59,7 @@
                                 <form:input path="captcha" cssClass="form-field" cssErrorClass="form-field error-field"/>
                             </p>
                             <form:input path="mail" cssClass="form-field" required="required" type="email" disabled="true" cssErrorClass="form-field error-field"/>
-                            <input type="submit" value="Send Recovery Email" name="forgot_password" class="form-btn mT0">
+                            <input name="_eventId_sendRecoveryMail" class="form-btn mT10" value="Send Recovery Email" type="submit">
                         </div>
                     </form:form>
                 </div>

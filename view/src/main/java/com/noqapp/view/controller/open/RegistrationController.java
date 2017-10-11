@@ -8,27 +8,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
 import com.noqapp.utils.ParseJsonStringToMap;
-import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.helper.AvailabilityStatus;
-import com.noqapp.view.validator.AccountValidator;
 
 import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender
@@ -42,88 +36,56 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/open/registrationMerchant")
-public class AccountRegistrationController {
-    private static final Logger LOG = LoggerFactory.getLogger(AccountRegistrationController.class);
+public class RegistrationController {
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
-    private AccountValidator accountValidator;
     private AccountService accountService;
     private MailService mailService;
     private LoginController loginController;
 
-    @Value ("${registrationPage:registrationMerchant}")
+    @Value ("${registrationPage:/open/register}")
     private String registrationPage;
 
-    @Value ("${registrationSuccess:redirect:/open/registrationMerchant/success.htm}")
-    private String registrationSuccess;
-
-    @Value ("${registrationSuccessPage:registrationsuccess}")
-    private String registrationSuccessPage;
-
-    @Value ("${recover:redirect:/open/forgot/recover.htm}")
-    private String recover;
-
     @Autowired
-    public AccountRegistrationController(
-            AccountValidator accountValidator,
+    public RegistrationController(
             AccountService accountService,
             MailService mailService,
             LoginController loginController
     ) {
-        this.accountValidator = accountValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.loginController = loginController;
     }
 
-    @RequestMapping (method = RequestMethod.GET)
-    public String loadForm(
-            @ModelAttribute ("merchantRegistrationForm")
-            MerchantRegistrationForm merchantRegistrationForm
+    @RequestMapping (method = RequestMethod.POST)
+    public String signUp(
+            @ModelAttribute ("merchantRegistration")
+            MerchantRegistrationForm merchantRegistration
     ) {
-        LOG.info("New Account Registration invoked");
-        return registrationPage;
-    }
-
-    @RequestMapping (
-            method = RequestMethod.POST,
-            params = {"signup"})
-    public String signup(
-            @ModelAttribute ("merchantRegistrationForm")
-            MerchantRegistrationForm merchantRegistrationForm,
-            BindingResult result
-    ) {
-        accountValidator.validate(merchantRegistrationForm, result);
-        if (result.hasErrors()) {
-            LOG.warn("validation fail");
-            return registrationPage;
-        }
-
-        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistrationForm.getPhone());
+        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhone());
 
         if (null != userProfile) {
-            LOG.warn("Account already exists with phone={}", merchantRegistrationForm.getPhone());
-            accountValidator.accountExists(merchantRegistrationForm, result);
-            merchantRegistrationForm.setAccountExists(true);
+            LOG.warn("Account already exists with phone={}", merchantRegistration.getPhone());
+            merchantRegistration.setAccountExists(true);
             return registrationPage;
         }
                                                                
         UserAccountEntity userAccount;
         try {
             userAccount = accountService.createNewAccount(
-                    merchantRegistrationForm.getPhone(),
-                    merchantRegistrationForm.getFirstName(),
-                    merchantRegistrationForm.getLastName(),
-                    merchantRegistrationForm.getMail(),
-                    StringUtils.isNotBlank(merchantRegistrationForm.getBirthday()) ? merchantRegistrationForm.getBirthday() : "",
-                    merchantRegistrationForm.getGender(),
-                    merchantRegistrationForm.getCountryShortName(),
-                    merchantRegistrationForm.getTimeZone(),
-                    merchantRegistrationForm.getPassword(),
+                    merchantRegistration.getPhone(),
+                    merchantRegistration.getFirstName().getText(),
+                    merchantRegistration.getLastName().getText(),
+                    StringUtils.lowerCase(merchantRegistration.getMail().getText()),
+                    StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
+                    merchantRegistration.getGender().getText(),
+                    merchantRegistration.findCountryShortFromPhone(),
+                    merchantRegistration.getPassword().getText(),
                     null,
                     false);
 
             if (null == userAccount) {
-                LOG.error("Failed creating account for phone={}", merchantRegistrationForm.getPhone());
+                LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());
                 return registrationPage;
             }
         } catch (RuntimeException e) {
@@ -141,51 +103,6 @@ public class AccountRegistrationController {
         String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getQueueUserId());
         LOG.info("Redirecting user to {}", redirectTo);
         return "redirect:" + redirectTo;
-    }
-
-    /**
-     * Starts the account recovery process.
-     *
-     * @param email
-     * @param httpServletResponse
-     * @return
-     * @throws IOException
-     */
-    @RequestMapping (
-            method = RequestMethod.GET,
-            value = "/success")
-    public String success(
-            @ModelAttribute ("email")
-            ScrubbedInput email,
-
-            HttpServletResponse httpServletResponse
-    ) throws IOException {
-        if (StringUtils.isNotBlank(email.getText())) {
-            return registrationSuccessPage;
-        } else {
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-    }
-
-    /**
-     * Starts the account recovery process.
-     *
-     * @param merchantRegistrationForm
-     * @param redirectAttrs
-     * @return
-     */
-    @RequestMapping (
-            method = RequestMethod.POST,
-            params = {"recover"})
-    public String recover(
-            @ModelAttribute ("merchantRegistrationForm")
-            MerchantRegistrationForm merchantRegistrationForm,
-
-            RedirectAttributes redirectAttrs
-    ) {
-        redirectAttrs.addFlashAttribute("merchantRegistrationForm", merchantRegistrationForm);
-        return recover;
     }
 
     /**
