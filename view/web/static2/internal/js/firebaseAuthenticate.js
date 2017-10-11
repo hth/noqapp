@@ -1,6 +1,6 @@
 var noQAuthentication = {
     doValidateUser: function (user) {
-        console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
+        //console.log('User details for doValidateUser call=', JSON.stringify(user, null, '  '));
         $('#loginPhoneForm #uid').val(user.uid);
         $('#loginPhoneForm #phone').val(user.phoneNumber);
         $.ajax({
@@ -17,7 +17,7 @@ var noQAuthentication = {
     },
 
     doSignUpUser: function (user) {
-        console.log('User details for doSignUpUser call=', JSON.stringify(user, null, '  '));
+        //console.log('User details for doSignUpUser call=', JSON.stringify(user, null, '  '));
         $('#merchantRegistration #phone').val(user.phoneNumber);
         $.ajax({
             type: 'POST',
