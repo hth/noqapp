@@ -84,7 +84,7 @@ public class RegistrationController {
                     null,
                     merchantRegistration.getPassword().getText(),
                     null,
-                    false);
+                    true);
 
             if (null == userAccount) {
                 LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());
