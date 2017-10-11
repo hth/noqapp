@@ -75,6 +75,7 @@
                             <span><br></span>
                             <span><br></span>
                             <h2>OTP</h2>
+                            <span>One time password has been sent to your phone number above. Please enter the password here.</span>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
                                 <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
@@ -204,7 +205,7 @@
         // nationalMode: false,
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // placeholderNumberType: "MOBILE",
-        preferredCountries: ['in'],
+        preferredCountries: ['in', 'us'],
         // separateDialCode: true,
         utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
     });

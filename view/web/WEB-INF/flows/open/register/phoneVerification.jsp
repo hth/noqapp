@@ -185,7 +185,7 @@
         // nationalMode: false,
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // placeholderNumberType: "MOBILE",
-        preferredCountries: ['in'],
+        preferredCountries: ['in', 'us'],
         // separateDialCode: true,
         utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
     });
