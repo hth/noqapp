@@ -140,12 +140,12 @@ public class BizService {
     }
 
     @Mobile
-    public StoreHourEntity findOne(String bizStoreId, int dayOfWeek) {
+    public StoreHourEntity findStoreHour(String bizStoreId, int dayOfWeek) {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 
     @Mobile
-    public StoreHourEntity findOne(String bizStoreId, DayOfWeek dayOfWeek) {
+    public StoreHourEntity findStoreHour(String bizStoreId, DayOfWeek dayOfWeek) {
         return storeHourManager.findOne(bizStoreId, dayOfWeek);
     }
 
