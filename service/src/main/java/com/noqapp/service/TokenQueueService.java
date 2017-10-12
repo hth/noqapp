@@ -323,10 +323,10 @@ public class TokenQueueService {
             TokenQueueEntity tokenQueue,
             String goTo
     ) {
-        LOG.info("Sending message codeQR={} goTo={}", codeQR, goTo);
+        LOG.debug("Sending message codeQR={} goTo={}", codeQR, goTo);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
             JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                     .setLastNumber(tokenQueue.getLastNumber())
@@ -376,7 +376,7 @@ public class TokenQueueService {
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
             } else {
-                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+                LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
     }
@@ -398,12 +398,12 @@ public class TokenQueueService {
             String goTo,
             int tokenNumber
     ) {
-        LOG.info("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
+        LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
 
         QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
-            LOG.info("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
+            LOG.debug("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
                     registeredDevice.getQueueUserId(),
                     registeredDevice.getDeviceId(),
                     registeredDevice.getDeviceType(),
@@ -433,7 +433,7 @@ public class TokenQueueService {
                     return;
                 case N:
                 default:
-                    LOG.info("Personal device is of type={} did={} token={}",
+                    LOG.debug("Personal device is of type={} did={} token={}",
                             registeredDevice.getDeviceType(),
                             registeredDevice.getDeviceId(),
                             registeredDevice.getToken());
@@ -453,12 +453,12 @@ public class TokenQueueService {
 
             jsonMessage.setData(jsonData);
 
-            LOG.info("Personal FCM message to be sent={}", jsonMessage);
+            LOG.debug("Personal FCM message to be sent={}", jsonMessage);
             boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
             } else {
-                LOG.info("Sent Personal topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+                LOG.debug("Sent Personal topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
     }

@@ -47,7 +47,7 @@ public class FirebaseMessageService {
      */
     @Mobile
     public boolean messageToTopic(JsonMessage jsonMessage) {
-        LOG.info("Message body={}", jsonMessage.asJson());
+        LOG.info("Sending FCM message with body={}", jsonMessage.asJson());
 
         RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
         Request request = new Request.Builder()
