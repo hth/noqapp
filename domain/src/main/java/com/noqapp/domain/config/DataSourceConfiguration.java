@@ -1,12 +1,11 @@
 package com.noqapp.domain.config;
 
+import javax.sql.DataSource;
+
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.zaxxer.hikari.HikariDataSource;
-
-import javax.sql.DataSource;
 
 /**
  * User: hitender
@@ -15,16 +14,16 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
-    @Value ("${mysql-db-name}")
+    @Value("${mysql-db-name}")
     private String mysql_db;
 
-    @Value ("${mysql-host}")
+    @Value("${mysql-host}")
     private String mysql_host;
 
-    @Value ("${mysql.username}")
+    @Value("${mysql.username}")
     private String mysqlUsername;
 
-    @Value ("${mysql.password}")
+    @Value("${mysql.password}")
     private String mysqlPassword;
 
     @Bean

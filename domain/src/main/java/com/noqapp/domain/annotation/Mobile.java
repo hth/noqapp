@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * User: hitender
  * Date: 11/19/16 12:35 AM
  */
-@Target ({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
-@Retention (RetentionPolicy.SOURCE)
+@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
+@Retention(RetentionPolicy.SOURCE)
 public @interface Mobile {
 }
