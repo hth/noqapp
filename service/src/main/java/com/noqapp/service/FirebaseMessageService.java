@@ -1,5 +1,8 @@
 package com.noqapp.service;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import okhttp3.MediaType;
@@ -12,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.net.UnknownHostException;
 
 /**
  * User: hitender
