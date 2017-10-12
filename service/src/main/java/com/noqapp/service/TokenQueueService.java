@@ -277,8 +277,8 @@ public class TokenQueueService {
     }
 
     /**
-     * Sends any message to a specific user. 
-     * 
+     * Sends any message to a specific user.
+     *
      * @param qid
      * @param title
      * @param body
@@ -387,7 +387,7 @@ public class TokenQueueService {
     /**
      * When servicing token that's out of order or sequence. Send message as the selected token is being served
      * and mark it Personal.
-     * 
+     *
      * @param codeQR
      * @param queueStatus
      * @param tokenQueue
@@ -405,7 +405,7 @@ public class TokenQueueService {
 
         QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
-        for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
+        for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.info("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
                     registeredDevice.getQueueUserId(),
                     registeredDevice.getDeviceId(),
@@ -450,7 +450,7 @@ public class TokenQueueService {
             if (!fcmMessageBroadcast) {
                 LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
             } else {
-                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+                LOG.info("Sent Personal topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
     }
