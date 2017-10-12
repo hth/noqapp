@@ -2,16 +2,13 @@ package com.noqapp.service;
 
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.tasks.Task;
-
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.service.config.FirebaseConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.service.config.FirebaseConfig;
 
 /**
  * User: hitender

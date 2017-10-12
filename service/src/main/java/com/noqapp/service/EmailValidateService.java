@@ -1,12 +1,11 @@
 package com.noqapp.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.repository.EmailValidateManager;
 import com.noqapp.utils.HashText;
 import com.noqapp.utils.RandomString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * User: hitender
