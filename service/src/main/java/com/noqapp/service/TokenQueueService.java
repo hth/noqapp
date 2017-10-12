@@ -269,7 +269,7 @@ public class TokenQueueService {
      * @param goTo
      * @param tokenNumber
      */
-    public void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
+    private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
         service.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
     }
 
@@ -427,8 +427,17 @@ public class TokenQueueService {
                 case D:
                     LOG.warn("Skipped sending personal message as queue status is not 'Next' but queueStatus={}", queueStatus);
                     break;
+                case P:
+                case C:
+                    LOG.error("Cannot reach this state codeQR={}, queueStatus={}", codeQR, queueStatus);
+                    return;
+                case N:
                 default:
-                    LOG.info("Personal device is of type={}", registeredDevice.getDeviceType());
+                    LOG.info("Personal device is of type={} did={} token={}",
+                            registeredDevice.getDeviceType(),
+                            registeredDevice.getDeviceId(),
+                            registeredDevice.getToken());
+
                     if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                         jsonMessage.getNotification()
                                 .setBody("Now Serving " + tokenNumber)
@@ -443,6 +452,8 @@ public class TokenQueueService {
             }
 
             jsonMessage.setData(jsonData);
+
+            LOG.info("Personal FCM message to be sent={}", jsonMessage);
             boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
