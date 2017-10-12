@@ -1,10 +1,9 @@
 package com.noqapp.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.StatsCronManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.LinkedHashMap;

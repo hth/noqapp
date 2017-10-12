@@ -1,16 +1,5 @@
 package com.noqapp.service;
 
-import static java.util.concurrent.Executors.newCachedThreadPool;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.MailEntity;
@@ -19,11 +8,19 @@ import com.noqapp.domain.types.MailStatusEnum;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.MailManager;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+
+import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender

@@ -1,9 +1,8 @@
 package com.noqapp.service;
 
+import com.noqapp.repository.GenerateUserIdManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.noqapp.repository.GenerateUserIdManager;
 
 /**
  * User: hitender
