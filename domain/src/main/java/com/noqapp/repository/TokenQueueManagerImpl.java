@@ -70,7 +70,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
      */
     @Override
     public TokenQueueEntity findByCodeQR(String codeQR) {
-        LOG.info("codeQR={}", codeQR);
+        LOG.info("findByCodeQR codeQR={}", codeQR);
         return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenQueueEntity.class, TABLE);
     }
 
