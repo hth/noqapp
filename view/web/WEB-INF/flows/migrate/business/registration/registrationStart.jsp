@@ -68,7 +68,6 @@
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
-
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
@@ -141,6 +140,23 @@
                                             <span style="display:block; font-size:14px;">(Select for franchise or stores at multiple locations)</span>
                                         </div>
                                         <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                To approve your business, we may ask you to provide valid
+                                                documentation for your registered business. Please keep business
+                                                information and point of contact up to date.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                Profile information added in previous screen would be primary point of
+                                                contact for this business.
+                                            </p>
+                                        </div>
                                     </li>
                                 </ul>
 

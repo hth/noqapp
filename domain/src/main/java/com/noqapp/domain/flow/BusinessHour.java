@@ -111,4 +111,16 @@ public class BusinessHour implements Serializable {
     public String getTokenNotAvailableFromAsString() {
         return Formatter.convertMilitaryTo12HourFormat(tokenNotAvailableFrom);
     }
+
+    @Override
+    public String toString() {
+        return "BusinessHour{" +
+                "dayOfWeek=" + dayOfWeek +
+                ", startHourStore=" + startHourStore +
+                ", endHourStore=" + endHourStore +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+                ", dayClosed=" + dayClosed +
+                '}';
+    }
 }

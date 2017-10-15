@@ -94,7 +94,8 @@
                                             <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Date of Birth YYYY-MM-DD"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
