@@ -61,7 +61,14 @@
 
                             <form:input path="mail" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Email ID"/>
                             <form:password path="password" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Password"/>
-                            <span class="left-remember"><form:checkbox path="acceptsAgreement" value="" />Agree to NoQueue Terms</span>
+                            <span class="left-remember">
+                                By signing up, user allows NoQueue&trade; or its representatives to connect with user via email, phone, or SMS for
+                                feedback, for improvements and or for marketing purposes. User's have read and understand the relevant
+                                <a href="https://noqapp.com/privacy.html" style="color:#8339ff">Privacy Statement</a>.
+                            </span>
+                            <span class="left-remember"><form:checkbox path="acceptsAgreement" value="" />
+                                Agree to <a href="https://noqapp.com/terms.html" style="color:#8339ff">NoQueue Terms</a>
+                            </span>
                             <span class="left-remember"><div id="mailErrors"></div></span>
                             <c:choose>
                                 <c:when test="${merchantRegistration.accountExists}">
