@@ -142,6 +142,15 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                To approve your business, we may ask you to provide valid
+                                                documentation for your registered business. Please keep business
+                                                information and point of contact up to date.
+                                            </p>
+                                        </div>
+                                    </li>
                                 </ul>
 
                                 <div id="storeDetail">
