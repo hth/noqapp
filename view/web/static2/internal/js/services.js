@@ -4,7 +4,7 @@ function handleFoundAddressClick() {
 
 function handleFoundAddressCheckboxUncheck() {
     $("input[name$=foundAddressPlaceId]").prop('checked', false);
-    $('#addressCheckBox .form-check-box').prop("disabled", true)
+    $('#addressCheckBox .form-check-box').prop("disabled", true);
 }
 
 function handleFoundAddressStoreClick() {
@@ -13,5 +13,6 @@ function handleFoundAddressStoreClick() {
 
 function handleFoundAddressStoreCheckboxUncheck() {
     $("input[name$=foundAddressStorePlaceId]").prop('checked', false);
-    $('#addressStoreCheckBox .form-check-box').prop("disabled", true)
+    $('#addressStoreCheckBox .form-check-box').prop("disabled", true);
+}
 }
