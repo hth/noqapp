@@ -41,14 +41,14 @@ public class FirebaseAuthenticateService {
      * @param uid
      * @return
      */
-    public UserProfileEntity getUserWhenLoggedViaPhone(String uid) throws ExecutionException, InterruptedException {
+    public UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
         final String[] phoneNumber = {""};
         ApiFuture<UserRecord> future = firebaseConfig.getFirebaseAuth().getUserAsync(uid);
 
         UserRecord userRecord;
         try {
             userRecord = future.get(4, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
             LOG.error("Failed to get UserRecord for uid={} reason={}", uid, e.getLocalizedMessage(), e);
             return null;
         }
