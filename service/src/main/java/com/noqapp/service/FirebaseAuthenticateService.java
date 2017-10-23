@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.tasks.Task;
 import com.noqapp.domain.UserProfileEntity;
@@ -9,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * User: hitender
@@ -36,30 +41,49 @@ public class FirebaseAuthenticateService {
      * @param uid
      * @return
      */
-    public UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
+    public UserProfileEntity getUserWhenLoggedViaPhone(String uid) throws ExecutionException, InterruptedException {
         final String[] phoneNumber = {""};
-        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
-                .addOnSuccessListener(userRecord -> {
-                    LOG.info("Successfully found user data for uid={}", userRecord.getUid());
-                    phoneNumber[0] = userRecord.getProviderData()[0].getUid();
-                })
-                .addOnFailureListener(e -> {
-                    LOG.warn("Not found user={} reason={}", uid, e.getLocalizedMessage());
-                    throw new UsernameNotFoundException("Error in retrieving user");
-                });
+        ApiFuture<UserRecord> future = firebaseConfig.getFirebaseAuth().getUserAsync(uid);
 
-        while (!task.isComplete()) {
-            try {
-                //TODO remove sleep method.
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
-            }
+        UserRecord userRecord;
+        try {
+            userRecord = future.get(4, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            LOG.error("Failed to get UserRecord for uid={} reason={}", uid, e.getLocalizedMessage(), e);
+            return null;
         }
 
+        if (null == userRecord) {
+            return null;
+        }
+
+        phoneNumber[0] = userRecord.getProviderData()[0].getUid();
         if (null != phoneNumber[0]) {
             return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
         }
+
+//        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
+//                .addOnSuccessListener(userRecord -> {
+//                    LOG.info("Successfully found user data for uid={}", userRecord.getUid());
+//                    phoneNumber[0] = userRecord.getProviderData()[0].getUid();
+//                })
+//                .addOnFailureListener(e -> {
+//                    LOG.warn("Not found user={} reason={}", uid, e.getLocalizedMessage());
+//                    throw new UsernameNotFoundException("Error in retrieving user");
+//                });
+//
+//        while (!task.isComplete()) {
+//            try {
+//                //TODO remove sleep method.
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
+//            }
+//        }
+//
+//        if (null != phoneNumber[0]) {
+//            return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
+//        }
 
         return null;
     }
