@@ -5,6 +5,8 @@ import com.google.firebase.auth.UserRecord;
 import com.google.firebase.tasks.Task;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.config.FirebaseConfig;
+import com.noqapp.utils.Formatter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,6 @@ public class FirebaseAuthenticateService {
      * @return
      */
     public UserProfileEntity getUserWhenLoggedViaPhone(String uid) {
-        final String[] phoneNumber = {""};
         ApiFuture<UserRecord> future = firebaseConfig.getFirebaseAuth().getUserAsync(uid);
 
         UserRecord userRecord;
@@ -57,33 +58,11 @@ public class FirebaseAuthenticateService {
             return null;
         }
 
-        phoneNumber[0] = userRecord.getProviderData()[0].getUid();
-        if (null != phoneNumber[0]) {
-            return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
+        String phoneNumber = userRecord.getProviderData()[0].getUid();
+        if (StringUtils.isNotBlank(phoneNumber)) {
+            LOG.info("Found phone={} for uid={}", phoneNumber, uid);
+            return userProfilePreferenceService.checkUserExistsByPhone(Formatter.phoneCleanup(phoneNumber));
         }
-
-//        Task<UserRecord> task = firebaseConfig.getFirebaseAuth().getUser(uid)
-//                .addOnSuccessListener(userRecord -> {
-//                    LOG.info("Successfully found user data for uid={}", userRecord.getUid());
-//                    phoneNumber[0] = userRecord.getProviderData()[0].getUid();
-//                })
-//                .addOnFailureListener(e -> {
-//                    LOG.warn("Not found user={} reason={}", uid, e.getLocalizedMessage());
-//                    throw new UsernameNotFoundException("Error in retrieving user");
-//                });
-//
-//        while (!task.isComplete()) {
-//            try {
-//                //TODO remove sleep method.
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                LOG.error("Thread failed on sleep for uid={} reason={}", uid, e.getLocalizedMessage());
-//            }
-//        }
-//
-//        if (null != phoneNumber[0]) {
-//            return userProfilePreferenceService.checkUserExistsByPhone(phoneNumber[0]);
-//        }
 
         return null;
     }
