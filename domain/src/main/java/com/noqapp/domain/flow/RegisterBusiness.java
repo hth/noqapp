@@ -1,19 +1,16 @@
 package com.noqapp.domain.flow;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.data.annotation.Transient;
-import org.springframework.util.Assert;
-
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
 import com.noqapp.utils.ScrubbedInput;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.Transient;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;

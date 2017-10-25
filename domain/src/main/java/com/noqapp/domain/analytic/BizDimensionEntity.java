@@ -1,11 +1,10 @@
 package com.noqapp.domain.analytic;
 
+import com.noqapp.domain.BaseEntity;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.noqapp.domain.BaseEntity;
 
 /**
  * User: hitender

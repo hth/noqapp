@@ -1,14 +1,12 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.QueueStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.noqapp.domain.types.FirebaseMessageTypeEnum;
-import com.noqapp.domain.types.QueueStatusEnum;
 
 /**
  * Token should exists only when open for business or when token is suppose to be made available.

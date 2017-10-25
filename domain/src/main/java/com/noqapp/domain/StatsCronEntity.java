@@ -1,13 +1,12 @@
 package com.noqapp.domain;
 
+import com.noqapp.utils.DateUtil;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.noqapp.utils.DateUtil;
 
 import java.util.Date;
 import java.util.LinkedHashMap;

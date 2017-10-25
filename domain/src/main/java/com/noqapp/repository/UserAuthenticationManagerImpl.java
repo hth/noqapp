@@ -1,11 +1,9 @@
 package com.noqapp.repository;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.UserAuthenticationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,8 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.UserAuthenticationEntity;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender

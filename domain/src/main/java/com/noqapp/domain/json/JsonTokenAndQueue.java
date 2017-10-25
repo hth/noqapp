@@ -1,17 +1,11 @@
 package com.noqapp.domain.json;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-
+import com.fasterxml.jackson.annotation.*;
 import com.noqapp.domain.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.time.ZonedDateTime;
 import java.util.TimeZone;

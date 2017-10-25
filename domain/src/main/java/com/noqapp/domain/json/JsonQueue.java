@@ -4,14 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.noqapp.domain.AbstractDomain;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.TimeZone;

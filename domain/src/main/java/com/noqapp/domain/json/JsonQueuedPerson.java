@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
+import com.noqapp.domain.AbstractDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.noqapp.domain.AbstractDomain;
 
 /**
  * User: hitender

@@ -1,25 +1,21 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import com.noqapp.domain.types.RoleEnum;
+import com.noqapp.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-
 import org.joda.time.DateTime;
-
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.noqapp.domain.types.AccountInactiveReasonEnum;
-import com.noqapp.domain.types.RoleEnum;
-import com.noqapp.utils.DateUtil;
-
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

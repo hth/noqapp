@@ -1,12 +1,10 @@
 package com.noqapp.domain.site;
 
 
+import com.noqapp.domain.types.UserLevelEnum;
 import org.apache.commons.text.WordUtils;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-
-import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Collection;
 

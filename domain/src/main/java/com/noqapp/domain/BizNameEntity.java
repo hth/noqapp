@@ -1,9 +1,11 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -11,14 +13,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.utils.Formatter;
-
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

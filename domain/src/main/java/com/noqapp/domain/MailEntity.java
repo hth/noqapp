@@ -1,9 +1,8 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.MailStatusEnum;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.noqapp.domain.types.MailStatusEnum;
 
 /**
  * User: hitender

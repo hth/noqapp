@@ -1,19 +1,16 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.DeviceTypeEnum;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.types.DeviceTypeEnum;
-
-import java.io.File;
-
 import javax.validation.constraints.NotNull;
+import java.io.File;
 
 /**
  * User: hitender

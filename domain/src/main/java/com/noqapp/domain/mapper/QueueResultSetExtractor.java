@@ -1,9 +1,8 @@
 package com.noqapp.domain.mapper;
 
-import org.springframework.jdbc.core.ResultSetExtractor;
-
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

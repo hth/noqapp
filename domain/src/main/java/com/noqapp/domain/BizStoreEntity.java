@@ -1,11 +1,12 @@
 package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
-
+import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.utils.CommonUtil;
+import com.noqapp.utils.Formatter;
 import com.noqapp.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,15 +18,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.util.Assert;
 
-import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.utils.CommonUtil;
-import com.noqapp.utils.Formatter;
-
+import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

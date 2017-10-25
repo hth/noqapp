@@ -1,23 +1,14 @@
 package com.noqapp.repository;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
-
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,12 +17,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.QueueEntity;
-import com.noqapp.domain.types.QueueUserStateEnum;
-
 import java.util.Date;
 import java.util.List;
+
+import static com.noqapp.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender

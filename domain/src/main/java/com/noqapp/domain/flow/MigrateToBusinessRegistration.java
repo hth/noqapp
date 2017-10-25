@@ -1,11 +1,10 @@
 package com.noqapp.domain.flow;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.utils.ScrubbedInput;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 

@@ -1,15 +1,12 @@
 package com.noqapp.domain.flow;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import org.springframework.data.annotation.Transient;
-import org.springframework.util.Assert;
-
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.utils.Formatter;
 import com.noqapp.utils.ScrubbedInput;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.Transient;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.HashMap;

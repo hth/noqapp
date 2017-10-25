@@ -3,10 +3,8 @@ package com.noqapp.domain.shared;
 import com.google.maps.model.AddressComponent;
 import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.util.Assert;
 
 import java.io.Serializable;

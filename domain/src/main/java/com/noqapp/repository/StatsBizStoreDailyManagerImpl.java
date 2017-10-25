@@ -1,25 +1,21 @@
 package com.noqapp.repository;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.StatsBizStoreDailyEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.StatsBizStoreDailyEntity;
-
 import java.util.List;
+
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * User: hitender

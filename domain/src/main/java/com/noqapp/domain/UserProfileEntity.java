@@ -1,21 +1,18 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.utils.Formatter;
-
-import java.util.Locale;
-
 import javax.validation.constraints.NotNull;
+import java.util.Locale;
 
 /**
  * User: hitender

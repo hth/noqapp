@@ -1,17 +1,11 @@
 package com.noqapp.domain.json.fcm;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.fasterxml.jackson.annotation.*;
 import com.noqapp.domain.AbstractDomain;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: hitender
