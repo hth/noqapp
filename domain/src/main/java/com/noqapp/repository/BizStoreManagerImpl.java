@@ -273,15 +273,19 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         Update update;
         if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId)
-                    .set("QH", queueHistoryNextRun)
-                    .set("AS", averageServiceTime));
+                    .set("QH", queueHistoryNextRun));
         } else {
             update = entityUpdate(update("TZ", zoneId)
                     .set("QH", queueHistoryNextRun)
-                    .set("AS", averageServiceTime)
                     .set("RC", ratingCount)
                     .set("RA", rating));
         }
+
+        /* Do not update the average service time when its zero. */
+        if (0 != averageServiceTime && null != update) {
+            update.set("AS", averageServiceTime);
+        }
+
         return mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 update,
