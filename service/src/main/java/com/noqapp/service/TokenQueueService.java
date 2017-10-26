@@ -79,7 +79,8 @@ public class TokenQueueService {
     }
 
     /**
-     * Get new token. This process adds the user to queue. Invokes broadcast.
+     * Gets new token or reloads existing token if previously registered.
+     * This process adds the user to queue. Invokes broadcast.
      *
      * @param codeQR
      * @param did
@@ -90,11 +91,11 @@ public class TokenQueueService {
     public JsonToken getNextToken(String codeQR, String did, String qid) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
-            LOG.info("next Token queue={}", queue);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
+                LOG.info("Assigned to queue with codeQR={} with new toke={}", codeQR, tokenQueue.getLastNumber());
 
                 switch (tokenQueue.getQueueStatus()) {
                     case D:
