@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.emp;
 
+import com.noqapp.domain.UserProfileEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,6 +91,13 @@ public class EmpLandingController {
         LOG.info("Business user={} loaded by qid={}", businessUserId.getText(), queueUser.getQueueUserId());
 
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId.getText());
+
+        UserProfileEntity inviteeUserProfile;
+        if (StringUtils.isNotBlank(businessUser.getBizName().getInviteeCode())) {
+            inviteeUserProfile = accountService.findProfileByInviteCode(businessUser.getBizName().getInviteeCode());
+            businessAwaitingApprovalForm.setInviteeUserProfile(inviteeUserProfile);
+        }
+
         businessAwaitingApprovalForm
                 .setBusinessUser(businessUser)
                 .setUserProfile(accountService.findProfileByReceiptUserId(businessUser.getQueueUserId()));
