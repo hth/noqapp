@@ -34,6 +34,8 @@ public class RegisterBusiness implements Serializable {
     private String countryShortName;
     private String phone;
     private String timeZone;
+    /* Reference to person who has recommended business. */
+    private String inviteeCode;
     private AddressOriginEnum addressOrigin;
     private BusinessUserEntity businessUser;
 
@@ -143,6 +145,14 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone.getText();
+    }
+
+    public String getInviteeCode() {
+        return inviteeCode;
+    }
+
+    public void setInviteeCode(String inviteeCode) {
+        this.inviteeCode = inviteeCode;
     }
 
     public AddressOriginEnum getAddressOrigin() {

@@ -99,6 +99,9 @@ public class BizNameEntity extends BaseEntity {
     @Field ("TZ")
     private String timeZone;
 
+    @Field ("IC")
+    private String inviteeCode;
+
     @Field ("MS")
     private boolean multiStore = false;
 
@@ -327,6 +330,14 @@ public class BizNameEntity extends BaseEntity {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public String getInviteeCode() {
+        return inviteeCode;
+    }
+
+    public void setInviteeCode(String inviteeCode) {
+        this.inviteeCode = inviteeCode;
     }
 
     public AddressOriginEnum getAddressOrigin() {

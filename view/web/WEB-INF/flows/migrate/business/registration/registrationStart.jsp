@@ -142,6 +142,16 @@
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
+                                        <div class="col-lable3">
+                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">Optional. Enter if you have been provided with one.</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
                                         <div class="alert-info">
                                             <p>
                                                 To approve your business, we may ask you to provide valid

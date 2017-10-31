@@ -155,6 +155,7 @@ class RegistrationFlowActions {
         bizName.setPhoneRaw(registerBusiness.getPhoneNotFormatted());
         bizName.setAddress(registerBusiness.getAddress());
         bizName.setTimeZone(registerBusiness.getTimeZone());
+        bizName.setInviteeCode(registerBusiness.getInviteeCode());
         bizName.setAddressOrigin(registerBusiness.getAddressOrigin());
         bizName.setMultiStore(registerBusiness.isMultiStore());
         validateAddress(bizName);

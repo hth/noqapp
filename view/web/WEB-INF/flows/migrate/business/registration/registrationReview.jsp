@@ -134,7 +134,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="registerBusiness.multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
@@ -149,6 +148,16 @@
                                                     <span style="display:block; font-size:14px;">You have answered 'YES'</span>
                                                 </c:otherwise>
                                             </c:choose>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.inviteeCode" cssClass="form-field-admin" readonly="true"/>
+                                            <span style="display:block; font-size:14px;">Optional. Enter if you have been provided with one.</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
