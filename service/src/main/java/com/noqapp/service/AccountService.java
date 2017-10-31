@@ -336,7 +336,7 @@ public class AccountService {
         }
     }
 
-    public UserProfileEntity findProfileByReceiptUserId(String queueUserId) {
+    public UserProfileEntity findProfileByQueueUserId(String queueUserId) {
         return userProfileManager.findByQueueUserId(queueUserId);
     }
 

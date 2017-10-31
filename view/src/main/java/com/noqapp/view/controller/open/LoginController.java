@@ -154,7 +154,7 @@ public class LoginController {
             throw new UsernameNotFoundException("User Not found");
         }
 
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         return determineTargetUrlAfterLogin(userAccount, userProfile);
     }
 

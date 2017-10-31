@@ -2,6 +2,7 @@ package com.noqapp.service.emp;
 
 import java.util.List;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
@@ -62,20 +63,11 @@ public class EmpLandingService {
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
-        if (StringUtils.isNotBlank(businessUser.getBizName().getInviteeCode())) {
-            UserProfileEntity userProfile = accountService.findProfileByInviteCode(businessUser.getBizName().getInviteeCode());
-            String businessName = businessUser.getBizName().getBusinessName();
-            tokenQueueService.sendMessageToSpecificUser(
-                    businessName + " joined NoQueue.",
-                    "Your invitee code was used during registration by " + businessName + ". "
-                            + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
-                            + "You will soon receive an email with more details. "
-                            + "This detail would also be available in your web account.",
-                    userProfile.getQueueUserId());
-        }
+        BizNameEntity bizName = businessUser.getBizName();
+        notifyInviteeWhenBusinessIsApproved(bizName.getInviteeCode(), bizName.getBusinessName());
 
         /* Change profile user level on approval of business. */
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getQueueUserId());
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
         accountService.save(userProfile);
 
@@ -85,7 +77,7 @@ public class EmpLandingService {
         );
         accountService.save(userAccount);
 
-        List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
         for (BizStoreEntity bizStore : bizStores) {
             //TODO remove me as this as to be done by cron job. Temp way of creating
             //For all registered false run job
@@ -97,21 +89,40 @@ public class EmpLandingService {
             BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
                     businessUser.getQueueUserId(),
                     bizStore.getId(),
-                    bizStore.getBizName().getId(),
+                    bizName.getId(),
                     bizStore.getCodeQR());
             businessUserStoreService.save(businessUserStore);
             //End cron job code
 
             LOG.info("added QR for qid={} bizName={} queueName={} topic={} bizStore={} ",
                     qid,
-                    businessUser.getBizName().getBusinessName(),
+                    bizName.getBusinessName(),
                     bizStore.getDisplayName(),
                     bizStore.getTopic(),
                     bizStore.getId());
         }
 
         if (1 < bizStores.size()) {
-            LOG.warn("Found stores more than 1, qid={} bizName={}", qid, businessUser.getBizName().getBusinessName());
+            LOG.warn("Found stores more than 1, qid={} bizName={}", qid, bizName.getBusinessName());
+        }
+    }
+
+    private void notifyInviteeWhenBusinessIsApproved(String inviteeCode, String businessName) {
+        if (StringUtils.isNotBlank(inviteeCode)) {
+            UserProfileEntity userProfile = accountService.findProfileByInviteCode(inviteeCode);
+
+            if (UserLevelEnum.CLIENT == userProfile.getLevel() || UserLevelEnum.Q_SUPERVISOR == userProfile.getLevel()) {
+                tokenQueueService.sendMessageToSpecificUser(
+                        businessName + " joined NoQueue.",
+                        "Your invitee code was used during registration by " + businessName + ". "
+                                + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
+                                + "You will soon receive an email with more details. "
+                                + "This detail would also be available in your web account.",
+                        userProfile.getQueueUserId());
+            } else {
+                LOG.warn("This facility is avail to just users with level={} or level={} and not level={}",
+                        UserLevelEnum.CLIENT, UserLevelEnum.Q_SUPERVISOR, userProfile.getLevel());
+            }
         }
     }
 

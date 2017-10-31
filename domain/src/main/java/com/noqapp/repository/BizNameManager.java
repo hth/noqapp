@@ -40,5 +40,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     Set<String> findAllDistinctBizStr(String businessName);
 
     List<BizNameEntity> findAll(int skip, int limit);
+
+    List<BizNameEntity> findByInviteeCode(String inviteCode);
 }
 

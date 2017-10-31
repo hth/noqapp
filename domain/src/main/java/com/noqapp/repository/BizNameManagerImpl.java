@@ -96,5 +96,9 @@ public final class BizNameManagerImpl implements BizNameManager {
                 BizNameEntity.class
         );
     }
+
+    public List<BizNameEntity> findByInviteeCode(String inviteCode) {
+        return mongoTemplate.find(query(where("IC").is(inviteCode)), BizNameEntity.class, TABLE);
+    }
 }
 

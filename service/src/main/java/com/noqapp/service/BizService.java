@@ -149,4 +149,8 @@ public class BizService {
     public List<StoreHourEntity> findAllStoreHours(String bizStoreId) {
         return storeHourManager.findAll(bizStoreId);
     }
+
+    public List<BizNameEntity> findByInviteeCode(String inviteCode) {
+        return bizNameManager.findByInviteeCode(inviteCode);
+    }
 }
