@@ -16,6 +16,7 @@ public class BusinessAwaitingApprovalForm {
 
     private BusinessUserEntity businessUser;
     private UserProfileEntity userProfile;
+    private UserProfileEntity inviteeUserProfile;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes = BusinessTypeEnum.asList();
@@ -35,6 +36,15 @@ public class BusinessAwaitingApprovalForm {
 
     public BusinessAwaitingApprovalForm setUserProfile(UserProfileEntity userProfile) {
         this.userProfile = userProfile;
+        return this;
+    }
+
+    public UserProfileEntity getInviteeUserProfile() {
+        return inviteeUserProfile;
+    }
+
+    public BusinessAwaitingApprovalForm setInviteeUserProfile(UserProfileEntity inviteeUserProfile) {
+        this.inviteeUserProfile = inviteeUserProfile;
         return this;
     }
 

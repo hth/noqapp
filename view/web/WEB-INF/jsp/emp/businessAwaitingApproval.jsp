@@ -55,6 +55,13 @@
                             <form:hidden path="businessUser.id"/>
                             <ul class="list-form">
                                 <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Registered Account Information
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
                                     <div class="col-lable3">
                                         <form:label path="userProfile.firstName" cssErrorClass="lb_error">First name</form:label>
                                     </div>
@@ -63,7 +70,6 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="userProfile.lastName" cssErrorClass="lb_error">Last name</form:label>
@@ -73,7 +79,6 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="userProfile.address" cssErrorClass="lb_error">Your Address</form:label>
@@ -83,7 +88,6 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="userProfile.phoneFormatted" cssErrorClass="lb_error">Your Phone</form:label>
@@ -92,6 +96,13 @@
                                         <form:input path="userProfile.phoneFormatted" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Business Information
+                                        </p>
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
@@ -131,6 +142,63 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+
+                                <c:choose>
+                                <c:when test="${!empty businessAwaitingApprovalForm.inviteeUserProfile}">
+                                <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Invitee Information below
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="inviteeUserProfile.firstName" cssErrorClass="lb_error">Invitee First name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="inviteeUserProfile.firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="inviteeUserProfile.lastName" cssErrorClass="lb_error">Invitee Last name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="inviteeUserProfile.lastName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="inviteeUserProfile.address" cssErrorClass="lb_error">Invitee Address</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:textarea path="inviteeUserProfile.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="inviteeUserProfile.phoneFormatted" cssErrorClass="lb_error">Invitee Phone</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="inviteeUserProfile.phoneFormatted" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                </c:when>
+                                <c:otherwise>
+                                <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Direct sign up. Please call to validate account. And, do ask how did they hear about us?
+                                        </p>
+                                    </div>
+                                </li>
+                                </c:otherwise>
+                                </c:choose>
 
                                 <li class="mB0">
                                     <div class="col-lable3"></div>
