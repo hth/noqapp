@@ -125,7 +125,7 @@ public class BusinessUserStoreService {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String qid = businessUserStore.getQueueUserId();
-            UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(qid);
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
             queueSupervisor.setBusinessUserId(businessUser.getId())

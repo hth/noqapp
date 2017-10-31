@@ -19,7 +19,7 @@
 <div class="header">
     <div class="warp-inner">
         <div class="logo-left">
-            <a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
@@ -29,6 +29,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
+                        <a href="${pageContext.request.contextPath}/access/businessInvite.htm">Business Invite</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

@@ -100,7 +100,7 @@ public class EmpLandingController {
 
         businessAwaitingApprovalForm
                 .setBusinessUser(businessUser)
-                .setUserProfile(accountService.findProfileByReceiptUserId(businessUser.getQueueUserId()));
+                .setUserProfile(accountService.findProfileByQueueUserId(businessUser.getQueueUserId()));
 
         return businessAwaitingApproval;
     }

@@ -67,7 +67,7 @@ public class EmpLandingService {
         notifyInviteeWhenBusinessIsApproved(bizName.getInviteeCode(), bizName.getBusinessName());
 
         /* Change profile user level on approval of business. */
-        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getQueueUserId());
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
         accountService.save(userProfile);
 
