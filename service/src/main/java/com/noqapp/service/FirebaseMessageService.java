@@ -40,7 +40,7 @@ public class FirebaseMessageService {
     }
 
     /**
-     * Sends message to topic when any change happens in queue
+     * Sends message to topic when any change happens in queue.
      *
      * @param jsonMessage
      * @return
