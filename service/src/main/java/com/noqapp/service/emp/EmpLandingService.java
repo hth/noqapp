@@ -64,14 +64,20 @@ public class EmpLandingService {
 
         if (StringUtils.isNotBlank(businessUser.getBizName().getInviteeCode())) {
             UserProfileEntity userProfile = accountService.findProfileByInviteCode(businessUser.getBizName().getInviteeCode());
-            String businessName = businessUser.getBizName().getBusinessName();
-            tokenQueueService.sendMessageToSpecificUser(
-                    businessName + " joined NoQueue.",
-                    "Your invitee code was used during registration by " + businessName + ". "
-                            + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
-                            + "You will soon receive an email with more details. "
-                            + "This detail would also be available in your web account.",
-                    userProfile.getQueueUserId());
+
+            if (UserLevelEnum.CLIENT == userProfile.getLevel() || UserLevelEnum.Q_SUPERVISOR == userProfile.getLevel()) {
+                String businessName = businessUser.getBizName().getBusinessName();
+                tokenQueueService.sendMessageToSpecificUser(
+                        businessName + " joined NoQueue.",
+                        "Your invitee code was used during registration by " + businessName + ". "
+                                + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
+                                + "You will soon receive an email with more details. "
+                                + "This detail would also be available in your web account.",
+                        userProfile.getQueueUserId());
+            } else {
+                LOG.warn("This facility is avail to just users with level={} or level={} and not level={}",
+                        UserLevelEnum.CLIENT, UserLevelEnum.Q_SUPERVISOR, userProfile.getLevel());
+            }
         }
 
         /* Change profile user level on approval of business. */
