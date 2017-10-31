@@ -62,6 +62,18 @@ public class EmpLandingService {
                 .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
+        if (StringUtils.isNotBlank(businessUser.getBizName().getInviteeCode())) {
+            UserProfileEntity userProfile = accountService.findProfileByInviteCode(businessUser.getBizName().getInviteeCode());
+            String businessName = businessUser.getBizName().getBusinessName();
+            tokenQueueService.sendMessageToSpecificUser(
+                    businessName + " joined NoQueue.",
+                    "Your invitee code was used during registration by " + businessName + ". "
+                            + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
+                            + "You will soon receive an email with more details. "
+                            + "This detail would also be available in your web account.",
+                    userProfile.getQueueUserId());
+        }
+
         /* Change profile user level on approval of business. */
         UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
