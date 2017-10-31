@@ -146,7 +146,14 @@
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <c:choose>
+                                                <c:when test="${empty register.registerBusiness.inviteeCode}">
+                                                    <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:input path="inviteeCode" cssClass="form-field-admin" readonly="true"/>
+                                                </c:otherwise>
+                                            </c:choose>
                                             <span style="display:block; font-size:14px;">Optional. Enter if you have been provided with one.</span>
                                         </div>
                                         <div class="clearFix"></div>
