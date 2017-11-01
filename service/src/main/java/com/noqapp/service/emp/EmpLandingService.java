@@ -8,6 +8,8 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.BillingPlanEnum;
+import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
@@ -64,6 +66,7 @@ public class EmpLandingService {
         businessUserService.save(businessUser);
 
         BizNameEntity bizName = businessUser.getBizName();
+        startWithPromotionalPlan(bizName);
         notifyInviteeWhenBusinessIsApproved(bizName.getInviteeCode(), bizName.getBusinessName());
 
         /* Change profile user level on approval of business. */
@@ -105,6 +108,12 @@ public class EmpLandingService {
         if (1 < bizStores.size()) {
             LOG.warn("Found stores more than 1, qid={} bizName={}", qid, bizName.getBusinessName());
         }
+    }
+
+    private void startWithPromotionalPlan(BizNameEntity bizName) {
+        bizName.setBillingPlan(BillingPlanEnum.P)
+                .setBillingStatus(BillingStatusEnum.C);
+        bizService.saveName(bizName);
     }
 
     private void notifyInviteeWhenBusinessIsApproved(String inviteeCode, String businessName) {

@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.BillingPlanEnum;
+import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
@@ -108,6 +110,12 @@ public class BizNameEntity extends BaseEntity {
     @NotNull
     @Field ("AO")
     private AddressOriginEnum addressOrigin;
+
+    @Field("BP")
+    private BillingPlanEnum billingPlan;
+
+    @Field("BS")
+    private BillingStatusEnum billingStatus;
 
     public static BizNameEntity newInstance() {
         return new BizNameEntity();
@@ -346,6 +354,24 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
         this.addressOrigin = addressOrigin;
+        return this;
+    }
+
+    public BillingPlanEnum getBillingPlan() {
+        return billingPlan;
+    }
+
+    public BizNameEntity setBillingPlan(BillingPlanEnum billingPeriod) {
+        this.billingPlan = billingPeriod;
+        return this;
+    }
+
+    public BillingStatusEnum getBillingStatus() {
+        return billingStatus;
+    }
+
+    public BizNameEntity setBillingStatus(BillingStatusEnum billingStatus) {
+        this.billingStatus = billingStatus;
         return this;
     }
 
