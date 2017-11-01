@@ -76,7 +76,7 @@
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
                                                 <th>State</th>
-                                                <th>Enrolled for Plan</th>
+                                                <th>Enrolled in Plan</th>
                                                 <th>Points Earned</th>
                                                 <th>Created</th>
                                             </tr>
