@@ -29,7 +29,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/access/businessInvite.htm">Business Invite</a>
+                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -52,20 +52,34 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business Invite</h3>
+                        <h3>Rewards</h3>
+
+                        <div class="admin-title" style="text-align: left; padding-top: 15px;">
+                            <h4>Business Invite</h4>
+                        </div>
+
+                        <div class="alert-info">
+                            <p>
+                                Shows list of business that were referred by you. Each business using your invitee code
+                                will be listed below. Based of the status of business you would earn points that
+                                can be cashed out as real money.
+                            </p>
+                        </div>
+
 
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty businessInvite.bizNames}">
+                                    <c:when test="${!empty rewards.bizNames}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
-                                                <th>Application Status</th>
+                                                <th>Status</th>
+                                                <th>Points Earned</th>
                                                 <th>Created</th>
                                             </tr>
-                                            <c:forEach items="${businessInvite.bizNames}" var="store" varStatus="status">
+                                            <c:forEach items="${rewards.bizNames}" var="store" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
@@ -80,6 +94,9 @@
                                                                 Awaiting
                                                             </c:otherwise>
                                                         </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        0
                                                     </td>
                                                     <td>
                                                         ${store.created}

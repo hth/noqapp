@@ -14,7 +14,7 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class BusinessInviteForm {
+public class RewardsForm {
 
     private List<BizNameEntity> bizNames;
 
@@ -22,7 +22,7 @@ public class BusinessInviteForm {
         return bizNames;
     }
 
-    public BusinessInviteForm setBizNames(List<BizNameEntity> bizNames) {
+    public RewardsForm setBizNames(List<BizNameEntity> bizNames) {
         this.bizNames = bizNames;
         return this;
     }
