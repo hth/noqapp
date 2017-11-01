@@ -29,7 +29,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/access/businessInvite.htm">Business Invite</a>
+                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -57,15 +57,15 @@
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty businessInvite.bizNames}">
+                                    <c:when test="${!empty rewards.bizNames}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
-                                                <th>Application Status</th>
+                                                <th>Status</th>
                                                 <th>Created</th>
                                             </tr>
-                                            <c:forEach items="${businessInvite.bizNames}" var="store" varStatus="status">
+                                            <c:forEach items="${rewards.bizNames}" var="store" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>

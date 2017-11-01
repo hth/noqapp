@@ -7,7 +7,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
-import com.noqapp.view.form.BusinessInviteForm;
+import com.noqapp.view.form.RewardsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +31,12 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping(value = "/access/businessInvite")
-public class BusinessInviteController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessInviteController.class);
+@RequestMapping(value = "/access/rewards")
+public class RewardsController {
+    private static final Logger LOG = LoggerFactory.getLogger(RewardsController.class);
 
     /**
-     * Refers to landing.jsp.
+     * Refers to rewards.jsp.
      */
     private String nextPage;
 
@@ -44,8 +44,8 @@ public class BusinessInviteController {
     private AccountService accountService;
 
     @Autowired
-    public BusinessInviteController(
-            @Value("${nextPage:/access/businessInvite}")
+    public RewardsController(
+            @Value("${nextPage:/access/rewards}")
             String nextPage,
 
             BizService bizService,
@@ -62,14 +62,14 @@ public class BusinessInviteController {
             method = RequestMethod.GET
     )
     public String loadForm(
-            @ModelAttribute("businessInvite")
-            BusinessInviteForm businessInvite
+            @ModelAttribute("rewards")
+            RewardsForm rewards
     ) {
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
         List<BizNameEntity> bizNames = bizService.findByInviteeCode(userProfile.getInviteCode());
-        businessInvite.setBizNames(bizNames);
+        rewards.setBizNames(bizNames);
 
         return nextPage;
     }
