@@ -22,7 +22,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * User: hitender
  * Date: 11/23/16 5:10 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

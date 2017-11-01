@@ -27,7 +27,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
  * User: hitender
  * Date: 3/1/17 12:27 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -42,7 +42,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             Document.class,
             "collection");
 
-    @Value ("${device.lastAccessed.now}")
+    @Value("${device.lastAccessed.now}")
     private String deviceLastAccessedNow;
 
     private MongoTemplate mongoTemplate;
@@ -100,7 +100,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                             ).andOperator(
                                 isActive(),
                                 isNotDeleted()
-                            ));
+                            )
+                    );
         }
         return mongoTemplate.find(
                 query,

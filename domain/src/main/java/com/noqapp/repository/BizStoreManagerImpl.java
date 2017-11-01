@@ -32,7 +32,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
  * User: hitender
  * Date: 11/23/16 4:45 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

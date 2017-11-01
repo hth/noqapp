@@ -23,7 +23,7 @@ import java.util.List;
  * User: hitender
  * Date: 3/9/17 9:57 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -162,7 +162,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         LOG.info("Fetch history by did={}", did);
         try {
             return jdbcTemplate.query(findByDid, new Object[]{did, did}, new QueueRowMapper());
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Error did={} reason={}", did, e.getLocalizedMessage(), e);
             return new ArrayList<>();
         }
@@ -173,7 +173,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         LOG.info("Fetch history by did={} lastAccessed={}", did, lastAccessed);
         try {
             return jdbcTemplate.query(findByDidAndByLastUpdated, new Object[]{did, lastAccessed, did}, new QueueRowMapper());
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Error did={} lastAccessed={} reason={}", did, lastAccessed, e.getLocalizedMessage(), e);
             return new ArrayList<>();
         }

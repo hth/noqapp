@@ -19,7 +19,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * User: hitender
  * Date: 12/10/16 8:01 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -51,7 +51,7 @@ public class StatsCronManagerImpl implements StatsCronManager {
     }
 
     @Override
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public List<String> getUniqueCronTasks() {
         return mongoTemplate.getCollection(TABLE).distinct("TN");
     }

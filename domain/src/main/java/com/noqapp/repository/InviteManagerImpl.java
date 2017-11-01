@@ -25,7 +25,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
  * User: hitender
  * Date: 3/29/17 10:40 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -87,7 +87,7 @@ public class InviteManagerImpl implements InviteManager {
             }
 
             return sum;
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Failed computing remote join reason={}", e.getLocalizedMessage(), e);
             return 0;
         }
@@ -122,7 +122,7 @@ public class InviteManagerImpl implements InviteManager {
 
             save(invite);
             return updated;
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Failed deducting from remote join reason={}", e.getLocalizedMessage(), e);
             return false;
         }

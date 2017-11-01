@@ -13,6 +13,7 @@ import java.util.List;
 public interface QueueManagerJDBC {
 
     void batchQueues(List<QueueEntity> queues);
+
     void rollbackQueues(List<QueueEntity> queues);
 
     /**

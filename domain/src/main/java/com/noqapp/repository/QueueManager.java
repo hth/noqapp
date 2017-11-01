@@ -43,22 +43,22 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Gets next token. By default this gets the next token in sequence/order of ascending .
-     * 
+     *
      * @param codeQR
-     * @param goTo      go tp counter name
-     * @param sid       server device id
+     * @param goTo   go tp counter name
+     * @param sid    server device id
      * @return
      */
     @Mobile
     QueueEntity getNext(String codeQR, String goTo, String sid);
-    
+
     /**
      * Gets a specific token as next. Used when serving NOT in sequence.
      *
      * @param codeQR
-     * @param goTo          go to counter name
-     * @param sid           server device id
-     * @param tokenNumber   asking for serving a specific token in queue
+     * @param goTo        go to counter name
+     * @param sid         server device id
+     * @param tokenNumber asking for serving a specific token in queue
      * @return
      */
     @Mobile
