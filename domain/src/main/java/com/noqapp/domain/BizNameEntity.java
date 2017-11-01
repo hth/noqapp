@@ -42,7 +42,7 @@ public class BizNameEntity extends BaseEntity {
     @Field ("BT")
     private List<BusinessTypeEnum> businessTypes = new ArrayList<>();
 
-    /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
+    /* Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")
     private String phoneNumberBlank;
 
@@ -82,7 +82,7 @@ public class BizNameEntity extends BaseEntity {
     @Field ("PR")
     private String phoneRaw;
 
-    /** Format Longitude and then Latitude. */
+    /* Format Longitude and then Latitude. */
     @Field ("COR")
     private double[] coordinate;
 
