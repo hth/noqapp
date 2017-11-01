@@ -26,8 +26,10 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
     BusinessUserEntity findBusinessUser(String qid);
 
     BusinessUserEntity findById(String id);
+
     boolean doesBusinessUserExists(String qid, String bizId);
 
     long awaitingApprovalCount();
+
     List<BusinessUserEntity> awaitingApprovals();
 }

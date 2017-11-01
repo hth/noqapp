@@ -30,7 +30,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param token
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     @Mobile
     RegisteredDeviceEntity lastAccessed(String qid, String did, String token);
 

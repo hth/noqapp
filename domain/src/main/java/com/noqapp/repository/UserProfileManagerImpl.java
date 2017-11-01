@@ -31,7 +31,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
  * User: hitender
  * Date: 11/19/16 12:36 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -47,7 +47,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     private MongoTemplate mongoTemplate;
 
-    /** When OptimisticLockingFailureException happen, ignore and re-create record. */
+    /**
+     * When OptimisticLockingFailureException happen, ignore and re-create record.
+     */
     private boolean ignoreOptimisticLockingFailureException = false;
 
     @Autowired

@@ -21,7 +21,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * User: hitender
  * Date: 6/16/17 4:48 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

@@ -19,7 +19,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
  * User: hitender
  * Date: 12/13/16 10:30 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -62,8 +62,8 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     public List<BusinessUserStoreEntity> getQueues(String qid, int limit) {
         Query query = query(where("QID").is(qid)
                 .andOperator(
-                    isActive(),
-                    isNotDeleted()
+                        isActive(),
+                        isNotDeleted()
                 )
         );
 
