@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -98,7 +100,7 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     public List<BizNameEntity> findByInviteeCode(String inviteCode) {
-        return mongoTemplate.find(query(where("IC").is(inviteCode)), BizNameEntity.class, TABLE);
+        return mongoTemplate.find(query(where("IC").is(inviteCode)).with(new Sort(DESC, "C")), BizNameEntity.class, TABLE);
     }
 }
 

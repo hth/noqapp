@@ -117,7 +117,7 @@ public class EmpLandingService {
                         "Your invitee code was used during registration by " + businessName + ". "
                                 + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
                                 + "You will soon receive an email with more details. "
-                                + "This detail would also be available in your web account.",
+                                + "This detail would also be available in your web account under Rewards.",
                         userProfile.getQueueUserId());
             } else {
                 LOG.warn("This facility is avail to just users with level={} or level={} and not level={}",

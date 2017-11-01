@@ -52,7 +52,20 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business Invite</h3>
+                        <h3>Rewards</h3>
+
+                        <div class="admin-title" style="text-align: left; padding-top: 15px;">
+                            <h4>Business Invite</h4>
+                        </div>
+
+                        <div class="alert-info">
+                            <p>
+                                Shows list of business that were referred by you. Each business using your invitee code
+                                will be listed below. Based of the status of business you would earn points that
+                                can be cashed out as real money.
+                            </p>
+                        </div>
+
 
                         <div class="add-store">
                             <div class="store-table">
@@ -63,6 +76,7 @@
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
                                                 <th>Status</th>
+                                                <th>Points Earned</th>
                                                 <th>Created</th>
                                             </tr>
                                             <c:forEach items="${rewards.bizNames}" var="store" varStatus="status">
@@ -80,6 +94,9 @@
                                                                 Awaiting
                                                             </c:otherwise>
                                                         </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        0
                                                     </td>
                                                     <td>
                                                         ${store.created}
