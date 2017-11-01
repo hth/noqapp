@@ -76,6 +76,7 @@
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
                                                 <th>Status</th>
+                                                <th>Enrolled for Plan</th>
                                                 <th>Points Earned</th>
                                                 <th>Created</th>
                                             </tr>
@@ -94,6 +95,9 @@
                                                                 Awaiting
                                                             </c:otherwise>
                                                         </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        ${store.billingPlan}
                                                     </td>
                                                     <td>
                                                         0
