@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 /**
+ * Shows all possible rewards accumulated.
+ *
  * User: hitender
  * Date: 10/31/17 11:41 PM
  */
