@@ -75,7 +75,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Business Name</th>
-                                                <th>Status</th>
+                                                <th>State</th>
                                                 <th>Enrolled for Plan</th>
                                                 <th>Points Earned</th>
                                                 <th>Created</th>
@@ -88,7 +88,7 @@
                                                     </td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${store.active}">
+                                                            <c:when test="${!empty store.billingPlan || !empty store.billingStatus}">
                                                                 Approved
                                                             </c:when>
                                                             <c:otherwise>
@@ -97,7 +97,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        ${store.billingPlan}
+                                                        ${store.billingPlan.description}
                                                     </td>
                                                     <td>
                                                         0
