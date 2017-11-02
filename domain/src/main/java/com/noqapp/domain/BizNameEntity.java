@@ -114,6 +114,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("BP")
     private BillingPlanEnum billingPlan;
 
+    /* Billing status is set when business has been approved. */
     @Field("BS")
     private BillingStatusEnum billingStatus;
 

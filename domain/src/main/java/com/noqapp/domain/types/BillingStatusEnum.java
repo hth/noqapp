@@ -1,6 +1,8 @@
 package com.noqapp.domain.types;
 
 /**
+ * When a billing status is set then the business has been approved.
+ *
  * User: hitender
  * Date: 11/01/17 5:04 PM
  */

@@ -88,7 +88,7 @@
                                                     </td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${!empty store.billingPlan || !empty store.billingStatus}">
+                                                            <c:when test="${!empty store.billingStatus}">
                                                                 Approved
                                                             </c:when>
                                                             <c:otherwise>
