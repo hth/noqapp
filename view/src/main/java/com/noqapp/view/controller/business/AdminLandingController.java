@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
-import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -195,8 +193,6 @@ public class AdminLandingController {
         return listQueueSupervisorPage;
     }
 
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             value = "/addStore",
             method = RequestMethod.GET,
@@ -207,8 +203,6 @@ public class AdminLandingController {
         return addStoreFlow;
     }
 
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             value = "/{bizStoreId}/addQueueSupervisor",
             method = RequestMethod.GET,
@@ -231,8 +225,6 @@ public class AdminLandingController {
      * @return
      * @throws IOException
      */
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             value = "/approveRejectQueueSupervisor",
             method = RequestMethod.POST
