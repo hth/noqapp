@@ -1,7 +1,5 @@
 package com.noqapp.view.controller.access;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
-import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -58,8 +56,6 @@ public class RewardsController {
         this.accountService = accountService;
     }
 
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             method = RequestMethod.GET
     )

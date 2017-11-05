@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
-import com.codahale.metrics.annotation.Timed;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -63,8 +61,6 @@ public class LandingController {
         this.queueService = queueService;
     }
 
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             value = "/landing",
             method = RequestMethod.GET
@@ -93,8 +89,6 @@ public class LandingController {
         return nextPage;
     }
 
-    @Timed
-    @ExceptionMetered
     @RequestMapping (
             value = "/landing/business/migrate",
             method = RequestMethod.GET
