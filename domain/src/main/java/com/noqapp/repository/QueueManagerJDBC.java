@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -56,4 +57,7 @@ public interface QueueManagerJDBC {
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
+
+    @Mobile
+    boolean isDBAlive() throws SQLException;
 }
