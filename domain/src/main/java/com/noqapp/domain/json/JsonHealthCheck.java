@@ -10,6 +10,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,8 +39,8 @@ import java.util.TimeZone;
 public class JsonHealthCheck extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
-    @JsonProperty("lastChecked")
-    private String lastChecked = DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+    @JsonIgnore
+    private Instant created = Instant.now();
 
     @JsonProperty("serviceUp")
     private int serviceUp;
@@ -68,5 +70,10 @@ public class JsonHealthCheck extends AbstractDomain {
     public JsonHealthCheck addJsonHealthServiceChecks(JsonHealthServiceCheck jsonHealthServiceCheck) {
         this.jsonHealthServiceChecks.add(jsonHealthServiceCheck);
         return this;
+    }
+
+    @JsonProperty("lastChecked")
+    public String lastChecked() {
+        return String.format("%d m", Duration.between(created, Instant.now()).toMinutes());
     }
 }
