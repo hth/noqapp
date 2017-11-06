@@ -10,6 +10,7 @@ import com.noqapp.domain.types.HealthStatusEnum;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender
@@ -40,6 +41,9 @@ public class JsonHealthServiceCheck extends AbstractDomain {
     @JsonIgnore
     private Instant end;
 
+    @JsonIgnore
+    private long nano;
+
     @JsonProperty("status")
     private HealthStatusEnum healthStatus;
 
@@ -62,8 +66,14 @@ public class JsonHealthServiceCheck extends AbstractDomain {
         return this;
     }
 
-    @JsonProperty("duration")
-    public long duration() {
-        return Duration.between(start, end).toNanos() / 1000000;
+    @JsonProperty("durationInNano")
+    public long durationInNano() {
+        nano = Duration.between(start, end).toNanos();
+        return nano;
+    }
+
+    @JsonProperty("durationInMilli")
+    public long durationInMilli() {
+        return TimeUnit.MILLISECONDS.convert(nano, TimeUnit.NANOSECONDS);
     }
 }
