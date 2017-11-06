@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -208,5 +209,15 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     codeQR, token, did, qid, ratingCount, hoursSaved, e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    public boolean isDBAlive() throws SQLException {
+        try {
+            return jdbcTemplate.getDataSource().getConnection().isValid(1);
+        } catch (SQLException e) {
+            LOG.error("Failed health check of MySQL sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
+            throw e;
+        }
+
     }
 }
