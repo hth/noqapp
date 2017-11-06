@@ -41,9 +41,6 @@ public class JsonHealthServiceCheck extends AbstractDomain {
     @JsonIgnore
     private Instant end;
 
-    @JsonIgnore
-    private long nano;
-
     @JsonProperty("status")
     private HealthStatusEnum healthStatus;
 
@@ -66,14 +63,13 @@ public class JsonHealthServiceCheck extends AbstractDomain {
         return this;
     }
 
-    @JsonProperty("durationInNano")
-    public long durationInNano() {
-        nano = Duration.between(start, end).toNanos();
-        return nano;
-    }
-
-    @JsonProperty("durationInMilli")
-    public long durationInMilli() {
-        return TimeUnit.MILLISECONDS.convert(nano, TimeUnit.NANOSECONDS);
+    /**
+     * Nano to milliseconds divide by 1_000_000.
+     *
+     * @return
+     */
+    @JsonProperty("duration")
+    public String duration() {
+        return String.format("%d ms", TimeUnit.NANOSECONDS.toMillis(Duration.between(start, end).toNanos()));
     }
 }
