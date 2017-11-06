@@ -51,10 +51,10 @@ public class HealthCheckService {
 
         try {
             queueManagerJDBC.isDBAlive();
-            jsonHealthCheck.setMongo(HealthStatus.GOOD.name()).increaseHealth();
+            jsonHealthCheck.setMysql(HealthStatus.GOOD.name()).increaseHealth();
         } catch (SQLException e) {
             LOG.error("Failed MySql sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
-            jsonHealthCheck.setMongo(HealthStatus.BAD.name());
+            jsonHealthCheck.setMysql(HealthStatus.BAD.name());
         }
 
         return jsonHealthCheck.asJson();
