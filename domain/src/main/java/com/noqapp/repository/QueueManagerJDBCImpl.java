@@ -211,13 +211,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         }
     }
 
-    public boolean isDBAlive() throws SQLException {
-        try {
-            return jdbcTemplate.getDataSource().getConnection().isValid(1);
-        } catch (SQLException e) {
-            LOG.error("Failed health check of MySQL sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
-            throw e;
-        }
-
+    public boolean isDBAlive() {
+        return jdbcTemplate.queryForMap("SELECT 1").size() == 0;
     }
 }

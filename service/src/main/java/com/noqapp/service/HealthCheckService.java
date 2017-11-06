@@ -54,8 +54,8 @@ public class HealthCheckService {
             queueManagerJDBC.isDBAlive();
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
             jsonHealthCheck.increaseServiceUpCount();
-        } catch (SQLException e) {
-            LOG.error("Failed MySql sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
+        } catch (Exception e) {
+            LOG.error("Failed MySql reason={}", e.getLocalizedMessage(), e);
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
         }
         jsonHealthCheck.addJsonHealthServiceChecks(jsonHealthServiceCheck);

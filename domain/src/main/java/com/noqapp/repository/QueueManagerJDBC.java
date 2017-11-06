@@ -59,5 +59,5 @@ public interface QueueManagerJDBC {
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
 
     @Mobile
-    boolean isDBAlive() throws SQLException;
+    boolean isDBAlive();
 }
