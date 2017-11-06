@@ -33,18 +33,19 @@ import java.util.List;
 public class JsonHealthCheck extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
-    @JsonProperty("health")
-    private int health;
+    @JsonProperty("increaseServiceUpCount")
+    private int serviceUp;
 
     @JsonProperty("services")
     private List<JsonHealthServiceCheck> jsonHealthServiceChecks = new ArrayList<>();
 
-    public int getHealth() {
-        return health;
+    public void increaseServiceUpCount() {
+        serviceUp++;
     }
 
-    public void increaseHealth() {
-        health ++;
+    @JsonProperty("health")
+    public String health() {
+        return String.format("%d of %d", serviceUp, jsonHealthServiceChecks.size());
     }
 
     public List<JsonHealthServiceCheck> getJsonHealthServiceChecks() {

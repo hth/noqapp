@@ -42,7 +42,7 @@ public class HealthCheckService {
         try {
             generateUserIdService.getLastGenerateUserId();
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
-            jsonHealthCheck.increaseHealth();
+            jsonHealthCheck.increaseServiceUpCount();
         } catch (Exception e) {
             LOG.error("Failed Mongo connection reason={}", e.getLocalizedMessage(), e);
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
@@ -53,7 +53,7 @@ public class HealthCheckService {
         try {
             queueManagerJDBC.isDBAlive();
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
-            jsonHealthCheck.increaseHealth();
+            jsonHealthCheck.increaseServiceUpCount();
         } catch (SQLException e) {
             LOG.error("Failed MySql sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
             jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
