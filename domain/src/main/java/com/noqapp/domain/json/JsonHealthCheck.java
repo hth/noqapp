@@ -34,7 +34,7 @@ import java.util.List;
 public class JsonHealthCheck extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
-    @JsonProperty("increaseServiceUpCount")
+    @JsonProperty("serviceUp")
     private int serviceUp;
 
     @JsonProperty("services")
