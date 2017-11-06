@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.domain.AbstractDomain;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Response shown when application is working.
@@ -34,20 +37,23 @@ import java.util.List;
 public class JsonHealthCheck extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
+    @JsonProperty("lastChecked")
+    private String lastChecked = DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+
     @JsonProperty("serviceUp")
     private int serviceUp;
 
     @JsonProperty("services")
     private List<JsonHealthServiceCheck> jsonHealthServiceChecks = new ArrayList<>();
 
-    @JsonIgnore
-    public void increaseServiceUpCount() {
-        serviceUp++;
-    }
-
     @JsonProperty("health")
     public String health() {
         return String.format("%d of %d", serviceUp, jsonHealthServiceChecks.size());
+    }
+
+    @JsonIgnore
+    public void increaseServiceUpCount() {
+        serviceUp++;
     }
 
     public List<JsonHealthServiceCheck> getJsonHealthServiceChecks() {
