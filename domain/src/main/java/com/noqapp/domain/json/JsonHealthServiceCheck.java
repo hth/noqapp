@@ -64,6 +64,6 @@ public class JsonHealthServiceCheck extends AbstractDomain {
 
     @JsonProperty("time")
     public long duration() {
-        return Duration.between(start, end).toNanos();
+        return Duration.between(start, end).toMillis();
     }
 }
