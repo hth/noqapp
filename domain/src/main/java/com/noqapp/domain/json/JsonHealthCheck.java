@@ -8,6 +8,9 @@ import com.noqapp.domain.AbstractDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Response shown when application is working.
  * User: hitender
@@ -33,52 +36,28 @@ public class JsonHealthCheck extends AbstractDomain {
     @JsonProperty("health")
     private int health;
 
-    @JsonProperty("sw")
-    private String web;
-
-    @JsonProperty("sm")
-    private String mongo;
-
-    @JsonProperty("sr")
-    private String mysql;
+    @JsonProperty("services")
+    private List<JsonHealthServiceCheck> jsonHealthServiceChecks = new ArrayList<>();
 
     public int getHealth() {
         return health;
-    }
-
-    public JsonHealthCheck setHealth(int health) {
-        this.health = health;
-        return this;
     }
 
     public void increaseHealth() {
         health ++;
     }
 
-    public String getWeb() {
-        return web;
+    public List<JsonHealthServiceCheck> getJsonHealthServiceChecks() {
+        return jsonHealthServiceChecks;
     }
 
-    public JsonHealthCheck setWeb(String web) {
-        this.web = web;
+    public JsonHealthCheck setJsonHealthServiceChecks(List<JsonHealthServiceCheck> jsonHealthServiceChecks) {
+        this.jsonHealthServiceChecks = jsonHealthServiceChecks;
         return this;
     }
 
-    public String getMongo() {
-        return mongo;
-    }
-
-    public JsonHealthCheck setMongo(String mongo) {
-        this.mongo = mongo;
-        return this;
-    }
-
-    public String getMysql() {
-        return mysql;
-    }
-
-    public JsonHealthCheck setMysql(String mysql) {
-        this.mysql = mysql;
+    public JsonHealthCheck addJsonHealthServiceChecks(JsonHealthServiceCheck jsonHealthServiceCheck) {
+        this.jsonHealthServiceChecks.add(jsonHealthServiceCheck);
         return this;
     }
 }

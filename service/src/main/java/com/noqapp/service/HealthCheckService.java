@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.json.JsonHealthCheck;
+import com.noqapp.domain.json.JsonHealthServiceCheck;
+import com.noqapp.domain.types.HealthStatusEnum;
 import com.noqapp.repository.QueueManagerJDBC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,6 @@ public class HealthCheckService {
     private GenerateUserIdService generateUserIdService;
     private QueueManagerJDBC queueManagerJDBC;
 
-    private enum HealthStatus {GOOD, BAD}
-
     @Autowired
     public HealthCheckService(
             GenerateUserIdService generateUserIdService,
@@ -37,26 +37,27 @@ public class HealthCheckService {
         this.queueManagerJDBC = queueManagerJDBC;
     }
 
-    public String doHealthCheck() {
-        JsonHealthCheck jsonHealthCheck = new JsonHealthCheck();
-        jsonHealthCheck.setWeb(HealthStatus.GOOD.name()).increaseHealth();
-
+    public void doHealthCheck(JsonHealthCheck jsonHealthCheck) {
+        JsonHealthServiceCheck jsonHealthServiceCheck = new JsonHealthServiceCheck("sm");
         try {
             generateUserIdService.getLastGenerateUserId();
-            jsonHealthCheck.setMongo(HealthStatus.GOOD.name()).increaseHealth();
+            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
+            jsonHealthCheck.increaseHealth();
         } catch (Exception e) {
             LOG.error("Failed Mongo connection reason={}", e.getLocalizedMessage(), e);
-            jsonHealthCheck.setMongo(HealthStatus.BAD.name());
+            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
         }
+        jsonHealthCheck.addJsonHealthServiceChecks(jsonHealthServiceCheck);
 
+        jsonHealthServiceCheck = new JsonHealthServiceCheck("sr");
         try {
             queueManagerJDBC.isDBAlive();
-            jsonHealthCheck.setMysql(HealthStatus.GOOD.name()).increaseHealth();
+            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
+            jsonHealthCheck.increaseHealth();
         } catch (SQLException e) {
             LOG.error("Failed MySql sqlState={} errorCode={}", e.getSQLState(), e.getErrorCode(), e);
-            jsonHealthCheck.setMysql(HealthStatus.BAD.name());
+            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
         }
-
-        return jsonHealthCheck.asJson();
+        jsonHealthCheck.addJsonHealthServiceChecks(jsonHealthServiceCheck);
     }
 }
