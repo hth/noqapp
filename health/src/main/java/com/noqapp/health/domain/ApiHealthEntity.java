@@ -1,8 +1,12 @@
 package com.noqapp.health.domain;
 
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.health.domain.types.HealthStatusEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender
@@ -16,9 +20,67 @@ import org.springframework.data.mongodb.core.mapping.Document;
 })
 @Document(collection = "HEALTH_SERVICE")
 @CompoundIndexes({
-        @CompoundIndex(name = "user_account_role_idx", def = "{'UID': 1, 'RE': 1}", unique = true),
-        @CompoundIndex (name = "user_account_qid_idx", def = "{'QID': 1}", unique = true),
-        @CompoundIndex (name = "user_account_uid_idx", def = "{'UID': 1}", unique = true)
+        @CompoundIndex(name = "health_service_idx", def = "{'API': 1, 'ME': 1, 'CL': 1}", unique = false)
 })
-public class ApiHealthEntity {
+public class ApiHealthEntity extends BaseEntity {
+    @NotNull
+    @Field("API")
+    private String api;
+
+    @Field("ME")
+    private String methodName;
+
+    @Field("CL")
+    private String clazzName;
+
+    @Field("DU")
+    private long duration;
+
+    @Field("HS")
+    private HealthStatusEnum healthStatus;
+
+    public String getApi() {
+        return api;
+    }
+
+    public ApiHealthEntity setApi(String api) {
+        this.api = api;
+        return this;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public ApiHealthEntity setMethodName(String methodName) {
+        this.methodName = methodName;
+        return this;
+    }
+
+    public String getClazzName() {
+        return clazzName;
+    }
+
+    public ApiHealthEntity setClazzName(String clazzName) {
+        this.clazzName = clazzName;
+        return this;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public ApiHealthEntity setDuration(long duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public HealthStatusEnum getHealthStatus() {
+        return healthStatus;
+    }
+
+    public ApiHealthEntity setHealthStatus(HealthStatusEnum healthStatus) {
+        this.healthStatus = healthStatus;
+        return this;
+    }
 }

@@ -44,7 +44,7 @@ public class SiteHealthService {
             jsonSiteHealth.increaseServiceUpCount();
         } catch (Exception e) {
             LOG.error("Failed Mongo connection reason={}", e.getLocalizedMessage(), e);
-            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.B);
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.F);
         }
         jsonSiteHealth.addJsonHealthServiceChecks(jsonSiteHealthService);
 
@@ -55,7 +55,7 @@ public class SiteHealthService {
             jsonSiteHealth.increaseServiceUpCount();
         } catch (Exception e) {
             LOG.error("Failed MySql reason={}", e.getLocalizedMessage(), e);
-            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.B);
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.F);
         }
         jsonSiteHealth.addJsonHealthServiceChecks(jsonSiteHealthService);
     }
