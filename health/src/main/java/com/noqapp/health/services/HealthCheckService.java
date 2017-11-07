@@ -1,15 +1,14 @@
-package com.noqapp.service;
+package com.noqapp.health.services;
 
-import com.noqapp.domain.json.JsonHealthCheck;
-import com.noqapp.domain.json.JsonHealthServiceCheck;
-import com.noqapp.domain.types.HealthStatusEnum;
+import com.noqapp.health.domain.json.JsonHealthCheck;
+import com.noqapp.health.domain.json.JsonHealthServiceCheck;
+import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.service.GenerateUserIdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 
 /**
  * User: hitender

@@ -1,4 +1,4 @@
-package com.noqapp.domain.types;
+package com.noqapp.health.domain.types;
 
 /**
  * User: hitender
