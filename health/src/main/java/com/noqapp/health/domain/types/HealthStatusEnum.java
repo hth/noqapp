@@ -6,7 +6,7 @@ package com.noqapp.health.domain.types;
  */
 public enum HealthStatusEnum {
     G("G", "Good"),
-    B("B", "Bad");
+    F("F", "Fail");
 
     private final String description;
     private final String name;
