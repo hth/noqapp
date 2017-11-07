@@ -34,7 +34,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonHealthCheck extends AbstractDomain {
+public class JsonSiteHealth extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
     @JsonIgnore
@@ -44,11 +44,11 @@ public class JsonHealthCheck extends AbstractDomain {
     private int serviceUp;
 
     @JsonProperty("services")
-    private List<JsonHealthServiceCheck> jsonHealthServiceChecks = new ArrayList<>();
+    private List<JsonSiteHealthService> jsonSiteHealthServices = new ArrayList<>();
 
     @JsonProperty("health")
     public String health() {
-        return String.format("%d of %d", serviceUp, jsonHealthServiceChecks.size());
+        return String.format("%d of %d", serviceUp, jsonSiteHealthServices.size());
     }
 
     @JsonIgnore
@@ -56,17 +56,17 @@ public class JsonHealthCheck extends AbstractDomain {
         serviceUp++;
     }
 
-    public List<JsonHealthServiceCheck> getJsonHealthServiceChecks() {
-        return jsonHealthServiceChecks;
+    public List<JsonSiteHealthService> getJsonSiteHealthServices() {
+        return jsonSiteHealthServices;
     }
 
-    public JsonHealthCheck setJsonHealthServiceChecks(List<JsonHealthServiceCheck> jsonHealthServiceChecks) {
-        this.jsonHealthServiceChecks = jsonHealthServiceChecks;
+    public JsonSiteHealth setJsonSiteHealthServices(List<JsonSiteHealthService> jsonSiteHealthServices) {
+        this.jsonSiteHealthServices = jsonSiteHealthServices;
         return this;
     }
 
-    public JsonHealthCheck addJsonHealthServiceChecks(JsonHealthServiceCheck jsonHealthServiceCheck) {
-        this.jsonHealthServiceChecks.add(jsonHealthServiceCheck);
+    public JsonSiteHealth addJsonHealthServiceChecks(JsonSiteHealthService jsonSiteHealthService) {
+        this.jsonSiteHealthServices.add(jsonSiteHealthService);
         return this;
     }
 

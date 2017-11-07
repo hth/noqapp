@@ -1,7 +1,7 @@
 package com.noqapp.health.services;
 
-import com.noqapp.health.domain.json.JsonHealthCheck;
-import com.noqapp.health.domain.json.JsonHealthServiceCheck;
+import com.noqapp.health.domain.json.JsonSiteHealth;
+import com.noqapp.health.domain.json.JsonSiteHealthService;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.service.GenerateUserIdService;
@@ -21,14 +21,14 @@ import org.springframework.stereotype.Service;
         "PMD.LongVariable"
 })
 @Service
-public class HealthCheckService {
-    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckService.class);
+public class SiteHealthService {
+    private static final Logger LOG = LoggerFactory.getLogger(SiteHealthService.class);
 
     private GenerateUserIdService generateUserIdService;
     private QueueManagerJDBC queueManagerJDBC;
 
     @Autowired
-    public HealthCheckService(
+    public SiteHealthService(
             GenerateUserIdService generateUserIdService,
             QueueManagerJDBC queueManagerJDBC
     ) {
@@ -36,27 +36,27 @@ public class HealthCheckService {
         this.queueManagerJDBC = queueManagerJDBC;
     }
 
-    public void doHealthCheck(JsonHealthCheck jsonHealthCheck) {
-        JsonHealthServiceCheck jsonHealthServiceCheck = new JsonHealthServiceCheck("sm");
+    public void doSiteHealthCheck(JsonSiteHealth jsonSiteHealth) {
+        JsonSiteHealthService jsonSiteHealthService = new JsonSiteHealthService("sm");
         try {
             generateUserIdService.getLastGenerateUserId();
-            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
-            jsonHealthCheck.increaseServiceUpCount();
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.G);
+            jsonSiteHealth.increaseServiceUpCount();
         } catch (Exception e) {
             LOG.error("Failed Mongo connection reason={}", e.getLocalizedMessage(), e);
-            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.B);
         }
-        jsonHealthCheck.addJsonHealthServiceChecks(jsonHealthServiceCheck);
+        jsonSiteHealth.addJsonHealthServiceChecks(jsonSiteHealthService);
 
-        jsonHealthServiceCheck = new JsonHealthServiceCheck("sr");
+        jsonSiteHealthService = new JsonSiteHealthService("sr");
         try {
             queueManagerJDBC.isDBAlive();
-            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.G);
-            jsonHealthCheck.increaseServiceUpCount();
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.G);
+            jsonSiteHealth.increaseServiceUpCount();
         } catch (Exception e) {
             LOG.error("Failed MySql reason={}", e.getLocalizedMessage(), e);
-            jsonHealthServiceCheck.ended().setHealthStatus(HealthStatusEnum.B);
+            jsonSiteHealthService.ended().setHealthStatus(HealthStatusEnum.B);
         }
-        jsonHealthCheck.addJsonHealthServiceChecks(jsonHealthServiceCheck);
+        jsonSiteHealth.addJsonHealthServiceChecks(jsonSiteHealthService);
     }
 }

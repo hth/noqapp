@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonHealthServiceCheck extends AbstractDomain {
+public class JsonSiteHealthService extends AbstractDomain {
 
     @JsonProperty("service")
     private String name;
@@ -44,12 +44,12 @@ public class JsonHealthServiceCheck extends AbstractDomain {
     @JsonProperty("status")
     private HealthStatusEnum healthStatus;
 
-    public JsonHealthServiceCheck(String name) {
+    public JsonSiteHealthService(String name) {
         this.name = name;
         this.start = Instant.now();
     }
 
-    public JsonHealthServiceCheck ended() {
+    public JsonSiteHealthService ended() {
         this.end = Instant.now();
         return this;
     }
@@ -58,7 +58,7 @@ public class JsonHealthServiceCheck extends AbstractDomain {
         return healthStatus;
     }
 
-    public JsonHealthServiceCheck setHealthStatus(HealthStatusEnum healthStatus) {
+    public JsonSiteHealthService setHealthStatus(HealthStatusEnum healthStatus) {
         this.healthStatus = healthStatus;
         return this;
     }
