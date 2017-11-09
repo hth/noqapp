@@ -193,12 +193,12 @@ public class QueueHistory {
      * @param queues
      */
     private StatsBizStoreDailyEntity saveDailyStat(String bizStoreId, String bizNameId, String codeQR, List<QueueEntity> queues) {
-        long totalServiceTime = 0, totalHoursSaved = 0;
+        long totalServiceTimeInMilliSeconds = 0, totalHoursSaved = 0;
         int totalServiced = 0, totalNoShow = 0, totalAbort = 0, totalRating = 0, totalCustomerRated = 0;
         for (QueueEntity queue : queues) {
             switch (queue.getQueueUserState()) {
                 case S:
-                    totalServiceTime += queue.timeTakenForService();
+                    totalServiceTimeInMilliSeconds += queue.timeTakenForServiceInMilliSeconds();
                     if (queue.getRatingCount() > 0) {
                         totalRating += queue.getRatingCount();
                         totalCustomerRated++;
@@ -254,12 +254,12 @@ public class QueueHistory {
 
         /* Service time and number of clients. */
         statsBizStoreDaily
-                .setTotalServiceTime(totalServiceTime)
+                .setTotalServiceTime(totalServiceTimeInMilliSeconds)
                 .setTotalServiced(totalServiced)
                 .setTotalAbort(totalAbort)
                 .setTotalNoShow(totalNoShow)
                 .setTotalClient(totalServiced + totalAbort + totalNoShow)
-                .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTime / totalServiced);
+                .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         statsBizStoreDaily

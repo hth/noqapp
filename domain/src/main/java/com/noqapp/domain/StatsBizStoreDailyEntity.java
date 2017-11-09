@@ -50,10 +50,12 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Field ("TC")
     private int totalClient;
 
+    /* Time saved as Milli Seconds. */
     @NotNull
     @Field ("ST")
     private long totalServiceTime;
 
+    /* Time saved as Milli Seconds. */
     @Field("AS")
     private long averageServiceTime;
 

@@ -200,7 +200,7 @@ public class QueueEntity extends BaseEntity {
         this.serviceEndTime = serviceEndTime;
     }
 
-    public long timeTakenForService() {
+    public long timeTakenForServiceInMilliSeconds() {
         return serviceEndTime.toInstant().toEpochMilli() - serviceBeginTime.toInstant().toEpochMilli();
     }
 
