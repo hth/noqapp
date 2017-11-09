@@ -171,7 +171,7 @@ public final class DateUtil {
         return convertToDateTime(LocalDateTime.parse(date, dateTimeFormatter));
     }
 
-    private static Date convertToDateTime(LocalDateTime localDateTime) {
+    public static Date convertToDateTime(LocalDateTime localDateTime) {
         return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
     }
 

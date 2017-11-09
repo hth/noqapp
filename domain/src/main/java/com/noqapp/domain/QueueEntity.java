@@ -82,6 +82,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("SE")
     private Date serviceEndTime;
 
+    @Field ("EB")
+    private Date expectedServiceBegin;
+
     public QueueEntity(String codeQR, String did, String queueUserId, int tokenNumber, String displayName) {
         this.codeQR = codeQR;
         this.did = did;
@@ -199,6 +202,15 @@ public class QueueEntity extends BaseEntity {
 
     public long timeTakenForService() {
         return serviceEndTime.toInstant().toEpochMilli() - serviceBeginTime.toInstant().toEpochMilli();
+    }
+
+    public Date getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public QueueEntity setExpectedServiceBegin(Date expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
+        return this;
     }
 
     @Override
