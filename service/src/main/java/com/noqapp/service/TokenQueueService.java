@@ -131,8 +131,8 @@ public class TokenQueueService {
                     }
 
                     if (0 != averageServiceTime) {
-                        long serviceInNanoSeconds = averageServiceTime * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
-                        queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusNanos(serviceInNanoSeconds)));
+                        long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
+                        queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes)));
                     }
                     queueManager.insert(queue);
                 } catch (DuplicateKeyException e) {
