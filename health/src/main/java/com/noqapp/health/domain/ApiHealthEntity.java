@@ -43,8 +43,8 @@ public class ApiHealthEntity extends BaseEntity {
 
     /* Auto delete records in 2 days. */
     @Indexed(name="health_service_auto_delete_idx", expireAfterSeconds=172800)
-    @Field ("C")
-    private Date created = new Date();
+    @Field ("E")
+    private Date expire = new Date();
 
     public String getApi() {
         return api;
