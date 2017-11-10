@@ -42,7 +42,7 @@ public class ApiHealthEntity extends BaseEntity {
     private HealthStatusEnum healthStatus;
 
     /* Auto delete records in 2 days. */
-    @Indexed(name="health_service_auto_delete_idx", expireAfterSeconds=172800)
+    @Indexed(name="health_service_auto_expire_idx", expireAfterSeconds=172800)
     @Field ("E")
     private Date expire = new Date();
 
