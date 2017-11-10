@@ -42,6 +42,6 @@ public class ApiHealthManagerImpl implements ApiHealthManager {
 
     @Override
     public void deleteHard(ApiHealthEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 }
