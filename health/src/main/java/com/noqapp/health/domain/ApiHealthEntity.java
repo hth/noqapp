@@ -1,6 +1,5 @@
 package com.noqapp.health.domain;
 
-import com.noqapp.domain.BaseEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
