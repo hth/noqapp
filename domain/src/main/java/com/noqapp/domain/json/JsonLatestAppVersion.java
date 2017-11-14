@@ -24,12 +24,12 @@ import com.noqapp.domain.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonSupportedDevice extends AbstractDomain {
+public class JsonLatestAppVersion extends AbstractDomain {
 
     @JsonProperty("av")
     private String latestAppVersion;
 
-    public JsonSupportedDevice(String latestAppVersion) {
+    public JsonLatestAppVersion(String latestAppVersion) {
         this.latestAppVersion = latestAppVersion;
     }
 }
