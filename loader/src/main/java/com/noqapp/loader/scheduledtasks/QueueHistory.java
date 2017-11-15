@@ -125,6 +125,7 @@ public class QueueHistory {
                         throw e;
                     }
 
+                    // TODO(hth) Make sure BizStoreHours are not empty.
                     bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
                     int deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
