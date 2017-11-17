@@ -51,8 +51,8 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping (value = "/business")
-public class AdminLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(AdminLandingController.class);
+public class AdminBusinessLandingController {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminBusinessLandingController.class);
 
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
@@ -66,7 +66,7 @@ public class AdminLandingController {
     private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
-    public AdminLandingController(
+    public AdminBusinessLandingController(
             @Value ("${nextPage:/business/landing}")
             String nextPage,
 
