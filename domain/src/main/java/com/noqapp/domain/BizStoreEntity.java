@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
+import com.noqapp.domain.elastic.BizStoreElasticEntity;
+import com.noqapp.domain.shared.GeoPoint;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.utils.CommonUtil;
 import com.noqapp.utils.Formatter;
@@ -485,5 +487,37 @@ public class BizStoreEntity extends BaseEntity {
 
         LOG.info("Average Service time {} in milliSeconds={}", time, averageServiceTime);
         return time;
+    }
+
+    @Transient
+    private GeoPoint getGeoPoint() {
+        /* Latitude and then Longitude. */
+        return new GeoPoint(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    public BizStoreElasticEntity getAsBizStoreElastic() {
+        return new BizStoreElasticEntity()
+                .setId(id)
+                .setBusinessName(bizName.getBusinessName())
+                .setAddress(address)
+                .setTown(town)
+                .setDistrict(district)
+                .setState(state)
+                .setStateShortName(stateShortName)
+                .setPostalCode(postalCode)
+                .setCountry(country)
+                .setCountryShortName(countryShortName)
+                .setPhone(phone)
+                .setPhoneRaw(phoneRaw)
+                .setGeoPoint(getGeoPoint())
+                .setPlaceId(placeId)
+                .setPlaceType(placeType)
+                .setRating(rating)
+                .setRatingCount(ratingCount)
+                .setBizNameId(bizName.getId())
+                .setDisplayName(displayName)
+                .setCodeQR(codeQR)
+                .setTimeZone(timeZone);
     }
 }

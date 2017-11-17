@@ -201,6 +201,7 @@ class RegistrationFlowActions {
         bizService.removeAll(registerBusiness.getBizStoreId());
         BizStoreEntity bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
         bizService.deleteBizStore(bizStore);
+        bizService.delete(bizStore.getId());
     }
 
     /**
@@ -255,6 +256,7 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
+            bizService.save(bizStore.getAsBizStoreElastic());
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",

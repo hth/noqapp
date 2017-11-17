@@ -1,17 +1,20 @@
 package com.noqapp.view.listener;
 
+import com.noqapp.domain.elastic.BizStoreElasticEntity;
+import com.noqapp.service.ElasticAdministrationService;
+import com.noqapp.service.config.FirebaseConfig;
+import com.noqapp.utils.CommonUtil;
+import org.elasticsearch.action.main.MainResponse;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.service.config.FirebaseConfig;
-
-import java.sql.SQLException;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * User: hitender
@@ -29,11 +32,20 @@ public class NoQAppInitializationCheckBean {
 
     private DataSource dataSource;
     private FirebaseConfig firebaseConfig;
+    private RestHighLevelClient restHighLevelClient;
+    private ElasticAdministrationService elasticAdministrationService;
 
     @Autowired
-    public NoQAppInitializationCheckBean(DataSource dataSource, FirebaseConfig firebaseConfig) {
+    public NoQAppInitializationCheckBean(
+            DataSource dataSource,
+            FirebaseConfig firebaseConfig,
+            RestHighLevelClient restHighLevelClient,
+            ElasticAdministrationService elasticAdministrationService
+    ) {
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
+        this.restHighLevelClient = restHighLevelClient;
+        this.elasticAdministrationService = elasticAdministrationService;
     }
 
     @PostConstruct
@@ -52,5 +64,35 @@ public class NoQAppInitializationCheckBean {
             throw new RuntimeException("Firebase could not be connected");
         }
         LOG.info("Firebase connected");
+    }
+
+    @PostConstruct
+    public void checkElasticConnection() {
+        try {
+            if (!restHighLevelClient.ping(CommonUtil.getMeSomeHeader())) {
+                LOG.error("Elastic could not be connected");
+                throw new RuntimeException("Elastic could not be connected");
+            }
+
+            MainResponse mainResponse = restHighLevelClient.info(CommonUtil.getMeSomeHeader());
+            LOG.info("Elastic {} connected clusterName={} nodeName={}\n  build={}\n  clusterUuid={}\n",
+                    mainResponse.getVersion(),
+                    mainResponse.getClusterName(),
+                    mainResponse.getNodeName(),
+                    mainResponse.getBuild(),
+                    mainResponse.getClusterUuid());
+        } catch (IOException e) {
+            LOG.error("Elastic could not be connected");
+            throw new RuntimeException("Elastic could not be connected");
+        }
+    }
+
+    @PostConstruct
+    public void checkElasticIndex() {
+        if (!elasticAdministrationService.doesIndexExists(BizStoreElasticEntity.INDEX)) {
+            LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElasticEntity.INDEX);
+        } else {
+            LOG.info("Elastic Index={} found", BizStoreElasticEntity.INDEX);
+        }
     }
 }

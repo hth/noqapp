@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.shared.GeoPoint;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
@@ -374,6 +375,12 @@ public class BizNameEntity extends BaseEntity {
     public BizNameEntity setBillingStatus(BillingStatusEnum billingStatus) {
         this.billingStatus = billingStatus;
         return this;
+    }
+
+    @Transient
+    private GeoPoint getGeoPoint() {
+        /* Latitude and then Longitude. */
+        return new GeoPoint(coordinate[1], coordinate[0]);
     }
 
     @Override
