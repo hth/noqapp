@@ -327,9 +327,9 @@
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="archive" name="com.noqapp-service.jar">
-              <element id="module-output" name="service_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            <element id="archive" name="com.noqapp-health.jar">
+              <element id="module-output" name="health_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
             </element>
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
@@ -576,6 +576,10 @@
             <element id="library" level="project" name="Gradle: org.threeten:threetenbp:1.3.3" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
+            <element id="archive" name="com.noqapp-service.jar">
+              <element id="module-output" name="service_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            </element>
           </element>
         </element>
       </root>
@@ -1140,6 +1144,10 @@
               <element id="module-output" name="social_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
             </element>
+            <element id="archive" name="com.noqapp-health.jar">
+              <element id="module-output" name="health_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-service.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
@@ -1429,6 +1437,7 @@
         <w>journaled</w>
         <w>logstash</w>
         <w>noqapp</w>
+        <w>okhttp</w>
         <w>rememberme</w>
         <w>scrypt</w>
         <w>webflow</w>

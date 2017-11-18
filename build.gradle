@@ -388,7 +388,7 @@ project(':health') {
     jar.baseName = baseName + '-health'
 
     dependencies {
-        compile project(':common'), project(':domain'), project(':service')
+        compile project(':common'), project(':domain')
     }
 }
 
@@ -412,7 +412,7 @@ project(':service') {
     jar.baseName = baseName + '-service'
 
     dependencies {
-        compile project(':common'), project(':domain')
+        compile project(':common'), project(':domain'), project(':health')
     }
 }
 

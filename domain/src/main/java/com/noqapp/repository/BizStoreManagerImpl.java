@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
@@ -300,6 +301,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 BizStoreEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public Stream<BizStoreEntity> findAll() {
+        return mongoTemplate.findAll(BizStoreEntity.class, TABLE).stream();
     }
 
     //TODO add query to for near and for nearBy with distance

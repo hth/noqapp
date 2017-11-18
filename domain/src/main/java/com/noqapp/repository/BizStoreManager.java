@@ -2,9 +2,14 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -114,5 +119,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
             long averageServiceTime);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
+
+    /**
+     * Stream all documents.
+     *
+     * @return
+     */
+    Stream<BizStoreEntity> findAll();
 }
 

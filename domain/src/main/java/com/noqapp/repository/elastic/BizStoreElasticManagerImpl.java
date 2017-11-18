@@ -4,14 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.utils.CommonUtil;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -31,13 +37,12 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 /**
- *
  * curl -XGET http://localhost:9200/noqapp_biz_store/biz_store/_search?q=country:India
  * curl http://localhost:9200/noqapp/_search/?pretty=true
  * curl -X GET http://localhost:9200/
  * curl http://localhost:9200/x/_search/?pretty=true
  * curl http://localhost:9200/noqapp/x/_search/?pretty=true
- *
+ * <p>
  * User: hitender
  * Date: 11/193/16 1:49 AM
  */
@@ -126,6 +131,48 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             } else {
                 LOG.error("Failed saving id={} reason={}", id, e.getDetailedMessage(), e);
             }
+        }
+    }
+
+    @Override
+    public void save(List<BizStoreElasticEntity> bizStoreElastics) {
+        BulkRequest request = new BulkRequest();
+        request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
+
+        for (BizStoreElasticEntity bizStoreElastic : bizStoreElastics) {
+            request.add(new IndexRequest(
+                    BizStoreElasticEntity.INDEX,
+                    BizStoreElasticEntity.TYPE,
+                    bizStoreElastic.getId())
+                    .source(bizStoreElastic.asJson(), XContentType.JSON));
+        }
+
+        try {
+            BulkResponse bulkResponse = restHighLevelClient.bulk(request, CommonUtil.getMeSomeHeader());
+            if (bulkResponse.hasFailures()) {
+                for (BulkItemResponse bulkItemResponse : bulkResponse) {
+                    if (bulkItemResponse.isFailed()) {
+                        BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
+                        LOG.info("Failed during saving id={} message={} cause={} status={}",
+                                failure.getId(), failure.getMessage(), failure.getCause(), failure.getStatus());
+                    }
+                }
+            } else {
+                long created = 0, updated = 0, deleted = 0;
+                for (BulkItemResponse bulkItemResponse : bulkResponse) {
+                    if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.INDEX
+                            || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
+                        created ++;
+                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.UPDATE) {
+                        updated ++;
+                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.DELETE) {
+                        deleted ++;
+                    }
+                }
+                LOG.info("Total saved BizStore create={} update={} delete={}", created, updated, deleted);
+            }
+        } catch (IOException e) {
+            LOG.error("Failed bulk save reason={}", e.getLocalizedMessage(), e);
         }
     }
 

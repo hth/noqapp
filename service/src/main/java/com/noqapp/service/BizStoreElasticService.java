@@ -24,10 +24,10 @@ import java.util.List;
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
 
-    private BizStoreElasticManager bizStoreElasticManager;
+    private BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager;
 
     @Autowired
-    public BizStoreElasticService(BizStoreElasticManager bizStoreElasticManager) {
+    public BizStoreElasticService(BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager) {
         this.bizStoreElasticManager = bizStoreElasticManager;
     }
 
@@ -37,11 +37,18 @@ public class BizStoreElasticService {
     }
 
     @Async
+    void save(List<BizStoreElasticEntity> bizStoreElastics) {
+        LOG.info("Bulk save size={}", bizStoreElastics.size());
+        bizStoreElasticManager.save(bizStoreElastics);
+    }
+
+    @Async
     void delete(String id) {
         bizStoreElasticManager.delete(id);
     }
 
     public List<BizStoreElasticEntity> searchByBusinessName(String businessName) {
+        LOG.info("Searching for {}", businessName);
         return bizStoreElasticManager.searchByBusinessName(businessName);
     }
 }

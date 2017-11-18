@@ -1,6 +1,7 @@
 package com.noqapp.view.listener;
 
 import com.noqapp.domain.elastic.BizStoreElasticEntity;
+import com.noqapp.service.BizService;
 import com.noqapp.service.ElasticAdministrationService;
 import com.noqapp.service.config.FirebaseConfig;
 import com.noqapp.utils.CommonUtil;
@@ -91,6 +92,7 @@ public class NoQAppInitializationCheckBean {
     public void checkElasticIndex() {
         if (!elasticAdministrationService.doesIndexExists(BizStoreElasticEntity.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElasticEntity.INDEX);
+            elasticAdministrationService.addAllBizStoreToElastic();
         } else {
             LOG.info("Elastic Index={} found", BizStoreElasticEntity.INDEX);
         }

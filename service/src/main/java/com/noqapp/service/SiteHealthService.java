@@ -1,10 +1,10 @@
-package com.noqapp.health.services;
+package com.noqapp.service;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.health.domain.json.JsonSiteHealth;
 import com.noqapp.health.domain.json.JsonSiteHealthService;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.repository.QueueManagerJDBC;
-import com.noqapp.service.GenerateUserIdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,7 @@ public class SiteHealthService {
         this.queueManagerJDBC = queueManagerJDBC;
     }
 
+    @Mobile
     public void doSiteHealthCheck(JsonSiteHealth jsonSiteHealth) {
         JsonSiteHealthService jsonSiteHealthService = new JsonSiteHealthService("sm");
         try {
