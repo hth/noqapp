@@ -40,7 +40,6 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 
     @Override
     public void save(UserPreferenceEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {
             object.setUpdated();
         }

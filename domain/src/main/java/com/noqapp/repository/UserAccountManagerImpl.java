@@ -45,7 +45,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
     @Override
     public void save(UserAccountEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             if (object.getId() != null) {
                 object.setUpdated();

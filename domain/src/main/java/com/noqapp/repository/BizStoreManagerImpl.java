@@ -56,7 +56,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public void save(BizStoreEntity object) {
         if (null != object.getBizName() && null != object.getBizName().getId()) {
-            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
                 object.setUpdated();
             }

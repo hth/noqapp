@@ -112,7 +112,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     List<QueueEntity> findByCodeQR(String codeQR);
 
-    int deleteByCodeQR(String codeQR);
+    long deleteByCodeQR(String codeQR);
 
     void increaseAttemptToSendNotificationCount(String id);
 

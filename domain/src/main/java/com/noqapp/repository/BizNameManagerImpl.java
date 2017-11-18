@@ -50,7 +50,6 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public void save(BizNameEntity object) {
         if (StringUtils.isNotBlank(object.getBusinessName())) {
-            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (null != object.getId()) {
                 object.setUpdated();
             }
