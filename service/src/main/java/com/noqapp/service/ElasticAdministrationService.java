@@ -3,7 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
-import com.noqapp.health.services.ApiHealthService;
+import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.config.NetworkService;
 import okhttp3.Request;
 import okhttp3.Response;

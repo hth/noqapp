@@ -1,4 +1,4 @@
-package com.noqapp.health.services;
+package com.noqapp.health.service;
 
 import com.noqapp.health.domain.ApiHealthContinuousEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
