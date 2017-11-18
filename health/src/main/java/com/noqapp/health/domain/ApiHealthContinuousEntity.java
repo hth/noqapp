@@ -20,11 +20,11 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "HEALTH_SERVICE")
+@Document(collection = "API_HEALTH_CONTINUOUS")
 @CompoundIndexes({
-        @CompoundIndex(name = "health_service_idx", def = "{'API': 1, 'ME': 1, 'CL': 1}", unique = false)
+        @CompoundIndex(name = "api_health_continuous_idx", def = "{'API': 1, 'ME': 1, 'CL': 1}", unique = false)
 })
-public class ApiHealthEntity {
+public class ApiHealthContinuousEntity {
     @Id
     protected String id;
 
@@ -45,7 +45,7 @@ public class ApiHealthEntity {
     private HealthStatusEnum healthStatus;
     
     /* Auto delete records in 2 months. */
-    @Indexed(name="health_service_auto_expire_idx", expireAfterSeconds=5184000)
+    @Indexed(name="api_health_continuous_auto_expire_idx", expireAfterSeconds=5184000)
     @Field ("C")
     private Date created = new Date();
 
@@ -53,7 +53,7 @@ public class ApiHealthEntity {
         return api;
     }
 
-    public ApiHealthEntity setApi(String api) {
+    public ApiHealthContinuousEntity setApi(String api) {
         this.api = api;
         return this;
     }
@@ -62,7 +62,7 @@ public class ApiHealthEntity {
         return methodName;
     }
 
-    public ApiHealthEntity setMethodName(String methodName) {
+    public ApiHealthContinuousEntity setMethodName(String methodName) {
         this.methodName = methodName;
         return this;
     }
@@ -71,7 +71,7 @@ public class ApiHealthEntity {
         return clazzName;
     }
 
-    public ApiHealthEntity setClazzName(String clazzName) {
+    public ApiHealthContinuousEntity setClazzName(String clazzName) {
         this.clazzName = clazzName;
         return this;
     }
@@ -80,7 +80,7 @@ public class ApiHealthEntity {
         return duration;
     }
 
-    public ApiHealthEntity setDuration(long duration) {
+    public ApiHealthContinuousEntity setDuration(long duration) {
         this.duration = duration;
         return this;
     }
@@ -89,7 +89,7 @@ public class ApiHealthEntity {
         return healthStatus;
     }
 
-    public ApiHealthEntity setHealthStatus(HealthStatusEnum healthStatus) {
+    public ApiHealthContinuousEntity setHealthStatus(HealthStatusEnum healthStatus) {
         this.healthStatus = healthStatus;
         return this;
     }
