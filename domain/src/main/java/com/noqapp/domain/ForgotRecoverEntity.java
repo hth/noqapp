@@ -38,7 +38,7 @@ public class ForgotRecoverEntity extends BaseEntity {
      * removing records after stipulated time of 7 days.
      */
     @NotNull
-    @Indexed (name = "remove_after_seconds_index", expireAfterSeconds = 604800)
+    @Indexed (name = "forgot_recover_auto_expire_idx", expireAfterSeconds = 604800)
     @Field ("CD")
     private Date createDate = getCreated();
 
