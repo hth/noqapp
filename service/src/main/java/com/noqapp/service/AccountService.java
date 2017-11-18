@@ -276,7 +276,7 @@ public class AccountService {
 
     private UserAuthenticationEntity getUserAuthenticationEntity(String password) {
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                HashText.computeBCrypt(password),
+                HashText.computeSCrypt(password),
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
         userAuthenticationManager.save(userAuthentication);
@@ -290,10 +290,9 @@ public class AccountService {
      * @return
      */
     public UserAuthenticationEntity getUserAuthenticationEntity() {
-        String code = HashText.computeBCrypt(RandomString.newInstance().nextString());
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                code,
-                code
+                HashText.computeSCrypt(RandomString.newInstance().nextString()),
+                HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;

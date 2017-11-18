@@ -277,6 +277,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.3.12.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.12.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.12.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.3.12.RELEASE" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -1428,6 +1429,8 @@
         <w>journaled</w>
         <w>logstash</w>
         <w>noqapp</w>
+        <w>rememberme</w>
+        <w>scrypt</w>
         <w>webflow</w>
       </words>
     </dictionary>

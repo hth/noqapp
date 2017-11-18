@@ -1,18 +1,12 @@
 package com.noqapp.utils;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 /**
  * User: hitender
@@ -32,13 +26,15 @@ public final class HashText {
 
     private static MessageDigest md1;
     private static MessageDigest md5;
+    private static SCryptPasswordEncoder sCryptPasswordEncoder;
 
     static {
         try {
             md1 = MessageDigest.getInstance("SHA-1");
             md5 = MessageDigest.getInstance("SHA-512");
-        } catch (NoSuchAlgorithmException exce) {
-            LOG.error("No hashing algorithm found={}", exce);
+            sCryptPasswordEncoder = new SCryptPasswordEncoder();
+        } catch (NoSuchAlgorithmException e) {
+            LOG.error("No hashing algorithm found={}", e);
         }
     }
 
@@ -58,11 +54,22 @@ public final class HashText {
         return BCrypt.hashpw(text, BCrypt.gensalt(WORKLOAD));
     }
 
+    public static String computeSCrypt(String text) {
+        return sCryptPasswordEncoder.encode(text);
+    }
+
     public static boolean checkPassword(String passwordPlainText, String storedHash) {
         if (null == storedHash || !storedHash.startsWith("$2a$")) {
             throw new IllegalArgumentException("Invalid hash provided for comparison");
         }
         return BCrypt.checkpw(passwordPlainText, storedHash);
+    }
+
+    public static boolean matchPassword(String passwordPlainText, String storedHash) {
+        if (null == storedHash || !storedHash.startsWith("$e0801$")) {
+            throw new IllegalArgumentException("Invalid hash provided for comparison");
+        }
+        return sCryptPasswordEncoder.matches(passwordPlainText, storedHash);
     }
 
     private static String hashCode(String text, MessageDigest md) {
@@ -91,37 +98,5 @@ public final class HashText {
             }
             return hexString.toString();
         }
-    }
-
-    /**
-     * This condition is used through Ajax call to validated if a receipt of similar value exist in db.
-     *
-     * @param queueUserId
-     * @param date
-     * @param total
-     * @return
-     */
-    public static String calculateChecksumForNotDeleted(String queueUserId, Date date, Double total) {
-        return calculateChecksum(queueUserId, date, total, false);
-    }
-
-    /**
-     * @param queueUserId
-     * @param date
-     * @param total
-     * @param deleted
-     * @return
-     */
-    public static String calculateChecksum(String queueUserId, Date date, Double total, boolean deleted) {
-        //This is considered to be thread safe
-        HashFunction hf = Hashing.md5();
-        HashCode hc = hf.newHasher()
-                .putString(queueUserId, Charsets.UTF_8)
-                .putString(date.toString(), Charsets.UTF_8)
-                .putDouble(total)
-                .putBoolean(deleted)
-                .hash();
-
-        return hc.toString();
     }
 }

@@ -206,7 +206,12 @@ public class MailService {
         }
     }
 
-    public MailTypeEnum sendQueueSupervisorInvite(String userId, String profileName, String businessName, String displayName) {
+    public MailTypeEnum sendQueueSupervisorInvite(
+            String userId,
+            String profileName,
+            String businessName,
+            String displayName
+    ) {
         LOG.info("Invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
@@ -229,8 +234,17 @@ public class MailService {
         return MailTypeEnum.SUCCESS;
     }
 
-    public MailTypeEnum addedAsQueueSupervisorNotifyMail(String userId, String profileName, String businessName, String displayName) {
-        LOG.info("Added to supervise notify mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
+    public MailTypeEnum addedAsQueueSupervisorNotifyMail(
+            String userId,
+            String profileName,
+            String businessName,
+            String displayName
+    ) {
+        LOG.info("Added to supervise notify mail businessName={} to userId={} by displayName={}",
+                businessName,
+                userId,
+                displayName);
+
         Map<String, String> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);

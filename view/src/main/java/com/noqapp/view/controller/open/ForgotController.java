@@ -235,7 +235,7 @@ public class ForgotController {
             } else {
                 UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                        HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
+                        HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
