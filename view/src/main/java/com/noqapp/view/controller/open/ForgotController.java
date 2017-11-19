@@ -230,7 +230,7 @@ public class ForgotController {
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getQueueUserId());
+                UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                         HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())

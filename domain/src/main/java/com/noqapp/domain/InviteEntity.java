@@ -91,7 +91,7 @@ public class InviteEntity extends BaseEntity {
         return remoteJoinForInviterCount;
     }
 
-    public void deductRemoteJoinForReceiptUserCount() {
+    public void deductRemoteJoinForQueueUserCount() {
         assertNotEquals(0, remoteJoinForQueueUserCount);
         this.remoteJoinForQueueUserCount--;
     }

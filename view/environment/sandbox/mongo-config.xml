@@ -44,7 +44,7 @@
 
     <bean id="gridfsDb" factory-bean="mongoTemplate" factory-method="getDb" />
 
-    <!-- Use this post processor to translate any MongoExceptions thrown in @ReceiptUser annotated classes -->
+    <!-- Use this post processor to translate any MongoExceptions thrown in @QueueUser annotated classes -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
 </beans>

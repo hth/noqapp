@@ -34,13 +34,13 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${accessLanding:/access/landing.htm}")
     private String accessLanding;
 
-    /** For NoQueue techs. */
-    @Value ("${empTechLanding:/emp/receipt/landing.htm}")
-    private String empTechLanding;
-
     /** For supers. */
     @Value ("${empLanding:/emp/landing.htm}")
     private String empLanding;
+
+    /** For NoQueue techs. TODO still */
+    @Value ("${empTechLanding:/emp/noqueue/landing.htm}")
+    private String empTechLanding;
 
     @Value ("${adminLanding:/admin/landing.htm}")
     private String adminLanding;

@@ -39,7 +39,7 @@ public class UserProfilePreferenceService {
         return userProfileManager.findByEmail(email);
     }
 
-    public UserProfileEntity findByReceiptUserId(String qid) {
+    public UserProfileEntity findByQueueUserId(String qid) {
         return userProfileManager.findByQueueUserId(qid);
     }
 
@@ -47,7 +47,7 @@ public class UserProfilePreferenceService {
         return userProfileManager.findOneByPhone(phone);
     }
 
-    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String qid) {
+    public UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid) {
         return userProfileManager.forProfilePreferenceFindByQueueUserId(qid);
     }
 

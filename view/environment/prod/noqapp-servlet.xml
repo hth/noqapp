@@ -72,7 +72,7 @@
         </property>
     </bean>
 
-    <!-- the application context definition for the receipt DispatcherServlet -->
+    <!-- the application context definition for the noqueue DispatcherServlet -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <!--suppress SpringModelInspection -->
         <property name="basename" value="messages" />

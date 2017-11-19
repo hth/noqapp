@@ -109,7 +109,7 @@ public class InviteManagerImpl implements InviteManager {
 
             boolean updated = false;
             if (invite.getQueueUserId().equalsIgnoreCase(qid)) {
-                invite.deductRemoteJoinForReceiptUserCount();
+                invite.deductRemoteJoinForQueueUserCount();
                 updated = true;
             } else if (invite.getInviterId().equalsIgnoreCase(qid)) {
                 invite.deductRemoteJoinForInviterCount();

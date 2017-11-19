@@ -26,7 +26,7 @@ Disallow: /404.html
 Disallow: /405.html
 Disallow: /414.html
 Disallow: /500.html
-Disallow: /receipt-mobile/
+Disallow: /noqapp-mobile/
 Disallow: /*?*
 Allow: /open/login.htm
 Allow: /open/register.htm
@@ -49,7 +49,7 @@ Disallow: /404.html
 Disallow: /405.html
 Disallow: /414.html
 Disallow: /500.html
-Disallow: /receipt-mobile/
+Disallow: /noqapp-mobile/
 Disallow: /*?*
 Allow: /open/login.htm
 Allow: /open/register.htm

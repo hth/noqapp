@@ -1440,6 +1440,7 @@
         <w>journaled</w>
         <w>logstash</w>
         <w>noqapp</w>
+        <w>noqueue</w>
         <w>okhttp</w>
         <w>rememberme</w>
         <w>scrypt</w>
