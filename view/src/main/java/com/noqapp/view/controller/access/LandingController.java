@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.access;
 
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,9 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.QueueService;
 import com.noqapp.view.form.LandingForm;
+
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * User: hitender
@@ -43,6 +48,7 @@ public class LandingController {
 
     private BusinessUserService businessUserService;
     private QueueService queueService;
+    private ApiHealthService apiHealthService;
 
     @Autowired
     public LandingController(
@@ -53,22 +59,25 @@ public class LandingController {
             String migrateToBusinessRegistrationFlowActions,
 
             BusinessUserService businessUserService,
-            QueueService queueService) {
+            QueueService queueService,
+            ApiHealthService apiHealthService) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
 
         this.businessUserService = businessUserService;
         this.queueService = queueService;
+        this.apiHealthService = apiHealthService;
     }
 
-    @RequestMapping (
+    @RequestMapping(
             value = "/landing",
             method = RequestMethod.GET
     )
-    public String loadForm(
-            @ModelAttribute ("landingForm")
+    public String landing(
+            @ModelAttribute("landingForm")
             LandingForm landingForm
     ) {
+        Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
@@ -86,6 +95,12 @@ public class LandingController {
                 landingForm.getCurrentQueues().size(),
                 landingForm.getHistoricalQueues().size());
 
+        apiHealthService.insert(
+                "/landing",
+                "landing",
+                LandingController.class.getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         return nextPage;
     }
 
