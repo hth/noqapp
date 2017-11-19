@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * User: hitender
  * Date: 11/07/17 10:13 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -43,10 +44,10 @@ public class ApiHealthContinuousEntity {
 
     @Field("HS")
     private HealthStatusEnum healthStatus;
-    
+
     /* Auto delete records in 2 months. */
-    @Indexed(name="api_health_continuous_auto_expire_idx", expireAfterSeconds=5184000)
-    @Field ("C")
+    @Indexed(name = "api_health_continuous_auto_expire_idx", expireAfterSeconds = 5184000)
+    @Field("C")
     private Date created = new Date();
 
     public String getApi() {

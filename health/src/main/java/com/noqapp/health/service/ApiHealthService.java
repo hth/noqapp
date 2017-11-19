@@ -17,6 +17,12 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
  * User: hitender
  * Date: 11/07/17 11:01 AM
  */
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Service
 public class ApiHealthService {
     private static final Logger LOG = LoggerFactory.getLogger(ApiHealthService.class);
@@ -32,7 +38,7 @@ public class ApiHealthService {
         this.service = newCachedThreadPool();
     }
 
-    public void insert(String apiName, String methodName, String clazzName, long duration,  HealthStatusEnum healthStatus) {
+    public void insert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
         service.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration, healthStatus));
     }
 
@@ -44,11 +50,11 @@ public class ApiHealthService {
         LOG.info("{} {} {} {} ms", apiName, methodName, healthStatus, duration);
         apiHealthContinuousManager.save(
                 new ApiHealthContinuousEntity()
-                    .setApi(apiName)
-                    .setMethodName(methodName)
-                    .setClazzName(clazzName)
-                    .setDuration(duration)
-                    .setHealthStatus(healthStatus)
+                        .setApi(apiName)
+                        .setMethodName(methodName)
+                        .setClazzName(clazzName)
+                        .setDuration(duration)
+                        .setHealthStatus(healthStatus)
         );
     }
 }

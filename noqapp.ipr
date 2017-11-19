@@ -1222,6 +1222,9 @@
       <module name="loader_integration" target="1.8" />
       <module name="loader_main" target="1.8" />
       <module name="loader_test" target="1.8" />
+      <module name="noqapp-health_integration" target="1.8" />
+      <module name="noqapp-health_main" target="1.8" />
+      <module name="noqapp-health_test" target="1.8" />
       <module name="noqapp_main" target="1.8" />
       <module name="noqapp_test" target="1.8" />
       <module name="security_integration" target="1.8" />
@@ -4223,6 +4226,13 @@
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/6d75e2498cd82c02665df5f9d7a77d0b5e398157/jedis-2.9.0-sources.jar!/" />
       </SOURCES>
+    </library>
+    <library name="noqapp-health-1.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/health/build/libs/noqapp-health-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
   <component name="masterDetails">

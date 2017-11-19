@@ -15,7 +15,7 @@ import java.util.Date;
  * hitender
  * 11/18/17 6:03 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -46,7 +46,7 @@ public class ApiHealthMonthlyEntity {
     private HealthStatusEnum healthStatus;
 
     /* Auto delete records in 2 months. */
-    @Indexed(name="api_health_monthly_auto_expire_idx", expireAfterSeconds=5184000)
-    @Field ("C")
+    @Indexed(name = "api_health_monthly_auto_expire_idx", expireAfterSeconds = 5184000)
+    @Field("C")
     private Date created = new Date();
 }
