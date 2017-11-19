@@ -370,7 +370,8 @@ project(':loader') {
     jar.baseName = baseName + '-loader'
 
     dependencies {
-        compile project(':common'), project(':service')
+        compile project(':common'),
+                project(':service')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
     }
@@ -388,7 +389,8 @@ project(':health') {
     jar.baseName = baseName + '-health'
 
     dependencies {
-        compile project(':common'), project(':domain')
+        compile project(':common'),
+                project(':domain')
     }
 }
 
@@ -401,7 +403,8 @@ project(':security') {
     }
 
     dependencies {
-        compile project(':common'), project(':domain')
+        compile project(':common'),
+                project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -412,7 +415,9 @@ project(':service') {
     jar.baseName = baseName + '-service'
 
     dependencies {
-        compile project(':common'), project(':domain'), project(':health')
+        compile project(':common'),
+                project(':domain'),
+                project(':health')
     }
 }
 
@@ -420,7 +425,9 @@ project(':social') {
     jar.baseName = baseName + '-social'
 
     dependencies {
-        compile project(':common'), project(':domain'), project(':service')
+        compile project(':common'),
+                project(':domain'),
+                project(':service')
     }
 }
 
@@ -434,7 +441,12 @@ project(':view') {
     }
 
     dependencies {
-        compile project(':common'), project(':domain'), project(':security'), project(':social'), project(':service'), project(':loader')
+        compile project(':common'),
+                project(':domain'),
+                project(':security'),
+                project(':social'),
+                project(':service'),
+                project(':loader')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
