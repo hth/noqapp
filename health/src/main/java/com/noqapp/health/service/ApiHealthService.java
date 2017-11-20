@@ -29,21 +29,21 @@ public class ApiHealthService {
 
     private ApiHealthNowManager apiHealthNowManager;
 
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     @Autowired
     public ApiHealthService(ApiHealthNowManager apiHealthNowManager) {
         this.apiHealthNowManager = apiHealthNowManager;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     public void insert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
-        service.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration, healthStatus));
+        executorService.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration, healthStatus));
     }
 
     public void insert(String apiName, String methodName, String clazzName, Duration duration, HealthStatusEnum healthStatus) {
-        service.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration.toMillis(), healthStatus));
+        executorService.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration.toMillis(), healthStatus));
     }
 
     private void invokeThreadToInsert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {

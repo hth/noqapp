@@ -44,7 +44,7 @@ public class MailService {
     private FreemarkerService freemarkerService;
     private MailManager mailManager;
 
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     private String devSentTo;
     private String domain;
@@ -97,7 +97,7 @@ public class MailService {
         this.emailValidateService = emailValidateService;
         this.mailManager = mailManager;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     /**
@@ -276,7 +276,7 @@ public class MailService {
     public void sendValidationMailOnAccountCreation(String userId, String qid, String name) {
         if (StringUtils.isNotBlank(userId) && !userId.endsWith("mail.noqapp.com")) {
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
-            service.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
+            executorService.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
         }
     }
 }
