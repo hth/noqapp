@@ -45,7 +45,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     private BusinessUserService businessUserService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     @Autowired
     public MigrateToBusinessProfileFlowActions(
@@ -64,7 +64,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     public RegisterUser loadProfile() {
@@ -110,7 +110,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
             accountService.updateUserProfile(registerUser, username);
             if (StringUtils.isNotBlank(registerUser.getPassword())) {
                 //TODO(hth) add condition to set password on web page when profile is being modified as user could be registered via Phone and not through email
-                service.submit(() -> updatePassword(registerUser));
+                executorService.submit(() -> updatePassword(registerUser));
             }
             sendMailAndPhoneValidation(registerUser);
 
@@ -146,11 +146,11 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
     private void sendMailAndPhoneValidation(RegisterUser registerUser) {
         if (!registerUser.isEmailValidated()) {
-            service.submit(() -> sendEmail(registerUser));
+            executorService.submit(() -> sendEmail(registerUser));
         }
 
         if (!registerUser.isPhoneValidated()) {
-            service.submit(() -> sendOTP(registerUser));
+            executorService.submit(() -> sendOTP(registerUser));
         }
     }
 

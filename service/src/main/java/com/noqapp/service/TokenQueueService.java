@@ -44,7 +44,7 @@ public class TokenQueueService {
     private AccountService accountService;
     private RegisteredDeviceManager registeredDeviceManager;
 
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     @Autowired
     public TokenQueueService(
@@ -60,7 +60,7 @@ public class TokenQueueService {
         this.accountService = accountService;
         this.registeredDeviceManager = registeredDeviceManager;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     //TODO has to create by cron job
@@ -265,7 +265,7 @@ public class TokenQueueService {
      * @param goTo
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
-        service.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+        executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
     }
 
     /**
@@ -278,7 +278,7 @@ public class TokenQueueService {
      * @param tokenNumber
      */
     private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
-        service.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
+        executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
     }
 
     /**

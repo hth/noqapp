@@ -52,7 +52,7 @@ public class AddQueueSupervisorFlowActions {
     private TokenQueueService tokenQueueService;
     private MailService mailService;
 
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     @Autowired
     public AddQueueSupervisorFlowActions(
@@ -77,7 +77,7 @@ public class AddQueueSupervisorFlowActions {
         this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     @SuppressWarnings ("all")
@@ -221,7 +221,7 @@ public class AddQueueSupervisorFlowActions {
 
         if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
             /* Send FCM notification. */
-            service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(
                     "Added to supervise Queue: " + bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue.",
                     qid));
@@ -238,7 +238,7 @@ public class AddQueueSupervisorFlowActions {
             );
         } else {
             /* Send FCM notification. */
-            service.submit(() -> tokenQueueService.sendMessageToSpecificUser(
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(
                     "Invitation to supervise: " + bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName() + " has sent an invite. Please login at https://noqapp.com to complete your profile.",
                     qid));

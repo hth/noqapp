@@ -58,7 +58,7 @@ public class AccountService {
     private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
 
-    private ExecutorService service;
+    private ExecutorService executorService;
 
     @Autowired
     public AccountService(
@@ -80,7 +80,7 @@ public class AccountService {
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
 
-        this.service = newCachedThreadPool();
+        this.executorService = newCachedThreadPool();
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -172,7 +172,7 @@ public class AccountService {
                 userAccountManager.save(userAccount);
                 /* Set authentication. This will speed up login through browser */
                 if (null != password) {
-                    service.submit(() -> createAuthentication(password, qid));
+                    executorService.submit(() -> createAuthentication(password, qid));
                 }
 
                 if (StringUtils.isBlank(mail)) {
