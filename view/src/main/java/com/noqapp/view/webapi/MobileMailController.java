@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.noqapp.service.MailService;
-import com.noqapp.utils.ParseJsonStringToMap;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ParseJsonStringToMap;
+import com.noqapp.common.utils.ScrubbedInput;
 
 import java.io.IOException;
 import java.util.HashMap;

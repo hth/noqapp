@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.noqapp.service.ShowHTMLService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 
 /**
  * User: hitender

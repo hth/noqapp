@@ -19,7 +19,7 @@ import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.EmailValidateService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 
 import java.io.IOException;
 

@@ -9,7 +9,7 @@ import java.util.TimeZone;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.utils.DateFormatter;
+import com.noqapp.common.utils.DateFormatter;
 import freemarker.template.TemplateException;
 import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;

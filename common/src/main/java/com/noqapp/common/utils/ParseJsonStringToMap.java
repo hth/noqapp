@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

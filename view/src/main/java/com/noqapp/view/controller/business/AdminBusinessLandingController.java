@@ -28,7 +28,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.form.QueueSupervisorApproveRejectForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;

@@ -18,11 +18,11 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.ExternalService;
-import com.noqapp.utils.CommonUtil;
-import com.noqapp.utils.DateUtil;
-import com.noqapp.utils.Formatter;
-import com.noqapp.utils.ScrubbedInput;
-import com.noqapp.utils.Validate;
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
 
 import java.util.Map;

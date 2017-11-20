@@ -3,8 +3,8 @@ package com.noqapp.view.flow.open.validator;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.service.AccountService;
-import com.noqapp.utils.DateUtil;
-import com.noqapp.utils.Validate;
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.flow.merchant.validator.MigrateToBusinessProfileValidator;
 import com.noqapp.view.form.MerchantRegistrationForm;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
 
 /**
  * User: hitender

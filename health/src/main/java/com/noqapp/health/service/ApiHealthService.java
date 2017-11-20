@@ -1,8 +1,8 @@
 package com.noqapp.health.service;
 
-import com.noqapp.health.domain.ApiHealthContinuousEntity;
+import com.noqapp.health.domain.ApiHealthNowEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
-import com.noqapp.health.repository.ApiHealthContinuousManager;
+import com.noqapp.health.repository.ApiHealthNowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 public class ApiHealthService {
     private static final Logger LOG = LoggerFactory.getLogger(ApiHealthService.class);
 
-    private ApiHealthContinuousManager apiHealthContinuousManager;
+    private ApiHealthNowManager apiHealthNowManager;
 
     private ExecutorService service;
 
     @Autowired
-    public ApiHealthService(ApiHealthContinuousManager apiHealthContinuousManager) {
-        this.apiHealthContinuousManager = apiHealthContinuousManager;
+    public ApiHealthService(ApiHealthNowManager apiHealthNowManager) {
+        this.apiHealthNowManager = apiHealthNowManager;
 
         this.service = newCachedThreadPool();
     }
@@ -48,8 +48,8 @@ public class ApiHealthService {
 
     private void invokeThreadToInsert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
         LOG.info("{} {} {} {} ms", apiName, methodName, healthStatus, duration);
-        apiHealthContinuousManager.save(
-                new ApiHealthContinuousEntity()
+        apiHealthNowManager.save(
+                new ApiHealthNowEntity()
                         .setApi(apiName)
                         .setMethodName(methodName)
                         .setClazzName(clazzName)

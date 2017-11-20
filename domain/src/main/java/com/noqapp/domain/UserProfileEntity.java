@@ -2,7 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.springframework.data.annotation.Transient;

@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import net.logstash.logback.encoder.org.apache.commons.lang.StringEscapeUtils;
 

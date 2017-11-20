@@ -26,9 +26,9 @@ import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.utils.HashText;
-import com.noqapp.utils.RandomString;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.HashText;
+import com.noqapp.common.utils.RandomString;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
 
 import java.util.concurrent.ExecutorService;

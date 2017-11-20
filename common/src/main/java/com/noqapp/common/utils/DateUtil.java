@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

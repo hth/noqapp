@@ -1,6 +1,6 @@
 package com.noqapp.view.form;
 
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 
 /**
  * User: hitender

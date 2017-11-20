@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 
-import com.noqapp.type.FileExtensionTypeEnum;
+import com.noqapp.common.type.FileExtensionTypeEnum;
 
 import java.io.File;
 import java.io.IOException;
