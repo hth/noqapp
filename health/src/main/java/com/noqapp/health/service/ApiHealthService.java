@@ -1,8 +1,8 @@
-package com.noqapp.health.services;
+package com.noqapp.health.service;
 
-import com.noqapp.health.domain.ApiHealthEntity;
+import com.noqapp.health.domain.ApiHealthContinuousEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
-import com.noqapp.health.repository.ApiHealthManager;
+import com.noqapp.health.repository.ApiHealthContinuousManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +17,28 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
  * User: hitender
  * Date: 11/07/17 11:01 AM
  */
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
 @Service
 public class ApiHealthService {
     private static final Logger LOG = LoggerFactory.getLogger(ApiHealthService.class);
 
-    private ApiHealthManager apiHealthManager;
+    private ApiHealthContinuousManager apiHealthContinuousManager;
 
     private ExecutorService service;
 
     @Autowired
-    public ApiHealthService(ApiHealthManager apiHealthManager) {
-        this.apiHealthManager = apiHealthManager;
+    public ApiHealthService(ApiHealthContinuousManager apiHealthContinuousManager) {
+        this.apiHealthContinuousManager = apiHealthContinuousManager;
 
         this.service = newCachedThreadPool();
     }
 
-    public void insert(String apiName, String methodName, String clazzName, long duration,  HealthStatusEnum healthStatus) {
+    public void insert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
         service.submit(() -> invokeThreadToInsert(apiName, methodName, clazzName, duration, healthStatus));
     }
 
@@ -42,13 +48,13 @@ public class ApiHealthService {
 
     private void invokeThreadToInsert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
         LOG.info("{} {} {} {} ms", apiName, methodName, healthStatus, duration);
-        apiHealthManager.save(
-                new ApiHealthEntity()
-                    .setApi(apiName)
-                    .setMethodName(methodName)
-                    .setClazzName(clazzName)
-                    .setDuration(duration)
-                    .setHealthStatus(healthStatus)
+        apiHealthContinuousManager.save(
+                new ApiHealthContinuousEntity()
+                        .setApi(apiName)
+                        .setMethodName(methodName)
+                        .setClazzName(clazzName)
+                        .setDuration(duration)
+                        .setHealthStatus(healthStatus)
         );
     }
 }

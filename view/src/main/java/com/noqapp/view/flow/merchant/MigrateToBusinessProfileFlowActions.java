@@ -132,7 +132,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         }
 
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                HashText.computeBCrypt(registerUser.getPassword()),
+                HashText.computeSCrypt(registerUser.getPassword()),
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
 

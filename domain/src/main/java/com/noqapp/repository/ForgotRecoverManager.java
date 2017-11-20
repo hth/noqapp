@@ -23,5 +23,5 @@ public interface ForgotRecoverManager extends RepositoryManager<ForgotRecoverEnt
      */
     void invalidateAllEntries(String queueUserId);
 
-    int markInActiveAllOlderThanThreeHours();
+    long markInActiveAllOlderThanThreeHours();
 }

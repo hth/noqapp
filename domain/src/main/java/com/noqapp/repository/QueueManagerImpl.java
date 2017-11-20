@@ -292,7 +292,7 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
-    public int deleteByCodeQR(String codeQR) {
+    public long deleteByCodeQR(String codeQR) {
         return mongoTemplate.remove(
                 query(where("QR").is(codeQR)),
                 QueueEntity.class,

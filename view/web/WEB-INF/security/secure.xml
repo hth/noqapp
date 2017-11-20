@@ -181,8 +181,8 @@
         </authentication-provider>
     </authentication-manager>
 
-    <!-- Use a BCrypt encoder since the user's passwords are stored as BCrypt in the database -->
-    <beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"/>
+    <!-- Use a SCrypt encoder since the user's passwords are stored as SCrypt in the database -->
+    <beans:bean class="org.springframework.security.crypto.scrypt.SCryptPasswordEncoder" id="passwordEncoder"/>
 
     <beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
         <beans:constructor-arg value="?M.?75:.V_/?ch1ll3rB!m$.2c0fkl1*c.s2M*@#-_xEx34!" />

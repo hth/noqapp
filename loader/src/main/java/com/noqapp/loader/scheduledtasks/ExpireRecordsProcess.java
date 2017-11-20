@@ -60,7 +60,7 @@ public class ExpireRecordsProcess {
         }
 
         int failure = 0;
-        int recordsModified = 0;
+        long recordsModified = 0;
         try {
             recordsModified = forgotRecoverManager.markInActiveAllOlderThanThreeHours();
         } catch (Exception e) {

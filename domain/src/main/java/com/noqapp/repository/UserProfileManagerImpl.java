@@ -60,7 +60,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public void save(UserProfileEntity object) {
         try {
-            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
                 if (!ObjectId.isValid(object.getId())) {
                     LOG.error("UserProfileId is not valid id={} qid={}", object.getId(), object.getQueueUserId());

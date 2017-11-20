@@ -42,7 +42,6 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
 
     @Override
     public void save(UserAuthenticationEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             if (object.getId() != null) {
                 object.setUpdated();

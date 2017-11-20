@@ -1,7 +1,5 @@
 package com.noqapp.view.controller.open;
 
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -30,7 +28,6 @@ import com.noqapp.utils.RandomString;
 import com.noqapp.utils.ScrubbedInput;
 import com.noqapp.view.form.ForgotAuthenticateForm;
 import com.noqapp.view.form.ForgotRecoverForm;
-import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import com.noqapp.view.validator.ForgotAuthenticateValidator;
 import com.noqapp.view.validator.ForgotRecoverValidator;
@@ -233,9 +230,9 @@ public class ForgotController {
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getQueueUserId());
+                UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                        HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
+                        HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 

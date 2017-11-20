@@ -2,6 +2,8 @@ package com.noqapp.utils;
 
 import com.google.maps.model.LatLng;
 
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 import org.bson.types.ObjectId;
 
 import org.json.JSONArray;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
  * Date: 11/18/16 6:09 PM
  */
 public final class CommonUtil {
+    private static Header dummyHeader = new BasicHeader("A", "A");
+
     private CommonUtil() {
     }
 
@@ -93,5 +97,9 @@ public final class CommonUtil {
     public static String getCountryNameFromIsoCode(String isoCode) {
         Locale l = new Locale("", isoCode);
         return l.getDisplayCountry();
+    }
+
+    public static Header getMeSomeHeader() {
+        return dummyHeader;
     }
 }

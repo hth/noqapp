@@ -71,7 +71,7 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     }
 
     @Override
-    public int markInActiveAllOlderThanThreeHours() {
+    public long markInActiveAllOlderThanThreeHours() {
         Date date = Date.from(Instant.now().minus(Duration.ofHours(3)));
         WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("C").lte(date)
