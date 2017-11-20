@@ -2,7 +2,7 @@ package com.noqapp.domain.helper;
 
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 
 import java.util.Date;
 

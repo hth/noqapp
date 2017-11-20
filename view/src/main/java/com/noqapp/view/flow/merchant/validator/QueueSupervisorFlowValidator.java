@@ -10,7 +10,7 @@ import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.flow.InviteQueueSupervisor;
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.view.controller.access.LandingController;
 
 /**

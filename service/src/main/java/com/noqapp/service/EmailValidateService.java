@@ -2,8 +2,8 @@ package com.noqapp.service;
 
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.repository.EmailValidateManager;
-import com.noqapp.utils.HashText;
-import com.noqapp.utils.RandomString;
+import com.noqapp.common.utils.HashText;
+import com.noqapp.common.utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

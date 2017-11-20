@@ -2,7 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.RoleEnum;
-import com.noqapp.utils.DateUtil;
+import com.noqapp.common.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.joda.time.DateTime;

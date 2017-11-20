@@ -22,9 +22,9 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.CodeQRGeneratorService;
-import com.noqapp.type.FileExtensionTypeEnum;
-import com.noqapp.utils.FileUtil;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.type.FileExtensionTypeEnum;
+import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.form.business.StoreLandingForm;
 
 import java.io.FileInputStream;

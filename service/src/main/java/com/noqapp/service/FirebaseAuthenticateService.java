@@ -2,15 +2,13 @@ package com.noqapp.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.UserRecord;
-import com.google.firebase.tasks.Task;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.config.FirebaseConfig;
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;

@@ -18,7 +18,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
-import com.noqapp.utils.ParseJsonStringToMap;
+import com.noqapp.common.utils.ParseJsonStringToMap;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.helper.AvailabilityStatus;
 

@@ -1,6 +1,6 @@
 package com.noqapp.domain;
 
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 import org.apache.commons.text.WordUtils;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;

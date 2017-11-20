@@ -32,6 +32,7 @@
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/build-info.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/messages.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/logback.xml" />
+            <element id="module-output" name="health_main" />
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
@@ -335,10 +336,6 @@
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
             </element>
-            <element id="archive" name="com.noqapp-health.jar">
-              <element id="module-output" name="health_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
-            </element>
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
@@ -433,6 +430,7 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
+            <element id="library" level="project" name="Gradle: org.json:json:20171018" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
@@ -583,7 +581,10 @@
             <element id="library" level="project" name="Gradle: org.threeten:threetenbp:1.3.3" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20171018/36ced462c97f0845b4a7b266a25cebe95d18baa3/json-20171018.jar" />
+            <element id="archive" name="com.noqapp-health.jar">
+              <element id="module-output" name="health_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
+            </element>
           </element>
         </element>
       </root>
@@ -616,10 +617,6 @@
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="archive" name="com.noqapp-health.jar">
-              <element id="module-output" name="health_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
-            </element>
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
@@ -714,6 +711,7 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
+            <element id="library" level="project" name="Gradle: org.json:json:20171018" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
@@ -865,7 +863,10 @@
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20171018/36ced462c97f0845b4a7b266a25cebe95d18baa3/json-20171018.jar" />
+            <element id="archive" name="com.noqapp-health.jar">
+              <element id="module-output" name="health_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
+            </element>
           </element>
         </element>
       </root>
@@ -902,10 +903,6 @@
               <element id="module-output" name="security_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
-            <element id="archive" name="com.noqapp-health.jar">
-              <element id="module-output" name="health_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
-            </element>
             <element id="archive" name="com.noqapp-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
@@ -1000,6 +997,7 @@
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
+            <element id="library" level="project" name="Gradle: org.json:json:20171018" />
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
@@ -1151,6 +1149,10 @@
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="archive" name="com.noqapp-health.jar">
+              <element id="module-output" name="health_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-social.jar">
               <element id="module-output" name="social_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
@@ -1163,7 +1165,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20171018/36ced462c97f0845b4a7b266a25cebe95d18baa3/json-20171018.jar" />
           </element>
         </element>
       </root>
@@ -1563,7 +1564,7 @@
       <module fileurl="file://$PROJECT_DIR$/view/view_test.iml" filepath="$PROJECT_DIR$/view/view_test.iml" group="view" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PropertiesComponent">

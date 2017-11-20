@@ -1,4 +1,4 @@
-package com.noqapp.type;
+package com.noqapp.common.type;
 
 /**
  * User: hitender

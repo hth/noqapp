@@ -26,7 +26,7 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
 
 import java.util.List;

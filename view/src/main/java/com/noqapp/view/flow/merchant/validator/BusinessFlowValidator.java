@@ -22,8 +22,8 @@ import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
-import com.noqapp.utils.CommonUtil;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.controller.access.LandingController;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.noqapp.domain.flow;
 
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.Formatter;
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;

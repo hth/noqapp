@@ -19,7 +19,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.emp.EmpLandingService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
 import com.noqapp.view.form.emp.EmpLandingForm;
 

@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.getInstance;
 import static org.hamcrest.CoreMatchers.containsString;

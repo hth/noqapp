@@ -28,8 +28,8 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.utils.CommonUtil;
-import com.noqapp.utils.Formatter;
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
 

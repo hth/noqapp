@@ -11,7 +11,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.utils.ScrubbedInput;
+import com.noqapp.common.utils.ScrubbedInput;
 
 /**
  * User: hitender

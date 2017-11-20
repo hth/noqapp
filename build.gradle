@@ -404,7 +404,8 @@ project(':security') {
     }
 
     dependencies {
-        compile project(':health')
+        compile project(':common'),
+                project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -415,7 +416,9 @@ project(':service') {
     jar.baseName = baseName + '-service'
 
     dependencies {
-        compile project(':health')
+        compile project(':common'),
+                project(':domain'),
+                project(':health')
     }
 }
 
@@ -423,7 +426,9 @@ project(':social') {
     jar.baseName = baseName + '-social'
 
     dependencies {
-        compile project(':service')
+        compile project(':common'),
+                project(':domain'),
+                project(':service')
     }
 }
 

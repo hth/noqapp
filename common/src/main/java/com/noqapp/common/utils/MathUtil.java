@@ -1,4 +1,4 @@
-package com.noqapp.utils;
+package com.noqapp.common.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
