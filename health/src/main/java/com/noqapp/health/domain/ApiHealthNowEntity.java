@@ -21,11 +21,11 @@ import java.util.Date;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "API_HEALTH_CONTINUOUS")
+@Document(collection = "API_HEALTH_NOW")
 @CompoundIndexes({
-        @CompoundIndex(name = "api_health_continuous_idx", def = "{'API': 1, 'ME': 1, 'CL': 1}", unique = false)
+        @CompoundIndex(name = "api_health_now_idx", def = "{'API': 1, 'ME': 1, 'CL': 1}", unique = false)
 })
-public class ApiHealthContinuousEntity {
+public class ApiHealthNowEntity {
     @Id
     protected String id;
 
@@ -54,7 +54,7 @@ public class ApiHealthContinuousEntity {
         return api;
     }
 
-    public ApiHealthContinuousEntity setApi(String api) {
+    public ApiHealthNowEntity setApi(String api) {
         this.api = api;
         return this;
     }
@@ -63,7 +63,7 @@ public class ApiHealthContinuousEntity {
         return methodName;
     }
 
-    public ApiHealthContinuousEntity setMethodName(String methodName) {
+    public ApiHealthNowEntity setMethodName(String methodName) {
         this.methodName = methodName;
         return this;
     }
@@ -72,7 +72,7 @@ public class ApiHealthContinuousEntity {
         return clazzName;
     }
 
-    public ApiHealthContinuousEntity setClazzName(String clazzName) {
+    public ApiHealthNowEntity setClazzName(String clazzName) {
         this.clazzName = clazzName;
         return this;
     }
@@ -81,7 +81,7 @@ public class ApiHealthContinuousEntity {
         return duration;
     }
 
-    public ApiHealthContinuousEntity setDuration(long duration) {
+    public ApiHealthNowEntity setDuration(long duration) {
         this.duration = duration;
         return this;
     }
@@ -90,7 +90,7 @@ public class ApiHealthContinuousEntity {
         return healthStatus;
     }
 
-    public ApiHealthContinuousEntity setHealthStatus(HealthStatusEnum healthStatus) {
+    public ApiHealthNowEntity setHealthStatus(HealthStatusEnum healthStatus) {
         this.healthStatus = healthStatus;
         return this;
     }

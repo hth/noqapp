@@ -1,8 +1,8 @@
 package com.noqapp.health.service;
 
-import com.noqapp.health.domain.ApiHealthContinuousEntity;
+import com.noqapp.health.domain.ApiHealthNowEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
-import com.noqapp.health.repository.ApiHealthContinuousManager;
+import com.noqapp.health.repository.ApiHealthNowManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
  */
 class ApiHealthServiceTest {
 
-    @Mock private ApiHealthContinuousManager apiHealthContinuousManager;
+    @Mock private ApiHealthNowManager apiHealthNowManager;
     private Duration duration;
 
     private ApiHealthService apiHealthService;
@@ -29,7 +29,7 @@ class ApiHealthServiceTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         apiHealthService = new ApiHealthService(
-            apiHealthContinuousManager
+                apiHealthNowManager
         );
 
         /* Mock final class. */
@@ -38,7 +38,7 @@ class ApiHealthServiceTest {
 
     @Test
     void testInsert_long() {
-        doNothing().when(apiHealthContinuousManager).save(any(ApiHealthContinuousEntity.class));
+        doNothing().when(apiHealthNowManager).save(any(ApiHealthNowEntity.class));
         apiHealthService.insert(
                 "/insertLong",
                 "insertLong",
@@ -49,7 +49,7 @@ class ApiHealthServiceTest {
 
     @Test
     void testInsert_duration() {
-        doNothing().when(apiHealthContinuousManager).save(any(ApiHealthContinuousEntity.class));
+        doNothing().when(apiHealthNowManager).save(any(ApiHealthNowEntity.class));
         apiHealthService.insert(
                 "/insertDuration",
                 "insertDuration",
