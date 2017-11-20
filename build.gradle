@@ -287,7 +287,8 @@ subprojects {
         compile 'org.hamcrest:hamcrest-all:1.3'
 
         testCompile "org.junit.jupiter:junit-jupiter-api:$junit5"
-        testCompile "org.mockito:mockito-all:1.10.19"
+        testCompile "org.mockito:mockito-core:$mockito"
+        testCompile "org.mockito:mockito-inline:$mockito"
         testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo:$flapdoodle"
         testCompile "org.springframework:spring-test:$springVersion"
     }
@@ -403,9 +404,7 @@ project(':security') {
     }
 
     dependencies {
-        compile project(':common'),
-                project(':domain'),
-                project(':health')
+        compile project(':health')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
@@ -416,9 +415,7 @@ project(':service') {
     jar.baseName = baseName + '-service'
 
     dependencies {
-        compile project(':common'),
-                project(':domain'),
-                project(':health')
+        compile project(':health')
     }
 }
 
@@ -426,10 +423,7 @@ project(':social') {
     jar.baseName = baseName + '-social'
 
     dependencies {
-        compile project(':common'),
-                project(':domain'),
-                project(':health'),
-                project(':service')
+        compile project(':service')
     }
 }
 
