@@ -1,6 +1,6 @@
 package com.noqapp.domain;
 
-import com.noqapp.domain.shared.GeoPoint;
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
@@ -9,6 +9,7 @@ import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -375,6 +376,12 @@ public class BizNameEntity extends BaseEntity {
     public BizNameEntity setBillingStatus(BillingStatusEnum billingStatus) {
         this.billingStatus = billingStatus;
         return this;
+    }
+
+    @Transient
+    private GeoPointOfQ getGeoPointOfQ() {
+        /* Latitude and then Longitude. */
+        return new GeoPointOfQ(coordinate[1], coordinate[0]);
     }
 
     @Transient

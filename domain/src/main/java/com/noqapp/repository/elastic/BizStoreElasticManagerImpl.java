@@ -161,11 +161,11 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
                     if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.INDEX
                             || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
-                        created ++;
+                        created++;
                     } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.UPDATE) {
-                        updated ++;
+                        updated++;
                     } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.DELETE) {
-                        deleted ++;
+                        deleted++;
                     }
                 }
                 LOG.info("Total saved BizStore create={} update={} delete={}", created, updated, deleted);
@@ -176,13 +176,13 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     @Override
-    public List<BizStoreElasticEntity> searchByBusinessName(String businessName) {
+    public List<BizStoreElasticEntity> searchByBusinessName(String businessName, int limitRecords) {
         List<BizStoreElasticEntity> results = new ArrayList<>();
 
         /* Size limits to fetching X data. Defaults to 10. */
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(matchQuery("N", "+" + businessName))
-                .size(30);
+                .size(limitRecords);
 
         SearchRequest searchRequest = new SearchRequest(BizStoreElasticEntity.INDEX)
                 .source(searchSourceBuilder)

@@ -1,7 +1,7 @@
 package com.noqapp.domain.json.fcm;
 
 import com.fasterxml.jackson.annotation.*;
-import com.noqapp.domain.AbstractDomain;
+import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonNotification;
 import org.slf4j.Logger;

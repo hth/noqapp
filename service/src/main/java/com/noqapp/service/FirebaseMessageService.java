@@ -2,7 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
-import com.noqapp.service.config.NetworkService;
+import com.noqapp.common.config.NetworkService;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;

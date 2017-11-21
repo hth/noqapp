@@ -3,7 +3,7 @@ package com.noqapp.service;
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.UserRecord;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.service.config.FirebaseConfig;
+import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

@@ -2,13 +2,14 @@ package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
 import com.noqapp.domain.elastic.BizStoreElasticEntity;
-import com.noqapp.domain.shared.GeoPoint;
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -490,6 +491,12 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @Transient
+    private GeoPointOfQ getGeoPointOfQ() {
+        /* Latitude and then Longitude. */
+        return new GeoPointOfQ(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
     private GeoPoint getGeoPoint() {
         /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
@@ -510,7 +517,7 @@ public class BizStoreEntity extends BaseEntity {
                 .setCountryShortName(countryShortName)
                 .setPhone(phone)
                 .setPhoneRaw(phoneRaw)
-                .setGeoPoint(getGeoPoint())
+                .setGeoPointOfQ(getGeoPointOfQ())
                 .setPlaceId(placeId)
                 .setPlaceType(placeType)
                 .setRating(rating)
@@ -518,6 +525,7 @@ public class BizStoreEntity extends BaseEntity {
                 .setBizNameId(bizName.getId())
                 .setDisplayName(displayName)
                 .setCodeQR(codeQR)
-                .setTimeZone(timeZone);
+                .setTimeZone(timeZone)
+                .setGeoHash(getGeoPoint().getGeohash());
     }
 }

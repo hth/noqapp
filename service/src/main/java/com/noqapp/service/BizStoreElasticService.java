@@ -5,6 +5,7 @@ import com.noqapp.repository.elastic.BizStoreElasticManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,16 @@ public class BizStoreElasticService {
 
     private BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager;
 
+    private int limitRecords;
+
     @Autowired
-    public BizStoreElasticService(BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager) {
+    public BizStoreElasticService(
+            @Value("${limitRecords:10}")
+            int limitRecords,
+            
+            BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager
+    ) {
+        this.limitRecords = limitRecords;
         this.bizStoreElasticManager = bizStoreElasticManager;
     }
 
@@ -49,6 +58,6 @@ public class BizStoreElasticService {
 
     public List<BizStoreElasticEntity> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName);
+        return bizStoreElasticManager.searchByBusinessName(businessName, limitRecords);
     }
 }

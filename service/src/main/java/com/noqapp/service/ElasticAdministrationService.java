@@ -4,7 +4,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.service.config.NetworkService;
+import com.noqapp.common.config.NetworkService;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;

@@ -34,5 +34,5 @@ public interface BizStoreElasticManager<BizStoreElasticEntity> {
      * @param businessName
      * @return
      */
-    List<BizStoreElasticEntity> searchByBusinessName(String businessName);
+    List<BizStoreElasticEntity> searchByBusinessName(String businessName, int limitRecords);
 }

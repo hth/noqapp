@@ -1,4 +1,4 @@
-package com.noqapp.domain;
+package com.noqapp.common.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
