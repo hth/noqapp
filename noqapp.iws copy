@@ -321,7 +321,7 @@
       <find>lookups</find>
       <find>elastic</find>
       <find>ObjectMapper</find>
-      <find>geoPoint</find>
+      <find>geoPointOfQ</find>
       <find>size</find>
       <find>dkim</find>
       <find>/admin</find>

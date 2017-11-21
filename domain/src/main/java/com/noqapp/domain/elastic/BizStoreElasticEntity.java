@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.domain.AbstractDomain;
 import com.noqapp.domain.config.ElasticsearchClientConfiguration;
-import com.noqapp.domain.shared.GeoPoint;
+import com.noqapp.domain.shared.GeoPointOfQ;
 
 import java.util.Arrays;
 
@@ -76,7 +76,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
     private String phoneRaw;
 
     @JsonProperty ("COR")
-    private GeoPoint geoPoint;
+    private GeoPointOfQ geoPointOfQ;
 
     @JsonProperty ("PI")
     private String placeId;
@@ -101,6 +101,10 @@ public class BizStoreElasticEntity extends AbstractDomain {
 
     @JsonProperty ("TZ")
     private String timeZone;
+
+    @JsonProperty ("GH")
+    private String geoHash;
+
 
     public String getId() {
         return id;
@@ -210,12 +214,12 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return this;
     }
 
-    public GeoPoint getGeoPoint() {
-        return geoPoint;
+    public GeoPointOfQ getGeoPointOfQ() {
+        return geoPointOfQ;
     }
 
-    public BizStoreElasticEntity setGeoPoint(GeoPoint geoPoint) {
-        this.geoPoint = geoPoint;
+    public BizStoreElasticEntity setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
+        this.geoPointOfQ = geoPointOfQ;
         return this;
     }
 
@@ -291,6 +295,15 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return this;
     }
 
+    public String getGeoHash() {
+        return geoHash;
+    }
+
+    public BizStoreElasticEntity setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BizStoreElasticEntity{" +
@@ -306,7 +319,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
                 ", countryShortName='" + countryShortName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", phoneRaw='" + phoneRaw + '\'' +
-                ", geoPoint=" + geoPoint +
+                ", geoPointOfQ=" + geoPointOfQ +
                 ", placeId='" + placeId + '\'' +
                 ", placeType=" + Arrays.toString(placeType) +
                 ", rating=" + rating +

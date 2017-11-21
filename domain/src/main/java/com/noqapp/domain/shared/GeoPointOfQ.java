@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.domain.AbstractDomain;
 
+
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -20,7 +21,7 @@ import com.noqapp.domain.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeoPoint  extends AbstractDomain {
+public class GeoPointOfQ extends AbstractDomain {
 
     @JsonProperty("lat")
     private double lat;
@@ -28,11 +29,11 @@ public class GeoPoint  extends AbstractDomain {
     @JsonProperty ("lon")
     private double lon;
 
-    private GeoPoint() {
+    private GeoPointOfQ() {
         //Required default constructor
     }
 
-    public GeoPoint(double lat, double lon) {
+    public GeoPointOfQ(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
     }
