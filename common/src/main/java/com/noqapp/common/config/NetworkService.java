@@ -4,24 +4,19 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 /**
  * hitender
  * 11/17/17 10:04 PM
  */
-@Service
+@Configuration
 public class NetworkService {
-    private static final Logger LOG = LoggerFactory.getLogger(NetworkService.class);
 
-    private OkHttpClient okHttpClient;
-
-    @Autowired
-    public NetworkService() {
-        this.okHttpClient = new OkHttpClient();
-    }
-
+    @Bean
     public OkHttpClient getOkHttpClient() {
-        return okHttpClient;
+        return new OkHttpClient();
     }
 }
