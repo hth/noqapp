@@ -1,7 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.fasterxml.jackson.annotation.*;
-import com.noqapp.domain.AbstractDomain;
+import com.noqapp.common.utils.AbstractDomain;
 
 import java.util.ArrayList;
 import java.util.List;

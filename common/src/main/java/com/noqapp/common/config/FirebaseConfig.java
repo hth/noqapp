@@ -1,4 +1,4 @@
-package com.noqapp.service.config;
+package com.noqapp.common.config;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.noqapp.service.config;
+package com.noqapp.common.config;
 
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.fasterxml.jackson.annotation.*;
-import com.noqapp.domain.AbstractDomain;
+import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.slf4j.Logger;

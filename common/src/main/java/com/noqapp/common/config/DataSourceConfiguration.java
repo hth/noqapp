@@ -1,4 +1,4 @@
-package com.noqapp.domain.config;
+package com.noqapp.common.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;

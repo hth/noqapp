@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.domain.AbstractDomain;
-import com.noqapp.domain.config.ElasticsearchClientConfiguration;
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.noqapp.service.config;
+package com.noqapp.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
