@@ -1,4 +1,4 @@
-package com.noqapp.repository.elastic;
+package com.noqapp.search.elastic.repository;
 
 import java.util.List;
 

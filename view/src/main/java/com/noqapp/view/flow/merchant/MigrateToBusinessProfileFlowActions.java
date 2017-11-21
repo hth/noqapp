@@ -2,6 +2,7 @@ package com.noqapp.view.flow.merchant;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -55,9 +56,10 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
             AccountService accountService,
             BusinessUserService businessUserService,
             MailService mailService,
-            EmailValidateService emailValidateService
+            EmailValidateService emailValidateService,
+            BizStoreElasticService bizStoreElasticService
     ) {
-        super(externalService, bizService, tokenQueueService);
+        super(externalService, bizService, tokenQueueService, bizStoreElasticService);
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;

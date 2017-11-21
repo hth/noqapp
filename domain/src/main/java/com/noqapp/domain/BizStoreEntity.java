@@ -1,7 +1,6 @@
 package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.CommonUtil;
@@ -491,41 +490,14 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @Transient
-    private GeoPointOfQ getGeoPointOfQ() {
+    public GeoPointOfQ getGeoPointOfQ() {
         /* Latitude and then Longitude. */
         return new GeoPointOfQ(coordinate[1], coordinate[0]);
     }
 
     @Transient
-    private GeoPoint getGeoPoint() {
+    public GeoPoint getGeoPoint() {
         /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
-    }
-
-    @Transient
-    public BizStoreElasticEntity getAsBizStoreElastic() {
-        return new BizStoreElasticEntity()
-                .setId(id)
-                .setBusinessName(bizName.getBusinessName())
-                .setAddress(address)
-                .setTown(town)
-                .setDistrict(district)
-                .setState(state)
-                .setStateShortName(stateShortName)
-                .setPostalCode(postalCode)
-                .setCountry(country)
-                .setCountryShortName(countryShortName)
-                .setPhone(phone)
-                .setPhoneRaw(phoneRaw)
-                .setGeoPointOfQ(getGeoPointOfQ())
-                .setPlaceId(placeId)
-                .setPlaceType(placeType)
-                .setRating(rating)
-                .setRatingCount(ratingCount)
-                .setBizNameId(bizName.getId())
-                .setDisplayName(displayName)
-                .setCodeQR(codeQR)
-                .setTimeZone(timeZone)
-                .setGeoHash(getGeoPoint().getGeohash());
     }
 }

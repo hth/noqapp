@@ -1,10 +1,12 @@
-package com.noqapp.service;
+package com.noqapp.search.elastic.service;
 
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
+import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.common.config.NetworkService;
+import com.noqapp.repository.BizStoreManager;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -35,19 +37,19 @@ public class ElasticAdministrationService {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticAdministrationService.class);
 
     private NetworkService networkService;
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
     private BizStoreElasticService bizStoreElasticService;
     private ApiHealthService apiHealthService;
 
     @Autowired
     public ElasticAdministrationService(
             NetworkService networkService,
-            BizService bizService,
+            BizStoreManager bizStoreManager,
             BizStoreElasticService bizStoreElasticService,
             ApiHealthService apiHealthService
     ) {
         this.networkService = networkService;
-        this.bizService = bizService;
+        this.bizStoreManager = bizStoreManager;
         this.bizStoreElasticService = bizStoreElasticService;
         this.apiHealthService = apiHealthService;
     }
@@ -112,8 +114,8 @@ public class ElasticAdministrationService {
     public void addAllBizStoreToElastic() {
         Instant start = Instant.now();
         long count = 0;
-        try (Stream<BizStoreEntity> stream = bizService.findAll()) {
-            List<BizStoreElasticEntity> bizStoreElastics = stream.map(BizStoreEntity::getAsBizStoreElastic).collect(Collectors.toList());
+        try (Stream<BizStoreEntity> stream = bizStoreManager.findAll()) {
+            List<BizStoreElasticEntity> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
             save(bizStoreElastics);
             count += bizStoreElastics.size();
         }

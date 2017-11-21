@@ -1,4 +1,4 @@
-package com.noqapp.domain.elastic;
+package com.noqapp.search.elastic.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.common.config.ElasticsearchClientConfiguration;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
 
 import java.util.Arrays;

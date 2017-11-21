@@ -1,5 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
@@ -35,15 +37,18 @@ class RegistrationFlowActions {
     private ExternalService externalService;
     private BizService bizService;
     private TokenQueueService tokenQueueService;
+    private BizStoreElasticService bizStoreElasticService;
 
     RegistrationFlowActions(
             ExternalService externalService,
             BizService bizService,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            BizStoreElasticService bizStoreElasticService
     ) {
         this.externalService = externalService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
+        this.bizStoreElasticService = bizStoreElasticService;
     }
 
     @SuppressWarnings ("unused")
@@ -201,7 +206,7 @@ class RegistrationFlowActions {
         bizService.removeAll(registerBusiness.getBizStoreId());
         BizStoreEntity bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
         bizService.deleteBizStore(bizStore);
-        bizService.delete(bizStore.getId());
+        bizStoreElasticService.delete(bizStore.getId());
     }
 
     /**
@@ -256,7 +261,7 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
-            bizService.save(bizStore.getAsBizStoreElastic());
+            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore));
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",

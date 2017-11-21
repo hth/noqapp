@@ -1,4 +1,4 @@
-package com.noqapp.common.config;
+package com.noqapp.search.elastic.config;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;

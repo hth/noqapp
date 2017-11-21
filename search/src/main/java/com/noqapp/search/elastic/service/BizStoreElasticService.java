@@ -1,7 +1,7 @@
-package com.noqapp.service;
+package com.noqapp.search.elastic.service;
 
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
-import com.noqapp.repository.elastic.BizStoreElasticManager;
+import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class BizStoreElasticService {
     }
 
     @Async
-    void save(BizStoreElasticEntity bizStoreElastic) {
+    public void save(BizStoreElasticEntity bizStoreElastic) {
         bizStoreElasticManager.save(bizStoreElastic);
     }
 
@@ -52,7 +52,7 @@ public class BizStoreElasticService {
     }
 
     @Async
-    void delete(String id) {
+    public void delete(String id) {
         bizStoreElasticManager.delete(id);
     }
 

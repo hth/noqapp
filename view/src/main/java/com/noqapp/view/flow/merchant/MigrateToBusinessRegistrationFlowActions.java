@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,9 +56,10 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             BusinessUserService businessUserService,
             BizService bizService,
             ExternalService externalService,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            BizStoreElasticService bizStoreElasticService
     ) {
-        super(externalService, bizService, tokenQueueService);
+        super(externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.fetcherService = fetcherService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
