@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * 11/17/17 10:04 PM
  */
 @Configuration
-public class NetworkService {
+public class OkHttpClientConfiguration {
 
     @Bean
     public OkHttpClient getOkHttpClient() {

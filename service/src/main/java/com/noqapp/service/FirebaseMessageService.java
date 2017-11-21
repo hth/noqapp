@@ -2,8 +2,9 @@ package com.noqapp.service;
 
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
-import com.noqapp.common.config.NetworkService;
+import com.noqapp.common.config.OkHttpClientConfiguration;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -27,18 +28,18 @@ public class FirebaseMessageService {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private String authorizationKey;
-    private NetworkService networkService;
+    private OkHttpClient okHttpClient;
 
     @Autowired
     public FirebaseMessageService(
             @Value ("${firebase.server.key}")
             String firebaseServerKey,
 
-            NetworkService networkService
+            OkHttpClient okHttpClient
     ) {
         this.authorizationKey = "key=" + firebaseServerKey;
 
-        this.networkService = networkService;
+        this.okHttpClient = okHttpClient;
     }
 
     /**
@@ -59,7 +60,7 @@ public class FirebaseMessageService {
                 .build();
         Response response = null;
         try {
-            response = networkService.getOkHttpClient().newCall(request).execute();
+            response = okHttpClient.newCall(request).execute();
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
             return false;
