@@ -17,7 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfig extends CachingConfigurerSupport {
+public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
     @Value ("${redis.host}")
     private String redisHost;

@@ -1,12 +1,12 @@
 package com.noqapp.search.elastic.service;
 
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
-import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.common.config.NetworkService;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -36,19 +36,19 @@ import java.util.stream.Stream;
 public class ElasticAdministrationService {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticAdministrationService.class);
 
-    private NetworkService networkService;
+    private OkHttpClient okHttpClient;
     private BizStoreManager bizStoreManager;
     private BizStoreElasticService bizStoreElasticService;
     private ApiHealthService apiHealthService;
 
     @Autowired
     public ElasticAdministrationService(
-            NetworkService networkService,
+            OkHttpClient okHttpClient,
             BizStoreManager bizStoreManager,
             BizStoreElasticService bizStoreElasticService,
             ApiHealthService apiHealthService
     ) {
-        this.networkService = networkService;
+        this.okHttpClient = okHttpClient;
         this.bizStoreManager = bizStoreManager;
         this.bizStoreElasticService = bizStoreElasticService;
         this.apiHealthService = apiHealthService;
@@ -67,7 +67,7 @@ public class ElasticAdministrationService {
                 .build();
         Response response;
         try {
-            response = networkService.getOkHttpClient().newCall(request).execute();
+            response = okHttpClient.newCall(request).execute();
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to Elastic host reason={}", e.getLocalizedMessage(), e);
             return false;
@@ -92,7 +92,7 @@ public class ElasticAdministrationService {
                 .build();
         Response response = null;
         try {
-            response = networkService.getOkHttpClient().newCall(request).execute();
+            response = okHttpClient.newCall(request).execute();
             return response.code() == 200;
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to Elastic host reason={}", e.getLocalizedMessage(), e);
