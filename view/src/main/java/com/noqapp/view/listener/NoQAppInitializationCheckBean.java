@@ -1,7 +1,7 @@
 package com.noqapp.view.listener;
 
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
-import com.noqapp.service.ElasticAdministrationService;
+import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.CommonUtil;
 import org.elasticsearch.action.main.MainResponse;

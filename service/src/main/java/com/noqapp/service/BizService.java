@@ -1,19 +1,9 @@
 package com.noqapp.service;
 
-import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
@@ -22,9 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -46,7 +39,6 @@ public class BizService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
-    private BizStoreElasticService bizStoreElasticService;
 
     @Autowired
     public BizService(
@@ -58,15 +50,13 @@ public class BizService {
 
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
-            StoreHourManager storeHourManager,
-            BizStoreElasticService bizStoreElasticService
+            StoreHourManager storeHourManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
-        this.bizStoreElasticService = bizStoreElasticService;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -163,17 +153,5 @@ public class BizService {
 
     public List<BizNameEntity> findByInviteeCode(String inviteCode) {
         return bizNameManager.findByInviteeCode(inviteCode);
-    }
-
-    public void save(BizStoreElasticEntity bizStoreElastic) {
-        bizStoreElasticService.save(bizStoreElastic);
-    }
-
-    public void delete(String id) {
-        bizStoreElasticService.delete(id);
-    }
-
-    Stream<BizStoreEntity> findAll() {
-        return bizStoreManager.findAll();
     }
 }

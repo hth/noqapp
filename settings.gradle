@@ -1,2 +1,10 @@
-include "common", "domain", "health", "security", "service", "social", "view", "loader"
+include "common",
+        "domain",
+        "health",
+        "security",
+        "service",
+        "search",
+        "social",
+        "view",
+        "loader"
 rootProject.name = 'noqapp'

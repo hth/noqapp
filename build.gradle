@@ -422,6 +422,16 @@ project(':service') {
     }
 }
 
+project(':search') {
+    jar.baseName = baseName + '-search'
+
+    dependencies {
+        compile project(':common'),
+                project(':domain'),
+                project(':health')
+    }
+}
+
 project(':social') {
     jar.baseName = baseName + '-social'
 
@@ -448,6 +458,7 @@ project(':view') {
                 project(':security'),
                 project(':social'),
                 project(':service'),
+                project(':search'),
                 project(':loader')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
@@ -465,6 +476,7 @@ task copyJars(type: Copy) {
     from 'health/build/libs'
     from 'security/build/libs'
     from 'service/build/libs'
+    from 'search/build/libs'
     from 'social/build/libs'
     from 'view/build/libs'
     into warLibDir
@@ -920,6 +932,28 @@ publishing {
         service(MavenPublication) {
             artifactId 'service'
             artifact "service/build/libs/$baseName" + '-service-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2016-2017. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQueue private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
+            }
+        }
+
+        search(MavenPublication) {
+            artifactId 'search'
+            artifact "search/build/libs/$baseName" + '-search-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()

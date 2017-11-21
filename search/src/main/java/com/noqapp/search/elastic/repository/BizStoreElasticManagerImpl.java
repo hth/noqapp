@@ -1,8 +1,8 @@
-package com.noqapp.repository.elastic;
+package com.noqapp.search.elastic.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noqapp.domain.elastic.BizStoreElasticEntity;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
