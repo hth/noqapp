@@ -1,6 +1,6 @@
 package com.noqapp.search.elastic.service;
 
-import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ import java.util.List;
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
 
-    private BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager;
+    private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
 
     private int limitRecords;
 
@@ -34,19 +34,19 @@ public class BizStoreElasticService {
             @Value("${limitRecords:10}")
             int limitRecords,
             
-            BizStoreElasticManager<BizStoreElasticEntity> bizStoreElasticManager
+            BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager
     ) {
         this.limitRecords = limitRecords;
         this.bizStoreElasticManager = bizStoreElasticManager;
     }
 
     @Async
-    public void save(BizStoreElasticEntity bizStoreElastic) {
+    public void save(BizStoreElastic bizStoreElastic) {
         bizStoreElasticManager.save(bizStoreElastic);
     }
 
     @Async
-    void save(List<BizStoreElasticEntity> bizStoreElastics) {
+    void save(List<BizStoreElastic> bizStoreElastics) {
         LOG.info("Bulk save size={}", bizStoreElastics.size());
         bizStoreElasticManager.save(bizStoreElastics);
     }
@@ -56,7 +56,7 @@ public class BizStoreElasticService {
         bizStoreElasticManager.delete(id);
     }
 
-    public List<BizStoreElasticEntity> searchByBusinessName(String businessName) {
+    public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
         return bizStoreElasticManager.searchByBusinessName(businessName, limitRecords);
     }

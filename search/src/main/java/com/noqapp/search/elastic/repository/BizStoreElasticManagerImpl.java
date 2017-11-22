@@ -2,7 +2,7 @@ package com.noqapp.search.elastic.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
@@ -52,7 +52,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
         "PMD.LongVariable"
 })
 @Repository
-public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizStoreElasticEntity> {
+public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizStoreElastic> {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
@@ -63,11 +63,11 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     @Override
-    public void save(BizStoreElasticEntity bizStoreElastic) {
+    public void save(BizStoreElastic bizStoreElastic) {
         try {
             IndexRequest request = new IndexRequest(
-                    BizStoreElasticEntity.INDEX,
-                    BizStoreElasticEntity.TYPE,
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE,
                     bizStoreElastic.getId())
                     .source(bizStoreElastic.asJson(), XContentType.JSON);
 
@@ -101,8 +101,8 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     @Override
     public void delete(String id) {
         DeleteRequest request = new DeleteRequest(
-                BizStoreElasticEntity.INDEX,
-                BizStoreElasticEntity.TYPE,
+                BizStoreElastic.INDEX,
+                BizStoreElastic.TYPE,
                 id);
 
         try {
@@ -134,14 +134,14 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     @Override
-    public void save(List<BizStoreElasticEntity> bizStoreElastics) {
+    public void save(List<BizStoreElastic> bizStoreElastics) {
         BulkRequest request = new BulkRequest();
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
 
-        for (BizStoreElasticEntity bizStoreElastic : bizStoreElastics) {
+        for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
             request.add(new IndexRequest(
-                    BizStoreElasticEntity.INDEX,
-                    BizStoreElasticEntity.TYPE,
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE,
                     bizStoreElastic.getId())
                     .source(bizStoreElastic.asJson(), XContentType.JSON));
         }
@@ -176,15 +176,15 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     @Override
-    public List<BizStoreElasticEntity> searchByBusinessName(String businessName, int limitRecords) {
-        List<BizStoreElasticEntity> results = new ArrayList<>();
+    public List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords) {
+        List<BizStoreElastic> results = new ArrayList<>();
 
         /* Size limits to fetching X data. Defaults to 10. */
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(matchQuery("N", "+" + businessName))
                 .size(limitRecords);
 
-        SearchRequest searchRequest = new SearchRequest(BizStoreElasticEntity.INDEX)
+        SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX)
                 .source(searchSourceBuilder)
                 .scroll(TimeValue.timeValueMinutes(1L));
         try {
@@ -194,7 +194,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
             ObjectMapper objectMapper = new ObjectMapper();
             for (SearchHit searchHit : hits) {
-                BizStoreElasticEntity value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElasticEntity.class);
+                BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
                 value.setId(searchHit.getId());
                 results.add(value);
             }

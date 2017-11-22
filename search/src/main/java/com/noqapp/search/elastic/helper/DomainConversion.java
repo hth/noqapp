@@ -1,7 +1,7 @@
 package com.noqapp.search.elastic.helper;
 
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 
 /**
  * hitender
@@ -9,8 +9,8 @@ import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
  */
 public class DomainConversion {
 
-    public static BizStoreElasticEntity getAsBizStoreElastic(BizStoreEntity bizStore) {
-        return new BizStoreElasticEntity()
+    public static BizStoreElastic getAsBizStoreElastic(BizStoreEntity bizStore) {
+        return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setAddress(bizStore.getAddress())
