@@ -126,6 +126,6 @@ public class ElasticAdministrationService {
                 ElasticAdministrationService.class.getName(),
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);
-        LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()));
+        LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()).toMillis());
     }
 }
