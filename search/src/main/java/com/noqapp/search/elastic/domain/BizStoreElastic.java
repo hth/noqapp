@@ -31,7 +31,7 @@ import java.util.Arrays;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BizStoreElasticEntity extends AbstractDomain {
+public class BizStoreElastic extends AbstractDomain {
 
     public static final String TYPE = "BIZ_STORE".toLowerCase();
     public static final String INDEX = ElasticsearchClientConfiguration.INDEX + "_" + TYPE;
@@ -110,7 +110,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return id;
     }
 
-    public BizStoreElasticEntity setId(String id) {
+    public BizStoreElastic setId(String id) {
         this.id = id;
         return this;
     }
@@ -119,7 +119,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return businessName;
     }
 
-    public BizStoreElasticEntity setBusinessName(String businessName) {
+    public BizStoreElastic setBusinessName(String businessName) {
         this.businessName = businessName;
         return this;
     }
@@ -128,7 +128,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return address;
     }
 
-    public BizStoreElasticEntity setAddress(String address) {
+    public BizStoreElastic setAddress(String address) {
         this.address = address;
         return this;
     }
@@ -137,7 +137,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return town;
     }
 
-    public BizStoreElasticEntity setTown(String town) {
+    public BizStoreElastic setTown(String town) {
         this.town = town;
         return this;
     }
@@ -146,7 +146,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return district;
     }
 
-    public BizStoreElasticEntity setDistrict(String district) {
+    public BizStoreElastic setDistrict(String district) {
         this.district = district;
         return this;
     }
@@ -155,7 +155,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return state;
     }
 
-    public BizStoreElasticEntity setState(String state) {
+    public BizStoreElastic setState(String state) {
         this.state = state;
         return this;
     }
@@ -164,7 +164,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return stateShortName;
     }
 
-    public BizStoreElasticEntity setStateShortName(String stateShortName) {
+    public BizStoreElastic setStateShortName(String stateShortName) {
         this.stateShortName = stateShortName;
         return this;
     }
@@ -173,7 +173,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return postalCode;
     }
 
-    public BizStoreElasticEntity setPostalCode(String postalCode) {
+    public BizStoreElastic setPostalCode(String postalCode) {
         this.postalCode = postalCode;
         return this;
     }
@@ -182,7 +182,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return country;
     }
 
-    public BizStoreElasticEntity setCountry(String country) {
+    public BizStoreElastic setCountry(String country) {
         this.country = country;
         return this;
     }
@@ -191,7 +191,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return countryShortName;
     }
 
-    public BizStoreElasticEntity setCountryShortName(String countryShortName) {
+    public BizStoreElastic setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
         return this;
     }
@@ -200,7 +200,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return phone;
     }
 
-    public BizStoreElasticEntity setPhone(String phone) {
+    public BizStoreElastic setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -209,7 +209,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return phoneRaw;
     }
 
-    public BizStoreElasticEntity setPhoneRaw(String phoneRaw) {
+    public BizStoreElastic setPhoneRaw(String phoneRaw) {
         this.phoneRaw = phoneRaw;
         return this;
     }
@@ -218,7 +218,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return geoPointOfQ;
     }
 
-    public BizStoreElasticEntity setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
+    public BizStoreElastic setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
         this.geoPointOfQ = geoPointOfQ;
         return this;
     }
@@ -227,7 +227,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return placeId;
     }
 
-    public BizStoreElasticEntity setPlaceId(String placeId) {
+    public BizStoreElastic setPlaceId(String placeId) {
         this.placeId = placeId;
         return this;
     }
@@ -236,7 +236,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return placeType;
     }
 
-    public BizStoreElasticEntity setPlaceType(String[] placeType) {
+    public BizStoreElastic setPlaceType(String[] placeType) {
         this.placeType = placeType;
         return this;
     }
@@ -245,7 +245,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return rating;
     }
 
-    public BizStoreElasticEntity setRating(float rating) {
+    public BizStoreElastic setRating(float rating) {
         this.rating = rating;
         return this;
     }
@@ -254,7 +254,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return ratingCount;
     }
 
-    public BizStoreElasticEntity setRatingCount(int ratingCount) {
+    public BizStoreElastic setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
         return this;
     }
@@ -263,7 +263,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return bizNameId;
     }
 
-    public BizStoreElasticEntity setBizNameId(String bizNameId) {
+    public BizStoreElastic setBizNameId(String bizNameId) {
         this.bizNameId = bizNameId;
         return this;
     }
@@ -272,7 +272,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return displayName;
     }
 
-    public BizStoreElasticEntity setDisplayName(String displayName) {
+    public BizStoreElastic setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -281,7 +281,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return codeQR;
     }
 
-    public BizStoreElasticEntity setCodeQR(String codeQR) {
+    public BizStoreElastic setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
     }
@@ -290,7 +290,7 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return timeZone;
     }
 
-    public BizStoreElasticEntity setTimeZone(String timeZone) {
+    public BizStoreElastic setTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
     }
@@ -299,14 +299,14 @@ public class BizStoreElasticEntity extends AbstractDomain {
         return geoHash;
     }
 
-    public BizStoreElasticEntity setGeoHash(String geoHash) {
+    public BizStoreElastic setGeoHash(String geoHash) {
         this.geoHash = geoHash;
         return this;
     }
 
     @Override
     public String toString() {
-        return "BizStoreElasticEntity{" +
+        return "BizStoreElastic{" +
                 "id='" + id + '\'' +
                 ", businessName='" + businessName + '\'' +
                 ", address='" + address + '\'' +

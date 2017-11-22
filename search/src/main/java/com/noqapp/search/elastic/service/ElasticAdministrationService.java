@@ -4,7 +4,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.search.elastic.domain.BizStoreElasticEntity;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -107,7 +107,7 @@ public class ElasticAdministrationService {
         }
     }
 
-    private void save(List<BizStoreElasticEntity> bizStoreElastics) {
+    private void save(List<BizStoreElastic> bizStoreElastics) {
         bizStoreElasticService.save(bizStoreElastics);
     }
 
@@ -115,7 +115,7 @@ public class ElasticAdministrationService {
         Instant start = Instant.now();
         long count = 0;
         try (Stream<BizStoreEntity> stream = bizStoreManager.findAll()) {
-            List<BizStoreElasticEntity> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
+            List<BizStoreElastic> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
             save(bizStoreElastics);
             count += bizStoreElastics.size();
         }

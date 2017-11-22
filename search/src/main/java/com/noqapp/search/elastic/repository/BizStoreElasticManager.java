@@ -6,20 +6,20 @@ import java.util.List;
  * User: hitender
  * Date: 11/193/16 1:49 AM
  */
-public interface BizStoreElasticManager<BizStoreElasticEntity> {
+public interface BizStoreElasticManager<BizStoreElastic> {
     /**
      * Save single object.
      *
      * @param bizStoreElastic
      */
-    void save(BizStoreElasticEntity bizStoreElastic);
+    void save(BizStoreElastic bizStoreElastic);
 
     /**
      * Bulk save operation.
      *
      * @param bizStoreElastics
      */
-    void save(List<BizStoreElasticEntity> bizStoreElastics);
+    void save(List<BizStoreElastic> bizStoreElastics);
 
     /**
      * Delete by id.
@@ -34,5 +34,5 @@ public interface BizStoreElasticManager<BizStoreElasticEntity> {
      * @param businessName
      * @return
      */
-    List<BizStoreElasticEntity> searchByBusinessName(String businessName, int limitRecords);
+    List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords);
 }
