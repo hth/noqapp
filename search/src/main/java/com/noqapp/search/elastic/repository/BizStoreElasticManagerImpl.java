@@ -36,11 +36,16 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 /**
- * curl -XGET http://localhost:9200/noqapp_biz_store/biz_store/_search?q=country:India
- * curl http://localhost:9200/noqapp/_search/?pretty=true
- * curl -X GET http://localhost:9200/
- * curl http://localhost:9200/x/_search/?pretty=true
- * curl http://localhost:9200/noqapp/x/_search/?pretty=true
+ * Note the difference in including query with search and no search parameter
+ *  curl http://localhost:9200/noqapp_biz_store/_search/?pretty=true -- will list data on the index
+ *  curl http://localhost:9200/noqapp_biz_store/?pretty=true -- will lists meta data only
+ *
+ * Different queries
+ *  curl -XGET http://localhost:9200/noqapp_biz_store/biz_store/_search?q=country:India
+ *  curl http://localhost:9200/noqapp/_search/?pretty=true
+ *  curl -X GET http://localhost:9200/
+ *  curl http://localhost:9200/x/_search/?pretty=true
+ *  curl http://localhost:9200/noqapp/x/_search/?pretty=true
  * <p>
  * User: hitender
  * Date: 11/193/16 1:49 AM
