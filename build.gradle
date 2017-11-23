@@ -15,6 +15,7 @@ ext {
     cert = file("$javaClasses/cert")
     conf = file("$javaClasses/conf")
     dkim = file("$javaClasses/dkim")
+    elastic_mapping = file("$javaClasses/elastic_mapping")
     images = file("$javaClasses/images")
 
     warDir = file("$buildDir/explodedWar/$env")
@@ -24,6 +25,7 @@ ext {
     warCertDir = file("$warDir$cert")
     warConfDir = file("$warDir$conf")
     warDkimDir = file("$warDir$dkim")
+    warMappingDir = file("$warDir$elastic_mapping")
     warWebInfClassesImagesDir = file("$warDir$images")
 
     activeProfilewarDir = file("$buildDir/activeProfile/$env")
@@ -663,6 +665,7 @@ task prepWar(dependsOn: [
         warClassesDir.mkdirs()
         warConfDir.mkdirs()
         warDkimDir.mkdirs()
+        warMappingDir.mkdirs()
 
         copy {
             from 'view/web'
@@ -771,6 +774,13 @@ task prepWar(dependsOn: [
             }
 
             into warDkimDir
+        }
+
+        copy {
+            from("search/resources/elastic_mapping") {
+                include "**/*.json"
+            }
+            into warMappingDir
         }
 
         copy {

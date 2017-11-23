@@ -1,14 +1,15 @@
-package com.noqapp.domain.shared;
+package com.noqapp.search.elastic.dsl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 
 /**
- * User: hitender
- * Date: 11/17/17 22:21 PM
+ * hitender
+ * 11/22/17 11:45 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -24,28 +25,18 @@ import com.noqapp.common.utils.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeoPointOfQ extends AbstractDomain {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Filter extends AbstractDomain {
 
-    @JsonProperty("lat")
-    private double lat;
+    @JsonProperty("geo_distance")
+    private GeoDistance geoDistance;
 
-    @JsonProperty ("lon")
-    private double lon;
-
-    private GeoPointOfQ() {
-        //Required default constructor
+    public GeoDistance getGeoDistance() {
+        return geoDistance;
     }
 
-    public GeoPointOfQ(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
+    public Filter setGeoDistance(GeoDistance geoDistance) {
+        this.geoDistance = geoDistance;
+        return this;
     }
 }

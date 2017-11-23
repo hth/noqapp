@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.common.config.OkHttpClientConfiguration;
@@ -24,8 +25,6 @@ import java.net.UnknownHostException;
 @Service
 public class FirebaseMessageService {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseMessageService.class);
-
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private String authorizationKey;
     private OkHttpClient okHttpClient;
@@ -52,7 +51,7 @@ public class FirebaseMessageService {
     public boolean messageToTopic(JsonMessage jsonMessage) {
         LOG.info("Sending FCM message with body={}", jsonMessage.asJson());
 
-        RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
+        RequestBody body = RequestBody.create(Constants.JSON, jsonMessage.asJson());
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
                 .addHeader("Authorization", authorizationKey)

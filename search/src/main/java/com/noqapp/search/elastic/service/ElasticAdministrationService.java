@@ -1,26 +1,25 @@
 package com.noqapp.search.elastic.service;
 
-import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.repository.BizStoreManager;
-import com.noqapp.search.elastic.domain.BizStoreElastic;
-import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.utils.LoadMappingFiles;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.noqapp.common.utils.Constants.JSON;
 
 /**
  * hitender
@@ -37,30 +36,131 @@ public class ElasticAdministrationService {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticAdministrationService.class);
 
     private OkHttpClient okHttpClient;
-    private BizStoreManager bizStoreManager;
-    private BizStoreElasticService bizStoreElasticService;
     private ApiHealthService apiHealthService;
 
     @Autowired
     public ElasticAdministrationService(
             OkHttpClient okHttpClient,
-            BizStoreManager bizStoreManager,
-            BizStoreElasticService bizStoreElasticService,
             ApiHealthService apiHealthService
     ) {
         this.okHttpClient = okHttpClient;
-        this.bizStoreManager = bizStoreManager;
-        this.bizStoreElasticService = bizStoreElasticService;
         this.apiHealthService = apiHealthService;
+    }
+
+    /**
+     * Adds mapping to Elastic. This method creates Index and Types. Types are associated inside mapping JSON file.
+     * Note: Not to create Index before running this method.
+     *
+     * @param index name of the index
+     * @param type  select a specific mapping file name
+     * @return
+     */
+    public boolean addMapping(String index, String type) {
+        Instant start = Instant.now();
+        try {
+            String json = LoadMappingFiles.loadMapping(type);
+            if (StringUtils.isBlank(json)) {
+                LOG.error("Failed to load file mapping for Elastic type={}", type);
+                throw new RuntimeException("Failed to load file mapping for " + type);
+            }
+
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder()
+                    .url("http://localhost:9200/" + index)
+                    .put(body)
+                    .build();
+            boolean result = parseResponse(request);
+            if (!result) {
+                LOG.error("Failed to insert mapping in index={} type={} data={}", index, type ,json);
+            }
+            return result;
+        } finally {
+            apiHealthService.insert(
+                    "/addMapping",
+                    "addMapping",
+                    this.getClass().getName(),
+                    Duration.between(start, Instant.now()),
+                    HealthStatusEnum.G);
+        }
+    }
+
+    /**
+     * Created index.
+     *
+     * @param index
+     * @return
+     */
+    public boolean createIndex(String index) {
+        Instant start = Instant.now();
+        try {
+            if (!doesIndexExists(index)) {
+                Request request = new Request.Builder()
+                        .url("http://localhost:9200/" + index)
+                        .put(RequestBody.create(JSON, "{}"))
+                        .build();
+                boolean result = parseResponse(request);
+                if (!result) {
+                    LOG.error("Failed to created index");
+                }
+                return result;
+            }
+
+            return true;
+        } finally {
+            apiHealthService.insert(
+                    "/createIndex",
+                    "createIndex",
+                    this.getClass().getName(),
+                    Duration.between(start, Instant.now()),
+                    HealthStatusEnum.G);
+        }
+    }
+
+    /**
+     * Delete all indices.
+     *
+     * @return
+     */
+    public boolean deleteAllIndices() {
+        return deleteIndex("*");
+    }
+
+    /**
+     * Delete existing index.
+     *
+     * @param index Name of index to be deleted
+     * @return
+     */
+    public boolean deleteIndex(String index) {
+        Instant start = Instant.now();
+        try {
+            Request request = new Request.Builder()
+                    .url("http://localhost:9200/" + index)
+                    .delete()
+                    .build();
+            boolean result = parseResponse(request);
+            if (!result) {
+                LOG.error("Failed to delete");
+            }
+            return result;
+        } finally {
+            apiHealthService.insert(
+                    "/deleteIndex",
+                    "deleteIndex",
+                    this.getClass().getName(),
+                    Duration.between(start, Instant.now()),
+                    HealthStatusEnum.G);
+        }
     }
 
     /**
      * Checks if a specific index exists.
      *
-     * @param index
+     * @param index Name of index
      * @return
      */
     public boolean doesIndexExists(String index) {
+        Instant start = Instant.now();
         Request request = new Request.Builder()
                 .url("http://localhost:9200/" + index)
                 .head()
@@ -74,26 +174,76 @@ public class ElasticAdministrationService {
         } catch (IOException e) {
             LOG.error("Failed making Elastic request reason={}", e.getLocalizedMessage(), e);
             return false;
+        } finally {
+            apiHealthService.insert(
+                    "/doesIndexExists",
+                    "doesIndexExists",
+                    this.getClass().getName(),
+                    Duration.between(start, Instant.now()),
+                    HealthStatusEnum.G);
         }
 
         return response.code() == 200;
     }
 
     /**
-     * Delete existing index.
+     * Common DSL Search Query.
      *
-     * @param index
+     * @param url
+     * @param query
      * @return
      */
-    public boolean deleteIndex(String index) {
+    //@Async //For now skipping on @Async and missing source
+    String executeDSLQuerySearch(String url, String query) {
+        Instant start = Instant.now();
+        RequestBody body = RequestBody.create(JSON, query);
         Request request = new Request.Builder()
-                .url("http://localhost:9200/" + index)
-                .delete()
+                .url(url)
+                .post(body)
                 .build();
+
+        Response response = null;
+        try {
+            String result = null;
+            response = okHttpClient.newCall(request).execute();
+            if (200 == response.code() && null != response.body()) {
+                result = response.body().string();
+                LOG.info("Search found data={}",result);
+            } else {
+                LOG.error("Failed to find query={} body={}", query, response.body());
+            }
+
+            return result;
+        } catch (UnknownHostException e) {
+            LOG.error("Failed connecting to Elastic host reason={}", e.getLocalizedMessage(), e);
+            return null;
+        } catch (IOException e) {
+            LOG.error("Failed deleting index from Elastic request reason={}", e.getLocalizedMessage(), e);
+            return null;
+        } finally {
+            if (response != null) {
+                response.body().close();
+            }
+
+            apiHealthService.insert(
+                    "/executeDSLQuerySearch",
+                    "executeDSLQuerySearch",
+                    this.getClass().getName(),
+                    Duration.between(start, Instant.now()),
+                    HealthStatusEnum.G);
+        }
+    }
+
+    private boolean parseResponse(Request request) {
         Response response = null;
         try {
             response = okHttpClient.newCall(request).execute();
-            return response.code() == 200;
+            if (response.code() == 200) {
+                return true;
+            } else {
+                LOG.error("Request={} Response={}", request, response);
+                return false;
+            }
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to Elastic host reason={}", e.getLocalizedMessage(), e);
             return false;
@@ -105,27 +255,5 @@ public class ElasticAdministrationService {
                 response.body().close();
             }
         }
-    }
-
-    private void save(List<BizStoreElastic> bizStoreElastics) {
-        bizStoreElasticService.save(bizStoreElastics);
-    }
-
-    public void addAllBizStoreToElastic() {
-        Instant start = Instant.now();
-        long count = 0;
-        try (Stream<BizStoreEntity> stream = bizStoreManager.findAll()) {
-            List<BizStoreElastic> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
-            save(bizStoreElastics);
-            count += bizStoreElastics.size();
-        }
-
-        apiHealthService.insert(
-                "/addAllBizStoreToElastic",
-                "addAllBizStoreToElastic",
-                ElasticAdministrationService.class.getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
-        LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()));
     }
 }

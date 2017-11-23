@@ -1,6 +1,7 @@
 package com.noqapp.view.listener;
 
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.CommonUtil;
@@ -34,18 +35,20 @@ public class NoQAppInitializationCheckBean {
     private FirebaseConfig firebaseConfig;
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
+    private BizStoreElasticService bizStoreElasticService;
 
     @Autowired
     public NoQAppInitializationCheckBean(
             DataSource dataSource,
             FirebaseConfig firebaseConfig,
             RestHighLevelClient restHighLevelClient,
-            ElasticAdministrationService elasticAdministrationService
-    ) {
+            ElasticAdministrationService elasticAdministrationService,
+            BizStoreElasticService bizStoreElasticService) {
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
+        this.bizStoreElasticService = bizStoreElasticService;
     }
 
     @PostConstruct
@@ -91,9 +94,23 @@ public class NoQAppInitializationCheckBean {
     public void checkElasticIndex() {
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
-            elasticAdministrationService.addAllBizStoreToElastic();
+            boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE);
+
+            if (createdMappingSuccessfully) {
+                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                bizStoreElasticService.addAllBizStoreToElastic();
+            }
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
+            doSearch();
         }
+    }
+
+    //DELETE ME, for test
+    private void doSearch() {
+        bizStoreElasticService.createBizStoreSearchDSLQuery("Ganesh");
+        bizStoreElasticService.createBizStoreSearchDSLQuery("Vashi", "te7ut0u5zy9c");
     }
 }

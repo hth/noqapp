@@ -1,14 +1,17 @@
-package com.noqapp.domain.shared;
+package com.noqapp.search.elastic.dsl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 
 /**
- * User: hitender
- * Date: 11/17/17 22:21 PM
+ * Conditions are like bool,
+ *
+ * hitender
+ * 11/23/17 1:16 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -24,28 +27,30 @@ import com.noqapp.common.utils.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeoPointOfQ extends AbstractDomain {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Conditions extends AbstractDomain {
 
-    @JsonProperty("lat")
-    private double lat;
+    @JsonProperty("filter")
+    private Filter filter;
 
-    @JsonProperty ("lon")
-    private double lon;
+    @JsonProperty("must")
+    private Options options;
 
-    private GeoPointOfQ() {
-        //Required default constructor
+    public Filter getFilter() {
+        return filter;
     }
 
-    public GeoPointOfQ(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
+    public Conditions setFilter(Filter filter) {
+        this.filter = filter;
+        return this;
     }
 
-    public double getLat() {
-        return lat;
+    public Options getOptions() {
+        return options;
     }
 
-    public double getLon() {
-        return lon;
+    public Conditions setOptions(Options options) {
+        this.options = options;
+        return this;
     }
 }

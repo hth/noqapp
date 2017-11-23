@@ -1,14 +1,17 @@
-package com.noqapp.domain.shared;
+package com.noqapp.search.elastic.dsl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 
 /**
- * User: hitender
- * Date: 11/17/17 22:21 PM
+ * Options are like must,....
+ *
+ * hitender
+ * 11/23/17 1:17 AM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -24,28 +27,18 @@ import com.noqapp.common.utils.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeoPointOfQ extends AbstractDomain {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Options  extends AbstractDomain {
 
-    @JsonProperty("lat")
-    private double lat;
+    @JsonProperty("multi_match")
+    private QueryString queryStringMultiMatch;
 
-    @JsonProperty ("lon")
-    private double lon;
-
-    private GeoPointOfQ() {
-        //Required default constructor
+    public QueryString getQueryStringMultiMatch() {
+        return queryStringMultiMatch;
     }
 
-    public GeoPointOfQ(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
+    public Options setQueryStringMultiMatch(QueryString queryStringMultiMatch) {
+        this.queryStringMultiMatch = queryStringMultiMatch;
+        return this;
     }
 }
