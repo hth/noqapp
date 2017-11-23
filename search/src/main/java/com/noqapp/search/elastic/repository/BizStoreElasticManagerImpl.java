@@ -6,6 +6,7 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -36,17 +37,6 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 /**
- * Note the difference in including query with search and no search parameter
- *  curl http://localhost:9200/noqapp_biz_store/_search/?pretty=true -- will list data on the index
- *  curl http://localhost:9200/noqapp_biz_store/?pretty=true -- will lists meta data only
- *
- * Different queries
- *  curl -XGET http://localhost:9200/noqapp_biz_store/biz_store/_search?q=country:India
- *  curl http://localhost:9200/noqapp/_search/?pretty=true
- *  curl -X GET http://localhost:9200/
- *  curl http://localhost:9200/x/_search/?pretty=true
- *  curl http://localhost:9200/noqapp/x/_search/?pretty=true
- * <p>
  * User: hitender
  * Date: 11/193/16 1:49 AM
  */
@@ -144,11 +134,17 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
 
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
-            request.add(new IndexRequest(
-                    BizStoreElastic.INDEX,
-                    BizStoreElastic.TYPE,
-                    bizStoreElastic.getId())
-                    .source(bizStoreElastic.asJson(), XContentType.JSON));
+            request.add(
+                    new IndexRequest(
+                            BizStoreElastic.INDEX,
+                            BizStoreElastic.TYPE,
+                            /*
+                             *  Recommend to remove your id for indexing as it checks before insert,
+                             *  that slows the process of insert. But having your existing index
+                             *  helps shorten data, and easy lookup by id.
+                             */
+                            bizStoreElastic.getId()
+                    ).source(bizStoreElastic.asJson(), XContentType.JSON));
         }
 
         try {
