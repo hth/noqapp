@@ -122,10 +122,14 @@ You'll need to take these quick steps first :
 
 This creates Index `test` and Type `type1`. If index already exists then it fails with `400` bad http request error.
 
+`Dynamic false` will prevent from adding fields at runtime. For new field add it here, drop index and 
+create new index by changing index version appended from v1 to v2. 
+
     curl -XPUT 'localhost:9200/test?pretty' -H 'Content-Type: application/json' -d'
     {
         "mappings" : {
             "type1" : {
+                "dynamic": false,
                 "properties" : {
                     "field1" : { "type" : "text" }
                 }
