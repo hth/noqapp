@@ -93,6 +93,8 @@ public class NoQAppInitializationCheckBean {
     @PostConstruct
     public void checkElasticIndex() {
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
+            //Remove index
+            elasticAdministrationService.deleteAllIndices();
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
             boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
                     BizStoreElastic.INDEX,

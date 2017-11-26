@@ -1,6 +1,3 @@
-//Dynamic false will prevent from adding fields at runtime.
-//For new field add it here, drop index and create new index.
-
 {
   "mappings": {
     "biz_store": {
