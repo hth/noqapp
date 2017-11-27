@@ -31,6 +31,7 @@ public class ElasticsearchClientConfiguration {
 
     @Bean
     public RestHighLevelClient createRestHighLevelClient() {
+        LOG.info("Host={} Port={}", elasticHost, elasticPort);
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(
                         new HttpHost(elasticHost, elasticPort, "http")));
