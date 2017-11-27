@@ -5,6 +5,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,11 +23,17 @@ public class ElasticsearchClientConfiguration {
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqapp_" + INDEX_VERSION;
 
+    @Value("${elastic.host}")
+    private String elasticHost;
+
+    @Value("${elastic.port}")
+    private int elasticPort;
+
     @Bean
     public RestHighLevelClient createRestHighLevelClient() {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(
-                        new HttpHost("localhost", 9200, "http")));
+                        new HttpHost(elasticHost, elasticPort, "http")));
 
         return client;
     }
