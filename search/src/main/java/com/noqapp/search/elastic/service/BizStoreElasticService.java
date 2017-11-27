@@ -33,7 +33,7 @@ import java.util.stream.Stream;
  * User: hitender
  * Date: 11/14/17 2:55 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -75,7 +75,9 @@ public class BizStoreElasticService {
     @Async
     void save(List<BizStoreElastic> bizStoreElastics) {
         LOG.info("Bulk save size={}", bizStoreElastics.size());
-        bizStoreElasticManager.save(bizStoreElastics);
+        if (!bizStoreElastics.isEmpty()) {
+            bizStoreElasticManager.save(bizStoreElastics);
+        }
     }
 
     @Async
@@ -127,11 +129,11 @@ public class BizStoreElasticService {
         if (StringUtils.isNotBlank(searchParameter)) {
             /* Search across all the specified fields. */
             q.setConditions(new Conditions()
-                            .setOptions(new Options()
-                                            .setQueryStringMultiMatch(new QueryString()
-                                                    .setQuery(searchParameter)
-                                            )
+                    .setOptions(new Options()
+                            .setQueryStringMultiMatch(new QueryString()
+                                    .setQuery(searchParameter)
                             )
+                    )
             );
         } else {
             /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
