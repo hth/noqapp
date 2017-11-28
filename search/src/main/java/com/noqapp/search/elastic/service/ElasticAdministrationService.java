@@ -199,16 +199,16 @@ public class ElasticAdministrationService {
     /**
      * Common DSL Search Query.
      *
-     * @param url
+     * @param indexPattern
      * @param query
      * @return
      */
     //@Async //For now skipping on @Async and missing source
-    String executeDSLQuerySearch(String url, String query) {
+    String executeDSLQuerySearch(String indexPattern, String query) {
         Instant start = Instant.now();
         RequestBody body = RequestBody.create(JSON, query);
         Request request = new Request.Builder()
-                .url(url)
+                .url(elasticURI + indexPattern)
                 .post(body)
                 .build();
 

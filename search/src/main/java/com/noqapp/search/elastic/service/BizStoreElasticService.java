@@ -166,8 +166,7 @@ public class BizStoreElasticService {
     private String executeSearchOnBizStoreUsingDSL(String dslQuery) {
         LOG.info("DSL Query={}", dslQuery);
         return elasticAdministrationService.executeDSLQuerySearch(
-                "http://localhost:9200/"
-                        + BizStoreElastic.INDEX
+                BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
                         + "/_search?pretty=true",
