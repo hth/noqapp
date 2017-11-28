@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +38,23 @@ public class ElasticAdministrationService {
 
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
+    private String elasticURI;
 
     @Autowired
     public ElasticAdministrationService(
+            @Value("${elastic.host}")
+            String elasticHost,
+
+            @Value("${elastic.port}")
+            int elasticPort,
+
             OkHttpClient okHttpClient,
             ApiHealthService apiHealthService
     ) {
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
+
+        this.elasticURI = "http://" + elasticHost + ":" + elasticPort + "/";
     }
 
     /**
@@ -66,7 +76,7 @@ public class ElasticAdministrationService {
 
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()
-                    .url("http://localhost:9200/" + index)
+                    .url(elasticURI + index)
                     .put(body)
                     .build();
             boolean result = parseResponse(request);
@@ -95,7 +105,7 @@ public class ElasticAdministrationService {
         try {
             if (!doesIndexExists(index)) {
                 Request request = new Request.Builder()
-                        .url("http://localhost:9200/" + index)
+                        .url(elasticURI + index)
                         .put(RequestBody.create(JSON, "{}"))
                         .build();
                 boolean result = parseResponse(request);
@@ -135,7 +145,7 @@ public class ElasticAdministrationService {
         Instant start = Instant.now();
         try {
             Request request = new Request.Builder()
-                    .url("http://localhost:9200/" + index)
+                    .url(elasticURI + index)
                     .delete()
                     .build();
             boolean result = parseResponse(request);
@@ -162,7 +172,7 @@ public class ElasticAdministrationService {
     public boolean doesIndexExists(String index) {
         Instant start = Instant.now();
         Request request = new Request.Builder()
-                .url("http://localhost:9200/" + index)
+                .url(elasticURI + index)
                 .head()
                 .build();
         Response response;
