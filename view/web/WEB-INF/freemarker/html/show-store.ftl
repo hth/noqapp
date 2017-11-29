@@ -38,7 +38,7 @@
 						<p>${phone}</p>
 					</div>
 					<div class="qr-queue">
-						<h3>${displayName} queue at ${bizName}</h3>
+						<h3>${displayName} at ${bizName}</h3>
 						<p><strong>${dayOfWeek} Hours: </strong> ${startHour} - ${endHour}</p>
 						<p><strong>Rating: </strong>${rating}</p>
 						<p><strong>Reviews: </strong>${ratingCount}</p>
