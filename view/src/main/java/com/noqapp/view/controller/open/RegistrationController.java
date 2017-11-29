@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.service.exceptions.DuplicateAccountException;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -90,8 +91,11 @@ public class RegistrationController {
                 LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());
                 return registrationPage;
             }
+        } catch (DuplicateAccountException e) {
+            LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
+            return registrationPage;
         } catch (RuntimeException e) {
-            LOG.error("failure in registering user reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failure in registering user reason={}", e.getLocalizedMessage(), e);
             return registrationPage;
         }
 

@@ -25,6 +25,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.service.exceptions.DuplicateAccountException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,7 +148,7 @@ public class AccountService {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
-        if (null == userProfileManager.findOneByPhone(phoneWithCountryCode) && null == userProfileManager.findOneByMail(mail)) {
+        if (null == checkUserExistsByPhone(phoneWithCountryCode) && null == doesUserExists(mail)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
 
@@ -234,7 +235,7 @@ public class AccountService {
             return userAccount;
         } else {
             LOG.error("Account creation failed as it already exists for phone={} mail={}", phoneWithCountryCode, mail);
-            return null;
+            throw new DuplicateAccountException("Account with credential already exists");
         }
     }
 
