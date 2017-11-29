@@ -147,7 +147,7 @@ public class AccountService {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
-        if (null == userProfileManager.findOneByPhone(phoneWithCountryCode)) {
+        if (null == userProfileManager.findOneByPhone(phoneWithCountryCode) && null == userProfileManager.findOneByMail(mail)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
 
@@ -233,7 +233,7 @@ public class AccountService {
             }
             return userAccount;
         } else {
-            LOG.error("Account creation failed as it already exists for phone={}", phoneWithCountryCode);
+            LOG.error("Account creation failed as it already exists for phone={} mail={}", phoneWithCountryCode, mail);
             return null;
         }
     }

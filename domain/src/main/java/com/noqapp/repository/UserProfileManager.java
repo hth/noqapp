@@ -13,8 +13,6 @@ import java.util.List;
 public interface UserProfileManager extends RepositoryManager<UserProfileEntity> {
     UserProfileEntity getById(String id);
 
-    UserProfileEntity findByEmail(String email);
-
     UserProfileEntity findByQueueUserId(String qid);
 
     UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid);
