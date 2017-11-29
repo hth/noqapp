@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 public final class CommonUtil {
     private static Header dummyHeader = new BasicHeader("A", "A");
 
+    public static final String AUTH_KEY_HIDDEN = "*********";
+    public static final String UNAUTHORIZED = "Unauthorized";
+
     private CommonUtil() {
     }
 
