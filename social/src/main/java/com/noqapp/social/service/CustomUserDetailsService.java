@@ -70,7 +70,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOG.info("login attempted email={}", email);
 
         /* Always check user login with lower letter email case. */
-        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
+        UserProfileEntity userProfile = userProfilePreferenceService.findOneByMail(email);
         if (null == userProfile) {
             LOG.warn("Not found user with email={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
