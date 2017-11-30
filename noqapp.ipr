@@ -346,8 +346,8 @@
         <element id="file-copy" path="$PROJECT_DIR$/view/web/500.html" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.1.war (exploded)">
-      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.1.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.2.war (exploded)">
+      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.2.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -355,42 +355,76 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.1.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.2.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.1.war" />
+        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.2.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="loader_main" />
             <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
           </element>
           <element id="directory" name="lib">
+            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
+            <element id="archive" name="com.noqapp-service.jar">
+              <element id="module-output" name="service_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-health.jar">
               <element id="module-output" name="health_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
+            </element>
+            <element id="archive" name="com.noqapp-domain.jar">
+              <element id="module-output" name="domain_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
             </element>
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/out/production/resources" />
             </element>
+            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
             <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" />
-            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.8.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.8.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
-            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
+            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.5" />
+            <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.9.1" />
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
@@ -400,7 +434,7 @@
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
-            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
+            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
             <element id="library" level="project" name="Gradle: net.sf.ehcache:ehcache-core:2.6.2" />
@@ -432,7 +466,7 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
@@ -466,6 +500,8 @@
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.70.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.2" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
@@ -496,7 +532,7 @@
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: org.tallison:jmatio:1.2" />
             <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-dom:0.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-compress:1.14" />
             <element id="library" level="project" name="Gradle: org.tukaani:xz:1.6" />
             <element id="library" level="project" name="Gradle: org.apache.pdfbox:pdfbox-tools:2.0.6" />
@@ -606,57 +642,21 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
-            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
-            <element id="archive" name="com.noqapp-domain.jar">
-              <element id="module-output" name="domain_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
-            </element>
-            <element id="archive" name="com.noqapp-service.jar">
-              <element id="module-output" name="service_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
-            </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.9.1/84b4b7d1c4a238e7899972b7446c250691e65f1f/okhttp-3.9.1.jar" />
           </element>
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : loader-1.1.war">
+    <artifact type="war" name="Gradle : com.noqapp : loader-1.2.war">
       <output-path>$PROJECT_DIR$/loader/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="loader-1.1.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.1.war (exploded)" />
+      <root id="archive" name="loader-1.2.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.2.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.1.war (exploded)">
-      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.1.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.2.war (exploded)">
+      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.2.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -664,38 +664,68 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.1.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.2.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.1.war" />
+        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.2.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="security_main" />
             <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
           </element>
           <element id="directory" name="lib">
+            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
+            <element id="archive" name="com.noqapp-domain.jar">
+              <element id="module-output" name="domain_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/out/production/resources" />
             </element>
+            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
             <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" />
-            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.8.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.8.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
-            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
+            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.5" />
+            <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.9.1" />
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
@@ -705,7 +735,7 @@
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
-            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
+            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
             <element id="library" level="project" name="Gradle: net.sf.ehcache:ehcache-core:2.6.2" />
@@ -737,7 +767,7 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
@@ -771,6 +801,8 @@
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.70.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.2" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
@@ -801,7 +833,7 @@
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: org.tallison:jmatio:1.2" />
             <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-dom:0.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-compress:1.14" />
             <element id="library" level="project" name="Gradle: org.tukaani:xz:1.6" />
             <element id="library" level="project" name="Gradle: org.apache.pdfbox:pdfbox-tools:2.0.6" />
@@ -911,54 +943,22 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
-            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="archive" name="com.noqapp-domain.jar">
-              <element id="module-output" name="domain_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
-            </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.9.1/84b4b7d1c4a238e7899972b7446c250691e65f1f/okhttp-3.9.1.jar" />
           </element>
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : security-1.1.war">
+    <artifact type="war" name="Gradle : com.noqapp : security-1.2.war">
       <output-path>$PROJECT_DIR$/security/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="security-1.1.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.1.war (exploded)" />
+      <root id="archive" name="security-1.2.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.2.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.1.war (exploded)">
-      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.1.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.2.war (exploded)">
+      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.2.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -966,46 +966,80 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.1.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.2.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.1.war" />
+        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.2.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="view_main" />
             <element id="dir-copy" path="$PROJECT_DIR$/view/out/production/resources" />
           </element>
           <element id="directory" name="lib">
-            <element id="archive" name="com.noqapp-loader.jar">
-              <element id="module-output" name="loader_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
+            <element id="archive" name="com.noqapp-social.jar">
+              <element id="module-output" name="social_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
+            </element>
+            <element id="archive" name="com.noqapp-service.jar">
+              <element id="module-output" name="service_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
             </element>
             <element id="archive" name="com.noqapp-health.jar">
               <element id="module-output" name="health_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/health/out/production/resources" />
             </element>
+            <element id="archive" name="com.noqapp-domain.jar">
+              <element id="module-output" name="domain_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-common.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/out/production/resources" />
             </element>
+            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
             <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" />
-            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.8.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.8.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
-            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
+            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.5" />
+            <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.9.1" />
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
@@ -1015,7 +1049,7 @@
             <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
-            <element id="library" level="project" name="Gradle: edu.ucar:netcdf4:4.5.5" />
+            <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
             <element id="library" level="project" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" />
             <element id="library" level="project" name="Gradle: edu.ucar:httpservices:4.5.5" />
             <element id="library" level="project" name="Gradle: net.sf.ehcache:ehcache-core:2.6.2" />
@@ -1047,7 +1081,7 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
@@ -1081,6 +1115,8 @@
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.70.0" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.0.2" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
@@ -1111,7 +1147,7 @@
             <element id="library" level="project" name="Gradle: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Gradle: org.tallison:jmatio:1.2" />
             <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-dom:0.8.1" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-compress:1.14" />
             <element id="library" level="project" name="Gradle: org.tukaani:xz:1.6" />
             <element id="library" level="project" name="Gradle: org.apache.pdfbox:pdfbox-tools:2.0.6" />
@@ -1221,40 +1257,9 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:5.0.0.RELEASE" />
-            <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
-            <element id="archive" name="com.noqapp-domain.jar">
-              <element id="module-output" name="domain_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/domain/out/production/resources" />
-            </element>
-            <element id="archive" name="com.noqapp-service.jar">
-              <element id="module-output" name="service_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            <element id="archive" name="com.noqapp-loader.jar">
+              <element id="module-output" name="loader_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
             </element>
             <element id="archive" name="com.noqapp-search.jar">
               <element id="module-output" name="search_main" />
@@ -1265,22 +1270,17 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="archive" name="com.noqapp-social.jar">
-              <element id="module-output" name="social_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
-            </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.9.1/84b4b7d1c4a238e7899972b7446c250691e65f1f/okhttp-3.9.1.jar" />
           </element>
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.1.war">
+    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.2.war">
       <output-path>$PROJECT_DIR$/view/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="noqapp-view-1.1.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.1.war (exploded)" />
+      <root id="archive" name="noqapp-view-1.2.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.2.war (exploded)" />
       </root>
     </artifact>
   </component>
