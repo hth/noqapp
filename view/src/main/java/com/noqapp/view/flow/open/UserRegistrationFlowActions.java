@@ -24,7 +24,6 @@ public class UserRegistrationFlowActions {
     @SuppressWarnings("unused")
     public MerchantRegistrationForm createUserRegistration() {
         try {
-            LOG.info("Registration form invoked");
             return MerchantRegistrationForm.newInstance();
         } catch (Exception e) {
             LOG.error("Failed loading registration form reason={}", e.getLocalizedMessage(), e);
