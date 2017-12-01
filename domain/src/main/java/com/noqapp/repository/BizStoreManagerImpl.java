@@ -291,7 +291,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 update,
                 BizStoreEntity.class,
                 TABLE
-        ).getModifiedCount() > 0;
+        ).getN() > 0;
     }
 
     @Override

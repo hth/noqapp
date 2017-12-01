@@ -1,6 +1,5 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.DistinctIterable;
 import com.noqapp.domain.StatsCronEntity;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public interface StatsCronManager extends RepositoryManager<StatsCronEntity> {
 
-    DistinctIterable<String> getUniqueCronTasks();
+    List<String> getUniqueCronTasks();
 
     List<StatsCronEntity> getHistoricalData(String task, int limit);
 }

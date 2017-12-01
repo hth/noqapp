@@ -3,7 +3,6 @@ package com.noqapp.repository;
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
-import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueUserStateEnum;
@@ -58,7 +57,7 @@ public class QueueManagerImpl implements QueueManager {
         if (object.getId() != null) {
             object.setUpdated();
         }
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         mongoTemplate.save(object, TABLE);
@@ -74,7 +73,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void abort(String id) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
@@ -146,14 +145,14 @@ public class QueueManagerImpl implements QueueManager {
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A).and("SID").is(sid)),
                 entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
                 QueueEntity.class,
-                TABLE).getModifiedCount() > 1;
+                TABLE).getN() > 1;
         LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
         return status;
     }
 
     @Override
     public QueueEntity getNext(String codeQR, String goTo, String sid) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
@@ -181,7 +180,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+        if (mongoTemplate.getDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
@@ -214,7 +213,7 @@ public class QueueManagerImpl implements QueueManager {
     private boolean updateWhenNextInQueueAcquired(String codeQR, String goTo, String sid, QueueEntity queue) {
         if (null != queue) {
             /* Mark as being served. */
-            UpdateResult updateResult = mongoTemplate.updateFirst(
+            WriteResult writeConcern = mongoTemplate.updateFirst(
                     /* Removed additional where clause as we just did it and found one. */
                     query(where("id").is(queue.getId()).and("QS").is(QueueUserStateEnum.Q)),
                     entityUpdate(update("SN", goTo).set("SID", sid).set("SB", new Date())),
@@ -222,12 +221,8 @@ public class QueueManagerImpl implements QueueManager {
                     TABLE
             );
 
-            LOG.info("Next to serve modified={} matched={} queue={}",
-                    updateResult.getModifiedCount(),
-                    updateResult.getMatchedCount(),
-                    queue);
-
-            if (0 == updateResult.getMatchedCount()) {
+            LOG.info("Next to serve WriteConcern={} queue={}", writeConcern.getN(), queue);
+            if (writeConcern.getN() == 0) {
                 LOG.info("Could not lock since its already modified codeQR={} token={}, going to next in queue",
                         codeQR, queue.getTokenNumber());
 
@@ -302,7 +297,7 @@ public class QueueManagerImpl implements QueueManager {
                 query(where("QR").is(codeQR)),
                 QueueEntity.class,
                 TABLE
-        ).getDeletedCount();
+        ).getN();
     }
 
     @Override
@@ -342,7 +337,7 @@ public class QueueManagerImpl implements QueueManager {
                 entityUpdate(update("RA", ratingCount).set("HR", hoursSaved)),
                 QueueEntity.class,
                 TABLE
-        ).getModifiedCount() > 0;
+        ).getN() > 0;
     }
 
     @Override
