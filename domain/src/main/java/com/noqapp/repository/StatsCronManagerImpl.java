@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.DistinctIterable;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StatsCronEntity;
 import org.slf4j.Logger;
@@ -52,8 +53,8 @@ public class StatsCronManagerImpl implements StatsCronManager {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> getUniqueCronTasks() {
-        return mongoTemplate.getCollection(TABLE).distinct("TN");
+    public DistinctIterable<String> getUniqueCronTasks() {
+        return mongoTemplate.getCollection(TABLE).distinct("TN", String.class);
     }
 
     @Override

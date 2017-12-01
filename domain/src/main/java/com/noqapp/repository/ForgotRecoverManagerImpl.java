@@ -1,8 +1,10 @@
 package com.noqapp.repository;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +14,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.*;
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -29,6 +33,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 })
 @Repository
 public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
+    private static final Logger LOG = LoggerFactory.getLogger(ForgotRecoverManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             ForgotRecoverEntity.class,
             Document.class,
@@ -73,7 +78,7 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public long markInActiveAllOlderThanThreeHours() {
         Date date = Date.from(Instant.now().minus(Duration.ofHours(3)));
-        WriteResult writeResult = mongoTemplate.updateMulti(
+        UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("C").lte(date)
                         .andOperator(
                                 isActive(),
@@ -84,7 +89,12 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
                 ForgotRecoverEntity.class,
                 TABLE);
 
-        return writeResult.getN();
+        if (updateResult.getModifiedCount() != updateResult.getMatchedCount()) {
+           LOG.error("Mismatch in count of found and marked modified={} matched={}",
+                   updateResult.getModifiedCount(),
+                   updateResult.getModifiedCount());
+        }
+        return updateResult.getModifiedCount();
     }
 
     @Override
