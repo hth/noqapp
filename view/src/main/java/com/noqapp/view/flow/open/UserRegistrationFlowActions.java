@@ -23,7 +23,12 @@ public class UserRegistrationFlowActions {
 
     @SuppressWarnings("unused")
     public MerchantRegistrationForm createUserRegistration() {
-        return MerchantRegistrationForm.newInstance();
+        try {
+            return MerchantRegistrationForm.newInstance();
+        } catch (Exception e) {
+            LOG.error("Failed loading registration form reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 
     public void sendPasswordRecoveryMail(MerchantRegistrationForm merchantRegistration) {
