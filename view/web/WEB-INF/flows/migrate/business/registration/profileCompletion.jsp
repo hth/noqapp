@@ -50,7 +50,7 @@
             <!-- Complete profile -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
                 <div class="admin-main">
-                    <form:form commandName="register.registerUser">
+                    <form:form modelAttribute="register.registerUser">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Please complete your profile</h2>
