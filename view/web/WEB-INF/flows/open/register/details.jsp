@@ -46,7 +46,7 @@
             <div class="login-box">
                 <div class="form-style">
                     <h2><fmt:message key="account.register.title" /></h2>
-                    <form:form commandName="merchantRegistration">
+                    <form:form modelAttribute="merchantRegistration">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                         <div class="error-box">

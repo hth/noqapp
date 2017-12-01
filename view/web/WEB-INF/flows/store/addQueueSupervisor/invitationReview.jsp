@@ -56,7 +56,7 @@
                         <h2>Add New Supervisor</h2>
                     </div>
 
-                    <form:form commandName="inviteQueueSupervisor">
+                    <form:form modelAttribute="inviteQueueSupervisor">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                         <c:if test="${!empty flowRequestContext.messageContext.allMessages}">

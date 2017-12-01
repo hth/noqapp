@@ -50,7 +50,7 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasRole('ROLE_M_ADMIN')">
                 <div class="admin-main">
-                    <form:form commandName="registerBusiness">
+                    <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Add Store Hours For Each Day</h2>

@@ -49,7 +49,7 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasRole('ROLE_CLIENT')">
                 <div class="admin-main">
-                    <form:form commandName="register">
+                    <form:form modelAttribute="register">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Review your personal and business details</h2>
