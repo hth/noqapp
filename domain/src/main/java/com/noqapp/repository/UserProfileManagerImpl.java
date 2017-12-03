@@ -1,9 +1,9 @@
 package com.noqapp.repository;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.DeleteResult;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.common.utils.Formatter;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,11 +73,11 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 LOG.error("UserProfile saving optimistic locking failure, override optimistic locking qid={} reason={}",
                         object.getQueueUserId(), e.getLocalizedMessage(), e);
 
-                WriteResult writeResult = mongoTemplate.remove(
+                DeleteResult deleteResult = mongoTemplate.remove(
                         query(where("QID").is(object.getQueueUserId())),
                         UserProfileEntity.class,
                         TABLE);
-                if (writeResult.getN() > 0) {
+                if (deleteResult.getDeletedCount() > 0) {
                     LOG.info("Deleted optimistic locking data issue for qid={}", object.getQueueUserId());
                     object.setId(null);
                     object.setVersion(null);
