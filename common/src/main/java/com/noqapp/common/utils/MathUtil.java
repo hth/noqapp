@@ -14,8 +14,7 @@ public class MathUtil {
 
     static float roundFloat(float f, int scale) {
         BigDecimal bd = new BigDecimal(Float.toString(f));
-        bd = bd.setScale(scale, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
+        return bd.setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     public static float roundFloat(float f) {
