@@ -639,8 +639,8 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.0.2.RELEASE/f7d59a840463f8468f317ee59588c38d6e04a2d1/spring-data-mongodb-2.0.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.0.2.RELEASE/1befa3239976b856202b1735531910a0c2f4e17f/spring-data-commons-2.0.2.RELEASE.jar" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
           </element>
         </element>
       </root>
@@ -940,9 +940,9 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.0.2.RELEASE/f7d59a840463f8468f317ee59588c38d6e04a2d1/spring-data-mongodb-2.0.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.0.2.RELEASE/1befa3239976b856202b1735531910a0c2f4e17f/spring-data-commons-2.0.2.RELEASE.jar" />
           </element>
         </element>
       </root>
@@ -1254,6 +1254,8 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="archive" name="com.noqapp-loader.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
@@ -1267,8 +1269,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.0.2.RELEASE/f7d59a840463f8468f317ee59588c38d6e04a2d1/spring-data-mongodb-2.0.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.0.2.RELEASE/1befa3239976b856202b1735531910a0c2f4e17f/spring-data-commons-2.0.2.RELEASE.jar" />
           </element>
         </element>
       </root>
