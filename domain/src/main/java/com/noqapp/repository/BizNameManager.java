@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.DistinctIterable;
 import com.noqapp.domain.BizNameEntity;
 
 import java.util.List;
@@ -30,6 +31,20 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
      * @return
      */
     List<BizNameEntity> findAllBizWithMatchingName(String businessName);
+
+    /**
+     * This method is replacement for the method listed in the link below as it reduces a step to
+     * list business names as string.
+     * <p>
+     * TODO Needs to be tested for result and speed
+     * <p>
+     * {@link #findAllBizWithMatchingName}
+     * {@link #findAllDistinctBizStr}
+     *
+     * @param businessName
+     * @return
+     */
+    Set<String> findDistinctBizWithMatchingName(String businessName);
 
     /**
      * Find all the Business with businessName. Mostly used for Ajax call listing.

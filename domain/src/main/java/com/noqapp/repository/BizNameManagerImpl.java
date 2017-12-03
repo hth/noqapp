@@ -1,8 +1,11 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.model.Filters;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,6 +88,32 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public List<BizNameEntity> findAllBizWithMatchingName(String businessName) {
         return mongoTemplate.find(query(where("N").regex("^" + businessName, "i")), BizNameEntity.class, TABLE);
+    }
+
+    /**
+     * This method is replacement for the method listed in the link below as it reduces a step to
+     * list business names as string.
+     * <p>
+     * TODO Needs to be tested for result and speed
+     * <p>
+     * {@link #findAllBizWithMatchingName}
+     * {@link #findAllDistinctBizStr}
+     *
+     * @param businessName
+     * @return
+     */
+    public Set<String> findDistinctBizWithMatchingName(String businessName) {
+        DistinctIterable<String> distinctIterable = mongoTemplate.getCollection(TABLE).distinct(
+                "N",
+                Filters.regex("N", "^" + businessName, "i"),
+                String.class);
+
+        Set<String> businessNames = new HashSet<>();
+        for (String foundName : distinctIterable) {
+            businessNames.add(foundName);
+        }
+
+        return businessNames;
     }
 
     @Override
