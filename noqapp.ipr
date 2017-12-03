@@ -329,7 +329,6 @@
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/view/web/WEB-INF/root-context.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/view/web/WEB-INF/web.xml" />
-          <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/noqapp-servlet.xml" />
         </element>
         <element id="file-copy" path="$PROJECT_DIR$/view/web/404.html" />
