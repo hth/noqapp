@@ -1,6 +1,5 @@
 package com.noqapp.common.config;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
@@ -9,8 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoTypeMapper;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.ArrayList;
@@ -30,11 +35,56 @@ public class MongoConfiguration {
     @Value("${mongo.database.name}")
     private String mongoDatabaseName;
 
-    private Mongo mongo() {
-        return new MongoClient(getMongoServers());
+    /**
+     * Template ready to use to operate on the database
+     *
+     * @return Mongo Template ready to use
+     */
+    @Bean
+    public MongoTemplate mongoTemplate() {
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(), mongoConverter());
+
+        mongoTemplate.setReadPreference(ReadPreference.nearest());
+        mongoTemplate.setWriteConcern(WriteConcern.JOURNALED);
+        mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
+
+        return mongoTemplate;
     }
 
-    private List<ServerAddress> getMongoServers() {
+    /**
+     * DB connection Factory
+     *
+     * @return a ready to use MongoDbFactory
+     */
+    @Bean
+    public MongoDbFactory mongoDbFactory() {
+        // Mongo Client
+        MongoClient mongoClient = new MongoClient(getMongoSeeds());
+
+        // Mongo DB Factory
+        MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoClient, mongoDatabaseName);
+
+        return mongoDbFactory;
+    }
+
+    @Bean
+    public MongoMappingContext mongoMappingContext() {
+        return new MongoMappingContext();
+    }
+
+    @Bean
+    public MappingMongoConverter mongoConverter() {
+        MappingMongoConverter converter = new MappingMongoConverter(mongoDbFactory(), mongoMappingContext());
+        converter.setTypeMapper(mongoTypeMapper());
+        return converter;
+    }
+
+    @Bean
+    public MongoTypeMapper mongoTypeMapper() {
+        return new DefaultMongoTypeMapper(null);
+    }
+
+    private List<ServerAddress> getMongoSeeds() {
         List<ServerAddress> serverAddresses = new ArrayList<>();
 
         if (StringUtils.isNotBlank(mongoReplicaSet)) {
@@ -45,42 +95,9 @@ public class MongoConfiguration {
                 serverAddresses.add(serverAddress);
             }
         } else {
-            throw new RuntimeException("No Mongo Server listed");
+            throw new RuntimeException("No Mongo Seed(s) listed");
         }
 
         return serverAddresses;
     }
-
-    /**
-     * Template ready to use to operate on the database
-     *
-     * @return Mongo Template ready to use
-     */
-    @Bean
-    public MongoTemplate mongoTemplate() {
-        MongoTemplate mongoTemplate = new MongoTemplate(mongo(), mongoDatabaseName);
-
-        mongoTemplate.setReadPreference(ReadPreference.nearest());
-        mongoTemplate.setWriteConcern(WriteConcern.JOURNALED);
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
-
-        return mongoTemplate;
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
