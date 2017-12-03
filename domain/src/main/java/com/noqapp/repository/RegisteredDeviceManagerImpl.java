@@ -201,7 +201,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 update,
                 RegisteredDeviceEntity.class,
                 TABLE
-        ).getN() > 0;
+        ).getModifiedCount() > 0;
     }
 
     public void markFetchedSinceBeginningForDevice(String id) {
