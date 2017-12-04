@@ -150,6 +150,10 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("LU")
     private boolean allowLoggedInUser = false;
 
+    //TODO Add for limited token available in this queue. Send limit back to prevent issues token more than limit.
+    //@Field ("TK")
+    //private int limitedToken;
+
     @Transient
     private List<StoreHourEntity> storeHours;
 
