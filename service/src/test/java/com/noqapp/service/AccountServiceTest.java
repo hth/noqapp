@@ -61,16 +61,6 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("Throw exception when account fails")
-    void failed_to_save_userAccount_with_exception() {
-        when(userAccount.getQueueUserId()).thenReturn("test_id");
-        doThrow(Exception.class).when(userAccountManager).save(userAccount);
-        Throwable exception = assertThrows(RuntimeException.class,
-                ()-> accountService.save(userAccount));
-        assertEquals("Error saving user account", exception.getMessage());
-    }
-
-    @Test
     @DisplayName("Throw data integrity violation exception when version number is different")
     void failed_to_save_userAccount_with_dataIntegrityViolationException() {
         when(userAccount.getQueueUserId()).thenReturn("test_id");
