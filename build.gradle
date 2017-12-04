@@ -59,9 +59,9 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.eriwen:gradle-js-plugin:2.14.1'
-        classpath 'com.eriwen:gradle-css-plugin:2.14.0'
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.1'
+        classpath "com.eriwen:gradle-js-plugin:2.14.1"
+        classpath "com.eriwen:gradle-css-plugin:2.14.0"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitPlatform"
     }
 }
 
@@ -296,7 +296,7 @@ subprojects {
         testCompile "org.springframework:spring-test:$springVersion"
 
         testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit5"
-        testRuntime "org.junit.platform:junit-platform-launcher:1.0.2"
+        testRuntime "org.junit.platform:junit-platform-launcher:$junitPlatform"
     }
 
     test {
