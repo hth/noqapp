@@ -389,6 +389,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
@@ -404,6 +405,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
@@ -639,8 +641,6 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
           </element>
         </element>
       </root>
@@ -690,6 +690,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
@@ -705,6 +706,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
@@ -940,8 +942,6 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
           </element>
         </element>
@@ -1004,6 +1004,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.8.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.6.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.2.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.6.RELEASE" />
@@ -1019,6 +1020,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.2.RELEASE" />
@@ -1254,8 +1256,6 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:2.0.0" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.2.RELEASE" />
             <element id="archive" name="com.noqapp-loader.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
@@ -4136,6 +4136,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.0.2/bb7170dd0ae7e4060ecb2df201f097238dea82df/junit-platform-engine-1.0.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: org.junit.platform:junit-platform-launcher:1.0.2">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.0.2/7cd136827fbfe3e6301b95f0340d654ad54feaa4/junit-platform-launcher-1.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.0.2/ecc829800f74f3286355efa4cc8e07e038108681/junit-platform-launcher-1.0.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.0.2/5456dbed4aa4c926624b592502bb3e16dbd48328/junit-platform-launcher-1.0.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.mockito:mockito-core:2.12.0">
