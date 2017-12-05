@@ -53,7 +53,7 @@
                     <form:form modelAttribute="register.registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Business Details</h2>
+                            <h2>Queue Setup</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
@@ -68,33 +68,28 @@
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
-                                <div id="storeDetail">
-                                    <div class="admin-title pT30">
-                                        <h2>Add Store details</h2>
-                                    </div>
-                                    <ul class="list-form">
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
-                                                <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
-                                                <span style="display:block; font-size:14px;">(Will limit registered users joining this queue)</span>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(Will limit registered users joining this queue)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                </ul>
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
