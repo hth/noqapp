@@ -53,7 +53,7 @@
                     <form:form modelAttribute="register.registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Store Hours For Each Day</h2>
+                            <h2>Add Queue Hours For Each Day</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
