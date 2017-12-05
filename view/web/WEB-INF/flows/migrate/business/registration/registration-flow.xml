@@ -35,17 +35,22 @@
     </action-state>
 
     <view-state id="registrationStart" model="register">
-        <transition on="submit" to="validateBusinessProfile"/>
+        <transition on="submit" to="validateBusinessDetails"/>
         <transition on="cancel" to="logout"/>
     </view-state>
 
-    <action-state id="validateBusinessProfile">
+    <action-state id="validateBusinessDetails">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)"/>
-        <transition on="success" to="businessHours"/>
+        <transition on="success" to="queueSettings"/>
         <!-- When selected multiStore then jump to review -->
         <transition on="skipStoreHours" to="registrationReview"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
+
+    <view-state id="queueSettings" model="register">
+        <transition on="submit" to="businessHours"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
 
     <view-state id="businessHours" model="register">
         <transition on="submit" to="validateBusinessHours"/>
