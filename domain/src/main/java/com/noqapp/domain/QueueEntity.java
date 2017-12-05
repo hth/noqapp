@@ -63,6 +63,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("CN")
     private String customerName;
 
+    @Field ("PH")
+    private String phone;
+
     @Field ("RA")
     private int ratingCount;
 
@@ -139,6 +142,15 @@ public class QueueEntity extends BaseEntity {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public QueueEntity setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 
     public int getRatingCount() {

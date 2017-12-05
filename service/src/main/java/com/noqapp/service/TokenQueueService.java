@@ -8,6 +8,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonResponse;
 import com.noqapp.domain.json.JsonToken;
@@ -118,8 +119,9 @@ public class TokenQueueService {
                 try {
                     queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (StringUtils.isNotBlank(qid)) {
-                        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
-                        queue.setCustomerName(userAccount.getDisplayName());
+                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                        queue.setCustomerName(userProfile.getName());
+                        queue.setPhone(userProfile.getPhone());
                     }
 
                     if (0 != averageServiceTime) {
