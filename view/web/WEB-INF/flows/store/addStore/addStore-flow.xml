@@ -22,6 +22,11 @@
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
+    <view-state id="queueSettings" model="registerBusiness">
+        <transition on="submit" to="businessHours"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
+
     <view-state id="businessHours" model="registerBusiness">
         <transition on="submit" to="validateBusinessHours"/>
         <transition on="cancel" to="logout"/>
