@@ -18,7 +18,7 @@
 
     <action-state id="validateStoreDetails">
         <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, '', messageContext)"/>
-        <transition on="success" to="businessHours"/>
+        <transition on="success" to="queueSettings"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
