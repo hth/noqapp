@@ -44,6 +44,7 @@ public class RegisterBusiness implements Serializable {
 
     private String bizStoreId;
     private String displayName;
+    private List<BusinessTypeEnum> storeBusinessTypes;
     private String addressStore;
     private String countryShortNameStore;
     private String phoneStore;
@@ -51,6 +52,7 @@ public class RegisterBusiness implements Serializable {
     private AddressOriginEnum addressStoreOrigin;
     private boolean remoteJoin;
     private boolean allowLoggedInUser;
+    private int availableTokenCount;
     private List<BusinessHour> businessHours = new LinkedList<>();
 
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
@@ -212,6 +214,15 @@ public class RegisterBusiness implements Serializable {
         this.displayName = displayName.getText();
     }
 
+    public List<BusinessTypeEnum> getStoreBusinessTypes() {
+        return storeBusinessTypes;
+    }
+
+    public RegisterBusiness setStoreBusinessTypes(List<BusinessTypeEnum> storeBusinessTypes) {
+        this.storeBusinessTypes = storeBusinessTypes;
+        return this;
+    }
+
     public String getAddressStore() {
         return addressStore;
     }
@@ -288,6 +299,15 @@ public class RegisterBusiness implements Serializable {
 
     public void setAllowLoggedInUser(boolean allowLoggedInUser) {
         this.allowLoggedInUser = allowLoggedInUser;
+    }
+
+    public int getAvailableTokenCount() {
+        return availableTokenCount;
+    }
+
+    public RegisterBusiness setAvailableTokenCount(int availableTokenCount) {
+        this.availableTokenCount = availableTokenCount;
+        return this;
     }
 
     public List<BusinessHour> getBusinessHours() {

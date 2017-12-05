@@ -202,6 +202,17 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
+                                                <form:label path="storeBusinessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:select path="storeBusinessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                    <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
+                                                </form:select>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
                                                 <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
                                             </div>
                                             <div class="col-fields">

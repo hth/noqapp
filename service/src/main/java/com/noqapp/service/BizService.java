@@ -154,4 +154,8 @@ public class BizService {
     public List<BizNameEntity> findByInviteeCode(String inviteCode) {
         return bizNameManager.findByInviteeCode(inviteCode);
     }
+
+    public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
+        bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
+    }
 }

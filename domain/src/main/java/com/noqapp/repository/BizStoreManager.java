@@ -126,5 +126,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     Stream<BizStoreEntity> findAll();
+
+    void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
 }
 

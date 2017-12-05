@@ -6,6 +6,7 @@ import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -22,6 +23,7 @@ import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -91,6 +93,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PR")
     private String phoneRaw;
 
+    @Field ("BT")
+    private List<BusinessTypeEnum> businessTypes = new ArrayList<>();
+
     /* Format Longitude and then Latitude. */
     @Field ("COR")
     private double[] coordinate;
@@ -144,15 +149,20 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("WL")
     private String webLocation;
 
+    //***************************/
+    //*  Queue Settings Starts. */
+    //***************************/
     @Field ("RJ")
     private boolean remoteJoin = false;
 
     @Field ("LU")
     private boolean allowLoggedInUser = false;
 
-    //TODO Add for limited token available in this queue. Send limit back to prevent issues token more than limit.
-    //@Field ("TK")
-    //private int limitedToken;
+    @Field ("AT")
+    private int availableTokenCount;
+    //***************************/
+    //*  Queue Settings Ends.   */
+    //***************************/
 
     @Transient
     private List<StoreHourEntity> storeHours;
@@ -281,6 +291,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setPhoneRaw(String phoneRaw) {
         this.phoneRaw = phoneRaw;
+    }
+
+    public List<BusinessTypeEnum> getBusinessTypes() {
+        return businessTypes;
+    }
+
+    public BizStoreEntity setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
+        this.businessTypes = businessTypes;
+        return this;
     }
 
     public BizNameEntity getBizName() {
@@ -417,6 +436,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAllowLoggedInUser(boolean allowLoggedInUser) {
         this.allowLoggedInUser = allowLoggedInUser;
+    }
+
+    public int getAvailableTokenCount() {
+        return availableTokenCount;
+    }
+
+    public BizStoreEntity setAvailableTokenCount(int availableTokenCount) {
+        this.availableTokenCount = availableTokenCount;
+        return this;
     }
 
     public AddressOriginEnum getAddressOrigin() {
