@@ -111,6 +111,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("lu")
     private boolean allowLoggedInUser = false;
 
+    @JsonProperty ("at")
+    private int availableTokenCount;
+
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
     }
@@ -331,6 +334,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAllowLoggedInUser(boolean allowLoggedInUser) {
         this.allowLoggedInUser = allowLoggedInUser;
+        return this;
+    }
+
+    public int getAvailableTokenCount() {
+        return availableTokenCount;
+    }
+
+    public JsonQueue setAvailableTokenCount(int availableTokenCount) {
+        this.availableTokenCount = availableTokenCount;
         return this;
     }
 }

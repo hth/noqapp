@@ -121,7 +121,7 @@ public class TokenQueueService {
                     if (StringUtils.isNotBlank(qid)) {
                         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
                         queue.setCustomerName(userProfile.getName());
-                        queue.setPhone(userProfile.getPhone());
+                        queue.setCustomerPhone(userProfile.getPhone());
                     }
 
                     if (0 != averageServiceTime) {
