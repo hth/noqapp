@@ -308,6 +308,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         return mongoTemplate.findAll(BizStoreEntity.class, TABLE).stream();
     }
 
+    @Override
+    public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
+        mongoTemplate.updateFirst(
+                query(where("QR").is(codeQR)),
+                entityUpdate(update("TK", availableTokenCount)),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

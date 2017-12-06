@@ -12,6 +12,11 @@
     </on-start>
 
     <view-state id="registrationStart" model="registerBusiness">
+        <on-entry>
+            <!-- Populates all available business types -->
+            <evaluate result="registerBusiness.availableBusinessTypes"
+                      expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()"/>
+        </on-entry>
         <transition on="submit" to="validateStoreDetails"/>
         <transition on="cancel" to="logout"/>
     </view-state>
@@ -23,9 +28,15 @@
     </action-state>
 
     <view-state id="queueSettings" model="registerBusiness">
-        <transition on="submit" to="businessHours"/>
+        <transition on="submit" to="validateQueueSettings"/>
         <transition on="cancel" to="logout"/>
     </view-state>
+
+    <action-state id="validateQueueSettings">
+        <evaluate expression="businessFlowValidator.validateQueueSettings(registerBusiness, '', messageContext)"/>
+        <transition on="success" to="businessHours" />
+        <transition on="failure" to="queueSettings"/>
+    </action-state>
 
     <view-state id="businessHours" model="registerBusiness">
         <transition on="submit" to="validateBusinessHours"/>

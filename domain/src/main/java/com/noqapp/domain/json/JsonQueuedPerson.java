@@ -35,6 +35,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("n")
     private String customerName = "";
 
+    @JsonProperty ("p")
+    private String customerPhone = "";
+
     @JsonProperty ("sid")
     private String serverDeviceId = "";
 
@@ -53,6 +56,15 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public JsonQueuedPerson setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
         return this;
     }
 

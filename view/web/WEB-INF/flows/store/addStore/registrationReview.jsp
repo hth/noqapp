@@ -108,6 +108,16 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="availableTokenCount" cssClass="form-field-admin" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(Customers in the queue will be limited to allowed number. 0 is Unlimited Token. Greater than 0 is limited token)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
                                     </ul>
                                 </div>
 

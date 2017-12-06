@@ -336,8 +336,8 @@ public class AccountService {
         }
     }
 
-    public UserProfileEntity findProfileByQueueUserId(String queueUserId) {
-        return userProfileManager.findByQueueUserId(queueUserId);
+    public UserProfileEntity findProfileByQueueUserId(String qid) {
+        return userProfileManager.findByQueueUserId(qid);
     }
 
     public void updateName(String firstName, String lastName, String qid) {

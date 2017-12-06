@@ -3,6 +3,7 @@ package com.noqapp.view.flow.merchant.validator;
 import com.google.maps.model.LatLng;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import org.slf4j.Logger;
@@ -283,6 +284,20 @@ public class BusinessFlowValidator {
     }
 
     /**
+     * Validate queue settings.
+     *
+     * @param register
+     * @param messageContext
+     * @return
+     */
+    @SuppressWarnings ("unused")
+    public String validateQueueSettings(Register register, MessageContext messageContext) {
+        LOG.info("Validate queue settings qid={}", register.getRegisterUser().getQueueUserId());
+        final RegisterBusiness registerBusiness = register.getRegisterBusiness();
+        return validateQueueSettings(registerBusiness, "registerBusiness.", messageContext);
+    }
+
+    /**
      * Validate business hours.
      *
      * @param register
@@ -296,6 +311,20 @@ public class BusinessFlowValidator {
         return validateBusinessHours(registerBusiness, "registerBusiness.", messageContext);
     }
 
+    public String validateQueueSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
+        String status = LandingController.SUCCESS;
+
+        if (!StringUtils.isNumeric(String.valueOf(registerBusiness.getAvailableTokenCount()))) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source(source + "limited token")
+                            .defaultText("Limited token is not valid")
+                            .build());
+            status = "failure";
+        }
+        return status;
+    }
 
     /**
      * Validate store hours.

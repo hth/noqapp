@@ -224,6 +224,7 @@ class RegistrationFlowActions {
     ) {
         bizStore.setBizName(bizName);
         bizStore.setDisplayName(registerBusiness.getDisplayName());
+        bizStore.setBusinessTypes(registerBusiness.getStoreBusinessTypes());
         bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
         bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
         bizStore.setAddress(registerBusiness.getAddressStore());
@@ -232,6 +233,7 @@ class RegistrationFlowActions {
         bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
         bizStore.setRemoteJoin(registerBusiness.isRemoteJoin());
         bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
+        bizStore.setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
