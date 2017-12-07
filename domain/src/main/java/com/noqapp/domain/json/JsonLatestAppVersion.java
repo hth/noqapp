@@ -29,7 +29,15 @@ public class JsonLatestAppVersion extends AbstractDomain {
     @JsonProperty("av")
     private String latestAppVersion;
 
+    private JsonLatestAppVersion() {
+        //Required default constructor
+    }
+
     public JsonLatestAppVersion(String latestAppVersion) {
         this.latestAppVersion = latestAppVersion;
+    }
+
+    public String getLatestAppVersion() {
+        return latestAppVersion;
     }
 }
