@@ -50,6 +50,10 @@ public class StoreHourEntity extends BaseEntity {
     @Field ("DC")
     private boolean dayClosed = false;
 
+    private StoreHourEntity() {
+        //Default
+    }
+
     public StoreHourEntity(String bizStoreId, int dayOfWeek) {
         this.bizStoreId = bizStoreId;
         this.dayOfWeek = dayOfWeek;
@@ -67,48 +71,54 @@ public class StoreHourEntity extends BaseEntity {
         return tokenAvailableFrom;
     }
 
-    public void setTokenAvailableFrom(int tokenAvailableFrom) {
+    public StoreHourEntity setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+        return this;
     }
 
     public int getStartHour() {
         return startHour;
     }
 
-    public void setStartHour(int startHour) {
+    public StoreHourEntity setStartHour(int startHour) {
         this.startHour = startHour;
+        return this;
     }
 
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
 
-    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+    public StoreHourEntity setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
     }
 
     public int getEndHour() {
         return endHour;
     }
 
-    public void setEndHour(int endHour) {
+    public StoreHourEntity setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
     }
 
     public boolean isPreventJoining() {
         return preventJoining;
     }
 
-    public void setPreventJoining(boolean preventJoining) {
+    public StoreHourEntity setPreventJoining(boolean preventJoining) {
         this.preventJoining = preventJoining;
+        return this;
     }
 
     public boolean isDayClosed() {
         return dayClosed;
     }
 
-    public void setDayClosed(boolean dayClosed) {
+    public StoreHourEntity setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
+        return this;
     }
 
     @Transient

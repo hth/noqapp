@@ -167,6 +167,10 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     private List<StoreHourEntity> storeHours;
 
+    private BizStoreEntity() {
+        //Default constructor
+    }
+
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
     }

@@ -120,6 +120,10 @@ public class BizNameEntity extends BaseEntity {
     @Field("BS")
     private BillingStatusEnum billingStatus;
 
+    private BizNameEntity() {
+        //Default constructor
+    }
+
     public static BizNameEntity newInstance() {
         return new BizNameEntity();
     }
