@@ -42,6 +42,10 @@ public class TokenQueueEntity extends BaseEntity {
     @Transient
     private FirebaseMessageTypeEnum firebaseMessageType;
 
+    private TokenQueueEntity() {
+        //Required default constructor
+    }
+
     public TokenQueueEntity(String topic, String displayName) {
         this.topic = topic;
         this.displayName = displayName;
@@ -51,16 +55,18 @@ public class TokenQueueEntity extends BaseEntity {
         return lastNumber;
     }
 
-    public void setLastNumber(int lastNumber) {
+    public TokenQueueEntity setLastNumber(int lastNumber) {
         this.lastNumber = lastNumber;
+        return this;
     }
 
     public int getCurrentlyServing() {
         return currentlyServing;
     }
 
-    public void setCurrentlyServing(int currentlyServing) {
+    public TokenQueueEntity setCurrentlyServing(int currentlyServing) {
         this.currentlyServing = currentlyServing;
+        return this;
     }
 
     public void closeQueue() {
@@ -79,8 +85,9 @@ public class TokenQueueEntity extends BaseEntity {
         return queueStatus;
     }
 
-    public void setQueueStatus(QueueStatusEnum queueStatus) {
+    public TokenQueueEntity setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
     }
 
     @Transient
