@@ -204,64 +204,72 @@ public class BizStoreEntity extends BaseEntity {
         return address;
     }
 
-    public void setAddress(String address) {
+    public BizStoreEntity setAddress(String address) {
         this.address = StringUtils.strip(address);
+        return this;
     }
 
     public String getTown() {
         return town;
     }
 
-    public void setTown(String town) {
+    public BizStoreEntity setTown(String town) {
         this.town = town;
+        return this;
     }
 
     public String getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public BizStoreEntity setDistrict(String district) {
         this.district = district;
+        return this;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public BizStoreEntity setState(String state) {
         this.state = state;
+        return this;
     }
 
     public String getStateShortName() {
         return stateShortName;
     }
 
-    public void setStateShortName(String stateShortName) {
+    public BizStoreEntity setStateShortName(String stateShortName) {
         this.stateShortName = stateShortName;
+        return this;
     }
 
     public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public BizStoreEntity setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+        return this;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public BizStoreEntity setCountry(String country) {
         this.country = country;
+        return this;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public BizStoreEntity setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getPhone() {
@@ -273,12 +281,13 @@ public class BizStoreEntity extends BaseEntity {
      *
      * @param phone
      */
-    public void setPhone(String phone) {
+    public BizStoreEntity setPhone(String phone) {
         if (StringUtils.isBlank(phone)) {
             this.phone = Formatter.phoneCleanup(phoneNumberBlank);
         } else {
             this.phone = Formatter.phoneCleanup(phone);
         }
+        return this;
     }
 
     public String getPhoneFormatted() {
@@ -289,8 +298,9 @@ public class BizStoreEntity extends BaseEntity {
         return phoneRaw;
     }
 
-    public void setPhoneRaw(String phoneRaw) {
+    public BizStoreEntity setPhoneRaw(String phoneRaw) {
         this.phoneRaw = phoneRaw;
+        return this;
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
@@ -306,56 +316,63 @@ public class BizStoreEntity extends BaseEntity {
         return bizName;
     }
 
-    public void setBizName(BizNameEntity bizName) {
+    public BizStoreEntity setBizName(BizNameEntity bizName) {
         this.bizName = bizName;
+        return this;
     }
 
     public boolean isValidatedUsingExternalAPI() {
         return validatedUsingExternalAPI;
     }
 
-    public void setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
+    public BizStoreEntity setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
         this.validatedUsingExternalAPI = validatedUsingExternalAPI;
+        return this;
     }
 
     public double[] getCoordinate() {
         return coordinate;
     }
 
-    public void setCoordinate(double[] coordinate) {
+    public BizStoreEntity setCoordinate(double[] coordinate) {
         this.coordinate = coordinate;
+        return this;
     }
 
     public String getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(String placeId) {
+    public BizStoreEntity setPlaceId(String placeId) {
         this.placeId = placeId;
+        return this;
     }
 
     public String[] getPlaceType() {
         return placeType;
     }
 
-    public void setPlaceType(String[] placeType) {
+    public BizStoreEntity setPlaceType(String[] placeType) {
         this.placeType = placeType;
+        return this;
     }
 
     public float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public BizStoreEntity setRating(float rating) {
         this.rating = rating;
+        return this;
     }
 
     public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setRatingCount(int ratingCount) {
+    public BizStoreEntity setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
     }
 
     public long getAverageServiceTime() {
@@ -384,41 +401,46 @@ public class BizStoreEntity extends BaseEntity {
         return codeQR;
     }
 
-    public void setCodeQR(String codeQR) {
+    public BizStoreEntity setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         this.changedCodeQR = true;
+        return this;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public BizStoreEntity setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public String getTimeZone() {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
+    public BizStoreEntity setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+        return this;
     }
 
     public Date getQueueHistory() {
         return queueHistory;
     }
 
-    public void setQueueHistory(Date queueHistory) {
+    public BizStoreEntity setQueueHistory(Date queueHistory) {
         this.queueHistory = queueHistory;
+        return this;
     }
 
     public String getWebLocation() {
         return webLocation;
     }
 
-    public void setWebLocation(String webLocation) {
+    public BizStoreEntity setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+        return this;
     }
 
     public boolean isRemoteJoin() {
@@ -434,8 +456,9 @@ public class BizStoreEntity extends BaseEntity {
         return allowLoggedInUser;
     }
 
-    public void setAllowLoggedInUser(boolean allowLoggedInUser) {
+    public BizStoreEntity setAllowLoggedInUser(boolean allowLoggedInUser) {
         this.allowLoggedInUser = allowLoggedInUser;
+        return this;
     }
 
     public int getAvailableTokenCount() {

@@ -134,8 +134,9 @@ public class BizNameEntity extends BaseEntity {
      *
      * @param businessName
      */
-    public void setBusinessName(String businessName) {
+    public BizNameEntity setBusinessName(String businessName) {
         this.businessName = WordUtils.capitalizeFully(StringUtils.trim(businessName));
+        return this;
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
@@ -143,8 +144,9 @@ public class BizNameEntity extends BaseEntity {
     }
 
     @SuppressWarnings("unused")
-    public void setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
+    public BizNameEntity setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
         this.businessTypes = businessTypes;
+        return this;
     }
 
     public void addBusinessType(BusinessTypeEnum businessType) {
@@ -193,64 +195,72 @@ public class BizNameEntity extends BaseEntity {
         return address;
     }
 
-    public void setAddress(String address) {
+    public BizNameEntity setAddress(String address) {
         this.address = StringUtils.strip(address);
+        return this;
     }
 
     public String getTown() {
         return town;
     }
 
-    public void setTown(String town) {
+    public BizNameEntity setTown(String town) {
         this.town = town;
+        return this;
     }
 
     public String getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public BizNameEntity setDistrict(String district) {
         this.district = district;
+        return this;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public BizNameEntity setState(String state) {
         this.state = state;
+        return this;
     }
 
     public String getStateShortName() {
         return stateShortName;
     }
 
-    public void setStateShortName(String stateShortName) {
+    public BizNameEntity setStateShortName(String stateShortName) {
         this.stateShortName = stateShortName;
+        return this;
     }
 
     public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public BizNameEntity setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+        return this;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public BizNameEntity setCountry(String country) {
         this.country = country;
+        return this;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public BizNameEntity setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getPhone() {
@@ -262,12 +272,13 @@ public class BizNameEntity extends BaseEntity {
      *
      * @param phone
      */
-    public void setPhone(String phone) {
+    public BizNameEntity setPhone(String phone) {
         if (StringUtils.isBlank(phone)) {
             this.phone = Formatter.phoneCleanup(phoneNumberBlank);
         } else {
             this.phone = Formatter.phoneCleanup(phone);
         }
+        return this;
     }
 
     public String getPhoneFormatted() {
@@ -278,40 +289,45 @@ public class BizNameEntity extends BaseEntity {
         return phoneRaw;
     }
 
-    public void setPhoneRaw(String phoneRaw) {
+    public BizNameEntity setPhoneRaw(String phoneRaw) {
         this.phoneRaw = phoneRaw;
+        return this;
     }
 
     public boolean isValidatedUsingExternalAPI() {
         return validatedUsingExternalAPI;
     }
 
-    public void setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
+    public BizNameEntity setValidatedUsingExternalAPI(boolean validatedUsingExternalAPI) {
         this.validatedUsingExternalAPI = validatedUsingExternalAPI;
+        return this;
     }
 
     public double[] getCoordinate() {
         return coordinate;
     }
 
-    public void setCoordinate(double[] coordinate) {
+    public BizNameEntity setCoordinate(double[] coordinate) {
         this.coordinate = coordinate;
+        return this;
     }
 
     public String getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(String placeId) {
+    public BizNameEntity setPlaceId(String placeId) {
         this.placeId = placeId;
+        return this;
     }
 
     public String[] getPlaceType() {
         return placeType;
     }
 
-    public void setPlaceType(String[] placeType) {
+    public BizNameEntity setPlaceType(String[] placeType) {
         this.placeType = placeType;
+        return this;
     }
 
     public int getValidationCount() {
@@ -331,24 +347,27 @@ public class BizNameEntity extends BaseEntity {
         return multiStore;
     }
 
-    public void setMultiStore(boolean multiStore) {
+    public BizNameEntity setMultiStore(boolean multiStore) {
         this.multiStore = multiStore;
+        return this;
     }
 
     public String getTimeZone() {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
+    public BizNameEntity setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+        return this;
     }
 
     public String getInviteeCode() {
         return inviteeCode;
     }
 
-    public void setInviteeCode(String inviteeCode) {
+    public BizNameEntity setInviteeCode(String inviteeCode) {
         this.inviteeCode = inviteeCode;
+        return this;
     }
 
     public AddressOriginEnum getAddressOrigin() {
