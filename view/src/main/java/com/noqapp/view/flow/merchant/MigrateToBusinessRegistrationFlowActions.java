@@ -82,7 +82,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         if (null == businessUser) {
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
-        } else if (businessUser.getBusinessUserRegistrationStatus() == BusinessUserRegistrationStatusEnum.N) {
+        } else if (BusinessUserRegistrationStatusEnum.N == businessUser.getBusinessUserRegistrationStatus()) {
             LOG.info("Editing business details by user={} businessId={}",
                     queueUser.getQueueUserId(),
                     businessUser.getBizName().getId());
