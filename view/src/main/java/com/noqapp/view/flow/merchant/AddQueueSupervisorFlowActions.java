@@ -86,10 +86,10 @@ public class AddQueueSupervisorFlowActions {
         String bizStoreId = (String) webFlowUtils.getFlashAttribute(externalContext, "bizStoreId");
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 
-        InviteQueueSupervisor inviteQueueSupervisor = new InviteQueueSupervisor();
-        inviteQueueSupervisor.setBizStoreId(bizStoreId);
-        inviteQueueSupervisor.setCountryShortName(bizStore.getCountryShortName());
-        inviteQueueSupervisor.setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()));
+        InviteQueueSupervisor inviteQueueSupervisor = new InviteQueueSupervisor()
+                .setBizStoreId(bizStoreId)
+                .setCountryShortName(bizStore.getCountryShortName())
+                .setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()));
 
         return inviteQueueSupervisor;
     }
