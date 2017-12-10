@@ -87,6 +87,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("u")
     private String createDate;
 
+    private JsonTokenAndQueue() {
+        //Required default constructor
+    }
+
     public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.businessName = jsonQueue.getBusinessName();
@@ -150,5 +154,77 @@ public class JsonTokenAndQueue extends AbstractDomain {
                 ", servicedEndTime='" + servicedEndTime + '\'' +
                 ", createDate='" + createDate + '\'' +
                 '}';
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public String getStorePhone() {
+        return storePhone;
+    }
+
+    public int getTokenAvailableFrom() {
+        return tokenAvailableFrom;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public int getServingNumber() {
+        return servingNumber;
+    }
+
+    public int getLastNumber() {
+        return lastNumber;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
+    }
+
+    public String getServicedEndTime() {
+        return servicedEndTime;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public int getHoursSaved() {
+        return hoursSaved;
+    }
+
+    public String getCreateDate() {
+        return createDate;
     }
 }
