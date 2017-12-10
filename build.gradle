@@ -92,15 +92,6 @@ subprojects {
             resources.srcDirs = ['src/test/resources']
             java.srcDirs = ['src/test/java']
         }
-
-        //Make files under integration compiled
-        integration {
-            resources.srcDirs = ['src/integration/resources']
-            java.srcDirs = ['src/integration/java']
-
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-        }
     }
 
     checkstyle {
@@ -163,9 +154,6 @@ subprojects {
         module {
             downloadSources = true
             downloadJavadoc = true
-            //and some extra integration test source and resources dirs
-            testSourceDirs += file('/src/integration/java')
-            testSourceDirs += file('/src/integration/resources')
         }
     }
 
@@ -361,17 +349,6 @@ subprojects {
             html.enabled = true
         }
     }
-
-    //Integration
-    configurations {
-        integrationCompile.extendsFrom testCompile
-        integrationRuntime.extendsFrom testRuntime
-    }
-
-    task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
-        testClassesDir = sourceSets.integration.output.classesDir
-        classpath = sourceSets.integration.runtimeClasspath
-    }
 }
 
 project(':common') {
@@ -476,10 +453,6 @@ project(':view') {
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
         runtime 'javax.servlet:jstl:1.+'
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
 }
 
 task copyJars(type: Copy) {
@@ -1026,4 +999,4 @@ publishing {
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
 //publishToMavenLocal for local
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar', 'test', 'testReport', 'jacocoTestReport', 'publish'

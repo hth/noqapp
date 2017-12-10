@@ -468,9 +468,9 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
+            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
             <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
-            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
             <element id="library" level="project" name="Gradle: org.json:json:20171018" />
@@ -516,6 +516,10 @@
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-netty:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-stub:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-auth:1.6.1" />
@@ -523,10 +527,6 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-core:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
@@ -769,9 +769,9 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
+            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
             <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
-            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
             <element id="library" level="project" name="Gradle: org.json:json:20171018" />
@@ -817,6 +817,10 @@
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-netty:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-stub:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-auth:1.6.1" />
@@ -824,10 +828,6 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-core:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
@@ -1083,9 +1083,9 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.2" />
+            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax:1.8.1" />
             <element id="library" level="project" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.8.0" />
-            <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
             <element id="library" level="project" name="Gradle: org.json:json:20171018" />
@@ -1131,6 +1131,10 @@
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.2" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.6" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.13.0" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
+            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-netty:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-stub:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-auth:1.6.1" />
@@ -1138,10 +1142,6 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-core:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-iam-v1:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.20" />
-            <element id="library" level="project" name="Gradle: com.google.api:api-common:1.1.0" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
             <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
@@ -1647,40 +1647,31 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" group="common" />
-      <module fileurl="file://$PROJECT_DIR$/common/common_integration.iml" filepath="$PROJECT_DIR$/common/common_integration.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/common/common_main.iml" filepath="$PROJECT_DIR$/common/common_main.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/common/common_test.iml" filepath="$PROJECT_DIR$/common/common_test.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/domain/domain.iml" filepath="$PROJECT_DIR$/domain/domain.iml" group="domain" />
-      <module fileurl="file://$PROJECT_DIR$/domain/domain_integration.iml" filepath="$PROJECT_DIR$/domain/domain_integration.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/domain/domain_main.iml" filepath="$PROJECT_DIR$/domain/domain_main.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/domain/domain_test.iml" filepath="$PROJECT_DIR$/domain/domain_test.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/health/health.iml" filepath="$PROJECT_DIR$/health/health.iml" group="health" />
-      <module fileurl="file://$PROJECT_DIR$/health/health_integration.iml" filepath="$PROJECT_DIR$/health/health_integration.iml" group="health" />
       <module fileurl="file://$PROJECT_DIR$/health/health_main.iml" filepath="$PROJECT_DIR$/health/health_main.iml" group="health" />
       <module fileurl="file://$PROJECT_DIR$/health/health_test.iml" filepath="$PROJECT_DIR$/health/health_test.iml" group="health" />
       <module fileurl="file://$PROJECT_DIR$/loader/loader.iml" filepath="$PROJECT_DIR$/loader/loader.iml" group="loader" />
-      <module fileurl="file://$PROJECT_DIR$/loader/loader_integration.iml" filepath="$PROJECT_DIR$/loader/loader_integration.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/loader/loader_main.iml" filepath="$PROJECT_DIR$/loader/loader_main.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/loader/loader_test.iml" filepath="$PROJECT_DIR$/loader/loader_test.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/noqapp.iml" filepath="$PROJECT_DIR$/noqapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/search/search.iml" filepath="$PROJECT_DIR$/search/search.iml" group="search" />
-      <module fileurl="file://$PROJECT_DIR$/search/search_integration.iml" filepath="$PROJECT_DIR$/search/search_integration.iml" group="search" />
       <module fileurl="file://$PROJECT_DIR$/search/search_main.iml" filepath="$PROJECT_DIR$/search/search_main.iml" group="search" />
       <module fileurl="file://$PROJECT_DIR$/search/search_test.iml" filepath="$PROJECT_DIR$/search/search_test.iml" group="search" />
       <module fileurl="file://$PROJECT_DIR$/security/security.iml" filepath="$PROJECT_DIR$/security/security.iml" group="security" />
-      <module fileurl="file://$PROJECT_DIR$/security/security_integration.iml" filepath="$PROJECT_DIR$/security/security_integration.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/security/security_main.iml" filepath="$PROJECT_DIR$/security/security_main.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/security/security_test.iml" filepath="$PROJECT_DIR$/security/security_test.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/service/service.iml" filepath="$PROJECT_DIR$/service/service.iml" group="service" />
-      <module fileurl="file://$PROJECT_DIR$/service/service_integration.iml" filepath="$PROJECT_DIR$/service/service_integration.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/service/service_main.iml" filepath="$PROJECT_DIR$/service/service_main.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/service/service_test.iml" filepath="$PROJECT_DIR$/service/service_test.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/social/social.iml" filepath="$PROJECT_DIR$/social/social.iml" group="social" />
-      <module fileurl="file://$PROJECT_DIR$/social/social_integration.iml" filepath="$PROJECT_DIR$/social/social_integration.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/social/social_main.iml" filepath="$PROJECT_DIR$/social/social_main.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/social/social_test.iml" filepath="$PROJECT_DIR$/social/social_test.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/view/view.iml" filepath="$PROJECT_DIR$/view/view.iml" group="view" />
-      <module fileurl="file://$PROJECT_DIR$/view/view_integration.iml" filepath="$PROJECT_DIR$/view/view_integration.iml" group="view" />
       <module fileurl="file://$PROJECT_DIR$/view/view_main.iml" filepath="$PROJECT_DIR$/view/view_main.iml" group="view" />
       <module fileurl="file://$PROJECT_DIR$/view/view_test.iml" filepath="$PROJECT_DIR$/view/view_test.iml" group="view" />
     </modules>
