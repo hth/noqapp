@@ -154,15 +154,15 @@ class RegistrationFlowActions {
         if (null == bizName) {
             bizName = BizNameEntity.newInstance();
         }
-        bizName.setBusinessName(registerBusiness.getName());
-        bizName.setBusinessTypes(registerBusiness.getBusinessTypes());
-        bizName.setPhone(registerBusiness.getPhoneWithCountryCode());
-        bizName.setPhoneRaw(registerBusiness.getPhoneNotFormatted());
-        bizName.setAddress(registerBusiness.getAddress());
-        bizName.setTimeZone(registerBusiness.getTimeZone());
-        bizName.setInviteeCode(registerBusiness.getInviteeCode());
-        bizName.setAddressOrigin(registerBusiness.getAddressOrigin());
-        bizName.setMultiStore(registerBusiness.isMultiStore());
+        bizName.setBusinessName(registerBusiness.getName())
+            .setBusinessTypes(registerBusiness.getBusinessTypes())
+            .setPhone(registerBusiness.getPhoneWithCountryCode())
+            .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
+            .setAddress(registerBusiness.getAddress())
+            .setTimeZone(registerBusiness.getTimeZone())
+            .setInviteeCode(registerBusiness.getInviteeCode())
+            .setAddressOrigin(registerBusiness.getAddressOrigin())
+            .setMultiStore(registerBusiness.isMultiStore());
         validateAddress(bizName);
 
         try {
@@ -222,18 +222,18 @@ class RegistrationFlowActions {
             BizNameEntity bizName,
             BizStoreEntity bizStore
     ) {
-        bizStore.setBizName(bizName);
-        bizStore.setDisplayName(registerBusiness.getDisplayName());
-        bizStore.setBusinessTypes(registerBusiness.getStoreBusinessTypes());
-        bizStore.setPhone(registerBusiness.getPhoneStoreWithCountryCode());
-        bizStore.setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted());
-        bizStore.setAddress(registerBusiness.getAddressStore());
-        bizStore.setTimeZone(registerBusiness.getTimeZoneStore());
-        bizStore.setCodeQR(ObjectId.get().toString());
-        bizStore.setAddressOrigin(registerBusiness.getAddressStoreOrigin());
-        bizStore.setRemoteJoin(registerBusiness.isRemoteJoin());
-        bizStore.setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser());
-        bizStore.setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
+        bizStore.setBizName(bizName)
+            .setDisplayName(registerBusiness.getDisplayName())
+            .setBusinessTypes(registerBusiness.getStoreBusinessTypes())
+            .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
+            .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
+            .setAddress(registerBusiness.getAddressStore())
+            .setTimeZone(registerBusiness.getTimeZoneStore())
+            .setCodeQR(ObjectId.get().toString())
+            .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
+            .setRemoteJoin(registerBusiness.isRemoteJoin())
+            .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
+            .setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);

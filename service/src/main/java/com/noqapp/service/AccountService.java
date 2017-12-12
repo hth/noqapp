@@ -27,6 +27,7 @@ import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.service.exceptions.DuplicateAccountException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +148,8 @@ public class AccountService {
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
+        String firstNameCleanedUp = WordUtils.capitalizeFully(firstName);
+        String lastNameCleanedUp = WordUtils.capitalizeFully(lastName);
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
         if (null == checkUserExistsByPhone(phoneWithCountryCode) && null == doesUserExists(mail)) {
             UserAccountEntity userAccount = null;
@@ -157,8 +160,8 @@ public class AccountService {
                 userAccount = UserAccountEntity.newInstance(
                         qid,
                         mail,
-                        firstName,
-                        lastName
+                        firstNameCleanedUp,
+                        lastNameCleanedUp
                 );
                 userAccount.setAccountValidated(false);
                 userAccount.setAccountValidatedBeginDate();
@@ -177,7 +180,7 @@ public class AccountService {
                 }
 
                 if (StringUtils.isBlank(mail)) {
-                    mail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(firstName), new ScrubbedInput(lastName), qid);
+                    mail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(firstNameCleanedUp), new ScrubbedInput(lastNameCleanedUp), qid);
                     userAccount.setUserId(mail);
                     userAccountManager.save(userAccount);
                 }
@@ -185,8 +188,8 @@ public class AccountService {
 
                 userProfile = UserProfileEntity.newInstance(
                         mail,
-                        firstName,
-                        lastName,
+                        firstNameCleanedUp,
+                        lastNameCleanedUp,
                         qid,
                         birthday
                 );
@@ -195,9 +198,9 @@ public class AccountService {
                 userProfile.setGender(gender);
                 userProfile.setCountryShortName(countryShortName);
                 userProfile.setTimeZone(timeZone);
-                String generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, qid);
+                String generatedInviteCode = RandomString.generateInviteCode(firstNameCleanedUp, lastNameCleanedUp, qid);
                 while (null != userProfileManager.inviteCodeExists(generatedInviteCode)) {
-                    generatedInviteCode = RandomString.generateInviteCode(firstName, lastName, qid);
+                    generatedInviteCode = RandomString.generateInviteCode(firstNameCleanedUp, lastNameCleanedUp, qid);
                 }
                 userProfile.setInviteCode(generatedInviteCode);
                 userProfileManager.save(userProfile);

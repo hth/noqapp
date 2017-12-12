@@ -14,11 +14,15 @@ import java.util.List;
         "PMD.LongVariable"
 })
 public enum UserLevelEnum {
+    /* Regular User. */
     CLIENT("Client", 10),
+
     /* Maintain the order otherwise there could be bug. Client is always less than Queue Supervisor. */
     Q_SUPERVISOR("Queue Supervisor", 22),
     S_MANAGER("Store Manager", 24),
     M_ADMIN("Merchant Admin", 29),
+
+    /* System User Level. */
     TECHNICIAN("Tech", 40),
     SUPERVISOR("Super", 50),
     ANALYSIS("Analysis", 60),

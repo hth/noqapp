@@ -29,7 +29,15 @@ public class JsonResponse extends AbstractDomain {
     @JsonProperty("r")
     private int response;
 
+    private JsonResponse() {
+        //Required default constructor
+    }
+
     public JsonResponse(boolean response) {
         this.response = response ? 1 : 0;
+    }
+
+    public int getResponse() {
+        return response;
     }
 }

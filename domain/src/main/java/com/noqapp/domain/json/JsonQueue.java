@@ -114,6 +114,10 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("at")
     private int availableTokenCount;
 
+    private JsonQueue() {
+        //Required default constructor
+    }
+
     public JsonQueue(String codeQR) {
         this.codeQR = codeQR;
     }

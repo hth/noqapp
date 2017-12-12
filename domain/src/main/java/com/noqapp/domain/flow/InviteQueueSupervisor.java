@@ -18,39 +18,44 @@ public class InviteQueueSupervisor implements Serializable {
         return bizStoreId;
     }
 
-    public void setBizStoreId(String bizStoreId) {
+    public InviteQueueSupervisor setBizStoreId(String bizStoreId) {
         this.bizStoreId = bizStoreId;
+        return this;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public InviteQueueSupervisor setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public int getCountryCode() {
         return countryCode;
     }
 
-    public void setCountryCode(int countryCode) {
+    public InviteQueueSupervisor setCountryCode(int countryCode) {
         this.countryCode = countryCode;
+        return this;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public InviteQueueSupervisor setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public String getInviteeCode() {
         return inviteeCode;
     }
 
-    public void setInviteeCode(String inviteeCode) {
+    public InviteQueueSupervisor setInviteeCode(String inviteeCode) {
         this.inviteeCode = inviteeCode;
+        return this;
     }
 }

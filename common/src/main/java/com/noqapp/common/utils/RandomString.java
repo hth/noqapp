@@ -75,9 +75,15 @@ public final class RandomString {
     }
 
     public static String generateInviteCode(String firstName, String lastName, String qid) {
+        String fName = firstName.replaceAll("\\s+", "");
         if (StringUtils.isBlank(lastName)) {
-            return StringUtils.lowerCase(firstName + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+            return StringUtils.lowerCase(fName + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
         }
-        return StringUtils.lowerCase(firstName + lastName + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+        String lName = lastName.replaceAll("\\s+", "");
+        if (fName.length() > 6 && lName.length() > 3) {
+            return StringUtils.lowerCase(fName + lName.substring(0, 3) + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+        } else {
+            return StringUtils.lowerCase(fName + lastName.replaceAll("\\s+", "") + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
+        }
     }
 }
