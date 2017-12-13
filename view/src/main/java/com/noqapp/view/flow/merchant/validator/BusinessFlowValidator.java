@@ -2,6 +2,7 @@ package com.noqapp.view.flow.merchant.validator;
 
 import com.google.maps.model.LatLng;
 
+import com.noqapp.domain.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
@@ -266,7 +267,7 @@ public class BusinessFlowValidator {
                             .error()
                             .source(source + "displayName")
                             .defaultText("Queue Name cannot be empty. " +
-                                    "Queue Names can be like: Pharmacy, Driving License, Dinner Registration")
+                                    "Queue Names can be like: Pharmacy, Driving License, Dinner Reservation")
                             .build());
             status = "failure";
         }
@@ -280,6 +281,24 @@ public class BusinessFlowValidator {
                             .build());
             status = "failure";
         }
+
+        boolean foundInStoreBusinessSelection = false;
+        for (BusinessTypeEnum businessType : registerBusiness.getBusinessTypes()) {
+            if (businessType == registerBusiness.getStoreBusinessType()) {
+                foundInStoreBusinessSelection = true;
+            }
+        }
+
+        if (!foundInStoreBusinessSelection) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source(source + "storeBusinessType")
+                            .defaultText("Queue for needs to be subset of Business Type set for business.")
+                            .build());
+            status = "failure";
+        }
+
         return status;
     }
 

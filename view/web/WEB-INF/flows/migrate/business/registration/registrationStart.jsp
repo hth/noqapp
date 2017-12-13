@@ -202,7 +202,7 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="storeBusinessType" cssErrorClass="lb_error">Business Type</form:label>
+                                                <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:select path="storeBusinessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">

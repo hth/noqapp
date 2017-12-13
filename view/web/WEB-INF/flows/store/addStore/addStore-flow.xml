@@ -12,11 +12,6 @@
     </on-start>
 
     <view-state id="registrationStart" model="registerBusiness">
-        <on-entry>
-            <!-- Populates all available business types -->
-            <evaluate result="registerBusiness.availableBusinessTypes"
-                      expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()"/>
-        </on-entry>
         <transition on="submit" to="validateStoreDetails"/>
         <transition on="cancel" to="logout"/>
     </view-state>
