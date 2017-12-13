@@ -38,7 +38,7 @@ public class NoQAppServletContextListener implements ServletContextListener {
 
     /**
      * This manually de-registers JDBC driver, which prevents Tomcat 7 from complaining about
-     * memory leaks with respect to this class
+     * memory leaks with respect to this class.
      */
     private void deregisterJDBCDriver() {
         Enumeration<Driver> drivers = DriverManager.getDrivers();

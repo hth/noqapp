@@ -5,11 +5,15 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.CommonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -28,9 +32,11 @@ import java.sql.SQLException;
         "PMD.LongVariable"
 })
 @Component
+@PropertySource("classpath:build-info.properties")
 public class NoQAppInitializationCheckBean {
     private static final Logger LOG = LoggerFactory.getLogger(NoQAppInitializationCheckBean.class);
 
+    private Environment environment;
     private DataSource dataSource;
     private FirebaseConfig firebaseConfig;
     private RestHighLevelClient restHighLevelClient;
@@ -39,16 +45,28 @@ public class NoQAppInitializationCheckBean {
 
     @Autowired
     public NoQAppInitializationCheckBean(
+            Environment environment,
             DataSource dataSource,
             FirebaseConfig firebaseConfig,
             RestHighLevelClient restHighLevelClient,
             ElasticAdministrationService elasticAdministrationService,
             BizStoreElasticService bizStoreElasticService) {
+        this.environment = environment;
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
+    }
+
+    @PostConstruct
+    public void checkEnvironmentIfPresent() {
+        if (StringUtils.isBlank(environment.getProperty("build.env"))) {
+            LOG.error("Failed to find environment for build.env");
+            throw new RuntimeException("Missing server environment info");
+        }
+        LOG.info("*************************************");
+        LOG.info("Starting server for environment={}", environment.getProperty("build.env"));
     }
 
     @PostConstruct

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
     @Autowired
     public MigrateToBusinessProfileFlowActions(
+            Environment environment,
             ExternalService externalService,
             BizService bizService,
             TokenQueueService tokenQueueService,
@@ -59,7 +61,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
             EmailValidateService emailValidateService,
             BizStoreElasticService bizStoreElasticService
     ) {
-        super(externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;

@@ -2,6 +2,7 @@ package com.noqapp.view.flow.merchant;
 
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +27,14 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
     @SuppressWarnings ("unused")
     @Autowired
     public AddStoreFlowActions(
+            Environment environment,
             ExternalService externalService,
             BizService bizService,
             BusinessUserService businessUserService,
             TokenQueueService tokenQueueService,
             BizStoreElasticService bizStoreElasticService
     ) {
-        super(externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.businessUserService = businessUserService;
     }
 
