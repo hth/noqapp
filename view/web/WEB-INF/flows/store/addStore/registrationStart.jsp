@@ -80,10 +80,10 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="storeBusinessTypes" cssErrorClass="lb_error">Queue Type</form:label>
+                                            <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue Type</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="storeBusinessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                            <form:select path="storeBusinessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
                                                 <form:options items="${registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
                                             </form:select>
                                         </div>

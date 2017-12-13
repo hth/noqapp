@@ -21,6 +21,7 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import org.springframework.core.env.Environment;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -34,17 +35,20 @@ import java.util.List;
 class RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationFlowActions.class);
 
+    private Environment environment;
     private ExternalService externalService;
     private BizService bizService;
     private TokenQueueService tokenQueueService;
     private BizStoreElasticService bizStoreElasticService;
 
     RegistrationFlowActions(
+            Environment environment,
             ExternalService externalService,
             BizService bizService,
             TokenQueueService tokenQueueService,
             BizStoreElasticService bizStoreElasticService
     ) {
+        this.environment = environment;
         this.externalService = externalService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
@@ -224,12 +228,15 @@ class RegistrationFlowActions {
     ) {
         bizStore.setBizName(bizName)
             .setDisplayName(registerBusiness.getDisplayName())
-            .setBusinessTypes(registerBusiness.getStoreBusinessTypes())
+            .setBusinessType(registerBusiness.getStoreBusinessType())
             .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
             .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
             .setAddress(registerBusiness.getAddressStore())
             .setTimeZone(registerBusiness.getTimeZoneStore())
-            .setCodeQR(ObjectId.get().toString())
+            .setCodeQR(environment.getProperty("build.env").equalsIgnoreCase("prod")
+                    ? ObjectId.get().toString()
+                    /* SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox. */
+                    : "SN_" + ObjectId.get().toString())
             .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
             .setRemoteJoin(registerBusiness.isRemoteJoin())
             .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())

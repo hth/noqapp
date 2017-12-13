@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("all")
     @Autowired
     public MigrateToBusinessRegistrationFlowActions(
+            Environment environment,
             FetcherService fetcherService,
             UserProfilePreferenceService userProfilePreferenceService,
             AccountService accountService,
@@ -59,7 +61,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             TokenQueueService tokenQueueService,
             BizStoreElasticService bizStoreElasticService
     ) {
-        super(externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.fetcherService = fetcherService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
