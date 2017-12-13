@@ -44,7 +44,7 @@ public class RegisterBusiness implements Serializable {
 
     private String bizStoreId;
     private String displayName;
-    private List<BusinessTypeEnum> storeBusinessTypes;
+    private BusinessTypeEnum storeBusinessType;
     private String addressStore;
     private String countryShortNameStore;
     private String phoneStore;
@@ -214,12 +214,12 @@ public class RegisterBusiness implements Serializable {
         this.displayName = displayName.getText();
     }
 
-    public List<BusinessTypeEnum> getStoreBusinessTypes() {
-        return storeBusinessTypes;
+    public BusinessTypeEnum getStoreBusinessType() {
+        return storeBusinessType;
     }
 
-    public RegisterBusiness setStoreBusinessTypes(List<BusinessTypeEnum> storeBusinessTypes) {
-        this.storeBusinessTypes = storeBusinessTypes;
+    public RegisterBusiness setStoreBusinessType(BusinessTypeEnum storeBusinessType) {
+        this.storeBusinessType = storeBusinessType;
         return this;
     }
 

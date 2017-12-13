@@ -94,7 +94,7 @@ public class BizStoreEntity extends BaseEntity {
     private String phoneRaw;
 
     @Field ("BT")
-    private List<BusinessTypeEnum> businessTypes = new ArrayList<>();
+    private BusinessTypeEnum businessType;
 
     /* Format Longitude and then Latitude. */
     @Field ("COR")
@@ -307,12 +307,12 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public List<BusinessTypeEnum> getBusinessTypes() {
-        return businessTypes;
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
-    public BizStoreEntity setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
-        this.businessTypes = businessTypes;
+    public BizStoreEntity setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 
