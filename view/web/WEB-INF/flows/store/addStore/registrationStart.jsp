@@ -84,6 +84,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:select path="storeBusinessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
+                                                <form:option value="NONE" label="--- Select ---"/>
                                                 <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
                                             </form:select>
                                         </div>

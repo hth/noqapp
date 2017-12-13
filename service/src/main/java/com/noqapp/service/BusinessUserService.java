@@ -1,15 +1,14 @@
 package com.noqapp.service;
 
-import java.util.List;
-
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -26,15 +25,10 @@ public class BusinessUserService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserService.class);
 
     private BusinessUserManager businessUserManager;
-    private BizStoreManager bizStoreManager;
 
     @Autowired
-    public BusinessUserService(
-            BusinessUserManager businessUserManager,
-            BizStoreManager bizStoreManager
-    ) {
+    public BusinessUserService(BusinessUserManager businessUserManager) {
         this.businessUserManager = businessUserManager;
-        this.bizStoreManager = bizStoreManager;
     }
 
     /**
@@ -47,7 +41,6 @@ public class BusinessUserService {
     void saveUpdateBusinessUser(String qid, UserLevelEnum userLevel, boolean active) {
         BusinessUserEntity businessUser = businessUserManager.findByRid(qid);
         switch (userLevel) {
-            //TODO add Accountant and Enterprise
             case M_ADMIN:
                 if (null == businessUser) {
                     businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
