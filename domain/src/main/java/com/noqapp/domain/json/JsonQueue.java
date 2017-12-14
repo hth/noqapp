@@ -114,7 +114,7 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("at")
     private int availableTokenCount;
 
-    private JsonQueue() {
+    public JsonQueue() {
         //Required default constructor
     }
 

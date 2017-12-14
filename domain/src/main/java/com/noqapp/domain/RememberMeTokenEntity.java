@@ -38,7 +38,7 @@ public class RememberMeTokenEntity extends BaseEntity {
     private String tokenValue;
 
     @SuppressWarnings ("unused")
-    private RememberMeTokenEntity() {
+    public RememberMeTokenEntity() {
         super();
     }
 

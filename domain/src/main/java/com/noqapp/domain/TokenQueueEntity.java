@@ -42,7 +42,7 @@ public class TokenQueueEntity extends BaseEntity {
     @Transient
     private FirebaseMessageTypeEnum firebaseMessageType;
 
-    private TokenQueueEntity() {
+    public TokenQueueEntity() {
         //Required default constructor
     }
 

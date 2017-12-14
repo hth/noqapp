@@ -29,7 +29,7 @@ public class JsonResponse extends AbstractDomain {
     @JsonProperty("r")
     private int response;
 
-    private JsonResponse() {
+    public JsonResponse() {
         //Required default constructor
     }
 

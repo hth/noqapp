@@ -50,7 +50,7 @@ public class StoreHourEntity extends BaseEntity {
     @Field ("DC")
     private boolean dayClosed = false;
 
-    private StoreHourEntity() {
+    public StoreHourEntity() {
         //Default
     }
 

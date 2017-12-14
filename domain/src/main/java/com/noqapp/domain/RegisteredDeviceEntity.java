@@ -54,7 +54,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private boolean sinceBeginning = true;
 
     /** To keep bean happy. */
-    private RegisteredDeviceEntity() {
+    public RegisteredDeviceEntity() {
         super();
     }
 

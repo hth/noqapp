@@ -87,7 +87,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("u")
     private String createDate;
 
-    private JsonTokenAndQueue() {
+    public JsonTokenAndQueue() {
         //Required default constructor
     }
 
