@@ -296,7 +296,7 @@ public class BusinessFlowValidator {
                     new MessageBuilder()
                             .error()
                             .source(source + "storeBusinessType")
-                            .defaultText("Queue for needs to be subset of Business Type set for business.")
+                            .defaultText("'Queue for' has to be a subset of 'Business Type' selected for business " + registerBusiness.getName())
                             .build());
             status = "failure";
         }
