@@ -370,7 +370,7 @@ ul.col3 li{ margin:0 1.5%; padding:0 ; float:left; display:block; width:30.33%; 
 .qr-address{ margin:0px 0 15px 0; padding:0 0 20px 0; border-bottom:1px solid #ccc}
 .qr-data h3{ font-size:25px; font-weight:400; margin:10px 0; color:#222}
 .qr-queue{margin:20px 0}
- .download-app-icon{margin:20px 0 15px 0; padding:10px 0; text-align:center; background:#e5e5e5}
+.download-app-icon{margin:20px 0 15px 0; padding:10px 0; text-align:center; background:#e5e5e5}
 .download-app-icon p{ padding:10px 0}
 
 .qr-footer{margin:15px 0; padding:10px 0 0 0; border-top: 1px solid #ccc}
@@ -487,7 +487,7 @@ td.lable-td{ padding-top:8px}
 .lb_error { color: red !important;}
 
 .form-field-select{resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
-.form-field-select-single-dropdown{resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC; height: 40px;}
+.form-field-select.single-dropdown{height: 40px;}
 .form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
 span.info-txt{ font-size:14px; display:block; text-align:right; line-height:16px;}
 
