@@ -49,7 +49,7 @@ public class BrowserEntity extends BaseEntity {
     private String operatingSystemVersion;
 
     @SuppressWarnings("unused")
-    private BrowserEntity() {}
+    public BrowserEntity() {}
 
     private BrowserEntity(
             String cookieId,

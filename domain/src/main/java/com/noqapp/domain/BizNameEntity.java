@@ -120,7 +120,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("BS")
     private BillingStatusEnum billingStatus;
 
-    private BizNameEntity() {
+    public BizNameEntity() {
         //Default constructor
     }
 
