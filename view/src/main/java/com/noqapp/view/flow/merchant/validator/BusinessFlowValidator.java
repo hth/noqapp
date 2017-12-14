@@ -283,7 +283,7 @@ public class BusinessFlowValidator {
         }
 
         boolean foundInStoreBusinessSelection = false;
-        if (!registerBusiness.getBusinessTypes().isEmpty()) {
+        if (null != registerBusiness.getBusinessTypes()) {
             for (BusinessTypeEnum businessType : registerBusiness.getBusinessTypes()) {
                 if (businessType == registerBusiness.getStoreBusinessType()) {
                     foundInStoreBusinessSelection = true;
