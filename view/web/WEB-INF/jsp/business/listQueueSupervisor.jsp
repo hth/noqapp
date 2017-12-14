@@ -83,7 +83,7 @@
                                                     <td nowrap>
                                                         <c:choose>
                                                             <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                                <select path="userLevel" cssClass="form-field-select-single-dropdown">
+                                                                <select path="userLevel" class="form-field-select single-dropdown">
                                                                     <c:forEach var="item" items="${userLevelEnumValues}">
                                                                         <%--//TODO Add ajax call to change user role--%>
                                                                         <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
