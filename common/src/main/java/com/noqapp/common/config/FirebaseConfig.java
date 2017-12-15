@@ -3,11 +3,10 @@ package com.noqapp.common.config;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseCredential;
-import com.google.firebase.auth.FirebaseCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,11 +35,11 @@ public class FirebaseConfig {
         if (null == options) {
             LOG.info("FirebaseApp initialization started");
             /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
+            InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
             try {
-                FirebaseCredential firebaseCredential = FirebaseCredentials.fromCertificate(serviceAccount);
+                GoogleCredentials googleCredentials = GoogleCredentials.fromStream(credentialsStream);
                 options = new FirebaseOptions.Builder()
-                        .setCredential(firebaseCredential)
+                        .setCredentials(googleCredentials)
                         .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
                         .build();
             } catch (IOException e) {
