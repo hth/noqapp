@@ -17,6 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -130,5 +131,11 @@ public class NoQAppInitializationCheckBean {
     private void doSearch() {
         bizStoreElasticService.createBizStoreSearchDSLQuery("Ganesh");
         bizStoreElasticService.createBizStoreSearchDSLQuery("Vashi", "te7ut0u5zy9c");
+    }
+
+    @PreDestroy
+    public void applicationDestroy() {
+        LOG.info("Stopping Server for environment={}", environment.getProperty("build.env"));
+        LOG.info("*************************************");
     }
 }
