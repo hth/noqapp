@@ -84,7 +84,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:option value="NONE" label="--- Select ---"/>
+                                                <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
                                                 <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
                                             </form:select>
                                         </div>
