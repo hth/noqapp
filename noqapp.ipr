@@ -198,9 +198,6 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
             <element id="library" level="project" name="Gradle: com.carrotsearch:hppc:0.7.1" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6" />
             <element id="library" level="project" name="Gradle: com.tdunning:t-digest:3.0" />
             <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.2" />
@@ -208,22 +205,6 @@
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:jna:4.4.0-1" />
             <element id="library" level="project" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.9" />
-            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.15" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.0.1" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: commons-codec:commons-codec:1.11" />
             <element id="library" level="project" name="Gradle: net.bytebuddy:byte-buddy-agent:1.7.9" />
@@ -309,12 +290,32 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-library:1.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-launcher:1.0.2" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.0.1" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:securesm:1.2" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.10" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch-cli:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.17" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -417,7 +418,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
@@ -446,7 +447,7 @@
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:6.0.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.1.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.7.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.25.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.7.0" />
@@ -477,7 +478,7 @@
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-scratchpad:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-ooxml:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.17" />
@@ -505,8 +506,8 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.mchange:c3p0:0.9.5.2" />
@@ -572,28 +573,28 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.0.1" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.1.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:securesm:1.2" />
-            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch-cli:6.1.0" />
             <element id="library" level="project" name="Gradle: com.carrotsearch:hppc:0.7.1" />
-            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.15" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.6" />
+            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.17" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.10" />
             <element id="library" level="project" name="Gradle: com.tdunning:t-digest:3.0" />
             <element id="library" level="project" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.9" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:jna:4.4.0-1" />
@@ -624,6 +625,7 @@
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.2" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0" />
+            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-context:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.auto.value:auto-value:1.2" />
             <element id="library" level="project" name="Gradle: org.threeten:threetenbp:1.3.3" />
@@ -718,7 +720,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
@@ -747,7 +749,7 @@
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:6.0.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.1.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.7.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.25.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.7.0" />
@@ -778,7 +780,7 @@
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-scratchpad:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-ooxml:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.17" />
@@ -806,8 +808,8 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.mchange:c3p0:0.9.5.2" />
@@ -873,28 +875,28 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.0.1" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.1.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:securesm:1.2" />
-            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch-cli:6.1.0" />
             <element id="library" level="project" name="Gradle: com.carrotsearch:hppc:0.7.1" />
-            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.15" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.6" />
+            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.17" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.10" />
             <element id="library" level="project" name="Gradle: com.tdunning:t-digest:3.0" />
             <element id="library" level="project" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.9" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:jna:4.4.0-1" />
@@ -925,6 +927,7 @@
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.2" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0" />
+            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-context:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.auto.value:auto-value:1.2" />
             <element id="library" level="project" name="Gradle: org.threeten:threetenbp:1.3.3" />
@@ -1032,7 +1035,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.9.1" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.16" />
@@ -1061,7 +1064,7 @@
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:6.0.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.1.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.7.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.25.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.7.0" />
@@ -1092,7 +1095,7 @@
             <element id="library" level="project" name="Gradle: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Gradle: commons-io:commons-io:2.5" />
             <element id="library" level="project" name="Gradle: commons-validator:commons-validator:1.6" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-scratchpad:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi-ooxml:3.17-beta1" />
             <element id="library" level="project" name="Gradle: org.apache.poi:poi:3.17" />
@@ -1120,8 +1123,8 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-all:1.3" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.13" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.1" />
-            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.1" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:parent-join-client:6.1.0" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.1.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.mchange:c3p0:0.9.5.2" />
@@ -1187,28 +1190,28 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.0.1" />
-            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.0.1" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-core:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-analyzers-common:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-backward-codecs:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-grouping:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-highlighter:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-join:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-memory:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-misc:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queries:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-queryparser:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-sandbox:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial-extras:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial3d:7.1.0" />
+            <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.1.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:securesm:1.2" />
-            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
+            <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch-cli:6.1.0" />
             <element id="library" level="project" name="Gradle: com.carrotsearch:hppc:0.7.1" />
-            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.15" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6" />
-            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.6" />
+            <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.17" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.10" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.10" />
             <element id="library" level="project" name="Gradle: com.tdunning:t-digest:3.0" />
             <element id="library" level="project" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.9" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:jna:4.4.0-1" />
@@ -1239,6 +1242,7 @@
             <element id="library" level="project" name="Gradle: javax.measure:jsr-275:0.9.3" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.0.2" />
             <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.0.0" />
+            <element id="library" level="project" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.2" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-context:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.auto.value:auto-value:1.2" />
             <element id="library" level="project" name="Gradle: org.threeten:threetenbp:1.3.3" />
@@ -1818,37 +1822,37 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.2/21f2f0b1de60af93890b12fac673035f516f0c94/jackson-databind-2.9.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.6">
+    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.10">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.6/b88721371cfa2d7242bb5e52fe70861aa061c050/jackson-dataformat-cbor-2.8.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.10/1c58cc9313ddf19f0900cd61ed044874278ce320/jackson-dataformat-cbor-2.8.10.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.6/7391d0d0cf1404b47fc0f5cc16a176966efb5e6f/jackson-dataformat-cbor-2.8.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.10/1ff84e46df2046b647e408d4dd2254afdc1e5444/jackson-dataformat-cbor-2.8.10-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.6/38ec48e1763ff02edc79af77dcf1f3a10a3a8ea1/jackson-dataformat-cbor-2.8.6-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.8.10/7e687e4527a46ec2e732cd74ed78c0c11574cb54/jackson-dataformat-cbor-2.8.10-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.6">
+    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.10">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.6/71590ad45cee21249774e2f93e5eca66e446cef3/jackson-dataformat-smile-2.8.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.10/e853081fadaad3e98ed801937acc3d8f77580686/jackson-dataformat-smile-2.8.10.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.6/7c98154771f7b952efcfdbe8c49ece4d60f5cc2a/jackson-dataformat-smile-2.8.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.10/6d0f2094c7f6937335a6575107013ca36a344653/jackson-dataformat-smile-2.8.10-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.6/c243875bf496db39e4c7fe5b0dc885f063698f31/jackson-dataformat-smile-2.8.6-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.8.10/aea8bef90dd0dd737dde92ed05d658870e2c977e/jackson-dataformat-smile-2.8.10-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.6">
+    <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.10">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.6/8bd44d50f9a6cdff9c7578ea39d524eb519e35ab/jackson-dataformat-yaml-2.8.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.10/1e08caf1d787c825307d8cc6362452086020d853/jackson-dataformat-yaml-2.8.10.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.6/241c85d557d3b3a70ac2be6079fb5938724dbc63/jackson-dataformat-yaml-2.8.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.10/5fd6b0c2ef576e0a6f8dc004833261dab1b158fa/jackson-dataformat-yaml-2.8.10-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.6/50413a50b11de25a2083f1d937e99d8c4ad3102a/jackson-dataformat-yaml-2.8.6-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.8.10/aca16a8b675bd4abd4a976dd804ae2c585a05c3d/jackson-dataformat-yaml-2.8.10-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.fasterxml:classmate:1.3.4">
@@ -3395,169 +3399,169 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-to-slf4j/2.9.1/93a2d5a7184e5509d4552c04e902ecb60c771a5a/log4j-to-slf4j-2.9.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-analyzers-common:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-analyzers-common:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.0.1/5f6b74b083e5925b00bb89a1146c76c9a0b208e0/lucene-analyzers-common-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.1.0/a508bf6b580471ee568dab7d2acfedfa5aadce70/lucene-analyzers-common-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.0.1/4e02c31d956a274fa87ae1c953a27c4c3e98d8bd/lucene-analyzers-common-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.1.0/da5286ffad443da7f79d9f2484ea6a1865d88717/lucene-analyzers-common-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.0.1/b10312f3da8ad019ae411f5fa98806482f6cdd71/lucene-analyzers-common-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/7.1.0/2267cccab7f03296c5b9f476d8d0b57cbbb0c68/lucene-analyzers-common-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-backward-codecs:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-backward-codecs:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.0.1/18638048b965511a490b84c1e2623d396b7b9a3f/lucene-backward-codecs-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.1.0/804a7ce82bba3d085733486bfde4846ecb77ce01/lucene-backward-codecs-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.0.1/2c2172b78d0ccb2a1924cf62474a530f062cdaee/lucene-backward-codecs-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.1.0/8e7e1afe71556f0c42536c2884d5204681d1d0f7/lucene-backward-codecs-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.0.1/ed898ccd5aed002f7caac29cc22cec061195dbf9/lucene-backward-codecs-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/7.1.0/9425385602aa97151386b9e72594af5e440fd115/lucene-backward-codecs-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-core:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-core:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.0.1/3f1ad4670da69cf5b4489b59152dce4eea252ff5/lucene-core-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.1.0/dd291b7ebf4845483895724d2562214dc7f40049/lucene-core-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.0.1/e7e7bd5e68433abefe30232baf52cb4f16f1b686/lucene-core-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.1.0/abcd025f28d1e85ca92c000981aa0534c05fe197/lucene-core-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.0.1/fee43cbaf69f0a6610997ba77ac63e2c4f416ff4/lucene-core-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/7.1.0/8b943b2d40d96042fb26609d70ec72b949fdaf85/lucene-core-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-grouping:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-grouping:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.0.1/6615491d5d2017e0243c2c2e016f92a8ca12db60/lucene-grouping-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.1.0/732d16c16421fca058a2a07ca4081ec7696365b/lucene-grouping-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.0.1/617a20cfdb204833c942cab2096a641eed35c3d6/lucene-grouping-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.1.0/14089fc96640a71718476c3be7723a9b3fa35b4/lucene-grouping-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.0.1/d3cb5c1187cbaaa37628c7d9b72cbfa6e2de02b1/lucene-grouping-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/7.1.0/79854fff33f85ba7c416b8a76be036da92953fee/lucene-grouping-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-highlighter:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-highlighter:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.0.1/888bf6b9a1e8bd69931e30c67fc01edd284b4c81/lucene-highlighter-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.1.0/596550daabae765ad685112e0fe7c4f0fdfccb3f/lucene-highlighter-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.0.1/1245a0a09491940b31de3546c9299c2748d5787b/lucene-highlighter-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.1.0/3827949c5edffe535a93b0a27f366a46a42c36bf/lucene-highlighter-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.0.1/96d15b7255c8a3c0289bfd327bf9a21724a82cf1/lucene-highlighter-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/7.1.0/ddaa0f6eb004c49492bcf27194057bc673e663fb/lucene-highlighter-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-join:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-join:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.0.1/bfa8769171ef4c12d347a094c90a5b314d4d7915/lucene-join-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.1.0/5f26dd64c195258a81175772ef7fe105e7d60a26/lucene-join-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.0.1/57799e8a36b873815a5a8df5e0bb50517dddc355/lucene-join-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.1.0/446ef49021f32787bee695edb0ca4485495e02d0/lucene-join-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.0.1/62abbbafab92c2c362a8cf9f44b8852fea02b8e5/lucene-join-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/7.1.0/20bbe4984d5f5d3fb040070781d5184aaab2c149/lucene-join-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-memory:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-memory:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.0.1/c9bdc376260a5c94318085f6b5ba932cfdd51ad8/lucene-memory-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.1.0/3ef64c58d0c09ca40d848efa96b585b7476271f2/lucene-memory-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.0.1/6feae2bcf01863f7f78ad4a54062c73b5921020f/lucene-memory-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.1.0/6d3a7db2d98cc1e73887b0c54251b2686748505b/lucene-memory-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.0.1/faf5ead5da841141d832c11bdbbb42fcab5a060d/lucene-memory-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/7.1.0/332bd5043c9acc1bc47a4030af9cb2f154498590/lucene-memory-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-misc:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-misc:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.0.1/c72dd9d63f92f0e82961dd38e169d5affdb915b0/lucene-misc-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.1.0/1496ee5fa62206ee5ddf51042a340d6a9ee3b5de/lucene-misc-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.0.1/54be1e8d0d04e3c56eaf9f7c44e09fe4c49dd4fb/lucene-misc-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.1.0/4699c10cd82a63b6420e43ad8e805f0201356c84/lucene-misc-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.0.1/c2fb01289ee3a5772cf6588faf603880fa901bed/lucene-misc-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/7.1.0/543604862e8c86a628f4ea501bbbd40dd1023178/lucene-misc-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-queries:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-queries:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.0.1/168e774681469e0d8902680d6cfce0131d6421bf/lucene-queries-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.1.0/1554920ab207a3245fa408d022a5c90ad3a1fea3/lucene-queries-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.0.1/10f4f158121b51ed9a970178a10c6f9dfb86ad73/lucene-queries-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.1.0/dc84de47f1ae6e9c8a624d987724464d0eb8f6b3/lucene-queries-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.0.1/28673509185b129efd41b9e0e4df35d6fafa4b4d/lucene-queries-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/7.1.0/2b9383b8bbf4b842be6b4ba139780b35a16d99e7/lucene-queries-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-queryparser:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-queryparser:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.0.1/4634a493b78fe7ced32ca34dc107b753a280a276/lucene-queryparser-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.1.0/5767c15c5ee97926829fd8a4337e434fa95f3c08/lucene-queryparser-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.0.1/1ad445027309b140ef3d9602101140210505aeb2/lucene-queryparser-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.1.0/39ebefd8b9ecd4a72ba41349bb5d14d0d4c1dc82/lucene-queryparser-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.0.1/fbe94b69b6084ce4f829399758edbdbca73efcf2/lucene-queryparser-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/7.1.0/6df630683e42bb3c59c308b65f281c45509e4e47/lucene-queryparser-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-sandbox:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-sandbox:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.0.1/a379474d929b909b1602ecfd093df8ef70f76776/lucene-sandbox-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.1.0/691f7b9ac05f3ad2ac7e80733ef70247904bd3ae/lucene-sandbox-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.0.1/4791939dd4e2d2c04d1bc31692a9b34c5a90af7f/lucene-sandbox-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.1.0/6e2c94c768b6f3278b560df5d8796c7175de33ac/lucene-sandbox-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.0.1/22aa5779bcc63ba785ce8a4caab9271245955e2b/lucene-sandbox-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/7.1.0/2a9f4179d1ef441b5500eeb7bbcb5de77aa9fd25/lucene-sandbox-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-spatial-extras:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-spatial-extras:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.0.1/86f777596734662402b55e24a2848f0ac4a96628/lucene-spatial-extras-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.1.0/3f1bc1aada8f06b176b782da24b9d7ad9641c41a/lucene-spatial-extras-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.0.1/cc2667fc9e31ac85e0e61406a784cd2ad7a41df0/lucene-spatial-extras-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.1.0/3e8bc6b8ba19cfeddb7d8eaa151e6778fbe87ac2/lucene-spatial-extras-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.0.1/14a8e8380fe096c34c51cc16c57b60765ab5bd75/lucene-spatial-extras-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial-extras/7.1.0/af2057aba36920739e63f9691ecd4bad5f3c4077/lucene-spatial-extras-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-spatial3d:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-spatial3d:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.0.1/f6fa29405bccc114456abc82c7c93a2a5629c592/lucene-spatial3d-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.1.0/8ded650aed23efb775f17be496e3e3870214e23b/lucene-spatial3d-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.0.1/a0746184b91c47ccfd5f86c46af1082697765b4f/lucene-spatial3d-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.1.0/3f445e62803bb5d12f785134ed0a2e70ae065f98/lucene-spatial3d-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.0.1/465584845870bd785486d2aec558688eeb8c28a/lucene-spatial3d-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/7.1.0/41b9bee4c801979e63afbb6b3d995761865259e4/lucene-spatial3d-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-spatial:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-spatial:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.0.1/cefbabb619f9d0abaa39ab4391c15afbd7b54afa/lucene-spatial-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.1.0/6c64c04d802badb800516a8a574cb993929c3805/lucene-spatial-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.0.1/51eabf0bccabc63a4c9c5133f5d354198ba10eaf/lucene-spatial-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.1.0/4b16f12fcfd5c8500c0c5867f979d8ea300de09a/lucene-spatial-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.0.1/f10b7b0ebce8c5c14b611a275463928b4230cf33/lucene-spatial-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/7.1.0/234be0f5d55e943abdc0c287f5d2fb09bc3a095a/lucene-spatial-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.lucene:lucene-suggest:7.0.1">
+    <library name="Gradle: org.apache.lucene:lucene-suggest:7.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.0.1/71cf313010f44841f9cfb70e71559af50ea8198b/lucene-suggest-7.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.1.0/8d0ed1589ebdccf34e888c6efc0134a13a238c85/lucene-suggest-7.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.0.1/cec8ef1390e45314f3cd3c8011adbd3eca9fb8cd/lucene-suggest-7.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.1.0/1ffc6f6732af1543e038111f6df73ee94cd43b39/lucene-suggest-7.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.0.1/27850ab933e41b8df279cfdeecc229257847f27c/lucene-suggest-7.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/7.1.0/8ab7225ad988333ed75c01d44d7be3bc900ba430/lucene-suggest-7.1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.opennlp:opennlp-tools:1.6.0">
@@ -3902,59 +3906,70 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codelibs/jhighlight/1.0.2/b721e136ac6ff410a5ebca2755d7d8c25e6adf7f/jhighlight-1.0.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.0.1">
+    <library name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:6.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.0.1/d1fd4aad149d91e91efc36a4a0fafc61a8d04cd6/elasticsearch-rest-client-6.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.1.0/5a10626b884ca36d9b6a85e0c037b4b531f48386/elasticsearch-rest-client-6.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.0.1/335d768b2c1e66530be38dd3b1a37c559a226c9d/elasticsearch-rest-client-6.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.1.0/aa8f6f0b29f27f8463412c6602fecac12611de29/elasticsearch-rest-client-6.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.0.1/51f00d8774a52b2d33a70e79515aea4b6f5040d2/elasticsearch-rest-client-6.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-client/6.1.0/793dc74e940d6e5f22fa807213b8d1815f2b2ed3/elasticsearch-rest-client-6.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.1">
+    <library name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.0.1/adb3c3e9d4d3bae6f830f91850e49352b556bbf5/elasticsearch-rest-high-level-client-6.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.1.0/36012208425b25eb8428301be7a40327648774f/elasticsearch-rest-high-level-client-6.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.0.1/78700864d174fdbd89efd6c9da36e75dd847edeb/elasticsearch-rest-high-level-client-6.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.1.0/41a30b5b1b0cc67cb574919727f0d0f1fec7a37c/elasticsearch-rest-high-level-client-6.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.0.1/9f27a71a6e740059722b08851f6acfafb2a2b90c/elasticsearch-rest-high-level-client-6.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.client/elasticsearch-rest-high-level-client/6.1.0/6a6c3c55871e48f8928b0d44cc3b0ee2120f7855/elasticsearch-rest-high-level-client-6.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.0.1">
+    <library name="Gradle: org.elasticsearch.plugin:aggs-matrix-stats-client:6.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.0.1/307621791f5c237d58f067e7c81625d55f46df51/aggs-matrix-stats-client-6.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.1.0/3c21a4ecdb874c5ce3e4db2b01979f74a8da46ba/aggs-matrix-stats-client-6.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.0.1/16e23f99f9275909b5a1eca853b1b596d2257369/aggs-matrix-stats-client-6.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.1.0/f701a912d40c361024844c1af15dbe25628a2673/aggs-matrix-stats-client-6.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.0.1/826a0a02f809bcf1d467e30bbcdee1590c2e5dcc/aggs-matrix-stats-client-6.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/aggs-matrix-stats-client/6.1.0/9a1b6e8968a495a14f2fb4c6cc1f93fc56d276d6/aggs-matrix-stats-client-6.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.elasticsearch.plugin:parent-join-client:6.0.1">
+    <library name="Gradle: org.elasticsearch.plugin:parent-join-client:6.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.0.1/17c689a6d473550be6604b7ad128e5b9414f50d6/parent-join-client-6.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.1.0/bd0f2ba5852df2fc3ccddcf981610c352c88b5fe/parent-join-client-6.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.0.1/7b598414ed360af163a2a57cdef4cdb32ccacb21/parent-join-client-6.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.1.0/e47aa946d63b565774135939fae1584e38a0e78e/parent-join-client-6.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.0.1/f3385e49215e3d10319e5666451588267d95dc13/parent-join-client-6.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/parent-join-client/6.1.0/b3fbdb8107b6ca5d6aa377d473016696e0723ea2/parent-join-client-6.1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.elasticsearch:elasticsearch:6.0.1">
+    <library name="Gradle: org.elasticsearch:elasticsearch-cli:6.1.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.0.1/e28e54a2c679a17d2e0ab1630b47341f724aaa4a/elasticsearch-6.0.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-cli/6.1.0/ace28406effdceefc9dc2e2c1b0aff1c53547d0d/elasticsearch-cli-6.1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.0.1/d73ed640bf0e55834c225c57b55bfb4305e899c/elasticsearch-6.0.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-cli/6.1.0/d837872193945e265a031a1ff0005c27f9578ac6/elasticsearch-cli-6.1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.0.1/d989fd54bc5646fa37d8e1da5b3a398fd5fa811a/elasticsearch-6.0.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-cli/6.1.0/d9ec76c4234ef83ef740886d383793161a50a085/elasticsearch-cli-6.1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: org.elasticsearch:elasticsearch:6.1.0">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.1.0/fe9c0853d91dd57745ecf3a58a1729ed8b4c9595/elasticsearch-6.1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.1.0/d597f188744afeefe9d44b33a488aad56a971741/elasticsearch-6.1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/6.1.0/a8c04aeab1eaac0d08f6f94e17d85faeb831a563/elasticsearch-6.1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.elasticsearch:jna:4.4.0-1">
@@ -4679,15 +4694,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.6/7a6db882d2085b715337ea2108fa168c46a683e3/xz-1.6-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.yaml:snakeyaml:1.15">
+    <library name="Gradle: org.yaml:snakeyaml:1.17">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.15/3b132bea69e8ee099f416044970997bde80f4ea6/snakeyaml-1.15.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/7a27ea250c5130b2922b86dea63cbb1cc10a660c/snakeyaml-1.17.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.15/af8323a5f753a53a23bb798065036eab1edac1a1/snakeyaml-1.15-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/7d487d4d4284b8621c310a3865776dc46befc90c/snakeyaml-1.17-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.15/7dc55271cad1cf73bb495e372164269e75d9345a/snakeyaml-1.15-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.17/63577e87886c76228db9f8a2c50ea43cde5072eb/snakeyaml-1.17-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: redis.clients:jedis:2.9.0">
