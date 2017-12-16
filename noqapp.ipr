@@ -230,7 +230,6 @@
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.5" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java:3.3.1" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.6" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-auth:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-context:1.6.1" />
             <element id="library" level="project" name="Gradle: io.grpc:grpc-core:1.6.1" />
@@ -316,6 +315,7 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.2" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.4" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.7" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.8" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -464,7 +464,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.6" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.8" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
@@ -766,7 +766,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.6" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.8" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
@@ -1081,7 +1081,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.6" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.8" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.11" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
@@ -2284,15 +2284,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/77979eaa98f90806f984155f44f63cc1fb60ac25/juniversalchardet-1.0.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.6">
+    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.8">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.6/15704449e14f67a1c598bc60cc3d138995f2775/libphonenumber-8.8.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.8/7c2b929e0b61dee1cbb739df350a79929d6476b5/libphonenumber-8.8.8.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.6/64b035622ddd40cd47217078fca72b5c92d9b84b/libphonenumber-8.8.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.8/84aceb8f1e42b0c19b74f0e231f0840d5fe4fa6a/libphonenumber-8.8.8-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.6/4fe1aa14c8b61b5931ba7dd79197ecd8b237d23b/libphonenumber-8.8.6-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.8/cc2b8ab4724bf111c51dca07f7c0d0707f92c5f1/libphonenumber-8.8.8-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.googlecode.mp4parser:isoparser:1.1.18">
