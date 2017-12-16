@@ -432,10 +432,10 @@
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.2" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.10" />
-            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.4" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -486,7 +486,7 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-appengine:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.4" />
             <element id="library" level="project" name="Gradle: commons-codec:commons-codec:1.11" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: com.healthmarketscience.jackcess:jackcess-encrypt:2.1.2" />
@@ -569,7 +569,7 @@
             <element id="library" level="project" name="Gradle: org.opengis:geoapi:3.0.0" />
             <element id="library" level="project" name="Gradle: edu.usc.ir:sentiment-analysis-parser:0.1" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.7" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
@@ -734,10 +734,10 @@
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.2" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.10" />
-            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.4" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -788,7 +788,7 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-appengine:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.4" />
             <element id="library" level="project" name="Gradle: commons-codec:commons-codec:1.11" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: com.healthmarketscience.jackcess:jackcess-encrypt:2.1.2" />
@@ -871,7 +871,7 @@
             <element id="library" level="project" name="Gradle: org.opengis:geoapi:3.0.0" />
             <element id="library" level="project" name="Gradle: edu.usc.ir:sentiment-analysis-parser:0.1" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.7" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
@@ -1049,10 +1049,10 @@
             <element id="library" level="project" name="Gradle: com.google.zxing:core:3.3.1" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
             <element id="library" level="project" name="Gradle: com.github.junrar:junrar:0.7" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.1" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-vfs2:2.2" />
             <element id="library" level="project" name="Gradle: com.jcraft:jsch:0.1.54" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.10" />
-            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.2" />
+            <element id="library" level="project" name="Gradle: com.zaxxer:HikariCP:2.7.4" />
             <element id="library" level="project" name="Gradle: com.google.firebase:firebase-admin:5.5.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
             <element id="library" level="project" name="Gradle: com.rometools:rome:1.5.1" />
@@ -1103,7 +1103,7 @@
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-appengine:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-jackson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client:1.22.0" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.4" />
             <element id="library" level="project" name="Gradle: commons-codec:commons-codec:1.11" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: com.healthmarketscience.jackcess:jackcess-encrypt:2.1.2" />
@@ -1186,7 +1186,7 @@
             <element id="library" level="project" name="Gradle: org.opengis:geoapi:3.0.0" />
             <element id="library" level="project" name="Gradle: edu.usc.ir:sentiment-analysis-parser:0.1" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6" />
-            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" />
+            <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.7" />
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.0.2" />
             <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.0.2" />
@@ -2471,15 +2471,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP-java6/2.3.13/2bf20fa35c3b5fa099fe2ab5eede4e437a6e1063/HikariCP-java6-2.3.13-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.zaxxer:HikariCP:2.7.2">
+    <library name="Gradle: com.zaxxer:HikariCP:2.7.4">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.2/8eadf835d2f74c30b75ffcb2693bb6853b85cf1e/HikariCP-2.7.2.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.4/c101cbc2d07c0adffa0857e742229ef785892699/HikariCP-2.7.4.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.2/da53d86e0fe88686627cc8bbfe2a5dbcf943089/HikariCP-2.7.2-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.4/90e0658008a65b8ff712e15ede8cdef28593e48d/HikariCP-2.7.4-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.2/955e24a70d06bd22e772852fa8a7fa74aeac57ed/HikariCP-2.7.2-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/2.7.4/3faa58bd38011d5722a65ce9b9df631338962c1a/HikariCP-2.7.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: commons-beanutils:commons-beanutils:1.9.2">
@@ -3229,15 +3229,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-text/1.1/f0770f7f0472bf120ada47beecadce4056fbd20a/commons-text-1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.commons:commons-vfs2:2.1">
+    <library name="Gradle: org.apache.commons:commons-vfs2:2.2">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.1/eb5576a3985719dc796d52b828c7a068f1d85b28/commons-vfs2-2.1.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.2/98a98f365a07256ec33c32a653c14255b12859e0/commons-vfs2-2.2.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.1/38211e1c7c2eeeaef50e64d7307f90e31aa4f339/commons-vfs2-2.1-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.2/39d0a5417a22992da665f77f296344f5a6bed168/commons-vfs2-2.2-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.1/91de47a7b0890f81af89abe147dbe9337695f8e1/commons-vfs2-2.1-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-vfs2/2.2/94eddc684b50ce2b8a5e4f3f475ddc2909b96d1a/commons-vfs2-2.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.cxf:cxf-core:3.0.12">
@@ -3315,15 +3315,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpasyncclient/4.1.2/c19bd8ca474b5ec2b797ec62a4cf9cdfc7804eaf/httpasyncclient-4.1.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.httpcomponents:httpclient:4.5.3">
+    <library name="Gradle: org.apache.httpcomponents:httpclient:4.5.4">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.3/d1577ae15f01ef5438c5afc62162457c00a34713/httpclient-4.5.3.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.4/2f8a3c0c53550b237d8f7a98a417397395af8b80/httpclient-4.5.4.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.3/feaf46a8d8f2da5f87d8164069cc3e865875e3b2/httpclient-4.5.3-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.4/6c396a3d10924e02db7b8f9c159b4301cb56914f/httpclient-4.5.4-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.3/4969730c661fff76fa7f9d4c7c61545817f5b033/httpclient-4.5.3-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.4/67fd2133e2289b0f21b5c686ecb4194aa421e173/httpclient-4.5.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.5">
@@ -3337,15 +3337,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore-nio/4.4.5/1544107ae82c6d87433984550d96d2f4126b51e5/httpcore-nio-4.4.5-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.httpcomponents:httpcore:4.4.6">
+    <library name="Gradle: org.apache.httpcomponents:httpcore:4.4.7">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.6/e3fd8ced1f52c7574af952e2e6da0df8df08eb82/httpcore-4.4.6.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.7/5442c20f3568da63b17e0066b06cd88c2999dc14/httpcore-4.4.7.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.6/31b01ef06400e3d48200d46ea3ca454ebbe8312f/httpcore-4.4.6-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.7/10c9fe161b3a03cf05baf66313534957dfaf3a21/httpcore-4.4.7-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.6/57cc0a7af46d66754e632bddc558a913b9e66ac3/httpcore-4.4.6-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.7/dbb124345936763ca84054f648b84675c5a45285/httpcore-4.4.7-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.httpcomponents:httpmime:4.2.6">
