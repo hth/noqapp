@@ -76,9 +76,10 @@ public class ShowHTMLService {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
                 /* This can happen when the business is awaiting approval. */
-                LOG.warn("Skipped creating store html bizStore={} bizName={}",
+                LOG.warn("Skipped creating store html bizStore={} bizName={} active={}",
                         bizStore.getId(),
-                        bizStore.getBizName().getId());
+                        bizStore.getBizName().getId(),
+                        bizStore.isActive());
             }
 
             return showStoreBlank;
@@ -97,7 +98,7 @@ public class ShowHTMLService {
 
         if (null == tokenQueue) {
             /* This can happen when the business is awaiting approval. */
-            LOG.warn("Could not find tokenQueue for codeQR={}", bizStore.getCodeQR());
+            LOG.warn("Could not find tokenQueue for codeQR={} active={}", bizStore.getCodeQR(), bizStore.isActive());
             return false;
         }
 
