@@ -15,6 +15,7 @@ import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class ShowHTMLService {
     private static final Logger LOG = LoggerFactory.getLogger(ShowHTMLService.class);
 
+    private String parentHost;
+
     private BizService bizService;
     private FreemarkerService freemarkerService;
     private TokenQueueService tokenQueueService;
@@ -35,16 +38,23 @@ public class ShowHTMLService {
 
     @Autowired
     public ShowHTMLService(
+            @Value("${parentHost}")
+            String parentHost,
+
             BizService bizService,
             FreemarkerService freemarkerService,
             TokenQueueService tokenQueueService
     ) {
+        this.parentHost = parentHost;
+
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
         this.tokenQueueService = tokenQueueService;
 
         try {
-            showStoreBlank = freemarkerService.freemarkerToString("html/show-store-blank.ftl", new HashMap<>());
+            Map<String, String> rootMap = new HashMap<>();
+            rootMap.put("parentHost", parentHost);
+            showStoreBlank = freemarkerService.freemarkerToString("html/show-store-blank.ftl", rootMap);
         } catch (IOException | TemplateException e) {
             LOG.error("Failed generating html page for BLANK store reason={}", e.getLocalizedMessage(), e);
         }
@@ -81,7 +91,7 @@ public class ShowHTMLService {
     private boolean populateStore(
             Map<String, String> rootMap,
             BizStoreEntity bizStore
-    ) throws IOException, TemplateException {
+    ) {
         
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
@@ -94,6 +104,7 @@ public class ShowHTMLService {
         bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
+        rootMap.put("parentHost", parentHost);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
         rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
         rootMap.put("phone", bizStore.getPhoneFormatted());

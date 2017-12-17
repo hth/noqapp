@@ -46,6 +46,7 @@ public class MailService {
 
     private ExecutorService executorService;
 
+    private String parentHost;
     private String devSentTo;
     private String domain;
     private String https;
@@ -56,6 +57,9 @@ public class MailService {
 
     @Autowired
     public MailService(
+            @Value("${parentHost}")
+            String parentHost,
+
             @Value ("${dev.sent.to}")
             String devSentTo,
 
@@ -83,7 +87,7 @@ public class MailService {
             EmailValidateService emailValidateService,
             MailManager mailManager
     ) {
-
+        this.parentHost = parentHost;
         this.devSentTo = devSentTo;
         this.domain = domain;
         this.https = https;
@@ -115,6 +119,7 @@ public class MailService {
         rootMap.put("link", auth);
         rootMap.put("domain", domain);
         rootMap.put("https", https);
+        rootMap.put("parentHost", parentHost);
 
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
@@ -147,6 +152,7 @@ public class MailService {
             rootMap.put("contact_email", userId);
             rootMap.put("domain", domain);
             rootMap.put("https", https);
+            rootMap.put("parentHost", parentHost);
 
             try {
                 MailEntity mail = new MailEntity()
@@ -173,6 +179,7 @@ public class MailService {
             rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
             rootMap.put("domain", domain);
             rootMap.put("https", https);
+            rootMap.put("parentHost", parentHost);
 
             try {
                 MailEntity mail = new MailEntity()
@@ -217,6 +224,7 @@ public class MailService {
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
         rootMap.put("profileName", profileName);
+        rootMap.put("parentHost", parentHost);
 
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
@@ -249,6 +257,7 @@ public class MailService {
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
         rootMap.put("profileName", profileName);
+        rootMap.put("parentHost", parentHost);
 
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);

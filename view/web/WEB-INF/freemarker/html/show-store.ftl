@@ -7,8 +7,8 @@
 	<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
 	<meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-	<link rel="stylesheet" href="/static2/internal/css/style.css" type='text/css'/>
-	<link rel="stylesheet" href="/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
+	<link rel="stylesheet" href="${parentHost}/static2/internal/css/style.css" type='text/css'/>
+	<link rel="stylesheet" href="${parentHost}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
 	<div class="header">
 		<div class="warp-inner">
 			<div class="logo">
-				<a href="/"><img src="/static2/internal/img/logo.png"/></a>
+				<a href="${parentHost}"><img src="${parentHost}/static2/internal/img/logo.png"/></a>
 			</div>
 		</div>
 	</div>
@@ -51,14 +51,14 @@
 					<div class="download-app-icon">
 						<p>Download NoQApp to</p>
 						<div>
-							<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8""><img src="/static2/internal/img/apple-store.png"/></a>
-							<a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client"><img src="/static2/internal/img/google-plya.png"/></a>
+							<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8""><img src="${parentHost}/static2/internal/img/apple-store.png"/></a>
+							<a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client"><img src="${parentHost}/static2/internal/img/google-play.png"/></a>
 						</div>
 					</div>
 
 					<div class="qr-footer">
 						<p>TM and Copyright &copy; 2017 NoQueue Inc.</p>
-						<p>All Rights Reserved &nbsp; | &nbsp; <a href="#">Privacy Policy</a></p>
+						<p>All Rights Reserved &nbsp; | &nbsp; <a href="${parentHost}/privacy.html">Privacy Policy</a> &nbsp; | &nbsp; <a href="${parentHost}/terms.html">Terms</a></p>
 						<p class="tm">S:${ftlDateTime?iso("PST")}</p>
 					</div>
 				</div>
