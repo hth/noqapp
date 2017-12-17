@@ -100,10 +100,10 @@ public class GenerateStoreQueueHTML {
             String modifiedDate = DF_YYYY_MM_DD.format(new Date());
             SiteMapIndex siteMapIndex = new SiteMapIndex();
 
+            /* Max URL supported is 50_000 per site map. */
             int MAX_LIMIT_PER_INSTANCE = 50_000;
             int i = 1;
             do {
-                /* Max URL supported is 50_000 per site map. */
                 List<BizStoreEntity> bizStores = bizStoreManager.getAll(i, MAX_LIMIT_PER_INSTANCE);
                 SiteUrlMap siteUrlMap = new SiteUrlMap();
                 for (BizStoreEntity bizStore : bizStores) {
@@ -141,7 +141,7 @@ public class GenerateStoreQueueHTML {
 
                 if (!siteUrlMap.getSiteUrls().isEmpty()) {
                     Path xmlFilePath = Paths.get(baseDirectory + Constants.FILE_SEPARATOR + i + ".xml");
-                    createSiteMapFile(Constants.CHAR_SET_UTF8, xmlFilePath, siteUrlMap);
+                    createSiteMapFile(xmlFilePath, siteUrlMap);
                     populateSiteMapIndex(modifiedDate, siteMapIndex, xmlFilePath);
                 }
 
@@ -155,7 +155,6 @@ public class GenerateStoreQueueHTML {
 
             /* Create site index file upon exit. */
             createSiteMapIndexFile(
-                    Constants.CHAR_SET_UTF8,
                     Paths.get(Paths.get(baseDirectory).getParent() + Constants.FILE_SEPARATOR + "q-biz-sitemap.xml"),
                     siteMapIndex);
 
@@ -210,26 +209,24 @@ public class GenerateStoreQueueHTML {
     /**
      * Generate Site Map File for all the HTML files that were created.
      *
-     * @param charset
      * @param xmlFilePath
      * @param siteUrlMap
      * @throws IOException
      */
-    private void createSiteMapFile(Charset charset, Path xmlFilePath, SiteUrlMap siteUrlMap) throws IOException {
+    private void createSiteMapFile(Path xmlFilePath, SiteUrlMap siteUrlMap) throws IOException {
         Files.deleteIfExists(xmlFilePath);
-        FileUtils.writeStringToFile(xmlFilePath.toFile(), siteUrlMap.asXML(), charset, false);
+        FileUtils.writeStringToFile(xmlFilePath.toFile(), siteUrlMap.asXML(), Constants.CHAR_SET_UTF8, false);
     }
 
     /**
      * Generate Site Map Index File for all the Site Map that were created for Queue Businesses.
      *
-     * @param charset
      * @param xmlFilePath
      * @param siteMapIndex
      * @throws IOException
      */
-    private void createSiteMapIndexFile(Charset charset, Path xmlFilePath, SiteMapIndex siteMapIndex) throws IOException {
+    private void createSiteMapIndexFile(Path xmlFilePath, SiteMapIndex siteMapIndex) throws IOException {
         Files.deleteIfExists(xmlFilePath);
-        FileUtils.writeStringToFile(xmlFilePath.toFile(), siteMapIndex.asXML(), charset, false);
+        FileUtils.writeStringToFile(xmlFilePath.toFile(), siteMapIndex.asXML(), Constants.CHAR_SET_UTF8, false);
     }
 }
