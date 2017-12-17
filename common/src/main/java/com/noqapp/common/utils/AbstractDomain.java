@@ -1,9 +1,13 @@
 package com.noqapp.common.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -31,8 +35,20 @@ public abstract class AbstractDomain {
             mapper.writeValue(writer, this);
             return writer.toString();
         } catch (IOException e) {
-            LOG.error("transforming object error={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed JSON transforming object error={}", e.getLocalizedMessage(), e);
             return "{}";
+        }
+    }
+
+    public String asXML() {
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+                    .enable(SerializationFeature.INDENT_OUTPUT);
+            return xmlMapper.writeValueAsString(this);
+        } catch (IOException e) {
+            LOG.error("Failed XML transforming object error={}", e.getLocalizedMessage(), e);
+            return "";
         }
     }
 }
