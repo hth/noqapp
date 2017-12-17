@@ -37,6 +37,9 @@ import java.util.List;
 public class GenerateStoreQueueHTML {
     private static final Logger LOG = LoggerFactory.getLogger(GenerateStoreQueueHTML.class);
 
+    private static final Charset CHAR_SET_UTF8 = Charset.forName("UTF-8");
+    private String parentHost;
+
     private BizStoreManager bizStoreManager;
     private ShowHTMLService showHTMLService;
     private StatsCronService statsCronService;
@@ -47,6 +50,9 @@ public class GenerateStoreQueueHTML {
 
     @Autowired
     public GenerateStoreQueueHTML(
+            @Value("${parentHost}")
+            String parentHost,
+
             @Value ("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
             String staticHTMLSwitch,
 
@@ -57,6 +63,7 @@ public class GenerateStoreQueueHTML {
             ShowHTMLService showHTMLService,
             StatsCronService statsCronService
     ) {
+        this.parentHost = parentHost;
         this.staticHTMLSwitch = staticHTMLSwitch;
         this.baseDirectory = baseDirectory;
 
@@ -100,12 +107,11 @@ public class GenerateStoreQueueHTML {
                                     pathToFile.toFile(),
                                     htmlData,
                                     Charset.forName("UTF-8"));
-                            
+
                             FileUtils.writeStringToFile(
                                     pathToTxtFile.toFile(),
-                                    //TODO(hth) replace domain name
-                                    filePath.replace("/tmp", "https://q.noqapp.com") + System.lineSeparator(),
-                                    Charset.forName("UTF-8"),
+                                    filePath.replace("/tmp", parentHost) + System.lineSeparator(),
+                                    CHAR_SET_UTF8,
                                     true);
 
                             generated++;
