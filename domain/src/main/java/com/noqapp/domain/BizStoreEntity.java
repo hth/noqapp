@@ -7,6 +7,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.QuestionnaireTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -23,7 +24,6 @@ import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -160,6 +160,10 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("AT")
     private int availableTokenCount;
+
+    /* Append question based on type to the request. */
+    @Field ("QT")
+    private QuestionnaireTypeEnum questionnaireType;
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
