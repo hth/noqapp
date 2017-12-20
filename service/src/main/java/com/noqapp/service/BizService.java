@@ -155,6 +155,7 @@ public class BizService {
         return bizNameManager.findByInviteeCode(inviteCode);
     }
 
+    @Mobile
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
     }
