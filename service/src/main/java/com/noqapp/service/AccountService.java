@@ -343,12 +343,13 @@ public class AccountService {
         return userProfileManager.findByQueueUserId(qid);
     }
 
-    public void updateName(String firstName, String lastName, String qid) {
+    private void updateName(String firstName, String lastName, String qid) {
         UserAccountEntity userAccount = findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
 
         userAccount.setFirstName(firstName);
         userAccount.setLastName(lastName);
+        userAccount.setDisplayName(userAccount.getName());
 
         userProfile.setFirstName(firstName);
         userProfile.setLastName(lastName);
