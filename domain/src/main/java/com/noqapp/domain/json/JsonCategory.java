@@ -6,12 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * hitender
- * 12/19/17 8:14 PM
+ * 12/21/17 1:15 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -27,29 +24,29 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonQueueList extends AbstractDomain {
+public class JsonCategory extends AbstractDomain {
 
-    @JsonProperty("cs")
-    private List<JsonCategory> categories = new ArrayList<>();
+    @JsonProperty("bc")
+    private String bizCategoryId;
 
-    @JsonProperty("qs")
-    private List<JsonQueue> queues = new ArrayList<>();
+    @JsonProperty ("cn")
+    private String categoryName;
 
-    public List<JsonCategory> getCategories() {
-        return categories;
+    public String getBizCategoryId() {
+        return bizCategoryId;
     }
 
-    public JsonQueueList addCategories(JsonCategory category) {
-        this.categories.add(category);
+    public JsonCategory setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 
-    public List<JsonQueue> getQueues() {
-        return queues;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public JsonQueueList addQueues(JsonQueue queue) {
-        this.queues.add(queue);
+    public JsonCategory setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
         return this;
     }
 }

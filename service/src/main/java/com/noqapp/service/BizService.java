@@ -1,9 +1,11 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
@@ -15,15 +17,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * User: hitender
  * Date: 11/23/16 4:41 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -39,24 +44,27 @@ public class BizService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
+    private BizCategoryManager bizCategoryManager;
 
     @Autowired
     public BizService(
-            @Value ("${degreeInMiles:69.172}")
+            @Value("${degreeInMiles:69.172}")
             double degreeInMiles,
 
-            @Value ("${degreeInKilometers:111.321}")
+            @Value("${degreeInKilometers:111.321}")
             double degreeInKilometers,
 
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
-            StoreHourManager storeHourManager
+            StoreHourManager storeHourManager,
+            BizCategoryManager bizCategoryManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
+        this.bizCategoryManager = bizCategoryManager;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -158,5 +166,42 @@ public class BizService {
     @Mobile
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
+    }
+
+    @Mobile
+    public List<BizCategoryEntity> getBusinessCategories(String bizNameId) {
+        return bizCategoryManager.getByBizNameId(bizNameId);
+    }
+
+    public Map<String, String> getBusinessCategoriesAsMap(String bizNameId) {
+        List<BizCategoryEntity> bizCategories = getBusinessCategories(bizNameId);
+
+        Map<String, String> bizCategoriesAsMap = new LinkedHashMap<>();
+        for (BizCategoryEntity bizCategory : bizCategories) {
+            bizCategoriesAsMap.put(bizCategory.getId(), bizCategory.getCategoryName());
+        }
+
+        return bizCategoriesAsMap;
+    }
+
+    public void addCategory(String categoryName, String bizNameId) {
+        if (!existCategory(categoryName, bizNameId)) {
+            BizCategoryEntity bizCategory = new BizCategoryEntity()
+                    .setBizNameId(bizNameId)
+                    .setCategoryName(categoryName);
+            bizCategoryManager.save(bizCategory);
+        }
+    }
+
+    public boolean existCategory(String categoryName, String bizNameId) {
+        return bizCategoryManager.existCategory(categoryName, bizNameId);
+    }
+
+    public BizCategoryEntity findByBizCategoryId(String id) {
+        return bizCategoryManager.findById(id);
+    }
+
+    public void updateBizCategoryName(String categoryId, String categoryName) {
+        bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
     }
 }

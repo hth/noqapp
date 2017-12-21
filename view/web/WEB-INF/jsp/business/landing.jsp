@@ -55,7 +55,8 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>

@@ -139,7 +139,7 @@ public class BizNameEntity extends BaseEntity {
      * @param businessName
      */
     public BizNameEntity setBusinessName(String businessName) {
-        this.businessName = WordUtils.capitalizeFully(StringUtils.trim(businessName));
+        this.businessName = StringUtils.trim(businessName);
         return this;
     }
 

@@ -1,19 +1,22 @@
 package com.noqapp.common.utils;
 
 import com.google.maps.model.LatLng;
-
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.bson.types.ObjectId;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
  * Date: 11/18/16 6:09 PM
  */
 public final class CommonUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(CommonUtil.class);
+
     private static Header dummyHeader = new BasicHeader("A", "A");
 
     public static final String AUTH_KEY_HIDDEN = "*********";
@@ -104,5 +109,30 @@ public final class CommonUtil {
 
     public static Header getMeSomeHeader() {
         return dummyHeader;
+    }
+
+    /**
+     * SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox.
+     *
+     * @param environment
+     * @return
+     */
+    public static String generateCodeQR(String environment) {
+        switch (environment) {
+            case "dev":
+            case "sandbox":
+                return "SN_" + ObjectId.get().toString();
+            case "prod":
+                return ObjectId.get().toString();
+            default:
+                LOG.error("Failed finding Environment type={}", environment);
+                throw new UnsupportedOperationException("Could not find Environment type " + environment);
+        }
+    }
+
+    public static <T> Map<T, T> toMap(Set<T> set) {
+        Map<T, T> map = new ConcurrentHashMap<>();
+        set.forEach(t -> map.put(t, t)); //contains same key and value pair
+        return map;
     }
 }

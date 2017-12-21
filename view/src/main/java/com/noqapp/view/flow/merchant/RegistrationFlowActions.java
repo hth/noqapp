@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
@@ -227,20 +228,18 @@ class RegistrationFlowActions {
             BizStoreEntity bizStore
     ) {
         bizStore.setBizName(bizName)
-            .setDisplayName(registerBusiness.getDisplayName())
-            .setBusinessType(registerBusiness.getStoreBusinessType())
-            .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
-            .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
-            .setAddress(registerBusiness.getAddressStore())
-            .setTimeZone(registerBusiness.getTimeZoneStore())
-            .setCodeQR(environment.getProperty("build.env").equalsIgnoreCase("prod")
-                    ? ObjectId.get().toString()
-                    /* SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox. */
-                    : "SN_" + ObjectId.get().toString())
-            .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
-            .setRemoteJoin(registerBusiness.isRemoteJoin())
-            .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
-            .setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
+                .setDisplayName(registerBusiness.getDisplayName())
+                .setBusinessType(registerBusiness.getStoreBusinessType())
+                .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
+                .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
+                .setAddress(registerBusiness.getAddressStore())
+                .setTimeZone(registerBusiness.getTimeZoneStore())
+                .setCodeQR(CommonUtil.generateCodeQR(environment.getProperty("build.env")))
+                .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
+                .setBizCategoryId(registerBusiness.getBizCategoryId())
+                .setRemoteJoin(registerBusiness.isRemoteJoin())
+                .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
+                .setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
