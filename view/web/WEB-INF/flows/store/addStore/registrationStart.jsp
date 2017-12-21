@@ -106,7 +106,7 @@
                                                     <div class="form-field-select">
                                                         No Category has been created by Business.
                                                         <div class="addbtn-store">
-                                                            <a href="/business/category.htm" class="add-btn">Go To Business Category</a>
+                                                            <a href="/business/category.htm" class="add-btn">Add Business Category</a>
                                                         </div>
                                                     </div>
                                                 </c:otherwise>

@@ -176,7 +176,7 @@
                                         Category clubs similar or shared characteristics.
                                         Like different kinds of Mangoes in one category of Mango. Or
                                         category to distinguish Vegetarian and Non-Vegetarian foods.
-                                        Similarly, you can club all Cardiologist Doctor under one Category.
+                                        Similarly, you can club all Cardiologist Doctors under one Category.
                                     </p>
                                 </div>
                             </c:otherwise>
