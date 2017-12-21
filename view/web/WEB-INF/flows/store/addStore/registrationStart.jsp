@@ -95,10 +95,22 @@
                                             <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                <form:options items="${registerBusiness.categories}" />
-                                            </form:select>
+                                            <c:choose>
+                                                <c:when test="${!empty registerBusiness.categories}">
+                                                    <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                        <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                        <form:options items="${registerBusiness.categories}" />
+                                                    </form:select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="form-field-select">
+                                                        No Category has been created by Business.
+                                                        <div class="addbtn-store">
+                                                            <a href="/business/category.htm" class="add-btn">Go To Business Category</a>
+                                                        </div>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

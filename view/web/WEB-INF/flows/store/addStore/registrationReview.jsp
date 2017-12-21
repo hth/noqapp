@@ -82,6 +82,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <c:if test="${!empty registerBusiness.categories}">
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
@@ -94,6 +95,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        </c:if>
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
