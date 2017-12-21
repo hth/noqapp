@@ -106,9 +106,6 @@ public class BizNameEntity extends BaseEntity {
     @Field ("IC")
     private String inviteeCode;
 
-    @Field ("MS")
-    private boolean multiStore = false;
-
     @NotNull
     @Field ("AO")
     private AddressOriginEnum addressOrigin;
@@ -345,15 +342,6 @@ public class BizNameEntity extends BaseEntity {
 
     public void increaseValidationCount() {
         this.validationCount += 1;
-    }
-
-    public boolean isMultiStore() {
-        return multiStore;
-    }
-
-    public BizNameEntity setMultiStore(boolean multiStore) {
-        this.multiStore = multiStore;
-        return this;
     }
 
     public String getTimeZone() {

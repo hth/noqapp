@@ -41,9 +41,6 @@ public class RegisterBusiness implements Serializable {
     private AddressOriginEnum addressOrigin;
     private BusinessUserEntity businessUser;
 
-    private boolean multiStore = false;
-    private boolean businessSameAsStore = false;
-
     private String bizStoreId;
     private String displayName;
     private BusinessTypeEnum storeBusinessType;
@@ -195,22 +192,6 @@ public class RegisterBusiness implements Serializable {
     public RegisterBusiness setCategories(Map<String, String> categories) {
         this.categories = categories;
         return this;
-    }
-
-    public boolean isMultiStore() {
-        return multiStore;
-    }
-
-    public void setMultiStore(boolean multiStore) {
-        this.multiStore = multiStore;
-    }
-
-    public boolean isBusinessSameAsStore() {
-        return businessSameAsStore;
-    }
-
-    public void setBusinessSameAsStore(boolean businessSameAsStore) {
-        this.businessSameAsStore = businessSameAsStore;
     }
 
     public String getBizStoreId() {
@@ -436,8 +417,6 @@ public class RegisterBusiness implements Serializable {
                 ", timeZone='" + timeZone + '\'' +
                 ", addressOrigin=" + addressOrigin +
                 ", businessUser=" + businessUser +
-                ", multiStore=" + multiStore +
-                ", businessSameAsStore=" + businessSameAsStore +
                 ", bizStoreId='" + bizStoreId + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", addressStore='" + addressStore + '\'' +
