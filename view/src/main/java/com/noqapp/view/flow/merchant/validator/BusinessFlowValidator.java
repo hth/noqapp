@@ -2,9 +2,9 @@ package com.noqapp.view.flow.merchant.validator;
 
 import com.google.maps.model.LatLng;
 
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import org.slf4j.Logger;
@@ -299,6 +299,19 @@ public class BusinessFlowValidator {
                             .defaultText("'Queue for' has to be a subset of 'Business Type'")
                             .build());
             status = "failure";
+        }
+
+        if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
+            if (!Validate.isValidObjectId(registerBusiness.getBizCategoryId())) {
+                LOG.error("BizCategoryId should be ObjectId but its {}", registerBusiness.getBizCategoryId());
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source(source + "bizCategoryId")
+                                .defaultText("Internal error on Category. Please contact support.")
+                                .build());
+                status = "failure";
+            }
         }
 
         return status;

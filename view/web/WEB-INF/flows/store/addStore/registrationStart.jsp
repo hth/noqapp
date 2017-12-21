@@ -97,7 +97,7 @@
                                         <div class="col-fields">
                                             <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                 <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                <form:options items="${registerBusiness.categories}" itemValue="key" itemLabel="value"/>
+                                                <form:options items="${registerBusiness.categories}" />
                                             </form:select>
                                         </div>
                                         <div class="clearFix"></div>
