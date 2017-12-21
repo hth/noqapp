@@ -52,7 +52,7 @@
                     <form:form modelAttribute="register">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Review your personal and business details</h2>
+                            <h2>Review your personal details</h2>
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
@@ -96,6 +96,13 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                </ul>
+
+                                <div id="storeDetail">
+                                    <div class="admin-title pT30">
+                                        <h2>Review Business details</h2>
+                                    </div>
+                                    <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="registerBusiness.name" cssErrorClass="lb_error">Business Name</form:label>
@@ -136,23 +143,6 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="registerBusiness.multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:checkbox path="registerBusiness.multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"/>
-                                            <c:choose>
-                                                <c:when test="${register.registerBusiness.multiStore eq false}">
-                                                    <span style="display:block; font-size:14px;">You have answered 'NO'. You can always change this later.</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span style="display:block; font-size:14px;">You have answered 'YES'</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
                                             <form:label path="registerBusiness.inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                         </div>
                                         <div class="col-fields">
@@ -162,117 +152,7 @@
                                         <div class="clearFix"></div>
                                     </li>
                                 </ul>
-
-                                <c:if test="${!register.registerBusiness.multiStore}">
-                                <div id="storeDetail">
-                                    <div class="admin-title pT30">
-                                        <h2>Review Store details</h2>
-                                    </div>
-                                    <ul class="list-form">
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.displayName" cssErrorClass="lb_error">Queue Name</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.displayName" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.addressStore" cssErrorClass="lb_error">Store Address</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:textarea path="registerBusiness.addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.phoneStore" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:checkbox path="registerBusiness.remoteJoin" cssClass="form-check-box" disabled="true"/>
-                                                <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:checkbox path="registerBusiness.allowLoggedInUser" cssClass="form-check-box" disabled="true"/>
-                                                <span style="display:block; font-size:14px;">(Will limit registered users joining this queue)</span>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.availableTokenCount" cssClass="form-field-admin" disabled="true"/>
-                                                <span style="display:block; font-size:14px;">(Customers in the queue will be limited to allowed number. 0 is Unlimited Token. Greater than 0 is limited token)</span>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                    </ul>
                                 </div>
-
-                                <div>
-                                    <ul class="col2-grid">
-                                        <c:forEach items="${register.registerBusiness.businessHours}" var="businessHour" varStatus="status">
-                                            <li>
-                                                <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
-                                                <c:choose>
-                                                    <c:when test="${businessHour.dayClosed}">
-                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                            <tr>
-                                                                <td>Closed for the day</td>
-                                                            </tr>
-                                                        </table>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                            <tr>
-                                                                <td>Token Available Time</td>
-                                                                <td>
-                                                                    <c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Store Start Time</td>
-                                                                <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Token Not Available After</td>
-                                                                <td>
-                                                                    <c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Store Close Time</td>
-                                                                <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
-                                                            </tr>
-                                                        </table>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </li>
-                                        </c:forEach>
-
-                                        <div class="clearFix"></div>
-                                    </ul>
-
-                                </div>
-                                </c:if>
 
                                 <div class="btn-hours">
                                     <c:if test="${register.registerUser.emailValidated}">
@@ -323,13 +203,4 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-            $('#storeDetail').hide();
-        } else {
-            $('#storeDetail').show();
-        }
-    });
-</script>
 </html>

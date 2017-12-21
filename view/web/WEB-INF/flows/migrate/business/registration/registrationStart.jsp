@@ -133,16 +133,6 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="multiStore" cssErrorClass="lb_error">More than 1 store?</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:checkbox path="multiStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
-                                            <span style="display:block; font-size:14px;">(Select for franchise or stores at multiple locations)</span>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                         </div>
                                         <div class="col-fields">
@@ -176,85 +166,6 @@
                                         </div>
                                     </li>
                                 </ul>
-
-                                <div id="storeDetail">
-                                    <div class="admin-title pT30">
-                                        <h2>Add Store details</h2>
-                                    </div>
-                                    <ul class="list-form">
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="businessSameAsStore" cssErrorClass="lb_error">Same as Business Address</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:checkbox path="businessSameAsStore" size="5" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="displayName" cssErrorClass="lb_error">Queue Name</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="displayName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                    <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
-                                                </form:select>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <c:if test="${!empty register.registerBusiness.foundAddressStores}">
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="foundAddressStorePlaceId" cssErrorClass="lb_error">Best Matching Store Addresses</form:label>
-                                            </div>
-                                            <div class="col-fields pT10 pB10">
-                                                <c:forEach items="${register.registerBusiness.foundAddressStores}" var="mapElement">
-                                                    <form:radiobutton path="foundAddressStorePlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"
-                                                            onclick="handleFoundAddressStoreClick();"/> <br />
-                                                </c:forEach>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="selectFoundAddressStore" cssErrorClass="lb_error">I choose Best Matching Store Address</form:label>
-                                            </div>
-                                            <div id="addressStoreCheckBox" class="col-fields">
-                                                <form:checkbox path="selectFoundAddressStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"
-                                                        onclick="handleFoundAddressStoreCheckboxUncheck()" />
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        </c:if>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="phoneStore" cssErrorClass="lb_error">Store Phone</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="phoneStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                    </ul>
-                                </div>
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
@@ -305,45 +216,4 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-            $('#storeDetail').hide();
-            $('[name="registerBusiness.displayName"]').val("");
-            $('[name="registerBusiness.addressStore"]').val("");
-            $('[name="registerBusiness.phoneStore"]').val("");
-            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
-            $('[name="registerBusiness.remoteJoin"]').prop('checked', false);
-            $('[name="registerBusiness.allowLoggedInUser"]').prop('checked', false);
-        } else {
-            $('#storeDetail').show();
-        }
-    });
-
-    $('[name="registerBusiness.businessSameAsStore"]').click(function () {
-        if ($('[name="registerBusiness.businessSameAsStore"]').is(':checked')) {
-            $('[name="registerBusiness.addressStore"]').val($('[name="registerBusiness.address"]').val());
-            $('[name="registerBusiness.phoneStore"]').val($('[name="registerBusiness.phone"]').val());
-        } else {
-            //Clear on un-check
-            $('[name="registerBusiness.addressStore"]').val("");
-            $('[name="registerBusiness.phoneStore"]').val("");
-        }
-    });
-
-    $('[name="registerBusiness.multiStore"]').click(function () {
-        if ($('[name="registerBusiness.multiStore"]').is(':checked')) {
-            $('#storeDetail').hide();
-            $('[name="registerBusiness.displayName"]').val("");
-            $('[name="registerBusiness.addressStore"]').val("");
-            $('[name="registerBusiness.phoneStore"]').val("");
-            $('[name="registerBusiness.businessSameAsStore"]').prop('checked', false);
-            $('[name="registerBusiness.remoteJoin"]').prop('checked', false);
-            $('[name="registerBusiness.allowLoggedInUser"]').prop('checked', false);
-        } else {
-            $('#storeDetail').show();
-        }
-    });
-</script>
 </html>

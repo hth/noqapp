@@ -78,40 +78,18 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
 
-        BizStoreEntity bizStore = null;
         List<StoreHourEntity> storeHours = null;
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         if (null == businessUser) {
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
-        } else if (BusinessUserRegistrationStatusEnum.N == businessUser.getBusinessUserRegistrationStatus()) {
-            LOG.info("Editing business details by user={} businessId={}",
-                    queueUser.getQueueUserId(),
-                    businessUser.getBizName().getId());
-
-            BizNameEntity bizName = businessUser.getBizName();
-            if (!bizName.isMultiStore()) {
-                List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
-                if (!bizStores.isEmpty()) {
-                    bizStore = bizStores.get(0);
-                    storeHours = bizService.findAllStoreHours(bizStore.getId());
-                }
-            }
         } else {
             /* Should never reach here. */
             LOG.error("Reached unexpected condition for user={}", queueUser.getQueueUserId());
             throw new UnsupportedOperationException("Failed loading Business");
         }
 
-        Register register;
-        if (null == bizStore) {
-            register = MigrateToBusinessRegistration.newInstance(businessUser, null);
-        } else {
-            register = MigrateToBusinessRegistration.newInstance(businessUser, bizStore);
-            /* When store exists, then store hours should also exists. */
-            register.getRegisterBusiness().setBusinessHours(convertToBusinessHours(storeHours));
-        }
-
+        Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(qid);
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))

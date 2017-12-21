@@ -5,8 +5,6 @@ import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
 
-import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,21 +62,9 @@ class RegistrationFlowActions {
     @SuppressWarnings ("unused")
     public void updateBusiness(Register register) {
         register.getRegisterBusiness().setPhone(new ScrubbedInput(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone())));
-
-        if (register.getRegisterBusiness().isMultiStore()) {
-            register.getRegisterBusiness().setAddressStore(new ScrubbedInput(""));
-            register.getRegisterBusiness().setPhoneStore(new ScrubbedInput(""));
-            register.getRegisterBusiness().setCountryShortNameStore(new ScrubbedInput(""));
-        } else {
-            List<BusinessHour> businessHours = register.getRegisterBusiness().getBusinessHours();
-            for (BusinessHour businessHour : businessHours) {
-                if (0 == businessHour.getTokenNotAvailableFrom()) {
-                    businessHour.setTokenNotAvailableFrom(businessHour.getEndHourStore());
-                }
-            }
-
-            register.getRegisterBusiness().setBusinessHours(businessHours);
-        }
+        register.getRegisterBusiness().setAddressStore(new ScrubbedInput(""));
+        register.getRegisterBusiness().setPhoneStore(new ScrubbedInput(""));
+        register.getRegisterBusiness().setCountryShortNameStore(new ScrubbedInput(""));
     }
 
     /**
@@ -166,20 +152,11 @@ class RegistrationFlowActions {
             .setAddress(registerBusiness.getAddress())
             .setTimeZone(registerBusiness.getTimeZone())
             .setInviteeCode(registerBusiness.getInviteeCode())
-            .setAddressOrigin(registerBusiness.getAddressOrigin())
-            .setMultiStore(registerBusiness.isMultiStore());
+            .setAddressOrigin(registerBusiness.getAddressOrigin());
         validateAddress(bizName);
 
         try {
             bizService.saveName(bizName);
-            if (!registerBusiness.isMultiStore()) {
-                /* Add a store when its not a multi store. */
-                registerStore(registerBusiness, bizName);
-            } else if(StringUtils.isNotBlank(registerBusiness.getBizStoreId())) {
-                /* Delete store when changed to multi store option. */
-                deleteExistingStore(registerBusiness);
-            }
-
             return bizName;
         } catch(Exception e) {
             LOG.error("Error saving business");
@@ -205,13 +182,6 @@ class RegistrationFlowActions {
             bizStore = BizStoreEntity.newInstance();
         }
         return saveStoreAndHours(registerBusiness, bizName, bizStore);
-    }
-
-    private void deleteExistingStore(RegisterBusiness registerBusiness) {
-        bizService.removeAll(registerBusiness.getBizStoreId());
-        BizStoreEntity bizStore = bizService.getByStoreId(registerBusiness.getBizStoreId());
-        bizService.deleteBizStore(bizStore);
-        bizStoreElasticService.delete(bizStore.getId());
     }
 
     /**
