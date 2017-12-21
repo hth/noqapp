@@ -83,7 +83,7 @@
                             <span>One time password has been sent to your phone number above. Please enter the password here.</span>
                             <span><br></span>
                             <ul class="enter-code-box" id="verification-code">
-                                <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" /></li>
+                                <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1"/></li>
                                 <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
                                 <li><input id="code3" name="3" type="text" class="enter-f" maxlength="1"/></li>
                                 <li><input id="code4" name="4" type="text" class="enter-f" maxlength="1"/></li>
