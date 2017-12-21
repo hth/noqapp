@@ -128,8 +128,8 @@
                             </div>
                         </c:if>
 
-                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="email error" />
-                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="password error" />
+                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="form-field error" />
+                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="form-field error" />
                         <input name="" type="submit" class="form-btn mT0" value="Login">
                         <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
                         <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password</a></span>

@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -50,6 +52,7 @@ public class RegisterBusiness implements Serializable {
     private String phoneStore;
     private String timeZoneStore;
     private AddressOriginEnum addressStoreOrigin;
+    private String bizCategoryId;
     private boolean remoteJoin;
     private boolean allowLoggedInUser;
     private int availableTokenCount;
@@ -72,6 +75,9 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
+
+    @Transient
+    public Map<String, String> categories;
 
     public String getBizId() {
         return bizId;
@@ -182,6 +188,15 @@ public class RegisterBusiness implements Serializable {
         this.availableBusinessTypes = availableBusinessTypes;
     }
 
+    public Map<String, String> getCategories() {
+        return categories;
+    }
+
+    public RegisterBusiness setCategories(Map<String, String> categories) {
+        this.categories = categories;
+        return this;
+    }
+
     public boolean isMultiStore() {
         return multiStore;
     }
@@ -281,6 +296,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setAddressStoreOrigin(AddressOriginEnum addressStoreOrigin) {
         this.addressStoreOrigin = addressStoreOrigin;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public RegisterBusiness setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 

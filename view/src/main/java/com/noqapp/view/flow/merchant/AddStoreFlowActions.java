@@ -23,6 +23,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 public class AddStoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
+    private BizService bizService;
 
     @SuppressWarnings ("unused")
     @Autowired
@@ -36,6 +37,7 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.businessUserService = businessUserService;
+        this.bizService = bizService;
     }
 
     @SuppressWarnings ("unused")
@@ -52,6 +54,7 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessTypes(businessUser.getBizName().getBusinessTypes());
+        registerBusiness.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
 
         return registerBusiness;
     }

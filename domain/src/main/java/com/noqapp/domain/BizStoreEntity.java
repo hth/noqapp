@@ -149,6 +149,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("WL")
     private String webLocation;
 
+    @Field ("BC")
+    private String bizCategoryId;
+
     //***************************/
     //*  Queue Settings Starts. */
     //***************************/
@@ -444,6 +447,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public BizStoreEntity setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 

@@ -114,6 +114,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("at")
     private int availableTokenCount;
 
+    @JsonProperty ("bc")
+    private String bizCategoryId;
+
     public JsonQueue() {
         //Required default constructor
     }
@@ -347,6 +350,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonQueue setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 }

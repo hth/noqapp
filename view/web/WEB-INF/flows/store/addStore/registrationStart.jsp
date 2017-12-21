@@ -92,6 +92,18 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
+                                            <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                <form:options items="${registerBusiness.categories}" itemValue="key" itemLabel="value"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
                                             <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
                                         </div>
                                         <div class="col-fields">
