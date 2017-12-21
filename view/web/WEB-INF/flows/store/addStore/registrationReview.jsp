@@ -52,13 +52,13 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Confirm your personal and business details</h2>
+                            <h2>Confirm your store details</h2>
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
                                 <div id="storeDetail">
                                     <div class="admin-title pT30">
-                                        <h2>Add Store details</h2>
+                                        <h2>Store details</h2>
                                     </div>
                                     <ul class="list-form">
                                         <li>
@@ -67,6 +67,30 @@
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="displayName" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="true">
+                                                    <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                    <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
+                                                </form:select>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="true">
+                                                    <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                    <form:options items="${registerBusiness.categories}" />
+                                                </form:select>
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
