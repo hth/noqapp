@@ -90,7 +90,7 @@
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Invitee Code</form:label></div>
                                         <div class="col-fields">
                                             <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                            <span class="info-txt">(Invitee code of Phone Number above found on Invite screen of this user)</span>
+                                            <span class="info-txt">(Owner of the Phone Number has to share invite code with you)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
