@@ -39,7 +39,7 @@ public class BusinessUserService {
      * @param active
      */
     void saveUpdateBusinessUser(String qid, UserLevelEnum userLevel, boolean active) {
-        BusinessUserEntity businessUser = businessUserManager.findByRid(qid);
+        BusinessUserEntity businessUser = businessUserManager.findByQid(qid);
         switch (userLevel) {
             case M_ADMIN:
                 if (null == businessUser) {
