@@ -81,11 +81,11 @@ public class BusinessUserService {
         businessUserManager.save(businessUser);
     }
 
-    public long awaitingApprovalCount() {
-        return businessUserManager.awaitingApprovalCount();
+    public long awaitingBusinessApprovalCount() {
+        return businessUserManager.awaitingBusinessApprovalCount();
     }
 
-    public List<BusinessUserEntity> awaitingApprovals() {
-        return businessUserManager.awaitingApprovals();
+    public List<BusinessUserEntity> awaitingBusinessApprovals() {
+        return businessUserManager.awaitingBusinessApprovals();
     }
 }

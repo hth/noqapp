@@ -73,8 +73,8 @@ public class EmpLandingController {
         LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
 
         empLandingForm
-                .setAwaitingApprovalCount(businessUserService.awaitingApprovalCount())
-                .setBusinessUsers(businessUserService.awaitingApprovals());
+                .setAwaitingApprovalCount(businessUserService.awaitingBusinessApprovalCount())
+                .setBusinessUsers(businessUserService.awaitingBusinessApprovals());
 
         return empLanding;
     }
