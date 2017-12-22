@@ -159,7 +159,7 @@
                                                     <span class="txt-red">${registerUser.email}</span>
                                                     has not been validated. Please validated email address to continue merchant account registration.
                                                 </p>
-                                                <p>To resend account validation email, <a href="txt-red">click here.</a>
+                                                <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
                                                 </p>
                                             </div>
                                         </li>

@@ -163,7 +163,7 @@
                                                     has not been validated. Please validated email address to continue merchant
                                                     account registration.
                                                 </p>
-                                                <p>To resend account validation email, <a href="">click here.</a></p>
+                                                <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
                                             </div>
                                         </li>
                                     </c:if>
