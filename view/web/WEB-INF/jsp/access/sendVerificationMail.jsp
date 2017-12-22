@@ -30,6 +30,7 @@
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -52,43 +53,64 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business: <span>${businessLandingForm.bizName}</span></h3>
+                        <h3>Re-Send Email Verification</h3>
+                    </div>
+                </div>
 
-                        <div class="add-store">
-                            <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Monitoring Queue(s): <span>${businessLandingForm.jsonTopics.size()}</span>
-                            </div>
-                            <div class="store-table">
-                                <c:choose>
-                                    <c:when test="${!empty businessLandingForm.jsonTopics}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th nowrap>Queue Name</th>
-                                                <th nowrap>Queue Status</th>
-                                                <th nowrap>In Queue</th>
-                                                <th>Serving</th>
-                                            </tr>
-                                            <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td nowrap><a href="/${jsonTopic.codeQR}/q.htm" target="_blank">${jsonTopic.displayName}</a></td>
-                                                    <td nowrap>${jsonTopic.queueStatus.description}</td>
-                                                    <td nowrap>${jsonTopic.token - jsonTopic.servingNumber}</td>
-                                                    <td nowrap>${jsonTopic.servingNumber}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>Could not find any queue assigned to you.</p>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
+                <c:choose>
+                    <c:when test="${profile.accountValidated}">
+                        <div class="admin-content">
+                            <div class="register-c">
+                                <p>Your account has already been validated. If you see this message, please contact your
+                                    administrator. Or contact at contact@noqapp.com and describe the issue in detail.
+                                </p>
                             </div>
                         </div>
-                    </div>
+                    </c:when>
+                    <c:when test="${!profile.submitState && !profile.accountValidated}">
+                        <form:form method="post" modelAttribute="profile"  action="${pageContext.request.contextPath}/access/sendVerificationMail.htm">
+                            <div class="admin-content">
+                                <div class="add-new">
+                                    <ul class="list-form">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="mail" cssErrorClass="lb_error">Send Mail To</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="mail" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                    </ul>
+
+                                    <div class="col-lable3"></div>
+                                    <div class="col-fields">
+                                        <div class="left-btn">
+                                            <input name="send" class="next-btn" value="SEND" type="submit">
+                                        </div>
+                                        <div class="right-btn">
+                                            <input name="cancel_Send" class="cancel-btn" value="CANCEL" type="submit">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </div>
+                            </div>
+                        </form:form>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="admin-content">
+                            <div class="register-c">
+                                <p>You should receive an email in few minutes.</p>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+                <div class="alert-info">
+                    <p>
+                        You should receive an email in 5 minutes. Click on the link in email to validate your email address.
+                    </p>
                 </div>
             </div>
             <!-- Add New Supervisor -->
@@ -120,7 +142,7 @@
 
 
 </body>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
 </html>
