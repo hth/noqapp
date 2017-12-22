@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -43,7 +44,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     }
 
     @Override
-    public BusinessUserEntity findByRid(String qid) {
+    public BusinessUserEntity findByQid(String qid) {
         return mongoTemplate.findOne(
                 query(where("QID").is(qid)),
                 BusinessUserEntity.class,
@@ -94,14 +95,15 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
 
     @Override
     public void deleteHard(BusinessUserEntity object) {
-        /** Do not implement this method. No hard delete for business user. */
+        /* Do not implement this method. No hard delete for business user. */
         throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
-    public List<BusinessUserEntity> awaitingApprovals() {
+    public List<BusinessUserEntity> awaitingBusinessApprovals() {
         return mongoTemplate.find(
                 query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                        .and("UL").is(UserLevelEnum.M_ADMIN)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -112,9 +114,10 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     }
 
     @Override
-    public long awaitingApprovalCount() {
+    public long awaitingBusinessApprovalCount() {
         return mongoTemplate.count(
                 query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                        .and("UL").is(UserLevelEnum.M_ADMIN)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()

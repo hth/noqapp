@@ -15,7 +15,7 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * @param qid
      * @return
      */
-    BusinessUserEntity findByRid(String qid);
+    BusinessUserEntity findByQid(String qid);
 
     /**
      * Finds active business user.
@@ -29,7 +29,19 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
 
     boolean doesBusinessUserExists(String qid, String bizId);
 
-    long awaitingApprovalCount();
+    /**
+     * Only Business Admins are approved. As they are the ones creating businesses. That's the only time they get the
+     * first level as Business Admin. Otherwise everyone migrates from Q_SUPERVISOR to S_MANAGER to M_ADMIN.
+     *
+     * @return
+     */
+    long awaitingBusinessApprovalCount();
 
-    List<BusinessUserEntity> awaitingApprovals();
+    /**
+     * Only Business Admins are approved. As they are the ones creating businesses. That's the only time they get the
+     * first level as Business Admin. Otherwise everyone migrates from Q_SUPERVISOR to S_MANAGER to M_ADMIN.
+     *
+     * @return
+     */
+    List<BusinessUserEntity> awaitingBusinessApprovals();
 }
