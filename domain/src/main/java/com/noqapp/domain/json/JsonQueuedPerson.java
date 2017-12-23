@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("p")
     private String customerPhone = "";
 
+    @JsonProperty ("qu")
+    private QueueUserStateEnum queueUserState;
+
     @JsonProperty ("sid")
     private String serverDeviceId = "";
 
@@ -61,6 +65,15 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public String getCustomerPhone() {
         return customerPhone;
+    }
+
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
+    }
+
+    public JsonQueuedPerson setQueueUserState(QueueUserStateEnum queueUserState) {
+        this.queueUserState = queueUserState;
+        return this;
     }
 
     public JsonQueuedPerson setCustomerPhone(String customerPhone) {
