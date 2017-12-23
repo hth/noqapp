@@ -352,10 +352,7 @@ public class QueueManagerImpl implements QueueManager {
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.Q),
                                 where("QS").is(QueueUserStateEnum.A))
-                        .andOperator(
-                                //TODO(hth) do we need to add this andOperator
-                                isActive(),
-                                isNotDeleted())
+                        .andOperator(isNotDeleted())
                 ),
                 QueueEntity.class,
                 TABLE
