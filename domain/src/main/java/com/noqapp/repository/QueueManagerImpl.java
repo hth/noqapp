@@ -346,15 +346,16 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public List<QueueEntity> findAllClientToBeServiced(String codeQR) {
+    public List<QueueEntity> findAllClientQueuedOrAborted(String codeQR) {
         return mongoTemplate.find(
                 query(where("QR").is(codeQR)
-                        .and("QS").is(QueueUserStateEnum.Q)
+                        .orOperator(
+                                where("QS").is(QueueUserStateEnum.Q),
+                                where("QS").is(QueueUserStateEnum.A))
                         .andOperator(
                                 //TODO(hth) do we need to add this andOperator
                                 isActive(),
-                                isNotDeleted()
-                        )
+                                isNotDeleted())
                 ),
                 QueueEntity.class,
                 TABLE
