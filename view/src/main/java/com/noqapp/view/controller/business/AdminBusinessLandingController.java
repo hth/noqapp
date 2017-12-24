@@ -178,7 +178,7 @@ public class AdminBusinessLandingController {
     }
 
     /**
-     * List all queue supervisor.
+     * List queue supervisors for a store.
      *
      * @param queueSupervisorForm
      * @param queueSupervisorActionForm Not populated but used
