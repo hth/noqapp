@@ -396,6 +396,54 @@ public class BusinessFlowValidator {
                                     .build());
                     status = "failure";
                 }
+
+                if (businessHour.getStartHourStore() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                                    .defaultText("Store Start Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getEndHourStore() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                                    .defaultText("Store Close Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getTokenAvailableFrom() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                                    .defaultText("Token Available Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getTokenNotAvailableFrom() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
+                                    .defaultText("Token Not Available After for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
             }
         }
 
