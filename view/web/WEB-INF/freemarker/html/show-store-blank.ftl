@@ -21,7 +21,7 @@
     <div class="header">
         <div class="warp-inner">
             <div class="logo">
-                <a href="${parentHost}"><img src="${parentHost}/static2/internal/img/logo.png"/></a>
+                <a href="${parentHost}"><img src="${parentHost}/static2/internal/img/logo.png" alt="NoQueue Inc"/></a>
             </div>
         </div>
     </div>

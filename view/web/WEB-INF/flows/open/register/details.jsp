@@ -33,7 +33,7 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></div>
+        <div class="logo"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></div>
     </div>
 </div>
 <!-- header end -->
