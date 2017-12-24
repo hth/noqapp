@@ -3,6 +3,7 @@ package com.noqapp.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -10,6 +11,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,14 @@ public class BusinessUserStoreService {
         businessUserStoreManager.activateAccount(qid, bizNameId);
     }
 
+    public void removeFromBusiness(String qid, String bizNameId) {
+        businessUserStoreManager.removeFromBusiness(qid, bizNameId);
+    }
+
+    public void removeFromStore(String qid, String bizStoreId) {
+        businessUserStoreManager.removeFromStore(qid, bizStoreId);
+    }
+
     @Mobile
     public boolean hasAccess(String qid, String codeQR) {
         return businessUserStoreManager.hasAccess(qid, codeQR);
@@ -106,30 +116,30 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.getQueues(qid, 0);
     }
 
-    public long findNumberOfPeopleAssignedToQueue(String businessStoreId) {
-        return businessUserStoreManager.findNumberOfPeopleAssignedToQueue(businessStoreId);
+    public long findNumberOfPeopleAssignedToQueue(String bizStoreId) {
+        return businessUserStoreManager.findNumberOfPeopleAssignedToQueue(bizStoreId);
     }
 
-    public long findNumberOfPeoplePendingApprovalToQueue(String businessStoreId) {
-        return businessUserStoreManager.findNumberOfPeoplePendingApprovalToQueue(businessStoreId);
+    public long findNumberOfPeoplePendingApprovalToQueue(String bizStoreId) {
+        return businessUserStoreManager.findNumberOfPeoplePendingApprovalToQueue(bizStoreId);
     }
 
     /**
      * Gets all the profile information of queue manager for a specific store associated.
      *
-     * @param storeId
+     * @param bizStoreId
      * @return
      */
-    public List<QueueSupervisor> getAllQueueManagers(String storeId) {
+    public List<QueueSupervisor> getAllManagingStore(String bizStoreId) {
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
-        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllQueueManagers(storeId);
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllManagingStore(bizStoreId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String qid = businessUserStore.getQueueUserId();
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
             QueueSupervisor queueSupervisor = new QueueSupervisor();
             queueSupervisor.setBusinessUserId(businessUser.getId())
-                    .setStoreId(storeId)
+                    .setStoreId(bizStoreId)
                     .setBusinessId(businessUserStore.getBizNameId())
                     .setName(userProfile.getName())
                     .setPhone(userProfile.getPhone())
@@ -146,5 +156,66 @@ public class BusinessUserStoreService {
         }
 
         return queueSupervisors;
+    }
+
+    /**
+     * Populate list with specific bizStoreId. These users will be available to be added as queue supervisor.
+     *
+     * @param bizNameId
+     * @param bizStoreId Add bizStoreId to the list of QueueSupervisor
+     * @return
+     */
+    public List<QueueSupervisor> getAllNonAdminForBusiness(String bizNameId, String bizStoreId) {
+        List<BusinessUserEntity> businessUsers = businessUserService.getAllNonAdminForBusiness(bizNameId);
+        List<QueueSupervisor> queueSupervisors = new ArrayList<>();
+
+        for (BusinessUserEntity businessUser : businessUsers) {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+            QueueSupervisor queueSupervisor = new QueueSupervisor();
+            queueSupervisor.setBusinessUserId(businessUser.getId())
+                    .setStoreId(bizStoreId)
+                    .setBusinessId(bizNameId)
+                    .setName(userProfile.getName())
+                    .setPhone(userProfile.getPhone())
+                    .setCountryShortName(userProfile.getCountryShortName())
+                    .setAddress(userProfile.getAddress())
+                    .setEmail(userProfile.getEmail())
+                    .setQueueUserId(userProfile.getQueueUserId())
+                    .setUserLevel(userProfile.getLevel())
+                    .setCreated(businessUser.getCreated())
+                    .setActive(businessUser.isActive())
+                    .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+
+            queueSupervisors.add(queueSupervisor);
+        }
+
+        return queueSupervisors;
+    }
+
+    /**
+     * Adding existing Q_SUPERVISOR or S_MANAGER to manager queue.
+     *
+     * @param qid
+     * @param bizStore
+     * @param businessUserRegistrationStatus
+     */
+    public void addToBusinessUserStore(String qid, BizStoreEntity bizStore, BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+        BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
+                qid,
+                bizStore.getId(),
+                bizStore.getBizName().getId(),
+                bizStore.getCodeQR());
+
+        /*
+         * Marked as inactive until user signs and agrees to be a queue supervisor.
+         * Will be active upon approval.
+         */
+        if (BusinessUserRegistrationStatusEnum.V == businessUserRegistrationStatus) {
+            /* If business user has been validated already then no need to mark it in-active. */
+            businessUserStore.active();
+        } else {
+            businessUserStore.inActive();
+        }
+        save(businessUserStore);
     }
 }

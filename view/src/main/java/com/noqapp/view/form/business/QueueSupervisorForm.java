@@ -13,6 +13,7 @@ public class QueueSupervisorForm {
     private String bizStoreId;
     private String queueName;
     private List<QueueSupervisor> queueSupervisors = new ArrayList<>();
+    private List<QueueSupervisor> availableQueueSupervisor = new ArrayList<>();
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -36,6 +37,15 @@ public class QueueSupervisorForm {
 
     public QueueSupervisorForm setQueueSupervisors(List<QueueSupervisor> queueSupervisors) {
         this.queueSupervisors = queueSupervisors;
+        return this;
+    }
+
+    public List<QueueSupervisor> getAvailableQueueSupervisor() {
+        return availableQueueSupervisor;
+    }
+
+    public QueueSupervisorForm setAvailableQueueSupervisor(List<QueueSupervisor> availableQueueSupervisor) {
+        this.availableQueueSupervisor = availableQueueSupervisor;
         return this;
     }
 }

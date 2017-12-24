@@ -81,11 +81,19 @@ public class BusinessUserService {
         businessUserManager.save(businessUser);
     }
 
+    public void deleteHard(BusinessUserEntity businessUser) {
+        businessUserManager.deleteHard(businessUser);
+    }
+
     public long awaitingBusinessApprovalCount() {
         return businessUserManager.awaitingBusinessApprovalCount();
     }
 
     public List<BusinessUserEntity> awaitingBusinessApprovals() {
         return businessUserManager.awaitingBusinessApprovals();
+    }
+
+    public List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId) {
+        return businessUserManager.getAllNonAdminForBusiness(bizNameId);
     }
 }

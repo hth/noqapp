@@ -5,6 +5,7 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.common.utils.Formatter;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -141,5 +142,19 @@ public class QueueSupervisor {
     public QueueSupervisor setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
         this.businessUserRegistrationStatus = businessUserRegistrationStatus;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QueueSupervisor that = (QueueSupervisor) o;
+        return Objects.equals(businessId, that.businessId) &&
+                Objects.equals(queueUserId, that.queueUserId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(businessId, queueUserId);
     }
 }

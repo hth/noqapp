@@ -72,7 +72,7 @@
                                                 <th>Since</th>
                                                 <th>&nbsp;</th>
                                             </tr>
-                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.merchantLevels()%>"/>
+                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
                                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
@@ -97,49 +97,40 @@
                                                         </c:choose>
                                                     </td>
                                                     <td nowrap>
-                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></td>
+                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
+                                                    </td>
                                                     <td class="Tleft" nowrap>
                                                         <c:choose>
-                                                            <c:when test="${queueSupervisor.userLevel eq 'M_ADMIN'}">
-                                                                <!-- Admin cannot delete self -->
-                                                                --
+                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
+                                                            <div>
+                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                    <form:hidden path="action" value="APPROVE" />
+                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                    <input class="cancel-btn" value="Approve" type="submit">
+                                                                </form:form>
+                                                                <br />
+                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                    <form:hidden path="action" value="REJECT" />
+                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                    <input class="cancel-btn" value="Reject" type="submit">
+                                                                </form:form>
+                                                            </div>
+                                                            </c:when>
+                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
+                                                                In progress
+                                                            </c:when>
+                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
+                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                    <form:hidden path="action" value="REMOVE" />
+                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                    <input class="cancel-btn" value="Remove" type="submit">
+                                                                </form:form>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <c:choose>
-                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                                    <div>
-                                                                        <form:form action="${pageContext.request.contextPath}/business/approveRejectQueueSupervisor.htm" modelAttribute="queueSupervisorApproveRejectForm" method="post">
-                                                                            <form:hidden path="approveOrReject" value="approve" />
-                                                                            <form:hidden path="referenceId" value="${queueSupervisor.businessUserId}" />
-                                                                            <form:hidden path="storeId" value="${queueSupervisorForm.bizStoreId}" />
-                                                                            <input class="cancel-btn" value="Approve" type="submit">
-                                                                        </form:form>
-                                                                        <br />
-                                                                        <form:form action="${pageContext.request.contextPath}/business/approveRejectQueueSupervisor.htm" modelAttribute="queueSupervisorApproveRejectForm" method="post">
-                                                                            <form:hidden path="approveOrReject" value="reject" />
-                                                                            <form:hidden path="referenceId" value="${queueSupervisor.businessUserId}" />
-                                                                            <form:hidden path="storeId" value="${queueSupervisorForm.bizStoreId}" />
-                                                                            <input class="cancel-btn" value="Reject" type="submit">
-                                                                        </form:form>
-                                                                    </div>
-                                                                    </c:when>
-                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
-                                                                        In progress
-                                                                    </c:when>
-                                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${queueSupervisor.active}">
-                                                                                Remove
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Delete
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        Pending
-                                                                    </c:otherwise>
-                                                                </c:choose>
+                                                                Pending
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
@@ -149,7 +140,55 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>There is no one assigned to this queue.</p>
+                                            <p>There is no supervisor assigned to manage this queue.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <h2>&nbsp;</h2>
+                            <h3>Available Supervisors: <span>${queueSupervisorForm.availableQueueSupervisor.size()}</span></h3>
+                            <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty queueSupervisorForm.availableQueueSupervisor}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Since</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                            <c:forEach items="${queueSupervisorForm.availableQueueSupervisor}" var="queueSupervisor" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}&nbsp;</td>
+                                                    <td nowrap>${queueSupervisor.name}</td>
+                                                    <td>${queueSupervisor.address}
+                                                        <p>Phone: ${queueSupervisor.phone}</p>
+                                                    </td>
+                                                    <td>${queueSupervisor.email}</td>
+                                                    <td>${queueSupervisor.userLevel.description}</td>
+                                                    <td nowrap>
+                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
+                                                    </td>
+                                                    <td class="Tleft" nowrap>
+                                                        <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                            <form:hidden path="action" value="ADD" />
+                                                            <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                            <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                            <input class="cancel-btn" value="Add" type="submit">
+                                                        </form:form>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>There is no additional supervisor to be assigned to this queue.</p>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>

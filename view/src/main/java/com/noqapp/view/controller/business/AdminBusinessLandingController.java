@@ -2,6 +2,10 @@ package com.noqapp.view.controller.business;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +33,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.view.form.QueueSupervisorApproveRejectForm;
+import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
 
@@ -64,6 +68,7 @@ public class AdminBusinessLandingController {
     private BizDimensionService bizDimensionService;
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
+    private AccountService accountService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -85,7 +90,9 @@ public class AdminBusinessLandingController {
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
-            BusinessUserStoreService businessUserStoreService) {
+            BusinessUserStoreService businessUserStoreService,
+            AccountService accountService
+    ) {
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
         this.addStoreFlow = addStoreFlow;
@@ -96,6 +103,7 @@ public class AdminBusinessLandingController {
         this.bizDimensionService = bizDimensionService;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
+        this.accountService = accountService;
     }
 
     /**
@@ -169,6 +177,14 @@ public class AdminBusinessLandingController {
         }
     }
 
+    /**
+     * List all queue supervisor.
+     *
+     * @param queueSupervisorForm
+     * @param queueSupervisorActionForm Not populated but used
+     * @param storeId
+     * @return
+     */
     @RequestMapping (
             value = "/{storeId}/listQueueSupervisor",
             method = RequestMethod.GET,
@@ -178,8 +194,8 @@ public class AdminBusinessLandingController {
             @ModelAttribute ("queueSupervisorForm")
             QueueSupervisorForm queueSupervisorForm,
 
-            @ModelAttribute ("queueSupervisorApproveRejectForm")
-            QueueSupervisorApproveRejectForm queueSupervisorApproveRejectForm,
+            @ModelAttribute ("queueSupervisorActionForm")
+            QueueSupervisorActionForm queueSupervisorActionForm,
 
             @PathVariable ("storeId")
             ScrubbedInput storeId
@@ -188,8 +204,17 @@ public class AdminBusinessLandingController {
         queueSupervisorForm.setBizStoreId(bizStore.getId());
         queueSupervisorForm.setQueueName(bizStore.getDisplayName());
 
-        List<QueueSupervisor> queueSupervisors = businessUserStoreService.getAllQueueManagers(storeId.getText());
+        List<QueueSupervisor> queueSupervisors = businessUserStoreService.getAllManagingStore(storeId.getText());
         queueSupervisorForm.setQueueSupervisors(queueSupervisors);
+
+        List<QueueSupervisor> availableQueueSupervisor = businessUserStoreService.getAllNonAdminForBusiness(
+                bizStore.getBizName().getId(),
+                bizStore.getId()
+        );
+        /* Filter already existing Q_SUPERVISOR for this queue. */
+        availableQueueSupervisor.removeAll(queueSupervisors);
+        queueSupervisorForm.setAvailableQueueSupervisor(availableQueueSupervisor);
+
         return listQueueSupervisorPage;
     }
 
@@ -226,12 +251,12 @@ public class AdminBusinessLandingController {
      * @throws IOException
      */
     @RequestMapping (
-            value = "/approveRejectQueueSupervisor",
+            value = "/actionQueueSupervisor",
             method = RequestMethod.POST
     )
-    public String approveRejectQueueSupervisor(
-            @ModelAttribute ("queueSupervisorApproveRejectForm")
-            QueueSupervisorApproveRejectForm queueSupervisorApproveRejectForm,
+    public String actionQueueSupervisor(
+            @ModelAttribute ("queueSupervisorActionForm")
+            QueueSupervisorActionForm queueSupervisorActionForm,
 
             HttpServletRequest request,
             HttpServletResponse response
@@ -239,36 +264,73 @@ public class AdminBusinessLandingController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            BusinessUserEntity businessUser = businessUserService.findById(queueSupervisorApproveRejectForm.getReferenceId().getText());
+            BusinessUserEntity businessUser = businessUserService.findById(queueSupervisorActionForm.getBusinessUserId().getText());
             if (null == businessUser) {
-                LOG.warn("Could not find businessUser={}", queueSupervisorApproveRejectForm.getReferenceId().getText());
+                LOG.warn("Could not find businessUser={}", queueSupervisorActionForm.getBusinessUserId().getText());
                 response.sendError(SC_NOT_FOUND, "Could not find");
                 return null;
             }
 
-            if (queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("approve")) {
-                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
-                businessUser.active();
-            } else if(queueSupervisorApproveRejectForm.getApproveOrReject().getText().equalsIgnoreCase("reject")) {
-                businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
-                businessUser.inActive();
-            } else {
-                LOG.warn("Reached un-reachable condition {}", queueSupervisorApproveRejectForm.getApproveOrReject());
-                throw new RuntimeException("Failed to update as the value supplied is invalid");
+            switch (queueSupervisorActionForm.getAction().getText()) {
+                case "APPROVE":
+                    businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
+                    businessUser.active();
+
+                    businessUser.setValidateByQid(queueUser.getQueueUserId());
+                    businessUserService.save(businessUser);
+                    businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
+                    break;
+                case "ADD":
+                    BizStoreEntity bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                    businessUserStoreService.addToBusinessUserStore(
+                            businessUser.getQueueUserId(),
+                            bizStore,
+                            businessUser.getBusinessUserRegistrationStatus());
+                    break;
+                case "REJECT":
+                    String qid = businessUser.getQueueUserId();
+
+                    businessUserStoreService.removeFromBusiness(qid, businessUser.getBizName().getId());
+                    businessUserService.deleteHard(businessUser);
+
+                    /* Downgrade ROLES for QID as it was set to Q_SUPERVISOR. */
+                    UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                    switch (userProfile.getLevel()) {
+                        case Q_SUPERVISOR:
+                            userProfile.setLevel(UserLevelEnum.CLIENT);
+                            break;
+                        default:
+                            LOG.error("Reached unsupported condition as userLevel={}", userProfile.getLevel());
+                            throw new UnsupportedOperationException("Reached unsupported condition");
+                    }
+                    accountService.save(userProfile);
+
+                    UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
+                            userProfile.getQueueUserId(),
+                            userProfile.getLevel());
+                    accountService.save(userAccount);
+
+                    break;
+                case "REMOVE":
+                    /* This removes from administrating a Queue. Does not remove from business. */
+                    businessUserStoreService.removeFromStore(
+                            businessUser.getQueueUserId(),
+                            queueSupervisorActionForm.getBizStoreId().getText());
+                    break;
+                default:
+                    LOG.warn("Reached un-reachable condition {}", queueSupervisorActionForm.getAction());
+                    throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
             }
-            businessUser.setValidateByQid(queueUser.getQueueUserId());
-            businessUserService.save(businessUser);
-            businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
             
-            return "redirect:/business/" + queueSupervisorApproveRejectForm.getStoreId().getText() + "/listQueueSupervisor.htm";
+            return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
         } catch (Exception e) {
             LOG.error("Failed updated status for id={} status={} reason={}",
-                    queueSupervisorApproveRejectForm.getReferenceId().getText(),
-                    queueSupervisorApproveRejectForm.getApproveOrReject().getText(),
+                    queueSupervisorActionForm.getBusinessUserId().getText(),
+                    queueSupervisorActionForm.getAction().getText(),
                     e.getLocalizedMessage(),
                     e);
 
-            return "redirect:/business/" + queueSupervisorApproveRejectForm.getStoreId().getText() + "/listQueueSupervisor.htm";
+            return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
         }
     }
 }

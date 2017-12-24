@@ -7,7 +7,7 @@ import java.util.List;
  * User: hitender
  * Date: 11/18/16 9:58 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -32,9 +32,8 @@ public enum UserLevelEnum {
     private final int value;
 
     /**
-     *
      * @param description
-     * @param value - used for comparing specific access
+     * @param value       - used for comparing specific access
      */
     UserLevelEnum(String description, int value) {
         this.description = description;
@@ -50,8 +49,18 @@ public enum UserLevelEnum {
         return value;
     }
 
-    public static List<UserLevelEnum> merchantLevels() {
-        return Arrays.asList(Q_SUPERVISOR, S_MANAGER, M_ADMIN);
+    /**
+     * M_ADMIN is no longer available to manage Queue. Nor should they be in BUSINESS_USER_STORE collection. Only
+     * Q_SUPERVISOR, S_MANAGER are allowed in BUSINESS_USER_STORE. M_ADMIN can only be deleted/inactive by another
+     * M_ADMIN. Once upgraded to M_ADMIN, it should be deleted from collection and given appropriate authority. M_ADMIN,
+     * S_MANAGER, Q_SUPERVISOR cannot be added as a supervisor for other queues. Only user with ROLE as CLIENT can
+     * be added to list of Queue Managers.
+     *
+     * @return
+     * @since 12/22/2017
+     */
+    public static List<UserLevelEnum> queueManagers() {
+        return Arrays.asList(Q_SUPERVISOR, S_MANAGER);
     }
 
     @Override
