@@ -1,5 +1,7 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.Validate;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -43,9 +45,15 @@ public class BusinessUserStoreEntity extends BaseEntity {
     private String codeQR;
 
     public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR) {
+        Assertions.assertTrue(Validate.isValidQid(queueUserId), "Should be a valid qid");
         this.queueUserId = queueUserId;
+
+        Assertions.assertTrue(Validate.isValidObjectId(bizStoreId), "Should be a valid ObjectId");
         this.bizStoreId = bizStoreId;
+
+        Assertions.assertTrue(Validate.isValidObjectId(bizNameId), "Should be a valid ObjectId");
         this.bizNameId = bizNameId;
+
         this.codeQR = codeQR;
     }
 

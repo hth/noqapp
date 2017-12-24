@@ -74,9 +74,9 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public long findNumberOfPeopleAssignedToQueue(String storeId) {
+    public long findNumberOfPeopleAssignedToQueue(String bizStoreId) {
         return mongoTemplate.count(
-                query(where("BS").is(storeId)
+                query(where("BS").is(bizStoreId)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -88,9 +88,9 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public long findNumberOfPeoplePendingApprovalToQueue(String storeId) {
+    public long findNumberOfPeoplePendingApprovalToQueue(String bizStoreId) {
         return mongoTemplate.count(
-                query(where("BS").is(storeId)
+                query(where("BS").is(bizStoreId)
                         .andOperator(
                                 isNotActive(),
                                 isNotDeleted()
@@ -102,9 +102,9 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public List<BusinessUserStoreEntity> getAllQueueManagers(String storeId) {
+    public List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId) {
         return mongoTemplate.find(
-                query(where("BS").is(storeId).andOperator(isNotDeleted())),
+                query(where("BS").is(bizStoreId).andOperator(isNotDeleted())),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
@@ -118,5 +118,22 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
                 BusinessUserStoreEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public void removeFromBusiness(String qid, String bizNameId) {
+        mongoTemplate.remove(
+                query(where("QID").is(qid).and("BN").is(bizNameId)),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void removeFromStore(String qid, String bizStoreId) {
+        mongoTemplate.remove(
+                query(where("QID").is(qid).and("BS").is(bizStoreId)),
+                BusinessUserStoreEntity.class,
+                TABLE);
     }
 }

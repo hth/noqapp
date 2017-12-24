@@ -14,11 +14,15 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> getQueues(String qid, int limit);
 
-    long findNumberOfPeopleAssignedToQueue(String storeId);
+    long findNumberOfPeopleAssignedToQueue(String bizStoreId);
 
-    long findNumberOfPeoplePendingApprovalToQueue(String storeId);
+    long findNumberOfPeoplePendingApprovalToQueue(String bizStoreId);
 
-    List<BusinessUserStoreEntity> getAllQueueManagers(String storeId);
+    List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId);
 
     void activateAccount(String qid, String bizNameId);
+
+    void removeFromBusiness(String qid, String bizNameId);
+
+    void removeFromStore(String qid, String bizStoreId);
 }

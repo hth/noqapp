@@ -98,6 +98,14 @@
                                 </c:choose>
                             </div>
                         </div>
+
+                        <div class="alert-info">
+                            <p>
+                                To add supervisor to a queue, click on "Pending" value for that queue. Please,
+                                notify the pending supervisor to complete their profile after login in at web site.
+                            </p>
+                            <p>Once supervisor completes their profile, you need to Approve their profile to be accepted as a supervisor.</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserAccountEntity;

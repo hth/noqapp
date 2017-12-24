@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 
 import java.util.List;
 
@@ -44,4 +45,6 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * @return
      */
     List<BusinessUserEntity> awaitingBusinessApprovals();
+
+    List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId);
 }

@@ -352,7 +352,6 @@ public class QueueManagerImpl implements QueueManager {
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.Q),
                                 where("QS").is(QueueUserStateEnum.A))
-                        .andOperator(isNotDeleted())
                 ),
                 QueueEntity.class,
                 TABLE

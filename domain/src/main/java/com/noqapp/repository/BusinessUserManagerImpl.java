@@ -95,8 +95,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
 
     @Override
     public void deleteHard(BusinessUserEntity object) {
-        /* Do not implement this method. No hard delete for business user. */
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object, TABLE);
     }
 
     @Override
@@ -126,5 +125,19 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
                 BusinessUserEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId) {
+        return mongoTemplate.find(
+                query(where("B_N.$id").is(new ObjectId(bizNameId))
+                        .and("UL").ne(UserLevelEnum.M_ADMIN)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                BusinessUserEntity.class,
+                TABLE);
     }
 }

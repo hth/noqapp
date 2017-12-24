@@ -16,7 +16,6 @@ import org.springframework.webflow.context.ExternalContext;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.InviteQueueSupervisor;
@@ -153,6 +152,55 @@ public class AddQueueSupervisorFlowActions {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(inviteQueueSupervisor.getBizStoreId());
+        switch (userProfile.getLevel()) {
+            case CLIENT:
+                LOG.info("Continue invite for qid={} with role={}", userProfile.getQueueUserId(), userProfile.getLevel());
+                break;
+            case M_ADMIN:
+                LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
+                        userProfile.getQueueUserId(),
+                        userProfile.getLevel(),
+                        bizStore.getBizName().getBusinessName(),
+                        bizStore.getBizName().getId());
+
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("inviteQueueSupervisor.phoneNumber")
+                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                                .build());
+                throw new InviteSupervisorException("Cannot invite this person");
+            case Q_SUPERVISOR:
+            case S_MANAGER:
+                LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
+                        userProfile.getQueueUserId(),
+                        userProfile.getLevel(),
+                        bizStore.getBizName().getBusinessName(),
+                        bizStore.getBizName().getId());
+
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("inviteQueueSupervisor.phoneNumber")
+                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                                .build());
+                throw new InviteSupervisorException("Cannot invite this person");
+            default:
+                LOG.error("Failed Invite as reached condition for qid={} with role={} for business name={} id={}",
+                        userProfile.getQueueUserId(),
+                        userProfile.getLevel(),
+                        bizStore.getBizName().getBusinessName(),
+                        bizStore.getBizName().getId());
+
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("inviteQueueSupervisor.phoneNumber")
+                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                                .build());
+                throw new InviteSupervisorException("Reached unsupported condition");
+        }
+
         int supervisorCount = businessUserStoreService.getQueues(userProfile.getQueueUserId()).size();
         if (supervisorCount > queueLimit) {
             messageContext.addMessage(
@@ -200,24 +248,11 @@ public class AddQueueSupervisorFlowActions {
             businessUserService.save(businessUser);
         }
 
-        BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                userProfile.getQueueUserId(),
-                bizStore.getId(),
-                bizStore.getBizName().getId(),
-                bizStore.getCodeQR());
-
-        /*
-         * Marked as inactive until user signs and agrees to be a queue supervisor.
-         * Will be active upon approval.
-         */
-        if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
-            /* If business user has been validated already then no need to mark it in-active. */
-            businessUserStore.active();
-        } else {
-            businessUserStore.inActive();
-        }
-        businessUserStoreService.save(businessUserStore);
         final String qid = userProfile.getQueueUserId();
+        businessUserStoreService.addToBusinessUserStore(
+                qid,
+                bizStore,
+                businessUser.getBusinessUserRegistrationStatus());
 
         if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
             /* Send FCM notification. */
