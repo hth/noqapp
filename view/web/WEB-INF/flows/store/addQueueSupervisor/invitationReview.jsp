@@ -20,7 +20,7 @@
 <div class="header">
     <div class="warp-inner">
         <div class="logo-left">
-            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></a>
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></a>
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
