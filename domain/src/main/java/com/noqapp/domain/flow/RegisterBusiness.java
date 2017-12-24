@@ -19,7 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * User: hitender
@@ -45,6 +44,7 @@ public class RegisterBusiness implements Serializable {
     private String displayName;
     private BusinessTypeEnum storeBusinessType;
     private String addressStore;
+    private boolean businessAddressAsStore;
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
@@ -228,6 +228,15 @@ public class RegisterBusiness implements Serializable {
         this.addressStore = addressStore.getText().replaceAll("\\R", " ");
     }
 
+    public boolean isBusinessAddressAsStore() {
+        return businessAddressAsStore;
+    }
+
+    public RegisterBusiness setBusinessAddressAsStore(boolean businessAddressAsStore) {
+        this.businessAddressAsStore = businessAddressAsStore;
+        return this;
+    }
+
     public String getPhoneStore() {
         if (StringUtils.isNotBlank(phoneStore)) {
             return Formatter.phoneFormatter(phoneStore, countryShortName);
@@ -383,6 +392,10 @@ public class RegisterBusiness implements Serializable {
             String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
 
+            /*
+             * Note: Same Display Name at same location will generate same webLocation.
+             * You might need to redo this with some randomness in URL.
+             */
             String webLocation = "/"
                     + countryShortNameStore.toLowerCase()
                     + "/"

@@ -121,6 +121,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(Google address preferred. Reason: Helps find on Google Map)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -154,6 +155,17 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="phoneStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="businessAddressAsStore" cssErrorClass="lb_error">Same As Business</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
+                                            <span style="display:block; font-size:14px;">(Store Address, Phone is same as Business)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -206,4 +218,15 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
+<script type="text/javascript">
+    $('[name="businessAddressAsStore"]').click(function () {
+        if (document.getElementById('businessAddressAsStore').checked) {
+            $('[name="addressStore"]').val('${registerBusiness.businessUser.bizName.address}').prop("disabled", true);
+            $('[name="phoneStore"]').val('${registerBusiness.businessUser.bizName.phoneFormatted}').prop("disabled", true);
+        } else {
+            $('[name="addressStore"]').val("").prop("disabled", false);
+            $('[name="phoneStore"]').val("").prop("disabled", false);
+        }
+    });
+</script>
 </html>

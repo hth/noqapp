@@ -191,6 +191,12 @@ public class BusinessFlowValidator {
      */
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
+
+        if (registerBusiness.isBusinessAddressAsStore()) {
+            registerBusiness.setAddressStore(new ScrubbedInput(registerBusiness.getBusinessUser().getBizName().getAddress()));
+            registerBusiness.setPhoneStore(new ScrubbedInput(registerBusiness.getBusinessUser().getBizName().getPhoneRaw()));
+        }
+
         if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -248,6 +254,12 @@ public class BusinessFlowValidator {
                 String timeZone = externalService.findTimeZone(latLng);
                 registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
             }
+        }
+
+        if (registerBusiness.isBusinessAddressAsStore()) {
+            /* Since this is overwritten above when address is fetched. */
+            //TODO(hth) should skip fetching from Google when address already exists.
+            registerBusiness.setAddressStoreOrigin(registerBusiness.getBusinessUser().getBizName().getAddressOrigin());
         }
 
         if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
@@ -393,6 +405,54 @@ public class BusinessFlowValidator {
                                     .defaultText("Specify Token Available Time for "
                                             + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                             + ". This is the time from when Token would be available to users.")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getStartHourStore() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                                    .defaultText("Store Start Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getEndHourStore() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                                    .defaultText("Store Close Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getTokenAvailableFrom() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                                    .defaultText("Token Available Time for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
+                                    .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getTokenNotAvailableFrom() > 2359) {
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
+                                    .defaultText("Token Not Available After for "
+                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                            + " cannot exceed 2359")
                                     .build());
                     status = "failure";
                 }

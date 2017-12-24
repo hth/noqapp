@@ -460,6 +460,7 @@
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.26-incubating" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.6-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-grpc:0.25.1" />
@@ -533,6 +534,7 @@
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: com.fasterxml.woodstox:woodstox-core:5.0.3" />
@@ -650,9 +652,7 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-buffer:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.6-jre/c0b638df79e7b2e1ed98f8d68ac62538a715ab1d/guava-23.6-jre.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/fc89b03860d11d6213d0154a62bcd1c2f69b9efa/checker-compat-qual-2.0.0.jar" />
+            <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
           </element>
         </element>
       </root>
@@ -765,6 +765,7 @@
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.26-incubating" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.6-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-grpc:0.25.1" />
@@ -838,6 +839,7 @@
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: com.fasterxml.woodstox:woodstox-core:5.0.3" />
@@ -955,10 +957,8 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-buffer:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
+            <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.6-jre/c0b638df79e7b2e1ed98f8d68ac62538a715ab1d/guava-23.6-jre.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/fc89b03860d11d6213d0154a62bcd1c2f69b9efa/checker-compat-qual-2.0.0.jar" />
           </element>
         </element>
       </root>
@@ -1083,6 +1083,7 @@
             <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.9" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.26-incubating" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:23.6-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-grpc:0.25.1" />
@@ -1156,6 +1157,7 @@
             <element id="library" level="project" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" />
             <element id="library" level="project" name="Gradle: io.opencensus:opencensus-api:0.5.1" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" />
+            <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" />
             <element id="library" level="project" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" />
             <element id="library" level="project" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" />
             <element id="library" level="project" name="Gradle: com.fasterxml.woodstox:woodstox-core:5.0.3" />
@@ -1273,6 +1275,7 @@
             <element id="library" level="project" name="Gradle: io.netty:netty-buffer:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-resolver:4.1.14.Final" />
             <element id="library" level="project" name="Gradle: io.netty:netty-common:4.1.14.Final" />
+            <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
             <element id="archive" name="com.noqapp-loader.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
@@ -1286,9 +1289,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.6-jre/c0b638df79e7b2e1ed98f8d68ac62538a715ab1d/guava-23.6-jre.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/fc89b03860d11d6213d0154a62bcd1c2f69b9efa/checker-compat-qual-2.0.0.jar" />
           </element>
         </element>
       </root>
