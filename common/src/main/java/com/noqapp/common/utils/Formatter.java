@@ -208,7 +208,7 @@ public final class Formatter {
     public static String phoneInternationalFormat(String phone, String formatToCountry) {
         try {
             if (StringUtils.isBlank(phone)) {
-                LOG.debug("phoneNationalFormat number blank");
+                LOG.debug("phoneInternationalFormat number blank");
                 return "";
             }
 
@@ -222,7 +222,7 @@ public final class Formatter {
             LOG.info("International phone format={}", internationalFormat);
             return internationalFormat;
         } catch (NumberParseException e) {
-            LOG.warn("Failed parsing phoneNationalFormat number={} reason={}", phone, e.getLocalizedMessage(), e);
+            LOG.warn("Failed parsing phoneInternationalFormat number={} reason={}", phone, e.getLocalizedMessage(), e);
             return "";
         }
     }
