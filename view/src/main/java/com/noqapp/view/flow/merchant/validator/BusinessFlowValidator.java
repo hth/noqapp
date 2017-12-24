@@ -191,6 +191,12 @@ public class BusinessFlowValidator {
      */
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
+
+        if (registerBusiness.isBusinessAddressAsStore()) {
+            registerBusiness.setAddressStore(new ScrubbedInput(registerBusiness.getBusinessUser().getBizName().getAddress()));
+            registerBusiness.setPhoneStore(new ScrubbedInput(registerBusiness.getBusinessUser().getBizName().getPhoneRaw()));
+        }
+
         if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -248,6 +254,12 @@ public class BusinessFlowValidator {
                 String timeZone = externalService.findTimeZone(latLng);
                 registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
             }
+        }
+
+        if (registerBusiness.isBusinessAddressAsStore()) {
+            /* Since this is overwritten above when address is fetched. */
+            //TODO(hth) should skip fetching from Google when address already exists.
+            registerBusiness.setAddressStoreOrigin(registerBusiness.getBusinessUser().getBizName().getAddressOrigin());
         }
 
         if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
