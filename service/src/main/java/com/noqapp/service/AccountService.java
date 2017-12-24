@@ -481,7 +481,7 @@ public class AccountService {
     }
 
     /**
-     * Used in for sending authentication link to recover account in case of the lost password
+     * Used in for sending authentication link to recover account in case of the lost password.
      *
      * @param queueUserId
      * @return
