@@ -78,6 +78,8 @@
                                                     </td>
                                                     <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                        <br/>
+                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>

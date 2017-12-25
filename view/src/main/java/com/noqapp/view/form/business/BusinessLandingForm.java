@@ -17,6 +17,7 @@ public class BusinessLandingForm {
     private String bizName;
     private List<BizStoreEntity> bizStores;
     private Map<String, QueueDetail> queueDetails = new HashMap<>();
+    private Map<String, String>  categories = new HashMap<>();
 
     /* Used when Queue Supervisor logs in. */
     private List<JsonTopic> jsonTopics;
@@ -54,6 +55,15 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm setJsonTopics(List<JsonTopic> jsonTopics) {
         this.jsonTopics = jsonTopics;
+        return this;
+    }
+
+    public Map<String, String> getCategories() {
+        return categories;
+    }
+
+    public BusinessLandingForm setCategories(Map<String, String> categories) {
+        this.categories = categories;
         return this;
     }
 }
