@@ -62,22 +62,18 @@
                                         <td colspan="2"><h3><span>${storeLandingForm.businessName}</span></h3></td>
                                     </tr>
                                     <tr>
-                                        <td width="100">Queue Name:</td>
-                                        <td>${storeLandingForm.displayName}</td>
+                                        <td colspan="2">${storeLandingForm.displayName}</td>
                                     </tr>
                                     <c:if test="${!empty storeLandingForm.categoryName}">
                                     <tr>
-                                        <td width="100">Department:</td>
-                                        <td>${storeLandingForm.categoryName}</td>
+                                        <td colspan="2">${storeLandingForm.categoryName}</td>
                                     </tr>
                                     </c:if>
                                     <tr>
-                                        <td>Address:</td>
-                                        <td>${storeLandingForm.address}</td>
+                                        <td colspan="2">${storeLandingForm.address}</td>
                                     </tr>
                                     <tr>
-                                        <td>Phone:</td>
-                                        <td>${storeLandingForm.phone}</td>
+                                        <td colspan="2">${storeLandingForm.phone}</td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp;</td>
