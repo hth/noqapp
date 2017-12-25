@@ -131,7 +131,7 @@ public class MailService {
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
-            LOG.error("Validation failure email for={}", userId, exception);
+            LOG.error("Failed validation email for={}", userId, exception);
             return false;
         }
         return true;
@@ -236,7 +236,7 @@ public class MailService {
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
-            LOG.error("Validation failure email for={}", userId, exception);
+            LOG.error("Failed validation email for={}", userId, exception);
             return MailTypeEnum.FAILURE;
         }
         return MailTypeEnum.SUCCESS;
@@ -269,7 +269,7 @@ public class MailService {
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
-            LOG.error("Validation failure email for={}", userId, exception);
+            LOG.error("Failed validation email for={}", userId, exception);
             return MailTypeEnum.FAILURE;
         }
         return MailTypeEnum.SUCCESS;

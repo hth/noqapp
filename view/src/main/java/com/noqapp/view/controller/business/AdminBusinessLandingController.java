@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +61,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminBusinessLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminBusinessLandingController.class);
 
+    private int queueLimit;
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
     private String addStoreFlow;
@@ -72,6 +76,9 @@ public class AdminBusinessLandingController {
 
     @Autowired
     public AdminBusinessLandingController(
+            @Value ("${BusinessUserStoreService.queue.limit}")
+            int queueLimit,
+
             @Value ("${nextPage:/business/landing}")
             String nextPage,
 
@@ -93,6 +100,7 @@ public class AdminBusinessLandingController {
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService
     ) {
+        this.queueLimit = queueLimit;
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
         this.addStoreFlow = addStoreFlow;
@@ -198,7 +206,10 @@ public class AdminBusinessLandingController {
             QueueSupervisorActionForm queueSupervisorActionForm,
 
             @PathVariable ("storeId")
-            ScrubbedInput storeId
+            ScrubbedInput storeId,
+
+            Model model,
+            RedirectAttributes redirectAttrs
     ) {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         queueSupervisorForm.setBizStoreId(bizStore.getId());
@@ -214,6 +225,11 @@ public class AdminBusinessLandingController {
         /* Filter already existing Q_SUPERVISOR for this queue. */
         availableQueueSupervisor.removeAll(queueSupervisors);
         queueSupervisorForm.setAvailableQueueSupervisor(availableQueueSupervisor);
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.errorMessage", model.asMap().get("result"));
+        }
 
         return listQueueSupervisorPage;
     }
@@ -258,6 +274,8 @@ public class AdminBusinessLandingController {
             @ModelAttribute ("queueSupervisorActionForm")
             QueueSupervisorActionForm queueSupervisorActionForm,
 
+            BindingResult result,
+            RedirectAttributes redirectAttrs,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
@@ -271,6 +289,7 @@ public class AdminBusinessLandingController {
                 return null;
             }
 
+            UserProfileEntity userProfile;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "APPROVE":
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
@@ -281,6 +300,25 @@ public class AdminBusinessLandingController {
                     businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
                     break;
                 case "ADD":
+                    int queueSupervisingCount = businessUserStoreService.findAllStoreQueueAssociated(businessUser.getQueueUserId()).size();
+                    userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+                    if (queueSupervisingCount > queueLimit) {
+                        LOG.warn("Failed validation since queue supervising has reached {} limit", queueLimit);
+
+                        result.addError(
+                                new ObjectError(
+                                        "errorMessage",
+                                        userProfile.getName()
+                                                + " already manages max limit of "
+                                                + queueLimit
+                                                + " queues. Please un-subscribe user from other queues.")
+                        );
+
+                        redirectAttrs.addFlashAttribute("result", result);
+                        //Re-direct to prevent resubmit
+                        return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+                    }
+
                     BizStoreEntity bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                     businessUserStoreService.addToBusinessUserStore(
                             businessUser.getQueueUserId(),
@@ -294,7 +332,7 @@ public class AdminBusinessLandingController {
                     businessUserService.deleteHard(businessUser);
 
                     /* Downgrade ROLES for QID as it was set to Q_SUPERVISOR. */
-                    UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                    userProfile = accountService.findProfileByQueueUserId(qid);
                     switch (userProfile.getLevel()) {
                         case Q_SUPERVISOR:
                             userProfile.setLevel(UserLevelEnum.CLIENT);

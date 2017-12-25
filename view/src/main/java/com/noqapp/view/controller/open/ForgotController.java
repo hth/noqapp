@@ -221,7 +221,7 @@ public class ForgotController {
     ) {
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
-            LOG.warn("Validation fail");
+            LOG.warn("Failed validation");
             return authenticatePage;
         } else {
             ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(

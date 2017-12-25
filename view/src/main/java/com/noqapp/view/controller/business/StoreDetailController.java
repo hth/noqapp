@@ -123,7 +123,9 @@ public class StoreDetailController {
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Failed PNG image retrieval error occurred for user={} reason={}",
-                    queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
+                    queueUser.getQueueUserId(),
+                    e.getLocalizedMessage(),
+                    e);
         } finally {
             if (inputStream != null) {
                 IOUtils.closeQuietly(inputStream);

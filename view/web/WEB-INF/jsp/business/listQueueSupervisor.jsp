@@ -60,6 +60,17 @@
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add new queue supervisor</a>
                             </div>
                             <div class="store-table">
+                                <spring:hasBindErrors name="errorMessage">
+                                <div class="error-box">
+                                    <div class="error-txt">
+                                        <ul>
+                                            <li><form:errors path="errorMessage"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="space10"></div>
+                                </spring:hasBindErrors>
+
                                 <c:choose>
                                     <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
