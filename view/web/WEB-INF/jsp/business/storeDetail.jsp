@@ -65,6 +65,12 @@
                                         <td width="100">Queue Name:</td>
                                         <td>${storeLandingForm.displayName}</td>
                                     </tr>
+                                    <c:if test="${!empty storeLandingForm.categoryName}">
+                                    <tr>
+                                        <td width="100">Department:</td>
+                                        <td>${storeLandingForm.categoryName}</td>
+                                    </tr>
+                                    </c:if>
                                     <tr>
                                         <td>Address:</td>
                                         <td>${storeLandingForm.address}</td>

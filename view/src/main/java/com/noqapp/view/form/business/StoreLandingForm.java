@@ -16,6 +16,7 @@ public class StoreLandingForm {
     private String address;
     private String phone;
     private String displayName;
+    private String categoryName;
     private String qrFileName;
     List<StoreHourEntity> storeHours;
 
@@ -52,6 +53,15 @@ public class StoreLandingForm {
 
     public StoreLandingForm setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public StoreLandingForm setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
         return this;
     }
 
