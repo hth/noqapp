@@ -50,6 +50,11 @@ public class StoreHourEntity extends BaseEntity {
     @Field ("DC")
     private boolean dayClosed = false;
 
+    /* TODO(hth) This includes temp day close and temp preventJoining. All this resets on next day. */
+    /* When business delays the start in minutes. TODO(hth) to be implemented. */
+    @Field ("DE")
+    private int delayedInMinutes = 0;
+
     public StoreHourEntity() {
         //Default
     }
@@ -118,6 +123,15 @@ public class StoreHourEntity extends BaseEntity {
 
     public StoreHourEntity setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
+        return this;
+    }
+
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public StoreHourEntity setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
         return this;
     }
 
