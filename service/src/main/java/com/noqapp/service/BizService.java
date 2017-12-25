@@ -201,6 +201,15 @@ public class BizService {
         return bizCategoryManager.findById(id);
     }
 
+    public String getNameOfCategory(String bizCategoryId) {
+        String categoryName = null;
+        BizCategoryEntity bizCategory = findByBizCategoryId(bizCategoryId);
+        if (null != bizCategory) {
+            categoryName = bizCategory.getCategoryName();
+        }
+        return categoryName;
+    }
+
     public void updateBizCategoryName(String categoryId, String categoryName) {
         bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
     }

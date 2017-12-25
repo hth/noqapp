@@ -5,6 +5,7 @@ import com.google.zxing.WriterException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,11 +87,17 @@ public class StoreDetailController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
+        String category = null;
+        if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
+            category = bizService.getNameOfCategory(bizStore.getBizCategoryId());
+        }
+
         storeLandingForm
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setAddress(bizStore.getAddress())
                 .setPhone(bizStore.getPhoneFormatted())
                 .setDisplayName(bizStore.getDisplayName())
+                .setCategoryName(category)
                 .setStoreHours(storeHours);
 
         try {
@@ -123,7 +130,9 @@ public class StoreDetailController {
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Failed PNG image retrieval error occurred for user={} reason={}",
-                    queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
+                    queueUser.getQueueUserId(),
+                    e.getLocalizedMessage(),
+                    e);
         } finally {
             if (inputStream != null) {
                 IOUtils.closeQuietly(inputStream);

@@ -123,7 +123,7 @@ public class CategoryController {
         businessCategoryValidator.validate(categoryLanding, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
-            LOG.warn("Validation fail");
+            LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
         }
@@ -209,7 +209,7 @@ public class CategoryController {
         businessCategoryValidator.validate(categoryLanding, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
-            LOG.warn("Validation fail");
+            LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
         }
