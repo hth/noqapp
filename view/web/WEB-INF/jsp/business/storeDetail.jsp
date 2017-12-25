@@ -59,24 +59,23 @@
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td colspan="2"><h3><span>${storeLandingForm.businessName}</span></h3></td>
+                                        <td><h3><span>${storeLandingForm.businessName}</span></h3></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">${storeLandingForm.displayName}</td>
+                                        <td>${storeLandingForm.displayName}</td>
                                     </tr>
                                     <c:if test="${!empty storeLandingForm.categoryName}">
                                     <tr>
-                                        <td colspan="2">${storeLandingForm.categoryName}</td>
+                                        <td>${storeLandingForm.categoryName}</td>
                                     </tr>
                                     </c:if>
                                     <tr>
-                                        <td colspan="2">${storeLandingForm.address}</td>
+                                        <td>${storeLandingForm.address}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">${storeLandingForm.phone}</td>
+                                        <td>${storeLandingForm.phone}</td>
                                     </tr>
                                     <tr>
-                                        <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                     </tr>
                                 </table>
