@@ -64,7 +64,7 @@ public class AdminBusinessLandingController {
     private int queueLimit;
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
-    private String addStoreFlow;
+    private String actionStoreFlow;
     private String addQueueSupervisorFlow;
     private String listQueueSupervisorPage;
 
@@ -85,8 +85,8 @@ public class AdminBusinessLandingController {
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
             String migrateBusinessRegistrationFlow,
 
-            @Value ("${addStoreFlow:redirect:/store/addStore.htm}")
-            String addStoreFlow,
+            @Value ("${actionStoreFlow:redirect:/store/actionStore.htm}")
+            String actionStoreFlow,
 
             @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
             String addQueueSupervisorFlow,
@@ -103,7 +103,7 @@ public class AdminBusinessLandingController {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
-        this.addStoreFlow = addStoreFlow;
+        this.actionStoreFlow = actionStoreFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
 
@@ -209,8 +209,7 @@ public class AdminBusinessLandingController {
             @PathVariable ("storeId")
             ScrubbedInput storeId,
 
-            Model model,
-            RedirectAttributes redirectAttrs
+            Model model
     ) {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         queueSupervisorForm.setBizStoreId(bizStore.getId());
@@ -241,8 +240,24 @@ public class AdminBusinessLandingController {
             produces = "text/html;charset=UTF-8"
     )
     public String addStore() {
-        LOG.info("Add store to business {}", addStoreFlow);
-        return addStoreFlow;
+        LOG.info("Add store to business {}", actionStoreFlow);
+        return actionStoreFlow;
+    }
+
+    @RequestMapping (
+            value = "/{bizStoreId}/editStore",
+            method = RequestMethod.GET,
+            produces = "text/html;charset=UTF-8"
+    )
+    public String editStore(
+            @PathVariable ("bizStoreId")
+            ScrubbedInput bizStoreId,
+
+            RedirectAttributes redirectAttrs
+    ) {
+        LOG.info("Edit business store {}", bizStoreId);
+        redirectAttrs.addFlashAttribute("bizStoreId", bizStoreId);
+        return actionStoreFlow;
     }
 
     @RequestMapping (

@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -233,7 +234,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())),
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                                .andOperator(isNotDeleted())
+                ).with(new Sort(ASC, "DN")),
                 BizStoreEntity.class
         );
     }

@@ -1,6 +1,9 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +17,8 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.common.utils.ScrubbedInput;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -40,8 +45,7 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
         this.bizService = bizService;
     }
 
-    @SuppressWarnings ("unused")
-    public RegisterBusiness createStoreRegistration() {
+    private RegisterBusiness createStoreRegistration() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
 
@@ -58,4 +62,25 @@ public class AddStoreFlowActions extends RegistrationFlowActions {
 
         return registerBusiness;
     }
+
+    @SuppressWarnings ("unused")
+    public RegisterBusiness populateStore(String bizStoreId) {
+        if (StringUtils.isBlank(bizStoreId)) {
+            return createStoreRegistration();
+        } else {
+            return editStoreRegistration(bizStoreId);
+        }
+    }
+
+    private RegisterBusiness editStoreRegistration(String bizStoreId) {
+        RegisterBusiness registerBusiness = createStoreRegistration();
+        if (null != registerBusiness) {
+            BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+            registerBusiness.populateWithBizStore(bizStore);
+            List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
+            registerBusiness.convertToBusinessHours(storeHours);
+        }
+        return registerBusiness;
+    }
+
 }

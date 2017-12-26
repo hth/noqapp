@@ -27,6 +27,7 @@ public final class CommonUtil {
     private static final Logger LOG = LoggerFactory.getLogger(CommonUtil.class);
 
     private static Header dummyHeader = new BasicHeader("A", "A");
+    public static final String CODE_QR_PREFIX = "SN_";
 
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
@@ -121,7 +122,7 @@ public final class CommonUtil {
         switch (environment) {
             case "dev":
             case "sandbox":
-                return "SN_" + ObjectId.get().toString();
+                return CODE_QR_PREFIX + ObjectId.get().toString();
             case "prod":
                 return ObjectId.get().toString();
             default:
