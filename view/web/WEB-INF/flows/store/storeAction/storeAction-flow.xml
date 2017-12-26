@@ -8,7 +8,7 @@
 
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')" result="conversationScope.bizStoreId" />
-        <evaluate expression="addStoreFlowActions.populateStore(bizStoreId)"
+        <evaluate expression="storeFlowActions.populateStore(bizStoreId)"
                   result="flowScope.registerBusiness"/>
     </on-start>
 

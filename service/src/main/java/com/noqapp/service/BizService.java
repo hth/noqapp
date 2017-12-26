@@ -214,7 +214,7 @@ public class BizService {
         bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
     }
 
-    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId) {
-        return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId);
+    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
+        return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId, bizStoreId);
     }
 }

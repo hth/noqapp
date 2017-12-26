@@ -436,7 +436,7 @@ public class RegisterBusiness implements Serializable {
         this.name = bizName.getBusinessName();
         this.address = bizName.getAddress();
         this.countryShortName = bizName.getCountryShortName();
-        this.phone = bizName.getPhone();
+        this.phone = Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName());
         this.timeZone = bizName.getTimeZone();
         this.inviteeCode = bizName.getInviteeCode();
         this.addressOrigin = bizName.getAddressOrigin();
@@ -446,7 +446,7 @@ public class RegisterBusiness implements Serializable {
         this.storeBusinessType = bizStore.getBusinessType();
         this.addressStore = bizStore.getAddress();
         this.countryShortNameStore = bizStore.getCountryShortName();
-        this.phoneStore = bizStore.getPhone();
+        this.phoneStore = Formatter.phoneNationalFormat(bizStore.getPhoneRaw(), bizStore.getCountryShortName());
         this.timeZoneStore = bizStore.getTimeZone();
         this.addressStoreOrigin = bizStore.getAddressOrigin();
         this.bizCategoryId = bizStore.getBizCategoryId();

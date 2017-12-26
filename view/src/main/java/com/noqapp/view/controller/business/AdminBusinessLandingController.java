@@ -64,7 +64,7 @@ public class AdminBusinessLandingController {
     private int queueLimit;
     private String nextPage;
     private String migrateBusinessRegistrationFlow;
-    private String actionStoreFlow;
+    private String storeActionFlow;
     private String addQueueSupervisorFlow;
     private String listQueueSupervisorPage;
 
@@ -85,8 +85,8 @@ public class AdminBusinessLandingController {
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
             String migrateBusinessRegistrationFlow,
 
-            @Value ("${actionStoreFlow:redirect:/store/actionStore.htm}")
-            String actionStoreFlow,
+            @Value ("${storeActionFlow:redirect:/store/storeAction.htm}")
+            String storeActionFlow,
 
             @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
             String addQueueSupervisorFlow,
@@ -103,7 +103,7 @@ public class AdminBusinessLandingController {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
         this.businessUserService = businessUserService;
-        this.actionStoreFlow = actionStoreFlow;
+        this.storeActionFlow = storeActionFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
 
@@ -240,8 +240,8 @@ public class AdminBusinessLandingController {
             produces = "text/html;charset=UTF-8"
     )
     public String addStore() {
-        LOG.info("Add store to business {}", actionStoreFlow);
-        return actionStoreFlow;
+        LOG.info("Add store to business {}", storeActionFlow);
+        return storeActionFlow;
     }
 
     @RequestMapping (
@@ -257,7 +257,7 @@ public class AdminBusinessLandingController {
     ) {
         LOG.info("Edit business store {}", bizStoreId);
         redirectAttrs.addFlashAttribute("bizStoreId", bizStoreId);
-        return actionStoreFlow;
+        return storeActionFlow;
     }
 
     @RequestMapping (

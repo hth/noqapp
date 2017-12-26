@@ -129,6 +129,14 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
 
-    boolean doesSimilarWebLocationExists(String webLocation, String bizNameId);
+    /**
+     * Match any WebLocation other than with similar bizStoreId.
+     *
+     * @param webLocation
+     * @param bizNameId
+     * @param bizStoreId
+     * @return
+     */
+    boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId);
 }
 

@@ -65,7 +65,11 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th nowrap>Queue Name</th>
+                                                <th nowrap>
+                                                    Queue Name
+                                                    &nbsp;
+                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                         alt="Sort" height="16px;"/></th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th>&nbsp;</th>
@@ -81,10 +85,14 @@
                                                         <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">
+                                                                ${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}
+                                                        </a>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
+                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">
+                                                                ${businessLandingForm.queueDetails.get(store.id).assignedToQueue}
+                                                        </a>
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>

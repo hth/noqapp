@@ -323,12 +323,21 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId) {
-        return mongoTemplate.exists(
-               query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("WL").is(webLocation)),
-               BizStoreEntity.class,
-               TABLE
-        );
+    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
+        Query query;
+        if (StringUtils.isBlank(bizStoreId)) {
+            query = query(
+                    where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                            .and("WL").is(webLocation)
+            );
+        } else {
+            query = query(
+                    where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                            .and("WL").is(webLocation)
+                            .and("id").ne(bizStoreId)
+            );
+        }
+        return mongoTemplate.exists(query, BizStoreEntity.class, TABLE);
     }
 
     //TODO add query to for near and for nearBy with distance
