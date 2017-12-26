@@ -1,5 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
@@ -53,8 +55,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         if (null == businessUser) {
             return null;
         }
-
-        RegisterBusiness registerBusiness = new RegisterBusiness();
+        RegisterBusiness registerBusiness = populateWithBizName(businessUser);
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessTypes(businessUser.getBizName().getBusinessTypes());
@@ -83,4 +84,18 @@ public class StoreFlowActions extends RegistrationFlowActions {
         return registerBusiness;
     }
 
+    private RegisterBusiness populateWithBizName(BusinessUserEntity businessUser) {
+        RegisterBusiness registerBusiness = new RegisterBusiness();
+        BizNameEntity bizName = businessUser.getBizName();
+        registerBusiness.setBizId(businessUser.getBizName().getId());
+        registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
+        registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));
+        registerBusiness.setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
+        registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName())));
+        registerBusiness.setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
+        registerBusiness.setInviteeCode(bizName.getInviteeCode());
+        registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
+        registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
+        return registerBusiness;
+    }
 }

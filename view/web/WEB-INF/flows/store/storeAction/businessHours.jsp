@@ -69,7 +69,24 @@
                         </div>
                         <div class="admin-content">
                             <div class="full">
+                                <ul class="col2-grid">
+                                    <li>
+                                        <table width="325px" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td class="lable-td pT0">
+                                                    <label for="copyData">Copy Monday's Data For All Other Days</label>
+                                                </td>
+                                                <td>
+                                                    <input id="copyData" name="copyData" type="checkbox" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </li>
+                                    <div class="clearFix"></div>
+                                </ul>
+                            </div>
 
+                            <div class="full">
                                 <ul class="col2-grid">
                                     <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
                                         <li>
@@ -173,5 +190,37 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript">
+    $('[name="copyData"]').click(function () {
+        if (document.getElementById('copyData').checked) {
+            document.getElementById('businessHours1.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours2.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours3.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours4.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours5.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours6.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
 
+            document.getElementById('businessHours1.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours2.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours3.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours4.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours5.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours6.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+
+            document.getElementById('businessHours1.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours2.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours3.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours4.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours5.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours6.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+
+            document.getElementById('businessHours1.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours2.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours3.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours4.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours5.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours6.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+        }
+    });
+</script>
 </html>

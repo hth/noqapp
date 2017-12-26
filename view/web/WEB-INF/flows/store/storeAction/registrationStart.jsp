@@ -140,7 +140,7 @@
                                         <div class="col-fields pT10 pB10">
                                             <c:forEach items="${registerBusiness.foundAddressStores}" var="mapElement">
                                                 <form:radiobutton path="foundAddressStorePlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"
-                                                                  onclick="handleFoundAddressStoreClick();"/> <br />
+                                                                  onclick="handleFoundAddressStoreClick()"/> <br />
                                             </c:forEach>
                                         </div>
                                         <div class="clearFix"></div>
