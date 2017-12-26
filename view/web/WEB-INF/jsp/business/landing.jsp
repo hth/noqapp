@@ -65,7 +65,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Store Location</th>
-                                                <th nowrap>Queue Name</th>
+                                                <th nowrap>Queue Name &nbsp;&nbsp;<img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png" alt="Sort" height="16px;"/></th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th>&nbsp;</th>
