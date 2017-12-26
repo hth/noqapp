@@ -157,7 +157,12 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th nowrap>Category Name</th>
+                                        <th nowrap>
+                                            Category Name
+                                            &nbsp;
+                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                 alt="Sort" height="16px;"/>
+                                        </th>
                                         <th nowrap>Edit</th>
                                     </tr>
                                     <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
