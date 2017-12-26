@@ -128,5 +128,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     Stream<BizStoreEntity> findAll();
 
     void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
+
+    boolean doesSimilarWebLocationExists(String webLocation, String bizNameId);
 }
 
