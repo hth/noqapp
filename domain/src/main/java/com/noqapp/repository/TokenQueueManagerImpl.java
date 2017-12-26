@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.mongodb.WriteConcern;
+import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -119,5 +120,17 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
                 entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.S)),
                 TokenQueueEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public boolean updateDisplayName(String codeQR, String topic, String displayName) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
+            query(where("_id").is(codeQR).and("TP").is(topic)),
+            entityUpdate(update("DN", displayName)),
+            TokenQueueEntity.class,
+            TABLE
+        );
+
+        return updateResult.getModifiedCount() == 1;
     }
 }

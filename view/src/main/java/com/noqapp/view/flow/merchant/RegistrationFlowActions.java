@@ -22,8 +22,6 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import org.springframework.core.env.Environment;
 
-import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -117,7 +115,7 @@ class RegistrationFlowActions {
         try {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
-            tokenQueueService.create(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
+            tokenQueueService.createUpdate(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
         } catch (Exception e) {
             LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
                     registerBusiness.getBusinessUser().getBizName().getId(),
@@ -204,7 +202,7 @@ class RegistrationFlowActions {
                 .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
                 .setAddress(registerBusiness.getAddressStore())
                 .setTimeZone(registerBusiness.getTimeZoneStore())
-                .setCodeQR(CommonUtil.generateCodeQR(environment.getProperty("build.env")))
+                .setCodeQR(StringUtils.isBlank(bizStore.getCodeQR()) ? CommonUtil.generateCodeQR(environment.getProperty("build.env")) : bizStore.getCodeQR())
                 .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
                 .setBizCategoryId(registerBusiness.getBizCategoryId())
                 .setRemoteJoin(registerBusiness.isRemoteJoin())
@@ -268,27 +266,5 @@ class RegistrationFlowActions {
                 LOG.error("Reached unsupported condition={}", businessUserRegistrationStatus);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUserRegistrationStatus);
         }
-    }
-
-    /**
-     * Populate BusinessHours from StoreHour when editing existing records.
-     *
-     * @param storeHours
-     * @return
-     */
-    List<BusinessHour> convertToBusinessHours(List<StoreHourEntity> storeHours) {
-        List<BusinessHour> businessHours = new ArrayList<>();
-        for (StoreHourEntity storeHour : storeHours) {
-            BusinessHour businessHour = new BusinessHour(DayOfWeek.of(storeHour.getDayOfWeek()));
-            businessHour.setStartHourStore(storeHour.getStartHour());
-            businessHour.setEndHourStore(storeHour.getEndHour());
-            businessHour.setTokenAvailableFrom(storeHour.getTokenAvailableFrom());
-            businessHour.setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom());
-            businessHour.setDayClosed(storeHour.isDayClosed());
-
-            businessHours.add(businessHour);
-        }
-
-        return businessHours;
     }
 }

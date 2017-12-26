@@ -68,7 +68,7 @@
                                                 <th nowrap>Queue Name</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
-                                                <th nowrap>Create Date</th>
+                                                <th>&nbsp;</th>
                                             </tr>
                                             <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
                                                 <tr>
@@ -78,8 +78,7 @@
                                                     </td>
                                                     <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                        <br/>
-                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
+                                                        <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
@@ -87,8 +86,8 @@
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
                                                     </td>
-                                                    <td nowrap>
-                                                        <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
+                                                    <td>
+                                                        <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

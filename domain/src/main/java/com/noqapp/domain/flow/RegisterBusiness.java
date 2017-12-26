@@ -1,6 +1,9 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -29,8 +32,6 @@ public class RegisterBusiness implements Serializable {
 
     private String bizId;
     private String name;
-    /* Business types are initialized in flow. Why? Show off. */
-    private List<BusinessTypeEnum> businessTypes;
     private String address;
     private String countryShortName;
     private String phone;
@@ -44,7 +45,6 @@ public class RegisterBusiness implements Serializable {
     private String displayName;
     private BusinessTypeEnum storeBusinessType;
     private String addressStore;
-    private boolean businessAddressAsStore;
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
@@ -57,11 +57,9 @@ public class RegisterBusiness implements Serializable {
 
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
     private String foundAddressPlaceId;
-    private boolean selectFoundAddress;
 
     private HashMap<String, DecodedAddress> foundAddressStores = new LinkedHashMap<>();
     private String foundAddressStorePlaceId;
-    private boolean selectFoundAddressStore;
 
     public RegisterBusiness() {
         for (int i = 1; i <= 7; i++) {
@@ -69,6 +67,19 @@ public class RegisterBusiness implements Serializable {
             businessHours.add(businessHour);
         }
     }
+
+    /* Business types are initialized in flow. Why? Show off. */
+    @Transient
+    private List<BusinessTypeEnum> businessTypes;
+
+    @Transient
+    private boolean selectFoundAddress;
+
+    @Transient
+    private boolean selectFoundAddressStore;
+
+    @Transient
+    private boolean businessAddressAsStore;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
@@ -416,6 +427,57 @@ public class RegisterBusiness implements Serializable {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
         }
+    }
+
+    @Transient
+    public void populateWithBizStore(BizStoreEntity bizStore) {
+        BizNameEntity bizName = bizStore.getBizName();
+        this.bizId = bizName.getId();
+        this.name = bizName.getBusinessName();
+        this.address = bizName.getAddress();
+        this.countryShortName = bizName.getCountryShortName();
+        this.phone = bizName.getPhone();
+        this.timeZone = bizName.getTimeZone();
+        this.inviteeCode = bizName.getInviteeCode();
+        this.addressOrigin = bizName.getAddressOrigin();
+
+        this.bizStoreId = bizStore.getId();
+        this.displayName = bizStore.getDisplayName();
+        this.storeBusinessType = bizStore.getBusinessType();
+        this.addressStore = bizStore.getAddress();
+        this.countryShortNameStore = bizStore.getCountryShortName();
+        this.phoneStore = bizStore.getPhone();
+        this.timeZoneStore = bizStore.getTimeZone();
+        this.addressStoreOrigin = bizStore.getAddressOrigin();
+        this.bizCategoryId = bizStore.getBizCategoryId();
+        this.remoteJoin = bizStore.isRemoteJoin();
+        this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
+        this.availableTokenCount = bizStore.getAvailableTokenCount();
+
+        this.foundAddressPlaceId = bizName.getPlaceId();
+        this.foundAddressStorePlaceId = bizStore.getPlaceId();
+    }
+
+    /**
+     * Populate BusinessHours from StoreHour when editing existing records.
+     *
+     * @param storeHours
+     * @return
+     */
+    public void convertToBusinessHours(List<StoreHourEntity> storeHours) {
+        List<BusinessHour> businessHours = new LinkedList<>();
+        for (StoreHourEntity storeHour : storeHours) {
+            BusinessHour businessHour = new BusinessHour(DayOfWeek.of(storeHour.getDayOfWeek()));
+            businessHour.setStartHourStore(storeHour.getStartHour());
+            businessHour.setEndHourStore(storeHour.getEndHour());
+            businessHour.setTokenAvailableFrom(storeHour.getTokenAvailableFrom());
+            businessHour.setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom());
+            businessHour.setDayClosed(storeHour.isDayClosed());
+
+            businessHours.add(businessHour);
+        }
+
+        this.businessHours = businessHours;
     }
 
     @Override

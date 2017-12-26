@@ -54,7 +54,14 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Store details</h2>
+                            <c:choose>
+                                <c:when test="${!empty registerBusiness.bizStoreId}">
+                                    <h2>Edit Store details</h2>
+                                </c:when>
+                                <c:otherwise>
+                                    <h2>Add Store details</h2>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">

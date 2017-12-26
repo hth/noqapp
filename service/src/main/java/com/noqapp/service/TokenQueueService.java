@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonResponse;
@@ -23,6 +22,7 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.common.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +64,21 @@ public class TokenQueueService {
         this.executorService = newCachedThreadPool();
     }
 
-    //TODO has to create by cron job
-    public void create(String codeQR, String topic, String displayName) {
+    //TODO has to createUpdate by cron job
+    public void createUpdate(String codeQR, String topic, String displayName) {
         try {
-            TokenQueueEntity token = new TokenQueueEntity(topic, displayName);
-            token.setId(codeQR);
-            tokenQueueManager.save(token);
+            Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
+            TokenQueueEntity token = tokenQueueManager.findByCodeQR(codeQR);
+            if (null == token) {
+                token = new TokenQueueEntity(topic, displayName);
+                token.setId(codeQR);
+                tokenQueueManager.save(token);
+            } else {
+                boolean updateSuccess = tokenQueueManager.updateDisplayName(codeQR, topic, displayName);
+                if (!updateSuccess) {
+                    LOG.error("Failed update for codeQR={} topic={} displayName={}", codeQR, topic, displayName);
+                }
+            }
         } catch (Exception e) {
             LOG.error("Failed creating TokenQueue codeQR={} topic={} displayName={}", codeQR, topic, displayName);
             throw new RuntimeException("Failed creating TokenQueue");

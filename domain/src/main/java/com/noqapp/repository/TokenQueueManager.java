@@ -22,4 +22,6 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
     void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus);
 
     void resetForNewDay(String codeQR);
+
+    boolean updateDisplayName(String codeQR, String topic, String displayName);
 }
