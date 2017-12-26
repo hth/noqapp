@@ -25,14 +25,14 @@ import java.util.List;
  * Date: 6/25/17 12:07 AM
  */
 @Component
-public class AddStoreFlowActions extends RegistrationFlowActions {
+public class StoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
     private BizService bizService;
 
     @SuppressWarnings ("unused")
     @Autowired
-    public AddStoreFlowActions(
+    public StoreFlowActions(
             Environment environment,
             ExternalService externalService,
             BizService bizService,

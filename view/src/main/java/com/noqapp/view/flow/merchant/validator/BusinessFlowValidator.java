@@ -256,13 +256,13 @@ public class BusinessFlowValidator {
 
                 /* Check if similar web location exists. */
                 String webLocation = registerBusiness.computeWebLocation(decodedAddressStore.getTown(), decodedAddressStore.getStateShortName());
-                boolean webLocationExists = bizService.doesSimilarWebLocationExists(webLocation, registerBusiness.getBizId());
+                boolean webLocationExists = bizService.doesSimilarWebLocationExists(webLocation, registerBusiness.getBizId(), registerBusiness.getBizStoreId());
                 if (webLocationExists) {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
                                     .source(source + "displayName")
-                                    .defaultText("'" + registerBusiness.getDisplayName() + "' at this location " +
+                                    .defaultText(registerBusiness.getDisplayName() + " at this location " +
                                             "already exists. Change Queue Name and try again or if this error " +
                                             "persist, please contact with detail explanation at contact@noqapp.com")
                                     .build());
