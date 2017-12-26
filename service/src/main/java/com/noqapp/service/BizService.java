@@ -213,4 +213,8 @@ public class BizService {
     public void updateBizCategoryName(String categoryId, String categoryName) {
         bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
     }
+
+    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId) {
+        return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId);
+    }
 }
