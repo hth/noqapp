@@ -431,16 +431,6 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public void populateWithBizStore(BizStoreEntity bizStore) {
-        BizNameEntity bizName = bizStore.getBizName();
-        this.bizId = bizName.getId();
-        this.name = bizName.getBusinessName();
-        this.address = bizName.getAddress();
-        this.countryShortName = bizName.getCountryShortName();
-        this.phone = Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName());
-        this.timeZone = bizName.getTimeZone();
-        this.inviteeCode = bizName.getInviteeCode();
-        this.addressOrigin = bizName.getAddressOrigin();
-
         this.bizStoreId = bizStore.getId();
         this.displayName = bizStore.getDisplayName();
         this.storeBusinessType = bizStore.getBusinessType();
@@ -449,13 +439,11 @@ public class RegisterBusiness implements Serializable {
         this.phoneStore = Formatter.phoneNationalFormat(bizStore.getPhoneRaw(), bizStore.getCountryShortName());
         this.timeZoneStore = bizStore.getTimeZone();
         this.addressStoreOrigin = bizStore.getAddressOrigin();
+        this.foundAddressStorePlaceId = bizStore.getPlaceId();
         this.bizCategoryId = bizStore.getBizCategoryId();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
-
-        this.foundAddressPlaceId = bizName.getPlaceId();
-        this.foundAddressStorePlaceId = bizStore.getPlaceId();
     }
 
     /**
