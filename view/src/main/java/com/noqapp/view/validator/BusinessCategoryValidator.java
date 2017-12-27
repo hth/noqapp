@@ -57,11 +57,13 @@ public class BusinessCategoryValidator implements Validator {
                                 + Constants.WORD_PATTERN_TEXT);
             }
 
-            if (bizService.existCategory(form.getCategoryName().getText(), form.getBizNameId().getText())) {
-                errors.rejectValue("categoryName",
-                        "category.exists",
-                        new Object[]{form.getCategoryName()},
-                        form.getCategoryName() + " category already exists");
+            if (!errors.hasErrors()) {
+                if (bizService.existCategory(form.getCategoryName().getText(), form.getBizNameId().getText())) {
+                    errors.rejectValue("categoryName",
+                            "category.exists",
+                            new Object[]{form.getCategoryName()},
+                            form.getCategoryName() + " category already exists");
+                }
             }
         }
     }
