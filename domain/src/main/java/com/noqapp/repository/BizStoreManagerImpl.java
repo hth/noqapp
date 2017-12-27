@@ -349,6 +349,18 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
+        return mongoTemplate.find(
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                                .and("BC").is(bizCategoryId)
+                ).with(new Sort(ASC, "DN")),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

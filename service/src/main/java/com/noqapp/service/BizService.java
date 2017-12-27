@@ -210,8 +210,8 @@ public class BizService {
         return categoryName;
     }
 
-    public void updateBizCategoryName(String categoryId, String categoryName) {
-        bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
+    public void updateBizCategoryName(String bizCategoryId, String categoryName) {
+        bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName);
     }
 
     public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
@@ -225,5 +225,9 @@ public class BizService {
         }
 
         return maps;
+    }
+
+    public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
+        return bizStoreManager.getBizStoresByCategory(bizCategoryId, bizNameId);
     }
 }

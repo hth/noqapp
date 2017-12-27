@@ -11,7 +11,7 @@ import java.util.Map;
 public class CategoryLandingForm {
 
     private ScrubbedInput bizNameId;
-    private ScrubbedInput categoryId;
+    private ScrubbedInput bizCategoryId;
     private ScrubbedInput categoryName;
     private Map<String, String> categories;
     private Map<String, Long> categoryCounts;
@@ -25,12 +25,12 @@ public class CategoryLandingForm {
         return this;
     }
 
-    public ScrubbedInput getCategoryId() {
-        return categoryId;
+    public ScrubbedInput getBizCategoryId() {
+        return bizCategoryId;
     }
 
-    public CategoryLandingForm setCategoryId(ScrubbedInput categoryId) {
-        this.categoryId = categoryId;
+    public CategoryLandingForm setBizCategoryId(ScrubbedInput bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 

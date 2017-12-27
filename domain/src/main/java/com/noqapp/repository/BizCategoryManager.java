@@ -17,5 +17,5 @@ public interface BizCategoryManager extends RepositoryManager<BizCategoryEntity>
 
     BizCategoryEntity findById(String id);
 
-    void updateBizCategoryName(String categoryId, String categoryName);
+    void updateBizCategoryName(String bizCategoryId, String categoryName);
 }

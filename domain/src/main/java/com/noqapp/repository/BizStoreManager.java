@@ -139,6 +139,15 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId);
 
+    /**
+     * Counts number of times the category has been used.
+     *
+     * @param bizCategoryId
+     * @param bizNameId
+     * @return
+     */
     long countCategoryUse(String bizCategoryId, String bizNameId);
+
+    List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId);
 }
 
