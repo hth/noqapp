@@ -102,6 +102,7 @@ public class CategoryController {
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.categoryLanding", model.asMap().get("result"));
+            categoryLanding.setBizCategoryId((ScrubbedInput) model.asMap().get("bizCategoryId"));
         } else {
             redirectAttrs.addFlashAttribute("categoryLanding", categoryLanding);
         }
@@ -225,6 +226,7 @@ public class CategoryController {
 
         businessCategoryValidator.validate(categoryLanding, result);
         if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("bizCategoryId", categoryLanding.getBizCategoryId());
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
