@@ -136,4 +136,14 @@ public final class CommonUtil {
         set.forEach(t -> map.put(t, t)); //contains same key and value pair
         return map;
     }
+
+    /**
+     * Used when merchant is dispensing token for people without app.
+     *
+     * @param did
+     * @return
+     */
+    public static String appendRandomToDeviceId(String did) {
+        return did + "-" + RandomString.newInstance(6).nextString();
+    }
 }
