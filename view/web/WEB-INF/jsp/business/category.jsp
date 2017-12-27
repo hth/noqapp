@@ -164,7 +164,7 @@
                                                  alt="Sort" height="16px;"/>
                                         </th>
                                         <th>
-                                            Referred
+                                            Referred Count
                                         </th>
                                         <th nowrap>Edit</th>
                                     </tr>
