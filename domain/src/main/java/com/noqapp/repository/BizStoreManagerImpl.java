@@ -316,7 +316,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR)),
-                entityUpdate(update("TK", availableTokenCount)),
+                entityUpdate(update("AT", availableTokenCount)),
                 BizStoreEntity.class,
                 TABLE
         );
