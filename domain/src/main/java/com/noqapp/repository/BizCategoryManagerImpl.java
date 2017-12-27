@@ -84,9 +84,9 @@ public class BizCategoryManagerImpl implements BizCategoryManager {
     }
 
     @Override
-    public void updateBizCategoryName(String categoryId, String categoryName) {
+    public void updateBizCategoryName(String bizCategoryId, String categoryName) {
         mongoTemplate.updateFirst(
-                query(where("id").is(categoryId)),
+                query(where("id").is(bizCategoryId)),
                 Update.update("CN", categoryName),
                 BizCategoryEntity.class,
                 TABLE

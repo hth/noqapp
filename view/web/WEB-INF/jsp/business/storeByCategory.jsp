@@ -29,6 +29,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
+                        <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -51,13 +52,9 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><span>${businessLandingForm.bizName}</span></h3>
+                        <h3><span>${businessLandingForm.bizName} by Category</span></h3>
 
                         <div class="add-store">
-                            <div class="addbtn-store">
-                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
-                                <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
-                            </div>
                             <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty businessLandingForm.bizStores}">
@@ -103,18 +100,10 @@
                                         </table>
                                     </c:when>
                                     <c:otherwise>
-                                        There are no stores associated with business.
+                                        There are no stores associated with category.
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                        </div>
-
-                        <div class="alert-info">
-                            <p>
-                                To add supervisor to a queue, click on "Pending" value for that queue. Please,
-                                notify the pending supervisor to complete their profile after login in at web site.
-                            </p>
-                            <p>Once supervisor completes their profile, you need to Approve their profile to be accepted as a supervisor.</p>
                         </div>
                     </div>
                 </div>

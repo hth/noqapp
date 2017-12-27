@@ -340,6 +340,27 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         return mongoTemplate.exists(query, BizStoreEntity.class, TABLE);
     }
 
+    @Override
+    public long countCategoryUse(String bizCategoryId, String bizNameId) {
+        return mongoTemplate.count(
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
+        return mongoTemplate.find(
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                                .and("BC").is(bizCategoryId)
+                ).with(new Sort(ASC, "DN")),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

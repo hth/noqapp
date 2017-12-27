@@ -210,11 +210,24 @@ public class BizService {
         return categoryName;
     }
 
-    public void updateBizCategoryName(String categoryId, String categoryName) {
-        bizCategoryManager.updateBizCategoryName(categoryId, categoryName);
+    public void updateBizCategoryName(String bizCategoryId, String categoryName) {
+        bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName);
     }
 
     public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
         return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId, bizStoreId);
+    }
+
+    public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {
+        Map<String, Long> maps = new HashMap<>();
+        for (String bizCategoryId : categories) {
+            maps.put(bizCategoryId, bizStoreManager.countCategoryUse(bizCategoryId, bizNameId));
+        }
+
+        return maps;
+    }
+
+    public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
+        return bizStoreManager.getBizStoresByCategory(bizCategoryId, bizNameId);
     }
 }

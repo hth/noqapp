@@ -58,10 +58,10 @@
                     </div>
 
                     <c:choose>
-                        <c:when test="${!empty categoryLanding.categoryId}">
+                        <c:when test="${!empty categoryLanding.bizCategoryId}">
                             <form:form method="post" action="${pageContext.request.contextPath}/business/category/edit.htm" modelAttribute="categoryLanding">
                                 <form:hidden path="bizNameId" />
-                                <form:hidden path="categoryId" />
+                                <form:hidden path="bizCategoryId" />
                                 <spring:hasBindErrors name="categoryLanding">
                                     <div class="error-box">
                                         <div class="error-txt">
@@ -163,13 +163,25 @@
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                  alt="Sort" height="16px;"/>
                                         </th>
+                                        <th>
+                                            Referred Count
+                                        </th>
                                         <th nowrap>Edit</th>
                                     </tr>
                                     <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>${category.value}</td>
-                                        <td nowrap><a href="/business/category/${category.key}/edit.htm">Click to Edit</a></td>
+                                        <td nowrap>
+                                            <a href="/business/category/${category.key}/storeByCategory.htm">
+                                                ${categoryLanding.categoryCounts.get(category.key)}
+                                            </a>
+                                        </td>
+                                        <td nowrap>
+                                            <a href="/business/category/${category.key}/edit.htm" class="add-btn">
+                                                Edit
+                                            </a>
+                                        </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
