@@ -193,33 +193,33 @@
 <script type="text/javascript">
     $('[name="copyData"]').click(function () {
         if (document.getElementById('copyData').checked) {
-            document.getElementById('businessHours1.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours2.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours3.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours4.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours5.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours6.tokenAvailableFrom').value =  document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours1.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours2.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours3.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours4.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours5.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
+            document.getElementById('businessHours6.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
 
-            document.getElementById('businessHours1.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours2.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours3.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours4.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours5.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours6.startHourStore').value =  document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours1.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours2.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours3.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours4.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours5.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours6.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
 
-            document.getElementById('businessHours1.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours2.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours3.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours4.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours5.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours6.tokenNotAvailableFrom').value =  document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours1.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours2.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours3.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours4.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours5.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
+            document.getElementById('businessHours6.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
 
-            document.getElementById('businessHours1.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours2.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours3.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours4.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours5.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours6.endHourStore').value =  document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours1.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours2.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours3.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours4.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours5.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours6.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
         }
     });
 </script>
