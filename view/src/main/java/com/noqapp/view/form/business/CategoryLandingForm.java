@@ -14,6 +14,7 @@ public class CategoryLandingForm {
     private ScrubbedInput categoryId;
     private ScrubbedInput categoryName;
     private Map<String, String> categories;
+    private Map<String, Long> categoryCounts;
 
     public ScrubbedInput getBizNameId() {
         return bizNameId;
@@ -48,6 +49,15 @@ public class CategoryLandingForm {
 
     public CategoryLandingForm setCategories(Map<String, String> categories) {
         this.categories = categories;
+        return this;
+    }
+
+    public Map<String, Long> getCategoryCounts() {
+        return categoryCounts;
+    }
+
+    public CategoryLandingForm setCategoryCounts(Map<String, Long> categoryCounts) {
+        this.categoryCounts = categoryCounts;
         return this;
     }
 }

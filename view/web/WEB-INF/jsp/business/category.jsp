@@ -163,12 +163,16 @@
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                  alt="Sort" height="16px;"/>
                                         </th>
+                                        <th>
+                                            Referred
+                                        </th>
                                         <th nowrap>Edit</th>
                                     </tr>
                                     <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>${category.value}</td>
+                                        <td nowrap>${categoryLanding.categoryCounts.get(category.key)}</td>
                                         <td nowrap><a href="/business/category/${category.key}/edit.htm">Click to Edit</a></td>
                                     </tr>
                                     </c:forEach>

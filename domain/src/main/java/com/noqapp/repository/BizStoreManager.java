@@ -138,5 +138,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId);
+
+    long countCategoryUse(String bizCategoryId, String bizNameId);
 }
 

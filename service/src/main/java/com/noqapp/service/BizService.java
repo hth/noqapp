@@ -217,4 +217,13 @@ public class BizService {
     public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
         return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId, bizStoreId);
     }
+
+    public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {
+        Map<String, Long> maps = new HashMap<>();
+        for (String bizCategoryId : categories) {
+            maps.put(bizCategoryId, bizStoreManager.countCategoryUse(bizCategoryId, bizNameId));
+        }
+
+        return maps;
+    }
 }

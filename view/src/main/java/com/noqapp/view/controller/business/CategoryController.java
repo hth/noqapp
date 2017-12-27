@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * hitender
@@ -93,9 +94,11 @@ public class CategoryController {
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
         String bizNameId = businessUser.getBizName().getId();
+        Map<String, String> categories = bizService.getBusinessCategoriesAsMap(bizNameId);
         categoryLanding
                 .setBizNameId(new ScrubbedInput(bizNameId))
-                .setCategories(bizService.getBusinessCategoriesAsMap(bizNameId));
+                .setCategories(categories)
+                .setCategoryCounts(bizService.countCategoryUse(categories.keySet(), bizNameId));
         return nextPage;
     }
 
