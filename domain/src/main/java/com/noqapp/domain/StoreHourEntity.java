@@ -51,7 +51,7 @@ public class StoreHourEntity extends BaseEntity {
     private boolean dayClosed = false;
 
     /* TODO(hth) This includes temp day close and temp preventJoining. All this resets on next day. */
-    /* When business delays the start in minutes. TODO(hth) to be implemented. */
+    /* When business queue delays the start time. Delayed by minutes. */
     @Field ("DE")
     private int delayedInMinutes = 0;
 
