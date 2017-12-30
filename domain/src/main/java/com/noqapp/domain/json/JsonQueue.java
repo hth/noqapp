@@ -69,6 +69,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("e")
     private int endHour;
 
+    @JsonProperty ("de")
+    private int delayedInMinutes;
+
     @JsonProperty ("pj")
     private boolean preventJoining;
 
@@ -217,6 +220,15 @@ public class JsonQueue extends AbstractDomain {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public JsonQueue setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
+        return this;
     }
 
     public boolean isPreventJoining() {
