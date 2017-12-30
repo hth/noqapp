@@ -232,7 +232,7 @@ public class MailService {
                     .setToMail(userId)
                     .setToName(profileName)
                     .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for supervising queue " + displayName)
-                    .setMessage(freemarkerService.freemarkerToString("mail/inviteAsQueueSupervisor.ftl", rootMap))
+                    .setMessage(freemarkerService.freemarkerToString("mail/invited-queue-supervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
@@ -265,7 +265,7 @@ public class MailService {
                     .setToMail(userId)
                     .setToName(profileName)
                     .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising queue " + displayName)
-                    .setMessage(freemarkerService.freemarkerToString("mail/addedAsQueueSupervisor.ftl", rootMap))
+                    .setMessage(freemarkerService.freemarkerToString("mail/added-queue-supervisor.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
