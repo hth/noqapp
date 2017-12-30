@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import java.util.Date;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -83,6 +85,15 @@ public class UserAccountManagerImpl implements UserAccountManager {
                 query(where("id").is(id).and("AIR").is(air)),
                 entityUpdate(update("A", true).set("AV", true).unset("AIR")),
                 UserAccountEntity.class
+        );
+    }
+
+    @Override
+    public long countRegisteredBetweenDates(Date from, Date to) {
+        return mongoTemplate.count(
+                new Query().addCriteria(where("C").gte(from).lt(to)),
+                UserAccountEntity.class,
+                TABLE
         );
     }
 }

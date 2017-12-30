@@ -12,7 +12,7 @@ import java.util.Locale;
  */
 public class DateFormatter {
     private static DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
-    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mma");
+    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
 
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
         DateTime dateTime = inputFormatter.parseDateTime(rawTimestamp);

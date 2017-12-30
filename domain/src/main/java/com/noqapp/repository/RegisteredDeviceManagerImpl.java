@@ -182,6 +182,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         );
     }
 
+    @Override
     public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, String token) {
         Update update;
         if (StringUtils.isBlank(qid)) {
@@ -204,6 +205,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         ).getModifiedCount() > 0;
     }
 
+    @Override
     public void markFetchedSinceBeginningForDevice(String id) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
@@ -212,11 +214,28 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 TABLE);
     }
 
+    @Override
     public void unsetQidForDevice(String id) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(new Update().unset("QID")),
                 RegisteredDeviceEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public long countRegisteredBetweenDates(Date from, Date to, DeviceTypeEnum deviceType) {
+        Query query = new Query();
+        if (null == deviceType) {
+            query.addCriteria(where("C").gte(from).lt(to));
+        } else {
+            query.addCriteria(where("DT").is(deviceType)).addCriteria(where("C").gte(from).lt(to));
+        }
+
+        return mongoTemplate.count(
+                query,
+                RegisteredDeviceEntity.class,
+                TABLE
+        );
     }
 }

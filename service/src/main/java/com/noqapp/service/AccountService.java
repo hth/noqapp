@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -560,5 +561,9 @@ public class AccountService {
         userAccount.setUserAuthentication(userAuthentication);
         save(userAccount);
         LOG.info("Updated with authentication qid={}", qid);
+    }
+
+    public long countRegisteredBetweenDates(Date from, Date to) {
+        return userAccountManager.countRegisteredBetweenDates(from, to);
     }
 }
