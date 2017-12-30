@@ -4,6 +4,7 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,4 +62,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @Mobile
     void unsetQidForDevice(String id);
+
+    long countRegisteredBetweenDates(Date from, Date to, DeviceTypeEnum deviceType);
 }

@@ -275,6 +275,37 @@ public class MailService {
         return MailTypeEnum.SUCCESS;
     }
 
+    public MailTypeEnum registrationStatusMail(
+            long awaitingBusinessApproval,
+            long registeredUser,
+            long deviceRegistered,
+            long androidDeviceRegistered,
+            long iPhoneDeviceRegistered
+    ) {
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("registeredUser", Long.toString(registeredUser));
+        rootMap.put("awaitingBusinessApproval", Long.toString(awaitingBusinessApproval));
+        rootMap.put("deviceRegistered", Long.toString(deviceRegistered));
+        rootMap.put("androidDeviceRegistered", Long.toString(androidDeviceRegistered));
+        rootMap.put("iPhoneDeviceRegistered", Long.toString(iPhoneDeviceRegistered));
+        rootMap.put("parentHost", parentHost);
+
+        try {
+            LOG.info("Account validation sent to={}", "info@noqapp.com");
+            MailEntity mail = new MailEntity()
+                    .setToMail("info@noqapp.com")
+                    .setToName("NoQueue Inc")
+                    .setSubject("Daily Registration Status")
+                    .setMessage(freemarkerService.freemarkerToString("mail/registration-status.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Failed validation email for={}", devSentTo, exception);
+            return MailTypeEnum.FAILURE;
+        }
+        return MailTypeEnum.SUCCESS;
+    }
+
     /**
      * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
      *
