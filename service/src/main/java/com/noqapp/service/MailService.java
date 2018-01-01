@@ -232,7 +232,7 @@ public class MailService {
         rootMap.put("parentHost", parentHost);
 
         try {
-            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
+            LOG.info("Send Queue Supervisor Mail sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(profileName)
@@ -265,7 +265,7 @@ public class MailService {
         rootMap.put("parentHost", parentHost);
 
         try {
-            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
+            LOG.info("Added Queue Supervisor Mail sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(profileName)
@@ -296,7 +296,7 @@ public class MailService {
         rootMap.put("parentHost", parentHost);
 
         try {
-            LOG.info("Account validation sent to={}", doNotReplyEmail);
+            LOG.info("Daily Registration Status Mail sent to={}", doNotReplyEmail);
             MailEntity mail = new MailEntity()
                     .setToMail(doNotReplyEmail)
                     .setToName("NoQueue Inc")
