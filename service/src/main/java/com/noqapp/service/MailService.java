@@ -54,6 +54,7 @@ public class MailService {
     private String mailRecoverSubject;
     private String mailValidateSubject;
     private String accountNotFoundSubject;
+    private String doNotReplyEmail;
 
     @Autowired
     public MailService(
@@ -81,6 +82,9 @@ public class MailService {
             @Value ("${mail.account.not.found.subject}")
             String accountNotFoundSubject,
 
+            @Value ("${do.not.reply.email}")
+            String doNotReplyEmail,
+
             AccountService accountService,
 
             FreemarkerService freemarkerService,
@@ -95,6 +99,7 @@ public class MailService {
         this.mailRecoverSubject = mailRecoverSubject;
         this.mailValidateSubject = mailValidateSubject;
         this.accountNotFoundSubject = accountNotFoundSubject;
+        this.doNotReplyEmail = doNotReplyEmail;
 
         this.accountService = accountService;
         this.freemarkerService = freemarkerService;
@@ -291,9 +296,9 @@ public class MailService {
         rootMap.put("parentHost", parentHost);
 
         try {
-            LOG.info("Account validation sent to={}", "info@noqapp.com");
+            LOG.info("Account validation sent to={}", doNotReplyEmail);
             MailEntity mail = new MailEntity()
-                    .setToMail("info@noqapp.com")
+                    .setToMail(doNotReplyEmail)
                     .setToName("NoQueue Inc")
                     .setSubject("Daily Registration Status")
                     .setMessage(freemarkerService.freemarkerToString("mail/registration-status.ftl", rootMap))
