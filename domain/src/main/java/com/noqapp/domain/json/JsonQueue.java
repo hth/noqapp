@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -54,6 +55,9 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty ("p")
     private String storePhone;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty ("f")
     private int tokenAvailableFrom;
@@ -184,6 +188,15 @@ public class JsonQueue extends AbstractDomain {
 
     public String getStorePhone() {
         return storePhone;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
     }
 
     public JsonQueue setTokenAvailableFrom(int tokenAvailableFrom) {

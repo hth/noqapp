@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -48,6 +49,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     @JsonProperty ("p")
     private String storePhone;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty ("f")
     private int tokenAvailableFrom;
@@ -98,6 +102,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.storeAddress = jsonQueue.getStoreAddress();
         this.countryShortName = jsonQueue.getCountryShortName();
         this.storePhone = jsonQueue.getStorePhone();
+        this.businessType = jsonQueue.getBusinessType();
         this.tokenAvailableFrom = jsonQueue.getTokenAvailableFrom();
         this.startHour = jsonQueue.getStartHour();
         this.endHour = jsonQueue.getEndHour();
@@ -120,6 +125,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.storeAddress = bizStore.getAddress();
         this.countryShortName = bizStore.getCountryShortName();
         this.storePhone = bizStore.getPhone();
+        this.businessType = bizStore.getBusinessType();
         this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
@@ -143,6 +149,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                 ", storeAddress='" + storeAddress + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
                 ", storePhone='" + storePhone + '\'' +
+                ", businessType=" + businessType +
                 ", tokenAvailableFrom=" + tokenAvailableFrom +
                 ", startHour=" + startHour +
                 ", endHour=" + endHour +
@@ -152,6 +159,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
                 ", token=" + token +
                 ", queueStatus=" + queueStatus +
                 ", servicedEndTime='" + servicedEndTime + '\'' +
+                ", ratingCount=" + ratingCount +
+                ", hoursSaved=" + hoursSaved +
                 ", createDate='" + createDate + '\'' +
                 '}';
     }
@@ -178,6 +187,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public String getStorePhone() {
         return storePhone;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
     public int getTokenAvailableFrom() {
