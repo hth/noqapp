@@ -8,6 +8,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StoreHourManager;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ public class BizService {
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
     private BizCategoryManager bizCategoryManager;
+    private BusinessUserStoreManager businessUserStoreManager;
 
     @Autowired
     public BizService(
@@ -57,7 +59,8 @@ public class BizService {
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
             StoreHourManager storeHourManager,
-            BizCategoryManager bizCategoryManager
+            BizCategoryManager bizCategoryManager,
+            BusinessUserStoreManager businessUserStoreManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
@@ -65,6 +68,7 @@ public class BizService {
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
         this.bizCategoryManager = bizCategoryManager;
+        this.businessUserStoreManager = businessUserStoreManager;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -77,6 +81,13 @@ public class BizService {
 
     public BizStoreEntity getByStoreId(String storeId) {
         return bizStoreManager.getById(storeId);
+    }
+
+    public void deleteStore(String storeId) {
+        BizStoreEntity bizStore = getByStoreId(storeId);
+        bizStoreManager.deleteHard(bizStore);
+        long removedRecords = businessUserStoreManager.deleteAllManagingStore(storeId);
+        LOG.info("Deleted Store id={} removed reference to number of people managing queue={}", storeId, removedRecords);
     }
 
     public void saveStore(BizStoreEntity bizStore) {

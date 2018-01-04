@@ -179,15 +179,34 @@
                                 </ul>
 
                                 <div class="col-lable3"></div>
-                                <div class="col-fields">
-                                    <div class="left-btn">
-                                        <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+
+                                <c:choose>
+                                <c:when test="${!empty registerBusiness.bizStoreId}">
+                                    <div class="col-fields">
+                                        <div class="first-btn">
+                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+                                        </div>
+                                        <div class="center-btn">
+                                            <input name="_eventId_delete" class="cancel-btn" value="DELETE" type="submit">
+                                        </div>
+                                        <div class="last-btn">
+                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                        </div>
+                                        <div class="clearFix"></div>
                                     </div>
-                                    <div class="right-btn">
-                                        <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="col-fields">
+                                        <div class="left-btn">
+                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
+                                        </div>
+                                        <div class="right-btn">
+                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                        </div>
+                                        <div class="clearFix"></div>
                                     </div>
-                                    <div class="clearFix"></div>
-                                </div>
+                                </c:otherwise>
+                                </c:choose>
                                 <div class="clearFix"></div>
                             </div>
                         </div>

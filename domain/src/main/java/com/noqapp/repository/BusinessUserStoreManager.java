@@ -20,6 +20,8 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId);
 
+    long deleteAllManagingStore(String bizStoreId);
+
     void activateAccount(String qid, String bizNameId);
 
     void removeFromBusiness(String qid, String bizNameId);

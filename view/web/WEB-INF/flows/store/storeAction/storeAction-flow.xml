@@ -14,8 +14,15 @@
 
     <view-state id="registrationStart" model="registerBusiness">
         <transition on="submit" to="validateStoreDetails"/>
+        <transition on="delete" to="deleteStoreDetails"/>
         <transition on="cancel" to="logout"/>
     </view-state>
+
+    <action-state id="deleteStoreDetails">
+        <evaluate expression="storeFlowActions.deleteStore(bizStoreId)"/>
+        <transition on="success" to="logout"/>
+        <transition on="failure" to="registrationStart"/>
+    </action-state>
 
     <action-state id="validateStoreDetails">
         <evaluate expression="businessFlowValidator.validateStoreDetails(registerBusiness, '', messageContext)"/>

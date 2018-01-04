@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.result.DeleteResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,17 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
                 BusinessUserStoreEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public long deleteAllManagingStore(String bizStoreId) {
+        DeleteResult deleteResult = mongoTemplate.remove(
+                query(where("BS").is(bizStoreId)),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+
+        return deleteResult.getDeletedCount();
     }
 
     @Override
