@@ -6,6 +6,8 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 @Component
 public class StoreFlowActions extends RegistrationFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(StoreFlowActions.class);
 
     private BusinessUserService businessUserService;
     private BizService bizService;
@@ -82,6 +85,12 @@ public class StoreFlowActions extends RegistrationFlowActions {
             registerBusiness.convertToBusinessHours(storeHours);
         }
         return registerBusiness;
+    }
+
+    @SuppressWarnings("unused")
+    public void deleteStore(String bizStoreId) {
+        LOG.info("Delete storeId={}", bizStoreId);
+        bizService.deleteStore(bizStoreId);
     }
 
     private RegisterBusiness populateWithBizName(BusinessUserEntity businessUser) {
