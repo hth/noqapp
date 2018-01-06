@@ -48,9 +48,7 @@ public class MobileMailController {
         this.mailService = mailService;
     }
 
-    @PostMapping(
-            value = "/accountSignup"
-    )
+    @PostMapping(value = "/accountSignup")
     public void accountValidationMail(
             @RequestBody
             String mailJson,
