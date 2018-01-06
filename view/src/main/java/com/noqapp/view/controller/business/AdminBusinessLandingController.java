@@ -17,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -121,11 +123,7 @@ public class AdminBusinessLandingController {
      * @param businessLandingForm
      * @return
      */
-    @RequestMapping (
-            value = "/landing",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
             @ModelAttribute ("businessLandingForm")
             BusinessLandingForm businessLandingForm
@@ -194,11 +192,7 @@ public class AdminBusinessLandingController {
      * @param storeId
      * @return
      */
-    @RequestMapping (
-            value = "/{storeId}/listQueueSupervisor",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping (value = "/{storeId}/listQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String listQueueSupervisor(
             @ModelAttribute ("queueSupervisorForm")
             QueueSupervisorForm queueSupervisorForm,
@@ -234,21 +228,13 @@ public class AdminBusinessLandingController {
         return listQueueSupervisorPage;
     }
 
-    @RequestMapping (
-            value = "/addStore",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
     public String addStore() {
         LOG.info("Add store to business {}", storeActionFlow);
         return storeActionFlow;
     }
 
-    @RequestMapping (
-            value = "/{bizStoreId}/editStore",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping (value = "/{bizStoreId}/editStore", produces = "text/html;charset=UTF-8")
     public String editStore(
             @PathVariable ("bizStoreId")
             ScrubbedInput bizStoreId,
@@ -260,11 +246,7 @@ public class AdminBusinessLandingController {
         return storeActionFlow;
     }
 
-    @RequestMapping (
-            value = "/{bizStoreId}/addQueueSupervisor",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping (value = "/{bizStoreId}/addQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String addQueueSupervisorFlow(
             @PathVariable ("bizStoreId")
             ScrubbedInput bizStoreId,
@@ -282,10 +264,7 @@ public class AdminBusinessLandingController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (
-            value = "/actionQueueSupervisor",
-            method = RequestMethod.POST
-    )
+    @PostMapping(value = "/actionQueueSupervisor")
     public String actionQueueSupervisor(
             @ModelAttribute ("queueSupervisorActionForm")
             QueueSupervisorActionForm queueSupervisorActionForm,

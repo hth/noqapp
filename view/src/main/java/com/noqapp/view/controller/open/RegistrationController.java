@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +59,7 @@ public class RegistrationController {
         this.loginController = loginController;
     }
 
-    @RequestMapping (method = RequestMethod.POST)
+    @PostMapping
     public String signUp(
             @ModelAttribute ("merchantRegistration")
             MerchantRegistrationForm merchantRegistration
@@ -118,8 +119,7 @@ public class RegistrationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (
-            method = RequestMethod.POST,
+    @PostMapping (
             value = "/availability",
             headers = "Accept=application/json",
             produces = "application/json"

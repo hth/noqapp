@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -99,10 +101,7 @@ public class ForgotController {
         this.mailService = mailService;
     }
 
-    @RequestMapping (
-            method = RequestMethod.GET,
-            value = "password"
-    )
+    @GetMapping(value = "password")
     public String onPasswordLinkClicked(
             @ModelAttribute ("forgotRecoverForm")
             ForgotRecoverForm forgotRecoverForm
@@ -111,11 +110,7 @@ public class ForgotController {
         return passwordPage;
     }
 
-    @RequestMapping (
-            method = RequestMethod.POST,
-            value = "password",
-            params = {"forgot_password"}
-    )
+    @PostMapping(value = "password", params = {"forgot_password"})
     public String emailUserForPasswordRecovery(
             @ModelAttribute ("forgotRecoverForm")
             ForgotRecoverForm forgotRecoverForm,
@@ -164,7 +159,7 @@ public class ForgotController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (method = RequestMethod.GET, value = "recoverConfirm")
+    @GetMapping (value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
             @ModelAttribute (SUCCESS_EMAIL)
             String success,
@@ -195,7 +190,7 @@ public class ForgotController {
      * @param forgotAuthenticateForm
      * @return
      */
-    @RequestMapping (method = RequestMethod.GET, value = "authenticate")
+    @GetMapping (value = "authenticate")
     public String whenClickedOnEmailLink(
             @RequestParam ("authenticationKey")
             ScrubbedInput key,
@@ -211,7 +206,7 @@ public class ForgotController {
         return authenticatePage;
     }
 
-    @RequestMapping (method = RequestMethod.POST, value = "authenticate", params = {"update_password"})
+    @PostMapping (value = "authenticate", params = {"update_password"})
     public String updatePassword(
             @ModelAttribute ("forgotAuthenticateForm")
             ForgotAuthenticateForm forgotAuthenticateForm,

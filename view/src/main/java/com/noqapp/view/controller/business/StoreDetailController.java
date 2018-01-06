@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +75,7 @@ public class StoreDetailController {
      * @param storeLandingForm
      * @return
      */
-    @RequestMapping (value = "/{storeId}", method = RequestMethod.GET)
+    @GetMapping(value = "/{storeId}")
     public String landing(
             @PathVariable("storeId")
             ScrubbedInput storeId,
@@ -114,7 +115,7 @@ public class StoreDetailController {
      * @param fileName
      * @return
      */
-    @RequestMapping (value = "/i/{fileName}", method = RequestMethod.GET)
+    @GetMapping (value = "/i/{fileName}")
     public void getQRFilename(
             @PathVariable("fileName")
             ScrubbedInput fileName,

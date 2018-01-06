@@ -21,8 +21,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -123,11 +125,7 @@ public class CategoryController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (
-            value = "/add",
-            method = RequestMethod.POST,
-            params = {"add"}
-    )
+    @PostMapping (value = "/add", params = {"add"})
     public String add(
             @ModelAttribute ("categoryLanding")
             CategoryLandingForm categoryLanding,
@@ -158,11 +156,7 @@ public class CategoryController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (
-            value = "/add",
-            method = RequestMethod.POST,
-            params = {"cancel_Add"}
-    )
+    @PostMapping (value = "/add", params = {"cancel_Add"})
     public String cancelAdd(
             @ModelAttribute ("categoryLanding")
             CategoryLandingForm categoryLanding
@@ -179,7 +173,7 @@ public class CategoryController {
      * @param bizCategoryId
      * @return
      */
-    @RequestMapping (value = "/{bizCategoryId}/edit", method = RequestMethod.GET)
+    @GetMapping (value = "/{bizCategoryId}/edit")
     public String editLanding(
             @PathVariable("bizCategoryId")
             ScrubbedInput bizCategoryId,
@@ -212,7 +206,7 @@ public class CategoryController {
      * @param response
      * @return
      */
-    @RequestMapping (value = "/edit", method = RequestMethod.POST)
+    @PostMapping(value = "/edit")
     public String edit(
             @ModelAttribute ("categoryLanding")
             CategoryLandingForm categoryLanding,
@@ -243,11 +237,7 @@ public class CategoryController {
      * @return
      * @throws IOException
      */
-    @RequestMapping (
-            value = "/edit",
-            method = RequestMethod.POST,
-            params = {"cancel_Edit"}
-    )
+    @PostMapping (value = "/edit", params = {"cancel_Edit"})
     public String cancelEdit(
             @ModelAttribute ("categoryLanding")
             CategoryLandingForm categoryLanding
@@ -264,7 +254,7 @@ public class CategoryController {
      * @param bizCategoryId
      * @return
      */
-    @RequestMapping (value = "/{bizCategoryId}/storeByCategory", method = RequestMethod.GET)
+    @GetMapping(value = "/{bizCategoryId}/storeByCategory")
     public String storeByCategory(
             @PathVariable("bizCategoryId")
             ScrubbedInput bizCategoryId,
