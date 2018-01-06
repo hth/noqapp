@@ -38,7 +38,10 @@ public class GetController {
      *
      * @return
      */
-    @GetMapping(headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @GetMapping(
+            headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"
+    )
     public String get(
             @RequestHeader ("X-R-API-MOBILE")
             String apiAccessToken,
