@@ -2,6 +2,7 @@ package com.noqapp.view.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +38,7 @@ public class ShowStoreController {
      *
      * @return
      */
-    @RequestMapping (value = "/{codeQR}/q", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{codeQR}/q", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showStoreByCodeQR(codeQR.getText());

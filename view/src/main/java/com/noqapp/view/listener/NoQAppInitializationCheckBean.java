@@ -122,14 +122,7 @@ public class NoQAppInitializationCheckBean {
             }
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
-            doSearch();
         }
-    }
-
-    //DELETE ME, for test
-    private void doSearch() {
-        bizStoreElasticService.createBizStoreSearchDSLQuery("Ganesh");
-        bizStoreElasticService.createBizStoreSearchDSLQuery("Vashi", "te7ut0u5zy9c");
     }
 
     @PreDestroy

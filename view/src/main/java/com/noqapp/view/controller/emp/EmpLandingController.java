@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -64,7 +66,7 @@ public class EmpLandingController {
         this.empLandingService = empLandingService;
     }
 
-    @RequestMapping (method = RequestMethod.GET)
+    @GetMapping
     public String empLanding(
             @ModelAttribute ("empLandingForm")
             EmpLandingForm empLandingForm
@@ -79,7 +81,7 @@ public class EmpLandingController {
         return empLanding;
     }
 
-    @RequestMapping (value = "{businessUserId}", method = RequestMethod.GET)
+    @GetMapping(value = "{businessUserId}")
     public String getAwaitingBusinessApprovals(
             @PathVariable ("businessUserId")
             ScrubbedInput businessUserId,
@@ -105,10 +107,7 @@ public class EmpLandingController {
         return businessAwaitingApproval;
     }
 
-    @RequestMapping (
-            value = "/approval",
-            method = RequestMethod.POST,
-            params = "business-user-approve")
+    @PostMapping (value = "/approval", params = "business-user-approve")
     public String approval(
             @ModelAttribute ("businessAwaitingApprovalForm")
             BusinessAwaitingApprovalForm businessAwaitingApprovalForm
@@ -125,10 +124,7 @@ public class EmpLandingController {
         return "redirect:" + "/emp/landing.htm";
     }
 
-    @RequestMapping (
-            value = "/approval",
-            method = RequestMethod.POST,
-            params = "business-user-decline")
+    @PostMapping(value = "/approval", params = "business-user-decline")
     public String decline(
             @ModelAttribute ("businessAwaitingApprovalForm")
             BusinessAwaitingApprovalForm businessAwaitingApprovalForm

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -35,11 +36,7 @@ public class AdminLandingController {
         this.nextPage = nextPage;
     }
 
-    @RequestMapping (
-            value = "/landing",
-            method = RequestMethod.GET,
-            produces = "text/html;charset=UTF-8"
-    )
+    @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String adminLanding() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Admin landed qid={}", queueUser.getQueueUserId());
