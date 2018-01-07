@@ -3,6 +3,7 @@ package com.noqapp.service;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -160,8 +161,9 @@ public class ShowHTMLService {
         /*
          * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
          * Hence matches ZonedDateTime Hour and Minutes
+         * And, To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence formatting.
          */
-        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + "" + zonedDateTime.getMinute()));
+        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute())));
         if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
             LOG.debug("{} > {}",
                     storeHour.getTokenNotAvailableFrom(),
