@@ -3,10 +3,10 @@ package com.noqapp.service;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -161,34 +161,34 @@ public class ShowHTMLService {
         /*
          * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
          * Hence matches ZonedDateTime Hour and Minutes
-         * And, To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence formatting.
+         * And, To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting.
          */
-        int currentZoneTime = Integer.valueOf(String.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute())));
-        if (storeHour.getTokenNotAvailableFrom() > currentZoneTime) {
+        int timeIn24HourFormat = CommonUtil.getTimeIn24HourFormat(zonedDateTime);
+        if (storeHour.getTokenNotAvailableFrom() > timeIn24HourFormat) {
             LOG.debug("{} > {}",
                     storeHour.getTokenNotAvailableFrom(),
-                    currentZoneTime);
+                    timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Open");
 
-        } else if (storeHour.getEndHour() <= currentZoneTime) {
+        } else if (storeHour.getEndHour() <= timeIn24HourFormat) {
             LOG.debug("{} < {}",
                     storeHour.getEndHour(),
-                    currentZoneTime);
+                    timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closed");
 
-        } else if (storeHour.getTokenNotAvailableFrom() < currentZoneTime && storeHour.getEndHour() > currentZoneTime) {
+        } else if (storeHour.getTokenNotAvailableFrom() < timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
             LOG.debug("{} < {} & {} > {}",
                     storeHour.getTokenNotAvailableFrom(),
-                    currentZoneTime,
+                    timeIn24HourFormat,
                     storeHour.getEndHour(),
-                    currentZoneTime);
+                    timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         } else {
             LOG.error("QueueStatus computed currentZoneTime={} bizStoreId={} storeHour={}",
-                    currentZoneTime,
+                    timeIn24HourFormat,
                     storeHour.getBizStoreId(),
                     storeHour);
 

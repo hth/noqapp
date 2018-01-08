@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -114,9 +115,6 @@ public final class CommonUtil {
 
     /**
      * SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox.
-     *
-     * @param environment
-     * @return
      */
     public static String generateCodeQR(String environment) {
         switch (environment) {
@@ -139,11 +137,23 @@ public final class CommonUtil {
 
     /**
      * Used when merchant is dispensing token for people without app.
-     *
-     * @param did
-     * @return
      */
     public static String appendRandomToDeviceId(String did) {
         return did + "-" + RandomString.newInstance(6).nextString();
+    }
+
+    /**
+     * Get time in 24 hour format.
+     */
+    public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
+        /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
+        return Integer.valueOf(String.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute())));
+    }
+
+    /**
+     * This will get you system time in 24 hour format.
+     */
+    public static int getTimeIn24HourFormat() {
+        return getTimeIn24HourFormat(ZonedDateTime.now());
     }
 }
