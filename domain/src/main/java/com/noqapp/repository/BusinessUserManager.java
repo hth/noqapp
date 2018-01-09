@@ -47,4 +47,6 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
     List<BusinessUserEntity> awaitingBusinessApprovals();
 
     List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId);
+
+    List<BusinessUserEntity> getAllForBusiness(String bizNameId);
 }

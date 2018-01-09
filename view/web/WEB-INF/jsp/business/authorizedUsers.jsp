@@ -53,7 +53,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Queue Supervisors & Managers of <span>${queueSupervisorForm.queueName}</span></h3>
+                        <h3>Authorized users to manage <span>${queueSupervisorForm.queueName}</span></h3>
 
                         <div class="add-store">
                             <div class="store-table">
@@ -91,7 +91,7 @@
                                                     <td>${queueSupervisor.email}</td>
                                                     <td nowrap>
                                                     <c:choose>
-                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
                                                             <select path="userLevel" class="form-field-select single-dropdown">
                                                                 <c:forEach var="item" items="${userLevelEnumValues}">
                                                                     <%--//TODO Add ajax call to change user role--%>
@@ -108,13 +108,18 @@
                                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
                                                     </td>
                                                     <td class="Tleft" nowrap>
-                                                    <c:if test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                        <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                            <form:hidden path="action" value="DELETE" />
-                                                            <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                            <input class="cancel-btn" value="Delete" type="submit">
-                                                        </form:form>
-                                                    </c:if>
+                                                    <c:choose>
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
+                                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                <form:hidden path="action" value="DELETE" />
+                                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                <input class="cancel-btn" value="Delete" type="submit">
+                                                            </form:form>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            --
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
