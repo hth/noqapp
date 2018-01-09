@@ -135,7 +135,7 @@ public class BusinessUserStoreService {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllManagingStore(bizStoreId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String qid = businessUserStore.getQueueUserId();
-            QueueSupervisor queueSupervisor = getQueueSupervisor(bizStoreId, businessUserStore.getBizNameId(), qid);
+            QueueSupervisor queueSupervisor = populateQueueSupervisorFromQid(bizStoreId, businessUserStore.getBizNameId(), qid);
             queueSupervisor
                     .setCreated(businessUserStore.getCreated())
                     .setActive(businessUserStore.isActive());
@@ -151,7 +151,7 @@ public class BusinessUserStoreService {
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
 
         for (BusinessUserEntity businessUser : businessUsers) {
-            QueueSupervisor queueSupervisor = getQueueSupervisor(null, bizNameId, businessUser.getQueueUserId());
+            QueueSupervisor queueSupervisor = populateQueueSupervisorFromQid(null, bizNameId, businessUser.getQueueUserId());
             queueSupervisor
                     .setCreated(businessUser.getCreated())
                     .setActive(businessUser.isActive());
@@ -162,7 +162,7 @@ public class BusinessUserStoreService {
         return queueSupervisors;
     }
 
-    private QueueSupervisor getQueueSupervisor(String bizStoreId, String bizNameId, String qid) {
+    private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
         QueueSupervisor queueSupervisor = new QueueSupervisor();
