@@ -96,4 +96,8 @@ public class BusinessUserService {
     public List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId) {
         return businessUserManager.getAllNonAdminForBusiness(bizNameId);
     }
+
+    public List<BusinessUserEntity> getAllForBusiness(String bizNameId) {
+        return businessUserManager.getAllForBusiness(bizNameId);
+    }
 }

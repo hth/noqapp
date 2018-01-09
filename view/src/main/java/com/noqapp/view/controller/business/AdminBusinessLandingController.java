@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.noqapp.domain.BizNameEntity;
@@ -69,7 +68,7 @@ public class AdminBusinessLandingController {
     private String storeActionFlow;
     private String addQueueSupervisorFlow;
     private String listQueueSupervisorPage;
-    private String allManagingQueuePage;
+    private String authorizedUsersPage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -97,8 +96,8 @@ public class AdminBusinessLandingController {
             @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
             String listQueueSupervisorPage,
 
-            @Value("${allManagingQueuePage:/business/allManagingQueue}")
-            String allManagingQueuePage,
+            @Value("${authorizedUsersPage:/business/authorizedUsers}")
+            String authorizedUsersPage,
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
@@ -112,7 +111,7 @@ public class AdminBusinessLandingController {
         this.storeActionFlow = storeActionFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
-        this.allManagingQueuePage = allManagingQueuePage;
+        this.authorizedUsersPage = authorizedUsersPage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -370,7 +369,7 @@ public class AdminBusinessLandingController {
             String goToPage;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "DELETE":
-                    goToPage = "redirect:/business/allManagingQueue.htm";
+                    goToPage = "redirect:/business/authorizedUsers.htm";
                     break;
                 default:
                     goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
@@ -386,7 +385,7 @@ public class AdminBusinessLandingController {
             String goToPage;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "DELETE":
-                    goToPage = "redirect:/business/allManagingQueue.htm";
+                    goToPage = "redirect:/business/authorizedUsers.htm";
                     break;
                 default:
                     goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
@@ -401,8 +400,8 @@ public class AdminBusinessLandingController {
      * @param queueSupervisorForm
      * @return
      */
-    @GetMapping (value = "/allManagingQueue", produces = "text/html;charset=UTF-8")
-    public String allManagingQueue(
+    @GetMapping (value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
+    public String authorizedUsers(
             @ModelAttribute ("queueSupervisorForm")
             QueueSupervisorForm queueSupervisorForm,
 
@@ -412,8 +411,8 @@ public class AdminBusinessLandingController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
-        queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAllManagingQueue(businessUser.getBizName().getId()));
+        queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
 
-        return allManagingQueuePage;
+        return authorizedUsersPage;
     }
 }

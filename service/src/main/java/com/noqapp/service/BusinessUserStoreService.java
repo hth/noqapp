@@ -146,8 +146,8 @@ public class BusinessUserStoreService {
         return queueSupervisors;
     }
 
-    public List<QueueSupervisor> getAllManagingQueue(String bizNameId) {
-        List<BusinessUserEntity> businessUsers = businessUserService.getAllNonAdminForBusiness(bizNameId);
+    public List<QueueSupervisor> getAuthorizedUsersForBusiness(String bizNameId) {
+        List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizNameId);
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
 
         for (BusinessUserEntity businessUser : businessUsers) {

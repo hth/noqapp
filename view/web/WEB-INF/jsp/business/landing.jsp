@@ -55,7 +55,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/allManagingQueue.htm" class="add-btn">Show All Managing Queue</a>
+                                <a href="/business/authorizedUsers.htm" class="add-btn">Show All Managing Queue</a>
                                 <a href="/business/category.htm" class="add-btn">Show Business Category</a>
                                 <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
                             </div>
