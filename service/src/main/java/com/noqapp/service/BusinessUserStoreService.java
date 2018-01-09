@@ -135,27 +135,49 @@ public class BusinessUserStoreService {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllManagingStore(bizStoreId);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String qid = businessUserStore.getQueueUserId();
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
-            QueueSupervisor queueSupervisor = new QueueSupervisor();
-            queueSupervisor.setBusinessUserId(businessUser.getId())
-                    .setStoreId(bizStoreId)
-                    .setBusinessId(businessUserStore.getBizNameId())
-                    .setName(userProfile.getName())
-                    .setPhone(userProfile.getPhone())
-                    .setCountryShortName(userProfile.getCountryShortName())
-                    .setAddress(userProfile.getAddress())
-                    .setEmail(userProfile.getEmail())
-                    .setQueueUserId(qid)
-                    .setUserLevel(userProfile.getLevel())
+            QueueSupervisor queueSupervisor = getQueueSupervisor(bizStoreId, businessUserStore.getBizNameId(), qid);
+            queueSupervisor
                     .setCreated(businessUserStore.getCreated())
-                    .setActive(businessUserStore.isActive())
-                    .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+                    .setActive(businessUserStore.isActive());
 
             queueSupervisors.add(queueSupervisor);
         }
 
         return queueSupervisors;
+    }
+
+    public List<QueueSupervisor> getAllManagingQueue(String bizNameId) {
+        List<BusinessUserEntity> businessUsers = businessUserService.getAllNonAdminForBusiness(bizNameId);
+        List<QueueSupervisor> queueSupervisors = new ArrayList<>();
+
+        for (BusinessUserEntity businessUser : businessUsers) {
+            QueueSupervisor queueSupervisor = getQueueSupervisor(null, bizNameId, businessUser.getQueueUserId());
+            queueSupervisor
+                    .setCreated(businessUser.getCreated())
+                    .setActive(businessUser.isActive());
+
+            queueSupervisors.add(queueSupervisor);
+        }
+
+        return queueSupervisors;
+    }
+
+    private QueueSupervisor getQueueSupervisor(String bizStoreId, String bizNameId, String qid) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
+        QueueSupervisor queueSupervisor = new QueueSupervisor();
+        queueSupervisor.setBusinessUserId(businessUser.getId())
+                .setStoreId(bizStoreId)
+                .setBusinessId(bizNameId)
+                .setName(userProfile.getName())
+                .setPhone(userProfile.getPhone())
+                .setCountryShortName(userProfile.getCountryShortName())
+                .setAddress(userProfile.getAddress())
+                .setEmail(userProfile.getEmail())
+                .setQueueUserId(qid)
+                .setUserLevel(userProfile.getLevel())
+                .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+        return queueSupervisor;
     }
 
     /**
