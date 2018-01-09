@@ -53,7 +53,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><span>${queueSupervisorForm.queueName}</span></h3>
+                        <h3>Queue Supervisors & Managers of <span>${queueSupervisorForm.queueName}</span></h3>
 
                         <div class="add-store">
                             <div class="store-table">
@@ -122,7 +122,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>There is no supervisor added to manage queues. Highly recommended to added queue supervisor. Select a queue to add supervisor.</p>
+                                            <p>There is no supervisor added to manage queue. Highly recommended to add queue supervisor. Select a queue to add supervisor.</p>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
