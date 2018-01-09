@@ -93,19 +93,7 @@
                                                     </td>
                                                     <td>${queueSupervisor.email}</td>
                                                     <td nowrap>
-                                                        <c:choose>
-                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                                <select path="userLevel" class="form-field-select single-dropdown">
-                                                                    <c:forEach var="item" items="${userLevelEnumValues}">
-                                                                        <%--//TODO Add ajax call to change user role--%>
-                                                                        <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
-                                                                    </c:forEach>
-                                                                </select>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                ${queueSupervisor.userLevel.description}
-                                                            </c:otherwise>
-                                                        </c:choose>
+                                                        ${queueSupervisor.userLevel.description}
                                                     </td>
                                                     <td nowrap>
                                                         <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>

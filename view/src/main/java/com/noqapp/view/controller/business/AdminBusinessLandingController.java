@@ -69,6 +69,7 @@ public class AdminBusinessLandingController {
     private String storeActionFlow;
     private String addQueueSupervisorFlow;
     private String listQueueSupervisorPage;
+    private String allManagingQueuePage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -96,6 +97,9 @@ public class AdminBusinessLandingController {
             @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
             String listQueueSupervisorPage,
 
+            @Value("${allManagingQueuePage:/business/allManagingQueue}")
+            String allManagingQueuePage,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
@@ -108,6 +112,7 @@ public class AdminBusinessLandingController {
         this.storeActionFlow = storeActionFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
+        this.allManagingQueuePage = allManagingQueuePage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -285,6 +290,7 @@ public class AdminBusinessLandingController {
             }
 
             UserProfileEntity userProfile;
+            String qid;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "APPROVE":
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
@@ -321,15 +327,21 @@ public class AdminBusinessLandingController {
                             businessUser.getBusinessUserRegistrationStatus());
                     break;
                 case "REJECT":
-                    String qid = businessUser.getQueueUserId();
+                case "DELETE":
+                    qid = businessUser.getQueueUserId();
 
                     businessUserStoreService.removeFromBusiness(qid, businessUser.getBizName().getId());
                     businessUserService.deleteHard(businessUser);
 
-                    /* Downgrade ROLES for QID as it was set to Q_SUPERVISOR. */
+                    /*
+                     * Downgrade ROLES for QID as it was set to Q_SUPERVISOR when approving.
+                     * But after approved and when rejecting, not sure about role, hence downgrading all to CLIENT.
+                     */
                     userProfile = accountService.findProfileByQueueUserId(qid);
                     switch (userProfile.getLevel()) {
                         case Q_SUPERVISOR:
+                        case S_MANAGER:
+                        case M_ADMIN:
                             userProfile.setLevel(UserLevelEnum.CLIENT);
                             break;
                         default:
@@ -354,8 +366,16 @@ public class AdminBusinessLandingController {
                     LOG.warn("Reached un-reachable condition {}", queueSupervisorActionForm.getAction());
                     throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
             }
-            
-            return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+
+            String goToPage;
+            switch (queueSupervisorActionForm.getAction().getText()) {
+                case "DELETE":
+                    goToPage = "redirect:/business/allManagingQueue.htm";
+                    break;
+                default:
+                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+            }
+            return goToPage;
         } catch (Exception e) {
             LOG.error("Failed updated status for id={} status={} reason={}",
                     queueSupervisorActionForm.getBusinessUserId().getText(),
@@ -363,7 +383,37 @@ public class AdminBusinessLandingController {
                     e.getLocalizedMessage(),
                     e);
 
-            return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+            String goToPage;
+            switch (queueSupervisorActionForm.getAction().getText()) {
+                case "DELETE":
+                    goToPage = "redirect:/business/allManagingQueue.htm";
+                    break;
+                default:
+                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+            }
+            return goToPage;
         }
+    }
+
+    /**
+     * List all users with role of Queue Supervisor and Manager managing queues for business.
+     *
+     * @param queueSupervisorForm
+     * @return
+     */
+    @GetMapping (value = "/allManagingQueue", produces = "text/html;charset=UTF-8")
+    public String allManagingQueue(
+            @ModelAttribute ("queueSupervisorForm")
+            QueueSupervisorForm queueSupervisorForm,
+
+            @ModelAttribute ("queueSupervisorActionForm")
+            QueueSupervisorActionForm queueSupervisorActionForm
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
+        queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
+        queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAllManagingQueue(businessUser.getBizName().getId()));
+
+        return allManagingQueuePage;
     }
 }
