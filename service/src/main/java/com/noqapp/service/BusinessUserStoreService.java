@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.noqapp.domain.BizStoreEntity;
@@ -18,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import static java.util.Comparator.comparing;
 
 /**
  * User: hitender
@@ -143,6 +146,8 @@ public class BusinessUserStoreService {
             queueSupervisors.add(queueSupervisor);
         }
 
+        /* Sort by name. */
+        queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
     }
 
@@ -159,6 +164,8 @@ public class BusinessUserStoreService {
             queueSupervisors.add(queueSupervisor);
         }
 
+        /* Sort by name. */
+        queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
     }
 
