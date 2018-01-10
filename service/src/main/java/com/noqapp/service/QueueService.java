@@ -58,4 +58,8 @@ public class QueueService {
         queues.addAll(getByQid(qid));
         return queues;
     }
+
+    public long deleteByCodeQR(String codeQR) {
+        return queueManager.deleteByCodeQR(codeQR);
+    }
 }
