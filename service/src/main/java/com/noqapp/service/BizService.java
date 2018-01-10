@@ -4,6 +4,7 @@ import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
@@ -46,6 +47,8 @@ public class BizService {
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
     private BizCategoryManager bizCategoryManager;
+    private TokenQueueService tokenQueueService;
+    private QueueService queueService;
     private BusinessUserStoreManager businessUserStoreManager;
 
     @Autowired
@@ -60,6 +63,8 @@ public class BizService {
             BizStoreManager bizStoreManager,
             StoreHourManager storeHourManager,
             BizCategoryManager bizCategoryManager,
+            TokenQueueService tokenQueueService,
+            QueueService queueService,
             BusinessUserStoreManager businessUserStoreManager
     ) {
         this.degreeInMiles = degreeInMiles;
@@ -68,6 +73,8 @@ public class BizService {
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
         this.bizCategoryManager = bizCategoryManager;
+        this.tokenQueueService = tokenQueueService;
+        this.queueService = queueService;
         this.businessUserStoreManager = businessUserStoreManager;
     }
 
@@ -85,9 +92,16 @@ public class BizService {
 
     public void deleteStore(String storeId) {
         BizStoreEntity bizStore = getByStoreId(storeId);
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+        tokenQueueService.deleteHard(tokenQueue);
+        long queuedRemoved = queueService.deleteByCodeQR(bizStore.getCodeQR());
         bizStoreManager.deleteHard(bizStore);
+        storeHourManager.removeAll(storeId);
         long removedRecords = businessUserStoreManager.deleteAllManagingStore(storeId);
-        LOG.info("Deleted Store id={} removed reference to number of people managing queue={}", storeId, removedRecords);
+        LOG.info("Deleted Store id={} removed reference to number of people managing queue={} queuedRemoved={}",
+                storeId,
+                removedRecords,
+                queuedRemoved);
     }
 
     public void saveStore(BizStoreEntity bizStore) {

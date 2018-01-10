@@ -85,9 +85,12 @@ public class TokenQueueService {
         }
     }
 
-    @Mobile
     public TokenQueueEntity findByCodeQR(String codeQR) {
         return tokenQueueManager.findByCodeQR(codeQR);
+    }
+
+    public void deleteHard(TokenQueueEntity tokenQueue) {
+        tokenQueueManager.deleteHard(tokenQueue);
     }
 
     /**

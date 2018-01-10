@@ -57,7 +57,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public void deleteHard(TokenQueueEntity object) {
-        throw new UnsupportedOperationException("This method is not supported");
+        mongoTemplate.remove(object);
     }
 
     /**
