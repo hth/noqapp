@@ -55,6 +55,12 @@
                     <div class="store">
                         <h3>Authorized users to manage <span>${queueSupervisorForm.queueName}</span></h3>
 
+                        <div class="alert-info">
+                            <p>
+                                Delete operation removes user permanently from ${queueSupervisorForm.queueName}.
+                                To add the user back, you would need to again add them as "Add New Queue Supervisor".
+                            </p>
+                        </div>
                         <div class="add-store">
                             <div class="store-table">
                                 <spring:hasBindErrors name="errorMessage">
