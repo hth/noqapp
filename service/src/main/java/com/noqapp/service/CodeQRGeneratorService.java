@@ -34,7 +34,7 @@ public class CodeQRGeneratorService {
 
     private int imageSize;
 
-    private Map<EncodeHintType, Object> hintMap = new HashMap<>();
+    private Map<EncodeHintType, Object> hintMap;
     private BufferedImage overlay;
 
     public CodeQRGeneratorService(
