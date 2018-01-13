@@ -5,5 +5,5 @@ package com.noqapp.common.type;
  * Date: 11/21/16 9:49 AM
  */
 public enum FileExtensionTypeEnum {
-    XLS, TXT, JPEG, JPG, PNG, PDF
+    XLS, TXT, JPEG, JPG, PNG, PDF, XML
 }
