@@ -154,7 +154,9 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setCodeQR(String codeQR) {
         //There is no setter code for setting codeQR
-        throw new UnsupportedOperationException("Cannot set CodeQR");
+        //throw new UnsupportedOperationException("Cannot set CodeQR");
+        this.codeQR = codeQR;
+        return this;
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
