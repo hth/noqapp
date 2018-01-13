@@ -162,6 +162,10 @@ public class BizService {
         return bizStoreManager.isValidCodeQR(codeQR);
     }
 
+    public boolean isValidBizNameCodeQR(String codeQR) {
+        return bizNameManager.isValidCodeQR(codeQR);
+    }
+
     public void insertAll(List<StoreHourEntity> storeHours) {
         storeHourManager.insertAll(storeHours);
     }
