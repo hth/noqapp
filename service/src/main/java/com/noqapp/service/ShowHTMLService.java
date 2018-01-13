@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.google.zxing.WriterException;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -30,39 +33,59 @@ public class ShowHTMLService {
     private static final Logger LOG = LoggerFactory.getLogger(ShowHTMLService.class);
 
     private String parentHost;
+    private String domain;
+    private String https;
 
     private BizService bizService;
     private FreemarkerService freemarkerService;
     private TokenQueueService tokenQueueService;
+    private CodeQRGeneratorService codeQRGeneratorService;
 
     private static String showStoreBlank;
+    private static String showBusinessBlank;
 
     @Autowired
     public ShowHTMLService(
             @Value("${parentHost}")
             String parentHost,
 
+            @Value ("${domain}")
+            String domain,
+
+            @Value ("${https}")
+            String https,
+
             BizService bizService,
             FreemarkerService freemarkerService,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            CodeQRGeneratorService codeQRGeneratorService
     ) {
         this.parentHost = parentHost;
+        this.domain = domain;
+        this.https = https;
 
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
         this.tokenQueueService = tokenQueueService;
+        this.codeQRGeneratorService = codeQRGeneratorService;
 
         try {
             Map<String, String> rootMap = new HashMap<>();
             rootMap.put("parentHost", parentHost);
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
             showStoreBlank = freemarkerService.freemarkerToString("html/show-store-blank.ftl", rootMap);
+            showBusinessBlank = freemarkerService.freemarkerToString("html/show-business-blank.ftl", rootMap);
         } catch (IOException | TemplateException e) {
             LOG.error("Failed generating html page for BLANK store reason={}", e.getLocalizedMessage(), e);
         }
     }
 
     public String showStoreByCodeQR(String codeQR) {
-        return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
+        if (Validate.isValidObjectId(codeQR)) {
+            return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
+        }
+        return showStoreByWebLocation(null);
     }
 
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
@@ -87,6 +110,36 @@ public class ShowHTMLService {
         } catch (IOException | TemplateException | NullPointerException e) {
             LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
             return showStoreBlank;
+        }
+    }
+
+    public String showBusinessByCodeQR(String codeQR) {
+        if (Validate.isValidObjectId(codeQR)) {
+            return showBusinessByWebLocation(bizService.findBizNameByCodeQR(codeQR));
+        }
+        return showBusinessByWebLocation(null);
+    }
+
+    private String showBusinessByWebLocation(BizNameEntity bizName) {
+        Map<String, String> rootMap = new HashMap<>();
+        try {
+            if (null == bizName) {
+                LOG.warn("No such business found. Showing blank business.");
+                return showBusinessBlank;
+            }
+
+            rootMap.put("parentHost", parentHost);
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
+            rootMap.put("bizName", bizName.getBusinessName());
+            rootMap.put("qrFileName", codeQRGeneratorService.createQRImage(bizName.getCodeQRInALink()));
+            return freemarkerService.freemarkerToString("html/show-business.ftl", rootMap);
+        } catch (IOException | TemplateException | NullPointerException e) {
+            LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
+            return showBusinessBlank;
+        } catch (WriterException e) {
+            LOG.error("Failed creating QR Code on html page for business reason={}", e.getLocalizedMessage(), e);
+            return showBusinessBlank;
         }
     }
 

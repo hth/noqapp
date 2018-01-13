@@ -141,16 +141,16 @@ class RegistrationFlowActions {
         }
 
         if (null == bizName) {
-            bizName = BizNameEntity.newInstance();
+            bizName = BizNameEntity.newInstance(CommonUtil.generateCodeQR(environment.getProperty("build.env")));
         }
         bizName.setBusinessName(registerBusiness.getName())
-            .setBusinessTypes(registerBusiness.getBusinessTypes())
-            .setPhone(registerBusiness.getPhoneWithCountryCode())
-            .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
-            .setAddress(registerBusiness.getAddress())
-            .setTimeZone(registerBusiness.getTimeZone())
-            .setInviteeCode(registerBusiness.getInviteeCode())
-            .setAddressOrigin(registerBusiness.getAddressOrigin());
+                .setBusinessTypes(registerBusiness.getBusinessTypes())
+                .setPhone(registerBusiness.getPhoneWithCountryCode())
+                .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
+                .setAddress(registerBusiness.getAddress())
+                .setTimeZone(registerBusiness.getTimeZone())
+                .setInviteeCode(registerBusiness.getInviteeCode())
+                .setAddressOrigin(registerBusiness.getAddressOrigin());
         validateAddress(bizName);
 
         try {

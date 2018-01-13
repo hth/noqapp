@@ -60,7 +60,7 @@ public class CodeQRGeneratorService {
 
     public String createQRImage(String qrCodeText) throws WriterException, IOException {
         LOG.info("QR Code={}", qrCodeText);
-        File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PNG.name());
+        File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PNG.name().toLowerCase());
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, imageSize, imageSize, hintMap);
@@ -86,7 +86,7 @@ public class CodeQRGeneratorService {
             }
         }
         //ImageIO.write(imageOfCodeQR, FileExtensionTypeEnum.PNG.name(), toFile);
-        ImageIO.write(getQRCodeWithOverlay(imageOfCodeQR), FileExtensionTypeEnum.PNG.name(), toFile);
+        ImageIO.write(getQRCodeWithOverlay(imageOfCodeQR), FileExtensionTypeEnum.PNG.name().toLowerCase(), toFile);
         return FilenameUtils.getBaseName(toFile.getName());
     }
 

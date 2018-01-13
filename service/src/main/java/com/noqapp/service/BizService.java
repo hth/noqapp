@@ -255,4 +255,8 @@ public class BizService {
     public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
         return bizStoreManager.getBizStoresByCategory(bizCategoryId, bizNameId);
     }
+
+    public BizNameEntity findBizNameByCodeQR(String codeQR) {
+        return bizNameManager.findByCodeQR(codeQR);
+    }
 }
