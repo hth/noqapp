@@ -140,5 +140,10 @@ public final class BizNameManagerImpl implements BizNameManager {
                 TABLE
         );
     }
+
+    @Override
+    public boolean isValidCodeQR(String codeQR) {
+        return mongoTemplate.exists(query(where("QR").is(codeQR)), BizNameEntity.class);
+    }
 }
 
