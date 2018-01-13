@@ -222,7 +222,6 @@ subprojects {
         /** --- Specific to NoQueue Web Application ---- */
         compile "org.springframework.webflow:spring-webflow:$webflow"
         compile "net.markenwerk:utils-mail-dkim:$dkim"
-        compile "org.apache.xmlgraphics:fop:$fop"
         /** ------- */
 
         compile "com.squareup.okhttp3:okhttp:$okhttp"
@@ -238,6 +237,7 @@ subprojects {
         compile "com.zaxxer:HikariCP:$hikariCP"
         compile "joda-time:joda-time:$joda"
         compile "org.freemarker:freemarker:$freemarker"
+        compile "org.apache.xmlgraphics:fop:$fop"
 
         compile "com.google.guava:guava:$guava"
         compile "com.google.code.gson:gson:$gson"
