@@ -54,7 +54,7 @@
                     <div class="store">
                         <div class="store-details-row">
                             <div class="qr-store-box">
-                                <img src="/business/store/detail/i/${storeLandingForm.qrFileName}.htm"/>
+                                <img src="/i/${storeLandingForm.qrFileName}.htm"/>
                             </div>
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">

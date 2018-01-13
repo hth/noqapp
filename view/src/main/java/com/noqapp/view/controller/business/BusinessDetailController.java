@@ -2,7 +2,10 @@ package com.noqapp.view.controller.business;
 
 import com.google.zxing.WriterException;
 
-import org.apache.commons.io.FilenameUtils;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.json.xml.XmlBusinessCodeQR;
+import com.noqapp.service.PdfGenerateService;
+import com.noqapp.view.helper.WebUtil;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -29,9 +31,9 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.form.business.StoreLandingForm;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,36 +49,37 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business/store/detail")
-public class StoreDetailController {
-    private static final Logger LOG = LoggerFactory.getLogger(StoreDetailController.class);
+@RequestMapping (value = "/business/detail")
+public class BusinessDetailController {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessDetailController.class);
 
-    private String nextPage;
+    private String storeDetail;
 
     private BizService bizService;
     private CodeQRGeneratorService codeQRGeneratorService;
+    private PdfGenerateService pdfGenerateService;
 
     @Autowired
-    public StoreDetailController(
-            @Value ("${nextPage:/business/storeDetail}")
-            String nextPage,
+    public BusinessDetailController(
+            @Value ("${storeDetail:/business/storeDetail}")
+            String storeDetail,
 
             BizService bizService,
-            CodeQRGeneratorService codeQRGeneratorService
+            CodeQRGeneratorService codeQRGeneratorService,
+            PdfGenerateService pdfGenerateService
     ) {
-        this.nextPage = nextPage;
+        this.storeDetail = storeDetail;
+
         this.bizService = bizService;
         this.codeQRGeneratorService = codeQRGeneratorService;
+        this.pdfGenerateService = pdfGenerateService;
     }
 
     /**
-     * Loading landing page for business.
-     *
-     * @param storeLandingForm
-     * @return
+     * Loading landing page for store with Code QR.
      */
-    @GetMapping(value = "/{storeId}")
-    public String landing(
+    @GetMapping(value = "/store/{storeId}")
+    public String storeLanding(
             @PathVariable("storeId")
             ScrubbedInput storeId,
 
@@ -107,48 +110,40 @@ public class StoreDetailController {
             LOG.error("Failed generating image for codeQR reason={}", e.getLocalizedMessage());
         }
 
-        return nextPage;
+        return storeDetail;
     }
 
     /**
-     *
-     * @param fileName
-     * @return
+     * Loading landing page for business with Code QR.
      */
-    @GetMapping (value = "/i/{fileName}")
-    public void getQRFilename(
-            @PathVariable("fileName")
-            ScrubbedInput fileName,
+    @GetMapping(value = "/business/{codeQR}")
+    public void businessLanding(
+            @PathVariable("codeQR")
+            ScrubbedInput codeQR,
+
+            @ModelAttribute ("storeLandingForm")
+            StoreLandingForm storeLandingForm,
 
             HttpServletResponse response
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        InputStream inputStream = null;
-        try {
-            setContentType(fileName.getText(), response);
-            inputStream = new FileInputStream(FileUtil.getFileFromTmpDir(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name()));
-            IOUtils.copy(inputStream, response.getOutputStream());
-        } catch (IOException e) {
-            LOG.error("Failed PNG image retrieval error occurred for user={} reason={}",
-                    queueUser.getQueueUserId(),
-                    e.getLocalizedMessage(),
-                    e);
-        } finally {
-            if (inputStream != null) {
-                IOUtils.closeQuietly(inputStream);
-            }
-        }
-    }
 
-    private void setContentType(String filename, HttpServletResponse response) {
-        String extension = FilenameUtils.getExtension(filename);
-        if (extension.endsWith("jpg") || extension.endsWith("jpeg")) {
-            response.setContentType("image/jpeg");
-        } else if (extension.endsWith("gif")) {
-            response.setContentType("image/gif");
-        } else {
-            response.setContentType("image/png");
+        try {
+            BizNameEntity bizName = bizService.findBizNameByCodeQR(codeQR.getText());
+            String fileName = codeQRGeneratorService.createQRImage(bizName.getCodeQRInALink());
+            File codeQRFile = FileUtil.getFileFromTmpDir(fileName + "." + FileExtensionTypeEnum.PNG.name().toLowerCase());
+            XmlBusinessCodeQR xmlBusinessCodeQR = new XmlBusinessCodeQR()
+                    .setBusinessName(bizName.getBusinessName())
+                    .setImageLocationCodeQR(codeQRFile.toURI());
+
+            File file = pdfGenerateService.createPDF(xmlBusinessCodeQR.asXML(), bizName.getBusinessName());
+            WebUtil.setContentType(file.getName(), response);
+            response.setHeader("Content-Disposition", "inline; filename=\"" + "NoQueue_" + bizName.getBusinessName() + ".pdf\"");
+            IOUtils.copy(new FileInputStream(file), response.getOutputStream());
+            response.flushBuffer();
+        } catch (WriterException | IOException e) {
+            LOG.error("Failed generating image for codeQR reason={}", e.getLocalizedMessage());
         }
     }
 }

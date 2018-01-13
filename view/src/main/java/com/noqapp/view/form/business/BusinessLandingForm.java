@@ -15,6 +15,7 @@ import java.util.Map;
 public class BusinessLandingForm {
 
     private String bizName;
+    private String bizCodeQR;
     private List<BizStoreEntity> bizStores;
     private Map<String, QueueDetail> queueDetails = new HashMap<>();
     private Map<String, String>  categories = new HashMap<>();
@@ -28,6 +29,15 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm setBizName(String bizName) {
         this.bizName = bizName;
+        return this;
+    }
+
+    public String getBizCodeQR() {
+        return bizCodeQR;
+    }
+
+    public BusinessLandingForm setBizCodeQR(String bizCodeQR) {
+        this.bizCodeQR = bizCodeQR;
         return this;
     }
 

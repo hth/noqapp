@@ -57,5 +57,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     List<BizNameEntity> findAll(int skip, int limit);
 
     List<BizNameEntity> findByInviteeCode(String inviteCode);
+
+    BizNameEntity findByCodeQR(String codeQR);
 }
 

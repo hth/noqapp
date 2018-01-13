@@ -33,13 +33,17 @@ import java.util.List;
 })
 @Document (collection = "BIZ_NAME")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_ph_idx", def = "{'PH' : 1}", unique = true)
+        @CompoundIndex (name = "biz_ph_idx", def = "{'PH' : 1}", unique = true),
+        @CompoundIndex (name = "biz_qr_idx", def = "{'QR' : 1}", unique = true)
 })
 public class BizNameEntity extends BaseEntity {
 
     @NotNull
     @Field ("N")
     private String businessName;
+
+    @Field ("QR")
+    private String codeQR;
 
     @Field ("BT")
     private List<BusinessTypeEnum> businessTypes = new ArrayList<>();
@@ -121,8 +125,12 @@ public class BizNameEntity extends BaseEntity {
         //Default constructor
     }
 
-    public static BizNameEntity newInstance() {
-        return new BizNameEntity();
+    public BizNameEntity(String codeQR) {
+        this.codeQR = codeQR;
+    }
+
+    public static BizNameEntity newInstance(String codeQR) {
+        return new BizNameEntity(codeQR);
     }
 
     public String getBusinessName() {
@@ -138,6 +146,15 @@ public class BizNameEntity extends BaseEntity {
     public BizNameEntity setBusinessName(String businessName) {
         this.businessName = StringUtils.trim(businessName);
         return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public BizNameEntity setCodeQR(String codeQR) {
+        //There is no setter code for setting codeQR
+        throw new UnsupportedOperationException("Cannot set CodeQR");
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
@@ -399,6 +416,11 @@ public class BizNameEntity extends BaseEntity {
     private GeoPoint getGeoPoint() {
         /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    public String getCodeQRInALink() {
+        return "https://q.noqapp.com/" + codeQR + "/b.htm";
     }
 
     @Override

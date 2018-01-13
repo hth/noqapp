@@ -51,7 +51,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><span>${businessLandingForm.bizName}</span></h3>
+                        <h3><a href="/business/detail/business/${businessLandingForm.bizCodeQR}.htm" target="_blank"><span>${businessLandingForm.bizName}</span></a></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
@@ -80,7 +80,7 @@
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
-                                                        <a href="/business/store/detail/${store.id}.htm" target="_blank">${store.address}</a>
+                                                        <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
                                                     </td>
                                                     <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>

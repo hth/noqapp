@@ -15,6 +15,7 @@ ext {
     cert = file("$javaClasses/cert")
     conf = file("$javaClasses/conf")
     dkim = file("$javaClasses/dkim")
+    xslfo = file("$javaClasses/xslfo")
     elastic_mapping = file("$javaClasses/elastic_mapping")
     images = file("$javaClasses/images")
 
@@ -25,6 +26,7 @@ ext {
     warCertDir = file("$warDir$cert")
     warConfDir = file("$warDir$conf")
     warDkimDir = file("$warDir$dkim")
+    warXslfoDir = file("$warDir$xslfo")
     warMappingDir = file("$warDir$elastic_mapping")
     warWebInfClassesImagesDir = file("$warDir$images")
 
@@ -33,6 +35,7 @@ ext {
     activeProfilewarClassesDir = file("$activeProfilewarDir$javaClasses")
     activeProfilewarConfDir = file("$activeProfilewarDir$conf")
     activeProfilewarFreemarkerDir = file("$activeProfilewarDir$freemarker")
+    activeProfilewarXslfoDir = file("$activeProfilewarDir$xslfo")
 
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
@@ -219,6 +222,7 @@ subprojects {
         /** --- Specific to NoQueue Web Application ---- */
         compile "org.springframework.webflow:spring-webflow:$webflow"
         compile "net.markenwerk:utils-mail-dkim:$dkim"
+        compile "org.apache.xmlgraphics:fop:$fop"
         /** ------- */
 
         compile "com.squareup.okhttp3:okhttp:$okhttp"
@@ -483,6 +487,7 @@ task setUpProfileForJunit() {
         activeProfilewarClassesDir.mkdirs()
         activeProfilewarConfDir.mkdirs()
         activeProfilewarFreemarkerDir.mkdirs()
+        activeProfilewarXslfoDir.mkdirs()
 
         copy {
             from file("view/environment/$env/$env" + ".properties")
@@ -561,6 +566,11 @@ task setUpProfileForJunit() {
         copy {
             from "view/web$freemarker"
             into activeProfilewarFreemarkerDir
+        }
+
+        copy {
+            from "view/resources/xslfo"
+            into activeProfilewarXslfoDir
         }
     }
 }
@@ -651,6 +661,7 @@ task prepWar(dependsOn: [
         warConfDir.mkdirs()
         warDkimDir.mkdirs()
         warMappingDir.mkdirs()
+        warXslfoDir.mkdirs()
 
         copy {
             from 'view/web'
@@ -677,6 +688,11 @@ task prepWar(dependsOn: [
         copy {
             from file("view/environment/$env/$env" + ".properties")
             into warConfDir
+        }
+
+        copy {
+            from 'view/resources/xslfo'
+            into warXslfoDir
         }
 
         copy {

@@ -76,7 +76,7 @@
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
-                                                        <a href="/business/store/detail/${store.id}.htm" target="_blank">${store.address}</a>
+                                                        <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
                                                     </td>
                                                     <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
