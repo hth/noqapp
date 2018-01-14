@@ -53,6 +53,7 @@ public class AnyTask {
 
     /**
      * Runs any requested task underneath.
+     * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
     @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
