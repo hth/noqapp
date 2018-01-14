@@ -37,13 +37,14 @@ public class AnyTask {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
         this.environment = environment;
-        LOG.info("AnyTask environment={}", environment.getProperty("build.env"));
+        LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
     }
 
     /**
      * Runs any requested task underneath.
      * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
+    @SuppressWarnings("all")
 //    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
