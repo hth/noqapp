@@ -1,18 +1,11 @@
 package com.noqapp.loader.scheduledtasks;
 
-import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.repository.BizNameManager;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Mostly used one time to update, modify any data.
