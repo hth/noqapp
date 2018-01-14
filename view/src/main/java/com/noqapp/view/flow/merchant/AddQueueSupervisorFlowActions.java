@@ -345,6 +345,11 @@ public class AddQueueSupervisorFlowActions {
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
             businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId());
+            
+            LOG.warn("Complete process QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
+                    inviteQueueSupervisor.getBizStoreId(),
+                    inviteQueueSupervisor.getPhoneNumber(),
+                    userProfile.getQueueUserId());
         }
 
         return inviteQueueSupervisor;
