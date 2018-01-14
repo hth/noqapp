@@ -117,12 +117,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
                 executorService.submit(() -> updatePassword(registerUser));
             }
             sendMailAndPhoneValidation(registerUser);
-
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(registerUser.getQueueUserId());
-            businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
-            businessUserService.save(businessUser);
-
-            return businessUser.getBusinessUserRegistrationStatus();
+            return businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(registerUser.getQueueUserId());
         } catch(Exception e) {
             LOG.error("Failed completing business profile qid={} reason={}", registerUser.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessProfileException("Failed to migrate to business profile");

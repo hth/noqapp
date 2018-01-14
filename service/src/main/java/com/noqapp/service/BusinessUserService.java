@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserManager;
 import org.slf4j.Logger;
@@ -99,5 +101,13 @@ public class BusinessUserService {
 
     public List<BusinessUserEntity> getAllForBusiness(String bizNameId) {
         return businessUserManager.getAllForBusiness(bizNameId);
+    }
+
+    public BusinessUserRegistrationStatusEnum markBusinessUserProfileCompleteOnProfileUpdate(String qid) {
+        BusinessUserEntity businessUser = findBusinessUser(qid);
+        businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+        save(businessUser);
+
+        return businessUser.getBusinessUserRegistrationStatus();
     }
 }

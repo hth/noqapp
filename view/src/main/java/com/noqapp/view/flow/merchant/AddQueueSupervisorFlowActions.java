@@ -2,6 +2,8 @@ package com.noqapp.view.flow.merchant;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.flow.RegisterUser;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -146,24 +148,41 @@ public class AddQueueSupervisorFlowActions {
             return messageWhenStoreAndInviteeAreFromDifferentCountry(inviteQueueSupervisor, messageContext, userProfile);
         }
 
+        UserProfileEntity userProfileOfInviteeCode = null;
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
-
-            UserProfileEntity userProfileOfInviteeCode = null;
             if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
                 userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+                UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
+                if (userProfile.getQueueUserId().endsWith("mail.noqapp.com") || !userAccount.isAccountValidated()) {
+                    LOG.warn("Override failed as user has not registered with valid email address");
+
+                    messageContext.addMessage(
+                            new MessageBuilder()
+                                    .error()
+                                    .source("inviteQueueSupervisor.phoneNumber")
+                                    .defaultText("This process requires a valid email address. Since user with "
+                                            + inviteQueueSupervisor.getPhoneNumber()
+                                            + " has not provided email address, you would need to enter user's invitee code and not yours.")
+                                    .build());
+
+                    throw new InviteSupervisorException("Override failed as user has not registered with valid email address.");
+                }
             }
 
+            /* To avoid inner if logic. UserProfileOfInviteeCode will be null when quickDataEntryByPassSwitch is OFF. */
             if (null == userProfileOfInviteeCode) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
                                 .source("inviteQueueSupervisor.phoneNumber")
-                                .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " does not exists or Invitee code does not match.")
+                                .defaultText("User of phone number "
+                                        + inviteQueueSupervisor.getPhoneNumber()
+                                        + " does not exists or Invitee code does not match.")
                                 .build());
 
                 throw new InviteSupervisorException("User does not exists or Invitee code does not match");
             } else {
-                LOG.warn("QuickDataEntryByPassSwitch used by bizStoreId={} for phone={} of uid={}",
+                LOG.warn("QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
                         inviteQueueSupervisor.getBizStoreId(),
                         inviteQueueSupervisor.getPhoneNumber(),
                         userProfile.getQueueUserId());
@@ -304,6 +323,28 @@ public class AddQueueSupervisorFlowActions {
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName()
             );
+        }
+
+        /*
+         * Conscious decision to let the whole process run before this condition.
+         * Override scenario does not mean to skip steps of notifying users.
+         */
+        if (null != userProfileOfInviteeCode
+                && "ON".equalsIgnoreCase(quickDataEntryByPassSwitch)
+                && userAccount.isAccountValidated()) {
+
+            BusinessUserEntity businessUserOfInviteeCode = businessUserService.findBusinessUser(userProfileOfInviteeCode.getQueueUserId());
+            RegisterUser registerUser = new RegisterUser()
+                    .setEmail(new ScrubbedInput(userProfile.getEmail()))
+                    .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))
+                    .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                    .setPhone(new ScrubbedInput(userProfile.getPhone()))
+                    .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+                    .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                    .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin());
+
+            accountService.updateUserProfile(registerUser, userProfile.getEmail());
+            businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId());
         }
 
         return inviteQueueSupervisor;
