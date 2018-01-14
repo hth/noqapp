@@ -341,11 +341,14 @@ public class AddQueueSupervisorFlowActions {
                     .setPhone(new ScrubbedInput(userProfile.getPhone()))
                     .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
                     .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                    .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin());
+                    .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
+                    .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                    .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                    .setQueueUserId(userProfile.getQueueUserId());
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
             businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId());
-            
+
             LOG.warn("Complete process QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
                     inviteQueueSupervisor.getBizStoreId(),
                     inviteQueueSupervisor.getPhoneNumber(),
