@@ -220,21 +220,21 @@ public class ShowHTMLService {
          */
         int timeIn24HourFormat = CommonUtil.getTimeIn24HourFormat(zonedDateTime);
         if (storeHour.getTokenNotAvailableFrom() > timeIn24HourFormat) {
-            LOG.debug("{} > {}",
+            LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} > timeIn24HourFormat={}",
                     storeHour.getTokenNotAvailableFrom(),
                     timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Open");
 
         } else if (storeHour.getEndHour() <= timeIn24HourFormat) {
-            LOG.debug("{} < {}",
+            LOG.debug("computeQueueStatus getEndHour={} <= timeIn24HourFormat={}",
                     storeHour.getEndHour(),
                     timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closed");
 
         } else if (storeHour.getTokenNotAvailableFrom() < timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
-            LOG.debug("{} < {} & {} > {}",
+            LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} < timeIn24HourFormat={} & getEndHour={} > timeIn24HourFormat={}",
                     storeHour.getTokenNotAvailableFrom(),
                     timeIn24HourFormat,
                     storeHour.getEndHour(),
