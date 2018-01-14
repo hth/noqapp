@@ -190,8 +190,9 @@ public class RegisterUser implements Serializable {
         return timeZone;
     }
 
-    public void setTimeZone(ScrubbedInput timeZone) {
+    public RegisterUser setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone.getText();
+        return this;
     }
 
     public boolean isEmailValidated() {
