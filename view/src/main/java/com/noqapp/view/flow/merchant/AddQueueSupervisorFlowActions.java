@@ -43,6 +43,8 @@ public class AddQueueSupervisorFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(AddQueueSupervisorFlowActions.class);
 
     private int queueLimit;
+    private String quickDataEntryByPassSwitch;
+
     private WebFlowUtils webFlowUtils;
     private BizService bizService;
     private AccountService accountService;
@@ -58,6 +60,9 @@ public class AddQueueSupervisorFlowActions {
             @Value ("${BusinessUserStoreService.queue.limit}")
             int queueLimit,
 
+            @Value("${QuickDataEntryByPassSwitch}")
+            String quickDataEntryByPassSwitch,
+
             WebFlowUtils webFlowUtils,
             BizService bizService,
             AccountService accountService,
@@ -67,6 +72,7 @@ public class AddQueueSupervisorFlowActions {
             MailService mailService
     ) {
         this.queueLimit = queueLimit;
+        this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;
 
         this.webFlowUtils = webFlowUtils;
         this.bizService = bizService;
@@ -141,14 +147,27 @@ public class AddQueueSupervisorFlowActions {
         }
 
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " does not exists or Invitee code does not match.")
-                            .build());
 
-            throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+            UserProfileEntity userProfileOfInviteeCode = null;
+            if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
+                userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+            }
+
+            if (null == userProfileOfInviteeCode) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("inviteQueueSupervisor.phoneNumber")
+                                .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " does not exists or Invitee code does not match.")
+                                .build());
+
+                throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+            } else {
+                LOG.warn("QuickDataEntryByPassSwitch used by bizStoreId={} for phone={} of uid={}",
+                        inviteQueueSupervisor.getBizStoreId(),
+                        inviteQueueSupervisor.getPhoneNumber(),
+                        userProfile.getQueueUserId());
+            }
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(inviteQueueSupervisor.getBizStoreId());
