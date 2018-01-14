@@ -518,6 +518,7 @@ public class AccountService {
      * @param username
      */
     public void updateUserProfile(RegisterUser registerUser, String username) {
+        LOG.info("Update profile with registeredUser={} username={}", registerUser, username);
         UserProfileEntity userProfile;
         if (!registerUser.getEmail().equalsIgnoreCase(username)) {
             updateUID(username, registerUser.getEmail());
