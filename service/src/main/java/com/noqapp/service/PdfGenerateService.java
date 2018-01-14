@@ -71,7 +71,7 @@ public class PdfGenerateService {
         }
     }
 
-    public File createPDF(String xmlContent, String businessName)  {
+    public File createPDF(String xmlContent, String businessName) {
         OutputStream out = null;
         try {
             File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PDF.name().toLowerCase());
@@ -103,7 +103,7 @@ public class PdfGenerateService {
             LOG.error("Error transforming to PDF reason={}", e.getLocalizedMessage(), e);
             return null;
         } finally {
-            if(out != null) {
+            if (out != null) {
                 IOUtils.closeQuietly(out);
             }
         }

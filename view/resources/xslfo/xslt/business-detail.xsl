@@ -20,7 +20,7 @@
                     <fo:block border-bottom-width="0.05pt"
                               border-bottom-style="solid"
                               border-bottom-color="lightgrey"
-                              font-weight="500"
+                              font-weight="400"
                               font-size="26pt"
                               text-align="center"
                               space-after="10mm">
@@ -53,13 +53,13 @@
                               text-align="center"
                               space-after="20mm">
                         <fo:block>
-                            <fo:inline color="grey">&#169; &#174; 2018 NoQueue</fo:inline>
+                            <fo:inline color="grey" font-size="9pt">&#169; &#174; 2018 NoQueue Inc</fo:inline>
                         </fo:block>
                     </fo:block>
                     <fo:block border-bottom-width="0.05pt"
                               border-bottom-style="solid"
                               border-bottom-color="lightgrey"
-                              font-weight="500"
+                              font-weight="400"
                               font-size="18pt"
                               text-align="center"
                               space-after="10mm">
