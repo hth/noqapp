@@ -33,21 +33,17 @@ public class AnyTask {
     private String oneTimeStatusSwitch;
 
     private Environment environment;
-    private BizNameManager bizNameManager;
 
     @Autowired
     public AnyTask(
             @Value("${oneTimeStatusSwitch:ON}")
             String oneTimeStatusSwitch,
 
-            Environment environment,
-            BizNameManager bizNameManager
+            Environment environment
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
         this.environment = environment;
-        this.bizNameManager = bizNameManager;
-
         LOG.info("AnyTask environment={}", environment.getProperty("build.env"));
     }
 
@@ -55,21 +51,15 @@ public class AnyTask {
      * Runs any requested task underneath.
      * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
-    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
+//    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
             return;
         }
 
         oneTimeStatusSwitch = "OFF";
+        LOG.info("Run someTask in AnyTask");
 
-        List<BizNameEntity> bizNames = bizNameManager.findAll(0, 100);
-        for (BizNameEntity bizName : bizNames) {
-            if (StringUtils.isBlank(bizName.getCodeQR())) {
-                String codeQR = CommonUtil.generateCodeQR(environment.getProperty("build.env"));
-                bizName.setCodeQR(codeQR);
-                bizNameManager.save(bizName);
-            }
-        }
+        /* Write your method after here. Un-comment @Scheduled. */
     }
 }
