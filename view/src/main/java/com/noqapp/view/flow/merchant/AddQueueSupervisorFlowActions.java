@@ -338,7 +338,7 @@ public class AddQueueSupervisorFlowActions {
                     .setEmail(new ScrubbedInput(userProfile.getEmail()))
                     .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))
                     .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-                    .setPhone(new ScrubbedInput(userProfile.getPhone()))
+                    .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                     .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
                     .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
                     .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
