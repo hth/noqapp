@@ -12,7 +12,8 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/jquery/css/jquery-ui.css" />
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -64,7 +65,7 @@
                         <div class="admin-content" style="background:white;">
                             <form:input path="firstName" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="First Name"/>
                             <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="Last Name"/>
-                            <form:input path="birthday" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="Date of Birth YYYY-MM-DD"/>
+                            <form:input path="birthday" cssClass="datepicker form-field-left" cssErrorClass="datepicker form-field-left error-field" placeholder="Date of Birth YYYY-MM-DD"/>
                             <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="M/F"/>
 
                             <div class="clearFix"></div>
@@ -126,6 +127,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -186,5 +188,12 @@
             $('#password').removeAttr('required');
         }
     }
+</script>
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    });
 </script>
 </html>
