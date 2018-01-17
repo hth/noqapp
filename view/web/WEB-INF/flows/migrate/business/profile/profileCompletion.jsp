@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/jquery/css/jquery-ui.css" />
 </head>
 
 <body>
@@ -95,7 +96,7 @@
                                             <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                            <form:input path="birthday" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field"
                                                         placeholder="Date of Birth YYYY-MM-DD"/>
                                         </div>
                                         <div class="clearFix"></div>
@@ -249,7 +250,14 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
-
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
 </html>
