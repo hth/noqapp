@@ -15,6 +15,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -140,7 +141,7 @@ public class AccountService {
             String lastName,
             String mail,
             String birthday,
-            String gender,
+            GenderEnum gender,
             String countryShortName,
             String timeZone,
             String password,

@@ -80,7 +80,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
         RegisterUser registerUser = new RegisterUser();
         registerUser.setQueueUserId(userAccount.getQueueUserId())
-                .setGender(new ScrubbedInput(userProfile.getGender()))
+                .setGender(userProfile.getGender())
                 .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
                 .setEmail(userProfile.getEmail().endsWith("mail.noqapp.com") ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
                 .setFirstName(new ScrubbedInput(userProfile.getFirstName()))

@@ -4,6 +4,7 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.types.GenderEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
@@ -32,7 +33,7 @@ public class RegisterUser implements Serializable {
     private boolean phoneValidated;
     private AddressOriginEnum addressOrigin;
 
-    private String gender;
+    private GenderEnum gender;
     private String birthday;
     private String password;
     private boolean accountExists;
@@ -98,12 +99,12 @@ public class RegisterUser implements Serializable {
         this.placeHolderAddress = placeHolderAddress;
     }
 
-    public String getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public RegisterUser setGender(ScrubbedInput gender) {
-        this.gender = gender.getText();
+    public RegisterUser setGender(GenderEnum gender) {
+        this.gender = gender;
         return this;
     }
 

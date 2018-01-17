@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.service.exceptions.DuplicateAccountException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -80,7 +81,7 @@ public class RegistrationController {
                     merchantRegistration.getLastName().getText(),
                     StringUtils.lowerCase(merchantRegistration.getMail().getText()),
                     StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
-                    merchantRegistration.getGender().getText(),
+                    GenderEnum.valueOf(merchantRegistration.getGender().getText()) == GenderEnum.M ? GenderEnum.M : GenderEnum.F,
                     merchantRegistration.findCountryShortFromPhone(),
                     /* Timezone from website is difficult to compute, hence passing null. */
                     null,

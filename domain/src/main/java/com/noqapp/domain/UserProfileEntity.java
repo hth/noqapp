@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,7 @@ public class UserProfileEntity extends BaseEntity {
     private String lastName;
 
     @Field ("GE")
-    private String gender;
+    private GenderEnum gender;
 
     @Field ("LO")
     private Locale locale;
@@ -142,12 +143,13 @@ public class UserProfileEntity extends BaseEntity {
         this.lastName = WordUtils.capitalizeFully(lastName);
     }
 
-    public String getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public UserProfileEntity setGender(GenderEnum gender) {
         this.gender = gender;
+        return this;
     }
 
     public Locale getLocale() {
