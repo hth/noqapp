@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/jquery/css/jquery-ui.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/toggle/css/toggle-style.css" />
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -49,6 +50,7 @@
                     <h2><fmt:message key="account.register.title" /></h2>
                     <form:form modelAttribute="merchantRegistration">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <input type="hidden" id="gender" name="gender" value="M"/>
 
                         <div class="error-box">
                             <div class="error-txt">
@@ -66,7 +68,12 @@
                             <form:input path="firstName" cssClass="form-field-left" cssErrorClass="form-field-left error-field" placeholder="First Name"/>
                             <form:input path="lastName" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="Last Name"/>
                             <form:input path="birthday" cssClass="datepicker form-field-left" cssErrorClass="datepicker form-field-left error-field" placeholder="Date of Birth YYYY-MM-DD"/>
-                            <form:input path="gender" cssClass="form-field-right" cssErrorClass="form-field-right error-field" placeholder="M/F"/>
+                            <div class="register-switch form-field-right">
+                                <input type="radio" name="sex" value="F" id="genderFemale" class="register-switch-input" onclick="genderClick('F')">
+                                <label for="genderFemale" class="register-switch-label">Female</label>
+                                <input type="radio" name="sex" value="M" id="genderMale" class="register-switch-input" onclick="genderClick('M')" checked>
+                                <label for="genderMale" class="register-switch-label">Male</label>
+                            </div>
 
                             <div class="clearFix"></div>
 
@@ -195,5 +202,17 @@
             dateFormat: 'yy-mm-dd'
         });
     });
+</script>
+<script>
+    $(document).ready(function() {
+        if (document.getElementById('gender').value === 'M') {
+            document.getElementById('genderMale').checked = true;
+        } else {
+            document.getElementById('genderFemale').checked = true;
+        }
+    });
+    function genderClick(gender) {
+        document.getElementById('gender').value = gender;
+    }
 </script>
 </html>

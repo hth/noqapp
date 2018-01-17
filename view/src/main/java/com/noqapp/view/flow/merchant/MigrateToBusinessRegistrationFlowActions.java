@@ -92,7 +92,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(qid);
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
-                .setGender(new ScrubbedInput(userProfile.getGender()))
+                .setGender(userProfile.getGender())
                 .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
                 .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
                 .setLastName(new ScrubbedInput(userProfile.getLastName()))
