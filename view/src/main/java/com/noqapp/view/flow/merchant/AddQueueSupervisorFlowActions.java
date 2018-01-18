@@ -273,7 +273,7 @@ public class AddQueueSupervisorFlowActions {
                 userProfile.getLevel());
         accountService.save(userAccount);
 
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(userProfile.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(userProfile.getQueueUserId());
         if (null == businessUser) {
             LOG.info("Creating new businessUser qid={}", userProfile.getQueueUserId());
             businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
@@ -333,7 +333,7 @@ public class AddQueueSupervisorFlowActions {
                 && "ON".equalsIgnoreCase(quickDataEntryByPassSwitch)
                 && userAccount.isAccountValidated()) {
 
-            BusinessUserEntity businessUserOfInviteeCode = businessUserService.findBusinessUser(userProfileOfInviteeCode.getQueueUserId());
+            BusinessUserEntity businessUserOfInviteeCode = businessUserService.loadBusinessUser(userProfileOfInviteeCode.getQueueUserId());
             RegisterUser registerUser = new RegisterUser()
                     .setEmail(new ScrubbedInput(userProfile.getEmail()))
                     .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))

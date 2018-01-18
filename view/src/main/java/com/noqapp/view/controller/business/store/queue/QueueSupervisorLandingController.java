@@ -11,7 +11,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -77,7 +76,7 @@ public class QueueSupervisorLandingController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.findBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
+        return nextPage(businessUserService.loadBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")
