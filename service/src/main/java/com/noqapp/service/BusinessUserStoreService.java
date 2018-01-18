@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.noqapp.domain.BizStoreEntity;
@@ -171,7 +170,7 @@ public class BusinessUserStoreService {
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(qid);
         QueueSupervisor queueSupervisor = new QueueSupervisor();
         queueSupervisor.setBusinessUserId(businessUser.getId())
                 .setStoreId(bizStoreId)

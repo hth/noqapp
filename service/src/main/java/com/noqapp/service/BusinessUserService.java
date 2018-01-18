@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserManager;
@@ -67,8 +66,8 @@ public class BusinessUserService {
         }
     }
 
-    public BusinessUserEntity findBusinessUser(String qid) {
-        return businessUserManager.findBusinessUser(qid);
+    public BusinessUserEntity loadBusinessUser(String qid) {
+        return businessUserManager.loadBusinessUser(qid);
     }
 
     public BusinessUserEntity findById(String id) {
@@ -104,7 +103,7 @@ public class BusinessUserService {
     }
 
     public BusinessUserRegistrationStatusEnum markBusinessUserProfileCompleteOnProfileUpdate(String qid) {
-        BusinessUserEntity businessUser = findBusinessUser(qid);
+        BusinessUserEntity businessUser = loadBusinessUser(qid);
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
         save(businessUser);
 

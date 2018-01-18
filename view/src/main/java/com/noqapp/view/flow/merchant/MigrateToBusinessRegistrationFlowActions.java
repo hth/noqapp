@@ -78,7 +78,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         String qid = queueUser.getQueueUserId();
 
         List<StoreHourEntity> storeHours = null;
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid);
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(qid);
         if (null == businessUser) {
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
@@ -127,7 +127,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             accountService.updateUserProfile(register.getRegisterUser(), username);
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
-                BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getQueueUserId());
+                BusinessUserEntity businessUser = businessUserService.loadBusinessUser(register.getRegisterUser().getQueueUserId());
                 if (null == businessUser) {
                     businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getQueueUserId(), UserLevelEnum.M_ADMIN);
                     businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);

@@ -24,7 +24,7 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * @param qid
      * @return
      */
-    BusinessUserEntity findBusinessUser(String qid);
+    BusinessUserEntity loadBusinessUser(String qid);
 
     BusinessUserEntity findById(String id);
 

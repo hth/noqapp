@@ -13,7 +13,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
@@ -99,7 +98,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     }
 
     public BusinessUserRegistrationStatusEnum registrationStatus(RegisterUser registerUser) {
-        return businessUserService.findBusinessUser(registerUser.getQueueUserId()).getBusinessUserRegistrationStatus();
+        return businessUserService.loadBusinessUser(registerUser.getQueueUserId()).getBusinessUserRegistrationStatus();
     }
 
     public boolean isRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {

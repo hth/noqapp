@@ -60,7 +60,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     }
 
     @Override
-    public BusinessUserEntity findBusinessUser(String qid) {
+    public BusinessUserEntity loadBusinessUser(String qid) {
         return mongoTemplate.findOne(
                 query(where("QID").is(qid)
                         .andOperator(

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -78,7 +77,7 @@ public class LandingController {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
         if (null != businessUser) {
             landingForm.setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus())
                     .setBusinessAccountSignedUp(businessUser.getUpdated());

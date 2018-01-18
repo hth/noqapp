@@ -134,7 +134,7 @@ public class AdminBusinessLandingController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.findBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
+        return nextPage(businessUserService.loadBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")
@@ -410,7 +410,7 @@ public class AdminBusinessLandingController {
             QueueSupervisorActionForm queueSupervisorActionForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
 
