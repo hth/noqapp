@@ -78,7 +78,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         String qid = queueUser.getQueueUserId();
 
         List<StoreHourEntity> storeHours = null;
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(qid);
+        /* Loads any existing business profile. */
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
@@ -127,10 +128,26 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             accountService.updateUserProfile(register.getRegisterUser(), username);
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
-                BusinessUserEntity businessUser = businessUserService.loadBusinessUser(register.getRegisterUser().getQueueUserId());
+                /**
+                 * Even though it is a new business, using
+                 * {@link com.noqapp.service.BusinessUserService#findBusinessUser(String, String)} way its safe to
+                 * create a new Merchant Admin or update same account when it was rejected/flagged previously. This
+                 * enforces we are updating the correct record.
+                 *
+                 * If we use {@link com.noqapp.service.BusinessUserService#loadBusinessUser()}, there is a likelihood
+                 * of finding existing user with a different role. In future,
+                 * {@link com.noqapp.service.BusinessUserService#loadBusinessUser()} will load multiple business user
+                 * associated with QID.
+                 */
+                BusinessUserEntity businessUser = businessUserService.findBusinessUser(
+                        register.getRegisterUser().getQueueUserId(),
+                        register.getRegisterBusiness().getBizId());
+
                 if (null == businessUser) {
-                    businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getQueueUserId(), UserLevelEnum.M_ADMIN);
-                    businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+                    businessUser = BusinessUserEntity.newInstance(
+                            register.getRegisterUser().getQueueUserId(),
+                            UserLevelEnum.M_ADMIN
+                    ).setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }
                 businessUser
                         .setBizName(bizName)

@@ -63,8 +63,7 @@ public class QueueSupervisorLandingController {
     }
 
     /**
-     * Loading landing page for business.
-     * This link is mapped in web flow after merchant adds new store to existing business.
+     * Loading landing page for user with queue supervisor role.
      *
      * @param businessLandingForm
      * @return
@@ -76,7 +75,7 @@ public class QueueSupervisorLandingController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.loadBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
+        return nextPage(businessUserService.loadBusinessUser(), businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")

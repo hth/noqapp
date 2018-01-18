@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import org.bson.types.ObjectId;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -60,16 +63,25 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     }
 
     @Override
-    public BusinessUserEntity loadBusinessUser(String qid) {
-        return mongoTemplate.findOne(
-                query(where("QID").is(qid)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserEntity.class,
-                TABLE);
+    public BusinessUserEntity loadBusinessUser() {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return findBusinessUser(queueUser.getQueueUserId(), null);
+    }
+
+    @Override
+    public BusinessUserEntity findBusinessUser(String qid, String bizId) {
+        Query query = query(where("QID").is(qid)
+                .andOperator(
+                        isActive(),
+                        isNotDeleted()
+                )
+        );
+
+        if (null != bizId) {
+            query.addCriteria(where("B_N.$id").is(new ObjectId(bizId)));
+        }
+
+        return mongoTemplate.findOne(query, BusinessUserEntity.class, TABLE);
     }
 
     @Override

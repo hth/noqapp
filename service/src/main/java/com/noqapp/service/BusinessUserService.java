@@ -1,12 +1,14 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,8 +68,20 @@ public class BusinessUserService {
         }
     }
 
-    public BusinessUserEntity loadBusinessUser(String qid) {
-        return businessUserManager.loadBusinessUser(qid);
+    /**
+     * //TODO currently there can be just one entry for business user. To support multiple, this will return a list.
+     * @deprecated  As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
+     * Implement multiple account support.
+     *
+     * @return
+     */
+    @Deprecated
+    public BusinessUserEntity loadBusinessUser() {
+        return businessUserManager.loadBusinessUser();
+    }
+
+    public BusinessUserEntity findBusinessUser(String qid, String bizId) {
+        return businessUserManager.findBusinessUser(qid, bizId);
     }
 
     public BusinessUserEntity findById(String id) {
@@ -102,8 +116,13 @@ public class BusinessUserService {
         return businessUserManager.getAllForBusiness(bizNameId);
     }
 
-    public BusinessUserRegistrationStatusEnum markBusinessUserProfileCompleteOnProfileUpdate(String qid) {
-        BusinessUserEntity businessUser = loadBusinessUser(qid);
+    public BusinessUserRegistrationStatusEnum markBusinessUserProfileCompleteOnProfileUpdate(String qid, String bizId) {
+        BusinessUserEntity businessUser;
+        if (null == bizId) {
+            businessUser = loadBusinessUser();
+        } else {
+            businessUser = findBusinessUser(qid, bizId);
+        }
         businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
         save(businessUser);
 
