@@ -44,7 +44,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
-    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR) {
+    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String bizStoreCodeQR) {
         Assertions.assertTrue(Validate.isValidQid(queueUserId), "Should be a valid qid");
         this.queueUserId = queueUserId;
 
@@ -54,7 +54,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
         Assertions.assertTrue(Validate.isValidObjectId(bizNameId), "Should be a valid ObjectId");
         this.bizNameId = bizNameId;
 
-        this.codeQR = codeQR;
+        this.codeQR = bizStoreCodeQR;
     }
 
     public String getQueueUserId() {
