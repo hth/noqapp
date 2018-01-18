@@ -77,7 +77,7 @@ public class LandingController {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null != businessUser) {
             landingForm.setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus())
                     .setBusinessAccountSignedUp(businessUser.getUpdated());

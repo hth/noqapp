@@ -170,7 +170,7 @@ public class BusinessUserStoreService {
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(qid);
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
         QueueSupervisor queueSupervisor = new QueueSupervisor();
         queueSupervisor.setBusinessUserId(businessUser.getId())
                 .setStoreId(bizStoreId)

@@ -51,10 +51,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
     }
 
     private RegisterBusiness createStoreRegistration() {
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String qid = queueUser.getQueueUserId();
-
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(qid);
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
             return null;
         }

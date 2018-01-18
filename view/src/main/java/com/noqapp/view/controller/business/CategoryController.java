@@ -109,7 +109,7 @@ public class CategoryController {
             redirectAttrs.addFlashAttribute("categoryLanding", categoryLanding);
         }
 
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         String bizNameId = businessUser.getBizName().getId();
         Map<String, String> categories = bizService.getBusinessCategoriesAsMap(bizNameId);
         categoryLanding
@@ -265,7 +265,7 @@ public class CategoryController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on editing category business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         BizNameEntity bizName = businessUser.getBizName();
         businessLandingForm.setBizName(bizName.getBusinessName());
         businessLandingForm.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));

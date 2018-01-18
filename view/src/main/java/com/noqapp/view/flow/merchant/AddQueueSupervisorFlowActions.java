@@ -273,7 +273,7 @@ public class AddQueueSupervisorFlowActions {
                 userProfile.getLevel());
         accountService.save(userAccount);
 
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(userProfile.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizStore.getBizName().getId());
         if (null == businessUser) {
             LOG.info("Creating new businessUser qid={}", userProfile.getQueueUserId());
             businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
@@ -333,7 +333,7 @@ public class AddQueueSupervisorFlowActions {
                 && "ON".equalsIgnoreCase(quickDataEntryByPassSwitch)
                 && userAccount.isAccountValidated()) {
 
-            BusinessUserEntity businessUserOfInviteeCode = businessUserService.loadBusinessUser(userProfileOfInviteeCode.getQueueUserId());
+            BusinessUserEntity businessUserOfInviteeCode = businessUserService.findBusinessUser(userProfileOfInviteeCode.getQueueUserId(), bizStore.getBizName().getId());
             RegisterUser registerUser = new RegisterUser()
                     .setEmail(new ScrubbedInput(userProfile.getEmail()))
                     .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))
@@ -347,7 +347,7 @@ public class AddQueueSupervisorFlowActions {
                     .setQueueUserId(userProfile.getQueueUserId());
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
-            businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId());
+            businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId(), bizStore.getBizName().getId());
 
             LOG.warn("Complete process QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
                     inviteQueueSupervisor.getBizStoreId(),

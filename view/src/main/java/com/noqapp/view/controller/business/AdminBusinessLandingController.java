@@ -122,7 +122,7 @@ public class AdminBusinessLandingController {
 
     /**
      * Loading landing page for business.
-     * This link is mapped in web flow after merchant adds new store to existing business.
+     * Note: This link is mapped in web flow after merchant adds new store to existing business.
      *
      * @param businessLandingForm
      * @return
@@ -134,7 +134,7 @@ public class AdminBusinessLandingController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.loadBusinessUser(queueUser.getQueueUserId()), businessLandingForm);
+        return nextPage(businessUserService.loadBusinessUser(), businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")
@@ -409,8 +409,7 @@ public class AdminBusinessLandingController {
             @ModelAttribute ("queueSupervisorActionForm")
             QueueSupervisorActionForm queueSupervisorActionForm
     ) {
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser(queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
 

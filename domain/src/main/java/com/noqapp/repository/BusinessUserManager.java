@@ -19,12 +19,19 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
     BusinessUserEntity findByQid(String qid);
 
     /**
-     * Finds active business user.
+     * Gets self.
+     * //TODO this will return a list of self. So better to add BusinessNameId in user session/context.
      *
-     * @param qid
-     * @return
+     * @deprecated  As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
+     * Implement multiple account support.
      */
-    BusinessUserEntity loadBusinessUser(String qid);
+    @Deprecated
+    BusinessUserEntity loadBusinessUser();
+
+    /**
+     * Load business user for a specific business. As same user can be registered in different businesses.
+     */
+    BusinessUserEntity findBusinessUser(String qid, String bizId);
 
     BusinessUserEntity findById(String id);
 
