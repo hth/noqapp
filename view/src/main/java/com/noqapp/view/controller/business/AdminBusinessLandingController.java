@@ -1,6 +1,5 @@
 package com.noqapp.view.controller.business;
 
-import static java.util.Comparator.comparing;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.domain.UserAccountEntity;
@@ -224,8 +223,6 @@ public class AdminBusinessLandingController {
         );
         /* Filter already existing Q_SUPERVISOR for this queue. */
         availableQueueSupervisor.removeAll(queueSupervisors);
-        /* Sort by name. */
-        availableQueueSupervisor.sort(comparing(QueueSupervisor::getName));
         queueSupervisorForm.setAvailableQueueSupervisor(availableQueueSupervisor);
 
         //Gymnastic to show BindingResult errors if any
