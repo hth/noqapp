@@ -158,7 +158,12 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Name</th>
+                                                <th>
+                                                    Name
+                                                    &nbsp;
+                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                         alt="Sort" height="16px;"/>
+                                                </th>
                                                 <th>Address</th>
                                                 <th>Email</th>
                                                 <th>Role</th>
