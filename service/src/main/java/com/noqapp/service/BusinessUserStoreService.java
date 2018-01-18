@@ -217,7 +217,9 @@ public class BusinessUserStoreService {
 
             queueSupervisors.add(queueSupervisor);
         }
-
+        
+        /* Sort by name. */
+        queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
     }
 
