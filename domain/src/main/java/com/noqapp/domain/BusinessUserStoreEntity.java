@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * Contains relation of Business_Manager with specific store access.
@@ -44,7 +45,12 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
-    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String bizStoreCodeQR) {
+    @SuppressWarnings("unused")
+    public BusinessUserStoreEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
+    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR) {
         Assertions.assertTrue(Validate.isValidQid(queueUserId), "Should be a valid qid");
         this.queueUserId = queueUserId;
 
@@ -54,7 +60,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
         Assertions.assertTrue(Validate.isValidObjectId(bizNameId), "Should be a valid ObjectId");
         this.bizNameId = bizNameId;
 
-        this.codeQR = bizStoreCodeQR;
+        this.codeQR = codeQR;
     }
 
     public String getQueueUserId() {
@@ -71,5 +77,18 @@ public class BusinessUserStoreEntity extends BaseEntity {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BusinessUserStoreEntity that = (BusinessUserStoreEntity) o;
+        return Objects.equals(codeQR, that.codeQR);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codeQR);
     }
 }

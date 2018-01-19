@@ -35,6 +35,11 @@ public class EmailValidateEntity extends BaseEntity {
     @Field ("AUTH")
     private String authenticationKey;
 
+    @SuppressWarnings("unused")
+    public EmailValidateEntity() {
+        super();
+    }
+
     private EmailValidateEntity(String queueUserId, String email, String authenticationKey) {
         super();
         this.queueUserId = queueUserId;

@@ -26,6 +26,7 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -171,7 +172,7 @@ public class BizStoreEntity extends BaseEntity {
     private List<StoreHourEntity> storeHours;
 
     public BizStoreEntity() {
-        //Default constructor
+        //Default constructor, required to keep bean happy
     }
 
     public static BizStoreEntity newInstance() {
@@ -570,5 +571,18 @@ public class BizStoreEntity extends BaseEntity {
     public GeoPoint getGeoPoint() {
         /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BizStoreEntity that = (BizStoreEntity) o;
+        return Objects.equals(codeQR, that.codeQR);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codeQR);
     }
 }
