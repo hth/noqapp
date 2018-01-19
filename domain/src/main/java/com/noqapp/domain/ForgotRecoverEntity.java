@@ -27,11 +27,11 @@ public class ForgotRecoverEntity extends BaseEntity {
 
     @NotNull
     @Field ("QID")
-    private final String queueUserId;
+    private String queueUserId;
 
     @NotNull
     @Field ("AUTH")
-    private final String authenticationKey;
+    private String authenticationKey;
 
     /*
      * Field "CD" is redundant field on which index exists to just for the sake of
@@ -41,6 +41,11 @@ public class ForgotRecoverEntity extends BaseEntity {
     @Indexed (name = "forgot_recover_auto_expire_idx", expireAfterSeconds = 604800)
     @Field ("CD")
     private Date createDate = getCreated();
+
+    @SuppressWarnings("unused")
+    public ForgotRecoverEntity() {
+        //Default constructor, required to keep bean happy
+    }
 
     private ForgotRecoverEntity(String queueUserId, String authenticationKey) {
         super();

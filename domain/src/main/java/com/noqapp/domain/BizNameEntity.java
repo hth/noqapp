@@ -121,8 +121,9 @@ public class BizNameEntity extends BaseEntity {
     @Field("BS")
     private BillingStatusEnum billingStatus;
 
+    @SuppressWarnings("unused")
     public BizNameEntity() {
-        //Default constructor
+        //Default constructor, required to keep bean happy
     }
 
     public BizNameEntity(String codeQR) {
