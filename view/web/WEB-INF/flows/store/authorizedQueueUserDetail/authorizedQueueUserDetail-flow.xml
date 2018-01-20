@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
+
+    <on-start>
+        <evaluate expression="authorizedQueueUserDetailFlowActions.loadQueueUserDetail(externalContext)"
+                  result="flowScope.authorizedQueueUser"/>
+    </on-start>
+
+    <view-state id="queueUserDetailStart" model="authorizedQueueUser">
+        <transition on="submit" to="validateQueueUserDetail"/>
+        <transition on="cancel" to="queueUserDetailCancel"/>
+    </view-state>
+
+    <action-state id="validateQueueUserDetail">
+        <evaluate expression="authorizedQueueUserDetailValidator.validateQueueUserDetails(authorizedQueueUser, messageContext)"/>
+        <transition on="success" to="queueUserDetailReview"/>
+        <transition on="failure" to="queueUserDetailStart"/>
+    </action-state>
+
+    <view-state id="queueUserDetailReview">
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeQueueUserDetail" history="invalidate"/>
+        <transition on="revise" to="queueUserDetailStart"/>
+        <transition on="cancel" to="queueUserDetailCancel"/>
+    </view-state>
+
+    <action-state id="completeQueueUserDetail">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="authorizedQueueUser"
+                  expression="authorizedQueueUserDetailFlowActions.completeQueueUserDetail(authorizedQueueUser)"/>
+
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.AuthorizedQueueUserDetailException"
+                    to="queueUserDetailStart"/>
+
+        <transition to="queueUserDetailComplete"/>
+    </action-state>
+
+    <view-state id="queueUserDetailCancel"
+                view="externalRedirect:contextRelative:/business/authorizedUsers.htm"/>
+    <view-state id="queueUserDetailComplete"
+                view="externalRedirect:contextRelative:/business/authorizedUsers.htm"/>
+</flow>
