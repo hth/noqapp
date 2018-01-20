@@ -67,6 +67,7 @@ public class AdminBusinessLandingController {
     private String migrateBusinessRegistrationFlow;
     private String storeActionFlow;
     private String addQueueSupervisorFlow;
+    private String queueUserDetailFlow;
     private String listQueueSupervisorPage;
     private String authorizedUsersPage;
 
@@ -99,6 +100,9 @@ public class AdminBusinessLandingController {
             @Value("${authorizedUsersPage:/business/authorizedUsers}")
             String authorizedUsersPage,
 
+            @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
+            String queueUserDetailFlow,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
@@ -110,6 +114,7 @@ public class AdminBusinessLandingController {
         this.businessUserService = businessUserService;
         this.storeActionFlow = storeActionFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
+        this.queueUserDetailFlow = queueUserDetailFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
         this.authorizedUsersPage = authorizedUsersPage;
 
@@ -261,6 +266,18 @@ public class AdminBusinessLandingController {
         LOG.info("Add queue manager to bizStoreId={} {}", bizStoreId.getText(), addQueueSupervisorFlow);
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
         return addQueueSupervisorFlow;
+    }
+
+    @GetMapping (value = "/queueUserDetail/{businessUserId}", produces = "text/html;charset=UTF-8")
+    public String queueUserDetail(
+            @PathVariable ("businessUserId")
+            ScrubbedInput businessUserId,
+
+            RedirectAttributes redirectAttributes
+    ) {
+        LOG.info("QueueUserDetail businessUserId={} {}", businessUserId.getText(), queueUserDetailFlow);
+        redirectAttributes.addFlashAttribute("businessUserId", businessUserId.getText());
+        return queueUserDetailFlow;
     }
 
     /**

@@ -8,8 +8,8 @@
                                        margin-bottom="3cm" margin-left="3cm" margin-right="3cm">
 
                     <fo:region-body margin-top="2mm" margin-bottom="2mm"/>
-                    <fo:region-before extent="2mm"   background-color="lightgrey"/>
-                    <fo:region-after extent="2mm"  background-color="lightgrey"/>
+                    <fo:region-before extent="2mm" background-color="lightgrey"/>
+                    <fo:region-after extent="2mm" background-color="lightgrey"/>
                     <fo:region-start extent="2mm" background-color="lightgrey"/>
                     <fo:region-end extent="2mm" background-color="lightgrey"/>
 
@@ -35,7 +35,7 @@
                                 height="2.50in"
                                 content-width="2.50in">
                             <xsl:attribute name="src">
-                                <xsl:value-of select="imageLocationCodeQR" />
+                                <xsl:value-of select="imageLocationCodeQR"/>
                             </xsl:attribute>
                         </fo:external-graphic>
                     </fo:block>

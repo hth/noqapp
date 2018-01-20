@@ -95,7 +95,16 @@
                                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
-                                                    <td nowrap>${queueSupervisor.name}</td>
+                                                    <td nowrap>
+                                                        <c:choose>
+                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
+                                                                <a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${queueSupervisor.name}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td>${queueSupervisor.address}
                                                         <p>Phone: ${queueSupervisor.phone}</p>
                                                     </td>
