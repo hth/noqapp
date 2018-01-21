@@ -98,12 +98,23 @@ public class StoreHourManagerImpl implements StoreHourManager {
     public StoreHourEntity modifyOne(
             String bizStoreId,
             DayOfWeek dayOfWeek,
+            int tokenAvailableFrom,
+            int startHour,
+            int tokenNotAvailableFrom,
+            int endHour,
             boolean preventJoining,
-            boolean dayClosed
+            boolean dayClosed,
+            int delayedInMinutes
     ) {
         return mongoTemplate.findAndModify(
                 query(where("BZ").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
-                entityUpdate(update("PJ", preventJoining).set("DC", dayClosed)),
+                entityUpdate(update("TF", tokenAvailableFrom)
+                        .set("SH", startHour)
+                        .set("TE", tokenNotAvailableFrom)
+                        .set("EH", endHour)
+                        .set("PJ", preventJoining)
+                        .set("DC", dayClosed)
+                        .set("DE", delayedInMinutes)),
                 FindAndModifyOptions.options().returnNew(true),
                 StoreHourEntity.class,
                 TABLE
