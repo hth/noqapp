@@ -24,7 +24,12 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
     StoreHourEntity modifyOne(
             String bizStoreId,
             DayOfWeek dayOfWeek,
+            int tokenAvailableFrom,
+            int startHour,
+            int tokenNotAvailableFrom,
+            int endHour,
             boolean preventJoining,
-            boolean dayClosed
+            boolean dayClosed,
+            int delayedInMinutes
     );
 }
