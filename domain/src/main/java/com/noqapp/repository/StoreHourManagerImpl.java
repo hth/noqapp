@@ -106,6 +106,24 @@ public class StoreHourManagerImpl implements StoreHourManager {
             boolean dayClosed,
             int delayedInMinutes
     ) {
+        LOG.info("Hour Change for bizStoreId={} " +
+                        "dayOfWeek={} " +
+                        "tokenAvailableFrom={} " +
+                        "startHour={} " +
+                        "tokenNotAvailableFrom={} " +
+                        "endHour={} " +
+                        "preventJoining={} " +
+                        "dayClosed={} " +
+                        "delayedInMinutes={}",
+                bizStoreId,
+                dayOfWeek.getValue(),
+                tokenAvailableFrom,
+                startHour,
+                tokenNotAvailableFrom,
+                endHour,
+                preventJoining,
+                dayClosed,
+                delayedInMinutes);
         return mongoTemplate.findAndModify(
                 query(where("BZ").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
                 entityUpdate(update("TF", tokenAvailableFrom)
