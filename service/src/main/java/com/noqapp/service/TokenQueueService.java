@@ -99,7 +99,13 @@ public class TokenQueueService {
      * This process adds the user to queue. Invokes broadcast.
      */
     @Mobile
-    public JsonToken getNextToken(String codeQR, String did, String qid, long averageServiceTime, TokenServiceEnum tokenService) {
+    public JsonToken getNextToken(
+            String codeQR,
+            String did,
+            String qid,
+            long averageServiceTime,
+            TokenServiceEnum tokenService
+    ) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
@@ -126,7 +132,7 @@ public class TokenQueueService {
                 }
 
                 try {
-                    queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenService);
+                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (StringUtils.isNotBlank(qid)) {
                         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
                         queue.setCustomerName(userProfile.getName());

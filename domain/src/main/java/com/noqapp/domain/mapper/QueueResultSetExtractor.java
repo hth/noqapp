@@ -14,35 +14,35 @@ import java.sql.SQLException;
  */
 public class QueueResultSetExtractor implements ResultSetExtractor {
 
-    public static final int ID = 1;
-    public static final int QR = 2;
-    public static final int DID = 3;
-    public static final int TS = 4;
-    public static final int QID = 5;
-    public static final int TN = 6;
-    public static final int DN = 7;
-    public static final int QS = 8;
-    public static final int NS = 9;
-    public static final int RA = 10;
-    public static final int HR = 11;
-    public static final int SN = 12;
-    public static final int SB = 13;
-    public static final int SE = 14;
-    public static final int V = 15;
-    public static final int U = 16;
-    public static final int C = 17;
-    public static final int A = 18;
-    public static final int D = 19;
+    private static final int ID = 1;
+    private static final int QR = 2;
+    private static final int DID = 3;
+    private static final int TS = 4;
+    private static final int QID = 5;
+    private static final int TN = 6;
+    private static final int DN = 7;
+    private static final int QS = 8;
+    private static final int NS = 9;
+    private static final int RA = 10;
+    private static final int HR = 11;
+    private static final int SN = 12;
+    private static final int SB = 13;
+    private static final int SE = 14;
+    private static final int V = 15;
+    private static final int U = 16;
+    private static final int C = 17;
+    private static final int A = 18;
+    private static final int D = 19;
 
     @Override
     public QueueEntity extractData(ResultSet rs) throws SQLException {
         QueueEntity queue = new QueueEntity(
                 rs.getString(QR),
                 rs.getString(DID),
+                TokenServiceEnum.valueOf(rs.getString(TS)),
                 rs.getString(QID),
                 rs.getInt(TN),
-                rs.getString(DN),
-                TokenServiceEnum.valueOf(rs.getString(TS))
+                rs.getString(DN)
         );
         queue.setId(rs.getString(ID));
         queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(QS)));

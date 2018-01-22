@@ -95,17 +95,17 @@ public class QueueEntity extends BaseEntity {
     public QueueEntity(
             String codeQR,
             String did,
+            TokenServiceEnum tokenService,
             String queueUserId,
             int tokenNumber,
-            String displayName,
-            TokenServiceEnum tokenService
+            String displayName
     ) {
         this.codeQR = codeQR;
         this.did = did;
+        this.tokenService = tokenService;
         this.queueUserId = queueUserId;
         this.tokenNumber = tokenNumber;
         this.displayName = displayName;
-        this.tokenService = tokenService;
     }
 
     public String getCodeQR() {
