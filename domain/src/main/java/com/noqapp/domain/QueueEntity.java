@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -88,9 +89,20 @@ public class QueueEntity extends BaseEntity {
     @Field ("EB")
     private Date expectedServiceBegin;
 
-    public QueueEntity(String codeQR, String did, String queueUserId, int tokenNumber, String displayName) {
+    @Field ("TS")
+    private TokenServiceEnum tokenService;
+
+    public QueueEntity(
+            String codeQR,
+            String did,
+            TokenServiceEnum tokenService,
+            String queueUserId,
+            int tokenNumber,
+            String displayName
+    ) {
         this.codeQR = codeQR;
         this.did = did;
+        this.tokenService = tokenService;
         this.queueUserId = queueUserId;
         this.tokenNumber = tokenNumber;
         this.displayName = displayName;
@@ -222,6 +234,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setExpectedServiceBegin(Date expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public TokenServiceEnum getTokenService() {
+        return tokenService;
+    }
+
+    public QueueEntity setTokenService(TokenServiceEnum tokenService) {
+        this.tokenService = tokenService;
         return this;
     }
 
