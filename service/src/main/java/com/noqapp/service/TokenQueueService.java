@@ -1,9 +1,6 @@
 package com.noqapp.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -17,10 +14,10 @@ import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.common.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
@@ -28,6 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -96,19 +97,15 @@ public class TokenQueueService {
     /**
      * Gets new token or reloads existing token if previously registered.
      * This process adds the user to queue. Invokes broadcast.
-     *
-     * @param codeQR
-     * @param did
-     * @param qid
-     * @return
      */
     @Mobile
-    public JsonToken getNextToken(String codeQR, String did, String qid, long averageServiceTime) {
+    public JsonToken getNextToken(String codeQR, String did, String qid, long averageServiceTime, TokenServiceEnum tokenService) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
+                Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
                 LOG.info("Assigned to queue with codeQR={} with new toke={}", codeQR, tokenQueue.getLastNumber());
 
@@ -129,7 +126,7 @@ public class TokenQueueService {
                 }
 
                 try {
-                    queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    queue = new QueueEntity(codeQR, did, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenService);
                     if (StringUtils.isNotBlank(qid)) {
                         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
                         queue.setCustomerName(userProfile.getName());

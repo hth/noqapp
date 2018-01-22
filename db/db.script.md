@@ -16,6 +16,7 @@ as a value, then it gets endless connections.
         ID VARCHAR(30)      NOT NULL,
         QR VARCHAR(30)      NOT NULL,
         DID VARCHAR(50)     NOT NULL,
+        TS VARCHAR(1)       NOT NULL,
         QID VARCHAR(13),
         TN INT(10)          NOT NULL,
         DN VARCHAR(100)     NOT NULL,
@@ -45,6 +46,7 @@ as a value, then it gets endless connections.
     
     ALTER TABLE `noqapp_test`.`QUEUE` 
     ADD COLUMN `XX` TINYINT(1) NULL DEFAULT NULL AFTER `XY`,
+    ADD COLUMN `TS` VARCHAR(1) NOT NULL DEFAULT 'C' AFTER `DID`,
     ADD COLUMN `XA` DATETIME NULL DEFAULT NULL AFTER `XX`;
     
 #### Insert System Date
