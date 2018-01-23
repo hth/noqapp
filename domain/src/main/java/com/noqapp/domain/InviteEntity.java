@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -49,13 +50,18 @@ public class InviteEntity extends BaseEntity {
     @Field ("RJI")
     private int remoteJoinForInviterCount;
 
-    public InviteEntity(String queueUserId, String inviterId, String inviteeCode) {
+    public InviteEntity(
+            String queueUserId,
+            String inviterId,
+            String inviteeCode,
+            int freeRemoteJoins
+    ) {
         this.queueUserId = queueUserId;
-        this.remoteJoinForQueueUserCount = 2;
+        this.remoteJoinForQueueUserCount = freeRemoteJoins;
         if (StringUtils.isNotBlank(inviteeCode)) {
             this.inviteeCode = inviteeCode;
             this.inviterId = inviterId;
-            this.remoteJoinForInviterCount = 2;
+            this.remoteJoinForInviterCount = freeRemoteJoins;
         }
     }
 

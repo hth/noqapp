@@ -33,6 +33,7 @@ import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -52,6 +53,9 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 @Service
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
+
+    @Value("${AccountService.freeRemoteJoins}")
+    private int freeRemoteJoins;
 
     private UserAccountManager userAccountManager;
     private UserAuthenticationManager userAuthenticationManager;
@@ -227,14 +231,14 @@ public class AccountService {
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
                 if (null != userProfileOfInvitee) {
-                    InviteEntity invite = new InviteEntity(qid, userProfileOfInvitee.getQueueUserId(), inviteCode);
+                    InviteEntity invite = new InviteEntity(qid, userProfileOfInvitee.getQueueUserId(), inviteCode, freeRemoteJoins);
                     inviteService.save(invite);
                 } else {
-                    InviteEntity invite = new InviteEntity(qid, null, null);
+                    InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
                     inviteService.save(invite);
                 }
             } else {
-                InviteEntity invite = new InviteEntity(qid, null, null);
+                InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
                 inviteService.save(invite);
             }
             return userAccount;
