@@ -302,6 +302,7 @@ public class TokenQueueService {
             }
 
             jsonMessage.setData(jsonData);
+            LOG.info("Specific Message={}", jsonMessage.asJson());
             boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
