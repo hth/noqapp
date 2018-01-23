@@ -235,12 +235,6 @@ public class TokenQueueService {
     /**
      * This acquires the record of the person being served by server. No one gets informed when the record is
      * acquired other than the person who's record is acquired to be served next.
-     *
-     * @param codeQR
-     * @param queueStatus
-     * @param serving
-     * @param goTo
-     * @return
      */
     @Mobile
     public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
@@ -275,11 +269,6 @@ public class TokenQueueService {
 
     /**
      * Send FCM message to Topic asynchronously.
-     *
-     * @param codeQR
-     * @param queueStatus
-     * @param tokenQueue
-     * @param goTo
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
         executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
@@ -287,12 +276,6 @@ public class TokenQueueService {
 
     /**
      * Send FCM message to person with specific token number asynchronously.
-     *
-     * @param codeQR
-     * @param queueStatus
-     * @param tokenQueue
-     * @param goTo
-     * @param tokenNumber
      */
     private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
         executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
@@ -300,10 +283,6 @@ public class TokenQueueService {
 
     /**
      * Sends any message to a specific user.
-     *
-     * @param qid
-     * @param title
-     * @param body
      */
     public void sendMessageToSpecificUser(String title, String body, String qid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
@@ -336,11 +315,6 @@ public class TokenQueueService {
 
     /**
      * Formulates and send messages to FCM.
-     *
-     * @param codeQR
-     * @param queueStatus
-     * @param tokenQueue
-     * @param goTo
      */
     private void invokeThreadSendMessageToTopic(
             String codeQR,
@@ -409,12 +383,6 @@ public class TokenQueueService {
     /**
      * When servicing token that's out of order or sequence. Send message as the selected token is being served
      * and mark it Personal.
-     *
-     * @param codeQR
-     * @param queueStatus
-     * @param tokenQueue
-     * @param goTo
-     * @param tokenNumber
      */
     private void invokeThreadSendMessageToSelectedTokenUser(
             String codeQR,
