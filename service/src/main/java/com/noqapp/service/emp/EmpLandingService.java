@@ -53,9 +53,6 @@ public class EmpLandingService {
 
     /**
      * Approve new business after validating all the details.
-     * 
-     * @param businessUserId
-     * @param qid
      */
     public void approveBusiness(String businessUserId, String qid) {
         LOG.info("Approve Business Clicked businessUserId={} qid={}", businessUserId, qid);
@@ -120,6 +117,7 @@ public class EmpLandingService {
         if (StringUtils.isNotBlank(inviteeCode)) {
             UserProfileEntity userProfile = accountService.findProfileByInviteCode(inviteeCode);
 
+            //TODO remove UserLevel Client as Level is updated during registration
             if (UserLevelEnum.CLIENT == userProfile.getLevel() || UserLevelEnum.Q_SUPERVISOR == userProfile.getLevel()) {
                 tokenQueueService.sendMessageToSpecificUser(
                         businessName + " joined NoQueue.",
@@ -137,9 +135,6 @@ public class EmpLandingService {
 
     /**
      * Decline approval of business when validation fails.
-     *
-     * @param businessUserId
-     * @param qid
      */
     public void declineBusiness(String businessUserId, String qid) {
         LOG.info("Decline Business Clicked businessUserId={} qid={}", businessUserId, qid);

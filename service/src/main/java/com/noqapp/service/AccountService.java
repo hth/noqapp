@@ -129,18 +129,6 @@ public class AccountService {
 
     /**
      * Creates new user for client or merchant account. There are some rollback but this process should not fail.
-     *
-     * @param phone
-     * @param firstName
-     * @param lastName
-     * @param mail
-     * @param birthday
-     * @param gender
-     * @param countryShortName
-     * @param timeZone
-     * @param password
-     * @param inviteCode
-     * @return
      */
     public UserAccountEntity createNewAccount(
             String phone,
@@ -327,9 +315,6 @@ public class AccountService {
 
     /**
      * Should be called when from catch condition of DataIntegrityViolationException.
-     *
-     * @param userAccount
-     * @param e
      */
     public void deleteAllWhenAccountCreationFailedDueToDuplicate(UserAccountEntity userAccount, DataIntegrityViolationException e) {
         Assert.notNull(e, "DataIntegrityViolationException is not set or not invoked properly");
@@ -396,10 +381,6 @@ public class AccountService {
 
     /**
      * Change user role to match user level.
-     *
-     * @param qid
-     * @param userLevel
-     * @return
      */
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String qid, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = findByQueueUserId(qid);
