@@ -286,6 +286,7 @@ public class TokenQueueService {
      */
     public void sendMessageToSpecificUser(String title, String body, String qid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
+        LOG.info("Found device count={} for qid={}", registeredDevices.size(), qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
