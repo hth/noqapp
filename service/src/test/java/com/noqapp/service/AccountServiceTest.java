@@ -43,6 +43,7 @@ class AccountServiceTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         accountService = new AccountService(
+                5,
                 userAccountManager,
                 userAuthenticationManager,
                 userPreferenceManager,
