@@ -53,8 +53,6 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 @Service
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
-
-    @Value("${AccountService.freeRemoteJoins}")
     private int freeRemoteJoins;
 
     private UserAccountManager userAccountManager;
@@ -70,6 +68,9 @@ public class AccountService {
 
     @Autowired
     public AccountService(
+            @Value("${AccountService.freeRemoteJoins}")
+            int freeRemoteJoins,
+
             UserAccountManager userAccountManager,
             UserAuthenticationManager userAuthenticationManager,
             UserPreferenceManager userPreferenceManager,
@@ -79,6 +80,8 @@ public class AccountService {
             InviteService inviteService,
             ForgotRecoverManager forgotRecoverManager
     ) {
+        this.freeRemoteJoins = freeRemoteJoins;
+
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
