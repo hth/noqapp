@@ -5,7 +5,6 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.service.TokenQueueService;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -43,7 +42,6 @@ public class NoQAppInitializationCheckBean {
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
-    private TokenQueueService tokenQueueService;
 
     @Autowired
     public NoQAppInitializationCheckBean(
@@ -52,14 +50,13 @@ public class NoQAppInitializationCheckBean {
             FirebaseConfig firebaseConfig,
             RestHighLevelClient restHighLevelClient,
             ElasticAdministrationService elasticAdministrationService,
-            BizStoreElasticService bizStoreElasticService, TokenQueueService tokenQueueService) {
+            BizStoreElasticService bizStoreElasticService) {
         this.environment = environment;
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
-        this.tokenQueueService = tokenQueueService;
     }
 
     @PostConstruct
@@ -126,9 +123,6 @@ public class NoQAppInitializationCheckBean {
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
-
-        tokenQueueService.sendMessageToSpecificUser("Hello Android", "World Android", "100000000029");
-        tokenQueueService.sendMessageToSpecificUser("Hello iPhone", "World iPhone", "100000000005");
     }
 
     @PreDestroy
