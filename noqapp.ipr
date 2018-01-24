@@ -1691,6 +1691,7 @@
         <w>gstatic</w>
         <w>intl</w>
         <w>journaled</w>
+        <w>ladda</w>
         <w>lightgrey</w>
         <w>logstash</w>
         <w>noqapp</w>
