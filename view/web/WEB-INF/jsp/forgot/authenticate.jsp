@@ -60,7 +60,10 @@
                                 <div class="admin-content" style="background:white;">
                                     <form:password path="password" cssClass="form-field" required="required" placeholder="Password" cssErrorClass="form-field error-field"/>
                                     <form:password path="passwordSecond" cssClass="form-field" required="required" placeholder="Retype Password" cssErrorClass="form-field error-field"/>
-                                    <input type="submit" value="Reset Password" name="update_password" class="form-btn mT0">
+                                    <%--<input type="submit" value="Reset Password" name="update_password" class="form-btn mT0">--%>
+                                    <div class="button-btn">
+                                        <button name="update_password" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Reset Password</button>
+                                    </div>
                                 </div>
                             </form:form>
                         </div>
@@ -113,4 +116,36 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript">
+    // Bind normal buttons
+    Ladda.bind('.button-btn button', {timeout: 6000});
+
+    // Bind progress buttons and simulate loading progress
+    Ladda.bind('.progress-demo button', {
+        callback: function (instance) {
+            var progress = 0;
+            var interval = setInterval(function () {
+                progress = Math.min(progress + Math.random() * 0.1, 1);
+                instance.setProgress(progress);
+
+                if (progress === 1) {
+                    instance.stop();
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+    });
+
+    // You can control loading explicitly using the JavaScript API
+    // as outlined below:
+
+    // var l = Ladda.create( document.querySelector( 'button' ) );
+    // l.start();
+    // l.stop();
+    // l.toggle();
+    // l.isLoading();
+    // l.setProgress( 0-1 );
+</script>
 </html>

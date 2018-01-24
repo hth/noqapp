@@ -71,7 +71,10 @@
                         <h2>Login</h2>
                         <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
                         <span class="mdl-textfield__error"> </span>
-                        <input name="" id="sign-in-button" type="button"  class="form-btn" value="NEXT" onClick = "onSignInSubmit()"/>
+                        <%--<input name="" id="sign-in-button" type="button" class="form-btn" value="NEXT" onClick="onSignInSubmit()"/>--%>
+                        <div class="button-btn">
+                            <button id="sign-in-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%" onClick="onSignInSubmit()">NEXT</button>
+                        </div>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
 
@@ -96,8 +99,15 @@
                                 <div class="clearFix"></div>
                             </ul>
                             <span class="mdl-textfield__error"> </span>
-                            <input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" style="width: 46%;" onClick = "onVerifyCodeSubmit()"/>
-                            <input id="cancel-verify-code-button"  name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>
+                            <%--<input id="verify-code-button" name="" type="button" class="form-btn mT10" value="Verify Now" style="width: 46%;" onClick="onVerifyCodeSubmit()"/>--%>
+                            <div class="button-btn">
+                                <button id="verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Verify Now</button>
+                            </div>
+
+                            <%--<input id="cancel-verify-code-button" name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>--%>
+                            <div class="button-btn">
+                                <button id="cancel-verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Cancel</button>
+                            </div>
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 
@@ -130,7 +140,11 @@
 
                         <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="form-field error" />
                         <form:password path="password" cssClass="form-field" required="required" cssErrorClass="form-field error" />
-                        <input name="" type="submit" class="form-btn mT0" value="Login">
+                        <%--<input name="" type="submit" class="form-btn mT0" value="Login">--%>
+                        <div class="button-btn">
+                            <button class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%">Login</button>
+                        </div>
+
                         <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
                         <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password</a></span>
                     </form:form>
@@ -416,5 +430,37 @@
         }
     }
 
+</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript">
+    // Bind normal buttons
+    Ladda.bind('.button-btn button', {timeout: 6000});
+
+    // Bind progress buttons and simulate loading progress
+    Ladda.bind('.progress-demo button', {
+        callback: function (instance) {
+            var progress = 0;
+            var interval = setInterval(function () {
+                progress = Math.min(progress + Math.random() * 0.1, 1);
+                instance.setProgress(progress);
+
+                if (progress === 1) {
+                    instance.stop();
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+    });
+
+    // You can control loading explicitly using the JavaScript API
+    // as outlined below:
+
+    // var l = Ladda.create( document.querySelector( 'button' ) );
+    // l.start();
+    // l.stop();
+    // l.toggle();
+    // l.isLoading();
+    // l.setProgress( 0-1 );
 </script>
 </html>

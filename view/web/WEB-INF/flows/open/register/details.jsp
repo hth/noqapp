@@ -90,13 +90,24 @@
                             <span class="left-remember"><div id="mailErrors"></div></span>
                             <c:choose>
                                 <c:when test="${merchantRegistration.accountExists}">
-                                    <input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" class="form-btn mT10" />
+                                    <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" class="form-btn mT10" />--%>
+
+                                    <div class="button-btn">
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%">Recover Password</button>
+                                    </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" style="display: none;" class="form-btn mT10" />
+                                    <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" style="display: none;" class="form-btn mT10" />--%>
+
+                                    <div class="button-btn">
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%; display: none;">Recover Password</button>
+                                    </div>
                                 </c:otherwise>
                             </c:choose>
-                            <input name="_eventId_submit" class="form-btn mT10" value="Sign Up" type="submit">
+                            <%--<input name="_eventId_submit" class="form-btn mT10" value="Sign Up" type="submit">--%>
+                            <div class="button-btn">
+                                <button name="_eventId_submit" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Sign Up</button>
+                            </div>
                         </div>
                     </form:form>
                 </div>
@@ -214,5 +225,38 @@
     function genderClick(gender) {
         document.getElementById('gender').value = gender;
     }
+</script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript">
+    // Bind normal buttons
+    Ladda.bind('.button-btn button', {timeout: 6000});
+
+    // Bind progress buttons and simulate loading progress
+    Ladda.bind('.progress-demo button', {
+        callback: function (instance) {
+            var progress = 0;
+            var interval = setInterval(function () {
+                progress = Math.min(progress + Math.random() * 0.1, 1);
+                instance.setProgress(progress);
+
+                if (progress === 1) {
+                    instance.stop();
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+    });
+
+    // You can control loading explicitly using the JavaScript API
+    // as outlined below:
+
+    // var l = Ladda.create( document.querySelector( 'button' ) );
+    // l.start();
+    // l.stop();
+    // l.toggle();
+    // l.isLoading();
+    // l.setProgress( 0-1 );
 </script>
 </html>
