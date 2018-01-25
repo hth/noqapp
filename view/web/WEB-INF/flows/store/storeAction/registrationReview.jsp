@@ -191,15 +191,20 @@
                                     </ul>
 
                                     <div class="btn-hours">
-                                        <div class="first-btn">
-                                            <input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">
-                                        </div>
-                                        <div class="center-btn">
-                                            <input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">
-                                        </div>
-                                        <div class="last-btn">
-                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
-                                        </div>
+                                        <%--<div class="first-btn">--%>
+                                            <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="center-btn">--%>
+                                            <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="last-btn">--%>
+                                            <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                        <%--</div>--%>
+                                            <div class="button-btn">
+                                                <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
+                                                <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
+                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
+                                            </div>
                                         <div class="clearFix"></div>
                                     </div>
                                 </div>
@@ -238,4 +243,36 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript">
+    // Bind normal buttons
+    Ladda.bind('.button-btn button', {timeout: 6000});
+
+    // Bind progress buttons and simulate loading progress
+    Ladda.bind('.progress-demo button', {
+        callback: function (instance) {
+            var progress = 0;
+            var interval = setInterval(function () {
+                progress = Math.min(progress + Math.random() * 0.1, 1);
+                instance.setProgress(progress);
+
+                if (progress === 1) {
+                    instance.stop();
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+    });
+
+    // You can control loading explicitly using the JavaScript API
+    // as outlined below:
+
+    // var l = Ladda.create( document.querySelector( 'button' ) );
+    // l.start();
+    // l.stop();
+    // l.toggle();
+    // l.isLoading();
+    // l.setProgress( 0-1 );
+</script>
 </html>

@@ -505,9 +505,12 @@ span.info-txt{ font-size:14px; display:block; text-align:right; line-height:16px
 .right-btn{ float:right; width:49%;}
 input.next-btn{ border:0; width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 0px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
 input.next-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
-
+button.next-btn{ width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer; font-weight: 500; border-radius:4px;}
+button.next-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
 input.cancel-btn{ border:0; width:100%; border:1px solid #222; background:#222 url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 0px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer;}
 input.cancel-btn:hover{ background:#000 url(../img/arrow.png) 98% 10px no-repeat}
+button.cancel-btn{ width:100%; border:1px solid #222; background:#222 url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer; font-weight: 500; border-radius:4px;}
+button.cancel-btn:hover{ background:#000 url(../img/arrow.png) 98% 10px no-repeat}
 
 .light-color{ color:#a6a6a6}
 .no-approve{ text-align:center; font-size:20px; padding:20px 0}
