@@ -93,20 +93,20 @@
                                     <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" class="form-btn mT10" />--%>
 
                                     <div class="button-btn">
-                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%">Recover Password</button>
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%">Recover Password</button>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" style="display: none;" class="form-btn mT10" />--%>
 
                                     <div class="button-btn">
-                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%; display: none;">Recover Password</button>
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%; display: none;">Recover Password</button>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
                             <%--<input name="_eventId_submit" class="form-btn mT10" value="Sign Up" type="submit">--%>
                             <div class="button-btn">
-                                <button name="_eventId_submit" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Sign Up</button>
+                                <button name="_eventId_submit" class="ladda-button form-btn" style="width:100%;">Sign Up</button>
                             </div>
                         </div>
                     </form:form>

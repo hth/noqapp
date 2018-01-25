@@ -61,7 +61,7 @@
                             <form:input path="mail" cssClass="form-field" required="required" type="email" placeholder="Email Id" cssErrorClass="form-field error-field"/>
                             <%--<input type="submit" value="Send Recovery Email" name="forgot_password" class="form-btn mT0">--%>
                             <div class="button-btn">
-                                <button name="forgot_password" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Send Recovery Email</button>
+                                <button name="forgot_password" class="ladda-button form-btn" style="width:100%;">Send Recovery Email</button>
                             </div>
                         </div>
                     </form:form>

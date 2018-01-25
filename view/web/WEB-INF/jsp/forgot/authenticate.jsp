@@ -62,7 +62,7 @@
                                     <form:password path="passwordSecond" cssClass="form-field" required="required" placeholder="Retype Password" cssErrorClass="form-field error-field"/>
                                     <%--<input type="submit" value="Reset Password" name="update_password" class="form-btn mT0">--%>
                                     <div class="button-btn">
-                                        <button name="update_password" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Reset Password</button>
+                                        <button name="update_password" class="ladda-button form-btn" style="width:100%;">Reset Password</button>
                                     </div>
                                 </div>
                             </form:form>
