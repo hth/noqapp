@@ -70,7 +70,7 @@
                     <form id="sign-in-form" action="">
                         <h2>Login</h2>
                         <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
-                        <div id="mdl-textfield" class="error-box" style="margin-top: 10px;">
+                        <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
                                 <span class="mdl-textfield__error"> </span>
                             </div>
@@ -104,7 +104,7 @@
                                 <li><input id="code6" name="6" type="text" class="enter-f" maxlength="1"/></li>
                                 <div class="clearFix"></div>
                             </ul>
-                            <div id="mdl-textfield" class="error-box" style="margin-top: 10px;">
+                            <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
                                 <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
                                     <span class="mdl-textfield__error"> </span>
                                 </div>
@@ -225,9 +225,6 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
 <script>
-    $(document).ready(function() {
-        $("#mdl-textfield").hide();
-    });
     $("#phone").intlTelInput({
         // allowDropdown: false,
         // autoHideDialCode: false,
