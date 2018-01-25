@@ -68,15 +68,17 @@
                         <span class="mdl-textfield__error"> </span>
                         <%--<input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>--%>
                         <div class="button-btn">
-                            <button id="sign-in-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%" onClick="onSignInSubmit()">CONTINUE SIGN UP</button>
+                            <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit()">CONTINUE SIGN UP</button>
                         </div>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
 
                     <div class="otp">
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                                </div>
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
@@ -97,13 +99,10 @@
                             <span class="mdl-textfield__error"> </span>
                             <%--<input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" style="width: 46%;" onClick = "onVerifyCodeSubmit()"/>--%>
                             <div class="button-btn">
-                                <button id="verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Verify Now</button>
+                                <button id="verify-code-button" type="button" class="ladda-button form-btn" style="width:46%; float: left" onClick="onVerifyCodeSubmit()">Verify Now</button>
+                                <button id="cancel-verify-code-button" type="button" class="ladda-button form-btn" style="width:46%; float: right" onClick="cancelVerification()">Cancel</button>
                             </div>
-
                             <%--<input id="cancel-verify-code-button"  name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>--%>
-                            <div class="button-btn">
-                                <button id="cancel-verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Cancel</button>
-                            </div>
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 

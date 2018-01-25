@@ -71,7 +71,7 @@
                             <form:input path="mail" cssClass="form-field" required="required" type="email" disabled="true" cssErrorClass="form-field error-field"/>
                             <%--<input name="_eventId_sendRecoveryMail" class="form-btn mT10" value="Send Recovery Email" type="submit">--%>
                             <div class="button-btn">
-                                <button name="_eventId_sendRecoveryMail" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%;">Send Recovery Email</button>
+                                <button name="_eventId_sendRecoveryMail" class="ladda-button form-btn" style="width:100%;">Send Recovery Email</button>
                             </div>
                         </div>
                     </form:form>

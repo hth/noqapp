@@ -73,15 +73,17 @@
                         <span class="mdl-textfield__error"> </span>
                         <%--<input name="" id="sign-in-button" type="button" class="form-btn" value="NEXT" onClick="onSignInSubmit()"/>--%>
                         <div class="button-btn">
-                            <button id="sign-in-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%" onClick="onSignInSubmit()">NEXT</button>
+                            <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit();">NEXT</button>
                         </div>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
 
                     <div class="otp">
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                                </div>
                             </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
@@ -101,13 +103,10 @@
                             <span class="mdl-textfield__error"> </span>
                             <%--<input id="verify-code-button" name="" type="button" class="form-btn mT10" value="Verify Now" style="width: 46%;" onClick="onVerifyCodeSubmit()"/>--%>
                             <div class="button-btn">
-                                <button id="verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Verify Now</button>
+                                <button id="verify-code-button" type="button" class="ladda-button form-btn" style="width:46%; float: left" onClick="onVerifyCodeSubmit()">Verify Now</button>
+                                <button id="cancel-verify-code-button" type="button" class="ladda-button form-btn" style="width:46%; float: right" onClick="cancelVerification()">Cancel</button>
                             </div>
-
                             <%--<input id="cancel-verify-code-button" name="" type="button"  class="form-btn mT10" value="Cancel" style="width: 46%;" onClick = "cancelVerification()"/>--%>
-                            <div class="button-btn">
-                                <button id="cancel-verify-code-button" class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:46%" onClick="onVerifyCodeSubmit()">Cancel</button>
-                            </div>
                             <!--<button class="mdl-button mdl-js-button mdl-button--raised" id="">Cancel</button>-->
                         </form>
 
@@ -121,20 +120,26 @@
                         <div class="or">Or</div>
 
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+                                </div>
                             </div>
                             <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
                         </c:if>
                         <c:if test="${!empty param.error and param.error eq 'provider'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
+                                </div>
                             </div>
                         </c:if>
                         <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
-                            <div class="r-error" style="margin-left: 0; width: 100%">
-                                Login not successful. Reason: You seem to have exceed number of connections allowed.
-                                Please wait and try after some time.
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    Login not successful. Reason: You seem to have exceed number of connections allowed.
+                                    Please wait and try after some time.
+                                </div>
                             </div>
                         </c:if>
 
@@ -142,7 +147,7 @@
                         <form:password path="password" cssClass="form-field" required="required" cssErrorClass="form-field error" />
                         <%--<input name="" type="submit" class="form-btn mT0" value="Login">--%>
                         <div class="button-btn">
-                            <button class="ladda-button form-btn" data-color="green" data-style="expand-right" style="width:100%">Login</button>
+                            <button class="ladda-button form-btn" style="width:100%">Login</button>
                         </div>
 
                         <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
