@@ -183,25 +183,35 @@
                                 <c:choose>
                                 <c:when test="${!empty registerBusiness.bizStoreId}">
                                     <div class="col-fields">
-                                        <div class="first-btn">
-                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
-                                        </div>
-                                        <div class="center-btn">
-                                            <input name="_eventId_delete" class="cancel-btn" value="DELETE" type="submit">
-                                        </div>
-                                        <div class="last-btn">
-                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                        <%--<div class="first-btn">--%>
+                                            <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="center-btn">--%>
+                                            <%--<input name="_eventId_delete" class="cancel-btn" value="DELETE" type="submit">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="last-btn">--%>
+                                            <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                        <%--</div>--%>
+
+                                        <div class="button-btn">
+                                            <button name="_eventId_submit" class="ladda-button next-btn" style="width:32%; float: left">Next</button>
+                                            <button name="_eventId_delete" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Delete</button>
+                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="col-fields">
-                                        <div class="left-btn">
-                                            <input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">
-                                        </div>
-                                        <div class="right-btn">
-                                            <input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">
+                                        <%--<div class="left-btn">--%>
+                                            <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="right-btn">--%>
+                                            <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                        <%--</div>--%>
+                                        <div class="button-btn">
+                                            <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>
@@ -254,5 +264,37 @@
             $('[name="phoneStore"]').val("").prop("disabled", false);
         }
     });
+</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript">
+    // Bind normal buttons
+    Ladda.bind('.button-btn button', {timeout: 6000});
+
+    // Bind progress buttons and simulate loading progress
+    Ladda.bind('.progress-demo button', {
+        callback: function (instance) {
+            var progress = 0;
+            var interval = setInterval(function () {
+                progress = Math.min(progress + Math.random() * 0.1, 1);
+                instance.setProgress(progress);
+
+                if (progress === 1) {
+                    instance.stop();
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+    });
+
+    // You can control loading explicitly using the JavaScript API
+    // as outlined below:
+
+    // var l = Ladda.create( document.querySelector( 'button' ) );
+    // l.start();
+    // l.stop();
+    // l.toggle();
+    // l.isLoading();
+    // l.setProgress( 0-1 );
 </script>
 </html>
