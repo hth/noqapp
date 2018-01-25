@@ -65,7 +65,11 @@
                         <h2>Enter Phone Number</h2>
                         <p class="mB20 Tcenter">Please enter a valid phone number to continue sign up</p>
                         <input name="phone" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
-                        <span class="mdl-textfield__error"> </span>
+                        <div id="mdl-textfield" class="error-box" style="margin-top: 10px;">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                <span class="mdl-textfield__error"> </span>
+                            </div>
+                        </div>
                         <%--<input name="" id="sign-in-button" type="button"  class="form-btn" value="CONTINUE SIGN UP" onClick = "onSignInSubmit()"/>--%>
                         <div class="button-btn">
                             <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit()">CONTINUE SIGN UP</button>
@@ -96,7 +100,11 @@
                                 <li><input id="code6" name="6" type="text" class="enter-f" maxlength="1"/></li>
                                 <div class="clearFix"></div>
                             </ul>
-                            <span class="mdl-textfield__error"> </span>
+                            <div id="mdl-textfield" class="error-box" style="margin-top: 10px;">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    <span class="mdl-textfield__error"> </span>
+                                </div>
+                            </div>
                             <%--<input id="verify-code-button"  name="" type="button"  class="form-btn mT10" value="verIfy now" style="width: 46%;" onClick = "onVerifyCodeSubmit()"/>--%>
                             <div class="button-btn">
                                 <button id="verify-code-button" type="button" class="ladda-button form-btn" style="width:46%; float: left" onClick="onVerifyCodeSubmit()">Verify Now</button>
@@ -181,6 +189,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
 <script>
+    $(document).ready(function() {
+        $("#mdl-textfield").hide();
+    });
     $("#phone").intlTelInput({
         // allowDropdown: false,
         // autoHideDialCode: false,
@@ -238,17 +249,17 @@
                     document.getElementById("verification-code-form").style.display="block";  //login-form
 
                     $(".mdl-textfield__error").text("");
+                    $("#mdl-textfield").hide();
 
                 }).catch(function (error) {
                 console.error('Error during signInWithPhoneNumber', error);
                 window.signingIn = false;
             });
 
-        }
-        else
-        {
+        } else {
             //alert('Please fill the valid phone number');
-            $(".mdl-textfield__error").text("Please enter valid phone");
+            $(".mdl-textfield__error").text("Please enter valid a phone number");
+            $("#mdl-textfield").show();
             return;
         }
     }
@@ -331,14 +342,15 @@
         //alert('getCodeFromUserInput 2' + verifystr);
         var verifystr = document.getElementById('code1').value + document.getElementById('code2').value + document.getElementById('code3').value
             + document.getElementById('code4').value + document.getElementById('code5').value + document.getElementById('code6').value;
-        if(verifystr.length !== 6 )
-        {
+        if(verifystr.length !== 6 ) {
             //alert('Please fill valid code');
             $(".mdl-textfield__error").text("Please enter valid code");
+            $("#mdl-textfield").show();
             return false;
-        }
-        else
+        } else {
             $(".mdl-textfield__error").text("");
+            $("#mdl-textfield").hide();
+        }
 
         //alert(verifystr);
         return verifystr;
@@ -349,7 +361,8 @@
         var index = ccode.indexOf(':');
         var phone = document.getElementById('phone').value;
         if (phone === "") {
-            $(".mdl-textfield__error").text("Please enter valid phone number");
+            $(".mdl-textfield__error").text("Please enter valid a phone number");
+            $("#mdl-textfield").show();
             return;
         }
         return (ccode.substring(index+1) + phone);
