@@ -80,7 +80,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
     private QueueStatusEnum queueStatus;
 
     @JsonProperty ("se")
-    private String servicedEndTime;
+    private String serviceEndTime;
 
     @JsonProperty ("ra")
     private int ratingCount;
@@ -109,7 +109,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
-        this.servicedEndTime = jsonQueue.getServiceEndTime();
+        this.serviceEndTime = jsonQueue.getServiceEndTime();
         this.createDate = jsonQueue.getCreated();
 
         this.queueStatus = queueStatus;
@@ -132,7 +132,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = bizStore.getTopic();
         //Skipped serving number
         //Skipped last number
-        this.servicedEndTime = DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.ratingCount = queue.getRatingCount();
         this.hoursSaved = queue.getHoursSaved();
         this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
@@ -158,7 +158,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                 ", lastNumber=" + lastNumber +
                 ", token=" + token +
                 ", queueStatus=" + queueStatus +
-                ", servicedEndTime='" + servicedEndTime + '\'' +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
                 ", ratingCount=" + ratingCount +
                 ", hoursSaved=" + hoursSaved +
                 ", createDate='" + createDate + '\'' +
@@ -225,8 +225,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         return queueStatus;
     }
 
-    public String getServicedEndTime() {
-        return servicedEndTime;
+    public String getServiceEndTime() {
+        return serviceEndTime;
     }
 
     public int getRatingCount() {
