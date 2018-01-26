@@ -105,10 +105,10 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /**
      * Find all clients serviced to send messages.
      *
-     * @param attemptToSendNotificationCounts
+     * @param numberOfAttemptsToSendFCM
      * @return
      */
-    List<QueueEntity> findAllClientServiced(int attemptToSendNotificationCounts);
+    List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM);
 
     List<QueueEntity> findByCodeQR(String codeQR);
 

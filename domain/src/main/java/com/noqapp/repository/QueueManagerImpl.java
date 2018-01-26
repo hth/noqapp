@@ -276,9 +276,9 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
-    public List<QueueEntity> findAllClientServiced(int attemptToSendNotificationCounts) {
+    public List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM) {
         return mongoTemplate.find(
-                query(where("NS").is(false).and("NC").lt(attemptToSendNotificationCounts)
+                query(where("NS").is(false).and("NC").lt(numberOfAttemptsToSendFCM)
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.S),
                                 where("QS").is(QueueUserStateEnum.N)
