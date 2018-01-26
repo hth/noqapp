@@ -59,5 +59,8 @@ public interface QueueManagerJDBC {
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
 
     @Mobile
+    boolean hasClientVisitedThisStore(String codeQR, String qid);
+
+    @Mobile
     boolean isDBAlive();
 }

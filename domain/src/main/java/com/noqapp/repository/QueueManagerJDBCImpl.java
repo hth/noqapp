@@ -81,6 +81,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "WHERE DID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
+    private static final String checkIfClientVisitedStore =
+            "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -210,6 +213,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     codeQR, token, did, qid, ratingCount, hoursSaved, e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public boolean hasClientVisitedThisStore(String codeQR, String qid) {
+        LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
+        return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid}, Boolean.class);
     }
 
     public boolean isDBAlive() {
