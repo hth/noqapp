@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -137,19 +138,12 @@ public class TokenQueueService {
 
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
-                    if (StringUtils.isNotBlank(qid)) {
-                        //TODO(hth) can be move inside thread
-                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-                        queue.setCustomerName(userProfile.getName());
-                        queue.setCustomerPhone(userProfile.getPhone());
-                        queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
-                    }
-
                     if (0 != averageServiceTime) {
                         long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
                         queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes)));
                     }
                     queueManager.insert(queue);
+                    updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR);
@@ -159,7 +153,8 @@ public class TokenQueueService {
                         .setToken(queue.getTokenNumber())
                         .setServingNumber(tokenQueue.getCurrentlyServing())
                         .setDisplayName(tokenQueue.getDisplayName())
-                        .setQueueStatus(tokenQueue.getQueueStatus());
+                        .setQueueStatus(tokenQueue.getQueueStatus())
+                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             }
 
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
@@ -186,10 +181,23 @@ public class TokenQueueService {
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(tokenQueue.getQueueStatus());
+                    .setQueueStatus(tokenQueue.getQueueStatus())
+                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
+        }
+    }
+
+    @Async
+    protected void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
+        Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
+        if (StringUtils.isNotBlank(qid)) {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            queue.setCustomerName(userProfile.getName());
+            queue.setCustomerPhone(userProfile.getPhone());
+            queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
+            queueManager.save(queue);
         }
     }
 
@@ -228,7 +236,8 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName());
+                    .setCustomerName(queue.getCustomerName())
+                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
         }
 
         return new JsonToken(codeQR)
@@ -263,7 +272,8 @@ public class TokenQueueService {
                     .setServingNumber(serving)
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName());
+                    .setCustomerName(queue.getCustomerName())
+                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
         }
 
         return new JsonToken(codeQR)

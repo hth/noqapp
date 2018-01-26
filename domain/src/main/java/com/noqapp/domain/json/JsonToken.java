@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -46,6 +50,12 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty ("n")
     private String customerName = "";
+
+    @JsonProperty ("e")
+    private String expectedServiceBegin;
+
+    @JsonProperty ("v")
+    private boolean clientVisitedThisStore;
 
     JsonToken() {}
 
@@ -120,6 +130,24 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
+    }
+
+    public String getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public JsonToken setExpectedServiceBegin(Date expectedServiceBegin) {
+        this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        return this;
+    }
+
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
         return this;
     }
 
