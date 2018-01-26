@@ -92,6 +92,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("TS")
     private TokenServiceEnum tokenService;
 
+    @Field ("VS")
+    private boolean clientVisitedThisStore;
+
     public QueueEntity(
             String codeQR,
             String did,
@@ -243,6 +246,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setTokenService(TokenServiceEnum tokenService) {
         this.tokenService = tokenService;
+        return this;
+    }
+
+    public boolean hasClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public QueueEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
         return this;
     }
 

@@ -16,6 +16,7 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,7 @@ public class TokenQueueService {
     private QueueManager queueManager;
     private AccountService accountService;
     private RegisteredDeviceManager registeredDeviceManager;
+    private QueueManagerJDBC queueManagerJDBC;
 
     private ExecutorService executorService;
 
@@ -54,13 +56,15 @@ public class TokenQueueService {
             FirebaseMessageService firebaseMessageService,
             QueueManager queueManager,
             AccountService accountService,
-            RegisteredDeviceManager registeredDeviceManager
+            RegisteredDeviceManager registeredDeviceManager,
+            QueueManagerJDBC queueManagerJDBC
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseMessageService = firebaseMessageService;
         this.queueManager = queueManager;
         this.accountService = accountService;
         this.registeredDeviceManager = registeredDeviceManager;
+        this.queueManagerJDBC = queueManagerJDBC;
 
         this.executorService = newCachedThreadPool();
     }
@@ -134,9 +138,11 @@ public class TokenQueueService {
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (StringUtils.isNotBlank(qid)) {
+                        //TODO(hth) can be move inside thread
                         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
                         queue.setCustomerName(userProfile.getName());
                         queue.setCustomerPhone(userProfile.getPhone());
+                        queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
                     }
 
                     if (0 != averageServiceTime) {
