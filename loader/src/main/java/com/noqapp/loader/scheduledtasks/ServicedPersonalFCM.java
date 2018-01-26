@@ -43,7 +43,8 @@ import java.util.List;
 public class ServicedPersonalFCM {
     private static final Logger LOG = LoggerFactory.getLogger(ServicedPersonalFCM.class);
 
-    private String sendPersonalNotification;
+    private String sendPersonalNotificationSwitch;
+    private int numberOfAttemptsToSendFCM;
 
     private QueueManager queueManager;
     private TokenQueueManager tokenQueueManager;
@@ -55,8 +56,11 @@ public class ServicedPersonalFCM {
 
     @Autowired
     public ServicedPersonalFCM(
-            @Value ("${ServicedPersonalFCM.sendPersonalNotification}")
-            String sendPersonalNotification,
+            @Value ("${ServicedPersonalFCM.sendPersonalNotification.switch}")
+            String sendPersonalNotificationSwitch,
+
+            @Value ("${ServicedPersonalFCM.numberOfAttemptsToSendFCM}")
+            int numberOfAttemptsToSendFCM,
 
             QueueManager queueManager,
             TokenQueueManager tokenQueueManager,
@@ -64,7 +68,8 @@ public class ServicedPersonalFCM {
             FirebaseMessageService firebaseMessageService,
             StatsCronService statsCronService
     ) {
-        this.sendPersonalNotification = sendPersonalNotification;
+        this.sendPersonalNotificationSwitch = sendPersonalNotificationSwitch;
+        this.numberOfAttemptsToSendFCM = numberOfAttemptsToSendFCM;
 
         this.queueManager = queueManager;
         this.tokenQueueManager = tokenQueueManager;
@@ -78,15 +83,15 @@ public class ServicedPersonalFCM {
         statsCron = new StatsCronEntity(
                 ServicedPersonalFCM.class.getName(),
                 "Serviced_Client_FCM",
-                sendPersonalNotification);
+                sendPersonalNotificationSwitch);
 
         int found = 0, failure = 0, sent = 0, skipped = 0;
-        if ("OFF".equalsIgnoreCase(sendPersonalNotification)) {
-            LOG.debug("feature is {}", sendPersonalNotification);
+        if ("OFF".equalsIgnoreCase(sendPersonalNotificationSwitch)) {
+            LOG.debug("feature is {}", sendPersonalNotificationSwitch);
         }
 
         try {
-            List<QueueEntity> queues = queueManager.findAllClientServiced(100);
+            List<QueueEntity> queues = queueManager.findAllClientServiced(numberOfAttemptsToSendFCM);
             found = queues.size();
 
             for (QueueEntity queue : queues) {
