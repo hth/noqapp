@@ -138,7 +138,9 @@ public class JsonToken extends AbstractDomain {
     }
 
     public JsonToken setExpectedServiceBegin(Date expectedServiceBegin) {
-        this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        if (null != expectedServiceBegin) {
+            this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        }
         return this;
     }
 
