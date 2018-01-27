@@ -54,7 +54,7 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
 
     @NotNull
     @Field ("VS")
-    private int clientsVisitedThisStore;
+    private int clientsPreviouslyVisitedThisStore;
 
     /* Time saved as Milli Seconds. */
     @NotNull
@@ -140,12 +140,12 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
         return this;
     }
 
-    public int getClientsVisitedThisStore() {
-        return clientsVisitedThisStore;
+    public int getClientsPreviouslyVisitedThisStore() {
+        return clientsPreviouslyVisitedThisStore;
     }
 
-    public StatsBizStoreDailyEntity setClientsVisitedThisStore(int clientsVisitedThisStore) {
-        this.clientsVisitedThisStore = clientsVisitedThisStore;
+    public StatsBizStoreDailyEntity setClientsPreviouslyVisitedThisStore(int clientsPreviouslyVisitedThisStore) {
+        this.clientsPreviouslyVisitedThisStore = clientsPreviouslyVisitedThisStore;
         return this;
     }
 
@@ -196,7 +196,7 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
 
     @Transient
     public int newClients() {
-        return totalClient - clientsVisitedThisStore;
+        return totalClient - clientsPreviouslyVisitedThisStore;
     }
 
     @Override

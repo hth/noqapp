@@ -265,7 +265,7 @@ public class QueueHistory {
                 .setTotalNoShow(totalNoShow)
                 .setTotalClient(totalServiced + totalAbort + totalNoShow)
                 .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced)
-                .setClientsVisitedThisStore(clientsVisitedThisStore);
+                .setClientsPreviouslyVisitedThisStore(clientsVisitedThisStore);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         statsBizStoreDaily
