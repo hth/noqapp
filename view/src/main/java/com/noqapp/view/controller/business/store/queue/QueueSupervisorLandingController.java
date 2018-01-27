@@ -1,5 +1,9 @@
 package com.noqapp.view.controller.business.store.queue;
 
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.helper.QueueDetail;
+import com.noqapp.service.BizService;
+import com.noqapp.service.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,23 +47,29 @@ public class QueueSupervisorLandingController {
 
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
+    private QueueService queueService;
+    private BizService bizService;
 
     @Autowired
     public QueueSupervisorLandingController(
-            @Value ("${nextPage:/business/queueLanding}")
+            @Value("${nextPage:/business/queueLanding}")
             String nextPage,
 
-            @Value ("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
+            @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
             String migrateBusinessProfileFlow,
 
             BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService
+            BusinessUserStoreService businessUserStoreService,
+            QueueService queueService,
+            BizService bizService
     ) {
         this.nextPage = nextPage;
         this.migrateBusinessProfileFlow = migrateBusinessProfileFlow;
 
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
+        this.queueService = queueService;
+        this.bizService = bizService;
     }
 
     /**
@@ -110,5 +120,15 @@ public class QueueSupervisorLandingController {
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
         List<JsonTopic> jsonTopics = businessUserStoreService.getQueues(businessUser.getQueueUserId());
         businessLandingForm.setJsonTopics(jsonTopics);
+
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
+        for (BizStoreEntity bizStore : bizStores) {
+            QueueDetail queueDetail = new QueueDetail()
+                    .setId(bizStore.getCodeQR())
+                    .setPreviouslyVisitedClientCount(queueService.getPreviouslyVisitedClientCount(bizStore.getCodeQR()))
+                    .setNewVisitClientCount(queueService.getNewVisitClientCount(bizStore.getCodeQR()));
+
+            businessLandingForm.addQueueDetail(queueDetail);
+        }
     }
 }

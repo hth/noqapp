@@ -72,8 +72,6 @@
                                                     <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                          alt="Sort" height="16px;"/>
                                                 </th>
-                                                <th>New</th>
-                                                <th>Re-Visit</th>
                                                 <th>Pending</th>
                                                 <th>Assigned</th>
                                                 <th>&nbsp;</th>
@@ -87,12 +85,6 @@
                                                     <td nowrap>
                                                         <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                                         <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
-                                                    </td>
-                                                    <td>
-                                                        ${businessLandingForm.queueDetails.get(store.id).previouslyVisitedClientCount}
-                                                    </td>
-                                                    <td>
-                                                        ${businessLandingForm.queueDetails.get(store.id).newVisitClientCount}
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>

@@ -12,10 +12,10 @@ public class QueueDetail {
     private long assignedToQueue;
     private long pendingApprovalToQueue;
 
-    //TODO(hth) Move this to Queue Manager Screen.
+    /* Used in Queue Supervisor and Queue Manager Screen. */
     private long previouslyVisitedClientCount;
 
-    //TODO(hth) Move this to Queue Manager Screen.
+    /* Used in Queue Supervisor and Queue Manager Screen. */
     private long newVisitClientCount;
 
     public String getId() {
