@@ -357,4 +357,24 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE
         );
     }
+
+    @Override
+    public long previouslyVisitedClientCount(String codeQR) {
+        return mongoTemplate.count(
+                query(where("QR").is(codeQR)
+                        .and("VS").is(true)
+                        .and("QS").ne(QueueUserStateEnum.A)),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    @Override
+    public long newVisitClientCount(String codeQR) {
+        return mongoTemplate.count(
+                query(where("QR").is(codeQR)
+                        .and("VS").is(false)
+                        .and("QS").ne(QueueUserStateEnum.A)),
+                QueueEntity.class,
+                TABLE);
+    }
 }

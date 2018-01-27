@@ -121,4 +121,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     @Mobile
     List<QueueEntity> findAllClientQueuedOrAborted(String codeQR);
+
+    long previouslyVisitedClientCount(String codeQR);
+    long newVisitClientCount(String codeQR);
 }

@@ -9,8 +9,14 @@ package com.noqapp.domain.helper;
 public class QueueDetail {
 
     private String id;
-    private Long assignedToQueue;
-    private Long pendingApprovalToQueue;
+    private long assignedToQueue;
+    private long pendingApprovalToQueue;
+
+    //TODO(hth) Move this to Queue Manager Screen.
+    private long previouslyVisitedClientCount;
+
+    //TODO(hth) Move this to Queue Manager Screen.
+    private long newVisitClientCount;
 
     public String getId() {
         return id;
@@ -21,7 +27,7 @@ public class QueueDetail {
         return this;
     }
 
-    public Long getAssignedToQueue() {
+    public long getAssignedToQueue() {
         return assignedToQueue;
     }
 
@@ -30,12 +36,30 @@ public class QueueDetail {
         return this;
     }
 
-    public Long getPendingApprovalToQueue() {
+    public long getPendingApprovalToQueue() {
         return pendingApprovalToQueue;
     }
 
     public QueueDetail setPendingApprovalToQueue(Long pendingApprovalToQueue) {
         this.pendingApprovalToQueue = pendingApprovalToQueue;
+        return this;
+    }
+
+    public long getPreviouslyVisitedClientCount() {
+        return previouslyVisitedClientCount;
+    }
+
+    public QueueDetail setPreviouslyVisitedClientCount(long previouslyVisitedClientCount) {
+        this.previouslyVisitedClientCount = previouslyVisitedClientCount;
+        return this;
+    }
+
+    public long getNewVisitClientCount() {
+        return newVisitClientCount;
+    }
+
+    public QueueDetail setNewVisitClientCount(long newVisitClientCount) {
+        this.newVisitClientCount = newVisitClientCount;
         return this;
     }
 }
