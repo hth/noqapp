@@ -59,55 +59,55 @@
                                 <a href="/business/addStore.htm" class="add-btn">Add new store</a>
                             </div>
                             <div class="store-table">
-                                <c:choose>
-                                    <c:when test="${!empty storeManagerForm.bizStores}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th>Store Location</th>
-                                                <th>Queue Name</th>
-                                                <th>Serving</th>
-                                                <th>In Queue</th>
-                                                <th>Rating</th>
-                                                <th>Rating Count</th>
-                                                <th>Average Service Time</th>
-                                                <th nowrap>Create Date</th>
-                                            </tr>
-                                            <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td>
-                                                        <a href="/business/detail/store/${store.id}.htm">${store.address}</a>
-                                                    </td>
-                                                    <td nowrap>
-                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                    </td>
-                                                    <td>
-                                                        ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
-                                                    </td>
-                                                    <td>
-                                                        ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
-                                                    </td>
-                                                    <td>
-                                                        ${store.ratingFormatted}
-                                                    </td>
-                                                    <td>
-                                                        ${store.ratingCount}
-                                                    </td>
-                                                    <td nowrap>
-                                                        ${store.averageServiceTimeFormatted}
-                                                    </td>
-                                                    <td nowrap>
-                                                        <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        Found no stores.
-                                    </c:otherwise>
-                                </c:choose>
+                            <c:choose>
+                            <c:when test="${!empty storeManagerForm.bizStores}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Store Location</th>
+                                        <th>Queue Name</th>
+                                        <th>Serving</th>
+                                        <th>In Queue</th>
+                                        <th>Rating</th>
+                                        <th>Rating Count</th>
+                                        <th>Average Service Time</th>
+                                        <th nowrap>Create Date</th>
+                                    </tr>
+                                    <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td>
+                                            <a href="/business/detail/store/${store.id}.htm">${store.address}</a>
+                                        </td>
+                                        <td nowrap>
+                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                        </td>
+                                        <td>
+                                            ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
+                                        </td>
+                                        <td>
+                                            ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
+                                        </td>
+                                        <td>
+                                            ${store.ratingFormatted}
+                                        </td>
+                                        <td>
+                                            ${store.ratingCount}
+                                        </td>
+                                        <td nowrap>
+                                            ${store.averageServiceTimeFormatted}
+                                        </td>
+                                        <td nowrap>
+                                            <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                            </c:when>
+                            <c:otherwise>
+                                Found no stores.
+                            </c:otherwise>
+                            </c:choose>
                             </div>
                         </div>
                     </div>

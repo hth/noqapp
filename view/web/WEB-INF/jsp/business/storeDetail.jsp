@@ -83,22 +83,22 @@
                                 <div class="store-hours">
                                     <p><strong>Open & Closed Hours</strong></p>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
-                                            <c:choose>
-                                                <c:when test="${storeHour.dayClosed}">
-                                                    <tr>
-                                                        <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
-                                                        <td>Closed</td>
-                                                    </tr>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <tr>
-                                                        <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
-                                                        <td>${storeHour.storeStartHourAsString} - ${storeHour.storeEndHourAsString}</td>
-                                                    </tr>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
+                                    <c:forEach items="${storeLandingForm.storeHours}" var="storeHour">
+                                    <c:choose>
+                                    <c:when test="${storeHour.dayClosed}">
+                                        <tr>
+                                            <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
+                                            <td>Closed</td>
+                                        </tr>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr>
+                                            <td width="100">${storeHour.dayOfTheWeekAsString}:</td>
+                                            <td>${storeHour.storeStartHourAsString} - ${storeHour.storeEndHourAsString}</td>
+                                        </tr>
+                                    </c:otherwise>
+                                    </c:choose>
+                                    </c:forEach>
                                     </table>
                                 </div>
 

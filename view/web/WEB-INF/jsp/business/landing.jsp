@@ -60,49 +60,49 @@
                                 <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
                             </div>
                             <div class="store-table">
-                                <c:choose>
-                                    <c:when test="${!empty businessLandingForm.bizStores}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th>Store Location</th>
-                                                <th nowrap>
-                                                    Queue Name
-                                                    &nbsp;
-                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                         alt="Sort" height="16px;"/>
-                                                </th>
-                                                <th>Pending</th>
-                                                <th>Assigned</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                            <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td>
-                                                        <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
-                                                    </td>
-                                                    <td nowrap>
-                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                        <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
-                                                    </td>
-                                                    <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        There are no stores associated with business.
-                                    </c:otherwise>
-                                </c:choose>
+                            <c:choose>
+                            <c:when test="${!empty businessLandingForm.bizStores}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Store Location</th>
+                                        <th nowrap>
+                                            Queue Name
+                                            &nbsp;
+                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                 alt="Sort" height="16px;"/>
+                                        </th>
+                                        <th>Pending</th>
+                                        <th>Assigned</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td>
+                                            <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
+                                        </td>
+                                        <td nowrap>
+                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                            <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
+                                        </td>
+                                        <td>
+                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                        </td>
+                                        <td>
+                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
+                                        </td>
+                                        <td>
+                                            <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                            </c:when>
+                            <c:otherwise>
+                                There are no stores associated with business.
+                            </c:otherwise>
+                            </c:choose>
                             </div>
                         </div>
 
