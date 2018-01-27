@@ -66,6 +66,8 @@
                                                 <th>&nbsp;</th>
                                                 <th nowrap>Queue Name</th>
                                                 <th nowrap>Queue Status</th>
+                                                <th>New</th>
+                                                <th>Re-Visit</th>
                                                 <th nowrap>In Queue</th>
                                                 <th>Serving</th>
                                             </tr>
@@ -74,6 +76,8 @@
                                                     <td>${status.count}&nbsp;</td>
                                                     <td nowrap><a href="/${jsonTopic.codeQR}/q.htm" target="_blank">${jsonTopic.displayName}</a></td>
                                                     <td nowrap>${jsonTopic.queueStatus.description}</td>
+                                                    <td>${businessLandingForm.queueDetails.get(jsonTopic.codeQR).previouslyVisitedClientCount}</td>
+                                                    <td>${businessLandingForm.queueDetails.get(jsonTopic.codeQR).newVisitClientCount}</td>
                                                     <td nowrap>${jsonTopic.token - jsonTopic.servingNumber}</td>
                                                     <td nowrap>${jsonTopic.servingNumber}</td>
                                                 </tr>
