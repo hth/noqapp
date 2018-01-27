@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -46,9 +47,14 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Field("TA")
     private int totalAbort;
 
+    /* Is sum of totalServiced, totalNoShow, totalAbort. */
     @NotNull
     @Field ("TC")
     private int totalClient;
+
+    @NotNull
+    @Field ("VS")
+    private int clientsVisitedThisStore;
 
     /* Time saved as Milli Seconds. */
     @NotNull
@@ -134,6 +140,15 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
         return this;
     }
 
+    public int getClientsVisitedThisStore() {
+        return clientsVisitedThisStore;
+    }
+
+    public StatsBizStoreDailyEntity setClientsVisitedThisStore(int clientsVisitedThisStore) {
+        this.clientsVisitedThisStore = clientsVisitedThisStore;
+        return this;
+    }
+
     public long getTotalServiceTime() {
         return totalServiceTime;
     }
@@ -177,6 +192,11 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     public StatsBizStoreDailyEntity setTotalHoursSaved(long totalHoursSaved) {
         this.totalHoursSaved = totalHoursSaved;
         return this;
+    }
+
+    @Transient
+    public int newClients() {
+        return totalClient - clientsVisitedThisStore;
     }
 
     @Override
