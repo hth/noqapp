@@ -6,6 +6,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +77,7 @@ public class AdminBusinessLandingController {
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
+    private QueueService queueService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -107,7 +109,8 @@ public class AdminBusinessLandingController {
             BizDimensionService bizDimensionService,
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
-            AccountService accountService
+            AccountService accountService,
+            QueueService queueService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -123,6 +126,7 @@ public class AdminBusinessLandingController {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
+        this.queueService = queueService;
     }
 
     /**
@@ -188,7 +192,9 @@ public class AdminBusinessLandingController {
             QueueDetail queueDetail = new QueueDetail()
                     .setId(bizStore.getId())
                     .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
-                    .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
+                    .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()))
+                    .setPreviouslyVisitedClientCount(queueService.getPreviouslyVisitedClientCount(bizStore.getCodeQR()))
+                    .setNewVisitClientCount(queueService.getNewVisitClientCount(bizStore.getCodeQR()));
 
             businessLandingForm.addQueueDetail(queueDetail);
         }

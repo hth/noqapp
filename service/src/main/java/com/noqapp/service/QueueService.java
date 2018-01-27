@@ -62,4 +62,12 @@ public class QueueService {
     public long deleteByCodeQR(String codeQR) {
         return queueManager.deleteByCodeQR(codeQR);
     }
+
+    public long getPreviouslyVisitedClientCount(String codeQR) {
+        return queueManager.previouslyVisitedClientCount(codeQR);
+    }
+
+    public long getNewVisitClientCount(String codeQR) {
+        return queueManager.newVisitClientCount(codeQR);
+    }
 }
