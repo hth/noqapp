@@ -41,12 +41,11 @@
                     <div class="qr-queue">
                         <h3>${displayName} at ${bizName}</h3>
                         <#if storeClosed == "Yes">
-                            <p><strong>Closed Today</p>
+                        <p><strong>Closed Today</p>
                         <#else>
-                            <p><strong>${dayOfWeek} Hours: </strong> ${startHour} - ${endHour}</p>
+                        <p><strong>${dayOfWeek} Hours: </strong> ${startHour} - ${endHour}</p>
                         </#if>
-                        <p><strong>Rating: </strong>${rating}</p>
-                        <p><strong>Reviews: </strong>${ratingCount}</p>
+                        <p>${rating} &nbsp; <span id="store_rating"></span>&nbsp;&nbsp;${ratingCount} Reviews &nbsp;</p>
 
                         <p><strong>Queue Status: </strong>${queueStatus}</p>
                         <p><strong>Currently Serving: </strong>${currentlyServing}</p>
@@ -56,10 +55,12 @@
                     <div class="download-app-icon">
                         <p>Download NoQApp to</p>
                         <div>
-                            <a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8"><img
-                                src="${parentHost}/static2/internal/img/apple-store.png"/></a>
-                            <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client"><img
-                                    src="${parentHost}/static2/internal/img/google-play.png"/></a>
+                            <a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">
+                                <img src="${parentHost}/static2/internal/img/apple-store.png"/>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
+                                <img src="${parentHost}/static2/internal/img/google-play.png"/>
+                            </a>
                         </div>
                     </div>
 
@@ -87,4 +88,18 @@
 
 
 </body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="${parentHost}/static2/external/raty/jquery.raty.js"></script>
+<script type="text/javascript">
+    $('#store_rating').raty({
+        score     : ${rating},
+        halfShow  : true,
+        readOnly  : true,
+        noRatedMsg: 'Not rated yet!',
+        starHalf  : '${parentHost}/static2/external/raty/img/star-half.png',
+        starOff   : '${parentHost}/static2/external/raty/img/star-off.png',
+        starOn    : '${parentHost}/static2/external/raty/img/star-on.png',
+        hints     : ['Bad', 'Poor', 'Good', 'Best', 'Awesome']
+    });
+</script>
 </html>
