@@ -170,6 +170,8 @@ public class ShowHTMLService {
         rootMap.put("rating", String.valueOf(bizStore.getRatingFormatted()));
         rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
