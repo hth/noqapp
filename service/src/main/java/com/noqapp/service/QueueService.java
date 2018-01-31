@@ -70,4 +70,12 @@ public class QueueService {
     public long getNewVisitClientCount(String codeQR) {
         return queueManager.newVisitClientCount(codeQR);
     }
+
+    public void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String phone) {
+        queueManager.addPhoneNumberToExistingQueue(token, codeQR, did, phone);
+    }
+
+    public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
+        return queueManager.findQueuedOne(codeQR, did, qid);
+    }
 }

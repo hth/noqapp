@@ -149,5 +149,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     long countCategoryUse(String bizCategoryId, String bizNameId);
 
     List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId);
+
+    boolean doesWebLocationExists(String webLocation);
 }
 

@@ -377,4 +377,23 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE);
     }
+
+    @Override
+    public QueueEntity findQueuedByPhone(String codeQR, String phone) {
+        return mongoTemplate.findOne(
+                query(where("QR").is(codeQR).and("PH").is(phone)),
+                QueueEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone) {
+        mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR).and("DID").is(did).and("TN").is(token)),
+                entityUpdate(update("PH", customerPhone)),
+                QueueEntity.class,
+                TABLE
+        );
+    }
 }

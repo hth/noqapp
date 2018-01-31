@@ -16,6 +16,23 @@ var noQAuthentication = {
         });
     },
 
+    doJoinQueue: function (user) {
+        $('#webJoinQueue #uid').val(user.uid);
+        $('#webJoinQueue #phone').val(user.phoneNumber);
+        $.ajax({
+            type: 'POST',
+            url: '/open/join/queue.htm',
+            data: $("#webJoinQueue").serialize(),
+            success: function (data) {
+                var json = $.parseJSON(data);
+                window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
+            },
+            error: function (data, request) {
+                window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=p--#";
+            }
+        });
+    },
+
     doSignUpUser: function (user) {
         //console.log('User details for doSignUpUser call=', JSON.stringify(user, null, '  '));
         $('#merchantRegistration #phone').val(user.phoneNumber);

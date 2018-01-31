@@ -61,5 +61,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     BizNameEntity findByCodeQR(String codeQR);
 
     boolean isValidCodeQR(String codeQR);
+
+    boolean doesWebLocationExists(String webLocation);
 }
 

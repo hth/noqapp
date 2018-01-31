@@ -58,7 +58,7 @@ public final class Formatter {
     private static final String FORMAT_TO_US = "US";
     private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
-    private static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+    public static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
     private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a");
 
     private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();

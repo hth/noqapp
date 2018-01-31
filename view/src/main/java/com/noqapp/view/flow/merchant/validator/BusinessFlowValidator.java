@@ -255,7 +255,7 @@ public class BusinessFlowValidator {
                 registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
 
                 /* Check if similar web location exists. */
-                String webLocation = registerBusiness.computeWebLocation(decodedAddressStore.getTown(), decodedAddressStore.getStateShortName());
+                String webLocation = registerBusiness.computeWebLocationForStore(decodedAddressStore.getTown(), decodedAddressStore.getStateShortName());
                 boolean webLocationExists = bizService.doesSimilarWebLocationExists(webLocation, registerBusiness.getBizId(), registerBusiness.getBizStoreId());
                 if (webLocationExists) {
                     messageContext.addMessage(

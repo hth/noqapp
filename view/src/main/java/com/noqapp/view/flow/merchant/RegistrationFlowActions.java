@@ -1,6 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import org.apache.commons.lang3.StringUtils;
@@ -154,6 +155,11 @@ class RegistrationFlowActions {
         validateAddress(bizName);
 
         try {
+            String webLocation = registerBusiness.computeWebLocationForBiz(bizName.getTown(), bizName.getStateShortName());
+            while (bizService.doesBusinessWebLocationExists(webLocation)) {
+                webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
+            }
+            bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
             return bizName;
         } catch(Exception e) {
@@ -212,7 +218,11 @@ class RegistrationFlowActions {
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
         try {
-            bizStore.setWebLocation(registerBusiness.computeWebLocation(bizStore.getTown(), bizStore.getStateShortName()));
+            String webLocation = registerBusiness.computeWebLocationForStore(bizStore.getTown(), bizStore.getStateShortName());
+            while (bizService.doesStoreWebLocationExists(webLocation)) {
+                webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
+            }
+            bizStore.setWebLocation(webLocation);
             bizService.saveStore(bizStore);
 
             String bizStoreId = bizStore.getId();

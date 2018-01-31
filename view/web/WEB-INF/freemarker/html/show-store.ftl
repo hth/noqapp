@@ -59,7 +59,9 @@
                         <p><strong>People in Queue: </strong>${peopleInQueue}</p>
 
                         <div class="button-btn" style="margin-bottom: 100px;">
-                            <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Join Queue</button>
+                            <form action="${https}://${domain}/open/join/queue/${codeQR}.htm">
+                                <button class="ladda-button next-btn" style="width:48%; float: left">Join Queue</button>
+                            </form>
                         </div>
                     </div>
 

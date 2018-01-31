@@ -4,6 +4,7 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.conversions.Bson;
 import org.slf4j.Logger;
@@ -145,5 +146,13 @@ public final class BizNameManagerImpl implements BizNameManager {
     public boolean isValidCodeQR(String codeQR) {
         return mongoTemplate.exists(query(where("QR").is(codeQR)), BizNameEntity.class);
     }
-}
 
+    @Override
+    public boolean doesWebLocationExists(String webLocation) {
+        return mongoTemplate.exists(
+                query(where("WL").is(webLocation)),
+                BizNameEntity.class,
+                TABLE
+        );
+    }
+}
