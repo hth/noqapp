@@ -75,7 +75,7 @@
                                 <p style="margin: 5px 0"><strong>Location: </strong>${webJoinQueue.rootMap.get("storeAddress")}</p>
 
                                 <br/>
-                                <p>Please be on time at above location. Please plan your arrival based on your location and traffic.</p>
+                                <p>Be on time at above location. Please plan your arrival based on your location and traffic.</p>
                             </div>
                         </div>
                     </form>
