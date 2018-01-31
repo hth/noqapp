@@ -86,11 +86,8 @@ public class CategoryController {
     /**
      * Loading landing page for business category.
      * Gymnastic for PRG.
-     *
-     * @param categoryLanding
-     * @return
      */
-    @RequestMapping (method = RequestMethod.GET)
+    @GetMapping
     public String landing(
             @ModelAttribute("categoryLanding")
             CategoryLandingForm categoryLanding,
@@ -121,9 +118,6 @@ public class CategoryController {
 
     /**
      * Add new category.
-     *
-     * @return
-     * @throws IOException
      */
     @PostMapping (value = "/add", params = {"add"})
     public String add(
@@ -152,9 +146,6 @@ public class CategoryController {
 
     /**
      * On cancelling addition of new category.
-     *
-     * @return
-     * @throws IOException
      */
     @PostMapping (value = "/add", params = {"cancel_Add"})
     public String cancelAdd(
@@ -169,9 +160,6 @@ public class CategoryController {
 
     /**
      * Edit landing category name.
-     *
-     * @param bizCategoryId
-     * @return
      */
     @GetMapping (value = "/{bizCategoryId}/edit")
     public String editLanding(
@@ -200,11 +188,6 @@ public class CategoryController {
 
     /**
      * Edit landing category name.
-     *
-     * @param categoryLanding
-     * @param redirectAttrs
-     * @param response
-     * @return
      */
     @PostMapping(value = "/edit")
     public String edit(
@@ -233,9 +216,6 @@ public class CategoryController {
 
     /**
      * On cancelling addition of new category.
-     *
-     * @return
-     * @throws IOException
      */
     @PostMapping (value = "/edit", params = {"cancel_Edit"})
     public String cancelEdit(
@@ -250,9 +230,6 @@ public class CategoryController {
 
     /**
      * List stores belonging to selected category name.
-     *
-     * @param bizCategoryId
-     * @return
      */
     @GetMapping(value = "/{bizCategoryId}/storeByCategory")
     public String storeByCategory(

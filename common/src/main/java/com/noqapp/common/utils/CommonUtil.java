@@ -156,4 +156,12 @@ public final class CommonUtil {
     public static int getTimeIn24HourFormat() {
         return getTimeIn24HourFormat(ZonedDateTime.now());
     }
+
+    public static String replaceLast(String string, String findString, String replacement) {
+        int index = string.lastIndexOf(findString);
+        if (index == -1) {
+            return string;
+        }
+        return string.substring(0, index) + replacement + string.substring(index + findString.length());
+    }
 }

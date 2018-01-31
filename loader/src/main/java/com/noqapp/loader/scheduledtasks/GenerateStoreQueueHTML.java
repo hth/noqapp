@@ -101,7 +101,7 @@ public class GenerateStoreQueueHTML {
 
             /* Max URL supported is 50_000 per site map. */
             int MAX_LIMIT_PER_INSTANCE = 50_000;
-            int i = 1;
+            int i = 0;
             do {
                 List<BizStoreEntity> bizStores = bizStoreManager.getAll(i, MAX_LIMIT_PER_INSTANCE);
                 SiteUrlMap siteUrlMap = new SiteUrlMap();

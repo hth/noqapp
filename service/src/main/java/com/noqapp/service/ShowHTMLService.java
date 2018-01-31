@@ -143,7 +143,7 @@ public class ShowHTMLService {
         }
     }
 
-    private boolean populateStore(
+    public boolean populateStore(
             Map<String, String> rootMap,
             BizStoreEntity bizStore
     ) {
@@ -170,6 +170,9 @@ public class ShowHTMLService {
         rootMap.put("rating", String.valueOf(bizStore.getRatingFormatted()));
         rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
+        rootMap.put("codeQR", bizStore.getCodeQR());
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);

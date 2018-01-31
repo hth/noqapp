@@ -23,11 +23,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Find the one that has been queued.
-     *
-     * @param codeQR
-     * @param did
-     * @param qid
-     * @return
      */
     QueueEntity findQueuedOne(String codeQR, String did, String qid);
 
@@ -124,4 +119,11 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     long previouslyVisitedClientCount(String codeQR);
     long newVisitClientCount(String codeQR);
+
+    /**
+     * Mostly when client is from Web.
+     */
+    QueueEntity findQueuedByPhone(String codeQR, String phone);
+
+    void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone);
 }

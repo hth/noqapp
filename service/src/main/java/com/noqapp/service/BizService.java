@@ -268,4 +268,12 @@ public class BizService {
     public BizNameEntity findBizNameByCodeQR(String codeQR) {
         return bizNameManager.findByCodeQR(codeQR);
     }
+
+    public boolean doesBusinessWebLocationExists(String webLocation) {
+        return bizNameManager.doesWebLocationExists(webLocation);
+    }
+
+    public boolean doesStoreWebLocationExists(String webLocation) {
+        return bizStoreManager.doesWebLocationExists(webLocation);
+    }
 }
