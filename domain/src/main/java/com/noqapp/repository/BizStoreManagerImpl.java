@@ -323,24 +323,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
-        Query query;
-        if (StringUtils.isBlank(bizStoreId)) {
-            query = query(
-                    where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                            .and("WL").is(webLocation)
-            );
-        } else {
-            query = query(
-                    where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                            .and("WL").is(webLocation)
-                            .and("id").ne(bizStoreId)
-            );
-        }
-        return mongoTemplate.exists(query, BizStoreEntity.class, TABLE);
-    }
-
-    @Override
     public long countCategoryUse(String bizCategoryId, String bizNameId) {
         return mongoTemplate.count(
                 query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)),

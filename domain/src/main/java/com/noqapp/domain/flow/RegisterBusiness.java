@@ -398,68 +398,6 @@ public class RegisterBusiness implements Serializable {
     }
 
     @Transient
-    public String computeWebLocationForStore(String town, String stateShortName) {
-        try {
-            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
-            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
-
-            /*
-             * Note: Same Display Name at same location will generate same webLocation.
-             * You might need to redo this with some randomness in URL.
-             */
-            String webLocation = "/"
-                    + countryShortNameStore.toLowerCase()
-                    + "/"
-                    + name.trim().toLowerCase().replace(" ", "-")
-                    + "/"
-                    + townString
-                    + "-"
-                    + stateShortNameString
-                    + "/"
-                    + displayName.trim().toLowerCase().replace(" ", "-");
-
-            /*
-             * Since empty townString and stateShortNameString can contain '-',
-             * hence replacing two consecutive '-' with a blank.
-             */
-            return webLocation.replaceAll("--", "");
-        } catch (Exception e) {
-            LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
-            throw e;
-        }
-    }
-
-    @Transient
-    public String computeWebLocationForBiz(String town, String stateShortName) {
-        try {
-            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
-            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
-
-            /*
-             * Note: Same Display Name at same location will generate same webLocation.
-             * You might need to redo this with some randomness in URL.
-             */
-            String webLocation = "/"
-                    + countryShortName.toLowerCase()
-                    + "/"
-                    + townString
-                    + "-"
-                    + stateShortNameString
-                    + "/"
-                    + name.trim().toLowerCase().replace(" ", "-");
-
-            /*
-             * Since empty townString and stateShortNameString can contain '-',
-             * hence replacing two consecutive '-' with a blank.
-             */
-            return webLocation.replaceAll("--", "");
-        } catch (Exception e) {
-            LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
-            throw e;
-        }
-    }
-
-    @Transient
     public void populateWithBizStore(BizStoreEntity bizStore) {
         this.bizStoreId = bizStore.getId();
         this.displayName = bizStore.getDisplayName();
