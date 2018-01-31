@@ -93,6 +93,7 @@
                                                     <span style="display:block; font-size:13px;">Average Service Time: ${store.averageServiceTimeFormatted}</span>
                                                 </c:otherwise>
                                             </c:choose>
+                                            <span style="display:block; font-size:13px;">Web Appoint: ${store.webLocation}</span>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
