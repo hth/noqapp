@@ -253,21 +253,6 @@ public class BusinessFlowValidator {
                 LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
                 String timeZone = externalService.findTimeZone(latLng);
                 registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
-
-                /* Check if similar web location exists. */
-                String webLocation = registerBusiness.computeWebLocationForStore(decodedAddressStore.getTown(), decodedAddressStore.getStateShortName());
-                boolean webLocationExists = bizService.doesSimilarWebLocationExists(webLocation, registerBusiness.getBizId(), registerBusiness.getBizStoreId());
-                if (webLocationExists) {
-                    messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "displayName")
-                                    .defaultText(registerBusiness.getDisplayName() + " at this location " +
-                                            "already exists. Change Queue Name and try again or if this error " +
-                                            "persist, please contact with detail explanation at contact@noqapp.com")
-                                    .build());
-                    status = "failure";
-                }
             }
         }
 

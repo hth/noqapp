@@ -155,10 +155,12 @@ class RegistrationFlowActions {
         validateAddress(bizName);
 
         try {
-            String webLocation = registerBusiness.computeWebLocationForBiz(bizName.getTown(), bizName.getStateShortName());
-            while (bizService.doesBusinessWebLocationExists(webLocation)) {
-                webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
-            }
+            String webLocation = bizService.buildWebLocationForBiz(
+                    bizName.getTown(),
+                    bizName.getStateShortName(),
+                    registerBusiness.getCountryShortName(),
+                    registerBusiness.getName());
+
             bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
             return bizName;
@@ -218,10 +220,13 @@ class RegistrationFlowActions {
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
         try {
-            String webLocation = registerBusiness.computeWebLocationForStore(bizStore.getTown(), bizStore.getStateShortName());
-            while (bizService.doesStoreWebLocationExists(webLocation)) {
-                webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
-            }
+            String webLocation = bizService.buildWebLocationForStore(
+                    bizStore.getTown(),
+                    bizStore.getStateShortName(),
+                    registerBusiness.getCountryShortNameStore(),
+                    registerBusiness.getName(),
+                    registerBusiness.getDisplayName());
+
             bizStore.setWebLocation(webLocation);
             bizService.saveStore(bizStore);
 

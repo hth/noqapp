@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
@@ -248,10 +250,6 @@ public class BizService {
         bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName);
     }
 
-    public boolean doesSimilarWebLocationExists(String webLocation, String bizNameId, String bizStoreId) {
-        return bizStoreManager.doesSimilarWebLocationExists(webLocation, bizNameId, bizStoreId);
-    }
-
     public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {
         Map<String, Long> maps = new HashMap<>();
         for (String bizCategoryId : categories) {
@@ -275,5 +273,94 @@ public class BizService {
 
     public boolean doesStoreWebLocationExists(String webLocation) {
         return bizStoreManager.doesWebLocationExists(webLocation);
+    }
+
+    public String buildWebLocationForStore(String town, String stateShortName, String countryShortNameStore, String name, String displayName) {
+        String webLocation = computeWebLocationForStore(
+                town,
+                stateShortName,
+                countryShortNameStore,
+                name,
+                displayName);
+
+        while (doesStoreWebLocationExists(webLocation)) {
+            webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
+        }
+
+        return webLocation;
+    }
+
+    public String buildWebLocationForBiz(String town, String stateShortName, String countryShortName, String name) {
+        String webLocation = computeWebLocationForBiz(
+                town,
+                stateShortName,
+                countryShortName,
+                name);
+
+        while (doesBusinessWebLocationExists(webLocation)) {
+            webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
+        }
+
+        return webLocation;
+    }
+
+    private String computeWebLocationForStore(String town, String stateShortName, String countryShortNameStore, String name, String displayName) {
+        try {
+            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
+            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
+
+            /*
+             * Note: Same Display Name at same location will generate same webLocation.
+             * You might need to redo this with some randomness in URL.
+             */
+            String webLocation = "/"
+                    + countryShortNameStore.toLowerCase()
+                    + "/"
+                    + name.trim().toLowerCase().replace(" ", "-")
+                    + "/"
+                    + townString
+                    + "-"
+                    + stateShortNameString
+                    + "/"
+                    + displayName.trim().toLowerCase().replace(" ", "-");
+
+            /*
+             * Since empty townString and stateShortNameString can contain '-',
+             * hence replacing two consecutive '-' with a blank.
+             */
+            return webLocation.replaceAll("--", "");
+        } catch (Exception e) {
+            LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
+            throw e;
+        }
+    }
+
+    private String computeWebLocationForBiz(String town, String stateShortName, String countryShortName, String name) {
+        try {
+            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
+            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
+
+            /*
+             * Note: Same Display Name at same location will generate same webLocation.
+             * You might need to redo this with some randomness in URL.
+             */
+            String webLocation = "/"
+                    + countryShortName.toLowerCase()
+                    + "/"
+                    + townString
+                    + "-"
+                    + stateShortNameString
+                    + "/"
+                    + name.trim().toLowerCase().replace(" ", "-");
+
+            /*
+             * Since empty townString and stateShortNameString can contain '-',
+             * hence replacing two consecutive '-' with a blank.
+             */
+            return webLocation.replaceAll("--", "");
+        } catch (Exception e) {
+            LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
+            throw e;
+        }
     }
 }

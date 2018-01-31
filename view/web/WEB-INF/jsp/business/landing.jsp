@@ -85,6 +85,14 @@
                                         <td nowrap>
                                             <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
                                             <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
+                                            <c:choose>
+                                                <c:when test="${store.averageServiceTime > 0}">
+                                                    <span style="display:block; font-size:13px;">Average Service Time: ${store.averageServiceTimeFormatted} per client</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;">Average Service Time: ${store.averageServiceTimeFormatted}</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
