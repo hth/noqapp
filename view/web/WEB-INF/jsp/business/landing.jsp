@@ -87,13 +87,13 @@
                                             <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
                                             <c:choose>
                                                 <c:when test="${store.averageServiceTime > 0}">
-                                                    <span style="display:block; font-size:13px;">Average Service Time: ${store.averageServiceTimeFormatted} per client</span>
+                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span style="display:block; font-size:13px;">Average Service Time: ${store.averageServiceTimeFormatted}</span>
+                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <span style="display:block; font-size:13px;">Web Appoint: ${store.webLocation}</span>
+                                            <span style="display:block; font-size:13px;"><a href="${store.webLocation}.html">Web Appointment Link</a></span>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
@@ -154,7 +154,7 @@
 
 
 </body>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
 </html>
