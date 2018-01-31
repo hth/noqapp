@@ -1,8 +1,11 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -15,9 +18,11 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
@@ -28,8 +33,16 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -48,6 +61,8 @@ public class TokenQueueService {
     private AccountService accountService;
     private RegisteredDeviceManager registeredDeviceManager;
     private QueueManagerJDBC queueManagerJDBC;
+    private StoreHourManager storeHourManager;
+    private BizStoreManager bizStoreManager;
 
     private ExecutorService executorService;
 
@@ -58,7 +73,9 @@ public class TokenQueueService {
             QueueManager queueManager,
             AccountService accountService,
             RegisteredDeviceManager registeredDeviceManager,
-            QueueManagerJDBC queueManagerJDBC
+            QueueManagerJDBC queueManagerJDBC,
+            StoreHourManager storeHourManager,
+            BizStoreManager bizStoreManager
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseMessageService = firebaseMessageService;
@@ -66,6 +83,8 @@ public class TokenQueueService {
         this.accountService = accountService;
         this.registeredDeviceManager = registeredDeviceManager;
         this.queueManagerJDBC = queueManagerJDBC;
+        this.storeHourManager = storeHourManager;
+        this.bizStoreManager = bizStoreManager;
 
         this.executorService = newCachedThreadPool();
     }
@@ -139,8 +158,21 @@ public class TokenQueueService {
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (0 != averageServiceTime) {
+                        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+                        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+                        DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
+                        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+
+                        LocalTime now = LocalTime.now(zoneId);
+                        LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
+
+                        Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
                         long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
-                        queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes)));
+                        if (duration.isNegative()) {
+                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes)));
+                        } else {
+                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes())));
+                        }
                     }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
@@ -190,7 +222,7 @@ public class TokenQueueService {
     }
 
     @Async
-    protected void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
+    public void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
@@ -479,5 +511,9 @@ public class TokenQueueService {
 
     public boolean isQueued(int tokenNumber, String codeQR) {
         return queueManager.isQueued(tokenNumber, codeQR);
+    }
+
+    public QueueEntity findQueuedByPhone(String codeQR, String phone) {
+        return queueManager.findQueuedByPhone(codeQR, phone);
     }
 }
