@@ -44,7 +44,7 @@
     <logger name="org.springframework.data.mongodb" level="WARN" />
 
     <logger name="org.elasticsearch.client" level="WARN" />
-    <logger name="okhttp3" level="FINE" />
+    <logger name="okhttp3" level="WARN" />
 
     <logger name="org.apache.http" level="INFO"/>
     <logger name="org.apache" level="WARN"/>
