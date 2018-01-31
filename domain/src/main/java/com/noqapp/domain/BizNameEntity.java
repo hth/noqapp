@@ -34,8 +34,8 @@ import java.util.List;
 @Document (collection = "BIZ_NAME")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "biz_ph_idx", def = "{'PH' : 1}", unique = true),
-        @CompoundIndex (name = "biz_qr_idx", def = "{'QR' : 1}", unique = true, background = true)
-//        @CompoundIndex (name = "biz_wl_idx", def = "{'WL': 1}", unique = true),
+        @CompoundIndex (name = "biz_qr_idx", def = "{'QR' : 1}", unique = true, background = true),
+        @CompoundIndex (name = "biz_wl_idx", def = "{'WL': 1}", unique = true, background = true),
 })
 public class BizNameEntity extends BaseEntity {
 
