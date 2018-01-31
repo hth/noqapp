@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
@@ -449,7 +450,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">
     // Bind normal buttons
-    Ladda.bind('.button-btn button', {timeout: 6000});
+    Ladda.bind('.button-btn button', {timeout: 12000});
 
     // Bind progress buttons and simulate loading progress
     Ladda.bind('.progress-demo button', {
