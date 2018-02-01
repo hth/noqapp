@@ -327,8 +327,9 @@
     function cancelVerification() {
         //e.preventDefault();
         window.confirmationResult = null;
-        updateVerificationCodeFormUI();
-        updateSignInFormUI();
+        //updateVerificationCodeFormUI();
+        //updateSignInFormUI();
+        window.location = "/open/login.htm";
     }
 
     function onSignOutClick() {
