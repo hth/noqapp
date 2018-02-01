@@ -113,7 +113,7 @@
 </div>
 <script>
     <c:choose>
-        <c:when test="${!webJoinQueue.rootMap.get('expectedServiceTime')}}">
+        <c:when test="${!empty webJoinQueue.rootMap.get('expectedServiceTime')}}">
             var c = moment.parseZone('${webJoinQueue.rootMap.get("expectedServiceTime")}').format("hh:mm A");
             $("#showTime").text(c);
         </c:when>
@@ -121,9 +121,6 @@
             $("#showTime").text("NA");
         </c:otherwise>
     </c:choose>
-
 </script>
-
-
 </body>
 </html>
