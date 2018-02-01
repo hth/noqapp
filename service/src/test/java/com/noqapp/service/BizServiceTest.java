@@ -59,6 +59,15 @@ class BizServiceTest {
         Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse", wl);
 
         wl = bizService.buildWebLocationForStore(
+                "New Delhi",
+                "MH",
+                "IN",
+                "Dimmer Lime",
+                "Dr. Mich J. Douse (evening)",
+                null);
+        Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse-evening", wl);
+
+        wl = bizService.buildWebLocationForStore(
                 "",
                 "MH",
                 "IN",

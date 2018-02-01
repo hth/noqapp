@@ -347,7 +347,12 @@ public class BizService {
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
+            webLocation = webLocation.replaceAll("--", "").replaceAll("/-/", "/");
+            if (webLocation.endsWith("-")) {
+                webLocation = webLocation.substring(0, webLocation.length() - 1);
+            }
+
+            return webLocation;
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
@@ -381,7 +386,12 @@ public class BizService {
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
+            webLocation = webLocation.replaceAll("--", "").replaceAll("/-/", "/");
+            if (webLocation.endsWith("-")) {
+                webLocation = webLocation.substring(0, webLocation.length() - 1);
+            }
+
+            return webLocation;
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
