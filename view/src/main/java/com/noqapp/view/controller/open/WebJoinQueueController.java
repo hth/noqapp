@@ -57,6 +57,8 @@ import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 public class WebJoinQueueController {
     private static final Logger LOG = LoggerFactory.getLogger(WebJoinQueueController.class);
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
+
     @Value ("${joinQueue:/join/queue}")
     private String joinQueuePage;
 
@@ -131,25 +133,43 @@ public class WebJoinQueueController {
             HttpServletResponse response
     ) throws IOException {
         if (StringUtils.isNotBlank(combined.getText())) {
-            String combinedDecoded = new String(Base64.getDecoder().decode(combined.getText()), StandardCharsets.ISO_8859_1);
-            String[] data = combinedDecoded.split("#");
+            try {
+                String combinedDecoded = new String(Base64.getDecoder().decode(combined.getText()), StandardCharsets.ISO_8859_1);
+                String[] data = combinedDecoded.split("#");
 
-            if (Validate.isValidObjectId(data[0])) {
-                if (!bizService.isValidCodeQR(data[0])) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
-                    return null;
+                if (Validate.isValidObjectId(data[0])) {
+                    if (!bizService.isValidCodeQR(data[0])) {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
+                        return null;
+                    }
+
+                    BizStoreEntity bizStore = bizService.findByCodeQR(data[0]);
+                    Map<String, String> rootMap = new HashMap<>();
+                    showHTMLService.populateStore(rootMap, bizStore);
+
+                    rootMap.put("token", data[1]);
+
+                    String expectedServiceTime;
+                    if (data.length >= 3) {
+                        expectedServiceTime = data[2].length() == 0 ? "" : data[2];
+                    } else {
+                        expectedServiceTime = "";
+                    }
+                    rootMap.put("expectedServiceTime", expectedServiceTime);
+                    rootMap.put("storeAddress", bizStore.getAddress());
+
+                    webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(bizStore.getCodeQR()));
+                    return joinQueueConfirmPage;
                 }
-
-                BizStoreEntity bizStore = bizService.findByCodeQR(data[0]);
-                Map<String, String> rootMap = new HashMap<>();
-                showHTMLService.populateStore(rootMap, bizStore);
-
-                rootMap.put("token", data[1]);
-                rootMap.put("expectedServiceTime", data[2]);
-                rootMap.put("storeAddress", bizStore.getAddress());
-
-                webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(bizStore.getCodeQR()));
-                return joinQueueConfirmPage;
+            } catch (Exception e) {
+                LOG.error("Failed loading Web Confirmation text={} reason={}", combined.getText(), e.getLocalizedMessage(), e);
+                LOG.warn(
+                        "404 request access={} header={}",
+                        joinQueueConfirmPage,
+                        HttpRequestResponseParser.printHeader(request)
+                );
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return null;
             }
         }
 
@@ -170,59 +190,68 @@ public class WebJoinQueueController {
 
             HttpServletResponse response
     ) throws IOException, ParseException {
-        LOG.info("CodeQR={}", webJoinQueue.getCodeQR().getText());
+        try {
+            LOG.info("CodeQR={}", webJoinQueue.getCodeQR().getText());
+            String codeQRDecoded = new String(Base64.getDecoder().decode(webJoinQueue.getCodeQR().getText()), StandardCharsets.ISO_8859_1);
 
-        if (!bizService.isValidCodeQR(webJoinQueue.getCodeQR().getText())) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
-            return null;
-        }
-
-        JsonToken jsonToken;
-        QueueEntity queue = tokenQueueService.findQueuedByPhone(
-                webJoinQueue.getCodeQR().getText(),
-                webJoinQueue.getPhone().getText());
-
-        BizStoreEntity bizStore = bizService.findByCodeQR(webJoinQueue.getCodeQR().getText());
-        if (null == queue) {
-            String did = UUID.randomUUID().toString();
-            UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
-
-            jsonToken = tokenQueueService.getNextToken(
-                    webJoinQueue.getCodeQR().getText(),
-                    did,
-                    null != userProfile ? userProfile.getQueueUserId() : null,
-                    bizStore.getAverageServiceTime(),
-                    TokenServiceEnum.W
-            );
-
-            if (null != userProfile) {
-                queue = queueService.findQueuedOne(webJoinQueue.getCodeQR().getText(), did, userProfile.getQueueUserId());
-                tokenQueueService.updateQueueWithUserDetail(webJoinQueue.getCodeQR().getText(), userProfile.getQueueUserId(), queue);
-            } else {
-                queueService.addPhoneNumberToExistingQueue(
-                        jsonToken.getToken(),
-                        webJoinQueue.getCodeQR().getText(),
-                        did,
-                        webJoinQueue.getPhone().getText());
+            if (!bizService.isValidCodeQR(codeQRDecoded)) {
+                LOG.info("Not a valid QRCode={}", codeQRDecoded);
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
+                return null;
             }
-        } else {
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(webJoinQueue.getCodeQR().getText());
-            jsonToken = new JsonToken(webJoinQueue.getCodeQR().getText())
-                    .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+
+            JsonToken jsonToken;
+            QueueEntity queue = tokenQueueService.findQueuedByPhone(
+                    codeQRDecoded,
+                    webJoinQueue.getPhone().getText());
+
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
+            if (null == queue) {
+                String did = UUID.randomUUID().toString();
+                UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
+
+                jsonToken = tokenQueueService.getNextToken(
+                        codeQRDecoded,
+                        did,
+                        null != userProfile ? userProfile.getQueueUserId() : null,
+                        bizStore.getAverageServiceTime(),
+                        TokenServiceEnum.W
+                );
+
+                if (null != userProfile) {
+                    queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
+                    tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
+                } else {
+                    queueService.addPhoneNumberToExistingQueue(
+                            jsonToken.getToken(),
+                            codeQRDecoded,
+                            did,
+                            webJoinQueue.getPhone().getText());
+                }
+            } else {
+                TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQRDecoded);
+                jsonToken = new JsonToken(codeQRDecoded)
+                        .setToken(queue.getTokenNumber())
+                        .setServingNumber(tokenQueue.getCurrentlyServing())
+                        .setDisplayName(tokenQueue.getDisplayName())
+                        .setQueueStatus(tokenQueue.getQueueStatus())
+                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            }
+
+            if (StringUtils.isNotBlank(jsonToken.getExpectedServiceBegin())) {
+                Date date = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+                jsonToken.setExpectedServiceBegin(date, bizStore.getTimeZone());
+            }
+
+            String expectedServiceBegin = StringUtils.isBlank(jsonToken.getExpectedServiceBegin()) ? "" : jsonToken.getExpectedServiceBegin();
+            /* Encoding of data. */
+            String combined = jsonToken.getCodeQR()
+                    + "#" + String.valueOf(jsonToken.getToken())
+                    + "#" + expectedServiceBegin;
+            return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
+        } catch (IOException | ParseException e) {
+            LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);
+            throw e;
         }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
-        Date date = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
-        jsonToken.setExpectedServiceBegin(date, bizStore.getTimeZone());
-
-        /* Encoding of data. */
-        String combined = jsonToken.getCodeQR()
-                + "#" + String.valueOf(jsonToken.getToken())
-                + "#" + jsonToken.getExpectedServiceBegin();
-        return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
     }
 }
