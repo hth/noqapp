@@ -24,6 +24,7 @@ import org.springframework.util.Assert;
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -584,5 +585,9 @@ public class BizStoreEntity extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(codeQR);
+    }
+
+    public String getCodeQRInBase64() {
+        return Base64.getEncoder().encodeToString(codeQR.getBytes());
     }
 }

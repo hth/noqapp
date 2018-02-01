@@ -172,7 +172,7 @@ public class ShowHTMLService {
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
         rootMap.put("domain", domain);
         rootMap.put("https", https);
-        rootMap.put("codeQR", bizStore.getCodeQR());
+        rootMap.put("codeQR", bizStore.getCodeQRInBase64());
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
