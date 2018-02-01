@@ -50,7 +50,7 @@ public class GenerateStoreQueueHTML {
     private ShowHTMLService showHTMLService;
     private StatsCronService statsCronService;
     private String staticHTMLSwitch;
-    private String baseDirectory;
+    private String storeBaseDirectory;
 
     private StatsCronEntity statsCron;
 
@@ -62,8 +62,8 @@ public class GenerateStoreQueueHTML {
             @Value("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
             String staticHTMLSwitch,
 
-            @Value("${GenerateStoreQueueHTML.base.directory:/tmp/biz}")
-            String baseDirectory,
+            @Value("${GenerateStoreQueueHTML.store.base.directory:/tmp/b/s}")
+            String storeBaseDirectory,
 
             BizStoreManager bizStoreManager,
             ShowHTMLService showHTMLService,
@@ -71,7 +71,7 @@ public class GenerateStoreQueueHTML {
     ) {
         this.parentHost = parentHost;
         this.staticHTMLSwitch = staticHTMLSwitch;
-        this.baseDirectory = baseDirectory;
+        this.storeBaseDirectory = storeBaseDirectory;
 
         this.bizStoreManager = bizStoreManager;
         this.showHTMLService = showHTMLService;
@@ -92,7 +92,7 @@ public class GenerateStoreQueueHTML {
 
         try {
             /* Stores all the URLs for business. This is for just validating the content */
-            Path pathToTxtFile = Paths.get(baseDirectory + Constants.FILE_SEPARATOR + "_all.txt");
+            Path pathToTxtFile = Paths.get(storeBaseDirectory + Constants.FILE_SEPARATOR + "_all.txt");
             Files.deleteIfExists(pathToTxtFile);
             Files.createDirectories(pathToTxtFile.getParent());
             Files.createFile(pathToTxtFile);
@@ -108,7 +108,7 @@ public class GenerateStoreQueueHTML {
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
                         String htmlData = showHTMLService.showStoreByWebLocation(bizStore);
-                        String filePath = baseDirectory + bizStore.getWebLocation() + ".html";
+                        String filePath = storeBaseDirectory + bizStore.getWebLocation() + ".html";
                         Path pathToFile = Paths.get(filePath);
                         try {
                             Files.deleteIfExists(pathToFile);
@@ -139,7 +139,7 @@ public class GenerateStoreQueueHTML {
                 }
 
                 if (!siteUrlMap.getSiteUrls().isEmpty()) {
-                    Path xmlFilePath = Paths.get(baseDirectory + Constants.FILE_SEPARATOR + i + ".xml");
+                    Path xmlFilePath = Paths.get(storeBaseDirectory + Constants.FILE_SEPARATOR + i + ".xml");
                     createSiteMapFile(xmlFilePath, siteUrlMap);
                     populateSiteMapIndex(modifiedDate, siteMapIndex, xmlFilePath);
                 }
@@ -154,7 +154,8 @@ public class GenerateStoreQueueHTML {
 
             /* Create site index file upon exit. */
             createSiteMapIndexFile(
-                    Paths.get(Paths.get(baseDirectory).getParent() + Constants.FILE_SEPARATOR + "q-biz-sitemap.xml"),
+                    /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
+                    Paths.get(Paths.get(storeBaseDirectory).getParent().getParent() + Constants.FILE_SEPARATOR + "q-s-sitemap.xml"),
                     siteMapIndex);
 
         } catch (Exception e) {
@@ -201,7 +202,8 @@ public class GenerateStoreQueueHTML {
      */
     private void populateSiteMapIndex(String modifiedDate, SiteMapIndex siteMapIndex, Path xmlFilePath) {
         siteMapIndex.addSiteMaps(new SiteMap()
-                .setLocation(xmlFilePath.toString().replace(Paths.get(baseDirectory).getParent().toString(), parentHost))
+                /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
+                .setLocation(xmlFilePath.toString().replace(Paths.get(storeBaseDirectory).getParent().getParent().toString(), parentHost))
                 .setLastModified(modifiedDate));
     }
 
