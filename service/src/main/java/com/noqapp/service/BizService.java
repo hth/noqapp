@@ -343,16 +343,7 @@ public class BizService {
                     + "/"
                     + displayName.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim();
 
-            /*
-             * Since empty townString and stateShortNameString can contain '-',
-             * hence replacing two consecutive '-' with a blank.
-             */
-            webLocation = webLocation.replaceAll("--", "").replaceAll("/-/", "/");
-            if (webLocation.endsWith("-")) {
-                webLocation = webLocation.substring(0, webLocation.length() - 1);
-            }
-
-            return webLocation;
+            return webLocationSanitize(webLocation);
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
@@ -382,19 +373,23 @@ public class BizService {
                     + "/"
                     + name.trim().toLowerCase().replaceAll("[^a-zA-Z]", "-");
 
-            /*
-             * Since empty townString and stateShortNameString can contain '-',
-             * hence replacing two consecutive '-' with a blank.
-             */
-            webLocation = webLocation.replaceAll("--", "").replaceAll("/-/", "/");
-            if (webLocation.endsWith("-")) {
-                webLocation = webLocation.substring(0, webLocation.length() - 1);
-            }
-
-            return webLocation;
+            return webLocationSanitize(webLocation);
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
         }
+    }
+
+    private String webLocationSanitize(String webLocation) {
+        /*
+         * Since empty townString and stateShortNameString can contain '-',
+         * hence replacing two consecutive '-' with a blank and little more sanitation.
+         */
+        webLocation = webLocation.replaceAll("--", "").replaceAll("/-/", "/");
+        if (webLocation.endsWith("-")) {
+            webLocation = webLocation.substring(0, webLocation.length() - 1);
+        }
+
+        return webLocation;
     }
 }
