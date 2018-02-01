@@ -316,19 +316,19 @@ public class BizService {
             String webLocation = "/"
                     + countryShortNameStore.toLowerCase()
                     + "/"
-                    + name.trim().toLowerCase().replace(" ", "-")
+                    + name.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim()
                     + "/"
                     + townString
                     + "-"
                     + stateShortNameString
                     + "/"
-                    + displayName.trim().toLowerCase().replace(" ", "-");
+                    + displayName.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim();
 
             /*
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "");
+            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
@@ -351,13 +351,13 @@ public class BizService {
                     + "-"
                     + stateShortNameString
                     + "/"
-                    + name.trim().toLowerCase().replace(" ", "-");
+                    + name.trim().toLowerCase().replaceAll("[^a-zA-Z]", "-");
 
             /*
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "");
+            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
