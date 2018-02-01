@@ -93,7 +93,7 @@
                                                     <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <span style="display:block; font-size:13px;"><a href="https://noqapp.com/biz${store.webLocation}.html">Web Appointment Link</a></span>
+                                            <span style="display:block; font-size:13px;"><a href="https://noqapp.com/b/s${store.webLocation}.html">Web Appointment Link</a></span>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
