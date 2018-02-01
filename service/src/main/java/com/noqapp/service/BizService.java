@@ -267,15 +267,22 @@ public class BizService {
         return bizNameManager.findByCodeQR(codeQR);
     }
 
-    public boolean doesBusinessWebLocationExists(String webLocation) {
-        return bizNameManager.doesWebLocationExists(webLocation);
+    private boolean doesBusinessWebLocationExists(String webLocation, String bizId) {
+        return bizNameManager.doesWebLocationExists(webLocation, bizId);
     }
 
-    public boolean doesStoreWebLocationExists(String webLocation) {
-        return bizStoreManager.doesWebLocationExists(webLocation);
+    private boolean doesStoreWebLocationExists(String webLocation, String storeId) {
+        return bizStoreManager.doesWebLocationExists(webLocation, storeId);
     }
 
-    public String buildWebLocationForStore(String town, String stateShortName, String countryShortNameStore, String name, String displayName) {
+    public String buildWebLocationForStore(
+            String town,
+            String stateShortName,
+            String countryShortNameStore,
+            String name,
+            String displayName,
+            String storeId
+    ) {
         String webLocation = computeWebLocationForStore(
                 town,
                 stateShortName,
@@ -283,28 +290,40 @@ public class BizService {
                 name,
                 displayName);
 
-        while (doesStoreWebLocationExists(webLocation)) {
+        while (doesStoreWebLocationExists(webLocation, storeId)) {
             webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
         }
 
         return webLocation;
     }
 
-    public String buildWebLocationForBiz(String town, String stateShortName, String countryShortName, String name) {
+    public String buildWebLocationForBiz(
+            String town,
+            String stateShortName,
+            String countryShortName,
+            String name,
+            String bizId
+    ) {
         String webLocation = computeWebLocationForBiz(
                 town,
                 stateShortName,
                 countryShortName,
                 name);
 
-        while (doesBusinessWebLocationExists(webLocation)) {
+        while (doesBusinessWebLocationExists(webLocation, bizId)) {
             webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
         }
 
         return webLocation;
     }
 
-    private String computeWebLocationForStore(String town, String stateShortName, String countryShortNameStore, String name, String displayName) {
+    private String computeWebLocationForStore(
+            String town,
+            String stateShortName,
+            String countryShortNameStore,
+            String name,
+            String displayName
+    ) {
         try {
             String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
@@ -316,26 +335,31 @@ public class BizService {
             String webLocation = "/"
                     + countryShortNameStore.toLowerCase()
                     + "/"
-                    + name.trim().toLowerCase().replace(" ", "-")
+                    + name.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim()
                     + "/"
                     + townString
                     + "-"
                     + stateShortNameString
                     + "/"
-                    + displayName.trim().toLowerCase().replace(" ", "-");
+                    + displayName.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim();
 
             /*
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "");
+            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
         }
     }
 
-    private String computeWebLocationForBiz(String town, String stateShortName, String countryShortName, String name) {
+    private String computeWebLocationForBiz(
+            String town,
+            String stateShortName,
+            String countryShortName,
+            String name
+    ) {
         try {
             String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
@@ -351,13 +375,13 @@ public class BizService {
                     + "-"
                     + stateShortNameString
                     + "/"
-                    + name.trim().toLowerCase().replace(" ", "-");
+                    + name.trim().toLowerCase().replaceAll("[^a-zA-Z]", "-");
 
             /*
              * Since empty townString and stateShortNameString can contain '-',
              * hence replacing two consecutive '-' with a blank.
              */
-            return webLocation.replaceAll("--", "");
+            return webLocation.replaceAll("--", "").replaceAll("/-/", "/");
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;

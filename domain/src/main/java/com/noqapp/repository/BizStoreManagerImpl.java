@@ -344,9 +344,15 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean doesWebLocationExists(String webLocation) {
+    public boolean doesWebLocationExists(String webLocation, String id) {
+        Query query;
+        if (StringUtils.isBlank(id)) {
+            query = query(where("WL").is(webLocation));
+        } else {
+            query = query(where("WL").is(webLocation).and("_id").ne(id));
+        }
         return mongoTemplate.exists(
-                query(where("WL").is(webLocation)),
+                query,
                 BizStoreEntity.class,
                 TABLE
         );
