@@ -159,7 +159,8 @@ class RegistrationFlowActions {
                     bizName.getTown(),
                     bizName.getStateShortName(),
                     registerBusiness.getCountryShortName(),
-                    registerBusiness.getName());
+                    registerBusiness.getName(),
+                    bizName.getId());
 
             bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
@@ -225,7 +226,8 @@ class RegistrationFlowActions {
                     bizStore.getStateShortName(),
                     registerBusiness.getCountryShortNameStore(),
                     registerBusiness.getName(),
-                    registerBusiness.getDisplayName());
+                    registerBusiness.getDisplayName(),
+                    bizStore.getId());
 
             bizStore.setWebLocation(webLocation);
             bizService.saveStore(bizStore);

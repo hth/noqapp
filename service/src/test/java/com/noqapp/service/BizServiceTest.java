@@ -54,7 +54,8 @@ class BizServiceTest {
                 "MH",
                 "IN",
                 "Dimmer Lime",
-                "Dr. Mich J. Douse");
+                "Dr. Mich J. Douse",
+                null);
         Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse", wl);
 
         wl = bizService.buildWebLocationForStore(
@@ -62,7 +63,8 @@ class BizServiceTest {
                 "MH",
                 "IN",
                 "Dimmer Lime",
-                "Dr. Mich J. Douse");
+                "Dr. Mich J. Douse",
+                null);
         Assertions.assertEquals("/in/dimmer-lime/mh/dr-mich-j-douse", wl);
 
         wl = bizService.buildWebLocationForStore(
@@ -70,7 +72,8 @@ class BizServiceTest {
                 "",
                 "IN",
                 "Dimmer Lime",
-                "Dr. Mich J. Douse");
+                "Dr. Mich J. Douse",
+                null);
         Assertions.assertEquals("/in/dimmer-lime/dr-mich-j-douse", wl);
     }
 
@@ -80,21 +83,24 @@ class BizServiceTest {
                 "New Delhi",
                 "MH",
                 "IN",
-                "Dimmer & Lime");
+                "Dimmer & Lime",
+                null);
         Assertions.assertEquals("/in/new-delhi-mh/dimmer-lime", wl);
 
         wl = bizService.buildWebLocationForBiz(
                 "",
                 "MH",
                 "IN",
-                "Dimmer 12#$%&*()?><: Lime");
+                "Dimmer 12#$%&*()?><: Lime",
+                null);
         Assertions.assertEquals("/in/mh/dimmer-lime", wl);
 
         wl = bizService.buildWebLocationForBiz(
                 "",
                 "",
                 "IN",
-                "Dimmer & Lime");
+                "Dimmer & Lime",
+                null);
         Assertions.assertEquals("/in/dimmer-lime", wl);
     }
 }
