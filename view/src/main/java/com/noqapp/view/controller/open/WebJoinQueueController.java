@@ -101,13 +101,14 @@ public class WebJoinQueueController {
             HttpServletResponse response
     ) throws IOException {
         LOG.info("CodeQR={}", codeQR.getText());
+        String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
 
-        if (!bizService.isValidCodeQR(codeQR.getText())) {
+        if (!bizService.isValidCodeQR(codeQRDecoded)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
             return null;
         }
 
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
         Map<String, String> rootMap = new HashMap<>();
         showHTMLService.populateStore(rootMap, bizStore);
 
