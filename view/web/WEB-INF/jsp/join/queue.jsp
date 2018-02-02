@@ -74,7 +74,14 @@
                                 <p>${webJoinQueue.rootMap.get("phone")}</p>
                             </div>
                             <div class="qr-queue">
+                                <c:choose>
+                                <c:when test="${webJoinQueue.rootMap.get('storeClosed')} eq 'Yes'">
+                                <p style="margin: 5px 0"><strong>Closed Today</strong></p>
+                                </c:when>
+                                <c:otherwise>
                                 <p style="margin: 5px 0"><strong>${webJoinQueue.rootMap.get("dayOfWeek")} Hours: </strong> ${webJoinQueue.rootMap.get("startHour")} - ${webJoinQueue.rootMap.get("endHour")}</p>
+                                </c:otherwise>
+                                </c:choose>
 
                                 </br>
                                 <p style="margin: 5px 0"><strong>Queue Status: </strong>${webJoinQueue.rootMap.get("queueStatus")}</p>
