@@ -60,7 +60,11 @@
 
                         <div class="button-btn" style="margin-bottom: 100px;">
                             <form action="${https}://${domain}/open/join/queue/${codeQR}.htm">
-                                <button class="ladda-button next-btn" style="width:48%; float: left">Join Queue</button>
+                                <#if storeClosed == "Yes">
+                                <button class="ladda-button next-btn" style="width:48%; float: left; background: grey; border: grey;">Closed Queue</button>
+                                <#else>
+                                <button class="ladda-button next-btn" style="width:48%; float: left;">Join Queue</button>
+                                </#if>
                             </form>
                         </div>
                     </div>

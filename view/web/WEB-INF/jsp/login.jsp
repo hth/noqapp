@@ -69,7 +69,7 @@
                 <div class="form-style">
                     <form id="sign-in-form" action="">
                         <h2>Login</h2>
-                        <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
+                        <input name="" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Phone Number" />
                         <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
                                 <span class="mdl-textfield__error"> </span>
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
-                        <c:set var = "errorFound" value = "${true}"/>
+                        <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
                         <c:if test="${!empty param.error and param.error eq 'provider'}">
@@ -143,7 +143,7 @@
                                 Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
                             </div>
                         </div>
-                        <c:set var = "errorFound" value = "${true}"/>
+                        <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
                         <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
@@ -153,15 +153,15 @@
                                 Please wait and try after some time.
                             </div>
                         </div>
-                        <c:set var = "errorFound" value = "${true}"/>
+                        <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
                         <c:if test="${errorFound}">
                         <br/>
                         </c:if>
 
-                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="form-field error" />
-                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="form-field error" />
+                        <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="Email" />
+                        <form:password path="password" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="Password" />
                         <%--<input name="" type="submit" class="form-btn mT0" value="Login">--%>
                         <div class="button-btn">
                             <button class="ladda-button form-btn" style="width:100%">Login</button>
