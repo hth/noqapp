@@ -45,7 +45,7 @@
                         <p>${phone}</p>
                     </div>
                     <div class="qr-queue">
-                        <h3>${displayName} at ${bizName}</h3>
+                        <h3>${displayName}</h3>
                         <p>${rating} &nbsp; <span id="store_rating"></span>&nbsp;&nbsp;${ratingCount} Reviews &nbsp;</p>
                         <#if storeClosed == "Yes">
                         <p><strong>Closed Today</p>
