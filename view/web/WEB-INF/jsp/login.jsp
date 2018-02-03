@@ -128,27 +128,36 @@
                         <div class="or">Or</div>
 
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
-                            <div class="error-box">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
                             </div>
-                            <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+                        </div>
+                        <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+                        <c:set var = "errorFound" value = "${true}"/>
                         </c:if>
+
                         <c:if test="${!empty param.error and param.error eq 'provider'}">
-                            <div class="error-box">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
                             </div>
+                        </div>
+                        <c:set var = "errorFound" value = "${true}"/>
                         </c:if>
+
                         <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
-                            <div class="error-box">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    Login not successful. Reason: You seem to have exceed number of connections allowed.
-                                    Please wait and try after some time.
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Login not successful. Reason: You seem to have exceed number of connections allowed.
+                                Please wait and try after some time.
                             </div>
+                        </div>
+                        <c:set var = "errorFound" value = "${true}"/>
+                        </c:if>
+
+                        <c:if test="${errorFound}">
+                        <br/>
                         </c:if>
 
                         <form:input path="emailId" cssClass="form-field" required="required" cssErrorClass="form-field error" />

@@ -97,7 +97,11 @@
                                 Failed to Join Queue. Try again.
                             </div>
                         </div>
-                        </br>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${errorFound}">
+                        <br/>
                         </c:if>
 
                         <input name=""  id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Enter your phone number to join ${webJoinQueue.rootMap.get("displayName")}" />
