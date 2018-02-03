@@ -76,7 +76,7 @@
                             </div>
                             <div class="qr-queue">
                                 <c:choose>
-                                <c:when test="${webJoinQueue.rootMap.get('storeClosed')} eq 'Yes'">
+                                <c:when test="${webJoinQueue.rootMap.get('storeClosed') eq 'Yes'}">
                                 <p style="margin: 5px 0"><strong>Closed Today</strong></p>
                                 </c:when>
                                 <c:otherwise>
