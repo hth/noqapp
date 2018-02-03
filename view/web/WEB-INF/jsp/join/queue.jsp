@@ -112,7 +112,14 @@
                         </div>
                         <%--<input name="" id="sign-in-button" type="button" class="form-btn" value="NEXT" onClick="onSignInSubmit()"/>--%>
                         <div class="button-btn">
+                            <c:choose>
+                            <c:when test="${webJoinQueue.rootMap.get('storeClosed') eq 'Yes'}">
+                            <button class="form-btn" style="width:100%; background: grey;" disabled>Closed</button>
+                            </c:when>
+                            <c:otherwise>
                             <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit();">NEXT</button>
+                            </c:otherwise>
+                            </c:choose>
                         </div>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
