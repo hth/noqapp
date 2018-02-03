@@ -71,6 +71,7 @@
                         <div class="qr-data">
                             <div class="qr-address">
                                 <h3>${webJoinQueue.rootMap.get("displayName")}</h3>
+                                <h1><span style="font-size: 20px; color: #ff1c79; font-weight: 500;">${webJoinQueue.rootMap.get("bizName")}</span></h1>
                                 <p>${webJoinQueue.rootMap.get("phone")}</p>
                             </div>
                             <div class="qr-queue">
