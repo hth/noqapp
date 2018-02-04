@@ -10,17 +10,16 @@ public interface InviteManager extends RepositoryManager<InviteEntity> {
 
     /**
      * Lists total number of remote join available.
-     *
-     * @param qid
-     * @return
      */
     int getRemoteJoinCount(String qid);
 
     /**
      * Deducts remote join from available remote scans.
-     *
-     * @param qid
-     * @return
      */
     boolean deductRemoteJoinCount(String qid);
+
+    /**
+     * Increase max remote join by a specific count.
+     */
+    long increaseRemoteJoin(int maxRemoteJoin);
 }
