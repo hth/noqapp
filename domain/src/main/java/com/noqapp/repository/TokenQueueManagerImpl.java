@@ -57,7 +57,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public void deleteHard(TokenQueueEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 
     /**

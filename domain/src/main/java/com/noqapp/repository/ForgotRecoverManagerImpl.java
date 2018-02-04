@@ -99,6 +99,6 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
 
     @Override
     public void deleteHard(ForgotRecoverEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 }

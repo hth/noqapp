@@ -77,6 +77,6 @@ public class MailManagerImpl implements MailManager {
 
     @Override
     public void deleteHard(MailEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 }

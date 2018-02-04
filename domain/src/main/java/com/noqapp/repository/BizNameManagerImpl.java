@@ -78,7 +78,7 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public void deleteHard(BizNameEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 
     @Override

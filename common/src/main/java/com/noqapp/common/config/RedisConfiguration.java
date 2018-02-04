@@ -1,15 +1,18 @@
 package com.noqapp.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.time.Duration;
 
 /**
  * User: hitender
@@ -17,7 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfiguration extends CachingConfigurerSupport {
+public class RedisConfiguration extends CachingConfigurerSupport {
 
     @Value ("${redis.host}")
     private String redisHost;
@@ -42,13 +45,24 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
     }
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+    public RedisCacheWriter redisCacheWriter(JedisConnectionFactory jedisConnectionFactory) {
+        return RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
+    }
+
+    @Bean
+    public RedisCacheConfiguration redisCacheConfiguration() {
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
 
         /* Number of seconds before expiration. Defaults to unlimited (0) */
-        cacheManager.setDefaultExpiration(300);
-        cacheManager.setUsePrefix(true);
-        return cacheManager;
+        redisCacheConfiguration.entryTtl(Duration.ofSeconds(300));
+        redisCacheConfiguration.usePrefix();
+
+        return redisCacheConfiguration;
+    }
+
+    @Bean
+    public RedisCacheManager cacheManager(RedisCacheWriter redisCacheWriter, RedisCacheConfiguration redisCacheConfiguration) {
+        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
     /**

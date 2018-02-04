@@ -95,6 +95,6 @@ public class BizCategoryManagerImpl implements BizCategoryManager {
 
     @Override
     public void deleteHard(BizCategoryEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 }
