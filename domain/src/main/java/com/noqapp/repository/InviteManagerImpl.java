@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.InviteEntity;
 import com.noqapp.domain.aggregate.GroupedValue;
@@ -17,9 +18,12 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -126,5 +130,16 @@ public class InviteManagerImpl implements InviteManager {
             LOG.error("Failed deducting from remote join reason={}", e.getLocalizedMessage(), e);
             return false;
         }
+    }
+
+    public long increaseRemoteJoin(int maxRemoteJoin) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+                query(where("RJQ").lte(10).andOperator(isActive())),
+                entityUpdate(update("RJQ", maxRemoteJoin)),
+                InviteEntity.class,
+                TABLE
+        );
+
+        return updateResult.getModifiedCount();
     }
 }
