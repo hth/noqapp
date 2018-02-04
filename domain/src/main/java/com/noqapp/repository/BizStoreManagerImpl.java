@@ -81,7 +81,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public void deleteHard(BizStoreEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 
     public BizStoreEntity noStore() {

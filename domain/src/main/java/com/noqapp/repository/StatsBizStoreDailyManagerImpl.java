@@ -52,7 +52,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
 
     @Override
     public void deleteHard(StatsBizStoreDailyEntity object) {
-        mongoTemplate.remove(object);
+        mongoTemplate.remove(object, TABLE);
     }
 
     @Override
