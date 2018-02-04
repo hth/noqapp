@@ -64,7 +64,7 @@ public class RemoteJoin {
         try {
             success = inviteManager.increaseRemoteJoin(25);
         } catch (Exception e) {
-            LOG.error("Failed marking records in active older than three hours, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed increasing remote join, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
             if (0 != success || 0 !=  failure) {
