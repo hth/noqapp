@@ -177,10 +177,6 @@ public class GenerateStoreQueueHTML {
 
     /**
      * This links to all the HTML for business that were created.
-     *
-     * @param siteUrlMap
-     * @param location
-     * @param modifiedDate
      */
     private void populateSiteMapURL(SiteUrlMap siteUrlMap, String location, String modifiedDate) {
         siteUrlMap.addSiteUrl(
@@ -195,10 +191,6 @@ public class GenerateStoreQueueHTML {
 
     /**
      * This links to all the site map that have been created.
-     *
-     * @param modifiedDate
-     * @param siteMapIndex
-     * @param xmlFilePath
      */
     private void populateSiteMapIndex(String modifiedDate, SiteMapIndex siteMapIndex, Path xmlFilePath) {
         siteMapIndex.addSiteMaps(new SiteMap()
@@ -209,10 +201,6 @@ public class GenerateStoreQueueHTML {
 
     /**
      * Generate Site Map File for all the HTML files that were created.
-     *
-     * @param xmlFilePath
-     * @param siteUrlMap
-     * @throws IOException
      */
     private void createSiteMapFile(Path xmlFilePath, SiteUrlMap siteUrlMap) throws IOException {
         Files.deleteIfExists(xmlFilePath);
@@ -221,10 +209,6 @@ public class GenerateStoreQueueHTML {
 
     /**
      * Generate Site Map Index File for all the Site Map that were created for Queue Businesses.
-     *
-     * @param xmlFilePath
-     * @param siteMapIndex
-     * @throws IOException
      */
     private void createSiteMapIndexFile(Path xmlFilePath, SiteMapIndex siteMapIndex) throws IOException {
         Files.deleteIfExists(xmlFilePath);
