@@ -48,7 +48,7 @@ public class RemoteJoin {
     /**
      * Increase Remote Joins when they fall below certain number.
      */
-    @Scheduled(fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
+    @Scheduled(cron = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
     public void increaseRemoteJoin() {
         StatsCronEntity statsCron = new StatsCronEntity(
                 ExpireRecordsProcess.class.getName(),
