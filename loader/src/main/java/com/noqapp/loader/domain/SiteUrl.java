@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.noqapp.common.utils.AbstractDomain;
 
 /**
@@ -27,16 +28,16 @@ import com.noqapp.common.utils.AbstractDomain;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SiteUrl extends AbstractDomain {
-    @JsonProperty("loc")
+    @JacksonXmlProperty(localName = "loc", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
     private String location;
 
-    @JsonProperty("lastmod")
+    @JacksonXmlProperty(localName = "lastmod", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
     private String lastModified;
 
-    @JsonProperty("changefreq")
+    @JacksonXmlProperty(localName = "changefreq", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
     private String changeFrequency;
 
-    @JsonProperty("priority")
+    @JacksonXmlProperty(localName = "priority", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
     private String priority;
 
     public String getLocation() {

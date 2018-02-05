@@ -34,7 +34,7 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "sitemapindex", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
 public class SiteMapIndex extends AbstractDomain {
 
-    @JacksonXmlProperty(localName = "sitemap")
+    @JacksonXmlProperty(localName = "sitemap", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<SiteMap> siteMaps = new ArrayList<>();
 
