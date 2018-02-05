@@ -117,7 +117,7 @@ public final class DateUtil {
      */
     public static int getDaysBetween(String start, String end) {
         Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
-        Assert.notNull(StringUtils.isNotBlank(end), "End date string is null");
+        Assert.isTrue(StringUtils.isNotBlank(end), "End date string is null");
         return getDaysBetween(convertToDate(start), convertToDate(end));
     }
 
@@ -179,5 +179,9 @@ public final class DateUtil {
         Assert.notNull(end, "End date is null");
         Interval interval = new Interval(start.getTime(), end.getTime());
         return interval.toPeriod(PeriodType.minutes()).getMinutes();
+    }
+
+    public static Date plusDays(int days) {
+        return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
