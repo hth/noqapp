@@ -154,52 +154,52 @@
                             <h3>Available Supervisors: <span>${queueSupervisorForm.availableQueueSupervisor.size()}</span></h3>
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty queueSupervisorForm.availableQueueSupervisor}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th>
-                                                    Name
-                                                    &nbsp;
-                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                         alt="Sort" height="16px;"/>
-                                                </th>
-                                                <th>Address</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Since</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
-                                            <c:forEach items="${queueSupervisorForm.availableQueueSupervisor}" var="queueSupervisor" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td nowrap>${queueSupervisor.name}</td>
-                                                    <td>${queueSupervisor.address}
-                                                        <p>Phone: ${queueSupervisor.phone}</p>
-                                                    </td>
-                                                    <td>${queueSupervisor.email}</td>
-                                                    <td>${queueSupervisor.userLevel.description}</td>
-                                                    <td nowrap>
-                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
-                                                    </td>
-                                                    <td class="Tleft" nowrap>
-                                                        <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                            <form:hidden path="action" value="ADD" />
-                                                            <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                            <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
-                                                            <input class="cancel-btn" value="Add" type="submit">
-                                                        </form:form>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>There is no additional supervisor to be assigned to this queue.</p>
-                                        </div>
-                                    </c:otherwise>
+                                <c:when test="${!empty queueSupervisorForm.availableQueueSupervisor}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>
+                                            Name
+                                            &nbsp;
+                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                 alt="Sort" height="16px;"/>
+                                        </th>
+                                        <th>Address</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Since</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                    <c:forEach items="${queueSupervisorForm.availableQueueSupervisor}" var="queueSupervisor" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td nowrap>${queueSupervisor.name}</td>
+                                        <td>${queueSupervisor.address}
+                                            <p>Phone: ${queueSupervisor.phone}</p>
+                                        </td>
+                                        <td>${queueSupervisor.email}</td>
+                                        <td>${queueSupervisor.userLevel.description}</td>
+                                        <td nowrap>
+                                            <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
+                                        </td>
+                                        <td class="Tleft" nowrap>
+                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                <form:hidden path="action" value="ADD" />
+                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                <input class="cancel-btn" value="Add" type="submit">
+                                            </form:form>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="alert-info">
+                                    <p>There is no additional supervisor to be assigned to this queue.</p>
+                                </div>
+                                </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>

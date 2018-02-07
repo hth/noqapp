@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -45,6 +46,9 @@ public class BusinessUserEntity extends BaseEntity {
     /* Set the kind of business is registered as. */
     @Field ("UL")
     private UserLevelEnum userLevel;
+
+    @Field ("EID")
+    private String externalAccessId;
 
     @SuppressWarnings("unused")
     public BusinessUserEntity() {
@@ -102,5 +106,15 @@ public class BusinessUserEntity extends BaseEntity {
 
     public UserLevelEnum getUserLevel() {
         return userLevel;
+    }
+
+    public String getExternalAccessId() {
+        return externalAccessId;
+    }
+
+    public BusinessUserEntity setExternalAccessId(ExternalAccessEntity externalAccess) {
+        Assertions.assertNotNull(externalAccess.getId());
+        this.externalAccessId = externalAccess.getId();
+        return this;
     }
 }

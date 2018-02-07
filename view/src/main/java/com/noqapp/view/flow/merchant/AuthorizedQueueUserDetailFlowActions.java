@@ -5,16 +5,19 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.AuthorizedQueueUser;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.view.flow.merchant.exception.AuthorizedQueueUserDetailException;
+import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
@@ -61,8 +64,16 @@ public class AuthorizedQueueUserDetailFlowActions {
     @SuppressWarnings("all")
     public AuthorizedQueueUser loadQueueUserDetail(ExternalContext externalContext) {
         LOG.info("loadQueueUserDetail Start");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            throw new UnAuthorizedAccessException("Not authorized to access " + queueUser.getQueueUserId());
+        }
+        /* Above condition to make sure users with right roles and access gets access. */
+
         String businessUserId = (String) webFlowUtils.getFlashAttribute(externalContext, "businessUserId");
-        BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
+        businessUser = businessUserService.findById(businessUserId);
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
 
         AuthorizedQueueUser authorizedQueueUser = new AuthorizedQueueUser();

@@ -51,7 +51,7 @@
         <div class="warp-inner">
             <!-- Add New Supervisor -->
             <div class="admin-main">
-                <sec:authorize access="hasRole('ROLE_M_ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
 
                     <div class="admin-title">
                         <h2>Add New Supervisor</h2>

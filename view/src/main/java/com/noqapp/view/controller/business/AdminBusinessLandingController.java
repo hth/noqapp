@@ -44,7 +44,6 @@ import com.noqapp.view.form.business.QueueSupervisorForm;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -128,18 +127,25 @@ public class AdminBusinessLandingController {
     /**
      * Loading landing page for business.
      * Note: This link is mapped in web flow after merchant adds new store to existing business.
-     *
-     * @param businessLandingForm
-     * @return
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
             @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm
-    ) {
+            BusinessLandingForm businessLandingForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.loadBusinessUser(), businessLandingForm);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        return nextPage(businessUser, businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")
@@ -196,11 +202,6 @@ public class AdminBusinessLandingController {
 
     /**
      * List queue supervisors for a store.
-     *
-     * @param queueSupervisorForm
-     * @param queueSupervisorActionForm Not populated but used
-     * @param storeId
-     * @return
      */
     @GetMapping (value = "/{storeId}/listQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String listQueueSupervisor(
@@ -213,8 +214,19 @@ public class AdminBusinessLandingController {
             @PathVariable ("storeId")
             ScrubbedInput storeId,
 
-            Model model
-    ) {
+            Model model,
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("List QueueSupervisors for storeId={} qid={} level={}", storeId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         queueSupervisorForm.setBizStoreId(bizStore.getId());
         queueSupervisorForm.setQueueName(bizStore.getDisplayName());
@@ -239,8 +251,17 @@ public class AdminBusinessLandingController {
     }
 
     @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
-    public String addStore() {
-        LOG.info("Add store to business {}", storeActionFlow);
+    public String addStore(HttpServletResponse response) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Add store to business {} qid={} level={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         return storeActionFlow;
     }
 
@@ -249,9 +270,19 @@ public class AdminBusinessLandingController {
             @PathVariable ("bizStoreId")
             ScrubbedInput bizStoreId,
 
-            RedirectAttributes redirectAttrs
-    ) {
-        LOG.info("Edit business store {}", bizStoreId);
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business store {} qid={} level={}", bizStoreId, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         redirectAttrs.addFlashAttribute("bizStoreId", bizStoreId);
         return storeActionFlow;
     }
@@ -261,9 +292,19 @@ public class AdminBusinessLandingController {
             @PathVariable ("bizStoreId")
             ScrubbedInput bizStoreId,
 
-            RedirectAttributes redirectAttributes
-    ) {
-        LOG.info("Add queue manager to bizStoreId={} {}", bizStoreId.getText(), addQueueSupervisorFlow);
+            RedirectAttributes redirectAttributes,
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Add queue manager to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
         return addQueueSupervisorFlow;
     }
@@ -273,18 +314,25 @@ public class AdminBusinessLandingController {
             @PathVariable ("businessUserId")
             ScrubbedInput businessUserId,
 
-            RedirectAttributes redirectAttributes
-    ) {
-        LOG.info("QueueUserDetail businessUserId={} {}", businessUserId.getText(), queueUserDetailFlow);
+            RedirectAttributes redirectAttributes,
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("QueueUserDetail businessUserId={} {}", businessUserId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), queueUserDetailFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
         redirectAttributes.addFlashAttribute("businessUserId", businessUserId.getText());
         return queueUserDetailFlow;
     }
 
     /**
      * Approve or reject new supervisor.
-     *
-     * @return
-     * @throws IOException
      */
     @PostMapping(value = "/actionQueueSupervisor")
     public String actionQueueSupervisor(
@@ -293,7 +341,6 @@ public class AdminBusinessLandingController {
 
             BindingResult result,
             RedirectAttributes redirectAttrs,
-            HttpServletRequest request,
             HttpServletResponse response
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -414,9 +461,6 @@ public class AdminBusinessLandingController {
 
     /**
      * List all users with role of Queue Supervisor and Manager managing queues for business.
-     *
-     * @param queueSupervisorForm
-     * @return
      */
     @GetMapping (value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
     public String authorizedUsers(
@@ -424,12 +468,25 @@ public class AdminBusinessLandingController {
             QueueSupervisorForm queueSupervisorForm,
 
             @ModelAttribute ("queueSupervisorActionForm")
-            QueueSupervisorActionForm queueSupervisorActionForm
-    ) {
+            QueueSupervisorActionForm queueSupervisorActionForm,
+
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("List authorizedUser for {} qid={} {}",
+                businessUser.getBizName().getBusinessName(),
+                queueUser.getQueueUserId(),
+                queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
-
         return authorizedUsersPage;
     }
 }

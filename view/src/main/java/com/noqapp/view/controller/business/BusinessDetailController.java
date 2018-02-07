@@ -3,7 +3,9 @@ package com.noqapp.view.controller.business;
 import com.google.zxing.WriterException;
 
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.json.xml.XmlBusinessCodeQR;
+import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.PdfGenerateService;
 import com.noqapp.view.helper.WebUtil;
 import org.apache.commons.io.IOUtils;
@@ -38,6 +40,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 /**
  * User: hitender
  * Date: 12/15/16 8:58 AM
@@ -58,6 +62,7 @@ public class BusinessDetailController {
     private BizService bizService;
     private CodeQRGeneratorService codeQRGeneratorService;
     private PdfGenerateService pdfGenerateService;
+    private BusinessUserService businessUserService;
 
     @Autowired
     public BusinessDetailController(
@@ -66,13 +71,15 @@ public class BusinessDetailController {
 
             BizService bizService,
             CodeQRGeneratorService codeQRGeneratorService,
-            PdfGenerateService pdfGenerateService
+            PdfGenerateService pdfGenerateService,
+            BusinessUserService businessUserService
     ) {
         this.storeDetail = storeDetail;
 
         this.bizService = bizService;
         this.codeQRGeneratorService = codeQRGeneratorService;
         this.pdfGenerateService = pdfGenerateService;
+        this.businessUserService = businessUserService;
     }
 
     /**
@@ -84,10 +91,19 @@ public class BusinessDetailController {
             ScrubbedInput storeId,
 
             @ModelAttribute ("storeLandingForm")
-            StoreLandingForm storeLandingForm
-    ) {
+            StoreLandingForm storeLandingForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
@@ -125,9 +141,16 @@ public class BusinessDetailController {
             StoreLandingForm storeLandingForm,
 
             HttpServletResponse response
-    ) {
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return;
+        }
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
 
         try {
             BizNameEntity bizName = bizService.findBizNameByCodeQR(codeQR.getText());

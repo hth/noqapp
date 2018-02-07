@@ -29,7 +29,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -52,76 +52,68 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><a href="/business/detail/business/${businessLandingForm.bizCodeQR}.htm" target="_blank"><span>${businessLandingForm.bizName}</span></a></h3>
-
+                        <h3>Permissions: <span>${externalAccessForm.externalAccesses.size()}</span></h3>
+                        <c:if test="${!empty externalAccessForm.externalAccesses}">
+                        <div class="alert-info">
+                            <p>Permission to NoQueue Support for helping in your account related activities.</p>
+                        </div>
+                        </c:if>
                         <div class="add-store">
-                            <div class="addbtn-store">
-                                <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
-                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
-                                <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
-                            </div>
+                            <h2>&nbsp;</h2>
                             <div class="store-table">
-                            <c:choose>
-                            <c:when test="${!empty businessLandingForm.bizStores}">
+                                <c:choose>
+                                <c:when test="${!empty externalAccessForm.externalAccesses}">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>Store Location</th>
-                                        <th nowrap>
-                                            Queue Name
-                                            &nbsp;
-                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                 alt="Sort" height="16px;"/>
-                                        </th>
-                                        <th>Pending</th>
-                                        <th>Assigned</th>
+                                        <th>Authorization</th>
+                                        <th>Permission</th>
                                         <th>&nbsp;</th>
                                     </tr>
-                                    <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
+                                    <c:forEach items="${externalAccessForm.externalAccesses}" var="externalAccess" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
-                                        <td>
-                                            <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
-                                        </td>
-                                        <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                            <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
+                                        <td>${externalAccess.idAsBase64}&nbsp;</td>
+                                        <td nowrap>${externalAccess.externalPermission.customerFriendlyDescription}</td>
+                                        <td class="Tleft" nowrap>
                                             <c:choose>
-                                                <c:when test="${store.averageServiceTime > 0}">
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
+                                                <c:when test="${empty externalAccess.approverQID}">
+                                                    <div>
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                            <form:hidden path="action" value="APPROVE" />
+                                                            <form:hidden path="id" value="${externalAccess.idAsBase64}" />
+                                                            <input class="cancel-btn" value="Approve" type="submit">
+                                                        </form:form>
+                                                        <br />
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                            <form:hidden path="action" value="REJECT" />
+                                                            <form:hidden path="id" value="${externalAccess.idAsBase64}" />
+                                                            <input class="cancel-btn" value="Reject" type="submit">
+                                                        </form:form>
+                                                    </div>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
+                                                    <div>
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                            <form:hidden path="action" value="REMOVE" />
+                                                            <form:hidden path="id" value="${externalAccess.idAsBase64}" />
+                                                            <input class="cancel-btn" style="margin: 0;" value="Remove" type="submit">
+                                                        </form:form>
+                                                    </div>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <span style="display:block; font-size:13px;"><a href="https://noqapp.com/b/s${store.webLocation}.html" target="_blank">Web Appointment Link</a></span>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
                                         </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
-                            </c:when>
-                            <c:otherwise>
-                                There are no stores associated with business.
-                            </c:otherwise>
-                            </c:choose>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="alert-info">
+                                    <p>No permissions given to NoQueue Support.</p>
+                                </div>
+                                </c:otherwise>
+                                </c:choose>
                             </div>
-                        </div>
-
-                        <div class="alert-info">
-                            <p>
-                                To add supervisor to a queue, click on "Pending" value for that queue. Please,
-                                notify the pending supervisor to complete their profile after login in at web site.
-                            </p>
-                            <p>Once supervisor completes their profile, you need to Approve their profile to be accepted as a supervisor.</p>
                         </div>
                     </div>
                 </div>
@@ -133,7 +125,7 @@
     <!-- content end -->
 
 
-    <!-- Foote -->
+    <!-- Footer -->
     <div class="footer">
         <div class="warp-inner ">
             <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
@@ -149,7 +141,7 @@
         </div>
 
     </div>
-    <!-- Foote End -->
+    <!-- Footer End -->
 
 </div>
 

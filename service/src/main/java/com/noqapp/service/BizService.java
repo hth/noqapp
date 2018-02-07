@@ -9,6 +9,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -391,5 +393,19 @@ public class BizService {
         }
 
         return webLocation;
+    }
+
+    public List<JsonBusiness> findDistinctBizWithMatchingName(String businessName) {
+        List<JsonBusiness> jsonBusinesses = new ArrayList<>();
+        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(businessName);
+        for (BizNameEntity bizName : bizNames) {
+            JsonBusiness jsonBusiness = new JsonBusiness()
+                    .setBizId(bizName.getId())
+                    .setBizName(bizName.getBusinessName());
+
+            jsonBusinesses.add(jsonBusiness);
+        }
+
+        return jsonBusinesses;
     }
 }

@@ -49,7 +49,7 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasRole('ROLE_M_ADMIN')">
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
                 <div class="admin-main">
                     <div class="admin-content">
                         <div class="store">
@@ -160,56 +160,56 @@
                     </c:choose>
 
                     <div class="store-table">
-                        <c:choose>
-                            <c:when test="${!empty categoryLanding.categories}">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <th>&nbsp;</th>
-                                        <th nowrap>
-                                            Category Name
-                                            &nbsp;
-                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                 alt="Sort" height="16px;"/>
-                                        </th>
-                                        <th>
-                                            Referred Count
-                                        </th>
-                                        <th nowrap>Edit</th>
-                                    </tr>
-                                    <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
-                                    <tr>
-                                        <td>${status.count}&nbsp;</td>
-                                        <td nowrap>${category.value}</td>
-                                        <td nowrap>
-                                            <a href="/business/category/${category.key}/storeByCategory.htm">
-                                                ${categoryLanding.categoryCounts.get(category.key)}
-                                            </a>
-                                        </td>
-                                        <td nowrap>
-                                            <a href="/business/category/${category.key}/edit.htm" class="add-btn">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </c:forEach>
-                                </table>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="alert-info">
-                                    <p>No category added.</p>
-                                    <p>
-                                        What's Category?
-                                        Category clubs similar or shared characteristics.
-                                        Like different kinds of Mangoes in one category of Mango. Or
-                                        category to distinguish Vegetarian and Non-Vegetarian foods.
-                                        Similarly, you can club all Cardiologist Doctors under one category.
-                                    </p>
-                                    <p>
-                                        Note: You need a minimum of two categories to distinguish.
-                                    </p>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
+                    <c:choose>
+                    <c:when test="${!empty categoryLanding.categories}">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th nowrap>
+                                    Category Name
+                                    &nbsp;
+                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                         alt="Sort" height="16px;"/>
+                                </th>
+                                <th>
+                                    Referred Count
+                                </th>
+                                <th nowrap>Edit</th>
+                            </tr>
+                            <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
+                            <tr>
+                                <td>${status.count}&nbsp;</td>
+                                <td nowrap>${category.value}</td>
+                                <td nowrap>
+                                    <a href="/business/category/${category.key}/storeByCategory.htm">
+                                        ${categoryLanding.categoryCounts.get(category.key)}
+                                    </a>
+                                </td>
+                                <td nowrap>
+                                    <a href="/business/category/${category.key}/edit.htm" class="add-btn">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="alert-info">
+                            <p>No category added.</p>
+                            <p>
+                                What's Category?
+                                Category clubs similar or shared characteristics.
+                                Like different kinds of Mangoes in one category of Mango. Or
+                                category to distinguish Vegetarian and Non-Vegetarian foods.
+                                Similarly, you can club all Cardiologist Doctors under one category.
+                            </p>
+                            <p>
+                                Note: You need a minimum of two categories to distinguish.
+                            </p>
+                        </div>
+                    </c:otherwise>
+                    </c:choose>
                     </div>
                 </div>
                 <!-- Add New Supervisor -->
