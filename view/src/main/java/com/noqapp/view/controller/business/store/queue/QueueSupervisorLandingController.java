@@ -25,7 +25,11 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.view.form.business.BusinessLandingForm;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * User: hitender
@@ -81,11 +85,21 @@ public class QueueSupervisorLandingController {
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
             @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm
-    ) {
+            BusinessLandingForm businessLandingForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
-        return nextPage(businessUserService.loadBusinessUser(), businessLandingForm);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        return nextPage(businessUser, businessLandingForm);
     }
 
     @SuppressWarnings("Duplicates")

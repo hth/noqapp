@@ -26,13 +26,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * hitender
@@ -93,10 +94,18 @@ public class CategoryController {
             CategoryLandingForm categoryLanding,
 
             Model model,
-            RedirectAttributes redirectAttrs
-    ) {
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
         LOG.info("Landed on business category page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
@@ -106,7 +115,6 @@ public class CategoryController {
             redirectAttrs.addFlashAttribute("categoryLanding", categoryLanding);
         }
 
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         String bizNameId = businessUser.getBizName().getId();
         Map<String, String> categories = bizService.getBusinessCategoriesAsMap(bizNameId);
         categoryLanding
@@ -148,10 +156,7 @@ public class CategoryController {
      * On cancelling addition of new category.
      */
     @PostMapping (value = "/add", params = {"cancel_Add"})
-    public String cancelAdd(
-            @ModelAttribute ("categoryLanding")
-            CategoryLandingForm categoryLanding
-    ) {
+    public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel business category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
@@ -171,9 +176,16 @@ public class CategoryController {
 
             RedirectAttributes redirectAttrs,
             HttpServletResponse response
-    ) {
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
         LOG.info("Landed on editing category business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
 
         BizCategoryEntity bizCategory = bizService.findByBizCategoryId(bizCategoryId.getText());
         categoryLanding
@@ -195,8 +207,7 @@ public class CategoryController {
             CategoryLandingForm categoryLanding,
 
             BindingResult result,
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+            RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on editing category business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -237,12 +248,20 @@ public class CategoryController {
             ScrubbedInput bizCategoryId,
 
             @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm
-    ) {
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on editing category business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+            BusinessLandingForm businessLandingForm,
 
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on editing category business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         BizNameEntity bizName = businessUser.getBizName();
         businessLandingForm.setBizName(bizName.getBusinessName());
         businessLandingForm.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));

@@ -1,14 +1,12 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +32,10 @@ public class BusinessUserService {
         this.businessUserManager = businessUserManager;
     }
 
+    public BusinessUserEntity findByQid(String qid) {
+        return businessUserManager.findByQid(qid);
+    }
+
     /**
      * Create, update business user.
      *
@@ -42,7 +44,7 @@ public class BusinessUserService {
      * @param active
      */
     void saveUpdateBusinessUser(String qid, UserLevelEnum userLevel, boolean active) {
-        BusinessUserEntity businessUser = businessUserManager.findByQid(qid);
+        BusinessUserEntity businessUser = findByQid(qid);
         switch (userLevel) {
             case M_ADMIN:
                 if (null == businessUser) {

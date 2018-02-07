@@ -1,9 +1,12 @@
 package com.noqapp.view.flow.merchant;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
@@ -90,6 +94,14 @@ public class AddQueueSupervisorFlowActions {
     @SuppressWarnings ("all")
     public InviteQueueSupervisor inviteSupervisorStart(ExternalContext externalContext) {
         LOG.info("InviteSupervisorStart");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            throw new UnAuthorizedAccessException("Not authorized to access " + queueUser.getQueueUserId());
+        }
+        /* Above condition to make sure users with right roles and access gets access. */
+
         String bizStoreId = (String) webFlowUtils.getFlashAttribute(externalContext, "bizStoreId");
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 

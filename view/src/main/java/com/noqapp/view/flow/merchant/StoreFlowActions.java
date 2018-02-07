@@ -5,6 +5,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +52,14 @@ public class StoreFlowActions extends RegistrationFlowActions {
     }
 
     private RegisterBusiness createStoreRegistration() {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
-            return null;
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            throw new UnAuthorizedAccessException("Not authorized to access " + queueUser.getQueueUserId());
         }
+        /* Above condition to make sure users with right roles and access gets access. */
+
         RegisterBusiness registerBusiness = populateWithBizName(businessUser);
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
