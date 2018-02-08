@@ -402,7 +402,11 @@ public class QueueManagerImpl implements QueueManager {
     public long markAllSkippedWhenQueueClosed(String codeQR, String serverDeviceId) {
         UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
-                entityUpdate(update("QS", QueueUserStateEnum.N).set("SID", serverDeviceId)),
+                entityUpdate(
+                        update("QS", QueueUserStateEnum.N)
+                                .set("SID", serverDeviceId)
+                                .set("SB", new Date())
+                ),
                 QueueEntity.class,
                 TABLE
         );
