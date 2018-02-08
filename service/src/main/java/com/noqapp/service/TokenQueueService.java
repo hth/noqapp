@@ -372,7 +372,15 @@ public class TokenQueueService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
-            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
+            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
+                    //Added additional info to message for Android to not crash as it looks for CodeQR.
+                    //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
+                    .setLastNumber(tokenQueue.getLastNumber())
+                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                    .setCodeQR(tokenQueue.getId())
+                    .setQueueStatus(queueStatus)
+                    .setGoTo("");
+
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
                         .setTitle(title)
