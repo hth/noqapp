@@ -16,8 +16,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Abort queue. Set QueueUserState to Abort.
-     *
-     * @param id
      */
     void abort(String id);
 
@@ -61,35 +59,23 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Find all based on device id, this is when user is not registered.
-     *
-     * @param did
-     * @return
      */
     @Mobile
     List<QueueEntity> findAllQueuedByDid(String did);
 
     /**
      * Find all based on registered user.
-     *
-     * @param qid
-     * @return
      */
     List<QueueEntity> findAllQueuedByQid(String qid);
 
     /**
      * Get all the queues that have been serviced for today by DID.
-     *
-     * @param did
-     * @return
      */
     @Mobile
     List<QueueEntity> findAllNotQueuedByDid(String did);
 
     /**
      * Get all the queues that have been serviced for today by QID.
-     *
-     * @param qid
-     * @return
      */
     @Mobile
     List<QueueEntity> findAllNotQueuedByQid(String qid);
@@ -99,9 +85,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     /**
      * Find all clients serviced to send messages.
-     *
-     * @param numberOfAttemptsToSendFCM
-     * @return
      */
     List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM);
 
@@ -126,4 +109,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findQueuedByPhone(String codeQR, String phone);
 
     void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone);
+
+    @Mobile
+    long markAllSkippedWhenQueueClosed(String codeQR, String serverDeviceId);
 }

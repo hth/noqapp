@@ -6,6 +6,7 @@ import com.mongodb.WriteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -395,5 +396,17 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public long markAllSkippedWhenQueueClosed(String codeQR, String serverDeviceId) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
+                entityUpdate(update("QS", QueueUserStateEnum.N).set("SID", serverDeviceId)),
+                QueueEntity.class,
+                TABLE
+        );
+
+        return updateResult.getModifiedCount();
     }
 }
