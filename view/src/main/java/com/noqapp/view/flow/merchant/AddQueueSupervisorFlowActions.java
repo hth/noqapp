@@ -165,9 +165,18 @@ public class AddQueueSupervisorFlowActions {
             if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
                 userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
                 UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
-                if (userProfile.getQueueUserId().endsWith("mail.noqapp.com") || !userAccount.isAccountValidated()) {
-                    LOG.warn("Override failed as user has not registered with valid email address");
 
+                /* Force email address validation. */
+                if (!userAccount.isAccountValidated()) {
+                    LOG.warn("Force email validation={} quickDataEntryByPassSwitch={}",
+                            userAccount.getUserId(),
+                            quickDataEntryByPassSwitch);
+
+                    userAccount.setAccountValidated(true);
+                    accountService.save(userAccount);
+                }
+
+                if (userProfile.getQueueUserId().endsWith("mail.noqapp.com") || !userAccount.isAccountValidated()) {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
