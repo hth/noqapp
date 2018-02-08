@@ -363,6 +363,37 @@ public class TokenQueueService {
     }
 
     /**
+     * Sends any message to all users subscribed to topic. This include Client and Merchant.
+     */
+    @Mobile
+    public void sendMessageToAllOnSpecificTopic(String title, String body, String topic) {
+        LOG.debug("Sending message topic={} title={} body={}", topic, title, body);
+        JsonMessage jsonMessage = new JsonMessage(topic);
+        JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
+
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            if (DeviceTypeEnum.I == deviceType) {
+                jsonMessage.getNotification()
+                        .setTitle(title)
+                        .setBody(body);
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setTitle(title)
+                        .setBody(body);
+            }
+        }
+
+        jsonMessage.setData(jsonData);
+        LOG.info("Broadcast Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent message to all subscriber of topic message={}", jsonMessage.asJson());
+        }
+    }
+
+    /**
      * Formulates and send messages to FCM.
      */
     private void invokeThreadSendMessageToTopic(

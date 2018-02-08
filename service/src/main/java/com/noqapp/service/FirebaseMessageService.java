@@ -43,9 +43,6 @@ public class FirebaseMessageService {
 
     /**
      * Sends message to topic when any change happens in queue.
-     *
-     * @param jsonMessage
-     * @return
      */
     @Mobile
     public boolean messageToTopic(JsonMessage jsonMessage) {
