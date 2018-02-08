@@ -366,12 +366,13 @@ public class TokenQueueService {
      * Sends any message to all users subscribed to topic. This include Client and Merchant.
      */
     @Mobile
-    public void sendMessageToAllOnSpecificTopic(String title, String body, String topic) {
-        LOG.debug("Sending message topic={} title={} body={}", topic, title, body);
-        JsonMessage jsonMessage = new JsonMessage(topic);
-        JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
+    public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
+        LOG.debug("Sending message to all title={} body={}", title, body);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
                         .setTitle(title)
@@ -381,15 +382,15 @@ public class TokenQueueService {
                 jsonData.setTitle(title)
                         .setBody(body);
             }
-        }
 
-        jsonMessage.setData(jsonData);
-        LOG.info("Broadcast Message={}", jsonMessage.asJson());
-        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-        } else {
-            LOG.info("Sent message to all subscriber of topic message={}", jsonMessage.asJson());
+            jsonMessage.setData(jsonData);
+            LOG.info("Broadcast Message={}", jsonMessage.asJson());
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent message to all subscriber of topic message={}", jsonMessage.asJson());
+            }
         }
     }
 
