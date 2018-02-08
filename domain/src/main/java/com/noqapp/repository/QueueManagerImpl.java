@@ -407,6 +407,7 @@ public class QueueManagerImpl implements QueueManager {
                                 .set("SID", serverDeviceId)
                                 .set("SB", new Date())
                                 .set("SE", new Date())
+                                .set("A", false)
                 ),
                 QueueEntity.class,
                 TABLE
