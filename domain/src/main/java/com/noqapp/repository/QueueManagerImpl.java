@@ -406,6 +406,7 @@ public class QueueManagerImpl implements QueueManager {
                         update("QS", QueueUserStateEnum.N)
                                 .set("SID", serverDeviceId)
                                 .set("SB", new Date())
+                                .set("SE", new Date())
                 ),
                 QueueEntity.class,
                 TABLE
