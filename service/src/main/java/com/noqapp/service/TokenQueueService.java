@@ -139,21 +139,7 @@ public class TokenQueueService {
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
                 LOG.info("Assigned to queue with codeQR={} with new toke={}", codeQR, tokenQueue.getLastNumber());
 
-                switch (tokenQueue.getQueueStatus()) {
-                    case D:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
-                        tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
-                        break;
-                    case S:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
-                        break;
-                    case R:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
-                        break;
-                    default:
-                        sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
-                        break;
-                }
+                doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
@@ -193,21 +179,7 @@ public class TokenQueueService {
             LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
                     queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
-            switch (tokenQueue.getQueueStatus()) {
-                case D:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
-                    tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
-                    break;
-                case S:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
-                    break;
-                case R:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
-                    break;
-                default:
-                    sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
-                    break;
-            }
+            doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
             return new JsonToken(codeQR)
                     .setToken(queue.getTokenNumber())
@@ -218,6 +190,24 @@ public class TokenQueueService {
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
+        }
+    }
+
+    private void doActionBasedOnQueueStatus(String codeQR, TokenQueueEntity tokenQueue) {
+        switch (tokenQueue.getQueueStatus()) {
+            case D:
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
+                tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
+                break;
+            case S:
+                sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
+                break;
+            case R:
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
+                break;
+            default:
+                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
+                break;
         }
     }
 
