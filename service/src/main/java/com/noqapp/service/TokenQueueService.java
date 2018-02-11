@@ -136,6 +136,10 @@ public class TokenQueueService {
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
+                /*
+                 * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
+                 * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+                 */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                 DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
