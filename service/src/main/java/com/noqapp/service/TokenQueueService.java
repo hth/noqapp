@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -135,6 +136,21 @@ public class TokenQueueService {
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+                ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+                DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
+                StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+
+                if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
+                    LOG.warn("When queue closed or prevent joining, attempting to create new token");
+                    return new JsonToken(codeQR)
+                            .setToken(0)
+                            .setServingNumber(0)
+                            .setDisplayName(bizStore.getDisplayName())
+                            .setQueueStatus(QueueStatusEnum.C)
+                            .setExpectedServiceBegin(new Date());
+                }
+
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
                 LOG.info("Assigned to queue with codeQR={} with new toke={}", codeQR, tokenQueue.getLastNumber());
@@ -144,11 +160,6 @@ public class TokenQueueService {
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (0 != averageServiceTime) {
-                        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-                        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
-                        DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
-                        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-
                         LocalTime now = LocalTime.now(zoneId);
                         LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
 
