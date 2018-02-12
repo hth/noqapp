@@ -50,6 +50,11 @@ public class InviteEntity extends BaseEntity {
     @Field ("RJI")
     private int remoteJoinForInviterCount;
 
+    @SuppressWarnings("unused")
+    public InviteEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
     public InviteEntity(
             String queueUserId,
             String inviterId,

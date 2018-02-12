@@ -44,6 +44,11 @@ public class StatsCronEntity extends BaseEntity {
     @Field ("ST")
     private Map<String, String> stats = new LinkedHashMap<>();
 
+    @SuppressWarnings("unused")
+    public StatsCronEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
     public StatsCronEntity(String className, String taskName, String processStatus) {
         this.className = className;
         this.taskName = taskName;
