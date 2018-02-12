@@ -6,10 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
 
 import java.util.Arrays;
+
+import static com.noqapp.domain.BizStoreEntity.*;
 
 /**
  * Json for elastic search.
@@ -34,7 +37,7 @@ import java.util.Arrays;
 public class BizStoreElastic extends AbstractDomain {
 
     public static final String TYPE = "BIZ_STORE".toLowerCase();
-    public static final String INDEX = ElasticsearchClientConfiguration.INDEX + "_" + TYPE;
+    public static final String INDEX = ElasticsearchClientConfiguration.INDEX + UNDER_SCORE + TYPE;
 
     @JsonIgnore
     private String id;

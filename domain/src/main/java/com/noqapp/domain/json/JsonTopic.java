@@ -35,4 +35,8 @@ public class JsonTopic extends JsonToken {
         super(tokenQueue);
         this.topic = tokenQueue.getTopic();
     }
+
+    public String getTopic() {
+        return topic;
+    }
 }
