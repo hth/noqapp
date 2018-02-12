@@ -95,6 +95,11 @@ public class QueueEntity extends BaseEntity {
     @Field ("VS")
     private boolean clientVisitedThisStore;
 
+    @SuppressWarnings("unused")
+    public QueueEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
     public QueueEntity(
             String codeQR,
             String did,
