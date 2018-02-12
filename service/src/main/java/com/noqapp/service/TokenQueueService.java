@@ -46,6 +46,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 
+import static com.noqapp.domain.BizStoreEntity.*;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
@@ -375,8 +376,8 @@ public class TokenQueueService {
         LOG.debug("Sending message to all title={} body={}", title, body);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
                     //Added additional info to message for Android to not crash as it looks for CodeQR.
                     //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
@@ -419,8 +420,8 @@ public class TokenQueueService {
         LOG.debug("Sending message codeQR={} goTo={}", codeQR, goTo);
 
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + "_" + deviceType.name());
+            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())

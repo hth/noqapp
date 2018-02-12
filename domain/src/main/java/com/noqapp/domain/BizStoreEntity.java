@@ -53,7 +53,7 @@ public class BizStoreEntity extends BaseEntity {
     /** Field name */
     public static final String ADDRESS_FIELD_NAME = "AD";
     public static final String PHONE_FIELD_NAME = "PH";
-    private static final String UNDER_SCORE = "_";
+    public static final String UNDER_SCORE = "_";
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")
