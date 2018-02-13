@@ -111,5 +111,5 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone);
 
     @Mobile
-    long markAllSkippedWhenQueueClosed(String codeQR, String serverDeviceId);
+    long markAllAbortWhenQueueClosed(String codeQR, String serverDeviceId);
 }
