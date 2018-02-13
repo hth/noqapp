@@ -166,11 +166,15 @@ public class TokenQueueService {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
                     if (0 != averageServiceTime) {
                         LocalTime now = LocalTime.now(zoneId);
+                        LOG.info("now={}", now);
                         LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
+                        LOG.info("start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour());
 
                         Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
+                        LOG.info("duration={}", duration);
                         long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
                         LOG.info("Service in minutes={}", serviceInMinutes);
+                        
                         if (duration.isNegative()) {
                             queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
                                     LocalDateTime.now()
@@ -186,7 +190,7 @@ public class TokenQueueService {
                                             .plusMinutes(serviceInMinutes)
                                             .plusMinutes(duration.toMinutes())
                                             .plusMinutes(storeHour.getDelayedInMinutes())));
-                            
+
                             queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
                                     LocalDateTime.now()
                                             .plusMinutes(serviceInMinutes)
