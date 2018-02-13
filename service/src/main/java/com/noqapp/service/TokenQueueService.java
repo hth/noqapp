@@ -171,9 +171,16 @@ public class TokenQueueService {
                         Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
                         long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
                         if (duration.isNegative()) {
-                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes)));
+                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
+                                    LocalDateTime.now()
+                                            .plusMinutes(serviceInMinutes)
+                                            .plusMinutes(storeHour.getDelayedInMinutes())));
                         } else {
-                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes())));
+                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
+                                    LocalDateTime.now()
+                                            .plusMinutes(serviceInMinutes)
+                                            .plusMinutes(duration.toMinutes())
+                                            .plusMinutes(storeHour.getDelayedInMinutes())));
                         }
                     }
                     queueManager.insert(queue);
