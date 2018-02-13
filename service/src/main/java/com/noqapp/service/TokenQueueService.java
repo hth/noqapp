@@ -171,7 +171,7 @@ public class TokenQueueService {
                         LOG.info("start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
 
                         Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
-                        LOG.info("duration={}", duration);
+                        LOG.info("duration={}", duration.toMinutes());
                         long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
                         LOG.info("Service in minutes={}", serviceInMinutes);
 
@@ -181,11 +181,11 @@ public class TokenQueueService {
                                             .plusMinutes(serviceInMinutes)
                                             .plusMinutes(storeHour.getDelayedInMinutes())));
                         } else {
-                            LOG.info("{}", LocalDateTime.now());
-                            LOG.info("{}", LocalDateTime.now().plusMinutes(serviceInMinutes));
-                            LOG.info("{}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
-                            LOG.info("{}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
-                            LOG.info("{}", DateUtil.convertToDateTime(
+                            LOG.info("Now {}", LocalDateTime.now());
+                            LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
+                            LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
+                            LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
+                            LOG.info("convertToDateTime {}", DateUtil.convertToDateTime(
                                     LocalDateTime.now()
                                             .plusMinutes(serviceInMinutes)
                                             .plusMinutes(duration.toMinutes())
