@@ -360,6 +360,15 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public long countAllQueued(String codeQR) {
+        return mongoTemplate.count(
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
+                QueueEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
     public long previouslyVisitedClientCount(String codeQR) {
         return mongoTemplate.count(
                 query(where("QR").is(codeQR)
