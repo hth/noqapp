@@ -158,7 +158,7 @@ public class TokenQueueService {
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
-                LOG.info("Assigned to queue with codeQR={} with new toke={}", codeQR, tokenQueue.getLastNumber());
+                LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
@@ -391,7 +391,7 @@ public class TokenQueueService {
     }
 
     /**
-     * Sends any message to all users subscribed to topic. This include Client and Merchant.
+     * Sends any message to all users subscribed to topic. This includes Client and Merchant.
      */
     @Mobile
     public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
@@ -463,13 +463,14 @@ public class TokenQueueService {
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */
+                    long confirmedWaiting = queueManager.countAllQueued(codeQR);
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
-                                .setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+                                .setBody("Now has " + tokenQueue.totalWaiting() + " waiting. Confirmed waiting " + confirmedWaiting)
                                 .setTitle(tokenQueue.getDisplayName() + " Queue");
                     } else {
                         jsonMessage.setNotification(null);
-                        jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting")
+                        jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting. Confirmed waiting " + confirmedWaiting)
                                 .setTitle(tokenQueue.getDisplayName() + " Queue");
                     }
                     break;
