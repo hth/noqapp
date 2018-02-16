@@ -21,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -140,6 +141,10 @@ public class QueueHistory {
                             /* When closed set hour to 23 and minute to 59. */
                             storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
                             storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
+
+                    /* Always reset storeHour after the end of day. */
+                    LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}", DayOfWeek.of(storeHour.getDayOfWeek()), bizStore.getDisplayName(), bizStore.getId());
+                    bizService.resetStoreHour(storeHour.getId());
 
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (null != bizStoreRating) {

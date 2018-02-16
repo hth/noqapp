@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.annotation.Mobile;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -21,6 +22,7 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
 
     List<StoreHourEntity> findAll(String bizStoreId);
 
+    @Mobile
     StoreHourEntity modifyOne(
             String bizStoreId,
             DayOfWeek dayOfWeek,
@@ -32,4 +34,6 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
             boolean dayClosed,
             int delayedInMinutes
     );
+
+    boolean resetStoreHour(String id);
 }
