@@ -28,6 +28,7 @@ class ExternalServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        /* Its IP protected. */
         externalService = new ExternalService("AIzaSyDUM3yIIrwrx3ciwZ57O9YamC4uISWAlAk", 0, bizStoreManager);
     }
 
@@ -47,7 +48,7 @@ class ExternalServiceTest {
     @Test
     void getGeocodingResults_InvalidAddress_Without_Commas() {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit Sunnyvale CA 94089");
-        assertEquals(1, geocodingResults.length);
+        assertEquals(2, geocodingResults.length);
     }
 
     @Test
