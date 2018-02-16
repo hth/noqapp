@@ -1,5 +1,6 @@
 package com.noqapp.repository;
 
+import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StoreHourEntity;
 import org.slf4j.Logger;
@@ -137,5 +138,18 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 StoreHourEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public boolean resetStoreHour(String id) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("PJ", false)
+                        .set("DE", 0)),
+                StoreHourEntity.class,
+                TABLE
+        );
+
+        return updateResult.wasAcknowledged();
     }
 }

@@ -408,4 +408,8 @@ public class BizService {
 
         return jsonBusinesses;
     }
+
+    public boolean resetStoreHour(String id) {
+        return storeHourManager.resetStoreHour(id);
+    }
 }
