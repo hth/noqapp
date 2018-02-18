@@ -1,5 +1,7 @@
 package com.noqapp.search.elastic.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
@@ -14,6 +16,8 @@ import com.noqapp.search.elastic.dsl.Query;
 import com.noqapp.search.elastic.dsl.QueryString;
 import com.noqapp.search.elastic.dsl.Search;
 import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.json.ElasticResult;
+import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,8 +27,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,6 +55,7 @@ public class BizStoreElasticService {
     private ApiHealthService apiHealthService;
 
     private int limitRecords;
+    private ObjectMapper objectMapper;
 
     @Autowired
     public BizStoreElasticService(
@@ -60,6 +67,9 @@ public class BizStoreElasticService {
             BizStoreManager bizStoreManager,
             ApiHealthService apiHealthService
     ) {
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         this.limitRecords = limitRecords;
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
@@ -109,20 +119,18 @@ public class BizStoreElasticService {
 
     /**
      * Search using RestHighLevelClient. DSL Query free search.
-     *
-     * @param businessName
-     * @return
+     * //TODO(hth) Check not working search.
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
         return bizStoreElasticManager.searchByBusinessName(businessName, limitRecords);
     }
 
-    public String createBizStoreSearchDSLQuery(String searchParameter) {
+    public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter) {
         return createBizStoreSearchDSLQuery(searchParameter, null);
     }
 
-    public String createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
+    public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
         LOG.info("User search parameter={}", searchParameter);
 
         Query q = new Query();
@@ -153,15 +161,23 @@ public class BizStoreElasticService {
                 .setSize(10)
                 .setQuery(q);
 
-        executeSearchOnBizStoreUsingDSL(search.asJson());
-        return null;
+        String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
+        if (StringUtils.isNotBlank(result)) {
+            try {
+                //TODO this is hard coded to just one type of search; should be extendable for other searches.
+                ElasticResult elasticResult = objectMapper.readValue(result, ElasticResult.class);
+                return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
+            } catch (IOException e) {
+                LOG.error("Failed parsing elastic result searchParameter={} reason={}", searchParameter, e.getLocalizedMessage(), e);
+                return new ArrayList<>();
+            }
+        }
+
+        return new ArrayList<>();
     }
 
     /**
      * Performs search on the index with provided DSL.
-     *
-     * @param dslQuery
-     * @return
      */
     private String executeSearchOnBizStoreUsingDSL(String dslQuery) {
         LOG.info("DSL Query={}", dslQuery);
@@ -170,6 +186,20 @@ public class BizStoreElasticService {
                         + "/"
                         + BizStoreElastic.TYPE
                         + "/_search?pretty=true",
+                dslQuery
+        );
+    }
+
+    /**
+     * Performs search on the index with provided DSL with filtered set of data sent in response.
+     */
+    private String executeSearchOnBizStoreUsingDSLFilteredData(String dslQuery) {
+        LOG.info("DSL Query={}", dslQuery);
+        return elasticAdministrationService.executeDSLQuerySearch(
+                BizStoreElastic.INDEX
+                        + "/"
+                        + BizStoreElastic.TYPE
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=AD,DN,BT,DT,N,SS,ST,TO,PH",
                 dslQuery
         );
     }

@@ -13,6 +13,7 @@ public class DomainConversion {
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
+                .setBusinessType(bizStore.getBusinessType())
                 .setAddress(bizStore.getAddress())
                 .setTown(bizStore.getTown())
                 .setDistrict(bizStore.getDistrict())
