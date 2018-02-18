@@ -9,30 +9,22 @@ import java.util.List;
 public interface BizStoreElasticManager<BizStoreElastic> {
     /**
      * Save single object.
-     *
-     * @param bizStoreElastic
      */
     void save(BizStoreElastic bizStoreElastic);
 
     /**
      * Bulk save operation.
-     *
-     * @param bizStoreElastics
      */
     void save(List<BizStoreElastic> bizStoreElastics);
 
     /**
      * Delete by id.
-     *
-     * @param id
      */
     void delete(String id);
 
     /**
      * Search by business name.
-     *
-     * @param businessName
-     * @return
      */
     List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords);
+    List<BizStoreElastic> searchByScrollId(String scrollId);
 }

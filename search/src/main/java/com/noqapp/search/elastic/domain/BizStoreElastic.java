@@ -9,6 +9,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Arrays;
 
@@ -41,6 +42,9 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonIgnore
     private String id;
+
+    @Transient
+    private String scrollId;
 
     @JsonProperty("N")
     private String businessName;
@@ -115,6 +119,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getScrollId() {
+        return scrollId;
+    }
+
+    public BizStoreElastic setScrollId(String scrollId) {
+        this.scrollId = scrollId;
         return this;
     }
 
