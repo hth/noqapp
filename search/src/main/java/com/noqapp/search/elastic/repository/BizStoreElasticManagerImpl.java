@@ -13,8 +13,11 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.ClearScrollRequest;
+import org.elasticsearch.action.search.ClearScrollResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -186,7 +189,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
         SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX)
                 .source(searchSourceBuilder)
-                .scroll(TimeValue.timeValueMinutes(1L));
+                .scroll(TimeValue.timeValueSeconds(10L));
         try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
             String scrollId = searchResponse.getScrollId();
@@ -196,10 +199,47 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             for (SearchHit searchHit : hits) {
                 BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
                 value.setId(searchHit.getId());
+                value.setScrollId(scrollId);
                 results.add(value);
             }
         } catch (IOException e) {
             LOG.error("Failed searching for {} reason={}", businessName, e.getLocalizedMessage(), e);
+        }
+
+        return results;
+    }
+
+    @Override
+    public List<BizStoreElastic> searchByScrollId(String scrollId) {
+        List<BizStoreElastic> results = new ArrayList<>();
+
+        SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+        scrollRequest.scroll(TimeValue.timeValueSeconds(10L));
+
+        try {
+            SearchResponse searchResponse = restHighLevelClient.searchScroll(scrollRequest);
+            scrollId = searchResponse.getScrollId();
+            SearchHits hits = searchResponse.getHits();
+
+            if (0 == hits.getHits().length) {
+                ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
+                clearScrollRequest.addScrollId(scrollId);
+                ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest);
+                boolean succeeded = clearScrollResponse.isSucceeded();
+                int released = clearScrollResponse.getNumFreed();
+                LOG.info("Removed scrollId status={} released={}", succeeded, released);
+                return results;
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            for (SearchHit searchHit : hits) {
+                BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
+                value.setId(searchHit.getId());
+                value.setScrollId(scrollId);
+                results.add(value);
+            }
+        } catch (IOException e) {
+            LOG.error("Failed searching for {} reason={}", scrollId, e.getLocalizedMessage(), e);
         }
 
         return results;
