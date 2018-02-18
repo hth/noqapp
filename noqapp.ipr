@@ -351,8 +351,8 @@
             <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-launcher:1.0.3" />
             <element id="library" level="project" name="Gradle: org.mockito:mockito-core:2.15.0" />
             <element id="library" level="project" name="Gradle: org.mockito:mockito-inline:2.15.0" />
-            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.3" />
-            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.process:2.0.2" />
+            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.0" />
+            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.process:2.0.1" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
