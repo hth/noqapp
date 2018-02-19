@@ -41,7 +41,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/view/resources/xslfo" />
             </element>
             <element id="directory" name="geo_db">
-              <element id="dir-copy" path="$PROJECT_DIR$/search/resources/geo_db" />
+              <element id="dir-copy" path="$PROJECT_DIR$/view/resources/geo_db" />
             </element>
           </element>
           <element id="directory" name="lib">

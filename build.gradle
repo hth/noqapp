@@ -54,7 +54,7 @@ ext {
     dkimCertTest = file(dkimCertificateTestFileLocation)
     dkimCertProd = file(dkimCertificateProdFileLocation)
 
-    geoDBLocal = file('search/resources/geo_db/GeoLite2-City.mmdb')
+    geoDBLocal = file('view/resources/geo_db/GeoLite2-City.mmdb')
     geoDBTest = file(geoDBTestFileLocation)
     geoDBProd = file(geoDBProdFileLocation)
 
@@ -805,7 +805,7 @@ task prepWar(dependsOn: [
             if (env == 'dev') {
                 println "Development environment, getting local GeoLite file $geoDBLocal.canonicalPath"
                 if (geoDBLocal.exists()) {
-                    from 'search/resources/geo_db/GeoLite2-City.mmdb'
+                    from 'view/resources/geo_db/GeoLite2-City.mmdb'
                 } else {
                     throw new Exception("Required GeoLite file does not exists: $geoDBProdFileLocation.canonicalPath")
                 }
