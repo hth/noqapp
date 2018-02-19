@@ -2,7 +2,6 @@ package com.noqapp.view.listener;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
-import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
@@ -22,7 +21,6 @@ import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * User: hitender
@@ -130,6 +128,7 @@ public class NoQAppInitializationCheckBean {
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
+    }
 
     @PostConstruct
     public void checkGeoLite() {
