@@ -1,6 +1,8 @@
 package com.noqapp.view.listener;
 
+import com.maxmind.geoip2.DatabaseReader;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
@@ -20,6 +22,7 @@ import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * User: hitender
@@ -42,6 +45,7 @@ public class NoQAppInitializationCheckBean {
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
+    private DatabaseReader databaseReader;
 
     @Autowired
     public NoQAppInitializationCheckBean(
@@ -50,13 +54,16 @@ public class NoQAppInitializationCheckBean {
             FirebaseConfig firebaseConfig,
             RestHighLevelClient restHighLevelClient,
             ElasticAdministrationService elasticAdministrationService,
-            BizStoreElasticService bizStoreElasticService) {
+            BizStoreElasticService bizStoreElasticService,
+            DatabaseReader databaseReader
+    ) {
         this.environment = environment;
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.databaseReader = databaseReader;
     }
 
     @PostConstruct
@@ -123,6 +130,15 @@ public class NoQAppInitializationCheckBean {
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
+
+    @PostConstruct
+    public void checkGeoLite() {
+        LOG.info("{} major={} minor={}\n  buildDate={}\n  ipVersion={}\n ",
+                databaseReader.getMetadata().getDatabaseType(),
+                databaseReader.getMetadata().getBinaryFormatMajorVersion(),
+                databaseReader.getMetadata().getBinaryFormatMinorVersion(),
+                databaseReader.getMetadata().getBuildDate(),
+                databaseReader.getMetadata().getIpVersion());
     }
 
     @PreDestroy

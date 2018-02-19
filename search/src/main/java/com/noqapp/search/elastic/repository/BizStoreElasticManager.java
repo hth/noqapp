@@ -24,6 +24,7 @@ public interface BizStoreElasticManager<BizStoreElastic> {
 
     /**
      * Search by business name.
+     * //TODO both method does not work
      */
     List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords);
     List<BizStoreElastic> searchByScrollId(String scrollId);
