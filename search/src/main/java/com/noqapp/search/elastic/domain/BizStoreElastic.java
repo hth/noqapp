@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import org.springframework.data.annotation.Transient;
@@ -48,6 +48,9 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonProperty("N")
     private String businessName;
+
+    @JsonProperty("BT")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty ("AD")
     private String address;
@@ -112,7 +115,6 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("GH")
     private String geoHash;
 
-
     public String getId() {
         return id;
     }
@@ -137,6 +139,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public BizStoreElastic setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 

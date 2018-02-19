@@ -218,7 +218,7 @@ public class ElasticAdministrationService {
             response = okHttpClient.newCall(request).execute();
             if (200 == response.code() && null != response.body()) {
                 result = response.body().string();
-                LOG.info("Search found data={}",result);
+                LOG.debug("Search found data={}", result);
             } else {
                 LOG.error("Failed to find query={} body={}", query, response.body());
             }
