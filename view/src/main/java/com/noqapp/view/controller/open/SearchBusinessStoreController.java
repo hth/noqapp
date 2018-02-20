@@ -78,18 +78,16 @@ public class SearchBusinessStoreController {
             model.addAttribute("org.springframework.validation.BindingResult.searchForm", model.asMap().get("result"));
             searchForm.setSearch((ScrubbedInput) model.asMap().get("search"));
         } else {
+            String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
+            searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
+
             if (model.asMap().containsKey("search")) {
                 searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
-                searchForm.setGeoIP(((SearchForm) model.asMap().get("search")).getGeoIP());
-
                 model.addAttribute(
                         "searchResult",
                         bizStoreElasticService.createBizStoreSearchDSLQuery(
                                 searchForm.getSearch().getText(),
                                 searchForm.getGeoIP().getGeoHash()));
-            } else {
-                String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
-                searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
             }
         }
 
