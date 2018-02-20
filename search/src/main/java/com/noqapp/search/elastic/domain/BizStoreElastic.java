@@ -3,6 +3,7 @@ package com.noqapp.search.elastic.domain;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
@@ -35,6 +36,7 @@ import static com.noqapp.domain.BizStoreEntity.*;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BizStoreElastic extends AbstractDomain {
 
     public static final String TYPE = "BIZ_STORE".toLowerCase();
@@ -44,13 +46,14 @@ public class BizStoreElastic extends AbstractDomain {
     private String id;
 
     @Transient
+    @JsonProperty("SI")
     private String scrollId;
 
     @JsonProperty("N")
     private String businessName;
 
     @JsonProperty("BT")
-    private BusinessTypeEnum businessType;
+    private String businessType;
 
     @JsonProperty ("AD")
     private String address;
@@ -142,12 +145,12 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public BusinessTypeEnum getBusinessType() {
+    public String getBusinessType() {
         return businessType;
     }
 
     public BizStoreElastic setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
+        this.businessType = businessType.getDescription();
         return this;
     }
 

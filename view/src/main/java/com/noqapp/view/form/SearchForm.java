@@ -1,6 +1,7 @@
 package com.noqapp.view.form;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.search.elastic.helper.GeoIP;
 
 /**
  * hitender
@@ -14,6 +15,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 })
 public class SearchForm {
     private ScrubbedInput search;
+    private GeoIP geoIP;
 
     public ScrubbedInput getSearch() {
         return search;
@@ -21,6 +23,15 @@ public class SearchForm {
 
     public SearchForm setSearch(ScrubbedInput search) {
         this.search = search;
+        return this;
+    }
+
+    public GeoIP getGeoIP() {
+        return geoIP;
+    }
+
+    public SearchForm setGeoIP(GeoIP geoIP) {
+        this.geoIP = geoIP;
         return this;
     }
 }

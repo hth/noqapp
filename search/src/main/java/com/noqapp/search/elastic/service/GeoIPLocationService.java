@@ -1,0 +1,52 @@
+package com.noqapp.search.elastic.service;
+
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+import com.noqapp.search.elastic.helper.GeoIP;
+import com.noqapp.search.elastic.repository.BizStoreElasticManagerImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.InetAddress;
+
+/**
+ * hitender
+ * 2/19/18 11:14 PM
+ */
+@Service
+public class GeoIPLocationService {
+    private static final Logger LOG = LoggerFactory.getLogger(GeoIPLocationService.class);
+    private DatabaseReader dbReader;
+
+    @Autowired
+    public GeoIPLocationService(DatabaseReader dbReader) {
+        this.dbReader = dbReader;
+    }
+
+    public GeoIP getLocation(String ip) {
+        LOG.debug("From ip={}", ip);
+
+        CityResponse response = null;
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            response = dbReader.city(ipAddress);
+        } catch (IOException e) {
+            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
+        } catch (GeoIp2Exception e) {
+            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
+        }
+
+        if (null == response) {
+            return new GeoIP();
+        }
+
+        String cityName = response.getCity().getName();
+        double latitude = response.getLocation().getLatitude();
+        double longitude = response.getLocation().getLongitude();
+        return new GeoIP(ip, cityName, latitude, longitude);
+    }
+}

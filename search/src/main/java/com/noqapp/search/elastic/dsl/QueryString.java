@@ -36,6 +36,8 @@ public class QueryString extends AbstractDomain {
             {
                     "AD", //Address
                     "DN", //Display Name
+                    "BT", //Business Type
+                    "CS", //Country Short Name
                     "DT", //District
                     "N",  //BusinessName
                     "SS", //State Short Name

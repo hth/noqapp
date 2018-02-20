@@ -158,7 +158,7 @@ public class BizStoreElasticService {
 
         Search search = new Search()
                 .setFrom(0)
-                .setSize(10)
+                .setSize(limitRecords)
                 .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -199,7 +199,7 @@ public class BizStoreElasticService {
                 BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=AD,DN,BT,DT,N,SS,ST,TO,PH",
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=AD,DN,BT,CS,DT,N,SS,ST,TO,PH",
                 dslQuery
         );
     }
