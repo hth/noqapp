@@ -117,7 +117,7 @@ public class ForgotController {
 
             BindingResult result,
             RedirectAttributes redirectAttrs
-    ) throws IOException {
+    ) {
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if (result.hasErrors()) {
             LOG.warn("Failed validation mail={} captcha={}", forgotRecoverForm.getMail(), forgotRecoverForm.getCaptcha());
@@ -152,12 +152,6 @@ public class ForgotController {
 
     /**
      * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
-     * 
-     * @param success
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @return
-     * @throws IOException
      */
     @GetMapping (value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(

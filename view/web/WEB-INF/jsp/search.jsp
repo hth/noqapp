@@ -37,7 +37,7 @@
         <div class="warp-inner">
             <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></div>
             <div class="top-menu-right">
-                <span class="help-btn"><a href="#">Sign In</a></span>
+                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
                 <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Merchant Register</a></span>
             </div>
 
@@ -55,11 +55,44 @@
                     <form:form id="search-form" method="post" modelAttribute="searchForm" action="/open/search.htm" autocomplete="off">
                         <form:hidden path="geoIP.geoHash" />
                         <form:input path="search" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="" autofocus="autofocus"/>
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/location.png" alt="Location" style="float: left;"/>
+                        <c:choose>
+                        <c:when test="${!empty searchForm.geoIP.city}">
                         <span class="left-remember">${searchForm.geoIP.city}</span>
+                        </c:when>
+                        <c:otherwise>
+                        <span class="left-remember">Unknown</span>
+                        </c:otherwise>
+                        </c:choose>
                         <div class="button-btn">
                             <button class="ladda-button form-btn" style="width:100%">Search</button>
                         </div>
                     </form:form>
+                </div>
+            </div>
+
+            <div class="form-style">
+                <div class="store-table">
+                    <span style="padding: 9px 6px">
+                        <c:if test="${!empty searchResult}">
+                        Found: ${searchResult.size()}
+                        </c:if>
+                    </span>
+                    <c:if test="${!empty searchResult}">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
+                        <c:forEach items="${searchResult}" var="elasticBizStoreSource" varStatus="status">
+                        <tr>
+                            <td nowrap style="border: 0px;">
+                                <a href="../${elasticBizStoreSource.bizStoreElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSource.bizStoreElastic.displayName}</a>
+                                <span style="display:block; font-size:13px;">
+                                        ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.district};
+                                            <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                </span>
+                            </td>
+                        </tr>
+                        </c:forEach>
+                    </table>
+                    </c:if>
                 </div>
             </div>
 

@@ -118,6 +118,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("GH")
     private String geoHash;
 
+    @JsonProperty ("WL")
+    private String webLocation;
+
     public String getId() {
         return id;
     }
@@ -331,6 +334,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setGeoHash(String geoHash) {
         this.geoHash = geoHash;
+        return this;
+    }
+
+    public String getWebLocation() {
+        return webLocation;
+    }
+
+    public BizStoreElastic setWebLocation(String webLocation) {
+        this.webLocation = webLocation;
         return this;
     }
 

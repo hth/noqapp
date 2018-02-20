@@ -38,6 +38,7 @@ public class QueryString extends AbstractDomain {
                     "DN", //Display Name
                     "BT", //Business Type
                     "CS", //Country Short Name
+                    "QR", //Code QR
                     "DT", //District
                     "N",  //BusinessName
                     "SS", //State Short Name
