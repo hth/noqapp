@@ -8,11 +8,15 @@ import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.view.form.SearchForm;
 import com.noqapp.view.form.business.CategoryLandingForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
+import com.noqapp.view.validator.SearchValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +45,7 @@ public class SearchBusinessStoreController {
 
     private BizStoreElasticService bizStoreElasticService;
     private GeoIPLocationService geoIPLocationService;
+    private SearchValidator searchValidator;
 
     private String nextPage;
 
@@ -50,12 +55,14 @@ public class SearchBusinessStoreController {
             String nextPage,
 
             BizStoreElasticService bizStoreElasticService,
-            GeoIPLocationService geoIPLocationService
+            GeoIPLocationService geoIPLocationService,
+            SearchValidator searchValidator
     ) {
         this.nextPage = nextPage;
 
         this.bizStoreElasticService = bizStoreElasticService;
         this.geoIPLocationService = geoIPLocationService;
+        this.searchValidator = searchValidator;
     }
 
     @GetMapping
@@ -63,19 +70,48 @@ public class SearchBusinessStoreController {
             @ModelAttribute("searchForm")
             SearchForm searchForm,
 
+            Model model,
             HttpServletRequest request
     ) {
-        String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
-        searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.searchForm", model.asMap().get("result"));
+            searchForm.setSearch((ScrubbedInput) model.asMap().get("search"));
+        } else {
+            if (model.asMap().containsKey("search")) {
+                searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
+                searchForm.setGeoIP(((SearchForm) model.asMap().get("search")).getGeoIP());
+
+                model.addAttribute(
+                        "searchResult",
+                        bizStoreElasticService.createBizStoreSearchDSLQuery(
+                                searchForm.getSearch().getText(),
+                                searchForm.getGeoIP().getGeoHash()));
+            } else {
+                String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
+                searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
+            }
+        }
+
         return nextPage;
     }
 
     @PostMapping(produces = "application/json")
-    @ResponseBody
-    public List<ElasticBizStoreSource> search(
+    public String search(
             @ModelAttribute("searchForm")
-            SearchForm searchForm
+            SearchForm searchForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
     ) {
-        return bizStoreElasticService.createBizStoreSearchDSLQuery(searchForm.getSearch().getText(), searchForm.getGeoIP().getGeoHash());
+        searchValidator.validate(searchForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/open/search.htm";
+        }
+        redirectAttrs.addFlashAttribute("search", searchForm);
+        return "redirect:/open/search.htm";
     }
 }

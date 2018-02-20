@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.config;
 
+import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class IPGeoConfiguration {
 
     @Bean
     public DatabaseReader getDatabaseReader() throws IOException {
-        return new DatabaseReader.Builder(dbLocation.getFile()).build();
+        /* Using cache, lookup performance is significantly improved at the cost of a small (~2MB) memory overhead. */
+        return new DatabaseReader.Builder(dbLocation.getFile()).withCache(new CHMCache()).build();
     }
 }

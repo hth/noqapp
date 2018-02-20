@@ -199,7 +199,7 @@ public class BizStoreElasticService {
                 BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=AD,DN,BT,CS,DT,N,SS,ST,TO,PH",
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=AD,DN,BT,CS,QR,DT,N,SS,ST,TO,PH,WL",
                 dslQuery
         );
     }

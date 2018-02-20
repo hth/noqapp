@@ -33,6 +33,7 @@ public class DomainConversion {
                 .setDisplayName(bizStore.getDisplayName())
                 .setCodeQR(bizStore.getCodeQR())
                 .setTimeZone(bizStore.getTimeZone())
-                .setGeoHash(bizStore.getGeoPoint().getGeohash());
+                .setGeoHash(bizStore.getGeoPoint().getGeohash())
+                .setWebLocation(bizStore.getWebLocation());
     }
 }
