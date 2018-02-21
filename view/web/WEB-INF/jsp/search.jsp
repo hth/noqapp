@@ -85,9 +85,10 @@
                             <td nowrap style="border: 0px;">
                                 <a href="../${elasticBizStoreSource.bizStoreElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSource.bizStoreElastic.displayName}</a>
                                 <span style="display:block; font-size:13px;">
-                                        ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.district};
+                                        ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.town};
                                             <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
+                                <span style="display:block; font-size:13px;">${elasticBizStoreSource.bizStoreElastic.businessName}</span>
                             </td>
                         </tr>
                         </c:forEach>
