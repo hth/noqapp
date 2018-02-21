@@ -4,6 +4,8 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 
 /**
+ * Helps transform data for persisting in Elastic.
+ * <p>
  * hitender
  * 11/21/17 6:01 PM
  */
