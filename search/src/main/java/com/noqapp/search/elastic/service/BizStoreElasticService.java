@@ -158,7 +158,7 @@ public class BizStoreElasticService {
 
         Search search = new Search()
                 .setFrom(0)
-                .setSize(limitRecords)
+                .setSize(20)
                 .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
