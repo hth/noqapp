@@ -1,7 +1,11 @@
 package com.noqapp.search.elastic.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.BizCategoryEntity;
+import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
@@ -34,7 +38,11 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
@@ -53,15 +61,27 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
+    private BizCategoryManager bizCategoryManager;
+
+    //Set cache parameters
+    private final Cache<String, Map<String, String>> cache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(2, TimeUnit.MINUTES)
+            .build();
 
     @Autowired
-    public BizStoreElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
+    public BizStoreElasticManagerImpl(
+            RestHighLevelClient restHighLevelClient,
+            BizCategoryManager bizCategoryManager
+    ) {
         this.restHighLevelClient = restHighLevelClient;
+        this.bizCategoryManager = bizCategoryManager;
     }
 
     @Override
     public void save(BizStoreElastic bizStoreElastic) {
         try {
+            replaceCategoryIdWithCategoryName(bizStoreElastic);
             IndexRequest request = new IndexRequest(
                     BizStoreElastic.INDEX,
                     BizStoreElastic.TYPE,
@@ -136,6 +156,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
 
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
+            replaceCategoryIdWithCategoryName(bizStoreElastic);
             request.add(
                     new IndexRequest(
                             BizStoreElastic.INDEX,
@@ -176,6 +197,22 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         } catch (IOException e) {
             LOG.error("Failed bulk save reason={}", e.getLocalizedMessage(), e);
         }
+    }
+
+    private void replaceCategoryIdWithCategoryName(BizStoreElastic bizStoreElastic) {
+        Map<String, String> categories;
+        categories = cache.getIfPresent(bizStoreElastic.getBizNameId());
+        if (null == categories) {
+            List<BizCategoryEntity> bizCategories = bizCategoryManager.getByBizNameId(bizStoreElastic.getBizNameId());
+            if (!bizCategories.isEmpty()) {
+                categories = bizCategories.stream().collect(Collectors.toMap(BizCategoryEntity::getId, BizCategoryEntity::getCategoryName));
+                cache.put(bizStoreElastic.getBizNameId(), categories);
+            } else {
+                categories = new HashMap<>();
+                cache.put(bizStoreElastic.getBizNameId(), categories);
+            }
+        }
+        bizStoreElastic.setCategory(categories.getOrDefault(bizStoreElastic.getCategory(), ""));
     }
 
     @Override

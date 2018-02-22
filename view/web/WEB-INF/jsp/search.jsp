@@ -84,10 +84,20 @@
                         <tr>
                             <td nowrap style="border: 0px;">
                                 <a href="../${elasticBizStoreSource.bizStoreElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSource.bizStoreElastic.displayName}</a>
+                                <c:choose>
+                                <c:when test="${!empty elasticBizStoreSource.bizStoreElastic.category}">
                                 <span style="display:block; font-size:13px;">
-                                        ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.town};
-                                            <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.category}, ${elasticBizStoreSource.bizStoreElastic.town};
+                                        <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
+                                </c:when>
+                                <c:otherwise>
+                                <span style="display:block; font-size:13px;">
+                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.town};
+                                        <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                </span>
+                                </c:otherwise>
+                                </c:choose>
                                 <span style="display:block; font-size:13px;">${elasticBizStoreSource.bizStoreElastic.businessName}</span>
                             </td>
                         </tr>
