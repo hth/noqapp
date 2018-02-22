@@ -73,11 +73,6 @@
 
             <div class="form-style">
                 <div class="store-table">
-                    <span style="padding: 9px 6px">
-                        <c:if test="${!empty searchResult}">
-                        Found: ${searchResult.size()}
-                        </c:if>
-                    </span>
                     <c:if test="${!empty searchResult}">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
                         <c:forEach items="${searchResult}" var="elasticBizStoreSource" varStatus="status">
