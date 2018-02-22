@@ -28,20 +28,19 @@ import com.noqapp.common.utils.AbstractDomain;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QueryString extends AbstractDomain {
 
+    /* Searching for elements. */
     @JsonProperty("query")
     private String query;
 
+    /* Query on fields below when querying. */
     @JsonProperty("fields")
     private String[] fields = new String[]
             {
                     "AD", //Address
                     "DN", //Display Name
                     "BT", //Business Type
-                    "CS", //Country Short Name
-                    "QR", //Code QR
                     "DT", //District
                     "N",  //BusinessName
-                    "SS", //State Short Name
                     "ST", //State
                     "TO", //Town
                     "PH"  //Phone
