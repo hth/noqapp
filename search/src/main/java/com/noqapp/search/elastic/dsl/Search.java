@@ -31,9 +31,11 @@ public class Search extends AbstractDomain {
     @JsonProperty("query")
     private Query query;
 
+    /* Used for pagination. */
     @JsonProperty("from")
     private int from;
 
+    /* Limit search to size. */
     @JsonProperty("size")
     private int size;
 
