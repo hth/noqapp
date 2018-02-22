@@ -55,6 +55,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("BT")
     private String businessType;
 
+    @JsonProperty ("BC")
+    private String category;
+
     @JsonProperty ("AD")
     private String address;
 
@@ -154,6 +157,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType.getDescription();
+        return this;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public BizStoreElastic setCategory(String category) {
+        this.category = category;
         return this;
     }
 

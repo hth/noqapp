@@ -1,6 +1,5 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.DistinctIterable;
 import com.noqapp.domain.BizNameEntity;
 
 import java.util.List;
