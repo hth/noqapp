@@ -9,6 +9,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,6 +240,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     public List<QueueEntity> findAllQueuedByDid(String did) {
+        Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
                 query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "C")),
                 QueueEntity.class,
@@ -253,6 +255,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     public List<QueueEntity> findAllNotQueuedByDid(String did) {
+        Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
                 query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)).with(new Sort(DESC, "C")),
                 QueueEntity.class,
