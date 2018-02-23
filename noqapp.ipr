@@ -437,7 +437,11 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.7.RELEASE" />
@@ -448,11 +452,18 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.4.RELEASE" />
+<<<<<<< HEAD
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
+=======
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.4.RELEASE" />
@@ -723,7 +734,10 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
+<<<<<<< HEAD
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
+=======
+>>>>>>> java9 initial
           </element>
         </element>
       </root>
@@ -774,7 +788,11 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.7.RELEASE" />
@@ -785,11 +803,18 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.4.RELEASE" />
+<<<<<<< HEAD
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
+=======
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.4.RELEASE" />
@@ -1061,7 +1086,10 @@
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+<<<<<<< HEAD
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
+=======
+>>>>>>> java9 initial
           </element>
         </element>
       </root>
@@ -1124,7 +1152,11 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.4.7.RELEASE" />
@@ -1135,11 +1167,18 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jms:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.4.RELEASE" />
+<<<<<<< HEAD
+=======
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.0.4.RELEASE" />
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.4.RELEASE" />
+<<<<<<< HEAD
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
+=======
+>>>>>>> java9 initial
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.4.RELEASE" />
@@ -1423,7 +1462,10 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+<<<<<<< HEAD
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
+=======
+>>>>>>> java9 initial
           </element>
         </element>
       </root>
