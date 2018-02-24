@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.noqapp.domain.BizStoreEntity.*;
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -459,6 +460,13 @@ public class TokenQueueService {
                 case S:
                 case R:
                 case D:
+                    //TODO remove me, added as messages go out fast, before records are propagated to other replica set
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException e) {
+                        LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
+                    }
+
                     /*
                      * This message has to go as the merchant with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
