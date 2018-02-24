@@ -442,6 +442,7 @@ public class TokenQueueService {
     ) {
         LOG.debug("Sending message codeQR={} goTo={}", codeQR, goTo);
 
+        int timeout = 2;
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
@@ -461,10 +462,13 @@ public class TokenQueueService {
                 case R:
                 case D:
                     //TODO remove me, added as messages go out fast, before records are propagated to other replica set
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
+                    if (0 != timeout) {
+                        try {
+                            TimeUnit.SECONDS.sleep(timeout);
+                            timeout = 0;
+                        } catch (InterruptedException e) {
+                            LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
+                        }
                     }
 
                     /*
