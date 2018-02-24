@@ -361,6 +361,10 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public long countAllQueued(String codeQR) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
         return mongoTemplate.count(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
