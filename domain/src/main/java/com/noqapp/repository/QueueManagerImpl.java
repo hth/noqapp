@@ -68,8 +68,8 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void insert(QueueEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         mongoTemplate.insert(object, TABLE);
     }
@@ -364,10 +364,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public long countAllQueued(String codeQR) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
         return mongoTemplate.count(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,
