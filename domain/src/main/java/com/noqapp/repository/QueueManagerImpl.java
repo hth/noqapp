@@ -390,6 +390,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity findQueuedByPhone(String codeQR, String phone) {
+        LOG.info("{} {}", codeQR, phone);
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("PH").is(phone).and("QS").is(QueueUserStateEnum.Q)),
                 QueueEntity.class,

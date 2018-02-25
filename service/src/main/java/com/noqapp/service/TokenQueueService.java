@@ -134,6 +134,9 @@ public class TokenQueueService {
             TokenServiceEnum tokenService
     ) {
         try {
+            LOG.info("Next token for codeQR={} did={} qid={} averageServiceTime={} tokenService={}",
+                    codeQR, did, qid, averageServiceTime, tokenService);
+
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
@@ -252,6 +255,7 @@ public class TokenQueueService {
 
     @Async
     public void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
+        LOG.info("{}", codeQR);
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
@@ -595,6 +599,8 @@ public class TokenQueueService {
     }
 
     public QueueEntity findQueuedByPhone(String codeQR, String phone) {
-        return queueManager.findQueuedByPhone(codeQR, phone);
+        QueueEntity queue = queueManager.findQueuedByPhone(codeQR, phone);
+        LOG.info("{}", queue);
+        return queue;
     }
 }
