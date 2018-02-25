@@ -149,7 +149,7 @@ public class TokenQueueService {
                 LOG.info("Found BizStore={}", bizStore);
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                 LOG.info("Found ZoneId={}", zoneId);
-                DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
+                DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 LOG.info("Found dayOfWeek={}", dayOfWeek);
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
                 LOG.info("StoreHour={}", storeHour);
