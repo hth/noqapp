@@ -24,6 +24,7 @@ import org.springframework.util.Assert;
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -594,5 +595,44 @@ public class BizStoreEntity extends BaseEntity {
 
     public String getCodeQRInBase64() {
         return Base64.getEncoder().encodeToString(codeQR.getBytes());
+    }
+
+    @Override
+    public String toString() {
+        return "BizStoreEntity{" +
+                "phoneNumberBlank='" + phoneNumberBlank + '\'' +
+                ", address='" + address + '\'' +
+                ", town='" + town + '\'' +
+                ", district='" + district + '\'' +
+                ", state='" + state + '\'' +
+                ", stateShortName='" + stateShortName + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", phoneRaw='" + phoneRaw + '\'' +
+                ", businessType=" + businessType +
+                ", coordinate=" + Arrays.toString(coordinate) +
+                ", placeId='" + placeId + '\'' +
+                ", placeType=" + Arrays.toString(placeType) +
+                ", rating=" + rating +
+                ", ratingCount=" + ratingCount +
+                ", averageServiceTime=" + averageServiceTime +
+                ", bizName=" + bizName +
+                ", validatedUsingExternalAPI=" + validatedUsingExternalAPI +
+                ", validationCount=" + validationCount +
+                ", displayName='" + displayName + '\'' +
+                ", codeQR='" + codeQR + '\'' +
+                ", timeZone='" + timeZone + '\'' +
+                ", queueHistory=" + queueHistory +
+                ", changedCodeQR=" + changedCodeQR +
+                ", addressOrigin=" + addressOrigin +
+                ", webLocation='" + webLocation + '\'' +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
+                ", remoteJoin=" + remoteJoin +
+                ", allowLoggedInUser=" + allowLoggedInUser +
+                ", availableTokenCount=" + availableTokenCount +
+                ", storeHours=" + storeHours +
+                '}';
     }
 }

@@ -186,6 +186,7 @@ public class StoreHourEntity extends BaseEntity {
                 ", endHour=" + endHour +
                 ", preventJoining=" + preventJoining +
                 ", dayClosed=" + dayClosed +
+                ", delayedInMinutes=" + delayedInMinutes +
                 '}';
     }
 }
