@@ -68,8 +68,8 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void insert(QueueEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         mongoTemplate.insert(object, TABLE);
     }
