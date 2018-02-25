@@ -462,14 +462,14 @@ public class TokenQueueService {
                 case R:
                 case D:
                     //TODO remove me, added as messages go out fast, before records are propagated to other replica set
-//                    if (0 != timeout) {
-//                        try {
-//                            TimeUnit.SECONDS.sleep(timeout);
-//                            timeout = 0;
-//                        } catch (InterruptedException e) {
-//                            LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
-//                        }
-//                    }
+                    if (0 != timeout) {
+                        try {
+                            TimeUnit.SECONDS.sleep(timeout);
+                            timeout = 0;
+                        } catch (InterruptedException e) {
+                            LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
+                        }
+                    }
 
                     /*
                      * This message has to go as the merchant with the opened queue
