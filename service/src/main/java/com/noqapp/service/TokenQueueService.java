@@ -146,13 +146,9 @@ public class TokenQueueService {
                  * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-                LOG.info("Found BizStore={}", bizStore);
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
-                LOG.info("Found ZoneId={}", zoneId);
                 DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
-                LOG.info("Found dayOfWeek={}", dayOfWeek);
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-                LOG.info("StoreHour={}", storeHour);
 
                 if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token closed={} preventJoining={}",
