@@ -134,9 +134,6 @@ public class TokenQueueService {
             TokenServiceEnum tokenService
     ) {
         try {
-            LOG.info("Next token for codeQR={} did={} qid={} averageServiceTime={} tokenService={}",
-                    codeQR, did, qid, averageServiceTime, tokenService);
-
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
@@ -146,18 +143,12 @@ public class TokenQueueService {
                  * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-                LOG.info("Found BizStore={}", bizStore);
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
-                LOG.info("Found ZoneId={}", zoneId);
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
-                LOG.info("Found dayOfWeek={}", dayOfWeek);
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-                LOG.info("StoreHour={}", storeHour);
 
                 if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
-                    LOG.warn("When queue closed or prevent joining, attempting to create new token closed={} preventJoining={}",
-                            storeHour.isDayClosed(), storeHour.isPreventJoining());
-
+                    LOG.warn("When queue closed or prevent joining, attempting to create new token");
                     return new JsonToken(codeQR)
                             .setToken(0)
                             .setServingNumber(0)
@@ -261,7 +252,6 @@ public class TokenQueueService {
 
     @Async
     public void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
-        LOG.info("{} {} {}", codeQR, qid, queue);
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
@@ -605,8 +595,6 @@ public class TokenQueueService {
     }
 
     public QueueEntity findQueuedByPhone(String codeQR, String phone) {
-        QueueEntity queue = queueManager.findQueuedByPhone(codeQR, phone);
-        LOG.info("{}", queue);
-        return queue;
+        return queueManager.findQueuedByPhone(codeQR, phone);
     }
 }
