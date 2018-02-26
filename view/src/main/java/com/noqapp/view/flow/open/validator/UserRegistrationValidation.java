@@ -149,7 +149,7 @@ public class UserRegistrationValidation {
 
         UserProfileEntity userProfile = accountService.doesUserExists(merchantRegistration.getMail().getText());
         if (null != userProfile) {
-            LOG.warn("Account already exists with phone={}", merchantRegistration.getMail());
+            LOG.warn("Account already exists with email={}", merchantRegistration.getMail());
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
