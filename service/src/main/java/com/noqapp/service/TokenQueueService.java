@@ -255,7 +255,7 @@ public class TokenQueueService {
 
     @Async
     public void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
-        LOG.info("{} {} {}", codeQR, qid, queue);
+        LOG.info("{}", codeQR);
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);

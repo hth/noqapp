@@ -56,7 +56,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void save(QueueEntity object) {
-        LOG.info("Save Queue {}", object);
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -68,7 +67,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public void insert(QueueEntity object) {
-        LOG.info("Insert Queue {}", object);
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
