@@ -144,7 +144,7 @@ public class TokenQueueService {
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
-                DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
+                DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
                 if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
