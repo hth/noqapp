@@ -47,6 +47,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("d")
     private String displayName;
 
+    @JsonProperty ("bt")
+    private BusinessTypeEnum businessType;
+
     @JsonProperty ("sa")
     private String storeAddress;
 
@@ -55,9 +58,6 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty ("p")
     private String storePhone;
-
-    @JsonProperty("bt")
-    private BusinessTypeEnum businessType;
 
     @JsonProperty ("f")
     private int tokenAvailableFrom;
@@ -163,6 +163,15 @@ public class JsonQueue extends AbstractDomain {
         return displayName;
     }
 
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
     public JsonQueue setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
         return this;
@@ -188,15 +197,6 @@ public class JsonQueue extends AbstractDomain {
 
     public String getStorePhone() {
         return storePhone;
-    }
-
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
-    }
-
-    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
-        return this;
     }
 
     public JsonQueue setTokenAvailableFrom(int tokenAvailableFrom) {

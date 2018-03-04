@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class TokenQueueEntity extends BaseEntity {
     @Field ("DN")
     private String displayName;
 
+    @Field ("BT")
+    private BusinessTypeEnum businessType;
+
     @Field ("QS")
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
 
@@ -49,6 +53,12 @@ public class TokenQueueEntity extends BaseEntity {
     public TokenQueueEntity(String topic, String displayName) {
         this.topic = topic;
         this.displayName = displayName;
+    }
+
+    public TokenQueueEntity(String topic, String displayName, BusinessTypeEnum businessType) {
+        this.topic = topic;
+        this.displayName = displayName;
+        this.businessType = businessType;
     }
 
     public int getLastNumber() {
@@ -79,6 +89,15 @@ public class TokenQueueEntity extends BaseEntity {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public TokenQueueEntity setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
     }
 
     public QueueStatusEnum getQueueStatus() {

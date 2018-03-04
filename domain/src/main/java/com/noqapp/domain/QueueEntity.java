@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class QueueEntity extends BaseEntity {
     @NotNull
     @Field ("DN")
     private String displayName;
+
+    @Field ("BT")
+    private BusinessTypeEnum businessType;
 
     @NotNull
     @Field ("QS")
@@ -106,7 +110,8 @@ public class QueueEntity extends BaseEntity {
             TokenServiceEnum tokenService,
             String queueUserId,
             int tokenNumber,
-            String displayName
+            String displayName,
+            BusinessTypeEnum businessType
     ) {
         this.codeQR = codeQR;
         this.did = did;
@@ -114,6 +119,7 @@ public class QueueEntity extends BaseEntity {
         this.queueUserId = queueUserId;
         this.tokenNumber = tokenNumber;
         this.displayName = displayName;
+        this.businessType = businessType;
     }
 
     public String getCodeQR() {
@@ -134,6 +140,16 @@ public class QueueEntity extends BaseEntity {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    @Deprecated(since = "1.1")
+    public QueueEntity setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
     }
 
     public QueueUserStateEnum getQueueUserState() {

@@ -149,4 +149,9 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
         return updateResult.getModifiedCount() == 1;
     }
+
+    @Override
+    public List<TokenQueueEntity> findAll() {
+        return mongoTemplate.findAll(TokenQueueEntity.class, TABLE);
+    }
 }

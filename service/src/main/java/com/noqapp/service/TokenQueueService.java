@@ -14,6 +14,7 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -93,12 +94,12 @@ public class TokenQueueService {
     }
 
     //TODO has to createUpdate by cron job
-    public void createUpdate(String codeQR, String topic, String displayName) {
+    public void createUpdate(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
         try {
             Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
             TokenQueueEntity token = tokenQueueManager.findByCodeQR(codeQR);
             if (null == token) {
-                token = new TokenQueueEntity(topic, displayName);
+                token = new TokenQueueEntity(topic, displayName, businessType);
                 token.setId(codeQR);
                 tokenQueueManager.save(token);
             } else {
@@ -164,7 +165,7 @@ public class TokenQueueService {
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
                 try {
-                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
                     if (0 != averageServiceTime) {
                         LocalTime now = LocalTime.now(zoneId);
                         LOG.info("Time now={}", now);
