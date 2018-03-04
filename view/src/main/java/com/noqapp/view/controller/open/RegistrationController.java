@@ -80,7 +80,7 @@ public class RegistrationController {
                     merchantRegistration.getLastName().getText(),
                     StringUtils.lowerCase(merchantRegistration.getMail().getText()),
                     StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
-                    GenderEnum.valueOf(merchantRegistration.getGender().getText()) == GenderEnum.M ? GenderEnum.M : GenderEnum.F,
+                    GenderEnum.valueOf(merchantRegistration.getGender().getText()),
                     merchantRegistration.findCountryShortFromPhone(),
                     /* Timezone from website is difficult to compute, hence passing null. */
                     null,
