@@ -116,7 +116,7 @@ class RegistrationFlowActions {
         try {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
-            tokenQueueService.createUpdate(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
+            tokenQueueService.createUpdate(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName(), bizStore.getBusinessType());
         } catch (Exception e) {
             LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
                     registerBusiness.getBusinessUser().getBizName().getId(),

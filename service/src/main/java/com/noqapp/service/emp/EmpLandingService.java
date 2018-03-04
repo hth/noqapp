@@ -82,7 +82,7 @@ public class EmpLandingService {
             //TODO remove me as this as to be done by cron job. Temp way of creating
             //For all registered false run job
             if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
-                tokenQueueService.createUpdate(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName());
+                tokenQueueService.createUpdate(bizStore.getCodeQR(), bizStore.getTopic(), bizStore.getDisplayName(), bizStore.getBusinessType());
             }
 
             /* Create relation for easy access. */

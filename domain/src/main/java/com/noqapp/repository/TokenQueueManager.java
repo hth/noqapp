@@ -24,4 +24,7 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
     void resetForNewDay(String codeQR);
 
     boolean updateDisplayName(String codeQR, String topic, String displayName);
+
+    @Deprecated(since="1.1")
+    List<TokenQueueEntity> findAll();
 }
