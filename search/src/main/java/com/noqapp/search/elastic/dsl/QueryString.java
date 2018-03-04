@@ -43,6 +43,7 @@ public class QueryString extends AbstractDomain {
                     "DT", //District
                     "N",  //BusinessName
                     "ST", //State
+                    "AR", //Area is smaller than Town
                     "TO", //Town
                     "PH"  //Phone
             };

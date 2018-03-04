@@ -57,6 +57,9 @@ public class BizNameEntity extends BaseEntity {
     @Field ("AD")
     private String address;
 
+    @Field ("AR")
+    private String area;
+
     @Field ("TO")
     private String town;
 
@@ -224,6 +227,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setAddress(String address) {
         this.address = StringUtils.strip(address);
+        return this;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public BizNameEntity setArea(String area) {
+        this.area = area;
         return this;
     }
 

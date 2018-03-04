@@ -17,6 +17,7 @@ public class DecodedAddress implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(DecodedAddress.class);
 
     private String formattedAddress;
+    private String area;
     private String town;
     private String district;
     private String state;
@@ -66,6 +67,10 @@ public class DecodedAddress implements Serializable {
                             LOG.debug("district code={}", addressComponent.longName);
                             district = addressComponent.longName;
                             break;
+                        case SUBLOCALITY_LEVEL_1:
+                            LOG.info("area code={}", addressComponent.longName);
+                            area = addressComponent.longName;
+                            break;
                         default:
                             LOG.debug("{} city code={}", addressComponentType.name(), addressComponent.longName);
                     }
@@ -91,6 +96,10 @@ public class DecodedAddress implements Serializable {
     /* Address sourced from third party. External source. */
     public String getFormattedAddress() {
         return formattedAddress;
+    }
+
+    public String getArea() {
+        return area;
     }
 
     public String getTown() {
