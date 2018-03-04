@@ -88,9 +88,10 @@ public class BusinessUserStoreService {
     @Mobile
     public List<JsonTopic> getQueues(String qid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, queueLimit);
-        LOG.info("Found user associated to business count={}", businessUserStores.size());
+        int size = businessUserStores.size();
+        LOG.info("Found user associated to business count={}", size);
 
-        String[] codes = new String[queueLimit];
+        String[] codes = new String[queueLimit <= size ? queueLimit : size];
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
