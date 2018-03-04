@@ -1,6 +1,7 @@
 package com.noqapp.view.form;
 
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 
 import java.util.Date;
@@ -22,6 +23,8 @@ public class LandingForm {
     private Date businessAccountSignedUp;
     private List<QueueEntity> currentQueues;
     private List<QueueEntity> historicalQueues;
+
+    private List<UserProfileEntity> minorUserProfiles;
 
     public BusinessUserRegistrationStatusEnum getBusinessUserRegistrationStatus() {
         return businessUserRegistrationStatus;
@@ -56,6 +59,15 @@ public class LandingForm {
 
     public LandingForm setHistoricalQueues(List<QueueEntity> historicalQueues) {
         this.historicalQueues = historicalQueues;
+        return this;
+    }
+
+    public List<UserProfileEntity> getMinorUserProfiles() {
+        return minorUserProfiles;
+    }
+
+    public LandingForm setMinorUserProfiles(List<UserProfileEntity> minorUserProfiles) {
+        this.minorUserProfiles = minorUserProfiles;
         return this;
     }
 }

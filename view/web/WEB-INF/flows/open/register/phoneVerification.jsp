@@ -64,6 +64,12 @@
                     <form id="sign-in-form" action="">
                         <h2>Enter Phone Number</h2>
                         <p class="mB20 Tcenter">Please enter a valid phone number to continue sign up</p>
+                        <c:if test="${merchantRegistration.notAdult}">
+                            <br/>
+                            <span class="left-remember"><form:checkbox id="guardian" path="merchantRegistration.notAdult" />
+                            Uncheck if this phone number belongs to the Minor registering
+                            </span>
+                        </c:if>
                         <input name="phone" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
                         <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
@@ -89,7 +95,7 @@
                             <span><br></span>
                             <span><br></span>
                             <h2>OTP</h2>
-                            <span>One time password has been sent to your phone number above. Please enter the password here.</span>
+                            <span>One time password has been sent to phone number above. Please enter here.</span>
                             <span><br></span>
                             <ul class="enter-code-box" id="verification-code">
                                 <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1"/></li>
@@ -122,6 +128,7 @@
                             <form:hidden path="mail" />
                             <form:hidden path="password" />
                             <form:hidden path="phone" />
+                            <form:hidden path="notAdult" />
                             <form:hidden path="acceptsAgreement" />
                         </form:form>
                     </div>
@@ -184,6 +191,14 @@
         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
         onSignOutClick();
         </c:if>
+
+        $('#guardian').change(function () {
+            if (this.checked !== true) {
+                $('#notAdult').val(false);
+            } else {
+                $('#notAdult').val(true);
+            }
+        });
     });
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>

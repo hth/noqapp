@@ -303,7 +303,6 @@
             <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-spatial:7.2.1" />
             <element id="library" level="project" name="Gradle: org.apache.lucene:lucene-suggest:7.2.1" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:jna:4.5.1" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.11" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.71.0" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.5" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpcore:4.4.9" />
@@ -358,6 +357,7 @@
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.6.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.9.0" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -459,6 +459,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.6.3" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.2.2" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.10.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -508,7 +509,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.11" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.9.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.4" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.11.0" />
@@ -723,7 +724,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
           </element>
         </element>
       </root>
@@ -796,6 +796,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.6.3" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.2.2" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.10.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -845,7 +846,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.11" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.9.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.4" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.11.0" />
@@ -1061,7 +1062,6 @@
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
           </element>
         </element>
       </root>
@@ -1094,13 +1094,9 @@
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="archive" name="com.noqapp-social.jar">
-              <element id="module-output" name="social_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
-            </element>
-            <element id="archive" name="com.noqapp-service.jar">
-              <element id="module-output" name="service_main" />
-              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            <element id="archive" name="com.noqapp-medical.jar">
+              <element id="module-output" name="medical_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/medical/out/production/resources" />
             </element>
             <element id="archive" name="com.noqapp-health.jar">
               <element id="module-output" name="health_main" />
@@ -1146,6 +1142,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.6.3" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.2.2" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.10.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -1195,7 +1192,7 @@
             <element id="library" level="project" name="Gradle: io.grpc:grpc-protobuf:1.6.1" />
             <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.11" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.9.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.4" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.4" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.11.0" />
@@ -1410,6 +1407,14 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" />
+            <element id="archive" name="com.noqapp-social.jar">
+              <element id="module-output" name="social_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/social/out/production/resources" />
+            </element>
+            <element id="archive" name="com.noqapp-service.jar">
+              <element id="module-output" name="service_main" />
+              <element id="dir-copy" path="$PROJECT_DIR$/service/out/production/resources" />
+            </element>
             <element id="archive" name="com.noqapp-loader.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/out/production/resources" />
@@ -1423,7 +1428,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.6.3/237cbf74df3441c172e80ca676dc967166625ff9/mongo-java-driver-3.6.3.jar" />
           </element>
         </element>
       </root>
@@ -1490,6 +1494,8 @@
       <module name="loader_integration" target="1.8" />
       <module name="loader_main" target="1.9" />
       <module name="loader_test" target="1.9" />
+      <module name="medical_main" target="1.9" />
+      <module name="medical_test" target="1.9" />
       <module name="noqapp-health_integration" target="1.8" />
       <module name="noqapp-health_main" target="1.8" />
       <module name="noqapp-health_test" target="1.8" />
@@ -1556,6 +1562,7 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/health" />
             <option value="$PROJECT_DIR$/loader" />
+            <option value="$PROJECT_DIR$/medical" />
             <option value="$PROJECT_DIR$/search" />
             <option value="$PROJECT_DIR$/security" />
             <option value="$PROJECT_DIR$/service" />
@@ -1817,6 +1824,9 @@
       <module fileurl="file://$PROJECT_DIR$/loader/loader.iml" filepath="$PROJECT_DIR$/loader/loader.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/loader/loader_main.iml" filepath="$PROJECT_DIR$/loader/loader_main.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/loader/loader_test.iml" filepath="$PROJECT_DIR$/loader/loader_test.iml" group="loader" />
+      <module fileurl="file://$PROJECT_DIR$/medical/medical.iml" filepath="$PROJECT_DIR$/medical/medical.iml" group="medical" />
+      <module fileurl="file://$PROJECT_DIR$/medical/medical_main.iml" filepath="$PROJECT_DIR$/medical/medical_main.iml" group="medical" />
+      <module fileurl="file://$PROJECT_DIR$/medical/medical_test.iml" filepath="$PROJECT_DIR$/medical/medical_test.iml" group="medical" />
       <module fileurl="file://$PROJECT_DIR$/noqapp.iml" filepath="$PROJECT_DIR$/noqapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/search/search.iml" filepath="$PROJECT_DIR$/search/search.iml" group="search" />
       <module fileurl="file://$PROJECT_DIR$/search/search_main.iml" filepath="$PROJECT_DIR$/search/search_main.iml" group="search" />
@@ -2465,15 +2475,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/77979eaa98f90806f984155f44f63cc1fb60ac25/juniversalchardet-1.0.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.8.11">
+    <library name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.9.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.11/ba797c6991a1c7814021436c60512784c890f04f/libphonenumber-8.8.11.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.9.0/8f1cb52fdaa23ddf57835299a02af0f00d438f98/libphonenumber-8.9.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.11/d2a6302d2312d1414b8d36251d01e5de25acec/libphonenumber-8.8.11-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.9.0/ea4b8dc9e3fcfec69ec2aa8a3b1caf31315e2965/libphonenumber-8.9.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.8.11/9a9fe45f576e10e8d403432e715d059f41f09cea/libphonenumber-8.8.11-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/8.9.0/34e8969471e4360f22ef6e6f52b3c4da783b283e/libphonenumber-8.9.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.googlecode.mp4parser:isoparser:1.1.18">
