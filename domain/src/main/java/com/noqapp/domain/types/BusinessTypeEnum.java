@@ -48,7 +48,7 @@ public enum BusinessTypeEnum {
 
     public static List<BusinessTypeEnum> asList() {
         BusinessTypeEnum[] all = BusinessTypeEnum.values();
-        return Arrays.asList(all);
+        return List.of(all);
     }
 
     @Override

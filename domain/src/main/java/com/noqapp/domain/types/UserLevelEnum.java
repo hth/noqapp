@@ -60,7 +60,7 @@ public enum UserLevelEnum {
      * @since 12/22/2017
      */
     public static List<UserLevelEnum> queueManagers() {
-        return Arrays.asList(Q_SUPERVISOR, S_MANAGER);
+        return List.of(Q_SUPERVISOR, S_MANAGER);
     }
 
     @Override
