@@ -47,6 +47,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
 
     @SuppressWarnings("unused")
     public BusinessUserStoreEntity() {
+        super();
         //Default constructor, required to keep bean happy
     }
 
