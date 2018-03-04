@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
@@ -141,14 +142,21 @@ public class AccountService {
             String timeZone,
             String password,
             String inviteCode,
-            boolean phoneValidated
+            boolean phoneValidated,
+            boolean notAdult
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
         String firstNameCleanedUp = WordUtils.capitalizeFully(firstName);
         String lastNameCleanedUp = WordUtils.capitalizeFully(lastName);
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
-        if (null == checkUserExistsByPhone(phoneWithCountryCode) && null == doesUserExists(mail)) {
+
+        UserProfileEntity existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
+        if (notAdult) {
+            existingUserProfile = null;
+        }
+
+        if (null == existingUserProfile && null == doesUserExists(mail)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
 
@@ -171,7 +179,7 @@ public class AccountService {
                     userAccount.setUserAuthentication(userAuthentication);
                 }
                 userAccountManager.save(userAccount);
-                /* Set authentication. This will speed up login through browser */
+                /* Set authentication. This will speed up login through browser. */
                 if (null != password) {
                     executorService.submit(() -> createAuthentication(password, qid));
                 }
@@ -190,8 +198,17 @@ public class AccountService {
                         qid,
                         birthday
                 );
-                userProfile.setPhone(phoneWithCountryCode);
-                userProfile.setPhoneRaw(phoneRaw);
+
+                if (notAdult) {
+                    existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
+                    userProfile.setPhone(qid);
+                    userProfile.setPhoneRaw(qid);
+                    userProfile.setGuardianPhone(phoneWithCountryCode);
+                    userProfile.setTimeZone(existingUserProfile.getTimeZone());
+                } else {
+                    userProfile.setPhone(phoneWithCountryCode);
+                    userProfile.setPhoneRaw(phoneRaw);
+                }
                 userProfile.setGender(gender);
                 userProfile.setCountryShortName(countryShortName);
                 userProfile.setTimeZone(timeZone);
@@ -311,6 +328,11 @@ public class AccountService {
             LOG.error("Saving UserPreferenceEntity qid={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
+    }
+
+    public List<UserProfileEntity> findMinorProfiles(String qid) {
+        UserProfileEntity userProfile = findProfileByQueueUserId(qid);
+        return userProfileManager.findMinorProfiles(userProfile.getPhone());
     }
 
     /**

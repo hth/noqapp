@@ -51,6 +51,7 @@
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-content">
+                    <c:if test="${empty landingForm.minorUserProfiles}">
                     <div class="register-c">
                         <h3>Welcome <sec:authentication property="principal.userShortName"/></h3>
 
@@ -72,10 +73,32 @@
                             </c:choose>
                         </sec:authorize>
                     </div>
-
                     <p>&nbsp;</p>
+                    </c:if>
 
                     <div class="store">
+                        <c:if test="${!empty landingForm.minorUserProfiles}">
+                            <h3>Guardian</h3>
+
+                            <div class="add-store">
+                                <div class="store-table" style="width: 50%">
+                                    Assigned as guardian to following account. Please log into the account to see details.
+                                    <br/><br/>
+                                    <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                                        <c:forEach items="${landingForm.minorUserProfiles}" var="profile" varStatus="status">
+                                        <tr>
+                                            <td>${profile.name}</td>
+                                            <td>${profile.email}</td>
+                                            <td>Age ${profile.age} yr</td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="clearFix"></div>
+                        </c:if>
+
                         <h3>Current Queue</h3>
 
                         <div class="add-store">
