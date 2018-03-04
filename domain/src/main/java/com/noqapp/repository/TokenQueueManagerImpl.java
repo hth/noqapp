@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -94,11 +95,26 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public List<TokenQueueEntity> getTokenQueues(String[] ids) {
-        return mongoTemplate.find(
-                query(where("_id").in(Arrays.asList(ids))),
-                TokenQueueEntity.class,
-                TABLE
-        );
+        try {
+            return mongoTemplate.find(
+                    /* Make sure ids does not contain null as List.of(ids) fails when null is encountered. */
+                    query(where("_id").in(List.of(ids))),
+                    TokenQueueEntity.class,
+                    TABLE
+            );
+        } catch (NullPointerException e) {
+            String[] cleanedIds = Arrays.stream(ids)
+                    .filter(s -> (s != null))
+                    .toArray(String[]::new);
+
+            if (cleanedIds.length < ids.length) {
+                LOG.warn("Attempting to recover when getting tokens reason={}", e.getLocalizedMessage());
+                return getTokenQueues(cleanedIds);
+            }
+
+            LOG.error("Failed getting tokens reason={}", e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed getting tokens");
+        }
     }
 
     @Override
