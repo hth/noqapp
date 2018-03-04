@@ -127,10 +127,12 @@ public class BizNameEntity extends BaseEntity {
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
+        super();
         //Default constructor, required to keep bean happy
     }
 
     public BizNameEntity(String codeQR) {
+        super();
         this.codeQR = codeQR;
     }
 
