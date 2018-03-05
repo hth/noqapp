@@ -5,9 +5,11 @@ import com.noqapp.domain.BrowserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -41,6 +43,16 @@ public final class BrowserManagerImpl implements BrowserManager {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public void update(String id) {
+        mongoTemplate.updateFirst(
+                query(where("_id").is(id)),
+                entityUpdate(new Update()),
+                BrowserEntity.class,
+                TABLE
+        );
     }
 
     @Override
