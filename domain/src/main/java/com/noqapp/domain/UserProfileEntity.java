@@ -15,7 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.IntStream;
 
 /**
  * User: hitender
@@ -83,6 +86,9 @@ public class UserProfileEntity extends BaseEntity {
 
     @Field ("GP")
     private String guardianPhone;
+
+    @Field ("GT")
+    private List<String> guardianToQueueUserId;
 
     @NotNull
     @Field ("IC")
@@ -244,6 +250,23 @@ public class UserProfileEntity extends BaseEntity {
 
     public UserProfileEntity setGuardianPhone(String guardianPhone) {
         this.guardianPhone = guardianPhone;
+        return this;
+    }
+
+    public List<String> getGuardianToQueueUserId() {
+        return guardianToQueueUserId;
+    }
+
+    public UserProfileEntity setGuardianToQueueUserId(List<String> guardianToQueueUserId) {
+        this.guardianToQueueUserId = guardianToQueueUserId;
+        return this;
+    }
+
+    public UserProfileEntity addGuardianToQueueUserId(String qid) {
+        if (null == this.guardianToQueueUserId) {
+            this.guardianToQueueUserId = new ArrayList<>();
+        }
+        this.guardianToQueueUserId.add(qid);
         return this;
     }
 

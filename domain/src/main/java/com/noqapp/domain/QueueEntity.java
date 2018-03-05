@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -98,6 +99,9 @@ public class QueueEntity extends BaseEntity {
 
     @Field ("VS")
     private boolean clientVisitedThisStore;
+
+    @Field ("GT")
+    private List<String> guardianToQueueUserId;
 
     @SuppressWarnings("unused")
     public QueueEntity() {
@@ -276,6 +280,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public List<String> getGuardianToQueueUserId() {
+        return guardianToQueueUserId;
+    }
+
+    public QueueEntity setGuardianToQueueUserId(List<String> guardianToQueueUserId) {
+        this.guardianToQueueUserId = guardianToQueueUserId;
         return this;
     }
 

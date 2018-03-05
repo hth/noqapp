@@ -9,6 +9,9 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 9/7/17 6:24 AM
@@ -33,6 +36,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty("qid")
+    private String queueUserId;
+
     @JsonProperty ("n")
     private String customerName = "";
 
@@ -45,12 +51,24 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("sid")
     private String serverDeviceId = "";
 
+    @JsonProperty ("min")
+    private List<JsonQueuedPerson> minors = new ArrayList<>();
+
     public int getToken() {
         return token;
     }
 
     public JsonQueuedPerson setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonQueuedPerson setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -87,6 +105,15 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setServerDeviceId(String serverDeviceId) {
         this.serverDeviceId = serverDeviceId;
+        return this;
+    }
+
+    public List<JsonQueuedPerson> getMinors() {
+        return minors;
+    }
+
+    public JsonQueuedPerson addMinors(JsonQueuedPerson minor) {
+        this.minors.add(minor);
         return this;
     }
 }

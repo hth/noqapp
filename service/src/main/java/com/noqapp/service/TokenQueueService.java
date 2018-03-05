@@ -259,6 +259,9 @@ public class TokenQueueService {
             queue.setCustomerName(userProfile.getName());
             queue.setCustomerPhone(userProfile.getPhone());
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
+            if (!userProfile.getGuardianToQueueUserId().isEmpty()) {
+                queue.setGuardianToQueueUserId(userProfile.getGuardianToQueueUserId());
+            }
             queueManager.save(queue);
         }
     }
@@ -289,7 +292,7 @@ public class TokenQueueService {
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
 
         LOG.info("After sending message to merchant");
-        QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+        QueueEntity queue = findOne(codeQR, tokenQueue.getCurrentlyServing());
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
@@ -325,7 +328,7 @@ public class TokenQueueService {
         sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving);
 
         LOG.info("After sending message to merchant and personal message to user of token");
-        QueueEntity queue = queueManager.findOne(codeQR, serving);
+        QueueEntity queue = findOne(codeQR, serving);
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
@@ -524,7 +527,7 @@ public class TokenQueueService {
     ) {
         LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
 
-        QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
+        QueueEntity queue = findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.debug("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
@@ -597,5 +600,9 @@ public class TokenQueueService {
 
     public QueueEntity findQueuedByPhone(String codeQR, String phone) {
         return queueManager.findQueuedByPhone(codeQR, phone);
+    }
+
+    public QueueEntity findOne(String codeQR, int tokenNumber) {
+        return queueManager.findOne(codeQR, tokenNumber);
     }
 }
