@@ -218,6 +218,15 @@ public class AccountService {
                 }
                 userProfile.setInviteCode(generatedInviteCode);
                 userProfileManager.save(userProfile);
+
+                if (notAdult) {
+                    UserProfileEntity guardianUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
+                    guardianUserProfile.addGuardianToQueueUserId(userProfile.getQueueUserId());
+                    userProfileManager.save(guardianUserProfile);
+
+                    LOG.info("Update guardian profile qid={} & minor qid={}",
+                            guardianUserProfile.getQueueUserId(), userProfile.getQueueUserId());
+                }
             } catch (Exception e) {
                 LOG.error("During saving UserProfileEntity={}", e.getLocalizedMessage(), e);
 

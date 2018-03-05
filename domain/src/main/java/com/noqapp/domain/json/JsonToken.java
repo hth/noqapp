@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * Since the object is broadcast, avoid using customer identifying details in here.
+ *
  * User: hitender
  * Date: 11/18/16 11:56 AM
  */
@@ -61,6 +63,7 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("v")
     private boolean clientVisitedThisStore;
 
+    /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
 
     public JsonToken(TokenQueueEntity tokenQueue) {

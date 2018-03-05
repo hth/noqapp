@@ -1,9 +1,13 @@
 package com.noqapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonQueuePersonList;
+import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import org.slf4j.Logger;
@@ -19,11 +23,17 @@ import org.springframework.stereotype.Service;
 public class QueueService {
     private static final Logger LOG = LoggerFactory.getLogger(QueueService.class);
 
+    private AccountService accountService;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
 
     @Autowired
-    public QueueService(QueueManager queueManager, QueueManagerJDBC queueManagerJDBC) {
+    public QueueService(
+            AccountService accountService,
+            QueueManager queueManager,
+            QueueManagerJDBC queueManagerJDBC
+    ) {
+        this.accountService = accountService;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
     }
@@ -77,5 +87,38 @@ public class QueueService {
 
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         return queueManager.findQueuedOne(codeQR, did, qid);
+    }
+
+    /** Finds clients who are yet to be serviced. */
+    public JsonQueuePersonList findAllClientQueuedOrAborted(String codeQR) {
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+        List<QueueEntity> queues = queueManager.findAllClientQueuedOrAborted(codeQR);
+        for (QueueEntity queue : queues) {
+            JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
+                    .setQueueUserId(queue.getQueueUserId())
+                    .setCustomerName(queue.getCustomerName())
+                    .setCustomerPhone(queue.getCustomerPhone())
+                    .setQueueUserState(queue.getQueueUserState())
+                    .setToken(queue.getTokenNumber())
+                    .setServerDeviceId(queue.getServerDeviceId());
+
+            if (!queue.getGuardianToQueueUserId().isEmpty()) {
+                LOG.info("Is a guardian qid={}", queue.getQueueUserId());
+
+                for (String qid : queue.getGuardianToQueueUserId()) {
+                    UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                    jsonQueuedPerson.addMinors(
+                            new JsonQueuedPerson()
+                                    .setQueueUserId(qid)
+                                    .setCustomerName(userProfile.getName())
+                                    .setToken(queue.getTokenNumber()));
+                }
+            }
+
+            queuedPeople.add(jsonQueuedPerson);
+        }
+
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 }
