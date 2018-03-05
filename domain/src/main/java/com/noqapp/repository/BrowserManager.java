@@ -8,5 +8,7 @@ import com.noqapp.domain.BrowserEntity;
  */
 public interface BrowserManager extends RepositoryManager<BrowserEntity> {
     BrowserEntity getByCookie(String id);
+
+    void update(String id);
 }
 
