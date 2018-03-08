@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 })
 @Repository
 public class ApiHealthNowManagerImpl implements ApiHealthNowManager {
-    private static final Logger LOG = LoggerFactory.getLogger(UserProfileManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApiHealthNowManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             ApiHealthNowEntity.class,
             Document.class,
