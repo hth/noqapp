@@ -123,6 +123,15 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     }
 
     @Override
+    public void resetWhenQueueClosed(String codeQR) {
+        mongoTemplate.updateFirst(
+                query(where("_id").is(codeQR).and("QS").ne(QueueStatusEnum.C)),
+                entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.C)),
+                TokenQueueEntity.class,
+                TABLE);
+    }
+
+    @Override
     public boolean updateDisplayName(String codeQR, String topic, String displayName) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
             query(where("_id").is(codeQR).and("TP").is(topic)),
