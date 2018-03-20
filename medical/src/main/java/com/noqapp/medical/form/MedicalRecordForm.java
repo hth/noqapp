@@ -51,7 +51,7 @@ public class MedicalRecordForm {
     private MedicalRecordForm() {
         //Happy Bean
 
-        medicalPhysical = new LinkedHashSet<>() {{
+        medicalPhysical = new LinkedHashSet<MedicalPhysicalForm>() {{
             for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
                 add(new MedicalPhysicalForm().setPhysicalExam(physicalExam));
             }
@@ -62,7 +62,7 @@ public class MedicalRecordForm {
         super();
 
         this.queueUserId = queueUserId;
-        medicalPhysical = new LinkedHashSet<>() {{
+        medicalPhysical = new LinkedHashSet<MedicalPhysicalForm>() {{
             for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
                 add(new MedicalPhysicalForm().setPhysicalExam(physicalExam));
             }
