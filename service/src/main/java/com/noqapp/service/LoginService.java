@@ -56,7 +56,7 @@ public class LoginService {
                 browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
                 browserManager.save(browserEntity);
             } else {
-                browserManager.save(browserEntity);
+                browserManager.update(browserEntity.getId());
             }
         } catch (Exception e) {
             LOG.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);

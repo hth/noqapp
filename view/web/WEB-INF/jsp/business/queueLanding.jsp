@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.QueueStatusEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -60,35 +61,57 @@
                             </div>
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty businessLandingForm.jsonTopics}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th nowrap>Queue Name</th>
-                                                <th nowrap>Queue Status</th>
-                                                <th>New</th>
-                                                <th>Re-Visit</th>
-                                                <th nowrap>In Queue</th>
-                                                <th>Serving</th>
-                                            </tr>
-                                            <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td nowrap><a href="/${jsonTopic.codeQR}/q.htm" target="_blank">${jsonTopic.displayName}</a></td>
-                                                    <td nowrap>${jsonTopic.queueStatus.description}</td>
-                                                    <td>${businessLandingForm.queueDetails.get(jsonTopic.codeQR).previouslyVisitedClientCount}</td>
-                                                    <td>${businessLandingForm.queueDetails.get(jsonTopic.codeQR).newVisitClientCount}</td>
-                                                    <td nowrap>${jsonTopic.token - jsonTopic.servingNumber}</td>
-                                                    <td nowrap>${jsonTopic.servingNumber}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>Could not find any queue assigned to you.</p>
-                                        </div>
-                                    </c:otherwise>
+                                <c:when test="${!empty businessLandingForm.jsonTopics}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th nowrap>Queue Name</th>
+                                        <th nowrap>Queue Status</th>
+                                        <th>Stats</th>
+                                        <th nowrap>In Queue</th>
+                                        <th>Serving</th>
+                                    </tr>
+                                    <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td nowrap>
+                                            <a href="/business/store/queue/people/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
+                                            <span style="display:block; font-size:13px;">${jsonTopic.businessType.description}</span>
+                                        </td>
+                                        <td nowrap>${jsonTopic.queueStatus.description}</td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">New: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).previouslyVisitedClientCount}</span>
+                                            <span style="display:block; font-size:13px;">Re-Visit: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).newVisitClientCount}</span>
+                                        </td>
+                                        <td nowrap>
+                                        <c:choose>
+                                        <c:when test="${jsonTopic.queueStatus == QueueStatusEnum.D}">
+                                            0
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${jsonTopic.token - jsonTopic.servingNumber}
+                                        </c:otherwise>
+                                        </c:choose>
+                                        </td>
+                                        <td nowrap>
+                                        <c:choose>
+                                        <c:when test="${jsonTopic.queueStatus == QueueStatusEnum.D}">
+                                            0
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${jsonTopic.servingNumber}
+                                        </c:otherwise>
+                                        </c:choose>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="alert-info">
+                                    <p>Could not find any queue assigned to you.</p>
+                                </div>
+                                </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>

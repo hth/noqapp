@@ -27,6 +27,7 @@ public final class MerchantRegistrationForm implements Serializable {
     private ScrubbedInput birthday;
     private ScrubbedInput gender;
     private ScrubbedInput password;
+    private boolean notAdult;
     private boolean accountExists;
     private boolean acceptsAgreement;
 
@@ -101,6 +102,15 @@ public final class MerchantRegistrationForm implements Serializable {
 
     public MerchantRegistrationForm setPassword(ScrubbedInput password) {
         this.password = password;
+        return this;
+    }
+
+    public boolean isNotAdult() {
+        return notAdult;
+    }
+
+    public MerchantRegistrationForm setNotAdult(boolean notAdult) {
+        this.notAdult = notAdult;
         return this;
     }
 

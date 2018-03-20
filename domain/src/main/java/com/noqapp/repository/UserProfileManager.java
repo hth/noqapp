@@ -43,4 +43,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     void updateCountryShortName(String country, String qid);
 
     UserProfileEntity inviteCodeExists(String inviteCode);
+
+    List<UserProfileEntity> findMinorProfiles(String phone);
 }

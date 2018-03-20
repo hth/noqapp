@@ -14,6 +14,7 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -93,12 +94,12 @@ public class TokenQueueService {
     }
 
     //TODO has to createUpdate by cron job
-    public void createUpdate(String codeQR, String topic, String displayName) {
+    public void createUpdate(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
         try {
             Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
-            TokenQueueEntity token = tokenQueueManager.findByCodeQR(codeQR);
+            TokenQueueEntity token = findByCodeQR(codeQR);
             if (null == token) {
-                token = new TokenQueueEntity(topic, displayName);
+                token = new TokenQueueEntity(topic, displayName, businessType);
                 token.setId(codeQR);
                 tokenQueueManager.save(token);
             } else {
@@ -164,7 +165,7 @@ public class TokenQueueService {
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
                 try {
-                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName());
+                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
                     if (0 != averageServiceTime) {
                         LocalTime now = LocalTime.now(zoneId);
                         LOG.info("Time now={}", now);
@@ -214,7 +215,7 @@ public class TokenQueueService {
                         .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             }
 
-            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+            TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
             LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
                     queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
@@ -258,6 +259,9 @@ public class TokenQueueService {
             queue.setCustomerName(userProfile.getName());
             queue.setCustomerPhone(userProfile.getPhone());
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
+            if (null != userProfile.getGuardianToQueueUserId() && !userProfile.getGuardianToQueueUserId().isEmpty()) {
+                queue.setGuardianToQueueUserId(userProfile.getGuardianToQueueUserId());
+            }
             queueManager.save(queue);
         }
     }
@@ -288,7 +292,7 @@ public class TokenQueueService {
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
 
         LOG.info("After sending message to merchant");
-        QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+        QueueEntity queue = findOne(codeQR, tokenQueue.getCurrentlyServing());
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
@@ -314,7 +318,7 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
         /*
          * Do not inform anyone other than the person with the
@@ -324,7 +328,7 @@ public class TokenQueueService {
         sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving);
 
         LOG.info("After sending message to merchant and personal message to user of token");
-        QueueEntity queue = queueManager.findOne(codeQR, serving);
+        QueueEntity queue = findOne(codeQR, serving);
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
@@ -523,7 +527,7 @@ public class TokenQueueService {
     ) {
         LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
 
-        QueueEntity queue = queueManager.findOne(codeQR, tokenNumber);
+        QueueEntity queue = findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.debug("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
@@ -596,5 +600,13 @@ public class TokenQueueService {
 
     public QueueEntity findQueuedByPhone(String codeQR, String phone) {
         return queueManager.findQueuedByPhone(codeQR, phone);
+    }
+
+    public QueueEntity findOne(String codeQR, int tokenNumber) {
+        return queueManager.findOne(codeQR, tokenNumber);
+    }
+
+    public void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
+        tokenQueueManager.changeQueueStatus(codeQR, queueStatus);
     }
 }

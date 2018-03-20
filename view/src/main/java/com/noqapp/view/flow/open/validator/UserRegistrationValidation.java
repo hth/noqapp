@@ -17,6 +17,9 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 /**
  * User: hitender
  * Date: 10/06/2017 11:19 AM
@@ -39,6 +42,9 @@ public class UserRegistrationValidation {
 
     @Value("${AccountValidator.passwordLength}")
     private int passwordLength;
+
+    @Value("${AccountValidator.underAge}")
+    private int underAge;
 
     private AccountService accountService;
 
@@ -101,6 +107,21 @@ public class UserRegistrationValidation {
                             .defaultText("Date format not valid " + merchantRegistration.getBirthday())
                             .build());
             status = "failure";
+        } else {
+            LocalDate startDate = LocalDate.parse(merchantRegistration.getBirthday().getText());
+            LocalDate endDate = LocalDate.now();
+
+            if (ChronoUnit.DAYS.between(startDate, endDate) < 0) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("birthday")
+                                .defaultText("Date is in future " + merchantRegistration.getBirthday())
+                                .build());
+                status = "failure";
+            }
+
+            merchantRegistration.setNotAdult(underAge > ChronoUnit.YEARS.between(startDate, endDate));
         }
 
         if (StringUtils.isNotBlank(merchantRegistration.getGender().getText())) {
@@ -149,7 +170,7 @@ public class UserRegistrationValidation {
 
         UserProfileEntity userProfile = accountService.doesUserExists(merchantRegistration.getMail().getText());
         if (null != userProfile) {
-            LOG.warn("Account already exists with phone={}", merchantRegistration.getMail());
+            LOG.warn("Account already exists with email={}", merchantRegistration.getMail());
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

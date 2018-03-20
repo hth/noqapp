@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * User: hitender
@@ -14,7 +15,8 @@ public class MathUtil {
 
     static float roundFloat(float f, int scale) {
         BigDecimal bd = new BigDecimal(Float.toString(f));
-        return bd.setScale(scale, BigDecimal.ROUND_HALF_UP).floatValue();
+        LOG.info("{} {}", f, bd.setScale(scale, RoundingMode.HALF_UP).floatValue());
+        return bd.setScale(scale, RoundingMode.HALF_UP).floatValue();
     }
 
     public static float roundFloat(float f) {

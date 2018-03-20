@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * Since the object is broadcast, avoid using customer identifying details in here.
+ *
  * User: hitender
  * Date: 11/18/16 11:56 AM
  */
@@ -39,6 +42,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("d")
     private String displayName;
 
+    @JsonProperty ("bt")
+    private BusinessTypeEnum businessType;
+
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
@@ -57,6 +63,7 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("v")
     private boolean clientVisitedThisStore;
 
+    /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
 
     public JsonToken(TokenQueueEntity tokenQueue) {
@@ -65,6 +72,7 @@ public class JsonToken extends AbstractDomain {
         this.servingNumber = tokenQueue.getCurrentlyServing();
         this.displayName = tokenQueue.getDisplayName();
         this.queueStatus = tokenQueue.getQueueStatus();
+        this.businessType = tokenQueue.getBusinessType();
     }
 
     public JsonToken(QueueStatusEnum queueStatus) {
@@ -104,6 +112,10 @@ public class JsonToken extends AbstractDomain {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
     public QueueStatusEnum getQueueStatus() {

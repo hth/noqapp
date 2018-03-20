@@ -66,7 +66,7 @@ public class RegistrationController {
     ) {
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhone());
 
-        if (null != userProfile) {
+        if (null != userProfile && !merchantRegistration.isNotAdult()) {
             LOG.warn("Account already exists with phone={}", merchantRegistration.getPhone());
             merchantRegistration.setAccountExists(true);
             return registrationPage;
@@ -80,13 +80,14 @@ public class RegistrationController {
                     merchantRegistration.getLastName().getText(),
                     StringUtils.lowerCase(merchantRegistration.getMail().getText()),
                     StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
-                    GenderEnum.valueOf(merchantRegistration.getGender().getText()) == GenderEnum.M ? GenderEnum.M : GenderEnum.F,
+                    GenderEnum.valueOf(merchantRegistration.getGender().getText()),
                     merchantRegistration.findCountryShortFromPhone(),
                     /* Timezone from website is difficult to compute, hence passing null. */
                     null,
                     merchantRegistration.getPassword().getText(),
                     null,
-                    true);
+                    true,
+                    merchantRegistration.isNotAdult());
 
             if (null == userAccount) {
                 LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());

@@ -19,6 +19,7 @@ public class DomainConversion {
                 /* Business Category Id is replaced with text at a later stage, right before insert to Elastic. */
                 .setCategory(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
+                .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())
                 .setDistrict(bizStore.getDistrict())
                 .setState(bizStore.getState())

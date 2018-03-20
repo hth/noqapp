@@ -71,8 +71,6 @@ public class ExternalService {
 
     /**
      * Find and populate Address, Latitude and Longitude for a given address from Google API Service to bizStore.
-     *
-     * @param bizStore
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
@@ -84,6 +82,7 @@ public class ExternalService {
                 } else {
                     bizStore.setAddress(geocode.getAddress());
                 }
+                bizStore.setArea(decodedAddress.getArea());
                 bizStore.setTown(decodedAddress.getTown());
                 bizStore.setDistrict(decodedAddress.getDistrict());
                 bizStore.setState(decodedAddress.getState());
@@ -126,8 +125,6 @@ public class ExternalService {
 
     /**
      * Find and populate Address, Latitude and Longitude for a given address from Google API Service to bizStore.
-     *
-     * @param bizName
      */
     public void decodeAddress(BizNameEntity bizName) {
         try {
@@ -139,6 +136,7 @@ public class ExternalService {
                 } else {
                     bizName.setAddress(geocode.getAddress());
                 }
+                bizName.setArea(decodedAddress.getArea());
                 bizName.setTown(decodedAddress.getTown());
                 bizName.setDistrict(decodedAddress.getDistrict());
                 bizName.setState(decodedAddress.getState());
@@ -172,9 +170,6 @@ public class ExternalService {
 
     /**
      * Keeps looking for a valid address and location until it finds one.
-     *
-     * @param address
-     * @return
      */
     public GeocodingResult[] getGeocodingResults(String address) {
         try {
@@ -210,10 +205,6 @@ public class ExternalService {
 
     /**
      * External call to find types and rating for a particular store.
-     *
-     * @param placeId
-     * @return
-     * @throws Exception
      */
     PlaceDetails getPlaceDetails(String placeId) {
         try {
@@ -228,8 +219,6 @@ public class ExternalService {
 
     /**
      * Updates Biz Store time zone based on the address of the store. Asynchronous call.
-     *
-     * @param bizStore
      */
     public void updateTimezone(BizStoreEntity bizStore) {
         try {
@@ -274,9 +263,6 @@ public class ExternalService {
 
     /**
      * No call back. Synchronous call.
-     *
-     * @param latLng
-     * @return
      */
     public String findTimeZone(LatLng latLng) {
         try {
@@ -291,11 +277,6 @@ public class ExternalService {
 
     /**
      * Compute UTC based DateTime.
-     *
-     * @param timeZone
-     * @param hourOfDay
-     * @param minuteOfDay
-     * @return
      */
     public ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
         try {

@@ -1,6 +1,7 @@
 package com.noqapp.domain.mapper;
 
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -21,18 +22,19 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int QID = 5;
     private static final int TN = 6;
     private static final int DN = 7;
-    private static final int QS = 8;
-    private static final int NS = 9;
-    private static final int RA = 10;
-    private static final int HR = 11;
-    private static final int SN = 12;
-    private static final int SB = 13;
-    private static final int SE = 14;
-    private static final int V = 15;
-    private static final int U = 16;
-    private static final int C = 17;
-    private static final int A = 18;
-    private static final int D = 19;
+    private static final int BT = 8;
+    private static final int QS = 9;
+    private static final int NS = 10;
+    private static final int RA = 11;
+    private static final int HR = 12;
+    private static final int SN = 13;
+    private static final int SB = 14;
+    private static final int SE = 15;
+    private static final int V = 16;
+    private static final int U = 17;
+    private static final int C = 18;
+    private static final int A = 19;
+    private static final int D = 20;
 
     @Override
     public QueueEntity extractData(ResultSet rs) throws SQLException {
@@ -42,7 +44,8 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
                 TokenServiceEnum.valueOf(rs.getString(TS)),
                 rs.getString(QID),
                 rs.getInt(TN),
-                rs.getString(DN)
+                rs.getString(DN),
+                BusinessTypeEnum.valueOf(rs.getString(BT))
         );
         queue.setId(rs.getString(ID));
         queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(QS)));

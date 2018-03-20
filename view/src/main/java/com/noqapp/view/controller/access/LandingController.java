@@ -2,6 +2,7 @@ package com.noqapp.view.controller.access;
 
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,7 @@ public class LandingController {
     private BusinessUserService businessUserService;
     private QueueService queueService;
     private ApiHealthService apiHealthService;
+    private AccountService accountService;
 
     @Autowired
     public LandingController(
@@ -60,13 +62,16 @@ public class LandingController {
 
             BusinessUserService businessUserService,
             QueueService queueService,
-            ApiHealthService apiHealthService) {
+            ApiHealthService apiHealthService,
+            AccountService accountService
+    ) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
 
         this.businessUserService = businessUserService;
         this.queueService = queueService;
         this.apiHealthService = apiHealthService;
+        this.accountService = accountService;
     }
 
     @GetMapping(value = "/landing")
@@ -86,6 +91,8 @@ public class LandingController {
         if (queueUser.getUserLevel() != UserLevelEnum.M_ADMIN) {
             landingForm.setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                     .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()));
+
+            landingForm.setMinorUserProfiles(accountService.findMinorProfiles(queueUser.getQueueUserId()));
         }
 
         LOG.info("Current size={} and Historical size={}",

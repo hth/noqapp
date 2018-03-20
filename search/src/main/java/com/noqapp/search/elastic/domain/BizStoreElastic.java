@@ -61,6 +61,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("AD")
     private String address;
 
+    @JsonProperty ("AR")
+    private String area;
+
     @JsonProperty ("TO")
     private String town;
 
@@ -175,6 +178,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public BizStoreElastic setArea(String area) {
+        this.area = area;
         return this;
     }
 

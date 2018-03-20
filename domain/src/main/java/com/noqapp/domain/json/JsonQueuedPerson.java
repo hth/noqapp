@@ -5,9 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.beans.Transient;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 /**
  * User: hitender
@@ -33,6 +41,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty("qid")
+    private String queueUserId;
+
     @JsonProperty ("n")
     private String customerName = "";
 
@@ -45,12 +56,24 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("sid")
     private String serverDeviceId = "";
 
+    @JsonProperty ("min")
+    private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
+
     public int getToken() {
         return token;
     }
 
     public JsonQueuedPerson setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonQueuedPerson setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -88,5 +111,28 @@ public class JsonQueuedPerson extends AbstractDomain {
     public JsonQueuedPerson setServerDeviceId(String serverDeviceId) {
         this.serverDeviceId = serverDeviceId;
         return this;
+    }
+
+    public List<JsonQueuedMinorPerson> getMinors() {
+        return minors;
+    }
+
+    public JsonQueuedPerson addMinors(JsonQueuedMinorPerson minor) {
+        this.minors.add(minor);
+        return this;
+    }
+
+    @Transient
+    public String getPhoneFormatted() {
+        if (StringUtils.isBlank(customerPhone)) {
+            return "";
+        }
+
+        return Formatter.phoneNationalFormat(customerPhone, Formatter.getCountryShortNameFromInternationalPhone(customerPhone));
+    }
+
+    @Transient
+    public String getRecordReferenceId() {
+        return Base64.getEncoder().encodeToString((token + "#" + queueUserId + "#" + queueUserId).getBytes());
     }
 }

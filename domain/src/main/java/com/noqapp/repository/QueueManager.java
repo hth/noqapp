@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.List;
 
@@ -14,14 +15,10 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     void insert(QueueEntity queue);
 
-    /**
-     * Abort queue. Set QueueUserState to Abort.
-     */
+    /** Abort queue. Set QueueUserState to Abort. */
     void abort(String id);
 
-    /**
-     * Find the one that has been queued.
-     */
+    /** Find the one that has been queued. */
     QueueEntity findQueuedOne(String codeQR, String did, String qid);
 
     QueueEntity findOne(String codeQR, int tokenNumber);
@@ -29,10 +26,21 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findToAbort(String codeQR, String did, String qid);
 
     @Mobile
-    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo, String sid);
+    QueueEntity updateAndGetNextInQueue(
+            String codeQR,
+            int tokenNumber,
+            QueueUserStateEnum queueUserState,
+            String goTo,
+            String sid,
+            TokenServiceEnum tokenService);
 
     @Mobile
-    boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid);
+    boolean updateServedInQueue(
+            String codeQR,
+            int tokenNumber,
+            QueueUserStateEnum queueUserState,
+            String sid,
+            TokenServiceEnum tokenService);
 
     /**
      * Gets next token. By default this gets the next token in sequence/order of ascending .
@@ -57,35 +65,25 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     @Mobile
     QueueEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber);
 
-    /**
-     * Find all based on device id, this is when user is not registered.
-     */
+    /** Find all based on device id, this is when user is not registered. */
     @Mobile
     List<QueueEntity> findAllQueuedByDid(String did);
 
-    /**
-     * Find all based on registered user.
-     */
+    /** Find all based on registered user. */
     List<QueueEntity> findAllQueuedByQid(String qid);
 
-    /**
-     * Get all the queues that have been serviced for today by DID.
-     */
+    /** Get all the queues that have been serviced for today by DID. */
     @Mobile
     List<QueueEntity> findAllNotQueuedByDid(String did);
 
-    /**
-     * Get all the queues that have been serviced for today by QID.
-     */
+    /** Get all the queues that have been serviced for today by QID. */
     @Mobile
     List<QueueEntity> findAllNotQueuedByQid(String qid);
 
     @Mobile
     boolean isQueued(int tokenNumber, String codeQR);
 
-    /**
-     * Find all clients serviced to send messages.
-     */
+    /** Find all clients serviced to send messages. */
     List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM);
 
     List<QueueEntity> findByCodeQR(String codeQR);
@@ -106,9 +104,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     long previouslyVisitedClientCount(String codeQR);
     long newVisitClientCount(String codeQR);
 
-    /**
-     * Mostly when client is from Web.
-     */
+    /** Mostly when client is from Web. */
     QueueEntity findQueuedByPhone(String codeQR, String phone);
 
     void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone);

@@ -13,7 +13,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.IntStream;
 
 /**
  * User: hitender
@@ -31,6 +36,7 @@ import java.util.Locale;
         @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
         @CompoundIndex (name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
         @CompoundIndex (name = "user_profile_ic_idx", def = "{'IC': 1}", unique = true),
+        @CompoundIndex (name = "user_profile_guardian_idx", def = "{'GP' : 1}", unique = false, sparse = true),
 })
 public class UserProfileEntity extends BaseEntity {
 
@@ -78,6 +84,12 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("PR")
     private String phoneRaw;
 
+    @Field ("GP")
+    private String guardianPhone;
+
+    @Field ("GT")
+    private List<String> guardianToQueueUserId;
+
     @NotNull
     @Field ("IC")
     private String inviteCode;
@@ -116,15 +128,6 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
-    }
-
-    @Transient
-    public String getName() {
-        if (StringUtils.isNotBlank(lastName)) {
-            return StringUtils.trim(firstName + UserAccountEntity.BLANK_SPACE + lastName);
-        }
-
-        return firstName;
     }
 
     public String getFirstName() {
@@ -233,6 +236,58 @@ public class UserProfileEntity extends BaseEntity {
         this.phoneRaw = phoneRaw;
     }
 
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public String getGuardianPhone() {
+        return guardianPhone;
+    }
+
+    public UserProfileEntity setGuardianPhone(String guardianPhone) {
+        this.guardianPhone = guardianPhone;
+        return this;
+    }
+
+    public List<String> getGuardianToQueueUserId() {
+        return guardianToQueueUserId;
+    }
+
+    public UserProfileEntity setGuardianToQueueUserId(List<String> guardianToQueueUserId) {
+        this.guardianToQueueUserId = guardianToQueueUserId;
+        return this;
+    }
+
+    public UserProfileEntity addGuardianToQueueUserId(String qid) {
+        if (null == this.guardianToQueueUserId) {
+            this.guardianToQueueUserId = new ArrayList<>();
+        }
+        this.guardianToQueueUserId.add(qid);
+        return this;
+    }
+
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public UserProfileEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
+    }
+
+    @Transient
+    public String getName() {
+        if (StringUtils.isNotBlank(lastName)) {
+            return StringUtils.trim(firstName + UserAccountEntity.BLANK_SPACE + lastName);
+        }
+
+        return firstName;
+    }
+
     @Transient
     public String getInitials() {
         String name = getName();
@@ -243,20 +298,8 @@ public class UserProfileEntity extends BaseEntity {
         }
     }
 
-    public String getInviteCode() {
-        return inviteCode;
-    }
-
-    public void setInviteCode(String inviteCode) {
-        this.inviteCode = inviteCode;
-    }
-
-    public AddressOriginEnum getAddressOrigin() {
-        return addressOrigin;
-    }
-
-    public UserProfileEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
-        this.addressOrigin = addressOrigin;
-        return this;
+    @Transient
+    public long getAge() {
+        return ChronoUnit.YEARS.between(LocalDate.parse(birthday), LocalDate.now());
     }
 }

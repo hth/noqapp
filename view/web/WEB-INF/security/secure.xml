@@ -124,6 +124,9 @@
         <intercept-url pattern="/business/store/**"
                        access="hasRole('ROLE_S_MANAGER')" />
 
+        <intercept-url pattern="/medical/**"
+                       access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR')" />
+
         <!-- Note: broader interceptor after narrowed interceptor, example '/business/store/queue/**' for ROLE_TECHNICIAN -->
         <!-- Remove ROLE of Technician or Supervisor to limit access to business -->
         <intercept-url pattern="/business/**"

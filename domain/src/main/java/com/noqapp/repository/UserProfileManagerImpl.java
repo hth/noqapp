@@ -192,4 +192,13 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE
         );
     }
+
+    @Override
+    public List<UserProfileEntity> findMinorProfiles(String phone) {
+        return mongoTemplate.find(
+                query(where("GP").is(phone)),
+                UserProfileEntity.class,
+                TABLE
+        );
+    }
 }

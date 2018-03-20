@@ -90,6 +90,13 @@
                                 </div>
                             </div>
                         </c:if>
+                        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p---'}">
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    User already registered with this number. Please login.
+                                </div>
+                            </div>
+                        </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <span><br></span>
                             <span><br></span>

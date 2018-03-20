@@ -93,8 +93,8 @@ subprojects {
     apply plugin: 'jacoco'      //for code coverage
     apply plugin: 'org.junit.platform.gradle.plugin'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 9
+    targetCompatibility = 9
 
     sourceSets {
         test {
@@ -260,7 +260,7 @@ subprojects {
         compile "com.fasterxml.jackson.core:jackson-databind:$jackson"
         compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson"
 
-        compile "org.json:json:20171018"
+        compile "org.json:json:20180130"
         compile "com.maxmind.geoip2:geoip2:$geoip2"
 
         compile "commons-fileupload:commons-fileupload:$commonsfileupload"
@@ -444,6 +444,17 @@ project(':social') {
     }
 }
 
+project(':medical') {
+    jar.baseName = baseName + '-medical'
+
+    dependencies {
+        compile project(':common'),
+                project(':domain'),
+                project(':health'),
+                project(':service')
+    }
+}
+
 project(':view') {
     apply plugin: 'war'
     jar.baseName = baseName + '-view'
@@ -458,6 +469,7 @@ project(':view') {
                 project(':domain'),
                 project(':health'),
                 project(':security'),
+                project(':medical'),
                 project(':social'),
                 project(':service'),
                 project(':search'),
@@ -473,6 +485,7 @@ task copyJars(type: Copy) {
     from 'domain/build/libs'
     from 'health/build/libs'
     from 'security/build/libs'
+    from 'medical/build/libs'
     from 'service/build/libs'
     from 'search/build/libs'
     from 'social/build/libs'
@@ -969,6 +982,28 @@ publishing {
                 license.appendNode('name', 'Private. Copyright 2016-2018. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQApp private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
+            }
+        }
+
+        medical(MavenPublication) {
+            artifactId 'medical'
+            artifact "medical/build/libs/$baseName" + '-medical-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2016-2018. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
