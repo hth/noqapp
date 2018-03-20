@@ -150,7 +150,7 @@ public class QueueEntity extends BaseEntity {
         return businessType;
     }
 
-    @Deprecated(since = "1.1")
+    @Deprecated
     public QueueEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;

@@ -1,5 +1,6 @@
 package com.noqapp.domain.types;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public enum BusinessTypeEnum {
 
     public static List<BusinessTypeEnum> asList() {
         BusinessTypeEnum[] all = BusinessTypeEnum.values();
-        return List.of(all);
+        return Arrays.asList(all);
     }
 
     @Override

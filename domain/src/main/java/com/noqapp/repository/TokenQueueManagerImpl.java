@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -98,7 +97,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         try {
             return mongoTemplate.find(
                     /* Make sure ids does not contain null as List.of(ids) fails when null is encountered. */
-                    query(where("_id").in(List.of(ids))),
+                    query(where("_id").in(Arrays.asList(ids))),
                     TokenQueueEntity.class,
                     TABLE
             );
