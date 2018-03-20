@@ -5,11 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.beans.Transient;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -52,7 +57,7 @@ public class JsonQueuedPerson extends AbstractDomain {
     private String serverDeviceId = "";
 
     @JsonProperty ("min")
-    private List<JsonQueuedPerson> minors = new ArrayList<>();
+    private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
 
     public int getToken() {
         return token;
@@ -108,12 +113,26 @@ public class JsonQueuedPerson extends AbstractDomain {
         return this;
     }
 
-    public List<JsonQueuedPerson> getMinors() {
+    public List<JsonQueuedMinorPerson> getMinors() {
         return minors;
     }
 
-    public JsonQueuedPerson addMinors(JsonQueuedPerson minor) {
+    public JsonQueuedPerson addMinors(JsonQueuedMinorPerson minor) {
         this.minors.add(minor);
         return this;
+    }
+
+    @Transient
+    public String getPhoneFormatted() {
+        if (StringUtils.isBlank(customerPhone)) {
+            return "";
+        }
+
+        return Formatter.phoneNationalFormat(customerPhone, Formatter.getCountryShortNameFromInternationalPhone(customerPhone));
+    }
+
+    @Transient
+    public String getRecordReferenceId() {
+        return Base64.getEncoder().encodeToString((token + "#" + queueUserId + "#" + queueUserId).getBytes());
     }
 }

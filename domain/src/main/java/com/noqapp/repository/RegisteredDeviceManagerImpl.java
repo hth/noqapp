@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -234,6 +235,15 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
         return mongoTemplate.count(
                 query,
+                RegisteredDeviceEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public RegisteredDeviceEntity findAnyDeviceId(String qid) {
+        return mongoTemplate.findOne(
+                query(where("QID").is(qid)).with(new Sort(Sort.Direction.DESC, "U")),
                 RegisteredDeviceEntity.class,
                 TABLE
         );

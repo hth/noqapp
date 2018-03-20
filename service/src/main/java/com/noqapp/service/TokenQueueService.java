@@ -97,7 +97,7 @@ public class TokenQueueService {
     public void createUpdate(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
         try {
             Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
-            TokenQueueEntity token = tokenQueueManager.findByCodeQR(codeQR);
+            TokenQueueEntity token = findByCodeQR(codeQR);
             if (null == token) {
                 token = new TokenQueueEntity(topic, displayName, businessType);
                 token.setId(codeQR);
@@ -215,7 +215,7 @@ public class TokenQueueService {
                         .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             }
 
-            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+            TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
             LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
                     queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
@@ -259,7 +259,7 @@ public class TokenQueueService {
             queue.setCustomerName(userProfile.getName());
             queue.setCustomerPhone(userProfile.getPhone());
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
-            if (!userProfile.getGuardianToQueueUserId().isEmpty()) {
+            if (null != userProfile.getGuardianToQueueUserId() && !userProfile.getGuardianToQueueUserId().isEmpty()) {
                 queue.setGuardianToQueueUserId(userProfile.getGuardianToQueueUserId());
             }
             queueManager.save(queue);
@@ -318,7 +318,7 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
         /*
          * Do not inform anyone other than the person with the
@@ -604,5 +604,9 @@ public class TokenQueueService {
 
     public QueueEntity findOne(String codeQR, int tokenNumber) {
         return queueManager.findOne(codeQR, tokenNumber);
+    }
+
+    public void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
+        tokenQueueManager.changeQueueStatus(codeQR, queueStatus);
     }
 }

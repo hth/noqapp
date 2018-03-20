@@ -1,6 +1,5 @@
 package com.noqapp.domain.types;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

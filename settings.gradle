@@ -4,6 +4,7 @@ include "common",
         "security",
         "service",
         "search",
+        "medical",
         "social",
         "view",
         "loader"

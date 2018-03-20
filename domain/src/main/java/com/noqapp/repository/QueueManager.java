@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.List;
 
@@ -25,10 +26,21 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findToAbort(String codeQR, String did, String qid);
 
     @Mobile
-    QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo, String sid);
+    QueueEntity updateAndGetNextInQueue(
+            String codeQR,
+            int tokenNumber,
+            QueueUserStateEnum queueUserState,
+            String goTo,
+            String sid,
+            TokenServiceEnum tokenService);
 
     @Mobile
-    boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid);
+    boolean updateServedInQueue(
+            String codeQR,
+            int tokenNumber,
+            QueueUserStateEnum queueUserState,
+            String sid,
+            TokenServiceEnum tokenService);
 
     /**
      * Gets next token. By default this gets the next token in sequence/order of ascending .

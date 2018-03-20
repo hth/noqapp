@@ -64,4 +64,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     void unsetQidForDevice(String id);
 
     long countRegisteredBetweenDates(Date from, Date to, DeviceTypeEnum deviceType);
+
+    RegisteredDeviceEntity findAnyDeviceId(String qid);
 }

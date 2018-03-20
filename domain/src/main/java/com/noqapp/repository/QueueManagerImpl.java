@@ -8,6 +8,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
@@ -135,17 +136,30 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity updateAndGetNextInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String goTo, String sid) {
-        boolean status = updateServedInQueue(codeQR, tokenNumber, queueUserState, sid);
+    public QueueEntity updateAndGetNextInQueue(
+            String codeQR,
+            int tokenNumber,
+            QueueUserStateEnum queueUserState,
+            String goTo,
+            String sid,
+            TokenServiceEnum tokenService
+    ) {
+        boolean status = updateServedInQueue(codeQR, tokenNumber, queueUserState, sid, tokenService);
         LOG.info("serving status={} codeQR={} tokenNumber={} sid={}", status, codeQR, tokenNumber, sid);
         return getNext(codeQR, goTo, sid);
     }
 
     @Override
-    public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid) {
+    public boolean updateServedInQueue(String codeQR, int tokenNumber, QueueUserStateEnum queueUserState, String sid, TokenServiceEnum tokenService) {
+        Query query;
+        if (TokenServiceEnum.W == tokenService) {
+            query = query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A));
+        } else {
+            query = query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A).and("SID").is(sid));
+        }
         boolean status = mongoTemplate.updateFirst(
                 /* Do not update if user aborted between beginning of service and before completion of service. */
-                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").ne(QueueUserStateEnum.A).and("SID").is(sid)),
+                query,
                 entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
                 QueueEntity.class,
                 TABLE).getModifiedCount() > 1;
@@ -356,7 +370,7 @@ public class QueueManagerImpl implements QueueManager {
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.Q),
                                 where("QS").is(QueueUserStateEnum.A))
-                ),
+                ).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
                 TABLE
         );

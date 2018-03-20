@@ -1,12 +1,19 @@
 package com.noqapp.view.controller.business.store.queue;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.helper.QueueDetail;
+import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.QueueService;
+import com.noqapp.view.form.business.BusinessLandingForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,15 +22,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.json.JsonTopic;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.view.form.business.BusinessLandingForm;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
