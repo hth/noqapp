@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Transient;
  */
 public class GeoIP {
     private String ipAddress;
-    private String city;
+    private String cityName;
     private double latitude;
     private double longitude;
 
@@ -20,9 +20,9 @@ public class GeoIP {
     public GeoIP() {
     }
 
-    public GeoIP(String ipAddress, String city, double latitude, double longitude) {
+    public GeoIP(String ipAddress, String cityName, double latitude, double longitude) {
         this.ipAddress = ipAddress;
-        this.city = city;
+        this.cityName = cityName;
         this.latitude = latitude;
         this.longitude = longitude;
 
@@ -33,8 +33,8 @@ public class GeoIP {
         return ipAddress;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityName() {
+        return cityName;
     }
 
     public double getLatitude() {
@@ -62,7 +62,7 @@ public class GeoIP {
     public String toString() {
         return "GeoIP{" +
                 "ipAddress='" + ipAddress + '\'' +
-                ", city='" + city + '\'' +
+                ", cityName='" + cityName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", geoPoint=" + geoPoint +

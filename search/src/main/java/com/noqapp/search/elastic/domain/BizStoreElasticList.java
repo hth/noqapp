@@ -33,6 +33,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BizStoreElasticList extends AbstractDomain {
 
+    @JsonProperty("cityName")
+    private String cityName;
+
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
@@ -42,6 +45,15 @@ public class BizStoreElasticList extends AbstractDomain {
 
     public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
+        return this;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public BizStoreElasticList setCityName(String cityName) {
+        this.cityName = cityName;
         return this;
     }
 

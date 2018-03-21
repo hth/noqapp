@@ -85,7 +85,17 @@
                                         </td>
                                         <td nowrap>
                                             <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                            <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
+                                            <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
+                                            <span style="display:block; font-size:13px;">Category:
+                                                <c:choose>
+                                                    <c:when test="${!empty businessLandingForm.categories.get(store.bizCategoryId)}">
+                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        N/A
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </span>
                                             <c:choose>
                                                 <c:when test="${store.averageServiceTime > 0}">
                                                     <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
