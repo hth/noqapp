@@ -57,8 +57,8 @@
                         <form:input path="search" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="" autofocus="autofocus"/>
                         <img src="${pageContext.request.contextPath}/static2/internal/img/location.png" alt="Location" style="float: left;"/>
                         <c:choose>
-                        <c:when test="${!empty searchForm.geoIP.city}">
-                        <span class="left-remember">${searchForm.geoIP.city}</span>
+                        <c:when test="${!empty searchForm.geoIP.cityName}">
+                        <span class="left-remember">${searchForm.geoIP.cityName}</span>
                         </c:when>
                         <c:otherwise>
                         <span class="left-remember">Unknown</span>
