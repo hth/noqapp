@@ -99,6 +99,10 @@ public class MedicalRecordController {
         MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner);
 
         QueueEntity queue = tokenQueueService.findOne(codeQR.getText(), token);
+        if (null == queue.getServiceBeginTime()) {
+            queueService.updateServiceBeginTime(queue.getId());
+        }
+
         if (StringUtils.isNotBlank(queue.getQueueUserId()) && qid.equalsIgnoreCase(queue.getQueueUserId())) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(recordOwner);
             medicalRecordForm

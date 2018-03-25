@@ -410,6 +410,7 @@ public class BizService {
     }
 
     public boolean resetStoreHour(String id) {
+        LOG.debug("StoreHour id={}", id);
         return storeHourManager.resetStoreHour(id);
     }
 }
