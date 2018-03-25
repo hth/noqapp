@@ -1,14 +1,5 @@
 package com.noqapp.service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.TimeZone;
-
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.PendingResult;
@@ -48,7 +39,7 @@ public class ExternalService {
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private GeoApiContext context;
-    private BizStoreManager bizStoreManager
+    private BizStoreManager bizStoreManager;
 
     @Autowired
     public ExternalService(
