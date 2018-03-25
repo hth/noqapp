@@ -48,7 +48,7 @@ public class ExternalService {
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private GeoApiContext context;
-    private BizStoreManager bizStoreManager;
+    private BizStoreManager bizStoreManager
 
     @Autowired
     public ExternalService(
