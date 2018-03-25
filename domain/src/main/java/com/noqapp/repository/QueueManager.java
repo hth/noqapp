@@ -111,4 +111,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     @Mobile
     long markAllAbortWhenQueueClosed(String codeQR, String serverDeviceId);
+
+    void updateServiceBeginTime(String id);
 }

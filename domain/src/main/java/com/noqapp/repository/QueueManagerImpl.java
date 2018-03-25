@@ -2,11 +2,9 @@ package com.noqapp.repository;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
-import com.mongodb.WriteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
-import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +22,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.*;
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -440,5 +438,15 @@ public class QueueManagerImpl implements QueueManager {
         );
 
         return updateResult.getModifiedCount();
+    }
+
+    @Override
+    public void updateServiceBeginTime(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("SB", new Date())),
+                QueueEntity.class,
+                TABLE
+        );
     }
 }
