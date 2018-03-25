@@ -1,8 +1,5 @@
 package com.noqapp.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -20,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -282,5 +282,9 @@ public class QueueService {
         }
 
         return null;
+    }
+
+    public void updateServiceBeginTime(String id) {
+        queueManager.updateServiceBeginTime(id);
     }
 }
