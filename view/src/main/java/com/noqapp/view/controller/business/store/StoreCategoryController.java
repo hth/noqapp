@@ -93,7 +93,7 @@ public class StoreCategoryController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store category page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -126,7 +126,7 @@ public class StoreCategoryController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Adding business product qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Adding store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -156,7 +156,7 @@ public class StoreCategoryController {
     @PostMapping (value = "/add", params = {"cancel_Add"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel business category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel adding store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/landing.htm";
     }
@@ -214,7 +214,7 @@ public class StoreCategoryController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Edit product storeProductId={} bizStoreId={} qid={} level={}",
+        LOG.info("Edit store category id={} bizStoreId={} qid={} level={}",
                 storeCategoryForm.getStoreCategoryId(),
                 storeCategoryForm.getBizStoreId(),
                 queueUser.getQueueUserId(),
@@ -244,7 +244,7 @@ public class StoreCategoryController {
             StoreCategoryForm storeCategoryForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel product edit qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel editing store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/landing.htm";
     }
@@ -263,7 +263,7 @@ public class StoreCategoryController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Delete product id={} qid={} level={}",
+        LOG.info("Delete store category id={} qid={} level={}",
                 storeCategoryForm.getStoreCategoryId().getText(),
                 queueUser.getQueueUserId(),
                 queueUser.getUserLevel());
