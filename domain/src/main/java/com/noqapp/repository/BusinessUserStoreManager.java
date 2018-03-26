@@ -11,6 +11,7 @@ import java.util.List;
 public interface BusinessUserStoreManager extends RepositoryManager<BusinessUserStoreEntity> {
 
     boolean hasAccess(String qid, String codeQR);
+    boolean hasAccessUsingStoreId(String qid, String bizStoreId);
 
     List<BusinessUserStoreEntity> getQueues(String qid, int limit);
 

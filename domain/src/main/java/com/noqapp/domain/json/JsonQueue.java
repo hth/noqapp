@@ -124,6 +124,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("bc")
     private String bizCategoryId;
 
+    @JsonProperty ("di")
+    private String displayImage;
+
     public JsonQueue() {
         //Required default constructor
     }
@@ -384,6 +387,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonQueue setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 }

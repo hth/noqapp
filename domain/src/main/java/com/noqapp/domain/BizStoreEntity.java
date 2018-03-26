@@ -1,11 +1,11 @@
 package com.noqapp.domain;
 
 import com.google.maps.model.LatLng;
-import com.noqapp.domain.shared.GeoPointOfQ;
-import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.shared.GeoPointOfQ;
+import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -23,7 +23,6 @@ import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -156,6 +155,9 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("BC")
     private String bizCategoryId;
+
+    @Field ("DI")
+    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
 
     //***************************/
     //*  Queue Settings Starts. */
@@ -470,6 +472,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public BizStoreEntity setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 

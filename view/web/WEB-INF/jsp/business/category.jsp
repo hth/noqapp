@@ -63,15 +63,15 @@
                                 <form:hidden path="bizNameId" />
                                 <form:hidden path="bizCategoryId" />
                                 <spring:hasBindErrors name="categoryLanding">
-                                    <div class="error-box">
-                                        <div class="error-txt">
-                                            <ul>
-                                                <c:if test="${errors.hasFieldErrors('categoryName')}">
-                                                    <li><form:errors path="categoryName"/></li>
-                                                </c:if>
-                                            </ul>
-                                        </div>
+                                <div class="error-box">
+                                    <div class="error-txt">
+                                        <ul>
+                                            <c:if test="${errors.hasFieldErrors('categoryName')}">
+                                            <li><form:errors path="categoryName"/></li>
+                                            </c:if>
+                                        </ul>
                                     </div>
+                                </div>
                                 </spring:hasBindErrors>
 
                                 <div class="admin-content">
@@ -116,7 +116,7 @@
                                         <div class="error-txt">
                                             <ul>
                                                 <c:if test="${errors.hasFieldErrors('categoryName')}">
-                                                    <li><form:errors path="categoryName"/></li>
+                                                <li><form:errors path="categoryName"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>

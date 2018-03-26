@@ -2,7 +2,6 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizCategoryEntity;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

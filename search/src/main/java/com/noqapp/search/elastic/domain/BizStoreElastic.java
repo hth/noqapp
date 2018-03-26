@@ -127,6 +127,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("WL")
     private String webLocation;
 
+    @JsonProperty ("DI")
+    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
+
     public String getId() {
         return id;
     }
@@ -367,6 +370,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public BizStoreElastic setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 
