@@ -5,6 +5,10 @@ import com.noqapp.common.utils.ScrubbedInput;
 import java.util.Map;
 
 /**
+ * Global business category. This is unique to a business. Store will have the capabilities to copy all the
+ * categories from business. For a store to define its own category, they need to add Store Category. Store
+ * Category is unique to a store and its not shared across other stores.
+ *
  * hitender
  * 12/20/17 4:36 PM
  */
@@ -13,6 +17,7 @@ public class CategoryLandingForm {
     private ScrubbedInput bizNameId;
     private ScrubbedInput bizCategoryId;
     private ScrubbedInput categoryName;
+
     private Map<String, String> categories;
     private Map<String, Long> categoryCounts;
 

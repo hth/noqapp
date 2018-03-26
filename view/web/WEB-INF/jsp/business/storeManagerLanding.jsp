@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -78,6 +79,14 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>
                                             <a href="/business/detail/store/${store.id}.htm">${store.address}</a>
+                                            <c:choose>
+                                                <c:when test="${BusinessTypeEnum.ST eq store.businessType}">
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" target="_blank">Product List</a> | <a href="/business/store/category/${store.id}.htm" target="_blank">Store Category</a></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;">Blank Here</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                         <td nowrap>
                                             <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
