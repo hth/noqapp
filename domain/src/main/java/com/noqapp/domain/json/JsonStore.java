@@ -35,6 +35,9 @@ public class JsonStore extends AbstractDomain {
     @JsonProperty("queue")
     private JsonQueue jsonQueue;
 
+    @JsonProperty("hours")
+    private List<JsonHour> jsonHours = new LinkedList<>();
+
     @JsonProperty("categories")
     private List<JsonStoreCategory> jsonStoreCategories = new LinkedList<>();
 
@@ -47,6 +50,15 @@ public class JsonStore extends AbstractDomain {
 
     public JsonStore setJsonQueue(JsonQueue jsonQueue) {
         this.jsonQueue = jsonQueue;
+        return this;
+    }
+
+    public List<JsonHour> getJsonHours() {
+        return jsonHours;
+    }
+
+    public JsonStore addJsonHour(JsonHour jsonHour) {
+        this.jsonHours.add(jsonHour);
         return this;
     }
 
