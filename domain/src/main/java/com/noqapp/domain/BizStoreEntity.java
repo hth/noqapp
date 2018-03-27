@@ -162,7 +162,7 @@ public class BizStoreEntity extends BaseEntity {
     private String bizCategoryId;
 
     @Field ("DI")
-    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
+    private String displayImage;
 
     @Field ("FF")
     private String famousFor;

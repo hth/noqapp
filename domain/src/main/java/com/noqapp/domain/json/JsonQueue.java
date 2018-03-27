@@ -131,34 +131,34 @@ public class JsonQueue extends AbstractDomain {
     private String bizCategoryId;
 
     @JsonProperty ("di")
-    private String displayImage;
+    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
 
     @JsonProperty("ff")
-    private String famousFor;
+    private String famousFor = "Chicken, Aloo Tikki";
 
     @JsonProperty ("dd")
-    private int discount;
+    private int discount = 15;
 
     @JsonProperty ("md")
-    private int minimumDeliveryOrder;
+    private int minimumDeliveryOrder = 100;
 
     @JsonProperty ("si")
-    private List<String> storeServiceImages = new LinkedList<>();
+    private List<String> storeServiceImages = new LinkedList<String>() {{add("https://noqapp.com/static2/internal/img/logo.png"); add("https://noqapp.com/static2/internal/img/logo.png");}};
 
     @JsonProperty ("ii")
-    private List<String> storeInteriorImages = new LinkedList<>();
+    private List<String> storeInteriorImages = new LinkedList<String>() {{add("https://noqapp.com/static2/internal/img/logo.png"); add("https://noqapp.com/static2/internal/img/logo.png");}};
 
     @JsonProperty ("pm")
-    private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
+    private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{add(PaymentTypeEnum.AP); add(PaymentTypeEnum.CA); add(PaymentTypeEnum.CC); add(PaymentTypeEnum.DC); }};
 
     @JsonProperty ("dm")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<DeliveryTypeEnum>() {{add(DeliveryTypeEnum.HD); add(DeliveryTypeEnum.TO);}};
 
     @JsonProperty ("am")
-    private List<AmenityEnum> amenities = new LinkedList<>();
+    private List<AmenityEnum> amenities = new LinkedList<AmenityEnum>() {{add(AmenityEnum.FP); add(AmenityEnum.AC);}};
 
     @JsonProperty ("fa")
-    private List<FacilityEnum> facilities = new LinkedList<>();
+    private List<FacilityEnum> facilities = new LinkedList<FacilityEnum>() {{add(FacilityEnum.EM); add(FacilityEnum.LS); add(FacilityEnum.RA);}};
 
     public JsonQueue() {
         //Required default constructor
