@@ -6,7 +6,11 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.PaymentTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -25,6 +29,7 @@ import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.util.Base64;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -158,6 +163,33 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("DI")
     private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
+
+    @Field ("FF")
+    private String famousFor;
+
+    @Field ("DD")
+    private int discount;
+
+    @Field ("MD")
+    private int minimumDeliveryOrder;
+
+    @Field ("SI")
+    private List<String> storeServiceImages = new LinkedList<>();
+
+    @Field ("II")
+    private List<String> storeInteriorImages = new LinkedList<>();
+
+    @Field ("PM")
+    private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
+
+    @Field ("DM")
+    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+
+    @Field ("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @Field ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     //***************************/
     //*  Queue Settings Starts. */
@@ -481,6 +513,87 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
+        return this;
+    }
+
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public BizStoreEntity setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
+        return this;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public BizStoreEntity setDiscount(int discount) {
+        this.discount = discount;
+        return this;
+    }
+
+    public int getMinimumDeliveryOrder() {
+        return minimumDeliveryOrder;
+    }
+
+    public BizStoreEntity setMinimumDeliveryOrder(int minimumDeliveryOrder) {
+        this.minimumDeliveryOrder = minimumDeliveryOrder;
+        return this;
+    }
+
+    public List<String> getStoreServiceImages() {
+        return storeServiceImages;
+    }
+
+    public BizStoreEntity setStoreServiceImages(List<String> storeServiceImages) {
+        this.storeServiceImages = storeServiceImages;
+        return this;
+    }
+
+    public List<String> getStoreInteriorImages() {
+        return storeInteriorImages;
+    }
+
+    public BizStoreEntity setStoreInteriorImages(List<String> storeInteriorImages) {
+        this.storeInteriorImages = storeInteriorImages;
+        return this;
+    }
+
+    public List<PaymentTypeEnum> getPaymentTypes() {
+        return paymentTypes;
+    }
+
+    public BizStoreEntity setPaymentTypes(List<PaymentTypeEnum> paymentTypes) {
+        this.paymentTypes = paymentTypes;
+        return this;
+    }
+
+    public List<DeliveryTypeEnum> getDeliveryTypes() {
+        return deliveryTypes;
+    }
+
+    public BizStoreEntity setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
+        this.deliveryTypes = deliveryTypes;
+        return this;
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizStoreEntity setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizStoreEntity setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
         return this;
     }
 

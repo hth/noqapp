@@ -5,13 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -126,6 +132,33 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty ("di")
     private String displayImage;
+
+    @JsonProperty("ff")
+    private String famousFor;
+
+    @JsonProperty ("dd")
+    private int discount;
+
+    @JsonProperty ("md")
+    private int minimumDeliveryOrder;
+
+    @JsonProperty ("si")
+    private List<String> storeServiceImages = new LinkedList<>();
+
+    @JsonProperty ("ii")
+    private List<String> storeInteriorImages = new LinkedList<>();
+
+    @JsonProperty ("pm")
+    private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
+
+    @JsonProperty ("dm")
+    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+
+    @JsonProperty ("am")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @JsonProperty ("fa")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     public JsonQueue() {
         //Required default constructor
@@ -396,6 +429,87 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
+        return this;
+    }
+
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public JsonQueue setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
+        return this;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public JsonQueue setDiscount(int discount) {
+        this.discount = discount;
+        return this;
+    }
+
+    public int getMinimumDeliveryOrder() {
+        return minimumDeliveryOrder;
+    }
+
+    public JsonQueue setMinimumDeliveryOrder(int minimumDeliveryOrder) {
+        this.minimumDeliveryOrder = minimumDeliveryOrder;
+        return this;
+    }
+
+    public List<String> getStoreServiceImages() {
+        return storeServiceImages;
+    }
+
+    public JsonQueue setStoreServiceImages(List<String> storeServiceImages) {
+        this.storeServiceImages = storeServiceImages;
+        return this;
+    }
+
+    public List<String> getStoreInteriorImages() {
+        return storeInteriorImages;
+    }
+
+    public JsonQueue setStoreInteriorImages(List<String> storeInteriorImages) {
+        this.storeInteriorImages = storeInteriorImages;
+        return this;
+    }
+
+    public List<PaymentTypeEnum> getPaymentTypes() {
+        return paymentTypes;
+    }
+
+    public JsonQueue setPaymentTypes(List<PaymentTypeEnum> paymentTypes) {
+        this.paymentTypes = paymentTypes;
+        return this;
+    }
+
+    public List<DeliveryTypeEnum> getDeliveryTypes() {
+        return deliveryTypes;
+    }
+
+    public JsonQueue setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
+        this.deliveryTypes = deliveryTypes;
+        return this;
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public JsonQueue setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public JsonQueue setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
         return this;
     }
 }
