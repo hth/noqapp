@@ -31,7 +31,7 @@ public class StoreProductEntity extends BaseEntity {
     private String productPrice;
 
     @Field("PD")
-    private String productDiscount;
+    private int productDiscount;
 
     @Field("PI")
     private String productInfo;
@@ -73,11 +73,11 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public String getProductDiscount() {
+    public int getProductDiscount() {
         return productDiscount;
     }
 
-    public StoreProductEntity setProductDiscount(String productDiscount) {
+    public StoreProductEntity setProductDiscount(int productDiscount) {
         this.productDiscount = productDiscount;
         return this;
     }
