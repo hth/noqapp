@@ -104,10 +104,20 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productDescription" cssErrorClass="lb_error">Description</form:label>
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Discount</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:input path="productDescription" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                    placeholder="Any specific discount on product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Describe the product"/>
                                                     </div>
                                                     <div class="clearFix"></div>
@@ -211,10 +221,20 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productDescription" cssErrorClass="lb_error">Description</form:label>
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Discount</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:input path="productDescription" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                    placeholder="Any specific discount on product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Describe the product"/>
                                                     </div>
                                                     <div class="clearFix"></div>
@@ -282,6 +302,7 @@
                                                  alt="Sort" height="16px;"/>
                                         </th>
                                         <th>Price</th>
+                                        <th>Product Discount</th>
                                         <th>Store Category</th>
                                         <th>Fresh</th>
                                         <th nowrap></th>
@@ -292,9 +313,10 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>
                                             ${storeProduct.productName}
-                                            <span style="display:block; font-size:13px;">${storeProduct.productDescription}</span>
+                                            <span style="display:block; font-size:13px;">${storeProduct.productInfo}</span>
                                         </td>
                                         <td nowrap>${storeProduct.productPrice}</td>
+                                        <td nowrap>${storeProduct.productDiscount}</td>
                                         <td nowrap>${storeProductForm.categories.get(storeProduct.storeCategoryId)}</td>
                                         <td nowrap>
                                             <c:choose>

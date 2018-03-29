@@ -31,7 +31,10 @@ public class StoreProductEntity extends BaseEntity {
     private String productPrice;
 
     @Field("PD")
-    private String productDescription;
+    private String productDiscount;
+
+    @Field("PI")
+    private String productInfo;
 
     @Field("SC")
     private String storeCategoryId;
@@ -70,12 +73,21 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public String getProductDiscount() {
+        return productDiscount;
     }
 
-    public StoreProductEntity setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public StoreProductEntity setProductDiscount(String productDiscount) {
+        this.productDiscount = productDiscount;
+        return this;
+    }
+
+    public String getProductInfo() {
+        return productInfo;
+    }
+
+    public StoreProductEntity setProductInfo(String productInfo) {
+        this.productInfo = productInfo;
         return this;
     }
 

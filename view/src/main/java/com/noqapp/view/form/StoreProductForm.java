@@ -17,7 +17,7 @@ public class StoreProductForm {
     private ScrubbedInput storeProductId;
     private ScrubbedInput productName;
     private ScrubbedInput productPrice;
-    private ScrubbedInput productDescription;
+    private ScrubbedInput productInfo;
     private ScrubbedInput storeCategoryId;
     private boolean productFresh;
 
@@ -69,12 +69,12 @@ public class StoreProductForm {
         return this;
     }
 
-    public ScrubbedInput getProductDescription() {
-        return productDescription;
+    public ScrubbedInput getProductInfo() {
+        return productInfo;
     }
 
-    public StoreProductForm setProductDescription(ScrubbedInput productDescription) {
-        this.productDescription = productDescription;
+    public StoreProductForm setProductInfo(ScrubbedInput productInfo) {
+        this.productInfo = productInfo;
         return this;
     }
 
