@@ -147,7 +147,7 @@ public class StoreProductController {
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
                 .setProductName(storeProductForm.getProductName().getText())
                 .setProductPrice(null == storeProductForm.getProductPrice() ? null : storeProductForm.getProductPrice().getText())
-                .setProductDescription(null == storeProductForm.getProductDescription() ? null : storeProductForm.getProductDescription().getText())
+                .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductFresh(storeProductForm.isProductFresh());
         storeProductService.save(storeProduct);
@@ -195,7 +195,7 @@ public class StoreProductController {
         storeProductForm
                 .setProductName(new ScrubbedInput(storeProduct.getProductName()))
                 .setProductPrice(new ScrubbedInput(storeProduct.getProductPrice()))
-                .setProductDescription(new ScrubbedInput(storeProduct.getProductDescription()))
+                .setProductInfo(new ScrubbedInput(storeProduct.getProductInfo()))
                 .setProductFresh(storeProduct.isProductFresh())
                 /*  When not store category is set. Which results in exception in JSP due to NULL. */
                 .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()));
@@ -241,7 +241,7 @@ public class StoreProductController {
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
                 .setProductName(storeProductForm.getProductName().getText())
                 .setProductPrice(null == storeProductForm.getProductPrice() ? null : storeProductForm.getProductPrice().getText())
-                .setProductDescription(null == storeProductForm.getProductDescription() ? null : storeProductForm.getProductDescription().getText())
+                .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductFresh(storeProductForm.isProductFresh());
         storeProductService.save(storeProduct);
