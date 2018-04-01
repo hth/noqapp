@@ -164,4 +164,8 @@ public final class CommonUtil {
         }
         return string.substring(0, index) + replacement + string.substring(index + findString.length());
     }
+
+    public static String generateHexFromObjectId() {
+        return ObjectId.get().toHexString();
+    }
 }
