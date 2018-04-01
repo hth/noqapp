@@ -70,7 +70,7 @@ public class StoreProductManagerImpl implements StoreProductManager {
     @Override
     public boolean existProductName(String storeId, String productName) {
         return mongoTemplate.exists(
-                Query.query(where("BZ").is(storeId).and("PN").regex("^" + productName, "i")),
+                Query.query(where("BZ").is(storeId).and("PN").regex("^" + productName + "$", "i")),
                 StoreProductEntity.class,
                 TABLE
         );

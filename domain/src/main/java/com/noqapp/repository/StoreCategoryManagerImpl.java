@@ -71,7 +71,7 @@ public class StoreCategoryManagerImpl implements StoreCategoryManager {
     @Override
     public boolean existCategoryName(String storeId, String categoryName) {
         return mongoTemplate.exists(
-                Query.query(where("BZ").is(storeId).and("CN").regex("^" + categoryName, "i")),
+                Query.query(where("BZ").is(storeId).and("CN").regex("^" + categoryName + "$", "i")),
                 StoreCategoryEntity.class,
                 TABLE
         );

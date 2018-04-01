@@ -1,9 +1,15 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.beans.Transient;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * hitender
@@ -28,7 +34,7 @@ public class StoreProductEntity extends BaseEntity {
     private String productName;
 
     @Field("PP")
-    private String productPrice;
+    private int productPrice;
 
     @Field("PD")
     private int productDiscount;
@@ -39,8 +45,11 @@ public class StoreProductEntity extends BaseEntity {
     @Field("SC")
     private String storeCategoryId;
 
-    @Field("PF")
-    private boolean productFresh;
+    @Field("PT")
+    private ProductTypeEnum productType;
+
+    @Field ("UM")
+    private UnitOfMeasurementEnum unitOfMeasurement;
 
     //TODO product description references to html location.
     @Field("PR")
@@ -64,11 +73,11 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public String getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public StoreProductEntity setProductPrice(String productPrice) {
+    public StoreProductEntity setProductPrice(int productPrice) {
         this.productPrice = productPrice;
         return this;
     }
@@ -100,12 +109,21 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isProductFresh() {
-        return productFresh;
+    public ProductTypeEnum getProductType() {
+        return productType;
     }
 
-    public StoreProductEntity setProductFresh(boolean productFresh) {
-        this.productFresh = productFresh;
+    public StoreProductEntity setProductType(ProductTypeEnum productType) {
+        this.productType = productType;
+        return this;
+    }
+
+    public UnitOfMeasurementEnum getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public StoreProductEntity setUnitOfMeasurement(UnitOfMeasurementEnum unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
         return this;
     }
 
@@ -116,5 +134,15 @@ public class StoreProductEntity extends BaseEntity {
     public StoreProductEntity setProductReference(String productReference) {
         this.productReference = productReference;
         return this;
+    }
+
+    @Transient
+    public String getDisplayPrice() {
+        return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+
+    @Transient
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
 }

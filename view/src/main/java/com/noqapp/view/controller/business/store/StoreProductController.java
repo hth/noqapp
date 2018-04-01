@@ -4,6 +4,8 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.StoreCategoryService;
@@ -28,6 +30,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -110,8 +114,9 @@ public class StoreProductController {
                 .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
                 .setBizStoreId(storeId)
                 .setStoreProducts(storeProductService.findAll(storeId.getText()))
-                .setCategories(categories);
-
+                .setCategories(categories)
+                .setProductTypes(ProductTypeEnum.values())
+                .setUnitOfMeasurements(UnitOfMeasurementEnum.values());
         return nextPage;
     }
 
@@ -146,10 +151,12 @@ public class StoreProductController {
         StoreProductEntity storeProduct = new StoreProductEntity()
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
                 .setProductName(storeProductForm.getProductName().getText())
-                .setProductPrice(null == storeProductForm.getProductPrice() ? null : storeProductForm.getProductPrice().getText())
+                .setProductPrice(null == storeProductForm.getProductPrice() ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
+                .setProductDiscount(null == storeProductForm.getProductDiscount() ? 0 : new BigDecimal(storeProductForm.getProductDiscount().getText()).multiply(new BigDecimal(100)).intValue())
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
-                .setProductFresh(storeProductForm.isProductFresh());
+                .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()));
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
     }
@@ -194,9 +201,11 @@ public class StoreProductController {
         StoreProductEntity storeProduct = storeProductService.findOne(storeProductId.getText());
         storeProductForm
                 .setProductName(new ScrubbedInput(storeProduct.getProductName()))
-                .setProductPrice(new ScrubbedInput(storeProduct.getProductPrice()))
+                .setProductPrice(new ScrubbedInput(new BigDecimal(storeProduct.getProductPrice()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
+                .setProductDiscount(new ScrubbedInput(new BigDecimal(storeProduct.getProductDiscount()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
                 .setProductInfo(new ScrubbedInput(storeProduct.getProductInfo()))
-                .setProductFresh(storeProduct.isProductFresh())
+                .setProductType(new ScrubbedInput(storeProduct.getProductType().name()))
+                .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
                 /*  When not store category is set. Which results in exception in JSP due to NULL. */
                 .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()));
 
@@ -240,10 +249,12 @@ public class StoreProductController {
         storeProduct
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
                 .setProductName(storeProductForm.getProductName().getText())
-                .setProductPrice(null == storeProductForm.getProductPrice() ? null : storeProductForm.getProductPrice().getText())
+                .setProductPrice(null == storeProductForm.getProductPrice() ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
+                .setProductDiscount(null == storeProductForm.getProductDiscount() ? 0 : new BigDecimal(storeProductForm.getProductDiscount().getText()).multiply(new BigDecimal(100)).intValue())
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
-                .setProductFresh(storeProductForm.isProductFresh());
+                .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()));
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
     }

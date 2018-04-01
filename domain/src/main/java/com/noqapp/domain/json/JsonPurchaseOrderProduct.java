@@ -1,0 +1,79 @@
+package com.noqapp.domain.json;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.common.utils.AbstractDomain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * hitender
+ * 3/31/18 4:15 PM
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonPurchaseOrderProduct extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonPurchaseOrderProduct.class);
+
+    @JsonProperty("pi")
+    private String productId;
+
+    @JsonProperty("pp")
+    private int productPrice;
+
+    @JsonProperty("pd")
+    private int productDiscount;
+
+    @JsonProperty("pq")
+    private int productQuantity;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public JsonPurchaseOrderProduct setProductId(String productId) {
+        this.productId = productId;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public JsonPurchaseOrderProduct setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public int getProductDiscount() {
+        return productDiscount;
+    }
+
+    public JsonPurchaseOrderProduct setProductDiscount(int productDiscount) {
+        this.productDiscount = productDiscount;
+        return this;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public JsonPurchaseOrderProduct setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+        return this;
+    }
+}
