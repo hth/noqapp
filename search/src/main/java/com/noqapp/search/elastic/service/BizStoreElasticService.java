@@ -16,8 +16,8 @@ import com.noqapp.search.elastic.dsl.Query;
 import com.noqapp.search.elastic.dsl.QueryString;
 import com.noqapp.search.elastic.dsl.Search;
 import com.noqapp.search.elastic.helper.DomainConversion;
-import com.noqapp.search.elastic.json.ElasticResult;
 import com.noqapp.search.elastic.json.ElasticBizStoreSource;
+import com.noqapp.search.elastic.json.ElasticResult;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -145,7 +145,7 @@ public class BizStoreElasticService {
             );
         } else {
             /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
-            q.setQueryStringMatchAll(new QueryString().setQuery(null).setFields(null));
+            q.setConditions(new Conditions().setOptions(new Options().setQueryStringMatchAll(new QueryString().setFields(null))));
         }
 
         if (StringUtils.isNotBlank(geoHash)) {
@@ -156,6 +156,7 @@ public class BizStoreElasticService {
                     ));
         }
 
+        LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
                 .setFrom(0)
                 .setSize(limitRecords)

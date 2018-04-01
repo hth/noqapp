@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,25 +31,8 @@ import org.slf4j.LoggerFactory;
 public class Query extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(Query.class);
 
-    @JsonProperty("match_all")
-    private QueryString queryStringMatchAll;
-
     @JsonProperty("bool")
     private Conditions conditions;
-
-    public QueryString getQueryStringMatchAll() {
-        return queryStringMatchAll;
-    }
-
-    public Query setQueryStringMatchAll(QueryString queryStringMatchAll) {
-        if (StringUtils.isNotBlank(queryStringMatchAll.getQuery()) || null == queryStringMatchAll.getFields()) {
-            LOG.error("Match All should be blank");
-            throw new RuntimeException("Match All should be blank");
-        }
-
-        this.queryStringMatchAll = queryStringMatchAll;
-        return this;
-    }
 
     public Conditions getConditions() {
         return conditions;

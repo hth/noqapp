@@ -51,6 +51,38 @@ Example from Stackoverflow[link](https://stackoverflow.com/questions/16776260/el
       }
     }  
     
+#### Search all fields
+
+    curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+        {
+            "query": {
+                "match_all" : {}
+            }
+        }
+        '    
+        
+#### Search all fields with distance
+    
+    curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+        {
+          "from": 0,
+          "query": {
+            "bool": {
+              "must": {
+                "match_all": {}
+              },
+              "filter": {
+                "geo_distance": {
+                  "distance": "150km",
+                  "GH": "te7ut71tgd9n"
+                }
+              }
+            }
+          },
+          "size": 10
+        }
+        '    
+    
     
 ### Changing Mapping with Zero Downtime
 
