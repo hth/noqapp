@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            PurchaseOrderManagerImpl.class,
+            PurchaseOrderEntity.class,
             Document.class,
             "collection");
 
