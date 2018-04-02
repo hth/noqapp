@@ -65,7 +65,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("op")
+    @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public JsonPurchaseOrder() {
