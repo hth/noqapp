@@ -131,7 +131,7 @@ public class JsonQueue extends AbstractDomain {
     private String bizCategoryId;
 
     @JsonProperty ("di")
-    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
+    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
 
     @JsonProperty("ff")
     private String famousFor = "Chicken, Aloo Tikki";
@@ -143,10 +143,10 @@ public class JsonQueue extends AbstractDomain {
     private int minimumDeliveryOrder = 100;
 
     @JsonProperty ("si")
-    private List<String> storeServiceImages = new LinkedList<String>() {{add("https://noqapp.com/static2/internal/img/logo.png"); add("https://noqapp.com/static2/internal/img/logo.png");}};
+    private List<String> storeServiceImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/40x40/a.jpeg"); add("https://noqapp.com/imgs/40x40/b.jpeg"); add("https://noqapp.com/imgs/40x40/e.jpeg");}};
 
     @JsonProperty ("ii")
-    private List<String> storeInteriorImages = new LinkedList<String>() {{add("https://noqapp.com/static2/internal/img/logo.png"); add("https://noqapp.com/static2/internal/img/logo.png");}};
+    private List<String> storeInteriorImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/60x60/e.jpeg"); add("https://noqapp.com/imgs/60x60/c.png");}};
 
     @JsonProperty ("pm")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{add(PaymentTypeEnum.AP); add(PaymentTypeEnum.CA); add(PaymentTypeEnum.CC); add(PaymentTypeEnum.DC); }};
