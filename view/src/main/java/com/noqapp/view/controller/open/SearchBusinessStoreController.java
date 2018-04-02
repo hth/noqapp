@@ -1,15 +1,11 @@
 package com.noqapp.view.controller.open;
 
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.search.elastic.helper.GeoIP;
-import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.view.form.SearchForm;
-import com.noqapp.view.form.business.CategoryLandingForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import com.noqapp.view.validator.SearchValidator;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * hitender
