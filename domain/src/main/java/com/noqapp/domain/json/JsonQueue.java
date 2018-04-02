@@ -41,6 +41,9 @@ import java.util.TimeZone;
 public class JsonQueue extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
+    @JsonProperty("bs")
+    private String bizStoreId;
+
     @JsonProperty ("c")
     private String codeQR;
 
@@ -164,8 +167,13 @@ public class JsonQueue extends AbstractDomain {
         //Required default constructor
     }
 
-    public JsonQueue(String codeQR) {
+    public JsonQueue(String bizStoreId, String codeQR) {
+        this.bizStoreId = bizStoreId;
         this.codeQR = codeQR;
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
     }
 
     public String getCodeQR() {
