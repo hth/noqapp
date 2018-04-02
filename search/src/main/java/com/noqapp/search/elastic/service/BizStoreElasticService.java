@@ -206,7 +206,7 @@ public class BizStoreElasticService {
                         + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,AD,AR,TO,DT,ST,SS,CC,CS,PH,RA,RC,DN,QR,GH,WL",
                 dslQuery
         );
-        
+
         LOG.info("DSL Query result={}", result);
         return result;
     }
