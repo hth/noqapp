@@ -128,7 +128,7 @@ public class BizStoreElastic extends AbstractDomain {
     private String webLocation;
 
     @JsonProperty ("DI")
-    private String displayImage = "https://noqapp.com/static2/internal/img/logo.png";
+    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
 
     public String getId() {
         return id;
