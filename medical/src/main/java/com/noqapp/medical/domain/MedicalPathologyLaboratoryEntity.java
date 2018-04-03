@@ -20,19 +20,19 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_LAB")
+@Document(collection = "M_PAT_LAB")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_lab_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_pat_lab_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicalLaboratoryEntity extends BaseEntity {
+public class MedicalPathologyLaboratoryEntity extends BaseEntity {
 
     @NotNull
     @Field("QID")
     private String queueUserId;
 
     @DBRef
-    @Field("LT")
-    private List<MedicalLabTestEntity> medicalLabTests;
+    @Field("PE")
+    private List<MedicalPathologyEntity> medicalPathologies;
 
     @Field("TR")
     private String testResult;
@@ -41,22 +41,22 @@ public class MedicalLaboratoryEntity extends BaseEntity {
         return queueUserId;
     }
 
-    public MedicalLaboratoryEntity setQueueUserId(String queueUserId) {
+    public MedicalPathologyLaboratoryEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
 
-    public List<MedicalLabTestEntity> getMedicalLabTests() {
-        return medicalLabTests;
+    public List<MedicalPathologyEntity> getMedicalPathologies() {
+        return medicalPathologies;
     }
 
-    public MedicalLaboratoryEntity setMedicalLabTests(List<MedicalLabTestEntity> medicalLabTests) {
-        this.medicalLabTests = medicalLabTests;
+    public MedicalPathologyLaboratoryEntity setMedicalPathologies(List<MedicalPathologyEntity> medicalPathologies) {
+        this.medicalPathologies = medicalPathologies;
         return this;
     }
 
-    public MedicalLaboratoryEntity addMedicalLabTests(MedicalLabTestEntity medicalLabTest) {
-        this.medicalLabTests.add(medicalLabTest);
+    public MedicalPathologyLaboratoryEntity addMedicalLabTests(MedicalPathologyEntity medicalLabTest) {
+        this.medicalPathologies.add(medicalLabTest);
         return this;
     }
 
@@ -64,7 +64,7 @@ public class MedicalLaboratoryEntity extends BaseEntity {
         return testResult;
     }
 
-    public MedicalLaboratoryEntity setTestResult(String testResult) {
+    public MedicalPathologyLaboratoryEntity setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }

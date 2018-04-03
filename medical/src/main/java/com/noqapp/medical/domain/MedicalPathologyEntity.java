@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.PathologyEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,21 +19,33 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_LAB_T")
+@Document(collection = "M_PAT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_lab_t_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_pat_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicalLabTestEntity extends BaseEntity {
+public class MedicalPathologyEntity extends BaseEntity {
     @NotNull
     @Field("QID")
     private String queueUserId;
+
+    @Field("PA")
+    private PathologyEnum pathology;
 
     public String getQueueUserId() {
         return queueUserId;
     }
 
-    public MedicalLabTestEntity setQueueUserId(String queueUserId) {
+    public MedicalPathologyEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public PathologyEnum getPathology() {
+        return pathology;
+    }
+
+    public MedicalPathologyEntity setPathology(PathologyEnum pathology) {
+        this.pathology = pathology;
         return this;
     }
 }

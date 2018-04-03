@@ -60,7 +60,7 @@ public class MedicalRecordEntity extends BaseEntity {
 
     @DBRef
     @Field("LE")
-    private MedicalLaboratoryEntity medicalLaboratory;
+    private MedicalPathologyLaboratoryEntity medicalLaboratory;
 
     @DBRef
     @Field("RE")
@@ -70,9 +70,10 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("ME")
     private MedicationEntity medication;
 
+    /* Always doctors id who looked or was booked for. */
     @NotNull
-    @Field("REI")
-    private String recordEnteredUserId;
+    @Field("DBI")
+    private String diagnosedById;
 
     @Field("RA")
     private Map<Date, String> recordAccessed;
@@ -165,11 +166,11 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalLaboratoryEntity getMedicalLaboratory() {
+    public MedicalPathologyLaboratoryEntity getMedicalLaboratory() {
         return medicalLaboratory;
     }
 
-    public MedicalRecordEntity setMedicalLaboratory(MedicalLaboratoryEntity medicalLaboratory) {
+    public MedicalRecordEntity setMedicalLaboratory(MedicalPathologyLaboratoryEntity medicalLaboratory) {
         this.medicalLaboratory = medicalLaboratory;
         return this;
     }
@@ -192,12 +193,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public String getRecordEnteredUserId() {
-        return recordEnteredUserId;
+    public String getDiagnosedById() {
+        return diagnosedById;
     }
 
-    public MedicalRecordEntity setRecordEnteredUserId(String recordEnteredUserId) {
-        this.recordEnteredUserId = recordEnteredUserId;
+    public MedicalRecordEntity setDiagnosedById(String diagnosedById) {
+        this.diagnosedById = diagnosedById;
         return this;
     }
 

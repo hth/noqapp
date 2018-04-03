@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +34,7 @@ public class MedicalRecordService {
         this.medicalPhysicalExaminationManager = medicalPhysicalExaminationManager;
     }
 
-    public void addMedicalRecord(MedicalRecordForm medicalRecordForm) {
+    public void addMedicalRecord(MedicalRecordForm medicalRecordForm, String diagnosedById) {
         MedicalRecordEntity medicalRecord = new MedicalRecordEntity(medicalRecordForm.getQueueUserId());
         medicalRecord.setBusinessType(medicalRecordForm.getBusinessType())
                 .setChiefComplain(StringUtils.capitalize(medicalRecordForm.getChiefComplain().trim()))
@@ -43,7 +42,9 @@ public class MedicalRecordService {
                 .setFamilyHistory(StringUtils.capitalize(medicalRecordForm.getFamilyHistory().trim()))
                 .setKnownAllergies(StringUtils.capitalize(medicalRecordForm.getKnownAllergies().trim()))
                 .setClinicalFinding(StringUtils.capitalize(medicalRecordForm.getClinicalFinding().trim()))
-                .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()));
+                .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
+                .setDiagnosedById(diagnosedById);
+
         if (!medicalRecordForm.getMedicalPhysical().isEmpty()) {
             Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
 

@@ -33,9 +33,6 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("XR")
     private Set<MedicalRadiologyXRayEntity> medicalRadiologyXRays = new HashSet<>();
 
-    @Field("TR")
-    private String testResult;
-
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -51,15 +48,6 @@ public class MedicalRadiologyEntity extends BaseEntity {
 
     public MedicalRadiologyEntity setMedicalRadiologyXRays(Set<MedicalRadiologyXRayEntity> medicalRadiologyXRays) {
         this.medicalRadiologyXRays = medicalRadiologyXRays;
-        return this;
-    }
-
-    public String getTestResult() {
-        return testResult;
-    }
-
-    public MedicalRadiologyEntity setTestResult(String testResult) {
-        this.testResult = testResult;
         return this;
     }
 }

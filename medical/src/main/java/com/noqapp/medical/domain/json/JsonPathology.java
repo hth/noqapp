@@ -1,0 +1,44 @@
+package com.noqapp.medical.domain.json;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.PathologyEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * hitender
+ * 4/3/18 6:07 PM
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonPathology extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonPathology.class);
+
+    @JsonProperty("lt")
+    private PathologyEnum pathology;
+
+    public PathologyEnum getPathology() {
+        return pathology;
+    }
+
+    public JsonPathology setPathology(PathologyEnum pathology) {
+        this.pathology = pathology;
+        return this;
+    }
+}

@@ -1,10 +1,8 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.types.PhysicalExamEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -35,9 +33,6 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("PE")
     private Set<String> medicalPhysicalExaminations = new HashSet<>();
 
-    @Field("TR")
-    private String testResult;
-
     public MedicalPhysicalEntity(String queueUserId) {
         this.queueUserId = queueUserId;
     }
@@ -57,15 +52,6 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public MedicalPhysicalEntity setMedicalPhysicalExaminations(Set<String> medicalPhysicalExaminations) {
         this.medicalPhysicalExaminations = medicalPhysicalExaminations;
-        return this;
-    }
-
-    public String getTestResult() {
-        return testResult;
-    }
-
-    public MedicalPhysicalEntity setTestResult(String testResult) {
-        this.testResult = testResult;
         return this;
     }
 }
