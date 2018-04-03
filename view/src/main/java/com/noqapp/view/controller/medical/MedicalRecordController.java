@@ -165,7 +165,7 @@ public class MedicalRecordController {
         }
 
         //Validate if the person has joined the queue
-        medicalRecordService.addMedicalRecord(medicalRecordForm);
+        medicalRecordService.addMedicalRecord(medicalRecordForm, queueUser.getQueueUserId());
         queueService.updateAndGetNextInQueue(
                 medicalRecordForm.getCodeQR(),
                 medicalRecordForm.getToken(),

@@ -39,6 +39,9 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
     @Field ("VA")
     private String value;
 
+    @Field("TR")
+    private String testResult;
+
     public String getMedicalPhysicalReferenceId() {
         return medicalPhysicalReferenceId;
     }
@@ -72,6 +75,15 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
 
     public MedicalPhysicalExaminationEntity setValue(String value) {
         this.value = value;
+        return this;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public MedicalPhysicalExaminationEntity setTestResult(String testResult) {
+        this.testResult = testResult;
         return this;
     }
 }

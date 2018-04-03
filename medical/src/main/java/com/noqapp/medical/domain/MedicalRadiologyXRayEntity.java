@@ -31,6 +31,9 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
     @Field ("RE")
     private RadiologyEnum radiology;
 
+    @Field("TR")
+    private String testResult;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -46,6 +49,15 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
 
     public MedicalRadiologyXRayEntity setRadiology(RadiologyEnum radiology) {
         this.radiology = radiology;
+        return this;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public MedicalRadiologyXRayEntity setTestResult(String testResult) {
+        this.testResult = testResult;
         return this;
     }
 }

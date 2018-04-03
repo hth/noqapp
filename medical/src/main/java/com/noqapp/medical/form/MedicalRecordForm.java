@@ -4,7 +4,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.PhysicalExamEnum;
-import com.noqapp.medical.domain.MedicalLaboratoryEntity;
+import com.noqapp.medical.domain.MedicalPathologyLaboratoryEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 import com.noqapp.medical.domain.MedicationEntity;
@@ -42,7 +42,7 @@ public class MedicalRecordForm {
     private Set<MedicalPhysicalForm> medicalPhysical;
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
-    private MedicalLaboratoryEntity medicalLaboratory = new MedicalLaboratoryEntity();
+    private MedicalPathologyLaboratoryEntity medicalLaboratory = new MedicalPathologyLaboratoryEntity();
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
     private MedicationEntity medication = new MedicationEntity();
     private Map<Date, String> recordAccessed = new HashMap<>();
@@ -231,11 +231,11 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicalLaboratoryEntity getMedicalLaboratory() {
+    public MedicalPathologyLaboratoryEntity getMedicalLaboratory() {
         return medicalLaboratory;
     }
 
-    public MedicalRecordForm setMedicalLaboratory(MedicalLaboratoryEntity medicalLaboratory) {
+    public MedicalRecordForm setMedicalLaboratory(MedicalPathologyLaboratoryEntity medicalLaboratory) {
         this.medicalLaboratory = medicalLaboratory;
         return this;
     }
