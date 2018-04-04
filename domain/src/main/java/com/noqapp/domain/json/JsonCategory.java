@@ -32,6 +32,9 @@ public class JsonCategory extends AbstractDomain {
     @JsonProperty ("cn")
     private String categoryName;
 
+    @JsonProperty ("di")
+    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+
     public String getBizCategoryId() {
         return bizCategoryId;
     }
@@ -47,6 +50,15 @@ public class JsonCategory extends AbstractDomain {
 
     public JsonCategory setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonCategory setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 }
