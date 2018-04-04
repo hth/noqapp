@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StoreHourEntity;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +144,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public boolean resetStoreHour(String id) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
-                query(where("id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 entityUpdate(update("PJ", false)
                         .set("DE", 0)),
                 StoreHourEntity.class,
