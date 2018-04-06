@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.domain.shared.GeoPointOfQ;
@@ -380,6 +381,37 @@ public class BizStoreElastic extends AbstractDomain {
     public BizStoreElastic setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
         return this;
+    }
+
+    @Transient
+    public static BizStoreElastic getThisFromBizStore(BizStoreEntity bizStore) {
+        return new BizStoreElastic()
+                .setBusinessName(bizStore.getBizName().getBusinessName())
+                .setBusinessType(bizStore.getBusinessType())
+                .setCategory(bizStore.getBizCategoryId())
+                .setAddress(bizStore.getAddress())
+                .setArea(bizStore.getArea())
+                .setTown(bizStore.getTown())
+                .setDistrict(bizStore.getDistrict())
+                .setState(bizStore.getState())
+                .setStateShortName(bizStore.getStateShortName())
+                .setPostalCode(bizStore.getPostalCode())
+                .setCountry(bizStore.getCountry())
+                .setCountryShortName(bizStore.getCountryShortName())
+                .setPhone(bizStore.getPhone())
+                .setPhoneRaw(bizStore.getPhoneRaw())
+                .setGeoPointOfQ(bizStore.getGeoPointOfQ())
+                .setPlaceId(bizStore.getPlaceId())
+                .setPlaceType(bizStore.getPlaceType())
+                .setRating(bizStore.getRating())
+                .setRatingCount(bizStore.getRatingCount())
+                .setBizNameId(bizStore.getBizName().getId())
+                .setDisplayName(bizStore.getDisplayName())
+                .setCodeQR(bizStore.getCodeQR())
+                .setTimeZone(bizStore.getTimeZone())
+                .setGeoHash(bizStore.getGeoPoint().getGeohash())
+                .setWebLocation(bizStore.getWebLocation())
+                .setDisplayImage("https://noqapp.com/imgs/240x120/f.jpeg");
     }
 
     @Override
