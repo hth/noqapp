@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonCategory;
 import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 
 import java.beans.Transient;
@@ -36,6 +37,9 @@ public class BizStoreElasticList extends AbstractDomain {
     @JsonProperty("cityName")
     private String cityName;
 
+    @JsonProperty("categories")
+    private List<JsonCategory> jsonCategories = new ArrayList<>();
+
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
@@ -45,6 +49,25 @@ public class BizStoreElasticList extends AbstractDomain {
 
     public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
+        return this;
+    }
+
+    public BizStoreElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
+        this.bizStoreElastics.add(bizStoreElastic);
+        return this;
+    }
+
+    public List<JsonCategory> getJsonCategories() {
+        return jsonCategories;
+    }
+
+    public BizStoreElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
+        this.jsonCategories = jsonCategories;
+        return this;
+    }
+
+    public BizStoreElasticList addJsonCategory(JsonCategory jsonCategory) {
+        this.jsonCategories.add(jsonCategory);
         return this;
     }
 
