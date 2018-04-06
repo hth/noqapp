@@ -3,9 +3,7 @@ package com.noqapp.search.elastic.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.Constants;
-import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizCategoryManager;
@@ -117,13 +115,22 @@ public class BizStoreElasticService {
 //        }
 
         List<BizStoreEntity> bizStores = bizStoreManager.findAll();
+
+
         for (BizStoreEntity bizStore : bizStores) {
-            BizCategoryEntity bizCategory = bizCategoryManager.findById(bizStore.getBizCategoryId());
-            List<StoreHourEntity> storeHours = storeHourManager.findAll(bizStore.getId());
-            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizCategory, storeHours);
-            save(bizStoreElastic);
-            count ++;
+            BizStoreElastic bizStoreElastic = null;
+            try {
+                bizStoreElastic = DomainConversion.getAsBizStoreElastic(
+                        bizStore,
+                        bizCategoryManager.findById(bizStore.getBizCategoryId()),
+                        storeHourManager.findAll(bizStore.getId()));
+                save(bizStoreElastic);
+                count++;
+            } catch (Exception e) {
+                LOG.error("Failed to insert in elastic data={}", bizStoreElastic);
+            }
         }
+
 
         apiHealthService.insert(
                 "/addAllBizStoreToElastic",
