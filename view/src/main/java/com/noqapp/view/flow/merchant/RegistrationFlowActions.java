@@ -3,7 +3,6 @@ package com.noqapp.view.flow.merchant;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -11,6 +10,7 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
@@ -252,8 +252,11 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
-            BizCategoryEntity bizCategory = bizService.findByBizCategoryId(bizStore.getBizCategoryId());
-            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, bizCategory, storeHours));
+            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(
+                    bizStore,
+                    StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizService.findByBizCategoryId(bizStore.getBizCategoryId()).getCategoryName(),
+                    storeHours);
+            bizStoreElasticService.save(bizStoreElastic);
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",
