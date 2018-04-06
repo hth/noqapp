@@ -1,7 +1,14 @@
 package com.noqapp.search.elastic.helper;
 
+import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.StoreHourElastic;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Helps transform data for persisting in Elastic.
@@ -11,13 +18,17 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
  */
 public class DomainConversion {
 
-    public static BizStoreElastic getAsBizStoreElastic(BizStoreEntity bizStore) {
+    public static BizStoreElastic getAsBizStoreElastic(
+            BizStoreEntity bizStore,
+            BizCategoryEntity bizCategory,
+            List<StoreHourEntity> storeHours
+    ) {
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                /* Business Category Id is replaced with text at a later stage, right before insert to Elastic. */
-                .setCategory(bizStore.getBizCategoryId())
+                .setCategory(bizCategory.getCategoryName())
+                .setCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())
@@ -39,6 +50,23 @@ public class DomainConversion {
                 .setCodeQR(bizStore.getCodeQR())
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
-                .setWebLocation(bizStore.getWebLocation());
+                .setWebLocation(bizStore.getWebLocation())
+                .setDisplayImage(bizStore.getDisplayImage())
+                .setStoreHourElasticList(getStoreHourElastics(storeHours));
+    }
+
+    @Mobile
+    public static List<StoreHourElastic> getStoreHourElastics(List<StoreHourEntity> storeHours) {
+        List<StoreHourElastic> storeHourElastics = new LinkedList<>();
+        for (StoreHourEntity storeHour : storeHours) {
+            storeHourElastics.add(new StoreHourElastic()
+                    .setDayOfWeek(storeHour.getDayOfWeek())
+                    .setStartHour(storeHour.getStartHour())
+                    .setEndHour(storeHour.getEndHour())
+                    .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                    .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+            );
+        }
+        return storeHourElastics;
     }
 }
