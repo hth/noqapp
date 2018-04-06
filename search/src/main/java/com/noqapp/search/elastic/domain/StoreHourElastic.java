@@ -3,9 +3,9 @@ package com.noqapp.search.elastic.domain;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * hitender
@@ -27,19 +27,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoreHourElastic extends AbstractDomain {
-    @Field("DW")
+
+    @JsonProperty("DW")
     private int dayOfWeek;
 
-    @Field ("TF")
+    @JsonProperty ("TF")
     private int tokenAvailableFrom;
 
-    @Field ("SH")
+    @JsonProperty ("SH")
     private int startHour;
 
-    @Field ("TE")
+    @JsonProperty ("TE")
     private int tokenNotAvailableFrom;
 
-    @Field ("EH")
+    @JsonProperty ("EH")
     private int endHour;
 
     public int getDayOfWeek() {
