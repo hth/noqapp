@@ -3,9 +3,7 @@ package com.noqapp.search.elastic.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.Constants;
-import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizCategoryManager;
@@ -108,6 +106,7 @@ public class BizStoreElasticService {
      * Should be called when initializing index for first time.
      */
     public void addAllBizStoreToElastic() {
+        boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         long count = 0;
 //        try (Stream<BizStoreEntity> stream = bizStoreManager.findAllWithStream()) {
@@ -118,11 +117,18 @@ public class BizStoreElasticService {
 
         List<BizStoreEntity> bizStores = bizStoreManager.findAll();
         for (BizStoreEntity bizStore : bizStores) {
-            BizCategoryEntity bizCategory = bizCategoryManager.findById(bizStore.getBizCategoryId());
-            List<StoreHourEntity> storeHours = storeHourManager.findAll(bizStore.getId());
-            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizCategory, storeHours);
-            save(bizStoreElastic);
-            count ++;
+            BizStoreElastic bizStoreElastic = null;
+            try {
+                bizStoreElastic = DomainConversion.getAsBizStoreElastic(
+                        bizStore,
+                        bizCategoryManager.findById(bizStore.getBizCategoryId()),
+                        storeHourManager.findAll(bizStore.getId()));
+                save(bizStoreElastic);
+                count++;
+            } catch (Exception e) {
+                LOG.error("Failed to insert in elastic data={} reason={}", bizStoreElastic, e.getLocalizedMessage(), e);
+                methodStatusSuccess = false;
+            }
         }
 
         apiHealthService.insert(
@@ -130,7 +136,7 @@ public class BizStoreElasticService {
                 "addAllBizStoreToElastic",
                 this.getClass().getName(),
                 Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()).toMillis());
     }
 

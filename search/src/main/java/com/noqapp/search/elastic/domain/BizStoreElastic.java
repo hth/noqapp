@@ -444,8 +444,13 @@ public class BizStoreElastic extends AbstractDomain {
     public String toString() {
         return "BizStoreElastic{" +
                 "id='" + id + '\'' +
+                ", scrollId='" + scrollId + '\'' +
                 ", businessName='" + businessName + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", category='" + category + '\'' +
+                ", categoryId='" + categoryId + '\'' +
                 ", address='" + address + '\'' +
+                ", area='" + area + '\'' +
                 ", town='" + town + '\'' +
                 ", district='" + district + '\'' +
                 ", state='" + state + '\'' +
@@ -464,6 +469,10 @@ public class BizStoreElastic extends AbstractDomain {
                 ", displayName='" + displayName + '\'' +
                 ", codeQR='" + codeQR + '\'' +
                 ", timeZone='" + timeZone + '\'' +
+                ", geoHash='" + geoHash + '\'' +
+                ", webLocation='" + webLocation + '\'' +
+                ", displayImage='" + displayImage + '\'' +
+                ", storeHourElasticList=" + storeHourElasticList +
                 '}';
     }
 }
