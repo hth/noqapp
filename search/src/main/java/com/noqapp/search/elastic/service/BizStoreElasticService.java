@@ -121,7 +121,7 @@ public class BizStoreElasticService {
             try {
                 bizStoreElastic = DomainConversion.getAsBizStoreElastic(
                         bizStore,
-                        bizCategoryManager.findById(bizStore.getBizCategoryId()),
+                        StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizCategoryManager.findById(bizStore.getBizCategoryId()).getCategoryName(),
                         storeHourManager.findAll(bizStore.getId()));
                 save(bizStoreElastic);
                 count++;

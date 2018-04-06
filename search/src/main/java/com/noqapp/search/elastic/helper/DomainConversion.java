@@ -1,6 +1,5 @@
 package com.noqapp.search.elastic.helper;
 
-import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -20,14 +19,14 @@ public class DomainConversion {
 
     public static BizStoreElastic getAsBizStoreElastic(
             BizStoreEntity bizStore,
-            BizCategoryEntity bizCategory,
+            String bizCategoryName,
             List<StoreHourEntity> storeHours
     ) {
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                .setCategory(bizCategory.getCategoryName())
+                .setCategory(bizCategoryName)
                 .setCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
