@@ -218,7 +218,8 @@ public class BizStoreElasticService {
     }
 
     /**
-     * Performs search on the index with provided DSL with filtered set of data sent in response.
+     * Performs search on the index with provided DSL with filtered set of data sent in response. The fields below
+     * are fetched when searched. Fetched fields are populated in mapped object.
      */
     private String executeSearchOnBizStoreUsingDSLFilteredData(String dslQuery) {
         LOG.info("DSL Query={}", dslQuery);
