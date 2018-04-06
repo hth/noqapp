@@ -106,6 +106,7 @@ public class BizStoreElasticService {
      * Should be called when initializing index for first time.
      */
     public void addAllBizStoreToElastic() {
+        boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         long count = 0;
 //        try (Stream<BizStoreEntity> stream = bizStoreManager.findAllWithStream()) {
@@ -115,8 +116,6 @@ public class BizStoreElasticService {
 //        }
 
         List<BizStoreEntity> bizStores = bizStoreManager.findAll();
-
-
         for (BizStoreEntity bizStore : bizStores) {
             BizStoreElastic bizStoreElastic = null;
             try {
@@ -127,17 +126,17 @@ public class BizStoreElasticService {
                 save(bizStoreElastic);
                 count++;
             } catch (Exception e) {
-                LOG.error("Failed to insert in elastic data={}", bizStoreElastic);
+                LOG.error("Failed to insert in elastic data={} reason={}", bizStoreElastic, e.getLocalizedMessage(), e);
+                methodStatusSuccess = false;
             }
         }
-
 
         apiHealthService.insert(
                 "/addAllBizStoreToElastic",
                 "addAllBizStoreToElastic",
                 this.getClass().getName(),
                 Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()).toMillis());
     }
 
