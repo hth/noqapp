@@ -1,14 +1,9 @@
 package com.noqapp.view.flow.merchant;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.RandomString;
-import com.noqapp.search.elastic.helper.DomainConversion;
-import com.noqapp.search.elastic.service.BizStoreElasticService;
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -16,11 +11,14 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.ScrubbedInput;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import java.util.LinkedList;
@@ -254,7 +252,8 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
-            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore));
+            BizCategoryEntity bizCategory = bizService.findByBizCategoryId(bizStore.getBizCategoryId());
+            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, bizCategory, storeHours));
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",
