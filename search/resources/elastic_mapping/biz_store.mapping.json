@@ -81,6 +81,9 @@
         "GH": {
           "type": "geo_point"
         },
+        "SH": {
+          "type": "nested"
+        },
         "N": {
           "type": "text",
           "fields": {

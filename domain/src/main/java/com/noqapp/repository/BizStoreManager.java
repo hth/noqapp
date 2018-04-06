@@ -2,10 +2,6 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -125,7 +121,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      *
      * @return
      */
-    Stream<BizStoreEntity> findAll();
+    Stream<BizStoreEntity> findAllWithStream();
+    List<BizStoreEntity> findAll();
 
     void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
 

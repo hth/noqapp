@@ -8,14 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
-import com.noqapp.domain.shared.GeoPointOfQ;
 import org.springframework.data.annotation.Transient;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static com.noqapp.domain.BizStoreEntity.*;
+import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 /**
  * Json for elastic search.
@@ -58,6 +60,9 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonProperty ("BC")
     private String category;
+
+    @JsonProperty ("BCI")
+    private String categoryId;
 
     @JsonProperty ("AD")
     private String address;
@@ -131,6 +136,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("DI")
     private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
 
+    @JsonProperty ("SH")
+    private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -173,6 +181,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setCategory(String category) {
         this.category = category;
+        return this;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public BizStoreElastic setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
         return this;
     }
 
@@ -383,12 +400,21 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public List<StoreHourElastic> getStoreHourElasticList() {
+        return storeHourElasticList;
+    }
+
+    public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
+        this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
     @Transient
     public static BizStoreElastic getThisFromBizStore(BizStoreEntity bizStore) {
         return new BizStoreElastic()
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                .setCategory(bizStore.getBizCategoryId())
+                .setCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())

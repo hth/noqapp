@@ -3,10 +3,14 @@ package com.noqapp.search.elastic.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.StoreHourManager;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.dsl.Conditions;
 import com.noqapp.search.elastic.dsl.Filter;
@@ -32,8 +36,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -52,6 +54,8 @@ public class BizStoreElasticService {
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreManager bizStoreManager;
+    private BizCategoryManager bizCategoryManager;
+    private StoreHourManager storeHourManager;
     private ApiHealthService apiHealthService;
 
     private int limitRecords;
@@ -60,11 +64,13 @@ public class BizStoreElasticService {
     @Autowired
     public BizStoreElasticService(
             @Value("${limitRecords:10}")
-            int limitRecords,
+                    int limitRecords,
 
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
             ElasticAdministrationService elasticAdministrationService,
             BizStoreManager bizStoreManager,
+            BizCategoryManager bizCategoryManager,
+            StoreHourManager storeHourManager,
             ApiHealthService apiHealthService
     ) {
         objectMapper = new ObjectMapper();
@@ -74,6 +80,8 @@ public class BizStoreElasticService {
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreManager = bizStoreManager;
+        this.bizCategoryManager = bizCategoryManager;
+        this.storeHourManager = storeHourManager;
         this.apiHealthService = apiHealthService;
     }
 
@@ -102,10 +110,19 @@ public class BizStoreElasticService {
     public void addAllBizStoreToElastic() {
         Instant start = Instant.now();
         long count = 0;
-        try (Stream<BizStoreEntity> stream = bizStoreManager.findAll()) {
-            List<BizStoreElastic> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
-            save(bizStoreElastics);
-            count += bizStoreElastics.size();
+//        try (Stream<BizStoreEntity> stream = bizStoreManager.findAllWithStream()) {
+//            List<BizStoreElastic> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
+//            save(bizStoreElastics);
+//            count += bizStoreElastics.size();
+//        }
+
+        List<BizStoreEntity> bizStores = bizStoreManager.findAll();
+        for (BizStoreEntity bizStore : bizStores) {
+            BizCategoryEntity bizCategory = bizCategoryManager.findById(bizStore.getBizCategoryId());
+            List<StoreHourEntity> storeHours = storeHourManager.findAll(bizStore.getId());
+            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizCategory, storeHours);
+            save(bizStoreElastic);
+            count ++;
         }
 
         apiHealthService.insert(

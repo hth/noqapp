@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -308,8 +307,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public Stream<BizStoreEntity> findAll() {
+    public Stream<BizStoreEntity> findAllWithStream() {
         return mongoTemplate.findAll(BizStoreEntity.class, TABLE).stream();
+    }
+
+    @Override
+    public List<BizStoreEntity> findAll() {
+        return mongoTemplate.findAll(BizStoreEntity.class, TABLE);
     }
 
     @Override
