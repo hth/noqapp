@@ -252,10 +252,7 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
-            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(
-                    bizStore,
-                    StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizService.findByBizCategoryId(bizStore.getBizCategoryId()).getCategoryName(),
-                    storeHours);
+            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHours);
             bizStoreElasticService.save(bizStoreElastic);
             return bizStore;
         } catch (Exception e) {
