@@ -39,6 +39,15 @@
             }
           }
         },
+        "BCI": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
         "CC": {
           "type": "text",
           "fields": {
