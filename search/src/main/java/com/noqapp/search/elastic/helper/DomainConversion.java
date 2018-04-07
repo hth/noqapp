@@ -16,17 +16,20 @@ import java.util.List;
  * 11/21/17 6:01 PM
  */
 public class DomainConversion {
-
     public static BizStoreElastic getAsBizStoreElastic(
             BizStoreEntity bizStore,
-            String bizCategoryName,
             List<StoreHourEntity> storeHours
     ) {
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                .setCategory(bizCategoryName)
+                /*
+                 * Business Category below is replaced with text at a later stage in process by method
+                 * BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName(),
+                 * right before insert to Elastic.
+                 */
+                .setCategory(null)
                 .setCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())

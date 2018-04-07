@@ -212,7 +212,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 cache.put(bizStoreElastic.getBizNameId(), categories);
             }
         }
-        bizStoreElastic.setCategory(categories.getOrDefault(bizStoreElastic.getCategory(), ""));
+        bizStoreElastic.setCategory(categories.getOrDefault(bizStoreElastic.getCategoryId(), null));
     }
 
     @Override
