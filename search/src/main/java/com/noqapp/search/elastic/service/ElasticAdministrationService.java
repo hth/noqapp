@@ -138,9 +138,9 @@ public class ElasticAdministrationService {
         return deleteIndex("*");
     }
 
-    public void deletePreviousIndices() {
+    public void deleteAllPreviousIndices() {
         for (String index : elasticsearchClientConfiguration.previousIndices()) {
-            LOG.info("Deleting Elastic Index {} deleteStatus={}", index, deleteIndex("*" + index + "*"));
+            LOG.info("Deleting Elastic Index *{}* deleteStatus={}", index, deleteIndex("*" + index + "*"));
         }
     }
 
