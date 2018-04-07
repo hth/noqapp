@@ -2,6 +2,7 @@ package com.noqapp.search.elastic.service;
 
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.utils.LoadMappingFiles;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,6 +38,7 @@ public class ElasticAdministrationService {
 
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
+    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
     private String elasticURI;
 
     @Autowired
@@ -49,10 +50,12 @@ public class ElasticAdministrationService {
             int elasticPort,
 
             OkHttpClient okHttpClient,
-            ApiHealthService apiHealthService
+            ApiHealthService apiHealthService,
+            ElasticsearchClientConfiguration elasticsearchClientConfiguration
     ) {
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
+        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
 
         this.elasticURI = "http://" + elasticHost + ":" + elasticPort + "/";
     }
@@ -135,13 +138,19 @@ public class ElasticAdministrationService {
         return deleteIndex("*");
     }
 
+    public void deletePreviousIndices() {
+        for (String index : elasticsearchClientConfiguration.previousIndices()) {
+            LOG.info("Deleting Elastic Index {} deleteStatus={}", index, deleteIndex("*" + index + "*"));
+        }
+    }
+
     /**
      * Delete existing index.
      *
      * @param index Name of index to be deleted
      * @return
      */
-    public boolean deleteIndex(String index) {
+    private boolean deleteIndex(String index) {
         Instant start = Instant.now();
         try {
             Request request = new Request.Builder()
