@@ -127,7 +127,7 @@ public class NoQAppInitializationCheckBean {
             }
 
             /* Delete older indices. */
-            elasticAdministrationService.deletePreviousIndices();
+            elasticAdministrationService.deleteAllPreviousIndices();
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
