@@ -21,11 +21,11 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 /**
  * Json for elastic search.
- *
+ * <p>
  * User: hitender
  * Date: 11/15/17 4:28 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -58,85 +58,85 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("BT")
     private String businessType;
 
-    @JsonProperty ("BC")
+    @JsonProperty("BC")
     private String category;
 
-    @JsonProperty ("BCI")
+    @JsonProperty("BCI")
     private String categoryId;
 
-    @JsonProperty ("AD")
+    @JsonProperty("AD")
     private String address;
 
-    @JsonProperty ("AR")
+    @JsonProperty("AR")
     private String area;
 
-    @JsonProperty ("TO")
+    @JsonProperty("TO")
     private String town;
 
-    @JsonProperty ("DT")
+    @JsonProperty("DT")
     private String district;
 
-    @JsonProperty ("ST")
+    @JsonProperty("ST")
     private String state;
 
-    @JsonProperty ("SS")
+    @JsonProperty("SS")
     private String stateShortName;
 
     /* Postal code could be empty for few countries. */
-    @JsonProperty ("PC")
+    @JsonProperty("PC")
     private String postalCode;
 
-    @JsonProperty ("CC")
+    @JsonProperty("CC")
     private String country;
 
-    @JsonProperty ("CS")
+    @JsonProperty("CS")
     private String countryShortName;
 
     /* Phone number saved with country code. */
-    @JsonProperty ("PH")
+    @JsonProperty("PH")
     private String phone;
 
     /* To not loose user entered phone number. */
-    @JsonProperty ("PR")
+    @JsonProperty("PR")
     private String phoneRaw;
 
-    @JsonProperty ("COR")
+    @JsonProperty("COR")
     private GeoPointOfQ geoPointOfQ;
 
-    @JsonProperty ("PI")
+    @JsonProperty("PI")
     private String placeId;
 
-    @JsonProperty ("PT")
+    @JsonProperty("PT")
     private String[] placeType;
 
-    @JsonProperty ("RA")
+    @JsonProperty("RA")
     private float rating;
 
-    @JsonProperty ("RC")
+    @JsonProperty("RC")
     private int ratingCount;
 
-    @JsonProperty ("BID")
+    @JsonProperty("BID")
     private String bizNameId;
 
     @JsonProperty("DN")
     private String displayName;
 
-    @JsonProperty ("QR")
+    @JsonProperty("QR")
     private String codeQR;
 
-    @JsonProperty ("TZ")
+    @JsonProperty("TZ")
     private String timeZone;
 
-    @JsonProperty ("GH")
+    @JsonProperty("GH")
     private String geoHash;
 
-    @JsonProperty ("WL")
+    @JsonProperty("WL")
     private String webLocation;
 
-    @JsonProperty ("DI")
+    @JsonProperty("DI")
     private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
 
-    @JsonProperty ("SH")
+    @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
     public String getId() {

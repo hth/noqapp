@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -62,7 +63,7 @@ public class BizStoreElasticService {
     @Autowired
     public BizStoreElasticService(
             @Value("${limitRecords:10}")
-                    int limitRecords,
+            int limitRecords,
 
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
             ElasticAdministrationService elasticAdministrationService,
@@ -106,29 +107,30 @@ public class BizStoreElasticService {
      * Should be called when initializing index for first time.
      */
     public void addAllBizStoreToElastic() {
-        boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         long count = 0;
-//        try (Stream<BizStoreEntity> stream = bizStoreManager.findAllWithStream()) {
-//            List<BizStoreElastic> bizStoreElastics = stream.map(DomainConversion::getAsBizStoreElastic).collect(Collectors.toList());
-//            save(bizStoreElastics);
-//            count += bizStoreElastics.size();
-//        }
+        try (Stream<BizStoreEntity> stream = bizStoreManager.findAllWithStream()) {
+            List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+            stream.iterator().forEachRemaining(bizStore -> {
+                BizStoreElastic bizStoreElastic = null;
+                String bizCategoryName = null;
+                try {
+                    bizStoreElastic = DomainConversion.getAsBizStoreElastic(
+                            bizStore,
+                            StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizCategoryManager.findById(bizStore.getBizCategoryId()).getCategoryName(),
+                            storeHourManager.findAll(bizStore.getId()));
 
-        List<BizStoreEntity> bizStores = bizStoreManager.findAll();
-        for (BizStoreEntity bizStore : bizStores) {
-            BizStoreElastic bizStoreElastic = null;
-            try {
-                bizStoreElastic = DomainConversion.getAsBizStoreElastic(
-                        bizStore,
-                        StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizCategoryManager.findById(bizStore.getBizCategoryId()).getCategoryName(),
-                        storeHourManager.findAll(bizStore.getId()));
-                save(bizStoreElastic);
-                count++;
-            } catch (Exception e) {
-                LOG.error("Failed to insert in elastic data={} reason={}", bizStoreElastic, e.getLocalizedMessage(), e);
-                methodStatusSuccess = false;
-            }
+                    bizStoreElastics.add(bizStoreElastic);
+                } catch (Exception e) {
+                    LOG.error("Failed to insert in elastic data={} bizCategoryName={} reason={}",
+                            bizStoreElastic,
+                            bizCategoryName,
+                            e.getLocalizedMessage(),
+                            e);
+                }
+            });
+            save(bizStoreElastics);
+            count += bizStoreElastics.size();
         }
 
         apiHealthService.insert(
@@ -136,7 +138,7 @@ public class BizStoreElasticService {
                 "addAllBizStoreToElastic",
                 this.getClass().getName(),
                 Duration.between(start, Instant.now()),
-                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
+                HealthStatusEnum.G);
         LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()).toMillis());
     }
 
