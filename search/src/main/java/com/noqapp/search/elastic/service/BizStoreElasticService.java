@@ -109,7 +109,6 @@ public class BizStoreElasticService {
             List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
             stream.iterator().forEachRemaining(bizStore -> {
                 BizStoreElastic bizStoreElastic = null;
-                String bizCategoryName = null;
                 try {
                     bizStoreElastic = DomainConversion.getAsBizStoreElastic(
                             bizStore,
@@ -117,9 +116,8 @@ public class BizStoreElasticService {
 
                     bizStoreElastics.add(bizStoreElastic);
                 } catch (Exception e) {
-                    LOG.error("Failed to insert in elastic data={} bizCategoryName={} reason={}",
+                    LOG.error("Failed to insert in elastic data={} reason={}",
                             bizStoreElastic,
-                            bizCategoryName,
                             e.getLocalizedMessage(),
                             e);
                 }
