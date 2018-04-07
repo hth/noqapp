@@ -5,9 +5,6 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,20 +16,21 @@ import java.util.List;
  * 11/21/17 6:01 PM
  */
 public class DomainConversion {
-    private static final Logger LOG = LoggerFactory.getLogger(DomainConversion.class);
-
     public static BizStoreElastic getAsBizStoreElastic(
             BizStoreEntity bizStore,
-            String bizCategoryName,
             List<StoreHourEntity> storeHours
     ) {
-        LOG.info("bizCategoryName={} bizCategoryId={}", bizCategoryName, bizStore.getBizCategoryId());
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                .setCategory(bizCategoryName)
-                .setCategoryId(StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizStore.getBizCategoryId())
+                /*
+                 * Business Category below is replaced with text at a later stage in process by method
+                 * BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName(),
+                 * right before insert to Elastic.
+                 */
+                .setCategory(null)
+                .setCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())

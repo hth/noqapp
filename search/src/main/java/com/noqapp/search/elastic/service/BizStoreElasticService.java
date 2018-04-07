@@ -6,7 +6,6 @@ import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
@@ -53,7 +52,6 @@ public class BizStoreElasticService {
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreManager bizStoreManager;
-    private BizCategoryManager bizCategoryManager;
     private StoreHourManager storeHourManager;
     private ApiHealthService apiHealthService;
 
@@ -68,7 +66,6 @@ public class BizStoreElasticService {
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
             ElasticAdministrationService elasticAdministrationService,
             BizStoreManager bizStoreManager,
-            BizCategoryManager bizCategoryManager,
             StoreHourManager storeHourManager,
             ApiHealthService apiHealthService
     ) {
@@ -79,7 +76,6 @@ public class BizStoreElasticService {
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreManager = bizStoreManager;
-        this.bizCategoryManager = bizCategoryManager;
         this.storeHourManager = storeHourManager;
         this.apiHealthService = apiHealthService;
     }
@@ -117,7 +113,6 @@ public class BizStoreElasticService {
                 try {
                     bizStoreElastic = DomainConversion.getAsBizStoreElastic(
                             bizStore,
-                            StringUtils.isBlank(bizStore.getBizCategoryId()) ? "" : bizCategoryManager.findById(bizStore.getBizCategoryId()).getCategoryName(),
                             storeHourManager.findAll(bizStore.getId()));
 
                     bizStoreElastics.add(bizStoreElastic);

@@ -18,7 +18,7 @@ public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
     /* This should help in migrating to new index by changing the name of version from v1 to v2. */
-    private static final String INDEX_VERSION = "v11";
+    private static final String INDEX_VERSION = "v0";
 
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqapp_" + INDEX_VERSION;
