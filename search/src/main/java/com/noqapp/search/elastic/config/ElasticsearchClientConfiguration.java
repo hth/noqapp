@@ -18,10 +18,10 @@ public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
     /* This should help in migrating to new index by changing the name of version from v1 to v2. */
-    private static final String INDEX_VERSION = "v0";
+    private static final String[] INDEX_VERSION = {"v0", "v1"};
 
     /* Always lower case for Index and Type. */
-    public static final String INDEX = "noqapp_" + INDEX_VERSION;
+    public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];
 
     @Value("${elastic.host}")
     private String elasticHost;
@@ -35,5 +35,11 @@ public class ElasticsearchClientConfiguration {
         return new RestHighLevelClient(
                 RestClient.builder(
                         new HttpHost(elasticHost, elasticPort, "http")));
+    }
+
+    public String[] previousIndices() {
+        String[] previous = new String[INDEX_VERSION.length - 1];
+        System.arraycopy(INDEX_VERSION, 0, previous, 0, previous.length);
+        return previous;
     }
 }
