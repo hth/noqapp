@@ -312,11 +312,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findAll() {
-        return mongoTemplate.findAll(BizStoreEntity.class, TABLE);
-    }
-
-    @Override
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         mongoTemplate.updateFirst(
                 query(where("QR").is(codeQR)),
