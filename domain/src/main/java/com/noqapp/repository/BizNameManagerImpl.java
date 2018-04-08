@@ -4,13 +4,15 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -66,7 +68,7 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public BizNameEntity getById(String id) {
         Assert.hasText(id, "Id empty for BizNameEntity");
-        return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), BizNameEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), BizNameEntity.class, TABLE);
     }
 
     @Override

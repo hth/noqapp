@@ -116,7 +116,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserProfileEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), UserProfileEntity.class, TABLE);
     }
 
     @Override

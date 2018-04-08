@@ -8,7 +8,6 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,7 @@ public class QueueManagerImpl implements QueueManager {
         }
 
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
+                query(where("id").is(id)),
                 entityUpdate(update("QS", QueueUserStateEnum.A).set("SB", new Date()).set("SE", new Date()).set("A", false)),
                 QueueEntity.class,
                 TABLE
@@ -231,7 +230,7 @@ public class QueueManagerImpl implements QueueManager {
             /* Mark as being served. */
             UpdateResult updateResult = mongoTemplate.updateFirst(
                     /* Removed additional where clause as we just did it and found one. */
-                    query(where("id").is(new ObjectId(queue.getId())).and("QS").is(QueueUserStateEnum.Q)),
+                    query(where("id").is(queue.getId()).and("QS").is(QueueUserStateEnum.Q)),
                     entityUpdate(update("SN", goTo).set("SID", sid).set("SB", new Date())),
                     QueueEntity.class,
                     TABLE
@@ -325,7 +324,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public void increaseAttemptToSendNotificationCount(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
+                query(where("id").is(id)),
                 entityUpdate(new Update().inc("NC", 1)),
                 QueueEntity.class,
                 TABLE
@@ -444,7 +443,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public void updateServiceBeginTime(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
+                query(where("id").is(id)),
                 entityUpdate(update("SB", new Date())),
                 QueueEntity.class,
                 TABLE
