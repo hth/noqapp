@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public UserAccountEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(id)), UserAccountEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserAccountEntity.class, TABLE);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id).and("AIR").is(air)),
+                query(where("id").is(new ObjectId(id)).and("AIR").is(air)),
                 entityUpdate(update("A", true).set("AV", true).unset("AIR")),
                 UserAccountEntity.class
         );
