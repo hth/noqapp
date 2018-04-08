@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BrowserEntity;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -48,7 +49,7 @@ public final class BrowserManagerImpl implements BrowserManager {
     @Override
     public void update(String id) {
         mongoTemplate.updateFirst(
-                query(where("_id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 entityUpdate(new Update()),
                 BrowserEntity.class,
                 TABLE

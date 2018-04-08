@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.MailEntity;
 import com.noqapp.domain.types.MailStatusEnum;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class MailManagerImpl implements MailManager {
     @Override
     public void updateMail(String id, MailStatusEnum mailStatus) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 entityUpdate(update("MS", mailStatus).inc("AT", 1)),
                 MailEntity.class,
                 TABLE

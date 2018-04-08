@@ -71,7 +71,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity getById(String id) {
         try {
             Assert.hasText(id, "Id empty for BizStore");
-            return mongoTemplate.findOne(query(where("id").is(id)), BizStoreEntity.class);
+            return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), BizStoreEntity.class);
         } catch (Exception e) {
             LOG.error("Failed to find BizStoreId={} reason={}", id, e.getLocalizedMessage(), e);
             return null;
@@ -290,7 +290,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         }
 
         return mongoTemplate.updateFirst(
-                query(where("id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 update,
                 BizStoreEntity.class,
                 TABLE
@@ -309,11 +309,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public Stream<BizStoreEntity> findAllWithStream() {
         return mongoTemplate.findAll(BizStoreEntity.class, TABLE).stream();
-    }
-
-    @Override
-    public List<BizStoreEntity> findAll() {
-        return mongoTemplate.findAll(BizStoreEntity.class, TABLE);
     }
 
     @Override

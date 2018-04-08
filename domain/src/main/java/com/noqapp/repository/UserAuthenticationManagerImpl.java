@@ -2,12 +2,12 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -56,7 +56,7 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public UserAuthenticationEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(id)), UserAuthenticationEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserAuthenticationEntity.class, TABLE);
     }
 
     @Override

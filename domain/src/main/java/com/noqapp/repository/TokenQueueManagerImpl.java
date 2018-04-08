@@ -5,6 +5,7 @@ import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,13 +70,13 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public TokenQueueEntity findByCodeQR(String codeQR) {
         LOG.info("findByCodeQR codeQR={}", codeQR);
-        return mongoTemplate.findOne(query(where("id").is(codeQR)), TokenQueueEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(new ObjectId(codeQR))), TokenQueueEntity.class, TABLE);
     }
 
     @Override
     public TokenQueueEntity getNextToken(String codeQR) {
         return mongoTemplate.findAndModify(
-                query(where("_id").is(codeQR)),
+                query(where("id").is(new ObjectId(codeQR))),
                 new Update().inc("LN", 1),
                 FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
@@ -85,7 +86,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public TokenQueueEntity updateServing(String codeQR, int serving, QueueStatusEnum queueStatus) {
         return mongoTemplate.findAndModify(
-                query(where("_id").is(codeQR)),
+                query(where("id").is(new ObjectId(codeQR))),
                 entityUpdate(update("CS", serving).set("QS", queueStatus)),
                 FindAndModifyOptions.options().returnNew(true),
                 TokenQueueEntity.class,
@@ -122,7 +123,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         mongoTemplate.updateFirst(
-                query(where("_id").is(codeQR)),
+                query(where("id").is(new ObjectId(codeQR))),
                 entityUpdate(update("QS", queueStatus)),
                 TokenQueueEntity.class,
                 TABLE);
@@ -131,7 +132,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public void resetForNewDay(String codeQR) {
         mongoTemplate.updateFirst(
-                query(where("_id").is(codeQR).and("QS").ne(QueueStatusEnum.C)),
+                query(where("id").is(new ObjectId(codeQR)).and("QS").ne(QueueStatusEnum.C)),
                 entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.S)),
                 TokenQueueEntity.class,
                 TABLE);
@@ -140,7 +141,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public boolean updateDisplayName(String codeQR, String topic, String displayName) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
-            query(where("_id").is(codeQR).and("TP").is(topic)),
+            query(where("id").is(new ObjectId(codeQR)).and("TP").is(topic)),
             entityUpdate(update("DN", displayName)),
             TokenQueueEntity.class,
             TABLE

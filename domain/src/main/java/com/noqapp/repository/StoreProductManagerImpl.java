@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StoreProductEntity;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class StoreProductManagerImpl implements StoreProductManager {
     @Override
     public StoreProductEntity findOne(String id) {
         return mongoTemplate.findOne(
-                query(where("id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 StoreProductEntity.class,
                 TABLE
         );
