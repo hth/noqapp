@@ -3,13 +3,13 @@ package com.noqapp.repository;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizCategoryEntity;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +18,9 @@ import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Query.*;
 
 /**
  * hitender
@@ -85,7 +86,7 @@ public class BizCategoryManagerImpl implements BizCategoryManager {
     @Override
     public void updateBizCategoryName(String bizCategoryId, String categoryName) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(bizCategoryId))),
+                query(where("id").is(bizCategoryId)),
                 Update.update("CN", categoryName),
                 BizCategoryEntity.class,
                 TABLE

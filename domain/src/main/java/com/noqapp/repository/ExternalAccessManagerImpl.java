@@ -1,8 +1,8 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ExternalAccessEntity;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class ExternalAccessManagerImpl implements ExternalAccessManager {
     @Override
     public ExternalAccessEntity findById(String id) {
         return mongoTemplate.findOne(
-                query(where("id").is(new ObjectId(id))),
+                query(where("_id").is(id)),
                 ExternalAccessEntity.class,
                 TABLE);
     }

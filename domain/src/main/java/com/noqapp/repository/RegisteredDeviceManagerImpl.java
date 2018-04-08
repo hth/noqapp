@@ -4,7 +4,6 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static com.noqapp.repository.util.AppendAdditionalFields.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -212,7 +209,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public void markFetchedSinceBeginningForDevice(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
+                query(where("id").is(id)),
                 entityUpdate(update("SB", false)),
                 RegisteredDeviceEntity.class,
                 TABLE);
@@ -221,7 +218,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public void unsetQidForDevice(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
+                query(where("id").is(id)),
                 entityUpdate(new Update().unset("QID")),
                 RegisteredDeviceEntity.class,
                 TABLE);
