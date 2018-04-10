@@ -78,18 +78,9 @@
                        'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_MEDICAL_TECHNICIAN',
                        'ROLE_SUPERVISOR',
                        'ROLE_ANALYSIS')" />
-
-        <intercept-url pattern="/access/eval/**"
-                       access="hasAnyRole(
-                       'ROLE_CLIENT',
-                       'ROLE_Q_SUPERVISOR',
-                       'ROLE_S_MANAGER',
-                       'ROLE_M_ADMIN',
-                       'ROLE_ADMIN',
-                       'ROLE_TECHNICIAN',
-                       'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/access/userprofilepreference/**"
                        access="hasAnyRole(
@@ -99,6 +90,7 @@
                        'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_MEDICAL_TECHNICIAN',
                        'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/access/**"
@@ -106,13 +98,24 @@
                        'ROLE_CLIENT',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_MEDICAL_TECHNICIAN',
                        'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/ws/**"
-                       access="hasAnyRole('ROLE_CLIENT', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
+                       access="hasAnyRole(
+                       'ROLE_CLIENT',
+                       'ROLE_TECHNICIAN',
+                       'ROLE_SUPERVISOR',
+                       'ROLE_MEDICAL_TECHNICIAN')" />
 
         <intercept-url pattern="/admin/**"
                        access="hasRole('ROLE_ADMIN')" />
+
+        <intercept-url pattern="/emp/landing/**"
+                       access="hasRole('ROLE_SUPERVISOR')" />
+
+        <intercept-url pattern="/emp/medical/**"
+                       access="hasRole('ROLE_MEDICAL_TECHNICIAN')" />
 
         <intercept-url pattern="/display/**"
                        access="hasRole('ROLE_ANALYSIS')" />

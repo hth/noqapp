@@ -10,6 +10,7 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
+import com.noqapp.medical.domain.PhysicalEntity;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.service.MedicalRecordService;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -96,7 +97,9 @@ public class MedicalRecordController {
         String qid = recordReference[1];
         String recordOwner = recordReference[2];
 
-        MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner);
+        List<PhysicalEntity> physicals = medicalRecordService.findAll();
+        MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner)
+                .populateEmptyForm(physicals);
 
         QueueEntity queue = tokenQueueService.findOne(codeQR.getText(), token);
         if (null == queue.getServiceBeginTime()) {
@@ -128,8 +131,10 @@ public class MedicalRecordController {
         for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
             List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
 
-            MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId(), medicalPhysicalExaminations);
-            historicalMedicalRecordForm.setBusinessType(medicalRecord.getBusinessType())
+            MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
+            historicalMedicalRecordForm
+                    .populateHistoricalForm(medicalPhysicalExaminations)
+                    .setBusinessType(medicalRecord.getBusinessType())
                     .setChiefComplain(medicalRecord.getChiefComplain())
                     .setPastHistory(medicalRecord.getPastHistory())
                     .setFamilyHistory(medicalRecord.getFamilyHistory())

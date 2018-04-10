@@ -1,11 +1,9 @@
 package com.noqapp.service;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.HashText;
+import com.noqapp.common.utils.RandomString;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.InviteEntity;
@@ -24,10 +22,6 @@ import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.HashText;
-import com.noqapp.common.utils.RandomString;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.service.exceptions.DuplicateAccountException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -38,6 +32,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -420,6 +420,11 @@ public class AccountService {
             case TECHNICIAN:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
+                userAccount.setRoles(roles);
+                break;
+            case MEDICAL_TECHNICIAN:
+                roles.add(RoleEnum.ROLE_CLIENT);
+                roles.add(RoleEnum.ROLE_MEDICAL_TECHNICIAN);
                 userAccount.setRoles(roles);
                 break;
             case SUPERVISOR:

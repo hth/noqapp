@@ -20,20 +20,26 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_MDC_M")
+@Document(collection = "M_MEDICINE")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_mdc_m_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_medicine_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicineEntity extends BaseEntity {
+public class MedicalMedicineEntity extends BaseEntity {
+
+    @NotNull
+    @Field("MRI")
+    private String medicalMedicationReferenceId;
+
+    @NotNull
+    @Field("PI")
+    private String pharmacyReferenceId;
+
     @NotNull
     @Field("QID")
     private String queueUserId;
 
     @Field("NA")
     private String name;
-
-    @Field("ST")
-    private int strength;
 
     @Field("TI")
     private int times;
@@ -44,11 +50,29 @@ public class MedicineEntity extends BaseEntity {
     @Field ("MR")
     private MedicationRouteEnum medicationRoute;
 
+    public String getMedicalMedicationReferenceId() {
+        return medicalMedicationReferenceId;
+    }
+
+    public MedicalMedicineEntity setMedicalMedicationReferenceId(String medicalMedicationReferenceId) {
+        this.medicalMedicationReferenceId = medicalMedicationReferenceId;
+        return this;
+    }
+
+    public String getPharmacyReferenceId() {
+        return pharmacyReferenceId;
+    }
+
+    public MedicalMedicineEntity setPharmacyReferenceId(String pharmacyReferenceId) {
+        this.pharmacyReferenceId = pharmacyReferenceId;
+        return this;
+    }
+
     public String getQueueUserId() {
         return queueUserId;
     }
 
-    public MedicineEntity setQueueUserId(String queueUserId) {
+    public MedicalMedicineEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
@@ -57,17 +81,8 @@ public class MedicineEntity extends BaseEntity {
         return name;
     }
 
-    public MedicineEntity setName(String name) {
+    public MedicalMedicineEntity setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public MedicineEntity setStrength(int strength) {
-        this.strength = strength;
         return this;
     }
 
@@ -75,7 +90,7 @@ public class MedicineEntity extends BaseEntity {
         return times;
     }
 
-    public MedicineEntity setTimes(int times) {
+    public MedicalMedicineEntity setTimes(int times) {
         this.times = times;
         return this;
     }
@@ -84,8 +99,17 @@ public class MedicineEntity extends BaseEntity {
         return medicationWithFood;
     }
 
-    public MedicineEntity setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public MedicalMedicineEntity setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
+        return this;
+    }
+
+    public MedicationRouteEnum getMedicationRoute() {
+        return medicationRoute;
+    }
+
+    public MedicalMedicineEntity setMedicationRoute(MedicationRouteEnum medicationRoute) {
+        this.medicationRoute = medicationRoute;
         return this;
     }
 }

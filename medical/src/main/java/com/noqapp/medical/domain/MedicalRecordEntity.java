@@ -22,9 +22,9 @@ import java.util.Map;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_REC")
+@Document(collection = "M_RECORD")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_rec_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_record_idx", def = "{'QID' : 1}", unique = false),
 })
 public class MedicalRecordEntity extends BaseEntity {
 
@@ -49,7 +49,7 @@ public class MedicalRecordEntity extends BaseEntity {
     private String knownAllergies;
 
     @DBRef
-    @Field("PE")
+    @Field("PY")
     private MedicalPhysicalEntity medicalPhysical;
 
     @Field("CF")
@@ -59,8 +59,8 @@ public class MedicalRecordEntity extends BaseEntity {
     private String provisionalDifferentialDiagnosis;
 
     @DBRef
-    @Field("LE")
-    private MedicalPathologyLaboratoryEntity medicalLaboratory;
+    @Field("MP")
+    private MedicalPathologyEntity medicalLaboratory;
 
     @DBRef
     @Field("RE")
@@ -68,7 +68,7 @@ public class MedicalRecordEntity extends BaseEntity {
 
     @DBRef
     @Field("ME")
-    private MedicationEntity medication;
+    private MedicalMedicationEntity medication;
 
     /* Always doctors id who looked or was booked for. */
     @NotNull
@@ -82,7 +82,6 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity(String queueUserId) {
         this.queueUserId = queueUserId;
-        medicalPhysical = new MedicalPhysicalEntity(queueUserId);
     }
 
     public BusinessTypeEnum getBusinessType() {
@@ -166,11 +165,11 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalPathologyLaboratoryEntity getMedicalLaboratory() {
+    public MedicalPathologyEntity getMedicalLaboratory() {
         return medicalLaboratory;
     }
 
-    public MedicalRecordEntity setMedicalLaboratory(MedicalPathologyLaboratoryEntity medicalLaboratory) {
+    public MedicalRecordEntity setMedicalLaboratory(MedicalPathologyEntity medicalLaboratory) {
         this.medicalLaboratory = medicalLaboratory;
         return this;
     }
@@ -184,11 +183,11 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicationEntity getMedication() {
+    public MedicalMedicationEntity getMedication() {
         return medication;
     }
 
-    public MedicalRecordEntity setMedication(MedicationEntity medication) {
+    public MedicalRecordEntity setMedication(MedicalMedicationEntity medication) {
         this.medication = medication;
         return this;
     }

@@ -19,39 +19,34 @@ import java.util.List;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_MDC")
+@Document(collection = "M_MEDICATION")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_mdc_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_medication_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicationEntity extends BaseEntity {
+public class MedicalMedicationEntity extends BaseEntity {
 
     @NotNull
     @Field("QID")
     private String queueUserId;
 
-    @Field("ME")
-    private List<MedicineEntity> medicines;
+    @Field("MD")
+    private List<String> medicineIds;
 
     public String getQueueUserId() {
         return queueUserId;
     }
 
-    public MedicationEntity setQueueUserId(String queueUserId) {
+    public MedicalMedicationEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
 
-    public List<MedicineEntity> getMedicines() {
-        return medicines;
+    public List<String> getMedicineIds() {
+        return medicineIds;
     }
 
-    public MedicationEntity setMedicines(List<MedicineEntity> medicines) {
-        this.medicines = medicines;
-        return this;
-    }
-
-    public MedicationEntity addMedicine(MedicineEntity medicine) {
-        this.medicines.add(medicine);
+    public MedicalMedicationEntity setMedicineIds(List<String> medicineIds) {
+        this.medicineIds = medicineIds;
         return this;
     }
 }

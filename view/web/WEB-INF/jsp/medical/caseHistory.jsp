@@ -176,14 +176,15 @@
                                 <div class="clearFix"></div>
                             </li>
                         </ul>
-                        <c:forEach items="${medicalRecordForm.medicalPhysical}" var="medicalPhysical" varStatus="status">
+                        <c:forEach items="${medicalRecordForm.medicalPhysicalForms}" var="medicalPhysicalForms" varStatus="status">
                         <ul class="list-form">
                             <li>
+                                <form:hidden path="medicalPhysicalForms[${status.index}].physicalReferenceId" value="${medicalPhysicalForms.physicalReferenceId}" />
                                 <div class="col-lable3">
-                                    <form:label path="medicalPhysical[${status.index}].physicalExam" cssErrorClass="lb_error">${medicalPhysical.physicalExam.description}</form:label>
+                                    <form:label path="medicalPhysicalForms[${status.index}].name" cssErrorClass="lb_error">${medicalPhysicalForms.name}</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="medicalPhysical[${status.index}].value" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    <form:input path="medicalPhysicalForms[${status.index}].value" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
