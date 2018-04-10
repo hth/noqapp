@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -20,9 +20,9 @@ import java.util.Set;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_PHY")
+@Document(collection = "M_PHYSICAL")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_phy_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_physical_idx", def = "{'QID' : 1}", unique = false),
 })
 public class MedicalPhysicalEntity extends BaseEntity {
 
@@ -30,10 +30,10 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("PE")
-    private Set<String> medicalPhysicalExaminations = new HashSet<>();
+    @Field("PD")
+    private Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
 
-    public MedicalPhysicalEntity(String queueUserId) {
+    public MedicalPhysicalEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
     }
 
@@ -41,17 +41,12 @@ public class MedicalPhysicalEntity extends BaseEntity {
         return queueUserId;
     }
 
-    public MedicalPhysicalEntity setQueueUserId(String queueUserId) {
-        this.queueUserId = queueUserId;
-        return this;
+    public Set<String> getMedicalPhysicalExaminationIds() {
+        return medicalPhysicalExaminationIds;
     }
 
-    public Set<String> getMedicalPhysicalExaminations() {
-        return medicalPhysicalExaminations;
-    }
-
-    public MedicalPhysicalEntity setMedicalPhysicalExaminations(Set<String> medicalPhysicalExaminations) {
-        this.medicalPhysicalExaminations = medicalPhysicalExaminations;
+    public MedicalPhysicalEntity setMedicalPhysicalExaminationIds(Set<String> medicalPhysicalExaminationIds) {
+        this.medicalPhysicalExaminationIds = medicalPhysicalExaminationIds;
         return this;
     }
 }

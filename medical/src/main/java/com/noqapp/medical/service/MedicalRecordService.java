@@ -1,13 +1,16 @@
 package com.noqapp.medical.service;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
+import com.noqapp.medical.domain.PhysicalEntity;
 import com.noqapp.medical.form.MedicalPhysicalForm;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalPhysicalExaminationManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
+import com.noqapp.medical.repository.PhysicalManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +29,18 @@ public class MedicalRecordService {
     private MedicalRecordManager medicalRecordManager;
     private MedicalPhysicalManager medicalPhysicalManager;
     private MedicalPhysicalExaminationManager medicalPhysicalExaminationManager;
+    private PhysicalManager physicalManager;
 
     @Autowired
-    public MedicalRecordService(MedicalRecordManager medicalRecordManager, MedicalPhysicalManager medicalPhysicalManager, MedicalPhysicalExaminationManager medicalPhysicalExaminationManager) {
+    public MedicalRecordService(
+            MedicalRecordManager medicalRecordManager,
+            MedicalPhysicalManager medicalPhysicalManager,
+            MedicalPhysicalExaminationManager medicalPhysicalExaminationManager,
+            PhysicalManager physicalManager) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalPhysicalExaminationManager = medicalPhysicalExaminationManager;
+        this.physicalManager = physicalManager;
     }
 
     public void addMedicalRecord(MedicalRecordForm medicalRecordForm, String diagnosedById) {
@@ -45,20 +54,23 @@ public class MedicalRecordService {
                 .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
                 .setDiagnosedById(diagnosedById);
 
-        if (!medicalRecordForm.getMedicalPhysical().isEmpty()) {
+        if (medicalRecordForm.getMedicalPhysicalForms() != null) {
             Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
 
-            for (MedicalPhysicalForm medicalPhysicalForm : medicalRecordForm.getMedicalPhysical()) {
-                MedicalPhysicalExaminationEntity medicalPhysicalExaminationEntity = new MedicalPhysicalExaminationEntity();
-                medicalPhysicalExaminationEntity.setQueueUserId(medicalRecordForm.getQueueUserId())
-                        .setPhysicalExam(medicalPhysicalForm.getPhysicalExam())
-                        .setValue(StringUtils.capitalize(medicalPhysicalForm.getValue().trim()));
+            for (MedicalPhysicalForm medicalPhysicalForm : medicalRecordForm.getMedicalPhysicalForms()) {
+                MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
+                medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
+                medicalPhysicalExamination
+                        .setPhysicalReferenceId(medicalPhysicalForm.getPhysicalReferenceId())
+                        .setQueueUserId(medicalRecordForm.getQueueUserId())
+                        .setName(medicalPhysicalForm.getName())
+                        .setTestResult(StringUtils.capitalize(medicalPhysicalForm.getValue().trim()));
 
-                medicalPhysicalExaminationManager.save(medicalPhysicalExaminationEntity);
-                medicalPhysicalExaminationIds.add(medicalPhysicalExaminationEntity.getId());
+                medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
+                medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
             }
             MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(medicalRecordForm.getQueueUserId());
-            medicalPhysical.setMedicalPhysicalExaminations(medicalPhysicalExaminationIds);
+            medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
             medicalRecord.setMedicalPhysical(medicalPhysical);
 
             medicalPhysicalManager.save(medicalPhysical);
@@ -76,5 +88,9 @@ public class MedicalRecordService {
 
     public List<MedicalPhysicalExaminationEntity> findByRefId(String referenceId) {
         return medicalPhysicalExaminationManager.findByRefId(referenceId);
+    }
+
+    public List<PhysicalEntity> findAll() {
+        return physicalManager.findAll();
     }
 }

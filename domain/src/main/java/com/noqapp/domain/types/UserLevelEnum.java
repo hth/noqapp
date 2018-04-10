@@ -24,6 +24,7 @@ public enum UserLevelEnum {
 
     /* System User Level. */
     TECHNICIAN("Tech", 40),
+    MEDICAL_TECHNICIAN("Medical Tech", 41),
     SUPERVISOR("Super", 50),
     ANALYSIS("Analysis", 60),
     ADMIN("Admin", 90);

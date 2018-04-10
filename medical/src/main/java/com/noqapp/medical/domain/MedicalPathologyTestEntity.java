@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * hitender
- * 3/7/18 9:32 PM
+ * 2/25/18 3:37 AM
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -18,19 +18,19 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_PHYSICAL_EXAMINATION")
+@Document(collection = "M_PATHOLOGY_TEST")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_physical_examination_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_pathology_test_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicalPhysicalExaminationEntity extends BaseEntity {
+public class MedicalPathologyTestEntity extends BaseEntity {
 
     @NotNull
     @Field("PRI")
-    private String medicalPhysicalReferenceId;
+    private String medicalPathologyReferenceId;
 
     @NotNull
     @Field("PI")
-    private String physicalReferenceId;
+    private String pathologyReferenceId;
 
     @NotNull
     @Field("QID")
@@ -42,21 +42,21 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
     @Field("TR")
     private String testResult;
 
-    public String getMedicalPhysicalReferenceId() {
-        return medicalPhysicalReferenceId;
+    public String getMedicalPathologyReferenceId() {
+        return medicalPathologyReferenceId;
     }
 
-    public MedicalPhysicalExaminationEntity setMedicalPhysicalReferenceId(String medicalPhysicalReferenceId) {
-        this.medicalPhysicalReferenceId = medicalPhysicalReferenceId;
+    public MedicalPathologyTestEntity setMedicalPathologyReferenceId(String medicalPathologyReferenceId) {
+        this.medicalPathologyReferenceId = medicalPathologyReferenceId;
         return this;
     }
 
-    public String getPhysicalReferenceId() {
-        return physicalReferenceId;
+    public String getPathologyReferenceId() {
+        return pathologyReferenceId;
     }
 
-    public MedicalPhysicalExaminationEntity setPhysicalReferenceId(String physicalReferenceId) {
-        this.physicalReferenceId = physicalReferenceId;
+    public MedicalPathologyTestEntity setPathologyReferenceId(String pathologyReferenceId) {
+        this.pathologyReferenceId = pathologyReferenceId;
         return this;
     }
 
@@ -64,7 +64,7 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
         return queueUserId;
     }
 
-    public MedicalPhysicalExaminationEntity setQueueUserId(String queueUserId) {
+    public MedicalPathologyTestEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
@@ -73,7 +73,7 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
         return name;
     }
 
-    public MedicalPhysicalExaminationEntity setName(String name) {
+    public MedicalPathologyTestEntity setName(String name) {
         this.name = name;
         return this;
     }
@@ -82,7 +82,7 @@ public class MedicalPhysicalExaminationEntity extends BaseEntity {
         return testResult;
     }
 
-    public MedicalPhysicalExaminationEntity setTestResult(String testResult) {
+    public MedicalPathologyTestEntity setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }

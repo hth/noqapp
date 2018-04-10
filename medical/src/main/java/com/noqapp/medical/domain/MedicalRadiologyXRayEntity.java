@@ -1,7 +1,6 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.types.RadiologyEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,20 +18,47 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_RDO_X")
+@Document(collection = "M_RADIOLOGY_XRAY")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_rdo_x_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_radiology_xray_idx", def = "{'QID' : 1}", unique = false),
 })
 public class MedicalRadiologyXRayEntity extends BaseEntity {
+
+    @NotNull
+    @Field("RRI")
+    private String medicalRadiologyReferenceId;
+
+    @NotNull
+    @Field("RD")
+    private String radiologyReferenceId;
+
     @NotNull
     @Field("QID")
     private String queueUserId;
 
-    @Field ("RE")
-    private RadiologyEnum radiology;
+    @Field("NA")
+    private String name;
 
     @Field("TR")
     private String testResult;
+
+    public String getMedicalRadiologyReferenceId() {
+        return medicalRadiologyReferenceId;
+    }
+
+    public MedicalRadiologyXRayEntity setMedicalRadiologyReferenceId(String medicalRadiologyReferenceId) {
+        this.medicalRadiologyReferenceId = medicalRadiologyReferenceId;
+        return this;
+    }
+
+    public String getRadiologyReferenceId() {
+        return radiologyReferenceId;
+    }
+
+    public MedicalRadiologyXRayEntity setRadiologyReferenceId(String radiologyReferenceId) {
+        this.radiologyReferenceId = radiologyReferenceId;
+        return this;
+    }
 
     public String getQueueUserId() {
         return queueUserId;
@@ -43,12 +69,12 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return this;
     }
 
-    public RadiologyEnum getRadiology() {
-        return radiology;
+    public String getName() {
+        return name;
     }
 
-    public MedicalRadiologyXRayEntity setRadiology(RadiologyEnum radiology) {
-        this.radiology = radiology;
+    public MedicalRadiologyXRayEntity setName(String name) {
+        this.name = name;
         return this;
     }
 

@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * hitender
@@ -20,9 +20,9 @@ import java.util.Set;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_RDO")
+@Document(collection = "M_RADIOLOGY")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_rdo_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_radiology_idx", def = "{'QID' : 1}", unique = false),
 })
 public class MedicalRadiologyEntity extends BaseEntity {
 
@@ -30,8 +30,8 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("XR")
-    private Set<MedicalRadiologyXRayEntity> medicalRadiologyXRays = new HashSet<>();
+    @Field("RD")
+    private List<String> medicalRadiologyXRayIds = new LinkedList<>();
 
     public String getQueueUserId() {
         return queueUserId;
@@ -42,12 +42,12 @@ public class MedicalRadiologyEntity extends BaseEntity {
         return this;
     }
 
-    public Set<MedicalRadiologyXRayEntity> getMedicalRadiologyXRays() {
-        return medicalRadiologyXRays;
+    public List<String> getMedicalRadiologyXRayIds() {
+        return medicalRadiologyXRayIds;
     }
 
-    public MedicalRadiologyEntity setMedicalRadiologyXRays(Set<MedicalRadiologyXRayEntity> medicalRadiologyXRays) {
-        this.medicalRadiologyXRays = medicalRadiologyXRays;
+    public MedicalRadiologyEntity setMedicalRadiologyXRayIds(List<String> medicalRadiologyXRayIds) {
+        this.medicalRadiologyXRayIds = medicalRadiologyXRayIds;
         return this;
     }
 }

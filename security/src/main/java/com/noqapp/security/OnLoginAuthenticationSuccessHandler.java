@@ -1,8 +1,8 @@
 package com.noqapp.security;
 
+import com.noqapp.domain.types.RoleEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,14 +14,11 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
 
-import com.noqapp.domain.types.RoleEnum;
-
-import java.io.IOException;
-import java.util.Collection;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * User: hitender
@@ -35,12 +32,15 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     private String accessLanding;
 
     /** For supers. */
-    @Value ("${empLanding:/emp/landing.htm}")
-    private String empLanding;
+    @Value ("${empSupervisorLanding:/emp/landing.htm}")
+    private String empSupervisorLanding;
 
-    /** For NoQueue techs. TODO still */
+    /** For NoQueue techs for data related. TODO(hth) still */
     @Value ("${empTechLanding:/emp/noqueue/landing.htm}")
     private String empTechLanding;
+
+    @Value ("${empMedicalTechLanding:/emp/medical/landing.htm}")
+    private String empMedicalTechLanding;
 
     @Value ("${adminLanding:/admin/landing.htm}")
     private String adminLanding;
@@ -139,8 +139,10 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return displayLanding;
             case ROLE_TECHNICIAN:
                 return empTechLanding;
+            case ROLE_MEDICAL_TECHNICIAN:
+                return empMedicalTechLanding;
             case ROLE_SUPERVISOR:
-                return empLanding;
+                return empSupervisorLanding;
             case ROLE_ADMIN:
                 return adminLanding;
             default:

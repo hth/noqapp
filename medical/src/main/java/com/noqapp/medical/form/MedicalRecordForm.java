@@ -3,20 +3,19 @@ package com.noqapp.medical.form;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
-import com.noqapp.domain.types.PhysicalExamEnum;
-import com.noqapp.medical.domain.MedicalPathologyLaboratoryEntity;
+import com.noqapp.medical.domain.MedicalMedicationEntity;
+import com.noqapp.medical.domain.MedicalPathologyEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
-import com.noqapp.medical.domain.MedicationEntity;
+import com.noqapp.medical.domain.PhysicalEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * hitender
@@ -39,52 +38,45 @@ public class MedicalRecordForm {
     private String pastHistory;
     private String familyHistory;
     private String knownAllergies;
-    private Set<MedicalPhysicalForm> medicalPhysical;
+    private List<MedicalPhysicalForm> medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{add(new MedicalPhysicalForm()); add(new MedicalPhysicalForm()); add(new MedicalPhysicalForm());}};
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
-    private MedicalPathologyLaboratoryEntity medicalLaboratory = new MedicalPathologyLaboratoryEntity();
+    private MedicalPathologyEntity medicalLaboratory = new MedicalPathologyEntity();
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
-    private MedicationEntity medication = new MedicationEntity();
+    private MedicalMedicationEntity medication = new MedicalMedicationEntity();
     private Map<Date, String> recordAccessed = new HashMap<>();
 
     @SuppressWarnings("unused")
     private MedicalRecordForm() {
         //Happy Bean
-
-        medicalPhysical = new LinkedHashSet<MedicalPhysicalForm>() {{
-            for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
-                add(new MedicalPhysicalForm().setPhysicalExam(physicalExam));
-            }
-        }};
     }
 
     public MedicalRecordForm(String queueUserId) {
-        super();
-
         this.queueUserId = queueUserId;
-        medicalPhysical = new LinkedHashSet<MedicalPhysicalForm>() {{
-            for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
-                add(new MedicalPhysicalForm().setPhysicalExam(physicalExam));
-            }
-        }};
     }
 
-    /**
-     * Used when populating historical record.
-     */
-    public MedicalRecordForm(String queueUserId, List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations) {
-        super();
+    public MedicalRecordForm populateEmptyForm(List<PhysicalEntity> physicals) {
+        medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{
+            for (PhysicalEntity physical : physicals) {
+                add(new MedicalPhysicalForm()
+                        .setPhysicalReferenceId(physical.getId())
+                        .setName(physical.getName()));
+            }
+        }};
+        return this;
+    }
 
-        this.queueUserId = queueUserId;
-        this.medicalPhysical = new LinkedHashSet<>();
-        for (MedicalPhysicalExaminationEntity medicalPhysicalExamination : medicalPhysicalExaminations) {
-            MedicalPhysicalForm medicalPhysicalForm = new MedicalPhysicalForm()
-                    .setPhysicalExam(medicalPhysicalExamination.getPhysicalExam())
-                    .setValue(medicalPhysicalExamination.getValue());
-
-            medicalPhysical.add(medicalPhysicalForm);
-        }
-     }
+    public MedicalRecordForm populateHistoricalForm(List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations) {
+        medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{
+            for (MedicalPhysicalExaminationEntity physical : medicalPhysicalExaminations) {
+                add(new MedicalPhysicalForm()
+                        .setPhysicalReferenceId(physical.getId())
+                        .setName(physical.getName())
+                        .setValue(physical.getTestResult()));
+            }
+        }};
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -204,12 +196,12 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public Set<MedicalPhysicalForm> getMedicalPhysical() {
-        return medicalPhysical;
+    public List<MedicalPhysicalForm> getMedicalPhysicalForms() {
+        return medicalPhysicalForms;
     }
 
-    public MedicalRecordForm setMedicalPhysical(Set<MedicalPhysicalForm> medicalPhysical) {
-        this.medicalPhysical = medicalPhysical;
+    public MedicalRecordForm setMedicalPhysicalForms(List<MedicalPhysicalForm> medicalPhysicalForms) {
+        this.medicalPhysicalForms = medicalPhysicalForms;
         return this;
     }
 
@@ -231,11 +223,11 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicalPathologyLaboratoryEntity getMedicalLaboratory() {
+    public MedicalPathologyEntity getMedicalLaboratory() {
         return medicalLaboratory;
     }
 
-    public MedicalRecordForm setMedicalLaboratory(MedicalPathologyLaboratoryEntity medicalLaboratory) {
+    public MedicalRecordForm setMedicalLaboratory(MedicalPathologyEntity medicalLaboratory) {
         this.medicalLaboratory = medicalLaboratory;
         return this;
     }
@@ -249,11 +241,11 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicationEntity getMedication() {
+    public MedicalMedicationEntity getMedication() {
         return medication;
     }
 
-    public MedicalRecordForm setMedication(MedicationEntity medication) {
+    public MedicalRecordForm setMedication(MedicalMedicationEntity medication) {
         this.medication = medication;
         return this;
     }

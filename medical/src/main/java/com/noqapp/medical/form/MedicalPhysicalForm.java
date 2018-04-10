@@ -1,22 +1,30 @@
 package com.noqapp.medical.form;
 
-import com.noqapp.domain.types.PhysicalExamEnum;
-
 /**
  * hitender
  * 3/8/18 1:18 AM
  */
 public class MedicalPhysicalForm {
 
-    private PhysicalExamEnum physicalExam;
+    private String physicalReferenceId;
+    private String name;
     private String value;
 
-    public PhysicalExamEnum getPhysicalExam() {
-        return physicalExam;
+    public String getPhysicalReferenceId() {
+        return physicalReferenceId;
     }
 
-    public MedicalPhysicalForm setPhysicalExam(PhysicalExamEnum physicalExam) {
-        this.physicalExam = physicalExam;
+    public MedicalPhysicalForm setPhysicalReferenceId(String physicalReferenceId) {
+        this.physicalReferenceId = physicalReferenceId;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public MedicalPhysicalForm setName(String name) {
+        this.name = name;
         return this;
     }
 

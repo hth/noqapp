@@ -32,6 +32,7 @@ import java.util.List;
 public class JsonMedicalRecord extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalRecord.class);
 
+    @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
     @JsonProperty("qid")

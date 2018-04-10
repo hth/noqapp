@@ -30,6 +30,9 @@ public enum RoleEnum {
     /** Validate and process data. */
     ROLE_TECHNICIAN,
 
+    /** Validate medical and process data. */
+    ROLE_MEDICAL_TECHNICIAN,
+
     /** Has view access pending things for to ROLE_TECHNICIAN. */
     ROLE_SUPERVISOR,
 
