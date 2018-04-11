@@ -415,7 +415,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public void addPhoneNumberToExistingQueue(int token, String codeQR, String did, String customerPhone) {
         mongoTemplate.updateFirst(
-            query(where("QR").is(codeQR).and("DID").is(did).and("TN").is(token)),
+                query(where("QR").is(codeQR).and("DID").is(did).and("TN").is(token)),
                 entityUpdate(update("PH", customerPhone)),
                 QueueEntity.class,
                 TABLE

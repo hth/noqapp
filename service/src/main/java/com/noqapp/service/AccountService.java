@@ -592,4 +592,9 @@ public class AccountService {
     public long countRegisteredBetweenDates(Date from, Date to) {
         return userAccountManager.countRegisteredBetweenDates(from, to);
     }
+
+    @Mobile
+    public void updateAuthenticationKey(String id, String authenticationKey) {
+        userAuthenticationManager.updateAuthenticationKey(id, authenticationKey);
+    }
 }

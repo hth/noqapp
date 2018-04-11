@@ -9,4 +9,12 @@ import com.noqapp.domain.UserAuthenticationEntity;
 public interface UserAuthenticationManager extends RepositoryManager<UserAuthenticationEntity> {
     UserAuthenticationEntity getById(String id);
 
+    /**
+     * For security sake update authenticationKey after every OTP/Login. This eliminates duplicate login.
+     *
+     * @param id
+     * @param authenticationKey
+     */
+    void updateAuthenticationKey(String id, String authenticationKey);
+
 }
