@@ -47,8 +47,8 @@ public class UserAuthenticationEntity extends BaseEntity {
 
     /**
      *
-     * @param password
-     * @param authenticationKey
+     * @param password              SCrypt
+     * @param authenticationKey     BCrypt
      */
     private UserAuthenticationEntity(String password, String authenticationKey) {
         super();
@@ -59,8 +59,8 @@ public class UserAuthenticationEntity extends BaseEntity {
     /**
      * This method is used when the Entity is created for the first time.
      *
-     * @param password
-     * @param authenticationKey - (password + time stamp) to HashCode this needs to go to OAuth
+     * @param password          SCrypt
+     * @param authenticationKey BCrypt
      * @return
      */
     public static UserAuthenticationEntity newInstance(String password, String authenticationKey) {
