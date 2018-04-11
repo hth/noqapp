@@ -93,10 +93,10 @@
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:input path="normalRange[0]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Blood Pressure/Weight/Pluse"/>
+                                                                placeholder="Start Range Blood Pressure"/>
                                                     - to -
                                                     <form:input path="normalRange[1]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Blood Pressure/Weight/Pluse"/>
+                                                                placeholder="End Range Blood Pressure"/>
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
@@ -164,10 +164,10 @@
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:input path="normalRange[0]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Blood Pressure/Weight/Pluse"/>
+                                                                placeholder="Start Range Blood Pressure"/>
                                                     - to -
                                                     <form:input path="normalRange[1]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Blood Pressure/Weight/Pluse"/>
+                                                                placeholder="End Range Blood Pressure"/>
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
