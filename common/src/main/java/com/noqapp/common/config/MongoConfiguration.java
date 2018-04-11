@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.WriteResultChecking;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoTypeMapper;
@@ -74,7 +75,7 @@ public class MongoConfiguration {
 
     @Bean
     public MappingMongoConverter mongoConverter() {
-        MappingMongoConverter converter = new MappingMongoConverter(mongoDbFactory(), mongoMappingContext());
+        MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory()), mongoMappingContext());
         converter.setTypeMapper(mongoTypeMapper());
         return converter;
     }
