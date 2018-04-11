@@ -92,10 +92,10 @@
                                                     <form:label path="normalRange" cssErrorClass="lb_error">Normal Range</form:label>
                                                 </div>
                                                 <div class="col-fields">
-                                                    <form:input path="normalRange[0]" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                    <form:input path="normalRange[0]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Blood Pressure/Weight/Pluse"/>
-
-                                                    <form:input path="normalRange[1]" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                    - to -
+                                                    <form:input path="normalRange[1]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Blood Pressure/Weight/Pluse"/>
                                                 </div>
                                                 <div class="clearFix"></div>
@@ -163,10 +163,10 @@
                                                     <form:label path="normalRange" cssErrorClass="lb_error">Normal Range</form:label>
                                                 </div>
                                                 <div class="col-fields">
-                                                    <form:input path="normalRange[0]" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                    <form:input path="normalRange[0]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Blood Pressure/Weight/Pluse"/>
-
-                                                    <form:input path="normalRange[1]" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                    - to -
+                                                    <form:input path="normalRange[1]" cssClass="form-field-admin" cssStyle="width: 40%" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Blood Pressure/Weight/Pluse"/>
                                                 </div>
                                                 <div class="clearFix"></div>
