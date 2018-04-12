@@ -83,7 +83,10 @@ public class BizStoreElasticList extends AbstractDomain {
     @Transient
     public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
-            bizStoreElastics.add(elasticBizStoreSource.getBizStoreElastic());
+            BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
+            //TODO(hth) remove this call
+            bizStoreElastic.getDisplayImage();
+            bizStoreElastics.add(bizStoreElastic);
         }
 
         return this;
