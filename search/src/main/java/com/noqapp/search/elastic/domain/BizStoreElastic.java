@@ -392,18 +392,18 @@ public class BizStoreElastic extends AbstractDomain {
     }
 
     public String getDisplayImage() {
-        switch(BusinessTypeEnum.valueOf(businessType)) {
-            case DO:
-            case HO:
+        switch(businessType) {
+            case "Doctor":
+            case "Hospital":
                 this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                 break;
-            case RS:
+            case "Restaurant":
                 this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
                 break;
-            case ST:
+            case "Store":
                 this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
                 break;
-            case GS:
+            case "Grocery Store":
                 this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
                 break;
             default:
