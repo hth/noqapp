@@ -432,6 +432,7 @@ public class JsonQueue extends AbstractDomain {
     }
 
     public String getDisplayImage() {
+        LOG.info("Business Type for display Image {}", businessType);
         switch (businessType) {
             case DO:
             case HO:
@@ -454,7 +455,25 @@ public class JsonQueue extends AbstractDomain {
     }
 
     public JsonQueue setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
+        LOG.info("Business Type for display Image {}", businessType);
+        switch (businessType.getDescription()) {
+            case "Doctor":
+            case "Hospital":
+                this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+                break;
+            case "Restaurant":
+                this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
+                break;
+            case "Store":
+                this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
+                break;
+            case "Grocery Store":
+                this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
+                break;
+            default:
+                this.displayImage = "https://noqapp.com/imgs/240x120/b.jpeg";
+        }
+        //this.displayImage = displayImage;
         return this;
     }
 
