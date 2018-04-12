@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -595,8 +594,27 @@ public class AccountService {
     }
 
     @Mobile
-    @Async
-    public void updateAuthenticationKey(String id, String authenticationKey) {
-        userAuthenticationManager.updateAuthenticationKey(id, authenticationKey);
+    public String updateAuthenticationKey(String id) {
+        String updatedAuthenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
+        userAuthenticationManager.updateAuthenticationKey(id, updatedAuthenticationKey);
+        return updatedAuthenticationKey;
+    }
+
+    @Mobile
+    public String updatePhoneNumber(String qid, String newPhone, String countryShortName, String timeZone) {
+        RegisterUser registerUser = new RegisterUser();
+        registerUser.setPhone(new ScrubbedInput(newPhone))
+                .setCountryShortName(new ScrubbedInput(countryShortName))
+                .setTimeZone(new ScrubbedInput(timeZone));
+
+        UserProfileEntity userProfile  = userProfileManager.findByQueueUserId(qid);
+        userProfile.setPhone(registerUser.getPhoneWithCountryCode());
+        userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
+        userProfile.setCountryShortName(registerUser.getCountryShortName());
+        userProfile.setTimeZone(registerUser.getTimeZone());
+
+        save(userProfile);
+        UserAccountEntity userAccount = findByQueueUserId(qid);
+        return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
 }
