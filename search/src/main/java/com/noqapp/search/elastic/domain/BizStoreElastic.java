@@ -134,7 +134,7 @@ public class BizStoreElastic extends AbstractDomain {
     private String webLocation;
 
     @JsonProperty("DI")
-    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+    private String displayImage;
 
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
@@ -392,6 +392,23 @@ public class BizStoreElastic extends AbstractDomain {
     }
 
     public String getDisplayImage() {
+        switch(BusinessTypeEnum.valueOf(businessType)) {
+            case DO:
+            case HO:
+                this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+                break;
+            case RS:
+                this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
+                break;
+            case ST:
+                this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
+                break;
+            case GS:
+                this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
+                break;
+            default:
+                this.displayImage = "https://noqapp.com/imgs/240x120/b.jpeg";
+        }
         return displayImage;
     }
 

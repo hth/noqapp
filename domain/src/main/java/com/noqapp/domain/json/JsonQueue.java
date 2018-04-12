@@ -134,7 +134,7 @@ public class JsonQueue extends AbstractDomain {
     private String bizCategoryId;
 
     @JsonProperty ("di")
-    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+    private String displayImage;
 
     @JsonProperty("ff")
     private String famousFor = "Chicken, Aloo Tikki";
@@ -432,6 +432,24 @@ public class JsonQueue extends AbstractDomain {
     }
 
     public String getDisplayImage() {
+        switch (businessType) {
+            case DO:
+            case HO:
+                this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+                break;
+            case RS:
+                this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
+                break;
+            case ST:
+                this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
+                break;
+            case GS:
+                this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
+                break;
+            default:
+                this.displayImage = "https://noqapp.com/imgs/240x120/b.jpeg";
+
+        }
         return displayImage;
     }
 
