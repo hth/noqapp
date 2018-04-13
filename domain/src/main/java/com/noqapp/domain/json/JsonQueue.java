@@ -451,7 +451,7 @@ public class JsonQueue extends AbstractDomain {
                 this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
                 break;
             default:
-                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpeg";
+                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
 
         }
         return displayImage;
