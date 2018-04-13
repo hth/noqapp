@@ -401,6 +401,9 @@ public class BizStoreElastic extends AbstractDomain {
             case "Hospital":
                 this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                 break;
+            case "Bank":
+                this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
+                break;
             case "Restaurant":
                 this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
                 break;
@@ -411,7 +414,7 @@ public class BizStoreElastic extends AbstractDomain {
                 this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
                 break;
             default:
-                this.displayImage = "https://noqapp.com/imgs/240x120/b.jpeg";
+                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpeg";
         }
         return displayImage;
     }
