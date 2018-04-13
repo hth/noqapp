@@ -438,6 +438,9 @@ public class JsonQueue extends AbstractDomain {
             case HO:
                 this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                 break;
+            case BK:
+                this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
+                break;
             case RS:
                 this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
                 break;
@@ -448,7 +451,7 @@ public class JsonQueue extends AbstractDomain {
                 this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
                 break;
             default:
-                this.displayImage = "https://noqapp.com/imgs/240x120/b.jpeg";
+                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpeg";
 
         }
         return displayImage;
