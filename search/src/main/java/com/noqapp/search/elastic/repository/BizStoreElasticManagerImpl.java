@@ -90,9 +90,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
             IndexResponse indexResponse = restHighLevelClient.index(request, CommonUtil.getMeSomeHeader());
             if (indexResponse.getResult() == DocWriteResponse.Result.CREATED) {
-                LOG.warn("Created successfully id={}", bizStoreElastic.getId());
+                LOG.info("Created elastic document successfully id={}", bizStoreElastic.getId());
             } else if (indexResponse.getResult() == DocWriteResponse.Result.UPDATED) {
-                LOG.warn("Updated document id={}", bizStoreElastic.getId());
+                LOG.info("Updated elastic document id={}", bizStoreElastic.getId());
             }
 
             ReplicationResponse.ShardInfo shardInfo = indexResponse.getShardInfo();

@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
-    /* This should help in migrating to new index by changing the name of version from v1 to v2. */
-    private static final String[] INDEX_VERSION = {"v0", "v1", "v2", "v3"};
+    /* Helps in migrating to new index by adding new name like v1 to v2 to string array. */
+    private static final String[] INDEX_VERSION = {"v3", "v0"};
 
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];
