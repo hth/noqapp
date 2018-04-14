@@ -461,7 +461,7 @@ public class BizStoreElastic extends AbstractDomain {
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
-                .setDisplayImage("https://noqapp.com/imgs/240x120/f.jpeg");
+                .setDisplayImage(bizStore.getDisplayImage());
     }
 
     @Override
