@@ -95,6 +95,7 @@ public class BizStoreElasticService {
 
     @Async
     public void delete(String id) {
+        LOG.info("Deleting store from elastic id={}", id);
         bizStoreElasticManager.delete(id);
     }
 
