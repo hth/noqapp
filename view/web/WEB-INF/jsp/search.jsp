@@ -82,13 +82,13 @@
                                 <c:choose>
                                 <c:when test="${!empty elasticBizStoreSource.bizStoreElastic.category}">
                                 <span style="display:block; font-size:13px;">
-                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.category}, ${elasticBizStoreSource.bizStoreElastic.town};
+                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.category}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
                                         <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
                                 </c:when>
                                 <c:otherwise>
                                 <span style="display:block; font-size:13px;">
-                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.town};
+                                    ${elasticBizStoreSource.bizStoreElastic.businessType}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
                                         <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
                                 </c:otherwise>
