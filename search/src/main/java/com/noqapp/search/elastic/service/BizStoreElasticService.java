@@ -184,7 +184,7 @@ public class BizStoreElasticService {
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
         if (StringUtils.isNotBlank(result)) {
             try {
-                //TODO this is hard coded to just one type of search; should be extendable for other searches.
+                //TODO(hth) this is hard coded to just one type of search; should be extendable for other searches.
                 ElasticResult elasticResult = objectMapper.readValue(result, ElasticResult.class);
                 return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
             } catch (IOException e) {

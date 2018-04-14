@@ -73,7 +73,8 @@
 
             <div class="form-style">
                 <div class="store-table">
-                    <c:if test="${!empty searchResult}">
+                    <c:choose>
+                    <c:when test="${!empty searchResult}">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
                         <c:forEach items="${searchResult}" var="elasticBizStoreSource" varStatus="status">
                         <tr>
@@ -98,7 +99,13 @@
                         </tr>
                         </c:forEach>
                     </table>
-                    </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="alert-info">
+                            No search result found. Modify query and search again.
+                        </div>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
