@@ -35,6 +35,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
     private BizService bizService;
+    private BizStoreElasticService bizStoreElasticService;
 
     @SuppressWarnings ("unused")
     @Autowired
@@ -49,6 +50,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.businessUserService = businessUserService;
         this.bizService = bizService;
+        this.bizStoreElasticService = bizStoreElasticService;
     }
 
     private RegisterBusiness createStoreRegistration() {
@@ -93,6 +95,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
     public void deleteStore(String bizStoreId) {
         LOG.info("Delete storeId={}", bizStoreId);
         bizService.deleteStore(bizStoreId);
+        bizStoreElasticService.delete(bizStoreId);
     }
 
     private RegisterBusiness populateWithBizName(BusinessUserEntity businessUser) {
