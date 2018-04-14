@@ -18,6 +18,7 @@ import org.springframework.data.annotation.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
@@ -462,6 +463,21 @@ public class BizStoreElastic extends AbstractDomain {
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
                 .setDisplayImage(bizStore.getDisplayImage());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BizStoreElastic that = (BizStoreElastic) o;
+        return Objects.equals(businessType, that.businessType) &&
+                Objects.equals(categoryId, that.categoryId) &&
+                Objects.equals(bizNameId, that.bizNameId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(businessType, categoryId, bizNameId);
     }
 
     @Override

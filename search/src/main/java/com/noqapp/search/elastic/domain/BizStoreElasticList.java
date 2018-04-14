@@ -11,7 +11,9 @@ import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 
 import java.beans.Transient;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -41,13 +43,13 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+    private Set<BizStoreElastic> bizStoreElastics = new LinkedHashSet<>();
 
-    public List<BizStoreElastic> getBizStoreElastics() {
+    public Set<BizStoreElastic> getBizStoreElastics() {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
@@ -84,7 +86,7 @@ public class BizStoreElasticList extends AbstractDomain {
     public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
-            //TODO(hth) remove this call
+            //TODO(hth) remove this call, currently it populates the images
             bizStoreElastic.getDisplayImage();
             bizStoreElastics.add(bizStoreElastic);
         }

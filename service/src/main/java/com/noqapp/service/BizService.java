@@ -166,13 +166,11 @@ public class BizService {
     @Mobile
     public boolean isValidCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizStoreManager.isValidCodeQR(codeQR);
-
     }
 
     @Mobile
     public boolean isValidBizNameCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizNameManager.isValidCodeQR(codeQR);
-
     }
 
     public void insertAll(List<StoreHourEntity> storeHours) {
