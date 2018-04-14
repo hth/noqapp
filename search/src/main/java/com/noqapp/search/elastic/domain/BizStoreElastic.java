@@ -470,9 +470,16 @@ public class BizStoreElastic extends AbstractDomain {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BizStoreElastic that = (BizStoreElastic) o;
-        return Objects.equals(businessType, that.businessType) &&
-                Objects.equals(categoryId, that.categoryId) &&
-                Objects.equals(bizNameId, that.bizNameId);
+
+        switch (businessType) {
+            case "Doctor":
+                return Objects.equals(businessType, that.businessType) &&
+                        Objects.equals(bizNameId, that.bizNameId);
+            default:
+                return Objects.equals(businessType, that.businessType) &&
+                        Objects.equals(categoryId, that.categoryId) &&
+                        Objects.equals(bizNameId, that.bizNameId);
+        }
     }
 
     @Override
