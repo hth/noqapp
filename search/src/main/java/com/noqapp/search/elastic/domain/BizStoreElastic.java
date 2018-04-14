@@ -488,7 +488,7 @@ public class BizStoreElastic extends AbstractDomain {
     public int hashCode() {
         switch (businessType) {
             case "Doctor":
-                return Objects.hash(categoryId, bizNameId);
+                return Objects.hash(businessType, bizNameId);
             default:
                 return Objects.hash(businessType, categoryId, bizNameId);
         }
