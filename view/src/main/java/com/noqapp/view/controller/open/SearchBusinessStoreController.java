@@ -66,14 +66,14 @@ public class SearchBusinessStoreController {
             Model model,
             HttpServletRequest request
     ) {
+        String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
+        searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
+
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.searchForm", model.asMap().get("result"));
             searchForm.setSearch((ScrubbedInput) model.asMap().get("search"));
         } else {
-            String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
-            searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
-
             if (model.asMap().containsKey("search")) {
                 searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
                 model.addAttribute(
@@ -84,6 +84,7 @@ public class SearchBusinessStoreController {
             }
         }
 
+        LOG.info("ipAddress={} cityName={}", ipAddress, searchForm.getGeoIP().getCityName());
         return nextPage;
     }
 
