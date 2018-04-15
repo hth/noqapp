@@ -19,6 +19,7 @@ public enum BusinessTypeEnum {
     GS("GS", "Grocery Store"),
     CF("CF", "Cafe"),
     HO("HO", "Hospital"),
+    CL("CL", "Clinic"),
     DO("DO", "Doctor"),
     PH("PH", "Pharmacy"),
     PW("PW", "Place of Worship"),

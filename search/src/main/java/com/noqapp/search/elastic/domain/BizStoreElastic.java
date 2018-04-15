@@ -60,7 +60,7 @@ public class BizStoreElastic extends AbstractDomain {
     private String businessName;
 
     @JsonProperty("BT")
-    private String businessType;
+    private BusinessTypeEnum businessType;
 
     @JsonProperty("BC")
     private String category;
@@ -170,12 +170,12 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public String getBusinessType() {
+    public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
     public BizStoreElastic setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType.getDescription();
+        this.businessType = businessType;
         return this;
     }
 
@@ -398,20 +398,20 @@ public class BizStoreElastic extends AbstractDomain {
     public String getDisplayImage() {
         LOG.info("Business Type for display Image {}", businessType);
         switch (businessType) {
-            case "Doctor":
-            case "Hospital":
+            case DO:
+            case HO:
                 this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                 break;
-            case "Bank":
+            case BK:
                 this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
                 break;
-            case "Restaurant":
+            case RS:
                 this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
                 break;
-            case "Store":
+            case ST:
                 this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
                 break;
-            case "Grocery Store":
+            case GS:
                 this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
                 break;
             default:
@@ -472,7 +472,7 @@ public class BizStoreElastic extends AbstractDomain {
         BizStoreElastic that = (BizStoreElastic) o;
 
         switch (businessType) {
-            case "Doctor":
+            case DO:
                 LOG.info("{}", businessType);
                 return Objects.equals(businessType, that.businessType) &&
                         Objects.equals(bizNameId, that.bizNameId);
@@ -487,7 +487,7 @@ public class BizStoreElastic extends AbstractDomain {
     @Override
     public int hashCode() {
         switch (businessType) {
-            case "Doctor":
+            case DO:
                 return Objects.hash(businessType, bizNameId);
             default:
                 return Objects.hash(businessType, categoryId, bizNameId);
