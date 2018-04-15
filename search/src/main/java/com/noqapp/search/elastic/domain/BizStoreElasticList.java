@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonCategory;
 import com.noqapp.search.elastic.json.ElasticBizStoreSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.Transient;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BizStoreElasticList extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticList.class);
 
     @JsonProperty("cityName")
     private String cityName;
@@ -88,6 +91,7 @@ public class BizStoreElasticList extends AbstractDomain {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
             //TODO(hth) remove this call, currently it populates the images
             bizStoreElastic.getDisplayImage();
+            LOG.info("hashCode={} ", bizStoreElastic.hashCode());
             bizStoreElastics.add(bizStoreElastic);
         }
 
