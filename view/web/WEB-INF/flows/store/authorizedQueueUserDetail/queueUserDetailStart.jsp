@@ -140,7 +140,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <p>${authorizedQueueUser.name} has not more stores left to manage.</p>
+                                        <p>${authorizedQueueUser.name} has no more stores left to manage.</p>
                                     </div>
                                 </c:otherwise>
                                 </c:choose>
