@@ -84,7 +84,12 @@
                                         <td>
                                             <a href="/business/detail/store/${store.id}.htm" target="_blank">${store.address}</a>
                                             <c:choose>
-                                                <c:when test="${BusinessTypeEnum.ST eq store.businessType}">
+                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                || BusinessTypeEnum.BA eq store.businessType
+                                                || BusinessTypeEnum.ST eq store.businessType
+                                                || BusinessTypeEnum.GS eq store.businessType
+                                                || BusinessTypeEnum.CF eq store.businessType
+                                                || BusinessTypeEnum.PH eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a> | <a href="/business/store/category/${store.id}.htm">Store Category</a></span>
                                                 </c:when>
                                                 <c:otherwise>
