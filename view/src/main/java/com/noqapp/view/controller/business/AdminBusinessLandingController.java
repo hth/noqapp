@@ -1,14 +1,27 @@
 package com.noqapp.view.controller.business;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.helper.QueueDetail;
+import com.noqapp.domain.helper.QueueSupervisor;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.analytic.BizDimensionService;
+import com.noqapp.view.form.QueueSupervisorActionForm;
+import com.noqapp.view.form.business.BusinessLandingForm;
+import com.noqapp.view.form.business.QueueSupervisorForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,27 +37,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.analytic.BizDimensionEntity;
-import com.noqapp.domain.helper.QueueDetail;
-import com.noqapp.domain.helper.QueueSupervisor;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.service.analytic.BizDimensionService;
-import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.view.form.QueueSupervisorActionForm;
-import com.noqapp.view.form.business.BusinessLandingForm;
-import com.noqapp.view.form.business.QueueSupervisorForm;
-
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * User: hitender
@@ -409,7 +406,13 @@ public class AdminBusinessLandingController {
                             userProfile.setLevel(UserLevelEnum.CLIENT);
                             break;
                         default:
-                            LOG.error("Reached unsupported condition as userLevel={}", userProfile.getLevel());
+                            /*
+                             * Could be session not expired, and user is still logged in
+                             * and access secured page with previous role.
+                             */
+                            LOG.error("Reached unsupported condition as userLevel={} mail={}",
+                                    userProfile.getLevel(), userProfile.getEmail());
+
                             throw new UnsupportedOperationException("Reached unsupported condition");
                     }
                     accountService.save(userProfile);
