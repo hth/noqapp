@@ -473,12 +473,12 @@ public class BizStoreElastic extends AbstractDomain {
 
         switch (businessType) {
             case DO:
-                LOG.info("{}", businessType);
-                return Objects.equals(businessType, that.businessType) &&
+                LOG.info("DO {}", businessType.name());
+                return Objects.equals(businessType.name(), that.businessType.name()) &&
                         Objects.equals(bizNameId, that.bizNameId);
             default:
-                LOG.info("{}", businessType);
-                return Objects.equals(businessType, that.businessType) &&
+                LOG.info("Default {}", businessType.name());
+                return Objects.equals(businessType.name(), that.businessType.name()) &&
                         Objects.equals(categoryId, that.categoryId) &&
                         Objects.equals(bizNameId, that.bizNameId);
         }
@@ -488,9 +488,9 @@ public class BizStoreElastic extends AbstractDomain {
     public int hashCode() {
         switch (businessType) {
             case DO:
-                return Objects.hash(businessType, bizNameId);
+                return Objects.hash(businessType.name(), bizNameId);
             default:
-                return Objects.hash(businessType, categoryId, bizNameId);
+                return Objects.hash(businessType.name(), categoryId, bizNameId);
         }
     }
 
