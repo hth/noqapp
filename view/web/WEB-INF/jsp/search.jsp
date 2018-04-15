@@ -73,6 +73,7 @@
 
             <div class="form-style">
                 <div class="store-table">
+                    <c:if test="${!empty searchForm.search}">
                     <c:choose>
                     <c:when test="${!empty searchResult}">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
@@ -106,6 +107,7 @@
                         </div>
                     </c:otherwise>
                     </c:choose>
+                    </c:if>
                 </div>
             </div>
 
