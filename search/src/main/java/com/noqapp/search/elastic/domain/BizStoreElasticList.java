@@ -91,8 +91,7 @@ public class BizStoreElasticList extends AbstractDomain {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
             //TODO(hth) remove this call, currently it populates the images
             bizStoreElastic.getDisplayImage();
-            LOG.info("{} {} {} hashCode={} ",
-                    bizStoreElastic.getId(),
+            LOG.info("{}, {}, hashCode={} ",
                     bizStoreElastic.getDisplayName(),
                     bizStoreElastic.getBusinessName(),
                     bizStoreElastic.hashCode());
