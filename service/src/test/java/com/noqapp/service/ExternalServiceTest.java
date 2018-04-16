@@ -1,20 +1,19 @@
 package com.noqapp.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import com.google.maps.model.GeocodingResult;
-
 import com.noqapp.repository.BizStoreManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.TimeZone;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * User: hitender
@@ -45,7 +44,7 @@ class ExternalServiceTest {
         assertNull(externalService.getGeocodingResults(""), "Null when address is empty");
     }                                           
 
-    @Test
+    @Disabled
     void getGeocodingResults_InvalidAddress_Without_Commas() {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit Sunnyvale CA 94089");
         assertEquals(1, geocodingResults.length);
