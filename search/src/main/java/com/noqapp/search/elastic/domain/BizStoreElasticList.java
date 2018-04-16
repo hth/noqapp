@@ -87,11 +87,6 @@ public class BizStoreElasticList extends AbstractDomain {
     }
 
     @Transient
-    public void uniqueSet() {
-        bizStoreElastics = new LinkedHashSet<>(bizStoreElastics);
-    }
-
-    @Transient
     public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
@@ -105,6 +100,9 @@ public class BizStoreElasticList extends AbstractDomain {
             bizStoreElastics.add(bizStoreElastic);
         }
 
+        if (!bizStoreElastics.isEmpty()) {
+            bizStoreElastics = new LinkedHashSet<>(bizStoreElastics);
+        }
         return this;
     }
 }
