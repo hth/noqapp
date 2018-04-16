@@ -58,13 +58,13 @@
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
-                                </c:if>
+                            <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                </c:forEach>
+                                </ul>
+                            </c:if>
                             </div>
                         </div>
                         <div class="admin-content">
@@ -79,7 +79,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
@@ -89,7 +88,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
@@ -100,7 +98,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
@@ -155,35 +152,35 @@
                                     </li>
 
                                     <c:if test="${!register.registerUser.emailValidated}">
-                                        <li>
-                                            <div class="alert-info">
-                                                <p>
-                                                    Your email address
-                                                    <a href="#" class="txt-red">${register.registerUser.email}</a>
-                                                    has not been validated. Please validated email address to continue merchant
-                                                    account registration.
-                                                </p>
-                                                <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
-                                            </div>
-                                        </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                Your email address
+                                                <a href="#" class="txt-red">${register.registerUser.email}</a>
+                                                has not been validated. Please validated email address to continue merchant
+                                                account registration.
+                                            </p>
+                                            <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
+                                        </div>
+                                    </li>
                                     </c:if>
 
                                     <c:if test="${!register.registerUser.phoneValidated}">
-                                        <li>
-                                            <div class="alert-info">
-                                                <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
-                                            </div>
-                                        </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
+                                        </div>
+                                    </li>
                                     </c:if>
 
                                     <c:if test="${register.registerUser.emailValidated}">
-                                        <li class="mB0">
-                                            <div class="col-lable3"></div>
-                                            <div class="col-fields">
-                                                <input type="submit" value="NEXT" class="next-btn" name="_eventId_submit">
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
+                                    <li class="mB0">
+                                        <div class="col-lable3"></div>
+                                        <div class="col-fields">
+                                            <input type="submit" value="NEXT" class="ladda-button next-btn" name="_eventId_submit">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     </c:if>
                                 </ul>
                             </div>
