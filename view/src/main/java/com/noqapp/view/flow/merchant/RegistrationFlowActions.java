@@ -164,7 +164,7 @@ class RegistrationFlowActions {
             bizService.saveName(bizName);
             return bizName;
         } catch(Exception e) {
-            LOG.error("Error saving business");
+            LOG.error("Error saving business reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving business");
         }
     }
