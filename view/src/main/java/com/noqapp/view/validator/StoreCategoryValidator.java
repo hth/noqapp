@@ -56,8 +56,8 @@ public class StoreCategoryValidator implements Validator {
                         LOG.warn("Cannot add Category when store business type is of pharmacy");
                         errors.rejectValue("categoryName",
                                 "unsupported.for.businessType",
-                                new Object[]{form.getCategoryName(), form.getBusinessType().getDescription()},
-                                form.getCategoryName() + " is not supported for " + form.getBusinessType().getDescription());
+                                new Object[]{"Category", form.getBusinessType().getDescription()},
+                                "Category" + " addition is not supported for " + form.getBusinessType().getDescription());
                         break;
                     default:
                         //Ignore for rest

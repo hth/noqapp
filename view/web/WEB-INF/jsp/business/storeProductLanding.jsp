@@ -216,7 +216,7 @@
                                     <form:hidden path="bizStoreId" />
                                     <form:hidden path="businessType" />
 
-                                    <spring:hasBindErrors name="businessLandingForm">
+                                    <spring:hasBindErrors name="storeProductForm">
                                     <div class="error-box">
                                         <div class="error-txt">
                                             <ul>

@@ -57,8 +57,8 @@ public class StoreProductValidator implements Validator {
                         LOG.warn("Cannot add Product when store business type is of pharmacy");
                         errors.rejectValue("productName",
                                 "unsupported.for.businessType",
-                                new Object[]{form.getProductName(), form.getBusinessType().getDescription()},
-                                form.getProductName() + " is not supported for " + form.getBusinessType().getDescription());
+                                new Object[]{"Product", form.getBusinessType().getDescription()},
+                                "Product" + " addition is not supported for " + form.getBusinessType().getDescription());
                         break;
                     default:
                         //Ignore for rest
