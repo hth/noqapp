@@ -13,12 +13,13 @@ import org.slf4j.LoggerFactory;
 
 import java.beans.Transient;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
- * 3/20/18 6:36 PM
+ * 4/16/18 4:54 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -35,7 +36,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BizStoreElasticList extends AbstractDomain {
+public class BizStoreElasticSet extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticList.class);
 
     @JsonProperty("cityName")
@@ -45,18 +46,18 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private List<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+    private Set<BizStoreElastic> bizStoreElastics = new LinkedHashSet<>();
 
-    public List<BizStoreElastic> getBizStoreElastics() {
+    public Set<BizStoreElastic> getBizStoreElastics() {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticSet setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
 
-    public BizStoreElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
+    public BizStoreElasticSet addBizStoreElastic(BizStoreElastic bizStoreElastic) {
         this.bizStoreElastics.add(bizStoreElastic);
         return this;
     }
@@ -65,12 +66,12 @@ public class BizStoreElasticList extends AbstractDomain {
         return jsonCategories;
     }
 
-    public BizStoreElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
+    public BizStoreElasticSet setJsonCategories(List<JsonCategory> jsonCategories) {
         this.jsonCategories = jsonCategories;
         return this;
     }
 
-    public BizStoreElasticList addJsonCategory(JsonCategory jsonCategory) {
+    public BizStoreElasticSet addJsonCategory(JsonCategory jsonCategory) {
         this.jsonCategories.add(jsonCategory);
         return this;
     }
@@ -79,13 +80,13 @@ public class BizStoreElasticList extends AbstractDomain {
         return cityName;
     }
 
-    public BizStoreElasticList setCityName(String cityName) {
+    public BizStoreElasticSet setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
 
     @Transient
-    public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
+    public BizStoreElasticSet populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
             //TODO(hth) remove this call, currently it populates the images
