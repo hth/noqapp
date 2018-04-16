@@ -8,6 +8,7 @@ import com.google.maps.TimeZoneApi;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.PlaceDetails;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.DecodedAddress;
@@ -153,7 +154,12 @@ public class ExternalService {
                 if (null != placeDetails) {
                     bizName.setPlaceType(placeDetails.types);
                     if (StringUtils.isBlank(bizName.getPhone()) && StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
-                        bizName.setPhone(placeDetails.formattedPhoneNumber);
+                        /* Append country code to phone number. */
+                        String phone = Formatter.phoneNumberWithCountryCode(placeDetails.formattedPhoneNumber, bizName.getCountryShortName());
+                        LOG.info("Phone changed cs={} from {} to {}",
+                                bizName.getCountryShortName(), placeDetails.formattedPhoneNumber, phone);
+
+                        bizName.setPhone(phone);
                     }
                 }
 
