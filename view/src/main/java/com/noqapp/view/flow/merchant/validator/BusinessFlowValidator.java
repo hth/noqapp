@@ -3,6 +3,7 @@ package com.noqapp.view.flow.merchant.validator;
 import com.google.maps.model.LatLng;
 
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -153,6 +154,19 @@ public class BusinessFlowValidator {
                             .defaultText("Business Phone cannot be empty")
                             .build());
             status = "failure";
+        } else {
+            LOG.info("Checking if business exists with phone={}", registerBusiness.getPhoneWithCountryCode());
+            BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
+            if (null != bizName) {
+                LOG.warn("Business exists with phone={} existing bizName={}", registerBusiness.getPhoneWithCountryCode(), bizName.getBusinessName());
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.phone")
+                                .defaultText("Business Phone already exists. Contact support for help.")
+                                .build());
+                status = "failure";
+            }
         }
 
         if (status.equalsIgnoreCase("success")) {
