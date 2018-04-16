@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.beans.Transient;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,19 +47,14 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private List<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new LinkedList<>();
 
-    public List<BizStoreElastic> getBizStoreElastics() {
-        return bizStoreElastics;
+    public String getCityName() {
+        return cityName;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
-        this.bizStoreElastics = bizStoreElastics;
-        return this;
-    }
-
-    public BizStoreElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
-        this.bizStoreElastics.add(bizStoreElastic);
+    public BizStoreElasticList setCityName(String cityName) {
+        this.cityName = cityName;
         return this;
     }
 
@@ -75,13 +72,23 @@ public class BizStoreElasticList extends AbstractDomain {
         return this;
     }
 
-    public String getCityName() {
-        return cityName;
+    public Collection<BizStoreElastic> getBizStoreElastics() {
+        return bizStoreElastics;
     }
 
-    public BizStoreElasticList setCityName(String cityName) {
-        this.cityName = cityName;
+    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+        this.bizStoreElastics = bizStoreElastics;
         return this;
+    }
+
+    public BizStoreElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
+        this.bizStoreElastics.add(bizStoreElastic);
+        return this;
+    }
+
+    @Transient
+    public void uniqueSet() {
+        bizStoreElastics = new LinkedHashSet<>(bizStoreElastics);
     }
 
     @Transient
