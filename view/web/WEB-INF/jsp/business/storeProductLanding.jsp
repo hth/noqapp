@@ -66,6 +66,7 @@
                                 <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/edit.htm" modelAttribute="storeProductForm">
                                     <form:hidden path="bizStoreId" />
                                     <form:hidden path="storeProductId" />
+                                    <form:hidden path="businessType" />
 
                                     <spring:hasBindErrors name="storeProductForm">
                                     <div class="error-box">
@@ -213,6 +214,7 @@
 
                                 <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/add.htm" modelAttribute="storeProductForm">
                                     <form:hidden path="bizStoreId" />
+                                    <form:hidden path="businessType" />
 
                                     <spring:hasBindErrors name="businessLandingForm">
                                     <div class="error-box">

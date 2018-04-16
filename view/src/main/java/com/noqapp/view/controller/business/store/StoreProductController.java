@@ -116,7 +116,8 @@ public class StoreProductController {
                 .setStoreProducts(storeProductService.findAll(storeId.getText()))
                 .setCategories(categories)
                 .setProductTypes(ProductTypeEnum.values())
-                .setUnitOfMeasurements(UnitOfMeasurementEnum.values());
+                .setUnitOfMeasurements(UnitOfMeasurementEnum.values())
+                .setBusinessType(bizStore.getBusinessType());
         return nextPage;
     }
 

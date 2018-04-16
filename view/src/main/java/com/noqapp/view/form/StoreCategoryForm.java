@@ -1,6 +1,7 @@
 package com.noqapp.view.form;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class StoreCategoryForm {
     private ScrubbedInput bizStoreId;
     private ScrubbedInput storeCategoryId;
     private ScrubbedInput categoryName;
+    private BusinessTypeEnum businessType;
 
     private Map<String, String> categories;
     private Map<String, Long> categoryCounts;
@@ -54,6 +56,15 @@ public class StoreCategoryForm {
 
     public StoreCategoryForm setCategoryName(ScrubbedInput categoryName) {
         this.categoryName = categoryName;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public StoreCategoryForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 

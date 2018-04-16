@@ -2,6 +2,7 @@ package com.noqapp.view.form;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.StoreProductEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
@@ -29,6 +30,7 @@ public class StoreProductForm {
     private List<StoreProductEntity> storeProducts;
     private ProductTypeEnum[] productTypes;
     private UnitOfMeasurementEnum[] unitOfMeasurements;
+    private BusinessTypeEnum businessType;
 
     public ScrubbedInput getDisplayName() {
         return displayName;
@@ -153,6 +155,15 @@ public class StoreProductForm {
 
     public StoreProductForm setUnitOfMeasurements(UnitOfMeasurementEnum[] unitOfMeasurements) {
         this.unitOfMeasurements = unitOfMeasurements;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public StoreProductForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 }

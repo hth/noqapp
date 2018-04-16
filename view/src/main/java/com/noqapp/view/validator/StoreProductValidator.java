@@ -51,6 +51,18 @@ public class StoreProductValidator implements Validator {
                             new Object[]{form.getProductName()},
                             form.getProductName() + " already exists");
                 }
+
+                switch (form.getBusinessType()) {
+                    case PH:
+                        LOG.warn("Cannot add Product when store business type is of pharmacy");
+                        errors.rejectValue("productName",
+                                "unsupported.for.businessType",
+                                new Object[]{form.getProductName(), form.getBusinessType().getDescription()},
+                                form.getProductName() + " is not supported for " + form.getBusinessType().getDescription());
+                        break;
+                    default:
+                        //Ignore for rest
+                }
             }
         }
     }

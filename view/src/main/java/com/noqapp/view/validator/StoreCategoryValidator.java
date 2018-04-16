@@ -43,13 +43,24 @@ public class StoreCategoryValidator implements Validator {
         if (!errors.hasErrors()) {
             StoreCategoryForm form = (StoreCategoryForm) target;
 
-
             if (!errors.hasErrors()) {
                 if (storeCategoryService.existCategoryName(form.getBizStoreId().getText(), form.getCategoryName().getText())) {
                     errors.rejectValue("categoryName",
-                            "categoryName.exists",
+                            "category.exists",
                             new Object[]{form.getCategoryName()},
                             form.getCategoryName() + " already exists");
+                }
+
+                switch (form.getBusinessType()) {
+                    case PH:
+                        LOG.warn("Cannot add Category when store business type is of pharmacy");
+                        errors.rejectValue("categoryName",
+                                "unsupported.for.businessType",
+                                new Object[]{form.getCategoryName(), form.getBusinessType().getDescription()},
+                                form.getCategoryName() + " is not supported for " + form.getBusinessType().getDescription());
+                        break;
+                    default:
+                        //Ignore for rest
                 }
             }
         }
