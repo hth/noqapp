@@ -152,7 +152,7 @@ public class ExternalService {
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
                     bizName.setPlaceType(placeDetails.types);
-                    if (StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
+                    if (StringUtils.isBlank(bizName.getPhone()) && StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         bizName.setPhone(placeDetails.formattedPhoneNumber);
                     }
                 }
