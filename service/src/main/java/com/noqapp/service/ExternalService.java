@@ -132,7 +132,7 @@ public class ExternalService {
             Geocode geocode = Geocode.newInstance(getGeocodingResults(bizName.getAddress()), bizName.getAddress());
             DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
             if (decodedAddress.isNotBlank()) {
-                if(bizName.getAddressOrigin() != AddressOriginEnum.S) {
+                if (bizName.getAddressOrigin() != AddressOriginEnum.S) {
                     bizName.setAddress(decodedAddress.getFormattedAddress());
                 } else {
                     bizName.setAddress(geocode.getAddress());
