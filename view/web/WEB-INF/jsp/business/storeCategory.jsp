@@ -62,6 +62,8 @@
                     <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/edit.htm" modelAttribute="storeCategoryForm">
                         <form:hidden path="bizStoreId" />
                         <form:hidden path="storeCategoryId" />
+                        <form:hidden path="businessType" />
+
                         <spring:hasBindErrors name="storeCategoryForm">
                         <div class="error-box">
                             <div class="error-txt">
@@ -111,6 +113,8 @@
                     <c:otherwise>
                     <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/add.htm" modelAttribute="storeCategoryForm">
                         <form:hidden path="bizStoreId" />
+                        <form:hidden path="businessType" />
+
                         <spring:hasBindErrors name="storeCategoryForm">
                         <div class="error-box">
                             <div class="error-txt">

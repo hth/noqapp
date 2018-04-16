@@ -110,7 +110,8 @@ public class StoreCategoryController {
                 .setBizStoreId(storeId)
                 .setCategories(categories)
                 .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
-                .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()));
+                .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                .setBusinessType(bizStore.getBusinessType());
         return nextPage;
     }
 
