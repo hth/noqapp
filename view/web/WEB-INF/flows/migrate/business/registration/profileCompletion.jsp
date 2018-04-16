@@ -180,7 +180,7 @@
                                         <li class="mB0">
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
-                                                <input type="submit" value="NEXT" class="next-btn" name="_eventId_submit">
+                                                <input type="submit" value="NEXT" class="ladda-button next-btn" name="_eventId_submit">
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
