@@ -1,12 +1,13 @@
 package com.noqapp.domain.types;
 
 /**
+ * Any product that can be available lawfully without prescription. Medicine and Drugs should never be listed. Feel free
+ * to extend this list. Might consider adding non-prescription medicine to the list.
  * hitender
  * 3/31/18 8:56 AM
  */
 public enum ProductTypeEnum {
     GE("GE", "General"),
-    ME("ME", "Medicine"),
     OR("OR", "Organic Produce (Fruits/Vegetables)"),
     FR("FR", "Fresh Produce (Fruits/Vegetables)"),
     GM("GM", "GMO Produce (Fruits/Vegetables)"),
