@@ -1,6 +1,7 @@
 package com.noqapp.view.controller.emp.medical;
 
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.medical.service.MedicalMasterDataService;
 import com.noqapp.view.form.emp.medical.EmpMedicalLandingForm;
 import org.slf4j.Logger;
@@ -11,6 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * hitender
@@ -44,10 +51,18 @@ public class EmpMedicalLandingController {
     @GetMapping
     public String empLanding(
             @ModelAttribute("empMedicalLandingForm")
-            EmpMedicalLandingForm empMedicalLandingForm
-    ) {
+            EmpMedicalLandingForm empMedicalLandingForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
+        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on medical page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
 
         empMedicalLandingForm.setCountPathology(medicalMasterDataService.countPathology());
         empMedicalLandingForm.setCountPharmacy(medicalMasterDataService.countPharmacy());

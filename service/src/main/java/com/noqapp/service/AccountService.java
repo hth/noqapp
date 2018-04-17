@@ -430,6 +430,7 @@ public class AccountService {
             case SUPERVISOR:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
+                roles.add(RoleEnum.ROLE_MEDICAL_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 userAccount.setRoles(roles);
                 break;

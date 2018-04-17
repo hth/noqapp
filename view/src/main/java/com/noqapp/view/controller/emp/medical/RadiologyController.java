@@ -58,10 +58,19 @@ public class RadiologyController {
     @GetMapping
     public String empLanding(
             @ModelAttribute("radiologyForm")
-            RadiologyForm radiologyForm
-    ) {
+            RadiologyForm radiologyForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
+        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on radiology page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         radiologyForm.setRadiologies(medicalMasterDataService.findAllRadiologies());
         return empLanding;
     }
@@ -83,7 +92,7 @@ public class RadiologyController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Adding pathology qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Adding radiology qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         radiologyValidator.validate(radiologyForm, result);
