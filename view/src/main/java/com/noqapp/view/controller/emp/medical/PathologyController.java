@@ -68,7 +68,7 @@ public class PathologyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
@@ -87,10 +87,10 @@ public class PathologyController {
         //Add category support
         //Map<String, String> categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
         pathologyForm.setPathologies(medicalMasterDataService.findAllPathologies());
-        pathologyForm
-                .setName(pathologyForm.getName())
-                .setCategory(pathologyForm.getCategory())
-                .setDescription(pathologyForm.getDescription());
+//        pathologyForm
+//                .setName(pathologyForm.getName())
+//                .setCategory(pathologyForm.getCategory())
+//                .setDescription(pathologyForm.getDescription());
         return empLanding;
     }
 
@@ -106,7 +106,7 @@ public class PathologyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;

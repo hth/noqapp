@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.emp.medical;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.medical.domain.PhysicalEntity;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,10 +62,12 @@ public class PhysicalController {
             @ModelAttribute("physicalForm")
             PhysicalForm physicalForm,
 
+            Model model,
+            RedirectAttributes redirectAttrs,
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
@@ -71,7 +75,19 @@ public class PhysicalController {
         LOG.info("Landed on physical page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.physicalForm", model.asMap().get("result"));
+            physicalForm.setId((ScrubbedInput) model.asMap().get("id"));
+        } else {
+            redirectAttrs.addFlashAttribute("physicalForm", physicalForm);
+        }
+
         physicalForm.setPhysicals(medicalMasterDataService.findAllPhysicals());
+//        physicalForm
+//                .setName(physicalForm.getName())
+//                .setDescription(physicalForm.getDescription())
+//                .setNormalRange(physicalForm.getNormalRange());
         return empLanding;
     }
 
@@ -87,7 +103,7 @@ public class PhysicalController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;

@@ -68,7 +68,7 @@ public class PharmacyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
@@ -85,12 +85,12 @@ public class PharmacyController {
         }
 
         pharmacyForm.setPharmacies(medicalMasterDataService.findAllPharmacies());
-        pharmacyForm
-                .setName(pharmacyForm.getName())
-                .setPharmacyMeasurementUnit(pharmacyForm.getPharmacyMeasurementUnit())
-                .setValue(pharmacyForm.getValue())
-                .setCompanyName(pharmacyForm.getCompanyName())
-                .setReferStaticLink(pharmacyForm.getReferStaticLink());
+//        pharmacyForm
+//                .setName(pharmacyForm.getName())
+//                .setPharmacyMeasurementUnit(pharmacyForm.getPharmacyMeasurementUnit())
+//                .setValue(pharmacyForm.getValue())
+//                .setCompanyName(pharmacyForm.getCompanyName())
+//                .setReferStaticLink(pharmacyForm.getReferStaticLink());
         return empLanding;
     }
 
@@ -106,7 +106,7 @@ public class PharmacyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
