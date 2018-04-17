@@ -11,6 +11,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
@@ -397,25 +398,27 @@ public class BizStoreElastic extends AbstractDomain {
 
     public String getDisplayImage() {
         LOG.info("Business Type for display Image {}", businessType);
-        switch (businessType) {
-            case DO:
-            case HO:
-                this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
-                break;
-            case BK:
-                this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
-                break;
-            case RS:
-                this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
-                break;
-            case ST:
-                this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
-                break;
-            case GS:
-                this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
-                break;
-            default:
-                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
+        if (StringUtils.isBlank(displayImage)) {
+            switch (businessType) {
+                case DO:
+                case HO:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+                    break;
+                case BK:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
+                    break;
+                case RS:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
+                    break;
+                case ST:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
+                    break;
+                case GS:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
+                    break;
+                default:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
+            }
         }
         return displayImage;
     }
