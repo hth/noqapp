@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * hitender
@@ -42,6 +43,9 @@ public class StoreHourElastic extends AbstractDomain {
 
     @JsonProperty ("EH")
     private int endHour;
+
+    @Field("DC")
+    private boolean dayClosed = false;
 
     public int getDayOfWeek() {
         return dayOfWeek;
@@ -85,6 +89,15 @@ public class StoreHourElastic extends AbstractDomain {
 
     public StoreHourElastic setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public StoreHourElastic setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
         return this;
     }
 }
