@@ -58,10 +58,19 @@ public class PhysicalController {
     @GetMapping
     public String empLanding(
             @ModelAttribute("physicalForm")
-            PhysicalForm physicalForm
-    ) {
+            PhysicalForm physicalForm,
+
+            HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
+        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on physical page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
         physicalForm.setPhysicals(medicalMasterDataService.findAllPhysicals());
         return empLanding;
     }

@@ -73,7 +73,7 @@ public class PharmacyController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Adding pathology qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on pharmacy page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
