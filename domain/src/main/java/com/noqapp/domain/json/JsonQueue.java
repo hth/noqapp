@@ -11,6 +11,7 @@ import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -433,26 +434,27 @@ public class JsonQueue extends AbstractDomain {
 
     public String getDisplayImage() {
         LOG.info("Business Type for display Image {}", businessType);
-        switch (businessType) {
-            case DO:
-            case HO:
-                this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
-                break;
-            case BK:
-                this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
-                break;
-            case RS:
-                this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
-                break;
-            case ST:
-                this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
-                break;
-            case GS:
-                this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
-                break;
-            default:
-                this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
-
+        if (StringUtils.isBlank(displayImage)) {
+            switch (businessType) {
+                case DO:
+                case HO:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+                    break;
+                case BK:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
+                    break;
+                case RS:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
+                    break;
+                case ST:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
+                    break;
+                case GS:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
+                    break;
+                default:
+                    this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
+            }
         }
         return displayImage;
     }
