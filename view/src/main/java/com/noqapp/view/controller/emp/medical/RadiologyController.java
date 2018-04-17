@@ -67,7 +67,7 @@ public class RadiologyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
@@ -102,7 +102,7 @@ public class RadiologyController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
+        if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
             LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
