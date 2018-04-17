@@ -85,12 +85,12 @@ public class PharmacyController {
         }
 
         pharmacyForm.setPharmacies(medicalMasterDataService.findAllPharmacies());
-        pharmacyForm
-                .setName(pharmacyForm.getName())
-                .setPharmacyMeasurementUnit(pharmacyForm.getPharmacyMeasurementUnit())
-                .setValue(pharmacyForm.getValue())
-                .setCompanyName(pharmacyForm.getCompanyName())
-                .setReferStaticLink(pharmacyForm.getReferStaticLink());
+//        pharmacyForm
+//                .setName(pharmacyForm.getName())
+//                .setPharmacyMeasurementUnit(pharmacyForm.getPharmacyMeasurementUnit())
+//                .setValue(pharmacyForm.getValue())
+//                .setCompanyName(pharmacyForm.getCompanyName())
+//                .setReferStaticLink(pharmacyForm.getReferStaticLink());
         return empLanding;
     }
 

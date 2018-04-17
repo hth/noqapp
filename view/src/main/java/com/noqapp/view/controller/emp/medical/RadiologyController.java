@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.emp.medical;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.medical.domain.RadiologyEntity;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,6 +62,8 @@ public class RadiologyController {
             @ModelAttribute("radiologyForm")
             RadiologyForm radiologyForm,
 
+            Model model,
+            RedirectAttributes redirectAttrs,
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -71,7 +75,18 @@ public class RadiologyController {
         LOG.info("Landed on radiology page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.radiologyForm", model.asMap().get("result"));
+            radiologyForm.setId((ScrubbedInput) model.asMap().get("id"));
+        } else {
+            redirectAttrs.addFlashAttribute("radiologyForm", radiologyForm);
+        }
+
         radiologyForm.setRadiologies(medicalMasterDataService.findAllRadiologies());
+//        radiologyForm
+//                .setCategory(radiologyForm.getCategory())
+//                .setName(radiologyForm.getName());
         return empLanding;
     }
 

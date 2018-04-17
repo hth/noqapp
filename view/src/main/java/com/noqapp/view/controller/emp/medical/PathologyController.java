@@ -87,10 +87,10 @@ public class PathologyController {
         //Add category support
         //Map<String, String> categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
         pathologyForm.setPathologies(medicalMasterDataService.findAllPathologies());
-        pathologyForm
-                .setName(pathologyForm.getName())
-                .setCategory(pathologyForm.getCategory())
-                .setDescription(pathologyForm.getDescription());
+//        pathologyForm
+//                .setName(pathologyForm.getName())
+//                .setCategory(pathologyForm.getCategory())
+//                .setDescription(pathologyForm.getDescription());
         return empLanding;
     }
 
