@@ -64,7 +64,7 @@ public class PhysicalController {
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
-            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
@@ -88,7 +88,7 @@ public class PhysicalController {
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (queueUser.getUserLevel() == UserLevelEnum.MEDICAL_TECHNICIAN) {
-            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            LOG.warn("Could not find qid={} having access as medical user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
