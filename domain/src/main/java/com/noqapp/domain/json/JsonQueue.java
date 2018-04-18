@@ -13,8 +13,10 @@ import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -543,5 +545,11 @@ public class JsonQueue extends AbstractDomain {
     public JsonQueue setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
         return this;
+    }
+
+    @Transient
+    public GeoPoint getGeoPoint() {
+        /* Latitude and then Longitude. */
+        return new GeoPoint(coordinate[1], coordinate[0]);
     }
 }
