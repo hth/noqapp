@@ -169,7 +169,7 @@ public class QueueService {
         LOG.info("Reached condition of not having any more to serve");
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.D);
-        return new JsonToken(codeQR)
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 /* Better to show last number than served number. This is to maintain consistent state. */
                 .setToken(tokenQueue.getCurrentlyServing())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
@@ -194,7 +194,7 @@ public class QueueService {
         boolean status = queueManager.updateServedInQueue(codeQR, servedNumber, queueUserState, sid, tokenService);
         LOG.info("Paused status={}", status);
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-        return new JsonToken(codeQR)
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
                 .setServingNumber(servedNumber)
                 .setDisplayName(tokenQueue.getDisplayName())
@@ -235,7 +235,7 @@ public class QueueService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         if (null != tokenQueue) {
             LOG.info("On next, found no one in queue, returning with DONE status");
-            return new JsonToken(codeQR)
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
                     .setToken(tokenQueue.getLastNumber())
                     .setServingNumber(tokenQueue.getLastNumber())
                     .setDisplayName(tokenQueue.getDisplayName())

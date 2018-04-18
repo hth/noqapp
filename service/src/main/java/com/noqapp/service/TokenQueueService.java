@@ -150,7 +150,7 @@ public class TokenQueueService {
 
                 if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token");
-                    return new JsonToken(codeQR)
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
                             .setToken(0)
                             .setServingNumber(0)
                             .setDisplayName(bizStore.getDisplayName())
@@ -204,10 +204,10 @@ public class TokenQueueService {
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
-                    return new JsonToken(codeQR);
+                    return new JsonToken(codeQR, tokenQueue.getBusinessType());
                 }
 
-                return new JsonToken(codeQR)
+                return new JsonToken(codeQR, tokenQueue.getBusinessType())
                         .setToken(queue.getTokenNumber())
                         .setServingNumber(tokenQueue.getCurrentlyServing())
                         .setDisplayName(tokenQueue.getDisplayName())
@@ -221,7 +221,7 @@ public class TokenQueueService {
 
             doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
-            return new JsonToken(codeQR)
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
                     .setToken(queue.getTokenNumber())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
@@ -296,7 +296,7 @@ public class TokenQueueService {
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
-            return new JsonToken(codeQR)
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
                     .setQueueStatus(tokenQueue.getQueueStatus())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
@@ -305,7 +305,7 @@ public class TokenQueueService {
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
         }
 
-        return new JsonToken(codeQR)
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
@@ -332,7 +332,7 @@ public class TokenQueueService {
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
-            return new JsonToken(codeQR)
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
                     .setQueueStatus(tokenQueue.getQueueStatus())
                     .setServingNumber(serving)
                     .setDisplayName(tokenQueue.getDisplayName())
@@ -341,7 +341,7 @@ public class TokenQueueService {
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
         }
 
-        return new JsonToken(codeQR)
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(serving)
                 .setDisplayName(tokenQueue.getDisplayName())
