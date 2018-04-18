@@ -100,7 +100,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
-        this.geoHash = jsonQueue.getGeoPoint().getGeohash();
+        this.geoHash = jsonQueue.getGeoHash();
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
         this.storeAddress = jsonQueue.getStoreAddress();
