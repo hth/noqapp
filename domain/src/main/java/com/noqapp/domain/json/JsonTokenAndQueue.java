@@ -35,6 +35,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("c")
     private String codeQR;
 
+    @JsonProperty("gh")
+    private String geoHash;
+
     @JsonProperty ("n")
     private String businessName;
 
@@ -97,6 +100,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
+        this.geoHash = jsonQueue.getGeoPoint().getGeohash();
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
         this.storeAddress = jsonQueue.getStoreAddress();
@@ -120,6 +124,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         this.codeQR = queue.getCodeQR();
+        this.geoHash = bizStore.getGeoPoint().getGeohash();
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = queue.getDisplayName();
         this.storeAddress = bizStore.getAddress();
@@ -167,6 +172,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    public String getGeoHash() {
+        return geoHash;
     }
 
     public String getBusinessName() {
