@@ -63,6 +63,12 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("sa")
     private String storeAddress;
 
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
     @JsonProperty ("cs")
     private String countryShortName;
 
@@ -224,6 +230,24 @@ public class JsonQueue extends AbstractDomain {
 
     public String getStoreAddress() {
         return storeAddress;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public JsonQueue setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonQueue setTown(String town) {
+        this.town = town;
+        return this;
     }
 
     public JsonQueue setCountryShortName(String countryShortName) {

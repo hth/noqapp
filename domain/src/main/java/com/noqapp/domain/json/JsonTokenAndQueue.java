@@ -47,6 +47,12 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("sa")
     private String storeAddress;
 
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
     @JsonProperty ("cs")
     private String countryShortName;
 
@@ -104,6 +110,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.businessName = jsonQueue.getBusinessName();
         this.displayName = jsonQueue.getDisplayName();
         this.storeAddress = jsonQueue.getStoreAddress();
+        this.area = jsonQueue.getArea();
+        this.town = jsonQueue.getTown();
         this.countryShortName = jsonQueue.getCountryShortName();
         this.storePhone = jsonQueue.getStorePhone();
         this.businessType = jsonQueue.getBusinessType();
@@ -128,6 +136,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = queue.getDisplayName();
         this.storeAddress = bizStore.getAddress();
+        this.area = bizStore.getArea();
+        this.town = bizStore.getTown();
         this.countryShortName = bizStore.getCountryShortName();
         this.storePhone = bizStore.getPhone();
         this.businessType = bizStore.getBusinessType();
@@ -143,31 +153,6 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         this.token = queue.getTokenNumber();
-    }
-
-    @Override
-    public String toString() {
-        return "JsonTokenAndQueue{" +
-                "codeQR='" + codeQR + '\'' +
-                ", businessName='" + businessName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", businessType=" + businessType +
-                ", tokenAvailableFrom=" + tokenAvailableFrom +
-                ", startHour=" + startHour +
-                ", endHour=" + endHour +
-                ", topic='" + topic + '\'' +
-                ", servingNumber=" + servingNumber +
-                ", lastNumber=" + lastNumber +
-                ", token=" + token +
-                ", queueStatus=" + queueStatus +
-                ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", ratingCount=" + ratingCount +
-                ", hoursSaved=" + hoursSaved +
-                ", createDate='" + createDate + '\'' +
-                '}';
     }
 
     public String getCodeQR() {
@@ -188,6 +173,14 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public String getStoreAddress() {
         return storeAddress;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getTown() {
+        return town;
     }
 
     public String getCountryShortName() {
@@ -249,4 +242,33 @@ public class JsonTokenAndQueue extends AbstractDomain {
     public String getCreateDate() {
         return createDate;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTokenAndQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", geoHash='" + geoHash + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", area='" + area + '\'' +
+                ", town='" + town + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", businessType=" + businessType +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", token=" + token +
+                ", queueStatus=" + queueStatus +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", ratingCount=" + ratingCount +
+                ", hoursSaved=" + hoursSaved +
+                ", createDate='" + createDate + '\'' +
+                '}';
+    }
+
 }
