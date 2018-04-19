@@ -57,19 +57,9 @@ public class MedicalPhysicalExaminationManagerImpl implements MedicalPhysicalExa
     }
 
     @Override
-    public List<MedicalPhysicalExaminationEntity> findByRefId(String referenceId) {
+    public List<MedicalPhysicalExaminationEntity> findByRefId(String medicalPhysicalReferenceId) {
         return mongoTemplate.find(
-                query(where("MP").is(referenceId)),
-                MedicalPhysicalExaminationEntity.class,
-                TABLE
-        );
-    }
-
-    @Override
-    public void updateWithMedicalPhysicalReferenceId(String id, String referenceId) {
-        mongoTemplate.updateFirst(
-                query(where("_id").is(id)),
-                entityUpdate(update("MP", referenceId)),
+                query(where("PRI").is(medicalPhysicalReferenceId)),
                 MedicalPhysicalExaminationEntity.class,
                 TABLE
         );

@@ -53,7 +53,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>${medicalRecordForm.name}</h3>
+                        <h3>${medicalRecordForm.patientName}</h3>
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0; text-align: center; width: 100%; float: none;">

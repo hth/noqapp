@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -76,7 +77,13 @@ public class MedicalRecordEntity extends BaseEntity {
     private String diagnosedById;
 
     @Field("RA")
-    private Map<Date, String> recordAccessed;
+    private Map<Date, String> recordAccessed = new HashMap<>();
+
+    @Field ("N")
+    private String businessName;
+
+    @Field ("BC")
+    private String bizCategoryId;
 
     private MedicalRecordEntity() {}
 
@@ -207,6 +214,29 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setRecordAccessed(Map<Date, String> recordAccessed) {
         this.recordAccessed = recordAccessed;
+        return this;
+    }
+
+    public MedicalRecordEntity addRecordAccessed(Date date, String queueUserId) {
+        this.recordAccessed.put(date, queueUserId);
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public MedicalRecordEntity setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public MedicalRecordEntity setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 }

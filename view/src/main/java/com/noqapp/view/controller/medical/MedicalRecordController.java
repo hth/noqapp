@@ -111,8 +111,8 @@ public class MedicalRecordController {
             medicalRecordForm
                     .setToken(token)
                     .setBusinessType(queue.getBusinessType())
-                    .setCodeQR(queue.getCodeQR())
-                    .setName(userProfile.getName())
+                    .setCodeQR(new ScrubbedInput(queue.getCodeQR()))
+                    .setPatientName(userProfile.getName())
                     .setGender(userProfile.getGender())
                     .setAge(userProfile.getAge());
 
@@ -170,9 +170,9 @@ public class MedicalRecordController {
         }
 
         //Validate if the person has joined the queue
-        medicalRecordService.addMedicalRecord(medicalRecordForm, queueUser.getQueueUserId());
+        medicalRecordService.addMedicalRecord(medicalRecordForm, queueUser.getQueueUserId(), medicalRecordForm.getCodeQR().getText());
         queueService.updateAndGetNextInQueue(
-                medicalRecordForm.getCodeQR(),
+                medicalRecordForm.getCodeQR().getText(),
                 medicalRecordForm.getToken(),
                 QueueUserStateEnum.S,
                 "",
