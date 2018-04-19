@@ -1,6 +1,7 @@
 package com.noqapp.medical.form;
 
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class MedicalRecordForm {
 
-    private String name;
+    private String patientName;
     private GenderEnum gender;
     private long age;
     private String guardianName;
@@ -32,7 +33,7 @@ public class MedicalRecordForm {
     private int token;
     private BusinessTypeEnum businessType;
     private String queueUserId;
-    private String codeQR;
+    private ScrubbedInput codeQR;
 
     private String chiefComplain;
     private String pastHistory;
@@ -78,12 +79,12 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getPatientName() {
+        return patientName;
     }
 
-    public MedicalRecordForm setName(String name) {
-        this.name = name;
+    public MedicalRecordForm setPatientName(String name) {
+        this.patientName = name;
         return this;
     }
 
@@ -151,11 +152,11 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public String getCodeQR() {
+    public ScrubbedInput getCodeQR() {
         return codeQR;
     }
 
-    public MedicalRecordForm setCodeQR(String codeQR) {
+    public MedicalRecordForm setCodeQR(ScrubbedInput codeQR) {
         this.codeQR = codeQR;
         return this;
     }

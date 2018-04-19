@@ -78,8 +78,7 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>
                                             <c:choose>
-                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.RS}">
-
+                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
                                             <c:choose>
                                             <c:when test="${!empty jsonQueuedPerson.queueUserId}">
                                             <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.recordReferenceId}.htm" target="_blank">${jsonQueuedPerson.customerName}</a>
@@ -111,7 +110,7 @@
                                         <td style="background-color: lightgrey; text-decoration: line-through;">${status.count}&nbsp;</td>
                                         <td style="background-color: lightgrey; text-decoration: line-through;" nowrap>
                                             <c:choose>
-                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.RS}">
+                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
                                             ${jsonQueuedPerson.customerName}
                                             <c:if test="${!empty jsonQueuedPerson.minors}">
 

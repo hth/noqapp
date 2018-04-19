@@ -10,7 +10,5 @@ import java.util.List;
  * 3/16/18 2:20 PM
  */
 public interface MedicalPhysicalExaminationManager extends RepositoryManager<MedicalPhysicalExaminationEntity> {
-    List<MedicalPhysicalExaminationEntity> findByRefId(String referenceId);
-
-    void updateWithMedicalPhysicalReferenceId(String id, String referenceId);
+    List<MedicalPhysicalExaminationEntity> findByRefId(String medicalPhysicalReferenceId);
 }
