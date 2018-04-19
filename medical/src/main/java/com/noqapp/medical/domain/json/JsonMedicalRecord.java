@@ -72,10 +72,16 @@ public class JsonMedicalRecord extends AbstractDomain {
     private List<JsonMedicine> medicines;
 
     @JsonProperty("dbi")
-    private String diagnosedById;
+    private String diagnosedBy;
 
     @JsonProperty("ra")
     private List<JsonRecordAccess> recordAccess;
+
+    @JsonProperty("n")
+    private String businessName;
+
+    @JsonProperty ("bc")
+    private String bizCategory;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -194,12 +200,12 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public String getDiagnosedById() {
-        return diagnosedById;
+    public String getDiagnosedBy() {
+        return diagnosedBy;
     }
 
-    public JsonMedicalRecord setDiagnosedById(String diagnosedById) {
-        this.diagnosedById = diagnosedById;
+    public JsonMedicalRecord setDiagnosedBy(String diagnosedBy) {
+        this.diagnosedBy = diagnosedBy;
         return this;
     }
 
@@ -209,6 +215,24 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setRecordAccess(List<JsonRecordAccess> recordAccess) {
         this.recordAccess = recordAccess;
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public JsonMedicalRecord setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public String getBizCategory() {
+        return bizCategory;
+    }
+
+    public JsonMedicalRecord setBizCategory(String bizCategory) {
+        this.bizCategory = bizCategory;
         return this;
     }
 }
