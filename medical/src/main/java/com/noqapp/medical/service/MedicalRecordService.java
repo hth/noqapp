@@ -81,35 +81,40 @@ public class MedicalRecordService {
     }
 
     private void populateWithMedicalPhysical(MedicalRecordForm medicalRecordForm, MedicalRecordEntity medicalRecord) {
-        LOG.info("Populate medical physical");
-        if (medicalRecordForm.getMedicalPhysicalForms() != null) {
-            MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(medicalRecordForm.getQueueUserId());
-            /* Setting its own ObjectId. */
-            medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
+        try {
+            LOG.info("Populate medical physical qid={}", medicalRecordForm.getQueueUserId());
 
-            Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
-            for (MedicalPhysicalForm medicalPhysicalForm : medicalRecordForm.getMedicalPhysicalForms()) {
-                MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
+            if (medicalRecordForm.getMedicalPhysicalForms() != null) {
+                MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(medicalRecordForm.getQueueUserId());
                 /* Setting its own ObjectId. */
-                medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
-                medicalPhysicalExamination
-                        .setMedicalPhysicalReferenceId(medicalPhysical.getId())
-                        .setPhysicalReferenceId(medicalPhysicalForm.getPhysicalReferenceId())
-                        .setQueueUserId(medicalRecordForm.getQueueUserId())
-                        .setName(medicalPhysicalForm.getName())
-                        .setTestResult(StringUtils.capitalize(medicalPhysicalForm.getValue().trim()));
+                medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
 
-                medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
-                medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
+                Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
+                for (MedicalPhysicalForm medicalPhysicalForm : medicalRecordForm.getMedicalPhysicalForms()) {
+                    MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
+                    /* Setting its own ObjectId. */
+                    medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
+                    medicalPhysicalExamination
+                            .setMedicalPhysicalReferenceId(medicalPhysical.getId())
+                            .setPhysicalReferenceId(medicalPhysicalForm.getPhysicalReferenceId())
+                            .setQueueUserId(medicalRecordForm.getQueueUserId())
+                            .setName(medicalPhysicalForm.getName())
+                            .setTestResult(StringUtils.capitalize(medicalPhysicalForm.getValue().trim()));
+
+                    medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
+                    medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
+                }
+
+                medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
+                medicalPhysicalManager.save(medicalPhysical);
+
+                /* Add the Medical Physical to Medical Record. */
+                medicalRecord.setMedicalPhysical(medicalPhysical);
             }
-
-            medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
-            medicalPhysicalManager.save(medicalPhysical);
-
-            /* Add the Medical Physical to Medical Record. */
-            medicalRecord.setMedicalPhysical(medicalPhysical);
+            LOG.info("Populate medical physical complete");
+        } catch (Exception e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
-        LOG.info("Populate medical physical complete");
     }
 
     public List<MedicalRecordEntity> historicalRecords(String qid) {
