@@ -476,11 +476,11 @@ public class BizStoreElastic extends AbstractDomain {
 
         switch (businessType) {
             case DO:
-                LOG.info("DO {}", businessType.name());
+                LOG.info("This is for business type DO = {}", businessType.name());
                 return Objects.equals(businessType.name(), that.businessType.name()) &&
                         Objects.equals(bizNameId, that.bizNameId);
             default:
-                LOG.info("Default {}", businessType.name());
+                LOG.info("Default business type {}", businessType.name());
                 return Objects.equals(businessType.name(), that.businessType.name()) &&
                         Objects.equals(bizNameId, that.bizNameId) &&
                         Objects.equals(categoryId, that.categoryId) &&
