@@ -14,19 +14,15 @@ import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.medical.repository.PhysicalManager;
 import com.noqapp.service.BizService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
-
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 
 /**
  * hitender
@@ -80,7 +76,7 @@ public class MedicalRecordService {
 
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
-                DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC")),
+                Instant.now().toEpochMilli(),
                 diagnosedById);
         medicalRecordManager.save(medicalRecord);
         LOG.info("Saved medical record");

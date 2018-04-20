@@ -76,7 +76,7 @@ public class MedicalRecordEntity extends BaseEntity {
     private String diagnosedById;
 
     @Field("RA")
-    private Map<String, String> recordAccessed = new HashMap<>();
+    private Map<Long, String> recordAccessed = new HashMap<>();
 
     @Field ("N")
     private String businessName;
@@ -207,16 +207,16 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public Map<String, String> getRecordAccessed() {
+    public Map<Long, String> getRecordAccessed() {
         return recordAccessed;
     }
 
-    public MedicalRecordEntity setRecordAccessed(Map<String, String> recordAccessed) {
+    public MedicalRecordEntity setRecordAccessed(Map<Long, String> recordAccessed) {
         this.recordAccessed = recordAccessed;
         return this;
     }
 
-    public MedicalRecordEntity addRecordAccessed(String date, String queueUserId) {
+    public MedicalRecordEntity addRecordAccessed(Long date, String queueUserId) {
         this.recordAccessed.put(date, queueUserId);
         return this;
     }
