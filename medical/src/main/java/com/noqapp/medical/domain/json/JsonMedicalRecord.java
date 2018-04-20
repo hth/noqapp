@@ -9,6 +9,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     private String knownAllergies;
 
     @JsonProperty("pe")
-    private List<JsonMedicalPhysicalExamination> medicalPhysicalExaminations;
+    private List<JsonMedicalPhysicalExamination> medicalPhysicalExaminations = new ArrayList<>();
 
     @JsonProperty("cf")
     private String clinicalFinding;
@@ -60,22 +61,22 @@ public class JsonMedicalRecord extends AbstractDomain {
     private String provisionalDifferentialDiagnosis;
 
     @JsonProperty("le")
-    private List<JsonPathology> pathologies;
+    private List<JsonPathology> pathologies = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
     @JsonProperty("re")
-    private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays;
+    private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays = new ArrayList<>();
 
     @JsonProperty("me")
-    private List<JsonMedicine> medicines;
+    private List<JsonMedicine> medicines = new ArrayList<>();
 
     @JsonProperty("dbi")
     private String diagnosedBy;
 
     @JsonProperty("ra")
-    private List<JsonRecordAccess> recordAccess;
+    private List<JsonRecordAccess> recordAccess = new ArrayList<>();
 
     @JsonProperty("n")
     private String businessName;
