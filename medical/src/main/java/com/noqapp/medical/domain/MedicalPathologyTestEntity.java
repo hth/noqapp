@@ -24,10 +24,12 @@ import javax.validation.constraints.NotNull;
 })
 public class MedicalPathologyTestEntity extends BaseEntity {
 
+    /** Maps to MedicalPathologyEntity Id. */
     @NotNull
     @Field("PRI")
     private String medicalPathologyReferenceId;
 
+    /** Maps to PathologyEntity Id. */
     @NotNull
     @Field("PI")
     private String pathologyReferenceId;

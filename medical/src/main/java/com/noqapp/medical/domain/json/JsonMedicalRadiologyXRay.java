@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.RadiologyEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,18 +29,18 @@ import org.slf4j.LoggerFactory;
 public class JsonMedicalRadiologyXRay extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalRadiologyXRay.class);
 
-    @JsonProperty("re")
-    private RadiologyEnum radiology;
+    @JsonProperty("na")
+    private String name;
 
     @JsonProperty("tr")
     private String testResult;
 
-    public RadiologyEnum getRadiology() {
-        return radiology;
+    public String getName() {
+        return name;
     }
 
-    public JsonMedicalRadiologyXRay setRadiology(RadiologyEnum radiology) {
-        this.radiology = radiology;
+    public JsonMedicalRadiologyXRay setName(String name) {
+        this.name = name;
         return this;
     }
 

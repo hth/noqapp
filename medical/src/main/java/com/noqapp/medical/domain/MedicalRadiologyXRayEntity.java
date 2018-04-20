@@ -24,10 +24,12 @@ import javax.validation.constraints.NotNull;
 })
 public class MedicalRadiologyXRayEntity extends BaseEntity {
 
+    /** Maps to MedicalRadiologyEntity Id. */
     @NotNull
     @Field("RRI")
     private String medicalRadiologyReferenceId;
 
+    /** Maps to RadiologyEntity Id. */
     @NotNull
     @Field("RD")
     private String radiologyReferenceId;
