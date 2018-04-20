@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.PhysicalExamEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +29,8 @@ import org.slf4j.LoggerFactory;
 public class JsonMedicalPhysicalExamination extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalPhysicalExamination.class);
 
-    @JsonProperty("pe")
-    private PhysicalExamEnum physicalExam;
+    @JsonProperty("na")
+    private String name;
 
     @JsonProperty ("va")
     private String value;
@@ -39,12 +38,12 @@ public class JsonMedicalPhysicalExamination extends AbstractDomain {
     @JsonProperty("tr")
     private String testResult;
 
-    public PhysicalExamEnum getPhysicalExam() {
-        return physicalExam;
+    public String getName() {
+        return name;
     }
 
-    public JsonMedicalPhysicalExamination setPhysicalExam(PhysicalExamEnum physicalExam) {
-        this.physicalExam = physicalExam;
+    public JsonMedicalPhysicalExamination setName(String name) {
+        this.name = name;
         return this;
     }
 

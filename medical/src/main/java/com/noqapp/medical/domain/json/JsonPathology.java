@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.PathologyEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,15 +29,27 @@ import org.slf4j.LoggerFactory;
 public class JsonPathology extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonPathology.class);
 
-    @JsonProperty("lt")
-    private PathologyEnum pathology;
+    @JsonProperty("na")
+    private String name;
 
-    public PathologyEnum getPathology() {
-        return pathology;
+    @JsonProperty("tr")
+    private String testResult;
+
+    public String getName() {
+        return name;
     }
 
-    public JsonPathology setPathology(PathologyEnum pathology) {
-        this.pathology = pathology;
+    public JsonPathology setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public JsonPathology setTestResult(String testResult) {
+        this.testResult = testResult;
         return this;
     }
 }
