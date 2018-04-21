@@ -108,6 +108,7 @@ public class MedicalRecordService {
                 }
 
                 medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
+                LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
 
                 /* Add the Medical Physical to Medical Record. */
