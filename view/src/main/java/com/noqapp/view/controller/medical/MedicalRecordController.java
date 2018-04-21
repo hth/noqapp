@@ -8,6 +8,8 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.PhysicalEntity;
@@ -33,6 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +63,7 @@ public class MedicalRecordController {
     private AccountService accountService;
     private MedicalRecordService medicalRecordService;
     private RegisteredDeviceManager registeredDeviceManager;
+    private ApiHealthService apiHealthService;
 
     @Autowired
     public MedicalRecordController(
@@ -69,7 +74,8 @@ public class MedicalRecordController {
             TokenQueueService tokenQueueService,
             AccountService accountService,
             MedicalRecordService medicalRecordService,
-            RegisteredDeviceManager registeredDeviceManager
+            RegisteredDeviceManager registeredDeviceManager,
+            ApiHealthService apiHealthService
     ) {
         this.nextPage = nextPage;
 
@@ -78,6 +84,7 @@ public class MedicalRecordController {
         this.accountService = accountService;
         this.medicalRecordService = medicalRecordService;
         this.registeredDeviceManager = registeredDeviceManager;
+        this.apiHealthService = apiHealthService;
     }
 
     @GetMapping(value = "/{codeQR}/{recordReferenceId}")
@@ -90,65 +97,80 @@ public class MedicalRecordController {
 
             HttpServletResponse response
     ) {
-        String identifier = new String(Base64.getDecoder().decode(recordReferenceId.getText()), StandardCharsets.ISO_8859_1);
-        String[] recordReference = identifier.split("#");
-
-        int token = Integer.valueOf(recordReference[0]);
-        String qid = recordReference[1];
-        String recordOwner = recordReference[2];
-
-        List<PhysicalEntity> physicals = medicalRecordService.findAll();
-        MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner)
-                .populateEmptyForm(physicals);
-
-        QueueEntity queue = tokenQueueService.findOne(codeQR.getText(), token);
-        if (null == queue.getServiceBeginTime()) {
-            queueService.updateServiceBeginTime(queue.getId());
-        }
-
-        if (StringUtils.isNotBlank(queue.getQueueUserId()) && qid.equalsIgnoreCase(queue.getQueueUserId())) {
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(recordOwner);
-            medicalRecordForm
-                    .setToken(token)
-                    .setBusinessType(queue.getBusinessType())
-                    .setCodeQR(new ScrubbedInput(queue.getCodeQR()))
-                    .setPatientName(userProfile.getName())
-                    .setGender(userProfile.getGender())
-                    .setAge(userProfile.getAge());
-
-            if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
-                UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-                medicalRecordForm.setGuardianName(guardianProfile.getName())
-                        .setGuardianPhone(guardianProfile.getPhone());
-            }
-        } else {
-            //Perform Account Registry
-        }
-
-
-        List<MedicalRecordEntity> historicalMedicalRecords = medicalRecordService.historicalRecords(recordOwner);
-        List<MedicalRecordForm> historicalMedicalRecordForms = new LinkedList<>();
-        for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
-            List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
-
-            MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
-            historicalMedicalRecordForm
-                    .populateHistoricalForm(medicalPhysicalExaminations)
-                    .setBusinessType(medicalRecord.getBusinessType())
-                    .setChiefComplain(medicalRecord.getChiefComplain())
-                    .setPastHistory(medicalRecord.getPastHistory())
-                    .setFamilyHistory(medicalRecord.getFamilyHistory())
-                    .setKnownAllergies(medicalRecord.getKnownAllergies())
-                    .setClinicalFinding(medicalRecord.getClinicalFinding())
-                    .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis());
-
-            historicalMedicalRecordForms.add(historicalMedicalRecordForm);
-        }
-
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
         ModelAndView modelAndView = new ModelAndView(nextPage);
-        modelAndView.addObject("medicalRecordForm", medicalRecordForm);
-        modelAndView.addObject("historicalMedicalRecordForms", historicalMedicalRecordForms);
-        return modelAndView;
+        try {
+            String identifier = new String(Base64.getDecoder().decode(recordReferenceId.getText()), StandardCharsets.ISO_8859_1);
+            String[] recordReference = identifier.split("#");
+
+            int token = Integer.valueOf(recordReference[0]);
+            String qid = recordReference[1];
+            String recordOwner = recordReference[2];
+
+            List<PhysicalEntity> physicals = medicalRecordService.findAll();
+            MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner)
+                    .populateEmptyForm(physicals);
+
+            QueueEntity queue = tokenQueueService.findOne(codeQR.getText(), token);
+            if (null == queue.getServiceBeginTime()) {
+                queueService.updateServiceBeginTime(queue.getId());
+            }
+
+            if (StringUtils.isNotBlank(queue.getQueueUserId()) && qid.equalsIgnoreCase(queue.getQueueUserId())) {
+                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(recordOwner);
+                medicalRecordForm
+                        .setToken(token)
+                        .setBusinessType(queue.getBusinessType())
+                        .setCodeQR(new ScrubbedInput(queue.getCodeQR()))
+                        .setPatientName(userProfile.getName())
+                        .setGender(userProfile.getGender())
+                        .setAge(userProfile.getAge());
+
+                if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                    UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+                    medicalRecordForm.setGuardianName(guardianProfile.getName())
+                            .setGuardianPhone(guardianProfile.getPhone());
+                }
+            } else {
+                //Perform Account Registry
+            }
+
+
+            List<MedicalRecordEntity> historicalMedicalRecords = medicalRecordService.historicalRecords(recordOwner);
+            List<MedicalRecordForm> historicalMedicalRecordForms = new LinkedList<>();
+            for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
+                List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
+
+                MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
+                historicalMedicalRecordForm
+                        .populateHistoricalForm(medicalPhysicalExaminations)
+                        .setBusinessType(medicalRecord.getBusinessType())
+                        .setChiefComplain(medicalRecord.getChiefComplain())
+                        .setPastHistory(medicalRecord.getPastHistory())
+                        .setFamilyHistory(medicalRecord.getFamilyHistory())
+                        .setKnownAllergies(medicalRecord.getKnownAllergies())
+                        .setClinicalFinding(medicalRecord.getClinicalFinding())
+                        .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis());
+
+                historicalMedicalRecordForms.add(historicalMedicalRecordForm);
+            }
+
+            modelAndView.addObject("medicalRecordForm", medicalRecordForm);
+            modelAndView.addObject("historicalMedicalRecordForms", historicalMedicalRecordForms);
+            return modelAndView;
+        } catch (Exception e) {
+            LOG.error("Failed to get records reason={}", e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+            return modelAndView;
+        } finally {
+            apiHealthService.insert(
+                    "/{codeQR}/{recordReferenceId}",
+                    "createRecord",
+                    MedicalRecordController.class.getName(),
+                    Duration.between(start, Instant.now()),
+                    methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
+        }
     }
 
     @PostMapping(value = "/add")
