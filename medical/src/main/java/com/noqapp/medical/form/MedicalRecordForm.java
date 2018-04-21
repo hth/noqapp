@@ -268,4 +268,30 @@ public class MedicalRecordForm {
 
         return Formatter.phoneNationalFormat(guardianPhone, Formatter.getCountryShortNameFromInternationalPhone(guardianPhone));
     }
+
+    @Override
+    public String toString() {
+        return "MedicalRecordForm{" +
+                "patientName='" + patientName + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                ", guardianName='" + guardianName + '\'' +
+                ", guardianPhone='" + guardianPhone + '\'' +
+                ", token=" + token +
+                ", businessType=" + businessType +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", codeQR=" + codeQR +
+                ", chiefComplain='" + chiefComplain + '\'' +
+                ", pastHistory='" + pastHistory + '\'' +
+                ", familyHistory='" + familyHistory + '\'' +
+                ", knownAllergies='" + knownAllergies + '\'' +
+                ", medicalPhysicalForms=" + medicalPhysicalForms +
+                ", clinicalFinding='" + clinicalFinding + '\'' +
+                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+                ", medicalLaboratory=" + medicalLaboratory +
+                ", medicalRadiology=" + medicalRadiology +
+                ", medication=" + medication +
+                ", recordAccessed=" + recordAccessed +
+                '}';
+    }
 }
