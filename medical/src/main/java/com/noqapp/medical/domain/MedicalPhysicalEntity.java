@@ -49,4 +49,12 @@ public class MedicalPhysicalEntity extends BaseEntity {
         this.medicalPhysicalExaminationIds = medicalPhysicalExaminationIds;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "MedicalPhysicalEntity{" +
+                "queueUserId='" + queueUserId + '\'' +
+                ", medicalPhysicalExaminationIds=" + medicalPhysicalExaminationIds +
+                '}';
+    }
 }

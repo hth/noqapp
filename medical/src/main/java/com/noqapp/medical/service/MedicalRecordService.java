@@ -79,7 +79,7 @@ public class MedicalRecordService {
                 Instant.now().toEpochMilli(),
                 diagnosedById);
         medicalRecordManager.save(medicalRecord);
-        LOG.info("Saved medical record");
+        LOG.info("Saved medical record={}", medicalRecord);
     }
 
     private void populateWithMedicalPhysical(MedicalRecordForm medicalRecordForm, MedicalRecordEntity medicalRecord) {
@@ -113,7 +113,7 @@ public class MedicalRecordService {
                 /* Add the Medical Physical to Medical Record. */
                 medicalRecord.setMedicalPhysical(medicalPhysical);
             }
-            LOG.info("Populate medical physical complete");
+            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
         } catch (Exception e) {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }

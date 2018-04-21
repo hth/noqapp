@@ -238,4 +238,27 @@ public class MedicalRecordEntity extends BaseEntity {
         this.bizCategoryId = bizCategoryId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "MedicalRecordEntity{" +
+                "businessType=" + businessType +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", chiefComplain='" + chiefComplain + '\'' +
+                ", pastHistory='" + pastHistory + '\'' +
+                ", familyHistory='" + familyHistory + '\'' +
+                ", knownAllergies='" + knownAllergies + '\'' +
+                ", medicalPhysical=" + medicalPhysical +
+                ", clinicalFinding='" + clinicalFinding + '\'' +
+                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+                ", medicalLaboratory=" + medicalLaboratory +
+                ", medicalRadiology=" + medicalRadiology +
+                ", medication=" + medication +
+                ", diagnosedById='" + diagnosedById + '\'' +
+                ", recordAccessed=" + recordAccessed +
+                ", businessName='" + businessName + '\'' +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
