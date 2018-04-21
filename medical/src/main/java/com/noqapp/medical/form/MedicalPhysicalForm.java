@@ -36,4 +36,13 @@ public class MedicalPhysicalForm {
         this.value = value;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "MedicalPhysicalForm{" +
+                "physicalReferenceId='" + physicalReferenceId + '\'' +
+                ", name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }
