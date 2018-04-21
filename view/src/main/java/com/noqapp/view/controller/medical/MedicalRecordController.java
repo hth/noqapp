@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
@@ -140,11 +141,14 @@ public class MedicalRecordController {
             List<MedicalRecordEntity> historicalMedicalRecords = medicalRecordService.historicalRecords(recordOwner);
             List<MedicalRecordForm> historicalMedicalRecordForms = new LinkedList<>();
             for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
-                List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
+                List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = new ArrayList<>();
+                if (null != medicalRecord.getMedicalPhysical()) {
+                    medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
+                }
 
                 MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
                 historicalMedicalRecordForm
-                        .populateHistoricalForm(medicalPhysicalExaminations)
+                        .populateHistoricalPhysicalForm(medicalPhysicalExaminations)
                         .setBusinessType(medicalRecord.getBusinessType())
                         .setChiefComplain(medicalRecord.getChiefComplain())
                         .setPastHistory(medicalRecord.getPastHistory())

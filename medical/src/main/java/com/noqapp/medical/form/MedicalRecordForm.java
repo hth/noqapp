@@ -67,7 +67,7 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicalRecordForm populateHistoricalForm(List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations) {
+    public MedicalRecordForm populateHistoricalPhysicalForm(List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations) {
         medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{
             for (MedicalPhysicalExaminationEntity physical : medicalPhysicalExaminations) {
                 add(new MedicalPhysicalForm()
