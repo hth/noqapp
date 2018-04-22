@@ -39,7 +39,7 @@ public class MedicalRecordForm {
     private String pastHistory;
     private String familyHistory;
     private String knownAllergies;
-    private List<MedicalPhysicalForm> medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{add(new MedicalPhysicalForm()); add(new MedicalPhysicalForm()); add(new MedicalPhysicalForm());}};
+    private List<MedicalPhysicalForm> medicalPhysicalForms;
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
     private MedicalPathologyEntity medicalLaboratory = new MedicalPathologyEntity();
