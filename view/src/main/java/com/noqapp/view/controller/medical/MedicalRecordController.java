@@ -182,29 +182,44 @@ public class MedicalRecordController {
             @ModelAttribute("medicalRecordForm")
             MedicalRecordForm medicalRecordForm
     ) {
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findAnyDeviceId(queueUser.getQueueUserId());
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
+        try {
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findAnyDeviceId(queueUser.getQueueUserId());
 
-        /* Note: Since being served by web, we will assume its being served by one of the QID user's device. */
-        String deviceId;
-        if (registeredDevice == null) {
-            /* Note: Should complain if no registered device found under the QID. */
-            //throw new RuntimeException("No registered device found");
-            deviceId = CommonUtil.appendRandomToDeviceId(queueUser.getQueueUserId() + "-" + TokenServiceEnum.W.getName());
-        } else {
-            deviceId = registeredDevice.getDeviceId();
+            /* Note: Since being served by web, we will assume its being served by one of the QID user's device. */
+            String deviceId;
+            if (registeredDevice == null) {
+                /* Note: Should complain if no registered device found under the QID. */
+                //throw new RuntimeException("No registered device found");
+                deviceId = CommonUtil.appendRandomToDeviceId(queueUser.getQueueUserId() + "-" + TokenServiceEnum.W.getName());
+            } else {
+                deviceId = registeredDevice.getDeviceId();
+            }
+
+            LOG.info("MedicalRecordForm={}", medicalRecordForm);
+            //Validate if the person has joined the queue
+            medicalRecordService.addMedicalRecord(medicalRecordForm, queueUser.getQueueUserId(), medicalRecordForm.getCodeQR().getText());
+            queueService.updateAndGetNextInQueue(
+                    medicalRecordForm.getCodeQR().getText(),
+                    medicalRecordForm.getToken(),
+                    QueueUserStateEnum.S,
+                    "",
+                    deviceId,
+                    TokenServiceEnum.W);
+            return "redirect:/business/store/queue/people/" + medicalRecordForm.getCodeQR() + ".htm";
+        } catch (Exception e) {
+            LOG.error("Failed to get records reason={}", e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+            return "redirect:" + "/medical/record/add.htm";
+        } finally {
+            apiHealthService.insert(
+                    "/add",
+                    "addRecord",
+                    MedicalRecordController.class.getName(),
+                    Duration.between(start, Instant.now()),
+                    methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         }
-
-        LOG.info("MedicalRecordForm={}", medicalRecordForm);
-        //Validate if the person has joined the queue
-        medicalRecordService.addMedicalRecord(medicalRecordForm, queueUser.getQueueUserId(), medicalRecordForm.getCodeQR().getText());
-        queueService.updateAndGetNextInQueue(
-                medicalRecordForm.getCodeQR().getText(),
-                medicalRecordForm.getToken(),
-                QueueUserStateEnum.S,
-                "",
-                deviceId,
-                TokenServiceEnum.W);
-        return "redirect:/business/store/queue/people/" + medicalRecordForm.getCodeQR() + ".htm";
     }
 }
