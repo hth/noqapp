@@ -1,30 +1,30 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.EmailValidateEntity;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.EmailValidateService;
+import com.noqapp.view.controller.medical.MedicalRecordController;
 import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.noqapp.domain.EmailValidateEntity;
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.EmailValidateService;
-import com.noqapp.common.utils.ScrubbedInput;
-
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * User: hitender
@@ -43,6 +43,7 @@ public class ValidateEmailController {
 
     private EmailValidateService emailValidateService;
     private AccountService accountService;
+    private ApiHealthService apiHealthService;
 
     @Value ("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
@@ -56,10 +57,12 @@ public class ValidateEmailController {
     @Autowired
     public ValidateEmailController(
             EmailValidateService emailValidateService,
-            AccountService accountService
+            AccountService accountService,
+            ApiHealthService apiHealthService
     ) {
         this.emailValidateService = emailValidateService;
         this.accountService = accountService;
+        this.apiHealthService = apiHealthService;
     }
 
     @GetMapping
@@ -70,29 +73,44 @@ public class ValidateEmailController {
             RedirectAttributes redirectAttrs,
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key.getText());
-        if (null == emailValidate) {
-            LOG.info("Email address authentication failed because its deleted/invalid auth={}", key);
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        } else if(!emailValidate.isActive()) {
-            LOG.info("Email address authentication previously validated for auth={}", key);
-            /* Expired link after validation. */
-            httpServletResponse.sendError(HttpServletResponse.SC_GONE);
-            return null;
-        }
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
+        try {
+            EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key.getText());
+            if (null == emailValidate) {
+                LOG.info("Email address authentication failed because its deleted/invalid auth={}", key);
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return null;
+            } else if (!emailValidate.isActive()) {
+                LOG.info("Email address authentication previously validated for auth={}", key);
+                /* Expired link after validation. */
+                httpServletResponse.sendError(HttpServletResponse.SC_GONE);
+                return null;
+            }
 
-        UserAccountEntity userAccount = accountService.findByQueueUserId(emailValidate.getQueueUserId());
-        if (userAccount.isAccountValidated()) {
-            redirectAttrs.addFlashAttribute("success", "false");
-            LOG.info("email address authentication failed for qid={}", userAccount.getQueueUserId());
-        } else {
-            accountService.validateAccount(emailValidate, userAccount);
-            redirectAttrs.addFlashAttribute("success", "true");
+            UserAccountEntity userAccount = accountService.findByQueueUserId(emailValidate.getQueueUserId());
+            if (userAccount.isAccountValidated()) {
+                redirectAttrs.addFlashAttribute("success", "false");
+                LOG.info("email address authentication failed for qid={}", userAccount.getQueueUserId());
+            } else {
+                accountService.validateAccount(emailValidate, userAccount);
+                redirectAttrs.addFlashAttribute("success", "true");
 
-            LOG.info("email address authentication success for qid={}", userAccount.getQueueUserId());
+                LOG.info("email address authentication success for qid={}", userAccount.getQueueUserId());
+            }
+            return validateResult;
+        } catch (Exception e) {
+            LOG.error("Failed validating reason={}", e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+            throw e;
+        } finally {
+            apiHealthService.insert(
+                    "/",
+                    "validateEmail",
+                    ValidateEmailController.class.getName(),
+                    Duration.between(start, Instant.now()),
+                    methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         }
-        return validateResult;
     }
 
     @GetMapping (value = "/result")
