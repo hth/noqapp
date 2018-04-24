@@ -87,6 +87,16 @@
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
+                                            <li>
+                                                <div class="col-lable3">
+                                                    <form:label path="displayImage" cssErrorClass="lb_error">Category Image</form:label>
+                                                </div>
+                                                <div class="col-fields">
+                                                    <form:input path="displayImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Upload image for category"/>
+                                                </div>
+                                                <div class="clearFix"></div>
+                                            </li>
                                         </ul>
 
                                         <div class="col-lable3"></div>
@@ -136,6 +146,16 @@
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
+                                            <li>
+                                                <div class="col-lable3">
+                                                    <form:label path="displayImage" cssErrorClass="lb_error">Category Image</form:label>
+                                                </div>
+                                                <div class="col-fields">
+                                                    <form:input path="displayImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Upload image for category"/>
+                                                </div>
+                                                <div class="clearFix"></div>
+                                            </li>
                                         </ul>
 
                                         <div class="col-lable3"></div>
@@ -171,18 +191,18 @@
                                     <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                          alt="Sort" height="16px;"/>
                                 </th>
-                                <th>
-                                    Referred Count
-                                </th>
+                                <th>Category Image</th>
+                                <th>Referred Count</th>
                                 <th nowrap>Edit</th>
                             </tr>
                             <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
                             <tr>
                                 <td>${status.count}&nbsp;</td>
-                                <td nowrap>${category.value}</td>
+                                <td nowrap>${category.value.categoryName}</td>
+                                <td>${category.value.displayImage}</td>
                                 <td nowrap>
                                     <a href="/business/category/${category.key}/storeByCategory.htm">
-                                        ${categoryLanding.categoryCounts.get(category.key)}
+                                            ${categoryLanding.categoryCounts.get(category.key)}
                                     </a>
                                 </td>
                                 <td nowrap>

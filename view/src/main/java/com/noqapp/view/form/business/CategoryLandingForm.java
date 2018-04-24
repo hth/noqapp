@@ -1,6 +1,7 @@
 package com.noqapp.view.form.business;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizCategoryEntity;
 
 import java.util.Map;
 
@@ -17,8 +18,9 @@ public class CategoryLandingForm {
     private ScrubbedInput bizNameId;
     private ScrubbedInput bizCategoryId;
     private ScrubbedInput categoryName;
+    private ScrubbedInput displayImage;
 
-    private Map<String, String> categories;
+    private Map<String, BizCategoryEntity> categories;
     private Map<String, Long> categoryCounts;
 
     public ScrubbedInput getBizNameId() {
@@ -48,11 +50,20 @@ public class CategoryLandingForm {
         return this;
     }
 
-    public Map<String, String> getCategories() {
+    public ScrubbedInput getDisplayImage() {
+        return displayImage;
+    }
+
+    public CategoryLandingForm setDisplayImage(ScrubbedInput displayImage) {
+        this.displayImage = displayImage;
+        return this;
+    }
+
+    public Map<String, BizCategoryEntity> getCategories() {
         return categories;
     }
 
-    public CategoryLandingForm setCategories(Map<String, String> categories) {
+    public CategoryLandingForm setCategories(Map<String, BizCategoryEntity> categories) {
         this.categories = categories;
         return this;
     }

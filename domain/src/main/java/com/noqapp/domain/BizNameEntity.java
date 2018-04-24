@@ -1,14 +1,13 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.commons.text.WordUtils;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
@@ -19,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -127,6 +127,9 @@ public class BizNameEntity extends BaseEntity {
     /* Billing status is set when business has been approved. */
     @Field("BS")
     private BillingStatusEnum billingStatus;
+
+    @Field ("BI")
+    private List<String> businessServiceImages = new LinkedList<>();
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -433,6 +436,20 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setBillingStatus(BillingStatusEnum billingStatus) {
         this.billingStatus = billingStatus;
+        return this;
+    }
+
+    public List<String> getBusinessServiceImages() {
+        return businessServiceImages;
+    }
+
+    public BizNameEntity setBusinessServiceImages(List<String> businessServiceImages) {
+        this.businessServiceImages = businessServiceImages;
+        return this;
+    }
+
+    public BizNameEntity addBusinessServiceImages(String businessServiceImage) {
+        this.businessServiceImages.add(businessServiceImage);
         return this;
     }
 

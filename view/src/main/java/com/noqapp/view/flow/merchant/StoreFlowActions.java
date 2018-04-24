@@ -66,7 +66,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessTypes(businessUser.getBizName().getBusinessTypes());
-        registerBusiness.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+        registerBusiness.setCategories(bizService.getBusinessCategoriesForDropDown(businessUser.getBizName().getId()));
 
         return registerBusiness;
     }

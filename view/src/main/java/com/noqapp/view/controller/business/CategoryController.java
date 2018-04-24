@@ -116,7 +116,7 @@ public class CategoryController {
         }
 
         String bizNameId = businessUser.getBizName().getId();
-        Map<String, String> categories = bizService.getBusinessCategoriesAsMap(bizNameId);
+        Map<String, BizCategoryEntity> categories = bizService.getBusinessCategoriesAsMap(bizNameId);
         categoryLanding
                 .setBizNameId(new ScrubbedInput(bizNameId))
                 .setCategories(categories)
@@ -146,7 +146,10 @@ public class CategoryController {
             return "redirect:" + nextPage + ".htm";
         }
 
-        bizService.addCategory(categoryLanding.getCategoryName().getText(), categoryLanding.getBizNameId().getText());
+        bizService.addCategory(
+                categoryLanding.getCategoryName().getText(),
+                categoryLanding.getBizNameId().getText(),
+                categoryLanding.getDisplayImage().getText());
         categoryLanding.setCategoryName(null);
         redirectAttrs.addFlashAttribute("categoryLanding", categoryLanding);
         return "redirect:" + nextPage + ".htm";
@@ -191,8 +194,8 @@ public class CategoryController {
         categoryLanding
                 .setBizCategoryId(bizCategoryId)
                 .setBizNameId(new ScrubbedInput(bizCategory.getBizNameId()))
-                .setCategoryName(new ScrubbedInput(bizCategory.getCategoryName()));
-
+                .setCategoryName(new ScrubbedInput(bizCategory.getCategoryName()))
+                .setDisplayImage(new ScrubbedInput(bizCategory.getDisplayImage()));
 
         redirectAttrs.addFlashAttribute("categoryLanding", categoryLanding);
         return "redirect:" + nextPage + ".htm";
@@ -221,7 +224,10 @@ public class CategoryController {
             return "redirect:" + nextPage + ".htm";
         }
 
-        bizService.updateBizCategoryName(categoryLanding.getBizCategoryId().getText(), categoryLanding.getCategoryName().getText());
+        bizService.updateBizCategoryName(
+                categoryLanding.getBizCategoryId().getText(),
+                categoryLanding.getCategoryName().getText(),
+                categoryLanding.getDisplayImage().getText());
         return "redirect:" + nextPage + ".htm";
     }
 
@@ -263,8 +269,9 @@ public class CategoryController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();
-        businessLandingForm.setBizName(bizName.getBusinessName());
-        businessLandingForm.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+        businessLandingForm
+                .setBizName(bizName.getBusinessName())
+                .setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
         List<BizStoreEntity> bizStores = bizService.getBizStoresByCategory(bizCategoryId.getText(), businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {

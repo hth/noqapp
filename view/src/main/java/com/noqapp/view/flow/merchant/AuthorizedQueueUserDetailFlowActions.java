@@ -103,7 +103,7 @@ public class AuthorizedQueueUserDetailFlowActions {
                 .setName(userProfile.getName())
                 .setEnrolledInStores(enrolledInStores)
                 .setBizStores(bizStores)
-                .setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+                .setCategories(bizService.getBusinessCategoriesForDropDown(businessUser.getBizName().getId()));
 
         return authorizedQueueUser;
     }

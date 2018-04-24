@@ -102,7 +102,7 @@
                                             <span style="display:block; font-size:13px;">Category:
                                                 <c:choose>
                                                     <c:when test="${!empty businessLandingForm.categories.get(store.bizCategoryId)}">
-                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
+                                                        ${businessLandingForm.categories.get(store.bizCategoryId).categoryName}
                                                     </c:when>
                                                     <c:otherwise>
                                                         N/A

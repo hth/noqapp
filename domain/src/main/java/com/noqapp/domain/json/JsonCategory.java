@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * hitender
  * 12/21/17 1:15 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -29,10 +30,10 @@ public class JsonCategory extends AbstractDomain {
     @JsonProperty("bc")
     private String bizCategoryId;
 
-    @JsonProperty ("cn")
+    @JsonProperty("cn")
     private String categoryName;
 
-    @JsonProperty ("di")
+    @JsonProperty("di")
     private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
 
     public String getBizCategoryId() {
@@ -58,7 +59,10 @@ public class JsonCategory extends AbstractDomain {
     }
 
     public JsonCategory setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
+        //TODO(hth) remove the check
+        if (StringUtils.isNotBlank(displayImage)) {
+            this.displayImage = displayImage;
+        }
         return this;
     }
 }
