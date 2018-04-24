@@ -209,7 +209,8 @@ public class BizService {
         return bizCategoryManager.getByBizNameId(bizNameId);
     }
 
-    public Map<String, String> getBusinessCategoriesAsMap(String bizNameId) {
+    /** Used in drop downs for key value listing of data. */
+    public Map<String, String> getBusinessCategoriesForDropDown(String bizNameId) {
         List<BizCategoryEntity> bizCategories = getBusinessCategories(bizNameId);
 
         Map<String, String> bizCategoriesAsMap = new LinkedHashMap<>();
@@ -220,11 +221,23 @@ public class BizService {
         return bizCategoriesAsMap;
     }
 
-    public void addCategory(String categoryName, String bizNameId) {
+    public Map<String, BizCategoryEntity> getBusinessCategoriesAsMap(String bizNameId) {
+        List<BizCategoryEntity> bizCategories = getBusinessCategories(bizNameId);
+
+        Map<String, BizCategoryEntity> bizCategoriesAsMap = new LinkedHashMap<>();
+        for (BizCategoryEntity bizCategory : bizCategories) {
+            bizCategoriesAsMap.put(bizCategory.getId(), bizCategory);
+        }
+
+        return bizCategoriesAsMap;
+    }
+
+    public void addCategory(String categoryName, String bizNameId, String displayImage) {
         if (!existCategory(categoryName, bizNameId)) {
             BizCategoryEntity bizCategory = new BizCategoryEntity()
                     .setBizNameId(bizNameId)
-                    .setCategoryName(categoryName);
+                    .setCategoryName(categoryName)
+                    .setDisplayImage(displayImage);
             bizCategoryManager.save(bizCategory);
         }
     }
@@ -246,8 +259,8 @@ public class BizService {
         return categoryName;
     }
 
-    public void updateBizCategoryName(String bizCategoryId, String categoryName) {
-        bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName);
+    public void updateBizCategoryName(String bizCategoryId, String categoryName, String displayImage) {
+        bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName, displayImage);
     }
 
     public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {

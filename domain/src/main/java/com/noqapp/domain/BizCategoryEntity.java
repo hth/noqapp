@@ -35,6 +35,9 @@ public class BizCategoryEntity extends BaseEntity {
     @Field("CN")
     private String categoryName;
 
+    @Field ("DI")
+    private String displayImage;
+
     public String getBizNameId() {
         return bizNameId;
     }
@@ -50,6 +53,15 @@ public class BizCategoryEntity extends BaseEntity {
 
     public BizCategoryEntity setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public BizCategoryEntity setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 }

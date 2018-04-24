@@ -152,6 +152,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("md")
     private int minimumDeliveryOrder = 100;
 
+    @JsonProperty ("bi")
+    private List<String> bizServiceImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/40x40/a.jpeg"); add("https://noqapp.com/imgs/40x40/b.jpeg"); add("https://noqapp.com/imgs/40x40/e.jpeg");}};
+
     @JsonProperty ("si")
     private List<String> storeServiceImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/40x40/a.jpeg"); add("https://noqapp.com/imgs/40x40/b.jpeg"); add("https://noqapp.com/imgs/40x40/e.jpeg");}};
 

@@ -183,8 +183,9 @@ public class AdminBusinessLandingController {
             businessLandingForm.setBizName(bizName.getBusinessName());
         }
 
-        businessLandingForm.setBizCodeQR(bizName.getCodeQR());
-        businessLandingForm.setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+        businessLandingForm
+                .setBizCodeQR(bizName.getCodeQR())
+                .setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
