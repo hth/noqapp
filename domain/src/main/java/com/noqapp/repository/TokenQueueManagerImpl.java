@@ -4,6 +4,7 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,10 +139,10 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     }
 
     @Override
-    public boolean updateDisplayName(String codeQR, String topic, String displayName) {
+    public boolean updateDisplayNameAndBusinessType(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
             query(where("_id").is(codeQR).and("TP").is(topic)),
-            entityUpdate(update("DN", displayName)),
+            entityUpdate(update("DN", displayName).set("BT", businessType)),
             TokenQueueEntity.class,
             TABLE
         );

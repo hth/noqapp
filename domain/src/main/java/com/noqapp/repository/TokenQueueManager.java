@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
 
     void resetForNewDay(String codeQR);
 
-    boolean updateDisplayName(String codeQR, String topic, String displayName);
+    boolean updateDisplayNameAndBusinessType(String codeQR, String topic, String displayName, BusinessTypeEnum businessType);
 
     @Deprecated
     List<TokenQueueEntity> findAll();
