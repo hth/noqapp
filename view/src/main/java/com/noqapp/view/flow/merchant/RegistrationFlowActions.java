@@ -220,6 +220,7 @@ class RegistrationFlowActions {
         validateAddress(bizStore);
         try {
             String webLocation = bizService.buildWebLocationForStore(
+                    bizStore.getArea(),
                     bizStore.getTown(),
                     bizStore.getStateShortName(),
                     registerBusiness.getCountryShortNameStore(),

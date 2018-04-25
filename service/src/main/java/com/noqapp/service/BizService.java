@@ -289,6 +289,7 @@ public class BizService {
     }
 
     public String buildWebLocationForStore(
+            String area,
             String town,
             String stateShortName,
             String countryShortNameStore,
@@ -297,6 +298,7 @@ public class BizService {
             String storeId
     ) {
         String webLocation = computeWebLocationForStore(
+                area,
                 town,
                 stateShortName,
                 countryShortNameStore,
@@ -331,6 +333,7 @@ public class BizService {
     }
 
     private String computeWebLocationForStore(
+            String area,
             String town,
             String stateShortName,
             String countryShortNameStore,
@@ -338,6 +341,7 @@ public class BizService {
             String displayName
     ) {
         try {
+            String areaString = StringUtils.isNotBlank(area) ? area.trim().toLowerCase().replace(" ", "-") : "-";
             String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
 
@@ -350,6 +354,8 @@ public class BizService {
                     + "/"
                     + name.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim()
                     + "/"
+                    + areaString
+                    + "-"
                     + townString
                     + "-"
                     + stateShortNameString
