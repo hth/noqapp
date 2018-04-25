@@ -29,8 +29,8 @@ public class DomainConversion {
                  * BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName(),
                  * right before insert to Elastic.
                  */
-                .setCategory(null)
-                .setCategoryId(bizStore.getBizCategoryId())
+                .setBizCategoryName(null)
+                .setBizCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())
