@@ -19,6 +19,8 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -67,6 +69,7 @@ public class TokenQueueService {
     private QueueManagerJDBC queueManagerJDBC;
     private StoreHourManager storeHourManager;
     private BizStoreManager bizStoreManager;
+    private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
 
@@ -79,7 +82,8 @@ public class TokenQueueService {
             RegisteredDeviceManager registeredDeviceManager,
             QueueManagerJDBC queueManagerJDBC,
             StoreHourManager storeHourManager,
-            BizStoreManager bizStoreManager
+            BizStoreManager bizStoreManager,
+            ApiHealthService apiHealthService
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseMessageService = firebaseMessageService;
@@ -89,13 +93,17 @@ public class TokenQueueService {
         this.queueManagerJDBC = queueManagerJDBC;
         this.storeHourManager = storeHourManager;
         this.bizStoreManager = bizStoreManager;
+        this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
     }
 
     //TODO has to createUpdate by cron job
     public void createUpdate(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
         try {
+            LOG.info("Create/Update id={} {} displayName={} businessType={}", codeQR, topic, displayName, businessType);
             Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
             TokenQueueEntity token = findByCodeQR(codeQR);
             if (null == token) {
@@ -103,14 +111,27 @@ public class TokenQueueService {
                 token.setId(codeQR);
                 tokenQueueManager.save(token);
             } else {
-                boolean updateSuccess = tokenQueueManager.updateDisplayNameAndBusinessType(codeQR, topic, displayName, businessType);
+                boolean updateSuccess = tokenQueueManager.updateDisplayNameAndBusinessType(
+                        codeQR,
+                        topic,
+                        displayName,
+                        businessType);
+
                 if (!updateSuccess) {
                     LOG.error("Failed update for codeQR={} topic={} displayName={}", codeQR, topic, displayName);
                 }
             }
         } catch (Exception e) {
             LOG.error("Failed creating TokenQueue codeQR={} topic={} displayName={}", codeQR, topic, displayName);
+            methodStatusSuccess = false;
             throw new RuntimeException("Failed creating TokenQueue");
+        } finally {
+            apiHealthService.insert(
+                    "createUpdate",
+                    "createUpdate",
+                    TokenQueueService.class.getName(),
+                    Duration.between(start, Instant.now()),
+                    methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         }
     }
 
