@@ -103,7 +103,7 @@ public class TokenQueueService {
                 token.setId(codeQR);
                 tokenQueueManager.save(token);
             } else {
-                boolean updateSuccess = tokenQueueManager.updateDisplayName(codeQR, topic, displayName);
+                boolean updateSuccess = tokenQueueManager.updateDisplayNameAndBusinessType(codeQR, topic, displayName, businessType);
                 if (!updateSuccess) {
                     LOG.error("Failed update for codeQR={} topic={} displayName={}", codeQR, topic, displayName);
                 }
