@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * hitender
  * 2/1/18 3:24 PM
@@ -50,6 +48,27 @@ class BizServiceTest {
     @Test
     void buildWebLocationForStore() {
         String wl = bizService.buildWebLocationForStore(
+                "Jankpuri",
+                "New Delhi",
+                "MH",
+                "IN",
+                "Dimmer Lime",
+                "Dr. Mich J. Douse",
+                null);
+        Assertions.assertEquals("/in/dimmer-lime/jankpuri-new-delhi-mh/dr-mich-j-douse", wl);
+
+        wl = bizService.buildWebLocationForStore(
+                "Jankpuri",
+                "New Delhi",
+                "MH",
+                "IN",
+                "Dimmer Lime",
+                "Dr. Mich J. Douse (evening)",
+                null);
+        Assertions.assertEquals("/in/dimmer-lime/jankpuri-new-delhi-mh/dr-mich-j-douse-evening", wl);
+
+        wl = bizService.buildWebLocationForStore(
+                "",
                 "New Delhi",
                 "MH",
                 "IN",
@@ -59,6 +78,7 @@ class BizServiceTest {
         Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse", wl);
 
         wl = bizService.buildWebLocationForStore(
+                "",
                 "New Delhi",
                 "MH",
                 "IN",
@@ -69,6 +89,7 @@ class BizServiceTest {
 
         wl = bizService.buildWebLocationForStore(
                 "",
+                "",
                 "MH",
                 "IN",
                 "Dimmer Lime",
@@ -77,6 +98,7 @@ class BizServiceTest {
         Assertions.assertEquals("/in/dimmer-lime/mh/dr-mich-j-douse", wl);
 
         wl = bizService.buildWebLocationForStore(
+                "",
                 "",
                 "",
                 "IN",
