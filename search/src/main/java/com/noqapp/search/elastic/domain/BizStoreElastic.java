@@ -64,10 +64,10 @@ public class BizStoreElastic extends AbstractDomain {
     private BusinessTypeEnum businessType;
 
     @JsonProperty("BC")
-    private String category;
+    private String bizCategoryName;
 
     @JsonProperty("BCI")
-    private String categoryId;
+    private String bizCategoryId;
 
     @JsonProperty("AD")
     private String address;
@@ -180,21 +180,21 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public String getCategory() {
-        return category;
+    public String getBizCategoryName() {
+        return bizCategoryName;
     }
 
-    public BizStoreElastic setCategory(String category) {
-        this.category = category;
+    public BizStoreElastic setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
         return this;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getBizCategoryId() {
+        return bizCategoryId;
     }
 
-    public BizStoreElastic setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public BizStoreElastic setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 
@@ -442,7 +442,7 @@ public class BizStoreElastic extends AbstractDomain {
         return new BizStoreElastic()
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
-                .setCategoryId(bizStore.getBizCategoryId())
+                .setBizCategoryId(bizStore.getBizCategoryId())
                 .setAddress(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())
@@ -483,7 +483,7 @@ public class BizStoreElastic extends AbstractDomain {
                 LOG.info("Default business type {}", businessType.name());
                 return Objects.equals(businessType.name(), that.businessType.name()) &&
                         Objects.equals(bizNameId, that.bizNameId) &&
-                        Objects.equals(categoryId, that.categoryId) &&
+                        Objects.equals(bizCategoryId, that.bizCategoryId) &&
                         Objects.equals(address, that.address);
         }
     }
@@ -494,7 +494,7 @@ public class BizStoreElastic extends AbstractDomain {
             case DO:
                 return Objects.hash(businessType.name(), bizNameId);
             default:
-                return Objects.hash(businessType.name(), bizNameId, categoryId, address);
+                return Objects.hash(businessType.name(), bizNameId, bizCategoryId, address);
         }
     }
 
@@ -505,8 +505,8 @@ public class BizStoreElastic extends AbstractDomain {
                 ", scrollId='" + scrollId + '\'' +
                 ", businessName='" + businessName + '\'' +
                 ", businessType='" + businessType + '\'' +
-                ", category='" + category + '\'' +
-                ", categoryId='" + categoryId + '\'' +
+                ", bizCategoryName='" + bizCategoryName + '\'' +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
                 ", address='" + address + '\'' +
                 ", area='" + area + '\'' +
                 ", town='" + town + '\'' +
