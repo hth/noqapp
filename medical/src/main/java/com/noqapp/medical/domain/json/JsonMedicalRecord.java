@@ -81,8 +81,9 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("n")
     private String businessName;
 
+    /** Convert to Category Name instead of Id. */
     @JsonProperty ("bc")
-    private String bizCategory;
+    private String bizCategoryName;
 
     @JsonProperty ("c")
     private String created;
@@ -231,12 +232,12 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public String getBizCategory() {
-        return bizCategory;
+    public String getBizCategoryName() {
+        return bizCategoryName;
     }
 
-    public JsonMedicalRecord setBizCategory(String bizCategory) {
-        this.bizCategory = bizCategory;
+    public JsonMedicalRecord setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
         return this;
     }
 
