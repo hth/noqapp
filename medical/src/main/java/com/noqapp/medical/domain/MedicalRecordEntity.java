@@ -81,7 +81,7 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field ("N")
     private String businessName;
 
-    @Field ("BC")
+    @Field ("BCI")
     private String bizCategoryId;
 
     private MedicalRecordEntity() {}
