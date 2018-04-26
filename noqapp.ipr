@@ -392,8 +392,8 @@
         <element id="file-copy" path="$PROJECT_DIR$/view/web/500.html" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -401,9 +401,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.3.war" />
+        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="loader_main" />
@@ -727,17 +727,17 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : loader-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : loader-1.3.0.war">
       <output-path>$PROJECT_DIR$/loader/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="loader-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.3.war (exploded)" />
+      <root id="archive" name="loader-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.3.0.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -745,9 +745,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.3.war" />
+        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="security_main" />
@@ -1064,17 +1064,17 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : security-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : security-1.3.0.war">
       <output-path>$PROJECT_DIR$/security/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="security-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.3.war (exploded)" />
+      <root id="archive" name="security-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.3.0.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -1082,9 +1082,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.3.war" />
+        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="view_main" />
@@ -1429,13 +1429,13 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.3.0.war">
       <output-path>$PROJECT_DIR$/view/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="noqapp-view-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.3.war (exploded)" />
+      <root id="archive" name="noqapp-view-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.3.0.war (exploded)" />
       </root>
     </artifact>
   </component>
