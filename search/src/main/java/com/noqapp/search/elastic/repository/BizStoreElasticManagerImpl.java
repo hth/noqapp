@@ -64,7 +64,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     private BizCategoryManager bizCategoryManager;
 
     //Set cache parameters
-    private final Cache<String, Map<String, String>> cache = CacheBuilder.newBuilder()
+    private final Cache<String, Map<String, BizCategoryEntity>> cache = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(2, TimeUnit.MINUTES)
             .build();
@@ -200,19 +200,27 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     private void replaceCategoryIdWithCategoryName(BizStoreElastic bizStoreElastic) {
-        Map<String, String> categories;
+        Map<String, BizCategoryEntity> categories;
         categories = cache.getIfPresent(bizStoreElastic.getBizNameId());
         if (null == categories) {
             List<BizCategoryEntity> bizCategories = bizCategoryManager.getByBizNameId(bizStoreElastic.getBizNameId());
             if (!bizCategories.isEmpty()) {
-                categories = bizCategories.stream().collect(Collectors.toMap(BizCategoryEntity::getId, BizCategoryEntity::getCategoryName));
+                categories = bizCategories.stream().collect(Collectors.toMap(BizCategoryEntity::getId, s1 -> s1));
                 cache.put(bizStoreElastic.getBizNameId(), categories);
             } else {
                 categories = new HashMap<>();
                 cache.put(bizStoreElastic.getBizNameId(), categories);
             }
         }
-        bizStoreElastic.setBizCategoryName(categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null));
+
+        BizCategoryEntity cacheOfBizCategory = categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null);
+        if (null != cacheOfBizCategory) {
+            bizStoreElastic.setBizCategoryName(cacheOfBizCategory.getCategoryName());
+            bizStoreElastic.setBizCategoryDisplayImage(cacheOfBizCategory.getDisplayImage());
+        } else {
+            bizStoreElastic.setBizCategoryName("");
+            bizStoreElastic.setBizCategoryDisplayImage("");
+        }
     }
 
     @Override
