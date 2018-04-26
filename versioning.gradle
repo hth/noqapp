@@ -19,6 +19,8 @@ class ProjectVersion {
 
         if (build) {
             fullVersion += ".$build"
+        } else {
+            fullVersion += ".0"
         }
 
         fullVersion

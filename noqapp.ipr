@@ -274,7 +274,6 @@
             <element id="library" level="project" name="Gradle: net.bytebuddy:byte-buddy:1.7.9" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.5.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:24.1-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.api.grpc:proto-google-cloud-firestore-v1beta1:0.1.28" />
@@ -351,13 +350,14 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M2" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M2" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.12.0" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-text:1.3" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.11.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.11.0" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.28" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:25.0-jre" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -392,8 +392,8 @@
         <element id="file-copy" path="$PROJECT_DIR$/view/web/500.html" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : loader-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -401,9 +401,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/loader/build/libs/exploded/loader-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.3.war" />
+        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="loader_main" />
@@ -436,7 +436,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.5.0.RELEASE" />
@@ -451,7 +451,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.5.RELEASE" />
@@ -501,7 +501,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.28" />
             <element id="library" level="project" name="Gradle: org.apache.xmlgraphics:fop:2.2" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:24.1-jre" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:25.0-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-httpjson:0.33.0" />
@@ -727,17 +727,17 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : loader-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : loader-1.3.0.war">
       <output-path>$PROJECT_DIR$/loader/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="loader-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.3.war (exploded)" />
+      <root id="archive" name="loader-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : loader-1.3.0.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : security-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/security/build/libs/exploded/security-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -745,9 +745,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/security/build/libs/exploded/security-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.3.war" />
+        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="security_main" />
@@ -772,7 +772,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.5.0.RELEASE" />
@@ -787,7 +787,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.5.RELEASE" />
@@ -837,7 +837,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.28" />
             <element id="library" level="project" name="Gradle: org.apache.xmlgraphics:fop:2.2" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:24.1-jre" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:25.0-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-httpjson:0.33.0" />
@@ -1064,17 +1064,17 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : security-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : security-1.3.0.war">
       <output-path>$PROJECT_DIR$/security/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="security-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.3.war (exploded)" />
+      <root id="archive" name="security-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : security-1.3.0.war (exploded)" />
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.3.war (exploded)">
-      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.noqapp : noqapp-view-1.3.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$">
           <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
@@ -1082,9 +1082,9 @@
       </properties>
       <root id="root">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/view/build/libs/exploded/noqapp-view-1.3.0.war/META-INF/MANIFEST.MF" />
         </element>
-        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.3.war" />
+        <element id="javaee-facet-resources" facet="view_main/web/Web Gradle : noqapp-view-1.3.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="view_main" />
@@ -1121,7 +1121,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-core:5.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-binding:2.5.0.RELEASE" />
@@ -1136,7 +1136,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:5.0.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M2" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.5.RELEASE" />
@@ -1186,7 +1186,7 @@
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.28" />
             <element id="library" level="project" name="Gradle: org.apache.xmlgraphics:fop:2.2" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:24.1-jre" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:25.0-jre" />
             <element id="library" level="project" name="Gradle: com.google.api-client:google-api-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.http-client:google-http-client-gson:1.23.0" />
             <element id="library" level="project" name="Gradle: com.google.api:gax-httpjson:0.33.0" />
@@ -1429,13 +1429,13 @@
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.3.war">
+    <artifact type="war" name="Gradle : com.noqapp : noqapp-view-1.3.0.war">
       <output-path>$PROJECT_DIR$/view/build/libs</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="noqapp-view-1.3.war">
-        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.3.war (exploded)" />
+      <root id="archive" name="noqapp-view-1.3.0.war">
+        <element id="artifact" artifact-name="Gradle : com.noqapp : noqapp-view-1.3.0.war (exploded)" />
       </root>
     </artifact>
   </component>
@@ -1830,7 +1830,7 @@
       <module fileurl="file://$PROJECT_DIR$/view/view_test.iml" filepath="$PROJECT_DIR$/view/view_test.iml" group="view" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="10" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PropertiesComponent">
@@ -2301,15 +2301,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-admin/5.9.0/6bda1adf09755def2f75012dd4ed0c51531a7682/firebase-admin-5.9.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.google.guava:guava:24.1-jre">
+    <library name="Gradle: com.google.guava:guava:25.0-jre">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/24.1-jre/96c528475465aeb22cce60605d230a7e67cebd7b/guava-24.1-jre.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/25.0-jre/7319c34fa5866a85b6bad445adad69d402323129/guava-25.0-jre.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/24.1-jre/e6b66ff3038b4939396f4108cc9739264e0c96b6/guava-24.1-jre-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/25.0-jre/4e515cb276c07e45f17e75897d38e54bf01049f2/guava-25.0-jre-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/24.1-jre/73e800fa7c9eb49747441dc3f65dd316169009b1/guava-24.1-jre-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/25.0-jre/30ade485699e7782cc2369b0e5d3d8e0bfc317c/guava-25.0-jre-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.http-client:google-http-client-appengine:1.23.0">
@@ -4814,15 +4814,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/962153db4a9ea71b79d047dfd1b2a0d80d8f4739/slf4j-api-1.7.25-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M2">
+    <library name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M1">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M2/7e942cda15d340c63e95f18e81a0418843ac189/spring-data-commons-2.1.0.M2.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M1/dbbd772ff15f75d19322a31c601d77154eb8ecb0/spring-data-commons-2.1.0.M1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M2/5c5c1615f80100bfdacfefa0a67415a2aeed7f2f/spring-data-commons-2.1.0.M2-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M1/18a0d0e53688a15460555e9ee78fb9f7d10a5d9a/spring-data-commons-2.1.0.M1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M2/8409a58cbe2eb3d99c6595bd1a31d5a8fcf6ba9/spring-data-commons-2.1.0.M2-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.0.M1/76f0affa2fa65005c7143dc622f5161618d60ede/spring-data-commons-2.1.0.M1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.springframework.data:spring-data-keyvalue:2.0.4.RELEASE">
@@ -4836,15 +4836,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.0.4.RELEASE/cd49becdeac6c90aa06af0629206cc5e4a13d427/spring-data-keyvalue-2.0.4.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M2">
+    <library name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M1">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M2/9c25626b0da3b655c5be260e4938582e514d9072/spring-data-mongodb-2.1.0.M2.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M1/70e2c324523fec57e5a00ab5fec51aaddb03633b/spring-data-mongodb-2.1.0.M1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M2/f04ba843019cb2942f61c41316e7aaaa6e977648/spring-data-mongodb-2.1.0.M2-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M1/96ad65dd0a50b2e981cf439810682a1913051ed4/spring-data-mongodb-2.1.0.M1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M2/5e9a02e3cc237e0bdb4cf88d8cdf2adba28867aa/spring-data-mongodb-2.1.0.M2-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-mongodb/2.1.0.M1/667dc6c4afba2971dfe5d47d550b99afc693afc3/spring-data-mongodb-2.1.0.M1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.springframework.data:spring-data-redis:2.0.4.RELEASE">
