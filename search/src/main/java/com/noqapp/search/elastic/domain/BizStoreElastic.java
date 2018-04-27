@@ -18,6 +18,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,6 +148,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
+
+    @Transient
+    @JsonProperty("BI")
+    private List<String> bizServiceImages = new LinkedList<String>() {{
+        add("https://noqapp.com/imgs/40x40/a.jpeg");
+        add("https://noqapp.com/imgs/40x40/b.jpeg");
+        add("https://noqapp.com/imgs/40x40/e.jpeg");
+    }};
+
 
     public String getId() {
         return id;
@@ -447,6 +457,18 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
         this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
+    public List<String> getBizServiceImages() {
+        return bizServiceImages;
+    }
+
+    public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
+        //TODO(hth) remove temp condition
+        if (!bizServiceImages.isEmpty()) {
+            this.bizServiceImages = bizServiceImages;
+        }
         return this;
     }
 
