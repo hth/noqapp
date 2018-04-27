@@ -50,7 +50,7 @@ public class JsonStoreProduct extends AbstractDomain {
     private String storeCategoryId;
 
     @JsonProperty("t")
-    private ProductTypeEnum ProductType;
+    private ProductTypeEnum productType;
 
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
@@ -114,11 +114,11 @@ public class JsonStoreProduct extends AbstractDomain {
     }
 
     public ProductTypeEnum getProductType() {
-        return ProductType;
+        return productType;
     }
 
     public JsonStoreProduct setProductType(ProductTypeEnum productType) {
-        ProductType = productType;
+        this.productType = productType;
         return this;
     }
 
