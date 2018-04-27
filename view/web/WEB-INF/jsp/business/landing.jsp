@@ -117,7 +117,21 @@
                                                     <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <span style="display:block; font-size:13px;"><a href="https://noqapp.com/b/s${store.webLocation}.html" target="_blank">Web Appointment Link</a></span>
+
+                                            <c:choose>
+                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                || BusinessTypeEnum.BA eq store.businessType
+                                                || BusinessTypeEnum.ST eq store.businessType
+                                                || BusinessTypeEnum.GS eq store.businessType
+                                                || BusinessTypeEnum.CF eq store.businessType}">
+                                                    <span style="display:block; font-size:13px;"><del>Web Appointment</del></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <span style="display:block; font-size:13px;"><a
+                                                        href="https://noqapp.com/b/s${store.webLocation}.html"
+                                                        target="_blank">Web Appointment Link</a></span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
