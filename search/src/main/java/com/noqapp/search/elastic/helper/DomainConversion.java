@@ -54,7 +54,8 @@ public class DomainConversion {
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
                 .setDisplayImage(bizStore.getDisplayImage())
-                .setStoreHourElasticList(getStoreHourElastics(storeHours));
+                .setStoreHourElasticList(getStoreHourElastics(storeHours))
+                .setBizServiceImages(bizStore.getBizName().getBusinessServiceImages());
     }
 
     @Mobile
