@@ -512,15 +512,12 @@ public class BizStoreElastic extends AbstractDomain {
         switch (businessType) {
             case DO:
             case HO:
-                return Objects.equals(businessType.name(), that.businessType.name()) &&
-                        Objects.equals(bizNameId, that.bizNameId);
+                return Objects.equals(bizNameId, that.bizNameId);
             case BK:
-                return Objects.equals(businessType.name(), that.businessType.name()) &&
-                        Objects.equals(bizNameId, that.bizNameId) &&
+                return Objects.equals(bizNameId, that.bizNameId) &&
                         Objects.equals(placeId, that.placeId);
             default:
-                return Objects.equals(businessType.name(), that.businessType.name()) &&
-                        Objects.equals(bizNameId, that.bizNameId) &&
+                return Objects.equals(bizNameId, that.bizNameId) &&
                         Objects.equals(bizCategoryId, that.bizCategoryId) &&
                         Objects.equals(address, that.address);
         }
@@ -531,11 +528,11 @@ public class BizStoreElastic extends AbstractDomain {
         switch (businessType) {
             case DO:
             case HO:
-                return Objects.hash(businessType.name(), bizNameId);
+                return Objects.hash(bizNameId);
             case BK:
-                return Objects.hash(businessType.name(), bizNameId, placeId);
+                return Objects.hash(bizNameId, placeId);
             default:
-                return Objects.hash(businessType.name(), bizNameId, bizCategoryId, address);
+                return Objects.hash(bizNameId, bizCategoryId, address);
         }
     }
 
