@@ -98,11 +98,6 @@ public class BizStoreElasticList extends AbstractDomain {
                     bizStoreElastic.getBusinessName(),
                     bizStoreElastic.hashCode(),
                     bizStoreElastic);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                LOG.error("Sleep {}", e.getLocalizedMessage(), e);
-            }
             bizStoreElastics.add(bizStoreElastic);
         }
 
