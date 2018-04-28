@@ -56,7 +56,7 @@ class ExternalServiceTest {
         assertEquals(1, geocodingResults.length);
     }
 
-    @Test
+    @Disabled
     @DisplayName("Break of a loop if the address could not be shortened")
     void getGeocodingResults_InvalidAddress_Break_Loop() {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234TestCircuitSunnyvaleCA94089");
