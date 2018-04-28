@@ -60,7 +60,7 @@ public class BizStoreElasticService {
 
     @Autowired
     public BizStoreElasticService(
-            @Value("${limitRecords:10}")
+            @Value("${limitRecords:20}")
             int limitRecords,
 
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
