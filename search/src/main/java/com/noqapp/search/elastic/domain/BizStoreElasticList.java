@@ -88,6 +88,7 @@ public class BizStoreElasticList extends AbstractDomain {
 
     @Transient
     public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
+        LOG.info("Before count={}", elasticBizStoreSources.size());
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
             //TODO(hth) remove this call, currently it populates the images
@@ -103,6 +104,7 @@ public class BizStoreElasticList extends AbstractDomain {
         if (!bizStoreElastics.isEmpty()) {
             bizStoreElastics = new LinkedHashSet<>(bizStoreElastics);
         }
+        LOG.info("After count={}", bizStoreElastics.size());
         return this;
     }
 }
