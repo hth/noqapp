@@ -4,11 +4,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreElasticList;
+import com.noqapp.search.elastic.domain.StoreHourElastic;
 import com.noqapp.search.elastic.dsl.Conditions;
 import com.noqapp.search.elastic.dsl.Filter;
 import com.noqapp.search.elastic.dsl.GeoDistance;
@@ -21,6 +26,13 @@ import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.json.ElasticResult;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +45,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
+
+import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 
 /**
  * User: hitender
@@ -49,8 +64,12 @@ import java.util.stream.Stream;
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
 
+    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "DI"};
+    private static String[] excludeFields = new String[] {"_type"};
+
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
     private ElasticAdministrationService elasticAdministrationService;
+    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
     private ApiHealthService apiHealthService;
@@ -65,6 +84,7 @@ public class BizStoreElasticService {
 
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
             ElasticAdministrationService elasticAdministrationService,
+            ElasticsearchClientConfiguration elasticsearchClientConfiguration,
             BizStoreManager bizStoreManager,
             StoreHourManager storeHourManager,
             ApiHealthService apiHealthService
@@ -75,6 +95,7 @@ public class BizStoreElasticService {
         this.limitRecords = limitRecords;
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
+        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
         this.apiHealthService = apiHealthService;
@@ -223,11 +244,71 @@ public class BizStoreElasticService {
                 BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL",
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,DI",
                 dslQuery
         );
 
         LOG.info("DSL Query result={}", result);
         return result;
+    }
+
+    @Mobile
+    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) throws IOException {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+
+        SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.fetchSource(includeFields, excludeFields);
+//        searchSourceBuilder.query(matchQuery("CC", "India"));
+        searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash));
+        searchSourceBuilder.size(limitRecords);
+        searchRequest.source(searchSourceBuilder);
+        searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+
+        SearchResponse searchResponse;
+        if (StringUtils.isNotBlank(scrollId)) {
+            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+            scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+            searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
+        } else {
+            searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+        }
+
+        bizStoreElastics.setScrollId(searchResponse.getScrollId());
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHits = hits.getHits();
+        if (searchHits != null && searchHits.length > 0) {
+            for (SearchHit hit : searchHits) {
+                Map<String, Object> map = hit.getSourceAsMap();
+                BizStoreElastic bizStoreElastic = new BizStoreElastic()
+                        .setId(map.containsKey("id") ? map.get("id").toString() : "")
+                        .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
+                        .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
+                        .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
+                        .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
+                        .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
+                        .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
+                        .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
+                        .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")
+                        .setStoreHourElasticList(map.containsKey("SH") ? (List<StoreHourElastic>) map.get("SH") : new ArrayList<>())
+                        .setState(map.containsKey("ST") ? map.get("ST").toString() : "")
+                        .setStateShortName(map.containsKey("SS") ? map.get("SS").toString() : "")
+                        .setCountry(map.containsKey("CC") ? map.get("CC").toString() : "")
+                        .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
+                        .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
+                        .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
+                        .setRating(map.containsKey("RA") ? Float.valueOf(map.get("RA").toString()) : 3.0f)
+                        .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
+                        .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
+                        .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
+                        .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
+                        .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
+                        .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
+                        .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
+
+                bizStoreElastics.addBizStoreElastic(bizStoreElastic);
+            }
+        }
+        return bizStoreElastics;
     }
 }

@@ -10,8 +10,8 @@ import com.noqapp.domain.json.JsonCategory;
 import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.Transient;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -40,6 +40,10 @@ import java.util.List;
 public class BizStoreElasticList extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticList.class);
 
+    @Transient
+    @JsonProperty("si")
+    private String scrollId;
+
     @JsonProperty("cityName")
     private String cityName;
 
@@ -48,6 +52,15 @@ public class BizStoreElasticList extends AbstractDomain {
 
     @JsonProperty("result")
     private Collection<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+
+    public String getScrollId() {
+        return scrollId;
+    }
+
+    public BizStoreElasticList setScrollId(String scrollId) {
+        this.scrollId = scrollId;
+        return this;
+    }
 
     public String getCityName() {
         return cityName;
