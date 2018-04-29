@@ -54,10 +54,6 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonIgnore
     private String id;
 
-    @Transient
-    @JsonProperty("SI")
-    private String scrollId;
-
     @JsonProperty("N")
     private String businessName;
 
@@ -164,15 +160,6 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getScrollId() {
-        return scrollId;
-    }
-
-    public BizStoreElastic setScrollId(String scrollId) {
-        this.scrollId = scrollId;
         return this;
     }
 
@@ -540,7 +527,6 @@ public class BizStoreElastic extends AbstractDomain {
     public String toString() {
         return "BizStoreElastic{" +
                 "id='" + id + '\'' +
-                ", scrollId='" + scrollId + '\'' +
                 ", businessName='" + businessName + '\'' +
                 ", businessType='" + businessType + '\'' +
                 ", bizCategoryName='" + bizCategoryName + '\'' +

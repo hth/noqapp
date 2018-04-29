@@ -244,7 +244,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             for (SearchHit searchHit : hits) {
                 BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
                 value.setId(searchHit.getId());
-                value.setScrollId(scrollId);
+//                value.setScrollId(scrollId);
                 results.add(value);
             }
         } catch (IOException e) {
@@ -280,7 +280,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             for (SearchHit searchHit : hits) {
                 BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
                 value.setId(searchHit.getId());
-                value.setScrollId(scrollId);
+                //value.setScrollId(scrollId);
                 results.add(value);
             }
         } catch (IOException e) {
