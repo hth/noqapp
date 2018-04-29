@@ -59,7 +59,17 @@ Example from Stackoverflow[link](https://stackoverflow.com/questions/16776260/el
                 "match_all" : {}
             }
         }
-        '    
+        '
+                
+#### Search all fields
+
+    curl -XGET 'localhost:9200/_search?pretty&scroll=1m' -H 'Content-Type: application/json' -d'
+        {
+            "query": {
+                "match_all" : {}
+            }
+        }
+        '        
         
 #### Search all fields with distance
     
