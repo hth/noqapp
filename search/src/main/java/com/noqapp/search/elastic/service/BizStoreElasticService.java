@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -191,7 +192,7 @@ public class BizStoreElasticService {
         if (StringUtils.isNotBlank(geoHash)) {
             q.getConditions().setFilter(new Filter()
                     .setGeoDistance(new GeoDistance()
-                            .setDistance(Constants.MAX_Q_SEARCH_DISTANCE)
+                            .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
                             .setGeoHash(geoHash)
                     ));
         }
@@ -260,7 +261,7 @@ public class BizStoreElasticService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.fetchSource(includeFields, excludeFields);
 //        searchSourceBuilder.query(matchQuery("CC", "India"));
-        searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash));
+        searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
         searchSourceBuilder.size(limitRecords);
         searchRequest.source(searchSourceBuilder);
         searchRequest.scroll(TimeValue.timeValueMinutes(1L));
@@ -306,6 +307,8 @@ public class BizStoreElasticService {
                         .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
                         .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
 
+                //TODO(hth) remove this call, currently it populates the images
+                bizStoreElastic.getDisplayImage();
                 bizStoreElastics.addBizStoreElastic(bizStoreElastic);
             }
         }
