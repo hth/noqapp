@@ -14,8 +14,8 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private Collection<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new HashSet<>();
 
     public String getScrollId() {
         return scrollId;
