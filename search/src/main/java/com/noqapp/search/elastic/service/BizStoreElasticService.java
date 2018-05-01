@@ -80,7 +80,7 @@ public class BizStoreElasticService {
 
     @Autowired
     public BizStoreElasticService(
-            @Value("${limitRecords:10}")
+            @Value("${limitRecords:5}")
             int limitRecords,
 
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
@@ -257,21 +257,21 @@ public class BizStoreElasticService {
     public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) throws IOException {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
 
-        SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.fetchSource(includeFields, excludeFields);
-//        searchSourceBuilder.query(matchQuery("CC", "India"));
-        searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-        searchSourceBuilder.size(limitRecords);
-        searchRequest.source(searchSourceBuilder);
-        searchRequest.scroll(TimeValue.timeValueMinutes(1L));
-
         SearchResponse searchResponse;
         if (StringUtils.isNotBlank(scrollId)) {
             SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
             scrollRequest.scroll(TimeValue.timeValueSeconds(30));
             searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
         } else {
+            SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.fetchSource(includeFields, excludeFields);
+//        searchSourceBuilder.query(matchQuery("CC", "India"));
+            searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+            searchSourceBuilder.size(limitRecords);
+            searchRequest.source(searchSourceBuilder);
+            searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+
             searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
         }
 
