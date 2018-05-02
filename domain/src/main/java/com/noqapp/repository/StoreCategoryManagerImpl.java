@@ -58,20 +58,20 @@ public class StoreCategoryManagerImpl implements StoreCategoryManager {
     @Override
     public List<StoreCategoryEntity> findAll(String storeId) {
         return mongoTemplate.find(
-                query(where("BZ").is(storeId)).with(new Sort(ASC, "CN")),
+                query(where("BS").is(storeId)).with(new Sort(ASC, "CN")),
                 StoreCategoryEntity.class,
                 TABLE);
     }
 
     @Override
     public long countOfCategory(String storeId) {
-        return mongoTemplate.count(Query.query(where("BZ").is(storeId)), StoreCategoryEntity.class, TABLE);
+        return mongoTemplate.count(Query.query(where("BS").is(storeId)), StoreCategoryEntity.class, TABLE);
     }
 
     @Override
     public boolean existCategoryName(String storeId, String categoryName) {
         return mongoTemplate.exists(
-                Query.query(where("BZ").is(storeId).and("CN").regex("^" + categoryName + "$", "i")),
+                Query.query(where("BS").is(storeId).and("CN").regex("^" + categoryName + "$", "i")),
                 StoreCategoryEntity.class,
                 TABLE
         );

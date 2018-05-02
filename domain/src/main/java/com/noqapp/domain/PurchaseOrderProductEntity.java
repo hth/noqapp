@@ -18,9 +18,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document(collection = "PURCHASE_ORDER_PRODUCT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "por_qid_bz_idx", def = "{'QID' : 1, 'BZ' : 1}", unique = false),
+        @CompoundIndex(name = "por_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
         @CompoundIndex(name = "por_bn_idx", def = "{'BN' : 1}", unique = false),
-        @CompoundIndex(name = "por_cqr_idx", def = "{'CQR' : 1}", unique = false),
+        @CompoundIndex(name = "por_qr_idx", def = "{'QR' : 1}", unique = false),
         @CompoundIndex(name = "por_po_idx", def = "{'PO' : 1}", unique = false),
 })
 public class PurchaseOrderProductEntity extends BaseEntity {
@@ -46,13 +46,13 @@ public class PurchaseOrderProductEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("BZ")
+    @Field("BS")
     private String bizStoreId;
 
     @Field("BN")
     private String bizNameId;
 
-    @Field("CQR")
+    @Field("QR")
     private String codeQR;
 
     @Field ("BT")

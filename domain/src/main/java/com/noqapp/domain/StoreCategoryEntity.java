@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document(collection = "STORE_CATEGORY")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "store_category_idx", def = "{'BN': -1, 'BZ': -1}", unique = false),
-        @CompoundIndex(name = "store_category_name_idx", def = "{'BN': -1, 'BZ': -1, 'CN' : -1}", unique = true),
+        @CompoundIndex(name = "store_category_idx", def = "{'BN': -1, 'BS': -1}", unique = false),
+        @CompoundIndex(name = "store_category_name_idx", def = "{'BN': -1, 'BS': -1, 'CN' : -1}", unique = true),
 })
 public class StoreCategoryEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(BizCategoryEntity.class);
@@ -32,7 +32,7 @@ public class StoreCategoryEntity extends BaseEntity {
     private String bizNameId;
 
     @NotNull
-    @Field("BZ")
+    @Field("BS")
     private String bizStoreId;
 
     @NotNull

@@ -23,11 +23,11 @@ import java.math.MathContext;
 })
 @Document(collection = "STORE_PRODUCT")
 @CompoundIndexes({
-        @CompoundIndex(name = "store_product_idx", def = "{'BZ': 1}", unique = false)
+        @CompoundIndex(name = "store_product_idx", def = "{'BS': 1}", unique = false)
 })
 public class StoreProductEntity extends BaseEntity {
 
-    @Field("BZ")
+    @Field("BS")
     private String bizStoreId;
 
     @Field("PN")
