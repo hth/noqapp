@@ -6,6 +6,7 @@ import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
@@ -37,7 +38,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -75,14 +75,10 @@ public class BizStoreElasticService {
     private StoreHourManager storeHourManager;
     private ApiHealthService apiHealthService;
 
-    private int limitRecords;
     private ObjectMapper objectMapper;
 
     @Autowired
     public BizStoreElasticService(
-            @Value("${limitRecords:5}")
-            int limitRecords,
-
             BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
             ElasticAdministrationService elasticAdministrationService,
             ElasticsearchClientConfiguration elasticsearchClientConfiguration,
@@ -93,7 +89,6 @@ public class BizStoreElasticService {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        this.limitRecords = limitRecords;
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
         this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
@@ -164,7 +159,7 @@ public class BizStoreElasticService {
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName, limitRecords);
+        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.TEN.getLimit());
     }
 
     public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter) {
@@ -200,7 +195,7 @@ public class BizStoreElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
                 .setFrom(0)
-                .setSize(limitRecords)
+                .setSize(PaginationEnum.TEN.getLimit())
                 .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -268,7 +263,7 @@ public class BizStoreElasticService {
             searchSourceBuilder.fetchSource(includeFields, excludeFields);
 //        searchSourceBuilder.query(matchQuery("CC", "India"));
             searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-            searchSourceBuilder.size(limitRecords);
+            searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
             searchRequest.source(searchSourceBuilder);
             searchRequest.scroll(TimeValue.timeValueMinutes(1L));
 

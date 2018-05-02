@@ -6,11 +6,12 @@ package com.noqapp.domain.types;
  */
 public enum PurchaseOrderStateEnum {
     IN("IN", "Initial"),
+    PC("PC", "Price Changed"),
     VB("VB", "Valid Before Purchase"),
     IB("IB", "Invalid Before Purchase"),
     PO("PO", "Placed Order"),
     FO("FO", "Failed Order"),
-    NM("NM", "Notify Merchant"),
+    NM("NM", "Notified Merchant"),
     OP("OP", "Order being Processed"),
     PR("PR", "Processed"),
     OW("OW", "On the Way"),
