@@ -22,11 +22,11 @@ import java.time.DayOfWeek;
 })
 @Document (collection = "STORE_HOUR")
 @CompoundIndexes ({
-        @CompoundIndex (name = "store_hour_idx", def = "{'BZ': 1, 'DW': 1}", unique = true)
+        @CompoundIndex (name = "store_hour_idx", def = "{'BS': 1, 'DW': 1}", unique = true)
 })
 public class StoreHourEntity extends BaseEntity {
 
-    @Field ("BZ")
+    @Field ("BS")
     private String bizStoreId;
 
     @Field ("DW")

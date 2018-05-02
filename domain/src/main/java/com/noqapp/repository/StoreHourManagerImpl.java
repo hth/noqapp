@@ -68,7 +68,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public void removeAll(String bizStoreId) {
         mongoTemplate.remove(
-                query(where("BZ").is(bizStoreId)),
+                query(where("BS").is(bizStoreId)),
                 StoreHourEntity.class,
                 TABLE);
     }
@@ -81,7 +81,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public StoreHourEntity findOne(String bizStoreId, int dayOfWeek) {
         return mongoTemplate.findOne(
-                query(where("BZ").is(bizStoreId).and("DW").is(dayOfWeek)),
+                query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek)),
                 StoreHourEntity.class,
                 TABLE
         );
@@ -90,7 +90,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public List<StoreHourEntity> findAll(String bizStoreId) {
         return mongoTemplate.find(
-                query(where("BZ").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
+                query(where("BS").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
                 StoreHourEntity.class,
                 TABLE
         );
@@ -127,7 +127,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 dayClosed,
                 delayedInMinutes);
         return mongoTemplate.findAndModify(
-                query(where("BZ").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
+                query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
                 entityUpdate(update("TF", tokenAvailableFrom)
                         .set("SH", startHour)
                         .set("TE", tokenNotAvailableFrom)

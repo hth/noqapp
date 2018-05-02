@@ -59,18 +59,18 @@ public class StoreProductManagerImpl implements StoreProductManager {
 
     @Override
     public List<StoreProductEntity> findAll(String storeId) {
-        return mongoTemplate.find(Query.query(where("BZ").is(storeId)).with(new Sort(ASC, "PN")), StoreProductEntity.class, TABLE);
+        return mongoTemplate.find(Query.query(where("BS").is(storeId)).with(new Sort(ASC, "PN")), StoreProductEntity.class, TABLE);
     }
 
     @Override
     public long countOfProduct(String storeId) {
-        return mongoTemplate.count(Query.query(where("BZ").is(storeId)), StoreProductEntity.class, TABLE);
+        return mongoTemplate.count(Query.query(where("BS").is(storeId)), StoreProductEntity.class, TABLE);
     }
 
     @Override
     public boolean existProductName(String storeId, String productName) {
         return mongoTemplate.exists(
-                Query.query(where("BZ").is(storeId).and("PN").regex("^" + productName + "$", "i")),
+                Query.query(where("BS").is(storeId).and("PN").regex("^" + productName + "$", "i")),
                 StoreProductEntity.class,
                 TABLE
         );
@@ -79,7 +79,7 @@ public class StoreProductManagerImpl implements StoreProductManager {
     @Override
     public long countCategoryUse(String storeId, String storeCategoryId) {
         return mongoTemplate.count(
-                query(where("BZ").is(storeId).and("SC").is(storeCategoryId)),
+                query(where("BS").is(storeId).and("SC").is(storeCategoryId)),
                 StoreProductEntity.class,
                 TABLE
         );

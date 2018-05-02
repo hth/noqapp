@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,22 +26,22 @@ import java.util.List;
 })
 @Document(collection = "PURCHASE_ORDER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "po_qid_bz_idx", def = "{'QID' : 1, 'BZ' : 1}", unique = false),
+        @CompoundIndex(name = "po_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
         @CompoundIndex(name = "po_bn_idx", def = "{'BN' : 1}", unique = false),
-        @CompoundIndex(name = "po_cqr_idx", def = "{'CQR' : 1}", unique = false),
+        @CompoundIndex(name = "po_qr_idx", def = "{'QR' : 1}", unique = false),
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
     @Field("QID")
     private String queueUserId;
 
-    @Field("BZ")
+    @Field("BS")
     private String bizStoreId;
 
     @Field("BN")
     private String bizNameId;
 
-    @Field("CQR")
+    @Field("QR")
     private String codeQR;
 
     @Field("CN")
