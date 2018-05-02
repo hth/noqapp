@@ -139,6 +139,10 @@ public class TokenQueueService {
         return tokenQueueManager.findByCodeQR(codeQR);
     }
 
+    public TokenQueueEntity getNextToken(String codeQR) {
+        return tokenQueueManager.getNextToken(codeQR);
+    }
+
     public void deleteHard(TokenQueueEntity tokenQueue) {
         tokenQueueManager.deleteHard(tokenQueue);
     }
@@ -180,47 +184,15 @@ public class TokenQueueService {
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
-                TokenQueueEntity tokenQueue = tokenQueueManager.getNextToken(codeQR);
+                TokenQueueEntity tokenQueue = getNextToken(codeQR);
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
-                    if (0 != averageServiceTime) {
-                        LocalTime now = LocalTime.now(zoneId);
-                        LOG.info("Time now={}", now);
-                        LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
-                        LOG.info("Time start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
-
-                        Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
-                        LOG.info("duration in minutes={}", duration.toMinutes());
-                        long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
-                        LOG.info("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
-
-                        if (duration.isNegative()) {
-                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
-                                    LocalDateTime.now()
-                                            .plusMinutes(serviceInMinutes)
-                                            .plusMinutes(storeHour.getDelayedInMinutes())));
-                        } else {
-                            LOG.info("Now {}", LocalDateTime.now());
-                            LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
-                            LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
-                            LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
-                            LOG.info("convertToDateTime {}", DateUtil.convertToDateTime(
-                                    LocalDateTime.now()
-                                            .plusMinutes(serviceInMinutes)
-                                            .plusMinutes(duration.toMinutes())
-                                            .plusMinutes(storeHour.getDelayedInMinutes())));
-
-                            queue.setExpectedServiceBegin(DateUtil.convertToDateTime(
-                                    LocalDateTime.now()
-                                            .plusMinutes(serviceInMinutes)
-                                            .plusMinutes(duration.toMinutes())
-                                            .plusMinutes(storeHour.getDelayedInMinutes())));
-                        }
-                    }
+                    Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                    queue.setExpectedServiceBegin(expectedServiceBegin);
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -252,6 +224,50 @@ public class TokenQueueService {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
+    }
+
+    Date computeExpectedServiceBeginTime(
+            long averageServiceTime,
+            ZoneId zoneId,
+            StoreHourEntity storeHour,
+            TokenQueueEntity tokenQueue
+    ) {
+        Date expectedServiceBegin = null;
+        if (0 != averageServiceTime) {
+            LocalTime now = LocalTime.now(zoneId);
+            LOG.info("Time now={}", now);
+            LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
+            LOG.info("Time start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
+
+            Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
+            LOG.info("duration in minutes={}", duration.toMinutes());
+            long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
+            LOG.info("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
+
+            if (duration.isNegative()) {
+                expectedServiceBegin = DateUtil.convertToDateTime(
+                        LocalDateTime.now()
+                                .plusMinutes(serviceInMinutes)
+                                .plusMinutes(storeHour.getDelayedInMinutes()));
+            } else {
+                LOG.info("Now {}", LocalDateTime.now());
+                LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
+                LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
+                LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
+                LOG.info("convertToDateTime {}", DateUtil.convertToDateTime(
+                        LocalDateTime.now()
+                                .plusMinutes(serviceInMinutes)
+                                .plusMinutes(duration.toMinutes())
+                                .plusMinutes(storeHour.getDelayedInMinutes())));
+
+                expectedServiceBegin = DateUtil.convertToDateTime(
+                        LocalDateTime.now()
+                                .plusMinutes(serviceInMinutes)
+                                .plusMinutes(duration.toMinutes())
+                                .plusMinutes(storeHour.getDelayedInMinutes()));
+            }
+        }
+        return expectedServiceBegin;
     }
 
     private void doActionBasedOnQueueStatus(String codeQR, TokenQueueEntity tokenQueue) {
