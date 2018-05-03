@@ -98,6 +98,7 @@ public class PurchaseOrderService {
     }
 
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
+    @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizService.getByStoreId(jsonPurchaseOrder.getBizStoreId());
         JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), did, jsonPurchaseOrder.getQueueUserId(), bizStore.getAverageServiceTime(), tokenService);
@@ -146,10 +147,15 @@ public class PurchaseOrderService {
             purchaseProductOrderManager.save(purchaseOrderProduct);
         }
 
+        purchaseOrder
+                .addOrderState(PurchaseOrderStateEnum.VB)
+                .addOrderState(PurchaseOrderStateEnum.PO);
+        purchaseOrderManager.save(purchaseOrder);
+
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
                 .setToken(purchaseOrder.getTokenNumber())
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
                 .setTransactionId(UUID.randomUUID().toString())
-                .setPurchaseOrderState(PurchaseOrderStateEnum.PO);
+                .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
     }
 }
