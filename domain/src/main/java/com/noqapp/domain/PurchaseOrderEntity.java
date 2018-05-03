@@ -30,6 +30,7 @@ import java.util.List;
         @CompoundIndex(name = "po_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
         @CompoundIndex(name = "po_bn_idx", def = "{'BN' : 1}", unique = false),
         @CompoundIndex(name = "po_qr_idx", def = "{'QR' : 1}", unique = false),
+        @CompoundIndex(name = "po_ti_idx", def = "{'TI' : 1}", unique = true),
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
@@ -110,6 +111,9 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Field ("VS")
     private boolean clientVisitedThisStore;
+
+    @Field ("TI")
+    private String transactionId;
 
     @SuppressWarnings("unused")
     private PurchaseOrderEntity() {
@@ -325,6 +329,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public PurchaseOrderEntity setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 }

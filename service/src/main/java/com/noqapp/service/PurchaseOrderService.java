@@ -128,7 +128,8 @@ public class PurchaseOrderService {
                 .setBusinessType(bizStore.getBusinessType())
                 .setTokenNumber(jsonToken.getToken())
                 .setExpectedServiceBegin(expectedServiceBegin)
-                .setTokenService(tokenService);
+                .setTokenService(tokenService)
+                .setTransactionId(UUID.randomUUID().toString());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
         purchaseOrderManager.save(purchaseOrder);
 
@@ -157,7 +158,7 @@ public class PurchaseOrderService {
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
                 .setToken(purchaseOrder.getTokenNumber())
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
-                .setTransactionId(UUID.randomUUID().toString())
+                .setTransactionId(purchaseOrder.getTransactionId())
                 .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
     }
 }
