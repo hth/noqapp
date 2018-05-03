@@ -105,7 +105,9 @@ public class PurchaseOrderService {
 
         Date expectedServiceBegin = null;
         try {
-            expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+            if (jsonToken.getExpectedServiceBegin() != null) {
+                expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+            }
         } catch (ParseException e) {
             LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
         }
