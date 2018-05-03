@@ -28,7 +28,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 
@@ -129,7 +128,7 @@ public class PurchaseOrderService {
                 .setTokenNumber(jsonToken.getToken())
                 .setExpectedServiceBegin(expectedServiceBegin)
                 .setTokenService(tokenService)
-                .setTransactionId(UUID.randomUUID().toString());
+                .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
         purchaseOrderManager.save(purchaseOrder);
 
