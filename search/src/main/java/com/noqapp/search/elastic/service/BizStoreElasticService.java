@@ -45,8 +45,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
@@ -312,5 +314,21 @@ public class BizStoreElasticService {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
         }
+    }
+
+    public BizStoreElasticList nearMeSearch(String geoHash) {
+        BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, null);
+        Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
+        int hits = 0;
+        while (bizStoreElasticSet.size() < 10 && hits < 3) {
+            LOG.info("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId());
+            BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(geoHash, bizStoreElastics.getScrollId());
+            bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
+            bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
+
+            hits ++;
+        }
+        bizStoreElastics.setBizStoreElastics(bizStoreElasticSet);
+        return bizStoreElastics;
     }
 }

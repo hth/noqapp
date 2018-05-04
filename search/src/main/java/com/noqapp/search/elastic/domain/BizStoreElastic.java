@@ -487,7 +487,9 @@ public class BizStoreElastic extends AbstractDomain {
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
-                .setDisplayImage(bizStore.getDisplayImage());
+                .setDisplayImage(bizStore.getDisplayImage())
+                //TODO check if the images are getting populated.
+                .setBizServiceImages(bizStore.getStoreServiceImages());
     }
 
     @Override
