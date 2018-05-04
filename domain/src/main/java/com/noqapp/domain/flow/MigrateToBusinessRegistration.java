@@ -1,5 +1,6 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -22,12 +23,14 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
         getRegisterBusiness().setBusinessUser(businessUser);
         getRegisterUser().setQueueUserId(businessUser.getQueueUserId());
         if (null != businessUser.getBizName()) {
-            getRegisterBusiness().setBizId(businessUser.getBizName().getId());
-            getRegisterBusiness().setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
-            getRegisterBusiness().setAddress(new ScrubbedInput(businessUser.getBizName().getAddress()));
-            getRegisterBusiness().setPhone(new ScrubbedInput(businessUser.getBizName().getPhone()));
-            getRegisterBusiness().setBusinessTypes(businessUser.getBizName().getBusinessTypes());
-            getRegisterBusiness().setInviteeCode(businessUser.getBizName().getInviteeCode());
+            BizNameEntity bizName = businessUser.getBizName();
+
+            getRegisterBusiness().setBizId(bizName.getId());
+            getRegisterBusiness().setName(new ScrubbedInput(bizName.getBusinessName()));
+            getRegisterBusiness().setAddress(new ScrubbedInput(bizName.getAddress()));
+            getRegisterBusiness().setPhone(new ScrubbedInput(bizName.getPhone()));
+            getRegisterBusiness().setBusinessTypes(bizName.getBusinessTypes());
+            getRegisterBusiness().setInviteeCode(bizName.getInviteeCode());
         }
 
         if (null != bizStore) {
