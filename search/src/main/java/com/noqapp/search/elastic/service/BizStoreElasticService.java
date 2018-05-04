@@ -322,7 +322,7 @@ public class BizStoreElasticService {
         int hits = 0;
         while (bizStoreElasticSet.size() < 10 && hits < 3) {
             LOG.info("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId());
-            BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(geoHash, bizStoreElastics.getScrollId());
+            BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
             bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
 
