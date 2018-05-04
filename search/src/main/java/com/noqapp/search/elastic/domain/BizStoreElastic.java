@@ -411,7 +411,6 @@ public class BizStoreElastic extends AbstractDomain {
         if (StringUtils.isBlank(displayImage)) {
             switch (businessType) {
                 case DO:
-                case HO:
                     this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                     break;
                 case BK:
@@ -500,7 +499,6 @@ public class BizStoreElastic extends AbstractDomain {
 
         switch (businessType) {
             case DO:
-            case HO:
                 return Objects.equals(bizNameId, that.bizNameId);
             case BK:
                 return Objects.equals(bizNameId, that.bizNameId) &&
@@ -516,7 +514,6 @@ public class BizStoreElastic extends AbstractDomain {
     public int hashCode() {
         switch (businessType) {
             case DO:
-            case HO:
                 return Objects.hash(bizNameId);
             case BK:
                 return Objects.hash(bizNameId, placeId);

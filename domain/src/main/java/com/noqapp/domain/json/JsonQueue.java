@@ -461,7 +461,6 @@ public class JsonQueue extends AbstractDomain {
         if (StringUtils.isBlank(displayImage)) {
             switch (businessType) {
                 case DO:
-                case HO:
                     this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
                     break;
                 case BK:
