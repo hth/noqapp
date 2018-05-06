@@ -214,6 +214,16 @@ public class BusinessFlowValidator {
             }
         }
 
+        if (StringUtils.isBlank(registerBusiness.getBusinessServiceImage())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.businessServiceImage")
+                            .defaultText("Business Image cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
         if (mode.equalsIgnoreCase("edit") && registerBusiness.getBusinessTypes() == null) {
             BizNameEntity bizName = bizService.getByBizNameId(registerBusiness.getBizId());
             registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
@@ -388,6 +398,16 @@ public class BusinessFlowValidator {
                             .error()
                             .source(source + "phoneStore")
                             .defaultText("Store Phone cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(registerBusiness.getBusinessServiceImageStore())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source(source + "businessServiceImageStore")
+                            .defaultText("Store Image cannot be empty")
                             .build());
             status = "failure";
         }

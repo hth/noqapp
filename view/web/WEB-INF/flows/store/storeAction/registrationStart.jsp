@@ -203,7 +203,7 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Business Image</form:label>
+                                            <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Store Image</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
