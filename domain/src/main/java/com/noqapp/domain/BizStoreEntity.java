@@ -554,6 +554,11 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
+    public BizStoreEntity addStoreServiceImage(String storeServiceImage) {
+        this.storeServiceImages.add(storeServiceImage);
+        return this;
+    }
+
     public Set<String> getStoreInteriorImages() {
         return storeInteriorImages;
     }

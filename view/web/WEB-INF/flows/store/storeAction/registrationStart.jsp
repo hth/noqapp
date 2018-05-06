@@ -191,7 +191,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="businessAddressAsStore" cssErrorClass="lb_error">Same As Business</form:label>
@@ -199,6 +198,15 @@
                                         <div class="col-fields">
                                             <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
                                             <span style="display:block; font-size:14px;">(Store Address, Phone is same as Business)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Business Image</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

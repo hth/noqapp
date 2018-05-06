@@ -37,8 +37,8 @@ public class RegisterBusiness implements Serializable {
     private String town;
     private String countryShortName;
     private String phone;
-    private String timeZone;
     private String businessServiceImage;
+    private String timeZone;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -52,6 +52,7 @@ public class RegisterBusiness implements Serializable {
     private String townStore;
     private String countryShortNameStore;
     private String phoneStore;
+    private String businessServiceImageStore;
     private String timeZoneStore;
     private AddressOriginEnum addressStoreOrigin;
     private String bizCategoryId;
@@ -178,14 +179,6 @@ public class RegisterBusiness implements Serializable {
         this.phone = phone.getText();
     }
 
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(ScrubbedInput timeZone) {
-        this.timeZone = timeZone.getText();
-    }
-
     public String getBusinessServiceImage() {
         return businessServiceImage;
     }
@@ -193,6 +186,14 @@ public class RegisterBusiness implements Serializable {
     public RegisterBusiness setBusinessServiceImage(String businessServiceImage) {
         this.businessServiceImage = businessServiceImage;
         return this;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(ScrubbedInput timeZone) {
+        this.timeZone = timeZone.getText();
     }
 
     public String getInviteeCode() {
@@ -323,6 +324,15 @@ public class RegisterBusiness implements Serializable {
         }
 
         return null;
+    }
+
+    public String getBusinessServiceImageStore() {
+        return businessServiceImageStore;
+    }
+
+    public RegisterBusiness setBusinessServiceImageStore(String businessServiceImageStore) {
+        this.businessServiceImageStore = businessServiceImageStore;
+        return this;
     }
 
     public String getCountryShortNameStore() {
@@ -462,6 +472,7 @@ public class RegisterBusiness implements Serializable {
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
+        this.businessServiceImageStore = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
     }
 
     @Transient
