@@ -28,6 +28,8 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setBizId(bizName.getId());
             getRegisterBusiness().setName(new ScrubbedInput(bizName.getBusinessName()));
             getRegisterBusiness().setAddress(new ScrubbedInput(bizName.getAddress()));
+            getRegisterBusiness().setArea(new ScrubbedInput(bizName.getArea()));
+            getRegisterBusiness().setTown(new ScrubbedInput(bizName.getTown()));
             getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
             getRegisterBusiness().setPhone(new ScrubbedInput(bizName.getPhone()));
             getRegisterBusiness().setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
@@ -42,6 +44,8 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setBizStoreId(bizStore.getId());
             getRegisterBusiness().setDisplayName(new ScrubbedInput(bizStore.getDisplayName()));
             getRegisterBusiness().setAddressStore(new ScrubbedInput(bizStore.getAddress()));
+            getRegisterBusiness().setAreaStore(new ScrubbedInput(bizStore.getArea()));
+            getRegisterBusiness().setTownStore(new ScrubbedInput(bizStore.getTown()));
             getRegisterBusiness().setPhoneStore(new ScrubbedInput(bizStore.getPhone()));
             getRegisterBusiness().setRemoteJoin(bizStore.isRemoteJoin());
             getRegisterBusiness().setAllowLoggedInUser(bizStore.isAllowLoggedInUser());

@@ -76,7 +76,7 @@
                                                 <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="true">
+                                                <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" multiple="false" disabled="true">
                                                     <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
                                                     <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
                                                 </form:select>
@@ -89,7 +89,7 @@
                                                 <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="true">
+                                                <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" multiple="false" disabled="true">
                                                     <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
                                                     <form:options items="${registerBusiness.categories}" />
                                                 </form:select>
@@ -102,7 +102,25 @@
                                                 <form:label path="addressStore" cssErrorClass="lb_error">Store Address</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                                <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="areaStore" cssErrorClass="lb_error">Store Town</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="areaStore" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="townStore" cssErrorClass="lb_error">Store City</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="townStore" cssClass="form-field-admin" readonly="true"/>
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>

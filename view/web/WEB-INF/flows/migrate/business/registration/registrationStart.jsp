@@ -66,11 +66,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                         <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -115,6 +115,32 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <c:if test="${message.source eq 'registerBusiness.area'}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="area" cssErrorClass="lb_error">Business Town</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="area" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Santacruz" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
+                                    <c:if test="${message.source eq 'registerBusiness.town'}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="town" cssErrorClass="lb_error">Business City</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Mumbai" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
+                                    </c:forEach>
+
                                     <c:if test="${!empty register.registerBusiness.foundAddresses}">
                                     <li>
                                         <div class="col-lable3">
@@ -210,7 +236,7 @@
                                         <c:when test="${!empty register.registerBusiness.businessUser}">
                                             <div class="button-btn">
                                                 <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                                <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                         </c:when>
                                         <c:otherwise>

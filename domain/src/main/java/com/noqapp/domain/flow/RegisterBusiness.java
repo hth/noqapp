@@ -33,6 +33,8 @@ public class RegisterBusiness implements Serializable {
     private String bizId;
     private String name;
     private String address;
+    private String area;
+    private String town;
     private String countryShortName;
     private String phone;
     private String timeZone;
@@ -46,6 +48,8 @@ public class RegisterBusiness implements Serializable {
     private String displayName;
     private BusinessTypeEnum storeBusinessType;
     private String addressStore;
+    private String areaStore;
+    private String townStore;
     private String countryShortNameStore;
     private String phoneStore;
     private String timeZoneStore;
@@ -119,6 +123,24 @@ public class RegisterBusiness implements Serializable {
     public void setAddress(ScrubbedInput address) {
         /* Java 8 regex engine supports \R which represents any line separator. */
         this.address = address.getText().replaceAll("\\R", " ");
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public RegisterBusiness setArea(ScrubbedInput area) {
+        this.area = area.getText();
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public RegisterBusiness setTown(ScrubbedInput town) {
+        this.town = town.getText();
+        return this;
     }
 
     public String getCountryShortName() {
@@ -247,6 +269,24 @@ public class RegisterBusiness implements Serializable {
     public void setAddressStore(ScrubbedInput addressStore) {
         /* Java 8 regex engine supports \R which represents any line separator. */
         this.addressStore = addressStore.getText().replaceAll("\\R", " ");
+    }
+
+    public String getAreaStore() {
+        return areaStore;
+    }
+
+    public RegisterBusiness setAreaStore(ScrubbedInput areaStore) {
+        this.areaStore = areaStore.getText();
+        return this;
+    }
+
+    public String getTownStore() {
+        return townStore;
+    }
+
+    public RegisterBusiness setTownStore(ScrubbedInput townStore) {
+        this.townStore = townStore.getText();
+        return this;
     }
 
     public boolean isBusinessAddressAsStore() {

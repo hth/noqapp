@@ -93,6 +93,24 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
+                                                <form:label path="registerBusiness.area" cssErrorClass="lb_error">Business Town</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="registerBusiness.area" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="registerBusiness.town" cssErrorClass="lb_error">Business City</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="registerBusiness.town" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
                                                 <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
                                             </div>
                                             <div class="col-fields">
@@ -113,32 +131,22 @@
                                 </div>
 
                                 <div class="btn-hours">
-                                    <c:choose>
-                                        <c:when test="${!empty register.registerBusiness.businessUser}">
-                                            <div class="button-btn">
-                                                <button name="_eventId_update" class="ladda-button next-btn" style="width:32%; float: left">Update</button>
-                                                <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="button-btn">
-                                                <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:48%; float: left">Revise</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                        <%--<c:if test="${register.registerUser.emailValidated}">--%>
-                                        <%--<div class="first-btn">--%>
-                                        <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--</c:if>--%>
-                                        <%--<div class="center-btn">--%>
-                                        <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="last-btn">--%>
-                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                        <%--</div>--%>
+                                    <div class="button-btn">
+                                        <button name="_eventId_update" class="ladda-button next-btn" style="width:32%; float: left">Update</button>
+                                        <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
+                                        <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
+                                    </div>
+                                    <%--<c:if test="${register.registerUser.emailValidated}">--%>
+                                    <%--<div class="first-btn">--%>
+                                    <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
+                                    <%--</div>--%>
+                                    <%--</c:if>--%>
+                                    <%--<div class="center-btn">--%>
+                                    <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
+                                    <%--</div>--%>
+                                    <%--<div class="last-btn">--%>
+                                    <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                    <%--</div>--%>
                                     <div class="clearFix"></div>
                                 </div>
                             </div>

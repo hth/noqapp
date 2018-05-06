@@ -38,8 +38,9 @@
                       expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()"/>
         </on-entry>
         <transition on="submit" to="validateBusinessDetails"/>
-        <transition on="edit" to="editValidateBusinessDetails"/>
         <transition on="cancel" to="logout"/>
+        <transition on="edit" to="editValidateBusinessDetails"/>
+        <transition on="editCancel" to="registrationEditComplete"/>
     </view-state>
 
     <action-state id="validateBusinessDetails">
@@ -65,7 +66,7 @@
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="update" to="updateRegistrationInformation" history="invalidate"/>
         <transition on="revise" to="registrationStart"/>
-        <transition on="cancel" to="logout"/>
+        <transition on="editCancel" to="registrationEditComplete"/>
     </view-state>
 
     <action-state id="completeRegistrationInformation">
