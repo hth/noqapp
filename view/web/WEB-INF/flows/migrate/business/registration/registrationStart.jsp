@@ -179,7 +179,7 @@
                                             <form:label path="businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="businessServiceImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <form:input path="businessServiceImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Show the best image of your business"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
