@@ -206,7 +206,8 @@
                                             <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Store Image</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Show the best image of your store"/>
+                                            <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Show the best image of your store"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -215,7 +216,8 @@
                                             <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="famousFor" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Speciality you would like everyone to know" />
+                                            <form:input path="famousFor" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Speciality you would like everyone to know" />
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
