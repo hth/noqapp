@@ -436,7 +436,7 @@ public class RegisterBusiness implements Serializable {
         registerBusiness.setInviteeCode(bizName.getInviteeCode());
         registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
         registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
-        registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().get(0));
+        registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
         registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
         return registerBusiness;
     }

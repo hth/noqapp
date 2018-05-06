@@ -18,8 +18,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -129,7 +130,7 @@ public class BizNameEntity extends BaseEntity {
     private BillingStatusEnum billingStatus;
 
     @Field ("BI")
-    private List<String> businessServiceImages = new LinkedList<>();
+    private Set<String> businessServiceImages = new LinkedHashSet<>();
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -439,11 +440,11 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getBusinessServiceImages() {
+    public Set<String> getBusinessServiceImages() {
         return businessServiceImages;
     }
 
-    public BizNameEntity setBusinessServiceImages(List<String> businessServiceImages) {
+    public BizNameEntity setBusinessServiceImages(Set<String> businessServiceImages) {
         this.businessServiceImages = businessServiceImages;
         return this;
     }

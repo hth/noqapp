@@ -34,7 +34,7 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setInviteeCode(bizName.getInviteeCode());
             getRegisterBusiness().setAddressOrigin(bizName.getAddressOrigin());
             getRegisterBusiness().setFoundAddressPlaceId(bizName.getPlaceId());
-            getRegisterBusiness().setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().get(0));
+            getRegisterBusiness().setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
             getRegisterBusiness().setBusinessTypes(bizName.getBusinessTypes());
         }
 

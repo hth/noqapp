@@ -18,9 +18,10 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
@@ -147,12 +148,11 @@ public class BizStoreElastic extends AbstractDomain {
 
     @Transient
     @JsonProperty("BI")
-    private List<String> bizServiceImages = new LinkedList<String>() {{
+    private Set<String> bizServiceImages = new LinkedHashSet<String>() {{
         add("https://noqapp.com/imgs/40x40/a.jpeg");
         add("https://noqapp.com/imgs/40x40/b.jpeg");
         add("https://noqapp.com/imgs/40x40/e.jpeg");
     }};
-
 
     public String getId() {
         return id;
@@ -446,11 +446,11 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public List<String> getBizServiceImages() {
+    public Set<String> getBizServiceImages() {
         return bizServiceImages;
     }
 
-    public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
+    public BizStoreElastic setBizServiceImages(Set<String> bizServiceImages) {
         //TODO(hth) remove temp condition
         if (!bizServiceImages.isEmpty()) {
             this.bizServiceImages = bizServiceImages;
