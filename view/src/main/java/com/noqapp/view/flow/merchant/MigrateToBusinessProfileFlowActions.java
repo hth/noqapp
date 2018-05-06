@@ -1,18 +1,8 @@
 package com.noqapp.view.flow.merchant;
 
-import static java.util.concurrent.Executors.newCachedThreadPool;
-
-import com.noqapp.search.elastic.service.BizStoreElasticService;
-import org.apache.commons.lang3.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-
+import com.noqapp.common.utils.HashText;
+import com.noqapp.common.utils.RandomString;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
@@ -20,6 +10,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -27,12 +18,18 @@ import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.common.utils.HashText;
-import com.noqapp.common.utils.RandomString;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutorService;
+
+import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender
@@ -97,14 +94,17 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         return registerUser;
     }
 
+    @SuppressWarnings ("unused")
     public BusinessUserRegistrationStatusEnum registrationStatus(RegisterUser registerUser) {
         return businessUserService.loadBusinessUser().getBusinessUserRegistrationStatus();
     }
 
-    public boolean isRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+    @SuppressWarnings ("unused")
+    public String isRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
         return isBusinessUserRegistrationComplete(businessUserRegistrationStatus);
     }
 
+    @SuppressWarnings ("unused")
     public BusinessUserRegistrationStatusEnum completeRegistrationInformation(RegisterUser registerUser) {
         try {
             QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

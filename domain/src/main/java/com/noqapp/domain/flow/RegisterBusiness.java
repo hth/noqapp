@@ -2,6 +2,7 @@ package com.noqapp.domain.flow;
 
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -35,6 +36,7 @@ public class RegisterBusiness implements Serializable {
     private String countryShortName;
     private String phone;
     private String timeZone;
+    private String businessServiceImage;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -160,6 +162,15 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone.getText();
+    }
+
+    public String getBusinessServiceImage() {
+        return businessServiceImage;
+    }
+
+    public RegisterBusiness setBusinessServiceImage(String businessServiceImage) {
+        this.businessServiceImage = businessServiceImage;
+        return this;
     }
 
     public String getInviteeCode() {
@@ -411,6 +422,23 @@ public class RegisterBusiness implements Serializable {
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
+    }
+
+    @Transient
+    public static RegisterBusiness populateWithBizName(BizNameEntity bizName) {
+        RegisterBusiness registerBusiness = new RegisterBusiness();
+        registerBusiness.setBizId(bizName.getId());
+        registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
+        registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));
+        registerBusiness.setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
+        registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName())));
+        registerBusiness.setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
+        registerBusiness.setInviteeCode(bizName.getInviteeCode());
+        registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
+        registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
+        registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().get(0));
+        registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
+        return registerBusiness;
     }
 
     /**

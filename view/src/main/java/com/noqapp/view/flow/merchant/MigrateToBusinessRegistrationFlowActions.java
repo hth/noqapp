@@ -1,6 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,8 +109,32 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     }
 
     @SuppressWarnings ("unused")
-    public boolean isRegistrationComplete(Register register) {
+    public String isRegistrationComplete(Register register) {
         return isBusinessUserRegistrationComplete(register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
+    }
+
+    @SuppressWarnings ("unused")
+    public Register populateBusiness(String bizId) {
+        if (StringUtils.isBlank(bizId)) {
+            return createBusinessRegistration();
+        } else {
+            return editBusiness(bizId);
+        }
+    }
+
+    @SuppressWarnings ("unused")
+    public Register editBusiness(String bizNameId) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String qid = queueUser.getQueueUserId();
+
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser || !businessUser.getBizName().getId().equalsIgnoreCase(bizNameId)) {
+            /* Should never reach here. */
+            LOG.error("Reached unexpected condition for user={}", queueUser.getQueueUserId());
+            throw new UnsupportedOperationException("Failed loading Business");
+        }
+
+        return MigrateToBusinessRegistration.newInstance(businessUser, null);
     }
 
     /**
@@ -166,6 +191,12 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                     register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
+    }
+
+    @SuppressWarnings ("unused")
+    public Register updateRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
+        registerBusinessDetails(register);
+        return register;
     }
 
     /**

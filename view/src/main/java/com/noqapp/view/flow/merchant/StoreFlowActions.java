@@ -1,10 +1,16 @@
 package com.noqapp.view.flow.merchant;
 
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.domain.BizNameEntity;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.flow.RegisterBusiness;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.ExternalService;
+import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,15 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.flow.RegisterBusiness;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.ExternalService;
-import com.noqapp.service.TokenQueueService;
-import com.noqapp.common.utils.ScrubbedInput;
 
 import java.util.List;
 
@@ -62,7 +59,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         }
         /* Above condition to make sure users with right roles and access gets access. */
 
-        RegisterBusiness registerBusiness = populateWithBizName(businessUser);
+        RegisterBusiness registerBusiness = RegisterBusiness.populateWithBizName(businessUser.getBizName());
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessTypes(businessUser.getBizName().getBusinessTypes());
@@ -96,20 +93,5 @@ public class StoreFlowActions extends RegistrationFlowActions {
         LOG.info("Delete storeId={}", bizStoreId);
         bizService.deleteStore(bizStoreId);
         bizStoreElasticService.delete(bizStoreId);
-    }
-
-    private RegisterBusiness populateWithBizName(BusinessUserEntity businessUser) {
-        RegisterBusiness registerBusiness = new RegisterBusiness();
-        BizNameEntity bizName = businessUser.getBizName();
-        registerBusiness.setBizId(businessUser.getBizName().getId());
-        registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
-        registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));
-        registerBusiness.setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
-        registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName())));
-        registerBusiness.setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
-        registerBusiness.setInviteeCode(bizName.getInviteeCode());
-        registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
-        registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
-        return registerBusiness;
     }
 }

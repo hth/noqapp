@@ -17,3 +17,6 @@ db.PURCHASE_ORDER.update({}, {$rename:{"CQR":"QR"}}, false, true);
 db.PURCHASE_ORDER_PRODUCT.update({}, {$rename:{"BZ":"BS"}}, false, true);
 db.PURCHASE_ORDER_PRODUCT.update({}, {$rename:{"CQR":"QR"}}, false, true);
 
+Make sure BusinessType in Token_QUEUE is not HO
+Change BusinessType in Business NAME from HO to DO
+

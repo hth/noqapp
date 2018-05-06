@@ -57,11 +57,12 @@ public class BusinessFlowValidator {
      * Validate business user profile and business.
      *
      * @param register
+     * @param mode           create or edit are the modes defined in flow xml
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateBusinessDetails(Register register, MessageContext messageContext) {
+    public String validateBusinessDetails(Register register, String mode, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         String status = LandingController.SUCCESS;
 
@@ -77,7 +78,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (null == registerBusiness.getBusinessTypes()) {
+        if (null == registerBusiness.getBusinessTypes() && mode.equalsIgnoreCase("create")) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -154,7 +155,7 @@ public class BusinessFlowValidator {
                             .defaultText("Business Phone cannot be empty")
                             .build());
             status = "failure";
-        } else {
+        } else if (mode.equalsIgnoreCase("create")) {
             LOG.info("Checking if business exists with phone={}", registerBusiness.getPhoneWithCountryCode());
             BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
             if (null != bizName) {
@@ -169,7 +170,7 @@ public class BusinessFlowValidator {
             }
         }
 
-        if (status.equalsIgnoreCase("success")) {
+        if (status.equalsIgnoreCase("success") && mode.equalsIgnoreCase("create")) {
             /* Ignore finding business when editing. */
             if (StringUtils.isBlank(registerBusiness.getBizId())) {
                 Set<BizStoreEntity> bizStores = bizService.bizSearch(
@@ -203,6 +204,7 @@ public class BusinessFlowValidator {
      * @param messageContext
      * @return
      */
+    @SuppressWarnings ("unused")
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 

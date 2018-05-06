@@ -272,13 +272,15 @@ class RegistrationFlowActions {
         }
     }
 
-    boolean isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+    String isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
         switch (businessUserRegistrationStatus) {
             case C:
-                return true;
+                return "complete";
             case I:
             case N:
-                return false;
+                return "in-complete";
+            case V:
+                return "edit";
             default:
                 LOG.error("Reached unsupported condition={}", businessUserRegistrationStatus);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUserRegistrationStatus);

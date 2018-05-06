@@ -30,6 +30,7 @@
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
+                        <a href="${pageContext.request.contextPath}/business/editBusiness.htm">Edit Business</a>
                         <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
