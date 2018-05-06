@@ -226,7 +226,8 @@ class RegistrationFlowActions {
                 .setRemoteJoin(registerBusiness.isRemoteJoin())
                 .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
                 .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
-                .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore());
+                .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore())
+                .setFamousFor(registerBusiness.getFamousFor());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);

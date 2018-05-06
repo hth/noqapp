@@ -144,6 +144,15 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
+                                                <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="famousFor" cssClass="form-field-admin" readonly="true"/>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
                                                 <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
                                             </div>
                                             <div class="col-fields">

@@ -210,6 +210,15 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="famousFor" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                 </ul>
 
                                 <div class="col-lable3"></div>

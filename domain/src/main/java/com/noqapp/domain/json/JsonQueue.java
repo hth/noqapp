@@ -11,7 +11,6 @@ import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,11 +139,8 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty ("bc")
     private String bizCategoryId;
 
-    @JsonProperty ("di")
-    private String displayImage;
-
     @JsonProperty("ff")
-    private String famousFor = "Chicken, Aloo Tikki";
+    private String famousFor;
 
     @JsonProperty ("dd")
     private int discount = 15;
@@ -153,7 +149,7 @@ public class JsonQueue extends AbstractDomain {
     private int minimumDeliveryOrder = 100;
 
     @JsonProperty ("si")
-    private List<String> storeServiceImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/40x40/a.jpeg"); add("https://noqapp.com/imgs/40x40/b.jpeg"); add("https://noqapp.com/imgs/40x40/e.jpeg");}};
+    private List<String> storeServiceImages = new LinkedList<>();
 
     @JsonProperty ("ii")
     private List<String> storeInteriorImages = new LinkedList<String>() {{add("https://noqapp.com/imgs/60x60/e.jpeg"); add("https://noqapp.com/imgs/60x60/c.png");}};
@@ -165,10 +161,10 @@ public class JsonQueue extends AbstractDomain {
     private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<DeliveryTypeEnum>() {{add(DeliveryTypeEnum.HD); add(DeliveryTypeEnum.TO);}};
 
     @JsonProperty ("am")
-    private List<AmenityEnum> amenities = new LinkedList<AmenityEnum>() {{add(AmenityEnum.FP); add(AmenityEnum.AC);}};
+    private List<AmenityEnum> amenities = new LinkedList<>();
 
     @JsonProperty ("fa")
-    private List<FacilityEnum> facilities = new LinkedList<FacilityEnum>() {{add(FacilityEnum.EM); add(FacilityEnum.LS); add(FacilityEnum.RA);}};
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     public JsonQueue() {
         //Required default constructor
@@ -453,37 +449,6 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
-        return this;
-    }
-
-    public String getDisplayImage() {
-        LOG.info("Business Type for display Image {}", businessType);
-        if (StringUtils.isBlank(displayImage)) {
-            switch (businessType) {
-                case DO:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
-                    break;
-                case BK:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
-                    break;
-                case RS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
-                    break;
-                case ST:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
-                    break;
-                case GS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
-                    break;
-                default:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
-            }
-        }
-        return displayImage;
-    }
-
-    public JsonQueue setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
         return this;
     }
 

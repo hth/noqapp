@@ -56,6 +56,7 @@ public class RegisterBusiness implements Serializable {
     private String timeZoneStore;
     private AddressOriginEnum addressStoreOrigin;
     private String bizCategoryId;
+    private String famousFor;
     private boolean remoteJoin;
     private boolean allowLoggedInUser;
     private int availableTokenCount;
@@ -369,6 +370,15 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public RegisterBusiness setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
+        return this;
+    }
+
     public boolean isRemoteJoin() {
         return remoteJoin;
     }
@@ -473,6 +483,7 @@ public class RegisterBusiness implements Serializable {
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
         this.businessServiceImageStore = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
+        this.famousFor = bizStore.getFamousFor();
     }
 
     @Transient
