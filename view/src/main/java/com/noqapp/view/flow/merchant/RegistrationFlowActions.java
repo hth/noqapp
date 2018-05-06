@@ -142,6 +142,12 @@ class RegistrationFlowActions {
         if (null == bizName) {
             bizName = BizNameEntity.newInstance(CommonUtil.generateCodeQR(environment.getProperty("build.env")));
         }
+
+        /* Marked address invalid when address is different. */
+        if (!bizName.getAddress().equalsIgnoreCase(registerBusiness.getAddress())) {
+            bizName.setValidatedUsingExternalAPI(false);
+        }
+
         bizName.setBusinessName(registerBusiness.getName())
                 .setBusinessTypes(registerBusiness.getBusinessTypes())
                 .setPhone(registerBusiness.getPhoneWithCountryCode())
@@ -149,7 +155,8 @@ class RegistrationFlowActions {
                 .setAddress(registerBusiness.getAddress())
                 .setTimeZone(registerBusiness.getTimeZone())
                 .setInviteeCode(registerBusiness.getInviteeCode())
-                .setAddressOrigin(registerBusiness.getAddressOrigin());
+                .setAddressOrigin(registerBusiness.getAddressOrigin())
+                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage());
         validateAddress(bizName);
 
         try {

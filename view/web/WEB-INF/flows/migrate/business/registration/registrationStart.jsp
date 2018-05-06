@@ -148,6 +148,15 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="businessServiceImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     <c:if test="${empty register.registerBusiness.businessUser}">
                                     <li>
                                         <div class="col-lable3">
