@@ -67,7 +67,7 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
 
-    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "DI"};
+    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "FF", "DI"};
     private static String[] excludeFields = new String[] {"_type"};
 
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
@@ -242,7 +242,7 @@ public class BizStoreElasticService {
                 BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,DI",
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
                 dslQuery
         );
 
@@ -302,10 +302,8 @@ public class BizStoreElasticService {
                             .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
                             .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                             .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
+                            .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
                             .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
-
-                    //TODO(hth) remove this call, currently it populates the images
-                    bizStoreElastic.getDisplayImage();
                     bizStoreElastics.addBizStoreElastic(bizStoreElastic);
                 }
             }

@@ -53,6 +53,7 @@ public class DomainConversion {
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
+                .setFamousFor(bizStore.getFamousFor())
                 .setDisplayImage(bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next())
                 .setStoreHourElasticList(getStoreHourElastics(storeHours))
                 .setBizServiceImages(bizStore.getBizName().getBusinessServiceImages());
