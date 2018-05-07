@@ -20,3 +20,10 @@ db.PURCHASE_ORDER_PRODUCT.update({}, {$rename:{"CQR":"QR"}}, false, true);
 Make sure BusinessType in Token_QUEUE is not HO
 Change BusinessType in Business NAME from HO to DO
 
+
+---- Mysql 
+
+Update all HO to DO in mysql
+
+Update all HO to DO in sql-lite 
+
