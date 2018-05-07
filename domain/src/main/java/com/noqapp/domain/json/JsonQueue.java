@@ -154,7 +154,7 @@ public class JsonQueue extends AbstractDomain {
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
     @JsonProperty ("ii")
-    private Set<String> storeInteriorImages = new LinkedHashSet<String>() {{add("https://noqapp.com/imgs/60x60/e.jpeg"); add("https://noqapp.com/imgs/60x60/c.png");}};
+    private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @JsonProperty ("pm")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{add(PaymentTypeEnum.AP); add(PaymentTypeEnum.CA); add(PaymentTypeEnum.CC); add(PaymentTypeEnum.DC); }};
