@@ -11,10 +11,10 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,6 +140,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("WL")
     private String webLocation;
 
+    @Field("FF")
+    private String famousFor;
+
     @JsonProperty("DI")
     private String displayImage;
 
@@ -148,11 +151,7 @@ public class BizStoreElastic extends AbstractDomain {
 
     @Transient
     @JsonProperty("BI")
-    private Set<String> bizServiceImages = new LinkedHashSet<String>() {{
-        add("https://noqapp.com/imgs/40x40/a.jpeg");
-        add("https://noqapp.com/imgs/40x40/b.jpeg");
-        add("https://noqapp.com/imgs/40x40/e.jpeg");
-    }};
+    private Set<String> bizServiceImages = new LinkedHashSet<>();
 
     public String getId() {
         return id;
@@ -406,29 +405,16 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public BizStoreElastic setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
+        return this;
+    }
+
     public String getDisplayImage() {
-        LOG.info("Business Type for display Image {}", businessType);
-        if (StringUtils.isBlank(displayImage)) {
-            switch (businessType) {
-                case DO:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
-                    break;
-                case BK:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
-                    break;
-                case RS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
-                    break;
-                case ST:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
-                    break;
-                case GS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
-                    break;
-                default:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
-            }
-        }
         return displayImage;
     }
 
@@ -451,10 +437,7 @@ public class BizStoreElastic extends AbstractDomain {
     }
 
     public BizStoreElastic setBizServiceImages(Set<String> bizServiceImages) {
-        //TODO(hth) remove temp condition
-        if (!bizServiceImages.isEmpty()) {
-            this.bizServiceImages = bizServiceImages;
-        }
+        this.bizServiceImages = bizServiceImages;
         return this;
     }
 
@@ -486,8 +469,8 @@ public class BizStoreElastic extends AbstractDomain {
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
-                .setDisplayImage(bizStore.getDisplayImage())
-                //TODO check if the images are getting populated.
+                .setFamousFor(bizStore.getFamousFor())
+                .setDisplayImage(bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next())
                 .setBizServiceImages(bizStore.getStoreServiceImages());
     }
 

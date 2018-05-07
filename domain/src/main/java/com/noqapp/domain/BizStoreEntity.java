@@ -163,9 +163,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("BC")
     private String bizCategoryId;
 
-    @Field ("DI")
-    private String displayImage;
-
     @Field ("FF")
     private String famousFor;
 
@@ -506,15 +503,6 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
-        return this;
-    }
-
-    public String getDisplayImage() {
-        return displayImage;
-    }
-
-    public BizStoreEntity setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
         return this;
     }
 
