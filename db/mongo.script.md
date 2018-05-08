@@ -17,11 +17,13 @@ Next Release Update Mongo
     db.PURCHASE_ORDER_PRODUCT.update({}, {$rename:{"BZ":"BS"}}, false, true);
     db.PURCHASE_ORDER_PRODUCT.update({}, {$rename:{"CQR":"QR"}}, false, true);
 
-Make sure BusinessType in Token_QUEUE is not HO
-Change BusinessType in Business NAME from HO to DO
+Also in Mongo
+
+1. Make sure BusinessType in Token_QUEUE is not HO
+2. Change BusinessType in Business NAME from HO to DO
 
 
----- Mysql 
+### Mysql 
 
 Update all HO to DO in mysql
 
