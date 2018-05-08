@@ -39,9 +39,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty("qid")
-    private String queueUserId;
-
     @JsonProperty ("p")
     private String customerPhone;
 
@@ -94,15 +91,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setBizStoreId(String bizStoreId) {
         this.bizStoreId = bizStoreId;
-        return this;
-    }
-
-    public String getQueueUserId() {
-        return queueUserId;
-    }
-
-    public JsonPurchaseOrder setQueueUserId(String queueUserId) {
-        this.queueUserId = queueUserId;
         return this;
     }
 

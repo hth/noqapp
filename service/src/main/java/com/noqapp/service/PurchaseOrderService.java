@@ -98,9 +98,9 @@ public class PurchaseOrderService {
 
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
     @Mobile
-    public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
+    public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizService.getByStoreId(jsonPurchaseOrder.getBizStoreId());
-        JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), did, jsonPurchaseOrder.getQueueUserId(), bizStore.getAverageServiceTime(), tokenService);
+        JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), did, qid, bizStore.getAverageServiceTime(), tokenService);
 
         Date expectedServiceBegin = null;
         try {
@@ -112,7 +112,7 @@ public class PurchaseOrderService {
         }
 
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(
-                        jsonPurchaseOrder.getQueueUserId(),
+                        qid,
                         jsonPurchaseOrder.getBizStoreId(),
                         bizStore.getBizName().getId(),
                         bizStore.getCodeQR())
@@ -140,7 +140,7 @@ public class PurchaseOrderService {
                     .setProductPrice(storeProduct.getProductPrice())
                     .setProductDiscount(storeProduct.getProductDiscount())
                     .setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
-                    .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
+                    .setQueueUserId(qid)
                     .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
                     .setBizNameId(bizStore.getBizName().getId())
                     .setCodeQR(bizStore.getCodeQR())
