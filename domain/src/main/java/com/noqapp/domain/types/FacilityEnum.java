@@ -1,5 +1,7 @@
 package com.noqapp.domain.types;
 
+import java.util.EnumSet;
+
 /**
  * hitender
  * 3/27/18 12:35 PM
@@ -20,7 +22,17 @@ public enum FacilityEnum {
     GY("GY", "Dentistry"),
     DE("DE", "Cashless Treatment"),
     AH("AH", "Health Checkup Plans"),
-    SO("SO", "Sunday OPD");
+    SO("SO", "Sunday OPD"),
+
+    /* For Grocery Stores */
+    DEL("DEL", "Delivery"),
+
+    /* For Restaurant Stores */
+    FRS("FRS", "Fresh");
+
+    public static EnumSet<FacilityEnum> DOCTOR_HOSPITAL = EnumSet.of(EM, IC, IU, NI, RA, MP, IF, LS, GS, CS, PY, SX, GY, DE, AH, SO);
+    public static EnumSet<FacilityEnum> GROCERY = EnumSet.of(DEL);
+    public static EnumSet<FacilityEnum> RESTAURANT = EnumSet.of(DEL, FRS);
 
     private final String description;
     private final String name;

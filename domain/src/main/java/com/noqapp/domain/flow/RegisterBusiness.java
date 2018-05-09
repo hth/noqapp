@@ -8,7 +8,9 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +19,14 @@ import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -39,6 +44,8 @@ public class RegisterBusiness implements Serializable {
     private String phone;
     private String businessServiceImage;
     private String timeZone;
+    private List<AmenityEnum> amenities = new ArrayList<>();
+    private List<FacilityEnum> facilities = new ArrayList<>();
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -54,6 +61,8 @@ public class RegisterBusiness implements Serializable {
     private String phoneStore;
     private String businessServiceImageStore;
     private String timeZoneStore;
+    private List<AmenityEnum> amenitiesStore = new ArrayList<>();
+    private List<FacilityEnum> facilitiesStore = new ArrayList<>();
     private AddressOriginEnum addressStoreOrigin;
     private String bizCategoryId;
     private String famousFor;
@@ -93,6 +102,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public Map<String, String> categories;
+
+    @Transient
+    private Set<AmenityEnum> amenitiesAvailable = new LinkedHashSet<>();
+
+    @Transient
+    private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
 
     public String getBizId() {
         return bizId;
@@ -195,6 +210,24 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone.getText();
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public RegisterBusiness setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public RegisterBusiness setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
+        return this;
     }
 
     public String getInviteeCode() {
@@ -352,6 +385,24 @@ public class RegisterBusiness implements Serializable {
         this.timeZoneStore = timeZoneStore.getText();
     }
 
+    public List<AmenityEnum> getAmenitiesStore() {
+        return amenitiesStore;
+    }
+
+    public RegisterBusiness setAmenitiesStore(List<AmenityEnum> amenitiesStore) {
+        this.amenitiesStore = amenitiesStore;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilitiesStore() {
+        return facilitiesStore;
+    }
+
+    public RegisterBusiness setFacilitiesStore(List<FacilityEnum> facilitiesStore) {
+        this.facilitiesStore = facilitiesStore;
+        return this;
+    }
+
     public AddressOriginEnum getAddressStoreOrigin() {
         return addressStoreOrigin;
     }
@@ -464,6 +515,24 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setSelectFoundAddressStore(boolean selectFoundAddressStore) {
         this.selectFoundAddressStore = selectFoundAddressStore;
+        return this;
+    }
+
+    public Set<AmenityEnum> getAmenitiesAvailable() {
+        return amenitiesAvailable;
+    }
+
+    public RegisterBusiness setAmenitiesAvailable(Set<AmenityEnum> amenitiesAvailable) {
+        this.amenitiesAvailable = amenitiesAvailable;
+        return this;
+    }
+
+    public Set<FacilityEnum> getFacilitiesAvailable() {
+        return facilitiesAvailable;
+    }
+
+    public RegisterBusiness setFacilitiesAvailable(Set<FacilityEnum> facilitiesAvailable) {
+        this.facilitiesAvailable = facilitiesAvailable;
         return this;
     }
 

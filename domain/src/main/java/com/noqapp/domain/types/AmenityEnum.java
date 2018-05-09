@@ -1,5 +1,8 @@
 package com.noqapp.domain.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * hitender
  * 3/27/18 10:08 AM
@@ -26,6 +29,11 @@ public enum AmenityEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<AmenityEnum> asList() {
+        AmenityEnum[] all = AmenityEnum.values();
+        return Arrays.asList(all);
     }
 
     @Override

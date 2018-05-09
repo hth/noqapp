@@ -144,7 +144,7 @@ class RegistrationFlowActions {
         }
 
         /* Marked address invalid when address is different. */
-        if (!bizName.getAddress().equalsIgnoreCase(registerBusiness.getAddress())) {
+        if (null != bizName.getAddress() && !bizName.getAddress().equalsIgnoreCase(registerBusiness.getAddress())) {
             bizName.setValidatedUsingExternalAPI(false);
         }
 
@@ -158,7 +158,9 @@ class RegistrationFlowActions {
                 .setTimeZone(registerBusiness.getTimeZone())
                 .setInviteeCode(registerBusiness.getInviteeCode())
                 .setAddressOrigin(registerBusiness.getAddressOrigin())
-                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage());
+                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage())
+                .setAmenities(registerBusiness.getAmenities())
+                .setFacilities(registerBusiness.getFacilities());
         validateAddress(bizName);
 
         try {
@@ -227,7 +229,9 @@ class RegistrationFlowActions {
                 .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
                 .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
                 .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore())
-                .setFamousFor(registerBusiness.getFamousFor());
+                .setFamousFor(registerBusiness.getFamousFor())
+                .setFacilities(registerBusiness.getFacilitiesStore())
+                .setAmenities(registerBusiness.getAmenitiesStore());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);

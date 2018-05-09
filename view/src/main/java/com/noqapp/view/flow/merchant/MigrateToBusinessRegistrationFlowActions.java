@@ -1,15 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
-import com.noqapp.search.elastic.service.BizStoreElasticService;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -19,8 +10,12 @@ import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -28,9 +23,17 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+import java.util.EnumSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -135,6 +138,33 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         }
 
         return MigrateToBusinessRegistration.newInstance(businessUser, null);
+    }
+
+    @SuppressWarnings ("unused")
+    public void additionalAttributes(Register register) {
+        for (BusinessTypeEnum businessType : register.getRegisterBusiness().getBusinessTypes()) {
+            switch (businessType) {
+                case DO:
+                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
+                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.DOCTOR_HOSPITAL);
+                    break;
+                case GS:
+                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
+                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.GROCERY);
+                    break;
+                case RS:
+                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
+                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.RESTAURANT);
+                    break;
+                default:
+                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
+                    EnumSet<FacilityEnum> facilitiesAvailable = FacilityEnum.GROCERY;
+                    facilitiesAvailable.addAll(FacilityEnum.RESTAURANT);
+
+                    register.getRegisterBusiness().setFacilitiesAvailable(facilitiesAvailable);
+                    break;
+            }
+        }
     }
 
     /**

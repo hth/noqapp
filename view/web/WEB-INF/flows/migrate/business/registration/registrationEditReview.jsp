@@ -130,6 +130,46 @@
                                     </ul>
                                 </div>
 
+                                <div class="full">
+                                    <div class="admin-title pT30">
+                                        <h2>Business Amenities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty register.registerBusiness.amenities}">
+                                                <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenities}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No amenity has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
+
+                                    <div class="admin-title pT30">
+                                        <h2>Business Facilities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty register.registerBusiness.facilities}">
+                                                <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilities}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No facility has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
+                                </div>
+
                                 <div class="btn-hours">
                                     <div class="button-btn">
                                         <button name="_eventId_update" class="ladda-button next-btn" style="width:32%; float: left">Update</button>

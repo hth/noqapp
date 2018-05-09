@@ -38,6 +38,8 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setFoundAddressPlaceId(bizName.getPlaceId());
             getRegisterBusiness().setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
             getRegisterBusiness().setBusinessTypes(bizName.getBusinessTypes());
+            getRegisterBusiness().setFacilities(bizName.getFacilities());
+            getRegisterBusiness().setAmenities(bizName.getAmenities());
         }
 
         if (null != bizStore) {
@@ -50,6 +52,8 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setRemoteJoin(bizStore.isRemoteJoin());
             getRegisterBusiness().setAllowLoggedInUser(bizStore.isAllowLoggedInUser());
             getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()));
+            getRegisterBusiness().setFacilitiesStore(bizStore.getFacilities());
+            getRegisterBusiness().setAmenitiesStore(bizStore.getAmenities());
         }
     }
 

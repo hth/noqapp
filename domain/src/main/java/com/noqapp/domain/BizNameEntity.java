@@ -3,9 +3,11 @@ package com.noqapp.domain;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -19,6 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -114,6 +117,12 @@ public class BizNameEntity extends BaseEntity {
 
     @Field ("IC")
     private String inviteeCode;
+
+    @Field ("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @Field ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     @NotNull
     @Field ("AO")
@@ -401,6 +410,24 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setInviteeCode(String inviteeCode) {
         this.inviteeCode = inviteeCode;
+        return this;
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizNameEntity setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizNameEntity setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
         return this;
     }
 

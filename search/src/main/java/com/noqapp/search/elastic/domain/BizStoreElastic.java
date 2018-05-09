@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.data.annotation.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -151,6 +154,14 @@ public class BizStoreElastic extends AbstractDomain {
     @Transient
     @JsonProperty("BI")
     private Set<String> bizServiceImages = new LinkedHashSet<>();
+
+    @Transient
+    @JsonProperty("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @Transient
+    @JsonProperty ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     public String getId() {
         return id;
@@ -440,6 +451,24 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizStoreElastic setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizStoreElastic setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
+        return this;
+    }
+
     @Transient
     public static BizStoreElastic getThisFromBizStore(BizStoreEntity bizStore) {
         return new BizStoreElastic()
@@ -470,7 +499,9 @@ public class BizStoreElastic extends AbstractDomain {
                 .setWebLocation(bizStore.getWebLocation())
                 .setFamousFor(bizStore.getFamousFor())
                 .setDisplayImage(bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next())
-                .setBizServiceImages(bizStore.getStoreServiceImages());
+                .setBizServiceImages(bizStore.getStoreServiceImages())
+                .setAmenities(bizStore.getAmenities())
+                .setFacilities(bizStore.getFacilities());
     }
 
     @Override

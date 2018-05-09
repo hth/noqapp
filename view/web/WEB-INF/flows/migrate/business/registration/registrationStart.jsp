@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <c:choose>
-                                                <c:when test="${!empty register.registerBusiness.businessUser}">
+                                                <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
                                                     <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
                                                         <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
                                                     </form:select>
@@ -234,14 +234,16 @@
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                         </c:when>
-                                        <c:when test="${!empty register.registerBusiness.businessUser}">
+                                        <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
                                             <div class="button-btn">
                                                 <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
                                                 <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                         </c:when>
                                         <c:otherwise>
-                                            <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
+                                            <div class="button-btn">
+                                                <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
+                                            </div>
                                         </c:otherwise>
                                     </c:choose>
 
