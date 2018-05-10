@@ -527,12 +527,22 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public RegisterBusiness addAmenitiesAvailable(Set<AmenityEnum> amenitiesAvailable) {
+        this.amenitiesAvailable.addAll(amenitiesAvailable);
+        return this;
+    }
+
     public Set<FacilityEnum> getFacilitiesAvailable() {
         return facilitiesAvailable;
     }
 
     public RegisterBusiness setFacilitiesAvailable(Set<FacilityEnum> facilitiesAvailable) {
         this.facilitiesAvailable = facilitiesAvailable;
+        return this;
+    }
+
+    public RegisterBusiness addFacilitiesAvailable(Set<FacilityEnum> facilitiesAvailable) {
+        this.facilitiesAvailable.addAll(facilitiesAvailable);
         return this;
     }
 
@@ -553,6 +563,8 @@ public class RegisterBusiness implements Serializable {
         this.availableTokenCount = bizStore.getAvailableTokenCount();
         this.businessServiceImageStore = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
         this.famousFor = bizStore.getFamousFor();
+        this.amenitiesStore = bizStore.getAmenities();
+        this.facilitiesStore = bizStore.getFacilities();
     }
 
     @Transient

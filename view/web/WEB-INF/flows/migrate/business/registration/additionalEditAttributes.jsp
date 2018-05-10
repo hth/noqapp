@@ -54,7 +54,7 @@
                     <form:form modelAttribute="register">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Edit Business Details</h2>
+                            <h2>Edit Business Amenities & Facilities</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">

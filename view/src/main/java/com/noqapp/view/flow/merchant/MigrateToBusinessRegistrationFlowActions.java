@@ -32,7 +32,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -140,26 +139,71 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     }
 
     @SuppressWarnings ("unused")
-    public void additionalAttributes(Register register) {
-        for (BusinessTypeEnum businessType : register.getRegisterBusiness().getBusinessTypes()) {
-            register.getRegisterBusiness().setAmenitiesAvailable(AmenityEnum.ALL);
-            switch (businessType) {
-                case DO:
-                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.DOCTOR_HOSPITAL);
-                    break;
-                case GS:
-                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.GROCERY);
-                    break;
-                case RS:
-                    register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.RESTAURANT);
-                    break;
-                default:
-                    EnumSet<FacilityEnum> facilitiesAvailable = FacilityEnum.GROCERY;
-                    facilitiesAvailable.addAll(FacilityEnum.RESTAURANT);
+    public void additionalAttributes(RegisterBusiness registerBusiness, String modelType) {
+        switch (modelType) {
+            case "bizName":
+                for (BusinessTypeEnum businessType : registerBusiness.getBusinessTypes()) {
+                    addAvailableAmenities(registerBusiness, businessType, modelType);
+                    addAvailableFacilities(registerBusiness, businessType, modelType);
+                }
+                break;
+            case "bizStore":
+                addAvailableAmenities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);
+                addAvailableFacilities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);
+                break;
+            default:
+                throw new UnsupportedOperationException("Reached Unsupported Condition");
+        }
+    }
 
-                    register.getRegisterBusiness().setFacilitiesAvailable(facilitiesAvailable);
-                    break;
-            }
+    private void addAvailableFacilities(RegisterBusiness registerBusiness, BusinessTypeEnum businessType, String modelType) {
+        switch (businessType) {
+            case DO:
+                switch (modelType) {
+                    case "bizName":
+                        registerBusiness.addFacilitiesAvailable(FacilityEnum.DOCTOR_HOSPITAL);
+                        break;
+                    case "bizStore":
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("Reached Unsupported Condition");
+                }
+                break;
+            case GS:
+                registerBusiness.setFacilitiesAvailable(FacilityEnum.GROCERY);
+                break;
+            case RS:
+                registerBusiness.setFacilitiesAvailable(FacilityEnum.RESTAURANT);
+                break;
+            default:
+                registerBusiness.addFacilitiesAvailable(FacilityEnum.GROCERY)
+                        .addFacilitiesAvailable(FacilityEnum.RESTAURANT);
+                break;
+        }
+    }
+
+    private void addAvailableAmenities(RegisterBusiness registerBusiness, BusinessTypeEnum businessType, String modelType) {
+        switch (businessType) {
+            case DO:
+                switch (modelType) {
+                    case "bizName":
+                        registerBusiness.addAmenitiesAvailable(AmenityEnum.ALL);
+                        break;
+                    case "bizStore":
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("Reached Unsupported Condition");
+                }
+                break;
+            case GS:
+                registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
+                break;
+            case RS:
+                registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
+                break;
+            default:
+                registerBusiness.addAmenitiesAvailable(AmenityEnum.ALL);
+                break;
         }
     }
 
