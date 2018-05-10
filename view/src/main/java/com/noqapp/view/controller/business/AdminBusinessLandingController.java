@@ -66,6 +66,7 @@ public class AdminBusinessLandingController {
     private String queueUserDetailFlow;
     private String listQueueSupervisorPage;
     private String authorizedUsersPage;
+    private String editBusinessFlow;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -99,6 +100,9 @@ public class AdminBusinessLandingController {
             @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
             String queueUserDetailFlow,
 
+            @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
+            String editBusinessFlow,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
@@ -113,6 +117,7 @@ public class AdminBusinessLandingController {
         this.queueUserDetailFlow = queueUserDetailFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
         this.authorizedUsersPage = authorizedUsersPage;
+        this.editBusinessFlow = editBusinessFlow;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -492,5 +497,27 @@ public class AdminBusinessLandingController {
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
         return authorizedUsersPage;
+    }
+
+    /**
+     * Edit existing business.
+     */
+    @GetMapping (value = "/editBusiness", produces = "text/html;charset=UTF-8")
+    public String editBusiness(
+            RedirectAttributes redirectAttrs,
+            HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        redirectAttrs.addFlashAttribute("bizNameId", businessUser.getBizName().getId());
+        return editBusinessFlow;
     }
 }

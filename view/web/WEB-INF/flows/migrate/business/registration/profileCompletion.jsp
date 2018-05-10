@@ -177,7 +177,9 @@
                                     <li class="mB0">
                                         <div class="col-lable3"></div>
                                         <div class="col-fields">
-                                            <input type="submit" value="NEXT" class="ladda-button next-btn" name="_eventId_submit">
+                                            <div class="button-btn">
+                                                <button name="_eventId_submit" class="ladda-button next-btn">NEXT</button>
+                                            </div>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

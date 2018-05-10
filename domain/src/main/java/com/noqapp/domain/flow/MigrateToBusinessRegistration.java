@@ -1,5 +1,6 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -22,22 +23,37 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
         getRegisterBusiness().setBusinessUser(businessUser);
         getRegisterUser().setQueueUserId(businessUser.getQueueUserId());
         if (null != businessUser.getBizName()) {
-            getRegisterBusiness().setBizId(businessUser.getBizName().getId());
-            getRegisterBusiness().setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
-            getRegisterBusiness().setAddress(new ScrubbedInput(businessUser.getBizName().getAddress()));
-            getRegisterBusiness().setPhone(new ScrubbedInput(businessUser.getBizName().getPhone()));
-            getRegisterBusiness().setBusinessTypes(businessUser.getBizName().getBusinessTypes());
-            getRegisterBusiness().setInviteeCode(businessUser.getBizName().getInviteeCode());
+            BizNameEntity bizName = businessUser.getBizName();
+
+            getRegisterBusiness().setBizId(bizName.getId());
+            getRegisterBusiness().setName(new ScrubbedInput(bizName.getBusinessName()));
+            getRegisterBusiness().setAddress(new ScrubbedInput(bizName.getAddress()));
+            getRegisterBusiness().setArea(new ScrubbedInput(bizName.getArea()));
+            getRegisterBusiness().setTown(new ScrubbedInput(bizName.getTown()));
+            getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
+            getRegisterBusiness().setPhone(new ScrubbedInput(bizName.getPhone()));
+            getRegisterBusiness().setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
+            getRegisterBusiness().setInviteeCode(bizName.getInviteeCode());
+            getRegisterBusiness().setAddressOrigin(bizName.getAddressOrigin());
+            getRegisterBusiness().setFoundAddressPlaceId(bizName.getPlaceId());
+            getRegisterBusiness().setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
+            getRegisterBusiness().setBusinessTypes(bizName.getBusinessTypes());
+            getRegisterBusiness().setFacilities(bizName.getFacilities());
+            getRegisterBusiness().setAmenities(bizName.getAmenities());
         }
 
         if (null != bizStore) {
             getRegisterBusiness().setBizStoreId(bizStore.getId());
             getRegisterBusiness().setDisplayName(new ScrubbedInput(bizStore.getDisplayName()));
             getRegisterBusiness().setAddressStore(new ScrubbedInput(bizStore.getAddress()));
+            getRegisterBusiness().setAreaStore(new ScrubbedInput(bizStore.getArea()));
+            getRegisterBusiness().setTownStore(new ScrubbedInput(bizStore.getTown()));
             getRegisterBusiness().setPhoneStore(new ScrubbedInput(bizStore.getPhone()));
             getRegisterBusiness().setRemoteJoin(bizStore.isRemoteJoin());
             getRegisterBusiness().setAllowLoggedInUser(bizStore.isAllowLoggedInUser());
             getRegisterBusiness().setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()));
+            getRegisterBusiness().setFacilitiesStore(bizStore.getFacilities());
+            getRegisterBusiness().setAmenitiesStore(bizStore.getAmenities());
         }
     }
 

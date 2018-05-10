@@ -2,12 +2,15 @@ package com.noqapp.domain.flow;
 
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +19,14 @@ import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -32,9 +38,14 @@ public class RegisterBusiness implements Serializable {
     private String bizId;
     private String name;
     private String address;
+    private String area;
+    private String town;
     private String countryShortName;
     private String phone;
+    private String businessServiceImage;
     private String timeZone;
+    private List<AmenityEnum> amenities = new ArrayList<>();
+    private List<FacilityEnum> facilities = new ArrayList<>();
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -44,11 +55,17 @@ public class RegisterBusiness implements Serializable {
     private String displayName;
     private BusinessTypeEnum storeBusinessType;
     private String addressStore;
+    private String areaStore;
+    private String townStore;
     private String countryShortNameStore;
     private String phoneStore;
+    private String businessServiceImageStore;
     private String timeZoneStore;
+    private List<AmenityEnum> amenitiesStore = new ArrayList<>();
+    private List<FacilityEnum> facilitiesStore = new ArrayList<>();
     private AddressOriginEnum addressStoreOrigin;
     private String bizCategoryId;
+    private String famousFor;
     private boolean remoteJoin;
     private boolean allowLoggedInUser;
     private int availableTokenCount;
@@ -86,6 +103,12 @@ public class RegisterBusiness implements Serializable {
     @Transient
     public Map<String, String> categories;
 
+    @Transient
+    private Set<AmenityEnum> amenitiesAvailable = new LinkedHashSet<>();
+
+    @Transient
+    private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
+
     public String getBizId() {
         return bizId;
     }
@@ -117,6 +140,24 @@ public class RegisterBusiness implements Serializable {
     public void setAddress(ScrubbedInput address) {
         /* Java 8 regex engine supports \R which represents any line separator. */
         this.address = address.getText().replaceAll("\\R", " ");
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public RegisterBusiness setArea(ScrubbedInput area) {
+        this.area = area.getText();
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public RegisterBusiness setTown(ScrubbedInput town) {
+        this.town = town.getText();
+        return this;
     }
 
     public String getCountryShortName() {
@@ -154,12 +195,39 @@ public class RegisterBusiness implements Serializable {
         this.phone = phone.getText();
     }
 
+    public String getBusinessServiceImage() {
+        return businessServiceImage;
+    }
+
+    public RegisterBusiness setBusinessServiceImage(String businessServiceImage) {
+        this.businessServiceImage = businessServiceImage;
+        return this;
+    }
+
     public String getTimeZone() {
         return timeZone;
     }
 
     public void setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone.getText();
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public RegisterBusiness setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public RegisterBusiness setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
+        return this;
     }
 
     public String getInviteeCode() {
@@ -238,6 +306,24 @@ public class RegisterBusiness implements Serializable {
         this.addressStore = addressStore.getText().replaceAll("\\R", " ");
     }
 
+    public String getAreaStore() {
+        return areaStore;
+    }
+
+    public RegisterBusiness setAreaStore(ScrubbedInput areaStore) {
+        this.areaStore = areaStore.getText();
+        return this;
+    }
+
+    public String getTownStore() {
+        return townStore;
+    }
+
+    public RegisterBusiness setTownStore(ScrubbedInput townStore) {
+        this.townStore = townStore.getText();
+        return this;
+    }
+
     public boolean isBusinessAddressAsStore() {
         return businessAddressAsStore;
     }
@@ -274,6 +360,15 @@ public class RegisterBusiness implements Serializable {
         return null;
     }
 
+    public String getBusinessServiceImageStore() {
+        return businessServiceImageStore;
+    }
+
+    public RegisterBusiness setBusinessServiceImageStore(String businessServiceImageStore) {
+        this.businessServiceImageStore = businessServiceImageStore;
+        return this;
+    }
+
     public String getCountryShortNameStore() {
         return countryShortNameStore;
     }
@@ -288,6 +383,24 @@ public class RegisterBusiness implements Serializable {
 
     public void setTimeZoneStore(ScrubbedInput timeZoneStore) {
         this.timeZoneStore = timeZoneStore.getText();
+    }
+
+    public List<AmenityEnum> getAmenitiesStore() {
+        return amenitiesStore;
+    }
+
+    public RegisterBusiness setAmenitiesStore(List<AmenityEnum> amenitiesStore) {
+        this.amenitiesStore = amenitiesStore;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilitiesStore() {
+        return facilitiesStore;
+    }
+
+    public RegisterBusiness setFacilitiesStore(List<FacilityEnum> facilitiesStore) {
+        this.facilitiesStore = facilitiesStore;
+        return this;
     }
 
     public AddressOriginEnum getAddressStoreOrigin() {
@@ -305,6 +418,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public RegisterBusiness setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
         return this;
     }
 
@@ -396,6 +518,24 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public Set<AmenityEnum> getAmenitiesAvailable() {
+        return amenitiesAvailable;
+    }
+
+    public RegisterBusiness setAmenitiesAvailable(Set<AmenityEnum> amenitiesAvailable) {
+        this.amenitiesAvailable = amenitiesAvailable;
+        return this;
+    }
+
+    public Set<FacilityEnum> getFacilitiesAvailable() {
+        return facilitiesAvailable;
+    }
+
+    public RegisterBusiness setFacilitiesAvailable(Set<FacilityEnum> facilitiesAvailable) {
+        this.facilitiesAvailable = facilitiesAvailable;
+        return this;
+    }
+
     @Transient
     public void populateWithBizStore(BizStoreEntity bizStore) {
         this.bizStoreId = bizStore.getId();
@@ -411,6 +551,25 @@ public class RegisterBusiness implements Serializable {
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
+        this.businessServiceImageStore = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
+        this.famousFor = bizStore.getFamousFor();
+    }
+
+    @Transient
+    public static RegisterBusiness populateWithBizName(BizNameEntity bizName) {
+        RegisterBusiness registerBusiness = new RegisterBusiness();
+        registerBusiness.setBizId(bizName.getId());
+        registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
+        registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));
+        registerBusiness.setCountryShortName(new ScrubbedInput(bizName.getCountryShortName()));
+        registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneNationalFormat(bizName.getPhoneRaw(), bizName.getCountryShortName())));
+        registerBusiness.setTimeZone(new ScrubbedInput(bizName.getTimeZone()));
+        registerBusiness.setInviteeCode(bizName.getInviteeCode());
+        registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
+        registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
+        registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
+        registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
+        return registerBusiness;
     }
 
     /**

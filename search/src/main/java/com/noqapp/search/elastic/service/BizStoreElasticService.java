@@ -45,8 +45,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
@@ -65,7 +67,7 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
 
-    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "DI"};
+    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "FF", "DI"};
     private static String[] excludeFields = new String[] {"_type"};
 
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
@@ -240,7 +242,7 @@ public class BizStoreElasticService {
                 BizStoreElastic.INDEX
                         + "/"
                         + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,DI",
+                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
                 dslQuery
         );
 
@@ -300,10 +302,8 @@ public class BizStoreElasticService {
                             .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
                             .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                             .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
+                            .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
                             .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
-
-                    //TODO(hth) remove this call, currently it populates the images
-                    bizStoreElastic.getDisplayImage();
                     bizStoreElastics.addBizStoreElastic(bizStoreElastic);
                 }
             }
@@ -312,5 +312,21 @@ public class BizStoreElasticService {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
         }
+    }
+
+    public BizStoreElasticList nearMeSearch(String geoHash) {
+        BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, null);
+        Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
+        int hits = 0;
+        while (bizStoreElasticSet.size() < 10 && hits < 3) {
+            LOG.info("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId());
+            BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
+            bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
+            bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
+
+            hits ++;
+        }
+        bizStoreElastics.setBizStoreElastics(bizStoreElasticSet);
+        return bizStoreElastics;
     }
 }

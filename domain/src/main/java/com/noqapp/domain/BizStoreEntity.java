@@ -29,9 +29,11 @@ import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.util.Base64;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -161,9 +163,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("BC")
     private String bizCategoryId;
 
-    @Field ("DI")
-    private String displayImage;
-
     @Field ("FF")
     private String famousFor;
 
@@ -174,10 +173,10 @@ public class BizStoreEntity extends BaseEntity {
     private int minimumDeliveryOrder;
 
     @Field ("SI")
-    private List<String> storeServiceImages = new LinkedList<>();
+    private Set<String> storeServiceImages = new LinkedHashSet<>();
 
     @Field ("II")
-    private List<String> storeInteriorImages = new LinkedList<>();
+    private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @Field ("PM")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
@@ -507,15 +506,6 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public String getDisplayImage() {
-        return displayImage;
-    }
-
-    public BizStoreEntity setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
-        return this;
-    }
-
     public String getFamousFor() {
         return famousFor;
     }
@@ -543,20 +533,25 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getStoreServiceImages() {
+    public Set<String> getStoreServiceImages() {
         return storeServiceImages;
     }
 
-    public BizStoreEntity setStoreServiceImages(List<String> storeServiceImages) {
+    public BizStoreEntity setStoreServiceImages(Set<String> storeServiceImages) {
         this.storeServiceImages = storeServiceImages;
         return this;
     }
 
-    public List<String> getStoreInteriorImages() {
+    public BizStoreEntity addStoreServiceImage(String storeServiceImage) {
+        this.storeServiceImages.add(storeServiceImage);
+        return this;
+    }
+
+    public Set<String> getStoreInteriorImages() {
         return storeInteriorImages;
     }
 
-    public BizStoreEntity setStoreInteriorImages(List<String> storeInteriorImages) {
+    public BizStoreEntity setStoreInteriorImages(Set<String> storeInteriorImages) {
         this.storeInteriorImages = storeInteriorImages;
         return this;
     }

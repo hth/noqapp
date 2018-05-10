@@ -57,11 +57,12 @@ public class BusinessFlowValidator {
      * Validate business user profile and business.
      *
      * @param register
+     * @param mode           create or edit are the modes defined in flow xml
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateBusinessDetails(Register register, MessageContext messageContext) {
+    public String validateBusinessDetails(Register register, String mode, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         String status = LandingController.SUCCESS;
 
@@ -77,7 +78,7 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (null == registerBusiness.getBusinessTypes()) {
+        if (null == registerBusiness.getBusinessTypes() && mode.equalsIgnoreCase("create")) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -101,12 +102,28 @@ public class BusinessFlowValidator {
                 decodedAddress = registerBusiness.getFoundAddresses().get(registerBusiness.getFoundAddressPlaceId());
                 registerBusiness.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
                 registerBusiness.setAddressOrigin(AddressOriginEnum.G);
+
+                if (StringUtils.isBlank(registerBusiness.getArea())) {
+                    registerBusiness.setArea(new ScrubbedInput(decodedAddress.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTown())) {
+                    registerBusiness.setTown(new ScrubbedInput(decodedAddress.getTown()));
+                }
             } else if(registerBusiness.getFoundAddresses().isEmpty()) {
                 Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerBusiness.getAddress()),
                         registerBusiness.getAddress());
                 registerBusiness.setFoundAddresses(geocode.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
+
+                if (StringUtils.isBlank(registerBusiness.getArea())) {
+                    registerBusiness.setArea(new ScrubbedInput(decodedAddress.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTown())) {
+                    registerBusiness.setTown(new ScrubbedInput(decodedAddress.getTown()));
+                }
 
                 if (decodedAddress.isNotBlank()) {
                     if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
@@ -135,6 +152,14 @@ public class BusinessFlowValidator {
                 Map.Entry<String, DecodedAddress> entry = registerBusiness.getFoundAddresses().entrySet().iterator().next();
                 decodedAddress = entry.getValue();
                 registerBusiness.setAddressOrigin(AddressOriginEnum.S);
+
+                if (StringUtils.isBlank(registerBusiness.getArea())) {
+                    registerBusiness.setArea(new ScrubbedInput(decodedAddress.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTown())) {
+                    registerBusiness.setTown(new ScrubbedInput(decodedAddress.getTown()));
+                }
             }
             
             if (decodedAddress.isNotBlank()) {
@@ -143,6 +168,26 @@ public class BusinessFlowValidator {
                 LatLng latLng = CommonUtil.getLatLng(decodedAddress.getCoordinate());
                 String timeZone = externalService.findTimeZone(latLng);
                 registerBusiness.setTimeZone(new ScrubbedInput(timeZone));
+            }
+
+            if (StringUtils.isBlank(registerBusiness.getArea())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.area")
+                                .defaultText("Business Town cannot be empty")
+                                .build());
+                status = "failure";
+            }
+
+            if (StringUtils.isBlank(registerBusiness.getTown())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.town")
+                                .defaultText("Business Area cannot be empty")
+                                .build());
+                status = "failure";
             }
         }
 
@@ -154,7 +199,7 @@ public class BusinessFlowValidator {
                             .defaultText("Business Phone cannot be empty")
                             .build());
             status = "failure";
-        } else {
+        } else if (mode.equalsIgnoreCase("create")) {
             LOG.info("Checking if business exists with phone={}", registerBusiness.getPhoneWithCountryCode());
             BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
             if (null != bizName) {
@@ -169,7 +214,22 @@ public class BusinessFlowValidator {
             }
         }
 
-        if (status.equalsIgnoreCase("success")) {
+        if (StringUtils.isBlank(registerBusiness.getBusinessServiceImage())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.businessServiceImage")
+                            .defaultText("Business Image cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (mode.equalsIgnoreCase("edit") && registerBusiness.getBusinessTypes() == null) {
+            BizNameEntity bizName = bizService.getByBizNameId(registerBusiness.getBizId());
+            registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
+        }
+
+        if (status.equalsIgnoreCase("success") && mode.equalsIgnoreCase("create")) {
             /* Ignore finding business when editing. */
             if (StringUtils.isBlank(registerBusiness.getBizId())) {
                 Set<BizStoreEntity> bizStores = bizService.bizSearch(
@@ -203,6 +263,7 @@ public class BusinessFlowValidator {
      * @param messageContext
      * @return
      */
+    @SuppressWarnings ("unused")
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
@@ -225,12 +286,28 @@ public class BusinessFlowValidator {
                 decodedAddressStore = registerBusiness.getFoundAddressStores().get(registerBusiness.getFoundAddressStorePlaceId());
                 registerBusiness.setAddressStore(new ScrubbedInput(decodedAddressStore.getFormattedAddress()));
                 registerBusiness.setAddressStoreOrigin(AddressOriginEnum.G);
+
+                if (StringUtils.isBlank(registerBusiness.getAreaStore())) {
+                    registerBusiness.setAreaStore(new ScrubbedInput(decodedAddressStore.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTownStore())) {
+                    registerBusiness.setTownStore(new ScrubbedInput(decodedAddressStore.getTown()));
+                }
             } else if(registerBusiness.getFoundAddressStores().isEmpty()) {
                 Geocode geocode = Geocode.newInstance(
                         externalService.getGeocodingResults(registerBusiness.getAddressStore()),
                         registerBusiness.getAddressStore());
                 registerBusiness.setFoundAddressStores(geocode.getFoundAddresses());
                 decodedAddressStore = DecodedAddress.newInstance(geocode.getResults(), 0);
+
+                if (StringUtils.isBlank(registerBusiness.getAreaStore())) {
+                    registerBusiness.setAreaStore(new ScrubbedInput(decodedAddressStore.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTownStore())) {
+                    registerBusiness.setTownStore(new ScrubbedInput(decodedAddressStore.getTown()));
+                }
 
                 if (decodedAddressStore.isNotBlank()) {
                     if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
@@ -259,6 +336,14 @@ public class BusinessFlowValidator {
                 Map.Entry<String, DecodedAddress> entry = registerBusiness.getFoundAddressStores().entrySet().iterator().next();
                 decodedAddressStore = entry.getValue();
                 registerBusiness.setAddressStoreOrigin(AddressOriginEnum.S);
+
+                if (StringUtils.isBlank(registerBusiness.getAreaStore())) {
+                    registerBusiness.setAreaStore(new ScrubbedInput(decodedAddressStore.getArea()));
+                }
+
+                if (StringUtils.isBlank(registerBusiness.getTownStore())) {
+                    registerBusiness.setTownStore(new ScrubbedInput(decodedAddressStore.getTown()));
+                }
             }
 
             if (decodedAddressStore.isNotBlank()) {
@@ -267,6 +352,26 @@ public class BusinessFlowValidator {
                 LatLng latLng = CommonUtil.getLatLng(decodedAddressStore.getCoordinate());
                 String timeZone = externalService.findTimeZone(latLng);
                 registerBusiness.setTimeZoneStore(new ScrubbedInput(timeZone));
+            }
+
+            if (StringUtils.isBlank(registerBusiness.getAreaStore())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source(source + "areaStore")
+                                .defaultText("Store Town cannot be empty")
+                                .build());
+                status = "failure";
+            }
+
+            if (StringUtils.isBlank(registerBusiness.getTownStore())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source(source + "townStore")
+                                .defaultText("Store City cannot be empty")
+                                .build());
+                status = "failure";
             }
         }
 
@@ -293,6 +398,16 @@ public class BusinessFlowValidator {
                             .error()
                             .source(source + "phoneStore")
                             .defaultText("Store Phone cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(registerBusiness.getBusinessServiceImageStore())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source(source + "businessServiceImageStore")
+                            .defaultText("Store Image cannot be empty")
                             .build());
             status = "failure";
         }

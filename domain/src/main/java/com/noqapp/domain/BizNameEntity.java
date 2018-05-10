@@ -3,9 +3,11 @@ package com.noqapp.domain;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -18,8 +20,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -35,7 +39,7 @@ import java.util.List;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "biz_ph_idx", def = "{'PH' : 1}", unique = true),
         @CompoundIndex (name = "biz_qr_idx", def = "{'QR' : 1}", unique = true, background = true),
-        @CompoundIndex (name = "biz_wl_idx", def = "{'WL': 1}", unique = true, background = true),
+        @CompoundIndex (name = "biz_wl_idx", def = "{'WL' : 1}", unique = true, background = true),
 })
 public class BizNameEntity extends BaseEntity {
 
@@ -114,6 +118,12 @@ public class BizNameEntity extends BaseEntity {
     @Field ("IC")
     private String inviteeCode;
 
+    @Field ("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @Field ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
+
     @NotNull
     @Field ("AO")
     private AddressOriginEnum addressOrigin;
@@ -129,7 +139,7 @@ public class BizNameEntity extends BaseEntity {
     private BillingStatusEnum billingStatus;
 
     @Field ("BI")
-    private List<String> businessServiceImages = new LinkedList<>();
+    private Set<String> businessServiceImages = new LinkedHashSet<>();
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -403,6 +413,24 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizNameEntity setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizNameEntity setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
+        return this;
+    }
+
     public AddressOriginEnum getAddressOrigin() {
         return addressOrigin;
     }
@@ -439,11 +467,11 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getBusinessServiceImages() {
+    public Set<String> getBusinessServiceImages() {
         return businessServiceImages;
     }
 
-    public BizNameEntity setBusinessServiceImages(List<String> businessServiceImages) {
+    public BizNameEntity setBusinessServiceImages(Set<String> businessServiceImages) {
         this.businessServiceImages = businessServiceImages;
         return this;
     }

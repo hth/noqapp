@@ -78,6 +78,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("HR")
     private int hoursSaved;
 
+    @Field ("RV")
+    private String review;
+
     /* Locked when being served. */
     @Field ("SN")
     private String serverName;
@@ -207,6 +210,15 @@ public class QueueEntity extends BaseEntity {
 
     public void setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public QueueEntity setReview(String review) {
+        this.review = review;
+        return this;
     }
 
     public String getServerName() {

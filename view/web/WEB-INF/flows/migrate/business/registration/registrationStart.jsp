@@ -49,21 +49,28 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasRole('ROLE_CLIENT')">
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_CLIENT')">
                 <div class="admin-main">
                     <form:form modelAttribute="register.registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Business Details</h2>
+                            <c:choose>
+                                <c:when test="${empty register.registerBusiness.businessUser}">
+                                    <h2>Add Business Details</h2>
+                                </c:when>
+                                <c:otherwise>
+                                    <h2>Edit Business Details</h2>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -84,9 +91,18 @@
                                             <form:label path="businessTypes" cssErrorClass="lb_error">Business Type</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
-                                                <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
-                                            </form:select>
+                                            <c:choose>
+                                                <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
+                                                    <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                        <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
+                                                    </form:select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                        <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
+                                                    </form:select>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -99,6 +115,30 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <c:if test="${message.source eq 'registerBusiness.area' or message.source eq 'registerBusiness.town'}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="area" cssErrorClass="lb_error">Business Town</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="area" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Santacruz" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="town" cssErrorClass="lb_error">Business City</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Mumbai" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
+                                    </c:forEach>
+
                                     <c:if test="${!empty register.registerBusiness.foundAddresses}">
                                     <li>
                                         <div class="col-lable3">
@@ -134,6 +174,17 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
+                                            <form:label path="businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="businessServiceImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Show the best image of your business"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <c:if test="${empty register.registerBusiness.businessUser}">
+                                    <li>
+                                        <div class="col-lable3">
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                         </div>
                                         <div class="col-fields">
@@ -149,6 +200,9 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
+
+                                    <c:if test="${empty register.registerBusiness.businessUser}">
                                     <li>
                                         <div class="alert-info">
                                             <p>
@@ -166,6 +220,7 @@
                                             </p>
                                         </div>
                                     </li>
+                                    </c:if>
                                 </ul>
 
                                 <div class="col-lable3"></div>
@@ -177,8 +232,16 @@
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                         </c:when>
+                                        <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
+                                            <div class="button-btn">
+                                                <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
+                                                <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                            </div>
+                                        </c:when>
                                         <c:otherwise>
-                                            <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
+                                            <div class="button-btn">
+                                                <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
+                                            </div>
                                         </c:otherwise>
                                     </c:choose>
 

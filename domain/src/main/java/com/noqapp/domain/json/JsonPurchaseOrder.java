@@ -8,6 +8,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,12 +39,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty("qid")
-    private String queueUserId;
-
-    @JsonProperty ("n")
-    private String customerName;
-
     @JsonProperty ("p")
     private String customerPhone;
 
@@ -68,6 +63,25 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
+    /* Populated from TokenQueue. */
+    @JsonProperty ("s")
+    private int servingNumber;
+
+    @JsonProperty ("t")
+    private int token;
+
+    @JsonProperty ("n")
+    private String customerName;
+
+    @JsonProperty ("e")
+    private String expectedServiceBegin;
+
+    @JsonProperty ("ti")
+    private String transactionId;
+
+    @JsonProperty ("os")
+    private PurchaseOrderStateEnum purchaseOrderState;
+
     public JsonPurchaseOrder() {
     }
 
@@ -77,15 +91,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setBizStoreId(String bizStoreId) {
         this.bizStoreId = bizStoreId;
-        return this;
-    }
-
-    public String getQueueUserId() {
-        return queueUserId;
-    }
-
-    public JsonPurchaseOrder setQueueUserId(String queueUserId) {
-        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -172,6 +177,51 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder addPurchaseOrderProduct(JsonPurchaseOrderProduct purchaseOrderProduct) {
         this.purchaseOrderProducts.add(purchaseOrderProduct);
+        return this;
+    }
+
+    public int getServingNumber() {
+        return servingNumber;
+    }
+
+    public JsonPurchaseOrder setServingNumber(int servingNumber) {
+        this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public JsonPurchaseOrder setToken(int token) {
+        this.token = token;
+        return this;
+    }
+
+    public String getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public JsonPurchaseOrder setExpectedServiceBegin(String expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonPurchaseOrder setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public PurchaseOrderStateEnum getPurchaseOrderState() {
+        return purchaseOrderState;
+    }
+
+    public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
+        this.purchaseOrderState = purchaseOrderState;
         return this;
     }
 }

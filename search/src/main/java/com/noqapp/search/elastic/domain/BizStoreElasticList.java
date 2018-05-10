@@ -15,7 +15,6 @@ import org.springframework.data.annotation.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -51,7 +50,7 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private Collection<BizStoreElastic> bizStoreElastics = new HashSet<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
     public String getScrollId() {
         return scrollId;
@@ -89,7 +88,7 @@ public class BizStoreElasticList extends AbstractDomain {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(Collection<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
@@ -100,8 +99,13 @@ public class BizStoreElasticList extends AbstractDomain {
     }
 
     @Transient
-    public BizStoreElasticList populateBizStoreElasticList(List<ElasticBizStoreSource> elasticBizStoreSources) {
+    public BizStoreElasticList populateBizStoreElasticSet(List<ElasticBizStoreSource> elasticBizStoreSources) {
         LOG.info("Before count={}", elasticBizStoreSources.size());
+
+        if (!elasticBizStoreSources.isEmpty()) {
+            bizStoreElastics = new HashSet<>();
+        }
+
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
             BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
             //TODO(hth) remove this call, currently it populates the images
@@ -112,10 +116,6 @@ public class BizStoreElasticList extends AbstractDomain {
                     bizStoreElastic.hashCode(),
                     bizStoreElastic);
             bizStoreElastics.add(bizStoreElastic);
-        }
-
-        if (!bizStoreElastics.isEmpty()) {
-            bizStoreElastics = new LinkedHashSet<>(bizStoreElastics);
         }
         LOG.info("After count={}", bizStoreElastics.size());
         return this;

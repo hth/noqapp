@@ -9,18 +9,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
+import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
@@ -139,6 +142,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("WL")
     private String webLocation;
 
+    @JsonProperty("FF")
+    private String famousFor;
+
     @JsonProperty("DI")
     private String displayImage;
 
@@ -147,12 +153,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     @Transient
     @JsonProperty("BI")
-    private List<String> bizServiceImages = new LinkedList<String>() {{
-        add("https://noqapp.com/imgs/40x40/a.jpeg");
-        add("https://noqapp.com/imgs/40x40/b.jpeg");
-        add("https://noqapp.com/imgs/40x40/e.jpeg");
-    }};
+    private Set<String> bizServiceImages = new LinkedHashSet<>();
 
+    @Transient
+    @JsonProperty("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @Transient
+    @JsonProperty ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     public String getId() {
         return id;
@@ -406,30 +415,16 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public BizStoreElastic setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
+        return this;
+    }
+
     public String getDisplayImage() {
-        LOG.info("Business Type for display Image {}", businessType);
-        if (StringUtils.isBlank(displayImage)) {
-            switch (businessType) {
-                case DO:
-                case HO:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
-                    break;
-                case BK:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/m.jpeg";
-                    break;
-                case RS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/g.jpeg";
-                    break;
-                case ST:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/c.png";
-                    break;
-                case GS:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/e.jpeg";
-                    break;
-                default:
-                    this.displayImage = "https://noqapp.com/imgs/240x120/k.jpg";
-            }
-        }
         return displayImage;
     }
 
@@ -447,15 +442,30 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public List<String> getBizServiceImages() {
+    public Set<String> getBizServiceImages() {
         return bizServiceImages;
     }
 
-    public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
-        //TODO(hth) remove temp condition
-        if (!bizServiceImages.isEmpty()) {
-            this.bizServiceImages = bizServiceImages;
-        }
+    public BizStoreElastic setBizServiceImages(Set<String> bizServiceImages) {
+        this.bizServiceImages = bizServiceImages;
+        return this;
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizStoreElastic setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizStoreElastic setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
         return this;
     }
 
@@ -487,7 +497,11 @@ public class BizStoreElastic extends AbstractDomain {
                 .setTimeZone(bizStore.getTimeZone())
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
-                .setDisplayImage(bizStore.getDisplayImage());
+                .setFamousFor(bizStore.getFamousFor())
+                .setDisplayImage(bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next())
+                .setBizServiceImages(bizStore.getStoreServiceImages())
+                .setAmenities(bizStore.getAmenities())
+                .setFacilities(bizStore.getFacilities());
     }
 
     @Override
@@ -498,7 +512,6 @@ public class BizStoreElastic extends AbstractDomain {
 
         switch (businessType) {
             case DO:
-            case HO:
                 return Objects.equals(bizNameId, that.bizNameId);
             case BK:
                 return Objects.equals(bizNameId, that.bizNameId) &&
@@ -514,7 +527,6 @@ public class BizStoreElastic extends AbstractDomain {
     public int hashCode() {
         switch (businessType) {
             case DO:
-            case HO:
                 return Objects.hash(bizNameId);
             case BK:
                 return Objects.hash(bizNameId, placeId);

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -32,6 +33,8 @@ public final class CommonUtil {
 
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
+
+    private static Random random = new Random();
 
     private CommonUtil() {
     }
@@ -167,5 +170,9 @@ public final class CommonUtil {
 
     public static String generateHexFromObjectId() {
         return ObjectId.get().toHexString();
+    }
+
+    public static String generateTransactionId(String storeId, int token) {
+        return storeId.substring(18, 24) + "-" + token + "-" + (random.ints(0,100).findFirst().getAsInt() + 100) + "-" + generateHexFromObjectId().substring(0, 8);
     }
 }

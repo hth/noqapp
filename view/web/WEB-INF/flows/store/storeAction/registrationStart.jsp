@@ -65,13 +65,13 @@
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                        <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
-                                </c:if>
+                            <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
+                            </c:if>
                             </div>
                         </div>
                         <div class="admin-content">
@@ -132,6 +132,30 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <c:if test="${message.source eq 'areaStore' or message.source eq 'townStore'}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="areaStore" cssErrorClass="lb_error">Store Town</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="areaStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Santacruz" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="townStore" cssErrorClass="lb_error">Store City</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="townStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Mumbai" />
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
+                                    </c:forEach>
+
                                     <c:if test="${!empty registerBusiness.foundAddressStores}">
                                     <li>
                                         <div class="col-lable3">
@@ -165,7 +189,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="businessAddressAsStore" cssErrorClass="lb_error">Same As Business</form:label>
@@ -173,6 +196,26 @@
                                         <div class="col-fields">
                                             <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
                                             <span style="display:block; font-size:14px;">(Store Address, Phone is same as Business)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Store Image</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Show the best image of your store"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="famousFor" cssErrorClass="lb_error">Famous For</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="famousFor" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        placeholder="Speciality you would like everyone to know" />
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

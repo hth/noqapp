@@ -142,14 +142,25 @@ class RegistrationFlowActions {
         if (null == bizName) {
             bizName = BizNameEntity.newInstance(CommonUtil.generateCodeQR(environment.getProperty("build.env")));
         }
+
+        /* Marked address invalid when address is different. */
+        if (null != bizName.getAddress() && !bizName.getAddress().equalsIgnoreCase(registerBusiness.getAddress())) {
+            bizName.setValidatedUsingExternalAPI(false);
+        }
+
         bizName.setBusinessName(registerBusiness.getName())
                 .setBusinessTypes(registerBusiness.getBusinessTypes())
                 .setPhone(registerBusiness.getPhoneWithCountryCode())
                 .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
                 .setAddress(registerBusiness.getAddress())
+                .setArea(registerBusiness.getArea())
+                .setTown(registerBusiness.getTown())
                 .setTimeZone(registerBusiness.getTimeZone())
                 .setInviteeCode(registerBusiness.getInviteeCode())
-                .setAddressOrigin(registerBusiness.getAddressOrigin());
+                .setAddressOrigin(registerBusiness.getAddressOrigin())
+                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage())
+                .setAmenities(registerBusiness.getAmenities())
+                .setFacilities(registerBusiness.getFacilities());
         validateAddress(bizName);
 
         try {
@@ -208,13 +219,19 @@ class RegistrationFlowActions {
                 .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
                 .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
                 .setAddress(registerBusiness.getAddressStore())
+                .setArea(registerBusiness.getAreaStore())
+                .setTown(registerBusiness.getTownStore())
                 .setTimeZone(registerBusiness.getTimeZoneStore())
                 .setCodeQR(StringUtils.isBlank(bizStore.getCodeQR()) ? CommonUtil.generateCodeQR(environment.getProperty("build.env")) : bizStore.getCodeQR())
                 .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
                 .setBizCategoryId(registerBusiness.getBizCategoryId())
                 .setRemoteJoin(registerBusiness.isRemoteJoin())
                 .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
-                .setAvailableTokenCount(registerBusiness.getAvailableTokenCount());
+                .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
+                .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore())
+                .setFamousFor(registerBusiness.getFamousFor())
+                .setFacilities(registerBusiness.getFacilitiesStore())
+                .setAmenities(registerBusiness.getAmenitiesStore());
 
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
@@ -272,13 +289,15 @@ class RegistrationFlowActions {
         }
     }
 
-    boolean isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+    String isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
         switch (businessUserRegistrationStatus) {
             case C:
-                return true;
+                return "complete";
             case I:
             case N:
-                return false;
+                return "in-complete";
+            case V:
+                return "edit";
             default:
                 LOG.error("Reached unsupported condition={}", businessUserRegistrationStatus);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUserRegistrationStatus);

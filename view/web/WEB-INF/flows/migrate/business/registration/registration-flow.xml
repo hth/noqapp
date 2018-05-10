@@ -4,25 +4,22 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_CLIENT" match="any"/>
+    <secured attributes="ROLE_CLIENT, ROLE_M_ADMIN" match="any"/>
 
     <on-start>
-        <evaluate expression="migrateToBusinessRegistrationFlowActions.createBusinessRegistration()"
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizNameId')" result="conversationScope.bizNameId" />
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.populateBusiness(bizNameId)"
                   result="flowScope.register"/>
     </on-start>
 
-    <decision-state id="profileComplete">
-        <if test="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(register)"
-            then="registrationComplete"
-            else="profileCompletion"/>
-    </decision-state>
+    <action-state id="profileComplete">
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(register)" />
+        <transition on="complete" to="registrationComplete"/>
+        <transition on="in-complete" to="profileCompletion"/>
+        <transition on="edit" to="registrationStart"/>
+    </action-state>
 
     <view-state id="profileCompletion" model="register">
-        <on-entry>
-            <!-- Populates all available business types -->
-            <evaluate result="register.registerBusiness.availableBusinessTypes"
-                      expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()"/>
-        </on-entry>
         <transition on="submit" to="validateUserProfile"/>
     </view-state>
 
@@ -35,22 +32,62 @@
     </action-state>
 
     <view-state id="registrationStart" model="register">
+        <on-entry>
+            <!-- Populates all available business types -->
+            <evaluate result="register.registerBusiness.availableBusinessTypes"
+                      expression="T(com.noqapp.domain.types.BusinessTypeEnum).asList()"/>
+        </on-entry>
         <transition on="submit" to="validateBusinessDetails"/>
         <transition on="cancel" to="logout"/>
+        <transition on="edit" to="editValidateBusinessDetails"/>
+        <transition on="editCancel" to="registrationEditComplete"/>
     </view-state>
 
     <action-state id="validateBusinessDetails">
-        <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)"/>
-        <transition on="success" to="registrationReview"/>
+        <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'create', messageContext)"/>
+        <transition on="success" to="additionalAttributes"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
+    <action-state id="editValidateBusinessDetails">
+        <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'edit', messageContext)"/>
+        <transition on="success" to="additionalEditAttributes"/>
+        <transition on="failure" to="registrationStart"/>
+    </action-state>
+
+    <!-- Additional Attributes -->
+    <view-state id="additionalAttributes" model="register">
+        <on-entry>
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.additionalAttributes(register)" />
+        </on-entry>
+        <transition on="continue" to="registrationReview"/>
+        <transition on="cancel" to="registrationStart"/>
+    </view-state>
+
+    <view-state id="additionalEditAttributes" model="register">
+        <on-entry>
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.additionalAttributes(register)" />
+        </on-entry>
+        <transition on="continueEdit" to="registrationEditReview"/>
+        <transition on="cancel" to="registrationEditComplete"/>
+    </view-state>
+    <!-- Additional Attributes End -->
+
+    <!-- Review -->
     <view-state id="registrationReview">
         <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
         <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
         <transition on="revise" to="profileCompletion"/>
         <transition on="cancel" to="logout"/>
     </view-state>
+
+    <view-state id="registrationEditReview">
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="update" to="updateRegistrationInformation" history="invalidate"/>
+        <transition on="revise" to="registrationStart"/>
+        <transition on="editCancel" to="registrationEditComplete"/>
+    </view-state>
+    <!-- Review End -->
 
     <action-state id="completeRegistrationInformation">
         <!-- Need the result to show correct message on JSP -->
@@ -63,6 +100,18 @@
         <transition to="registrationComplete"/>
     </action-state>
 
+    <action-state id="updateRegistrationInformation">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="register"
+                  expression="migrateToBusinessRegistrationFlowActions.updateRegistrationInformation(register)"/>
+
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException"
+                    to="registrationStart"/>
+
+        <transition to="registrationEditComplete"/>
+    </action-state>
+
+    <view-state id="registrationEditComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
     <view-state id="registrationComplete"/>
     <end-state id="logout"/>
 

@@ -14,11 +14,11 @@
                   result="flowScope.businessUserRegistrationStatus"/>
     </on-start>
 
-    <decision-state id="profileComplete">
-        <if test="migrateToBusinessProfileFlowActions.isRegistrationComplete(businessUserRegistrationStatus)"
-            then="registrationComplete"
-            else="profileCompletion"/>
-    </decision-state>
+    <action-state id="profileComplete">
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(businessUserRegistrationStatus)" />
+        <transition on="complete" to="registrationComplete"/>
+        <transition on="in-complete" to="profileCompletion"/>
+    </action-state>
 
     <view-state id="profileCompletion" model="registerUser">
         <transition on="submit" to="validateUserProfile"/>

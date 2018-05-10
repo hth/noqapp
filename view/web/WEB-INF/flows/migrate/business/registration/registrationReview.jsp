@@ -135,10 +135,37 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
+                                            <form:label path="registerBusiness.area" cssErrorClass="lb_error">Business Town</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.area" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.town" cssErrorClass="lb_error">Business City</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.town" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
                                             <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="registerBusiness.phone" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.businessServiceImage" cssClass="form-field-admin" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -153,6 +180,46 @@
                                         <div class="clearFix"></div>
                                     </li>
                                 </ul>
+                                </div>
+
+                                <div class="full">
+                                    <div class="admin-title pT30">
+                                        <h2>Business Amenities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty register.registerBusiness.amenities}">
+                                                <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenities}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No amenity has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
+
+                                    <div class="admin-title pT30">
+                                        <h2>Business Facilities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty register.registerBusiness.facilities}">
+                                                <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilities}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No facility has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
                                 </div>
 
                                 <div class="btn-hours">

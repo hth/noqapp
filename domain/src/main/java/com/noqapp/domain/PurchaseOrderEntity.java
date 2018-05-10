@@ -4,6 +4,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,6 +30,7 @@ import java.util.List;
         @CompoundIndex(name = "po_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
         @CompoundIndex(name = "po_bn_idx", def = "{'BN' : 1}", unique = false),
         @CompoundIndex(name = "po_qr_idx", def = "{'QR' : 1}", unique = false),
+        @CompoundIndex(name = "po_ti_idx", def = "{'TI' : 1}", unique = true),
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
@@ -43,6 +45,9 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Field("QR")
     private String codeQR;
+
+    @Field ("DID")
+    private String did;
 
     @Field("CN")
     private String customerName;
@@ -71,6 +76,45 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("BT")
     private BusinessTypeEnum businessType;
 
+    @Field ("RA")
+    private int ratingCount;
+
+    @Field ("HR")
+    private int hoursSaved;
+
+    @Field ("RV")
+    private String review;
+
+    /* Order Number. */
+    @NotNull
+    @Field ("TN")
+    private int tokenNumber;
+
+    /* Locked when being served. */
+    @Field ("SN")
+    private String serverName;
+
+    @Field ("SID")
+    private String serverDeviceId;
+
+    @Field ("SB")
+    private Date serviceBeginTime;
+
+    @Field ("SE")
+    private Date serviceEndTime;
+
+    @Field ("EB")
+    private Date expectedServiceBegin;
+
+    @Field ("TS")
+    private TokenServiceEnum tokenService;
+
+    @Field ("VS")
+    private boolean clientVisitedThisStore;
+
+    @Field ("TI")
+    private String transactionId;
+
     @SuppressWarnings("unused")
     private PurchaseOrderEntity() {
         //Default constructor, required to keep bean happy
@@ -97,6 +141,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    public String getDid() {
+        return did;
+    }
+
+    public PurchaseOrderEntity setDid(String did) {
+        this.did = did;
+        return this;
     }
 
     public String getCustomerName() {
@@ -177,6 +230,114 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public PurchaseOrderEntity setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public int getHoursSaved() {
+        return hoursSaved;
+    }
+
+    public PurchaseOrderEntity setHoursSaved(int hoursSaved) {
+        this.hoursSaved = hoursSaved;
+        return this;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public PurchaseOrderEntity setReview(String review) {
+        this.review = review;
+        return this;
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public PurchaseOrderEntity setTokenNumber(int tokenNumber) {
+        this.tokenNumber = tokenNumber;
+        return this;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public PurchaseOrderEntity setServerName(String serverName) {
+        this.serverName = serverName;
+        return this;
+    }
+
+    public String getServerDeviceId() {
+        return serverDeviceId;
+    }
+
+    public PurchaseOrderEntity setServerDeviceId(String serverDeviceId) {
+        this.serverDeviceId = serverDeviceId;
+        return this;
+    }
+
+    public Date getServiceBeginTime() {
+        return serviceBeginTime;
+    }
+
+    public PurchaseOrderEntity setServiceBeginTime(Date serviceBeginTime) {
+        this.serviceBeginTime = serviceBeginTime;
+        return this;
+    }
+
+    public Date getServiceEndTime() {
+        return serviceEndTime;
+    }
+
+    public PurchaseOrderEntity setServiceEndTime(Date serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
+        return this;
+    }
+
+    public Date getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public PurchaseOrderEntity setExpectedServiceBegin(Date expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public TokenServiceEnum getTokenService() {
+        return tokenService;
+    }
+
+    public PurchaseOrderEntity setTokenService(TokenServiceEnum tokenService) {
+        this.tokenService = tokenService;
+        return this;
+    }
+
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public PurchaseOrderEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public PurchaseOrderEntity setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 }
