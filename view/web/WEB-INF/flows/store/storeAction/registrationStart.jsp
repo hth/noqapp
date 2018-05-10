@@ -134,7 +134,7 @@
                                     </li>
 
                                     <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <c:if test="${message.source eq 'areaStore'}">
+                                    <c:if test="${message.source eq 'areaStore' or message.source eq 'townStore'}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="areaStore" cssErrorClass="lb_error">Store Town</form:label>
@@ -144,8 +144,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-                                    </c:if>
-                                    <c:if test="${message.source eq 'townStore'}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="townStore" cssErrorClass="lb_error">Store City</form:label>
@@ -213,7 +211,7 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
+                                            <form:label path="famousFor" cssErrorClass="lb_error">Famous For</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="famousFor" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
