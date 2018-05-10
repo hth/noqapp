@@ -184,7 +184,50 @@
                                     </ul>
                                 </div>
 
+                                <div class="full">
+                                    <div class="admin-title pT30">
+                                        <h2>Store Amenities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty registerBusiness.amenitiesStore}">
+                                                <form:checkboxes element="li" path="amenitiesStore" items="${registerBusiness.amenitiesStore}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No store amenity has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
+
+                                    <div class="admin-title pT30">
+                                        <h2>Store Facilities</h2>
+                                    </div>
+                                    <ul class="col3-grid">
+                                        <c:choose>
+                                            <c:when test="${!empty registerBusiness.facilitiesStore}">
+                                                <form:checkboxes element="li" path="facilitiesStore" items="${registerBusiness.facilitiesStore}" disabled="true"/>
+                                                <div class="clearFix"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        No store facility has been selected
+                                                    </p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </ul>
+                                </div>
+
                                 <div>
+                                    <div class="admin-title pT30">
+                                        <h2>Store Hours</h2>
+                                    </div>
                                     <ul class="col2-grid">
                                         <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
                                             <li>

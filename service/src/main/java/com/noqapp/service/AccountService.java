@@ -174,15 +174,17 @@ public class AccountService {
                 userAccount.active();
 
                 /* Login through Mobile. */
-                if (null == password) {
-                    UserAuthenticationEntity userAuthentication = generateUserAuthentication(null);
-                    userAccount.setUserAuthentication(userAuthentication);
-                }
+//                if (StringUtils.isBlank(password)) {
+//                    UserAuthenticationEntity userAuthentication = generateUserAuthentication(null);
+//                    userAccount.setUserAuthentication(userAuthentication);
+//                }
+                UserAuthenticationEntity userAuthentication = generateUserAuthentication(password);
+                userAccount.setUserAuthentication(userAuthentication);
                 userAccountManager.save(userAccount);
                 /* Set authentication. This will speed up login through browser. */
-                if (null != password) {
-                    executorService.submit(() -> createAuthentication(password, qid));
-                }
+//                if (StringUtils.isNotBlank(password)) {
+//                    executorService.submit(() -> createAuthentication(password, qid));
+//                }
 
                 if (StringUtils.isBlank(mail)) {
                     mail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(firstNameCleanedUp), new ScrubbedInput(lastNameCleanedUp), qid);

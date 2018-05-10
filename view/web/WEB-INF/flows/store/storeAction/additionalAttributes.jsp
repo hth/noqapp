@@ -1,4 +1,4 @@
-<%@ include file="../../../../jsp/include.jsp" %>
+<%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -51,10 +51,17 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_CLIENT')">
                 <div class="admin-main">
-                    <form:form modelAttribute="register">
+                    <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Business Amenities & Facilities</h2>
+                            <c:choose>
+                            <c:when test="${!empty registerBusiness.bizStoreId}">
+                                <h2>Edit Store Amenities & Facilities</h2>
+                            </c:when>
+                            <c:otherwise>
+                                <h2>Add Store Amenities & Facilities</h2>
+                            </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
@@ -72,28 +79,51 @@
                             <div class="full">
                                 <ul class="col3-grid">
                                     <h4><strong>Amenities</strong></h4>
-                                    <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenitiesAvailable}"/>
+                                    <c:choose>
+                                    <c:when test="${!empty registerBusiness.amenitiesAvailable}">
+                                        <form:checkboxes element="li" path="amenitiesStore" items="${registerBusiness.amenitiesAvailable}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>
+                                                No individual amenity selection allowed
+                                            </p>
+                                        </div>
+                                    </c:otherwise>
+                                    </c:choose>
                                     <div class="clearFix"></div>
                                 </ul>
                                 <ul class="col3-grid">
                                     <h4><strong>Facilities</strong></h4>
-                                    <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilitiesAvailable}"/>
+                                    <c:choose>
+                                    <c:when test="${!empty registerBusiness.facilitiesAvailable}">
+                                        <form:checkboxes element="li" path="facilitiesStore" items="${registerBusiness.facilitiesAvailable}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>
+                                                No individual facility selection allowed
+                                            </p>
+                                        </div>
+                                    </c:otherwise>
+                                    </c:choose>
                                     <div class="clearFix"></div>
                                 </ul>
 
                                 <div class="btn-hours">
                                     <c:choose>
-                                        <c:when test="${register.registerUser.emailValidated}">
-                                        <div class="button-btn">
-                                            <button name="_eventId_continue" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                        </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                        <div class="button-btn">
-                                            <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
-                                        </div>
-                                        </c:otherwise>
+                                    <c:when test="${!empty registerBusiness.bizStoreId}">
+                                    <div class="button-btn">
+                                        <button name="_eventId_continue" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
+                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                    </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <div class="button-btn">
+                                        <button name="_eventId_continue" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                    </div>
+                                    </c:otherwise>
                                     </c:choose>
                                     <div class="clearFix"></div>
                                 </div>
