@@ -33,7 +33,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -143,21 +142,18 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("unused")
     public void additionalAttributes(Register register) {
         for (BusinessTypeEnum businessType : register.getRegisterBusiness().getBusinessTypes()) {
+            register.getRegisterBusiness().setAmenitiesAvailable(AmenityEnum.ALL);
             switch (businessType) {
                 case DO:
-                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
                     register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.DOCTOR_HOSPITAL);
                     break;
                 case GS:
-                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
                     register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.GROCERY);
                     break;
                 case RS:
-                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
                     register.getRegisterBusiness().setFacilitiesAvailable(FacilityEnum.RESTAURANT);
                     break;
                 default:
-                    register.getRegisterBusiness().setAmenitiesAvailable(new LinkedHashSet<>(AmenityEnum.asList()));
                     EnumSet<FacilityEnum> facilitiesAvailable = FacilityEnum.GROCERY;
                     facilitiesAvailable.addAll(FacilityEnum.RESTAURANT);
 
