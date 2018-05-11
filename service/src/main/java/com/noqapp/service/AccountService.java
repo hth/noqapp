@@ -545,7 +545,7 @@ public class AccountService {
      * @param registerUser
      * @param username
      */
-    public void updateUserProfile(RegisterUser registerUser, String username) {
+    public UserProfileEntity updateUserProfile(RegisterUser registerUser, String username) {
         LOG.info("Update profile with registeredUser={} username={}", registerUser, username);
         UserProfileEntity userProfile;
         if (!registerUser.getEmail().equalsIgnoreCase(username)) {
@@ -556,6 +556,7 @@ public class AccountService {
             userProfile = doesUserExists(username);
         }
 
+        userProfile.setGender(registerUser.getGender());
         userProfile.setAddress(registerUser.getAddress());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         userProfile.setPhone(registerUser.getPhoneWithCountryCode());
@@ -576,6 +577,8 @@ public class AccountService {
                     registerUser.getLastName(),
                     registerUser.getQueueUserId());
         }
+
+        return userProfile;
     }
 
     /**

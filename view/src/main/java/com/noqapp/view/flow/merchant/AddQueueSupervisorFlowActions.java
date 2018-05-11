@@ -365,6 +365,7 @@ public class AddQueueSupervisorFlowActions {
                     .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
                     .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
                     .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                    .setGender(userProfile.getGender())
                     .setQueueUserId(userProfile.getQueueUserId());
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
