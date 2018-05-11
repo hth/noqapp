@@ -545,7 +545,7 @@ public class AccountService {
      * @param registerUser
      * @param username
      */
-    public UserProfileEntity updateUserProfile(RegisterUser registerUser, String username) {
+    public void updateUserProfile(RegisterUser registerUser, String username) {
         LOG.info("Update profile with registeredUser={} username={}", registerUser, username);
         UserProfileEntity userProfile;
         if (!registerUser.getEmail().equalsIgnoreCase(username)) {
@@ -577,8 +577,6 @@ public class AccountService {
                     registerUser.getLastName(),
                     registerUser.getQueueUserId());
         }
-
-        return userProfile;
     }
 
     /**
