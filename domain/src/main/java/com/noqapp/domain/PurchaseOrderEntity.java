@@ -70,6 +70,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("PT")
     private PaymentTypeEnum paymentType;
 
+    @Field("PS")
+    private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
+
     @Field("OS")
     private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{add(PurchaseOrderStateEnum.IN);}};
 
@@ -215,12 +218,22 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
+    public PurchaseOrderStateEnum getPresentOrderState() {
+        return presentOrderState;
+    }
+
+    public PurchaseOrderEntity setPresentOrderState() {
+        this.presentOrderState = this.orderStates.get(orderStates.size() - 1);
+        return this;
+    }
+
     public List<PurchaseOrderStateEnum> getOrderStates() {
         return orderStates;
     }
 
     public PurchaseOrderEntity addOrderState(PurchaseOrderStateEnum orderState) {
         this.orderStates.add(orderState);
+        this.presentOrderState = orderState;
         return this;
     }
 
