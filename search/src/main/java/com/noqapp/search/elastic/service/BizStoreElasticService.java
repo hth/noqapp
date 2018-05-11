@@ -161,7 +161,7 @@ public class BizStoreElasticService {
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.TEN.getLimit());
+        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.THREE.getLimit());
     }
 
     public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter) {
@@ -197,7 +197,7 @@ public class BizStoreElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
                 .setFrom(0)
-                .setSize(PaginationEnum.TEN.getLimit())
+                .setSize(PaginationEnum.THREE.getLimit())
                 .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -265,7 +265,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
                 //searchSourceBuilder.query(matchQuery("CC", "India"));
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(1L));
 
@@ -314,11 +314,12 @@ public class BizStoreElasticService {
         }
     }
 
-    public BizStoreElasticList nearMeSearch(String geoHash) {
-        BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, null);
+    @Mobile
+    public BizStoreElasticList nearMeSearch(String geoHash, String scrollId) {
+        BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
-        while (bizStoreElasticSet.size() < 10 && hits < 3) {
+        while (bizStoreElasticSet.size() < PaginationEnum.THREE.getLimit() && hits < 3) {
             LOG.info("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId());
             BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
