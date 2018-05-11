@@ -12,6 +12,8 @@ package com.noqapp.domain.types;
 })
 public enum PaginationEnum {
     ALL(-1),
+    TWO(2),
+    THREE(3),
     FIVE(5),
     TEN(10);
 
