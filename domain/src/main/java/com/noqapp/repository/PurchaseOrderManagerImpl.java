@@ -2,12 +2,18 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * hitender
@@ -45,5 +51,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public void deleteHard(PurchaseOrderEntity object) {
 
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findAllByQid(String qid) {
+        return mongoTemplate.find(
+                Query.query(where("QID").is(qid).and("PS").ne(PurchaseOrderStateEnum.OD)),
+                PurchaseOrderEntity.class,
+                TABLE
+        );
     }
 }

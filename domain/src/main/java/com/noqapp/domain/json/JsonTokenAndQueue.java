@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -104,6 +105,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Required default constructor
     }
 
+    /* For Active Queue. */
     public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.geoHash = jsonQueue.getGeoHash();
@@ -121,6 +123,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
+        //Skipped ratingCount
+        //Skipped hoursSaved
         this.serviceEndTime = jsonQueue.getServiceEndTime();
         this.createDate = jsonQueue.getCreated();
 
@@ -134,7 +138,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.codeQR = queue.getCodeQR();
         this.geoHash = bizStore.getGeoPoint().getGeohash();
         this.businessName = bizStore.getBizName().getBusinessName();
-        this.displayName = queue.getDisplayName();
+        this.displayName = bizStore.getDisplayName();
         this.storeAddress = bizStore.getAddress();
         this.area = bizStore.getArea();
         this.town = bizStore.getTown();
@@ -152,6 +156,37 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.hoursSaved = queue.getHoursSaved();
         this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
+        //Skipped queueStatus
+        this.token = queue.getTokenNumber();
+    }
+
+    /* For Active Order. */
+    public JsonTokenAndQueue(PurchaseOrderEntity queue, BizStoreEntity bizStore) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+        this.codeQR = queue.getCodeQR();
+        this.geoHash = bizStore.getGeoPoint().getGeohash();
+        this.businessName = bizStore.getBizName().getBusinessName();
+        this.displayName = bizStore.getDisplayName();
+        this.storeAddress = bizStore.getAddress();
+        this.area = bizStore.getArea();
+        this.town = bizStore.getTown();
+        this.countryShortName = bizStore.getCountryShortName();
+        this.storePhone = bizStore.getPhone();
+        this.businessType = bizStore.getBusinessType();
+        this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
+        this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
+        this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
+        this.topic = bizStore.getTopic();
+        this.servingNumber = 0;
+        this.lastNumber = 0;
+        //Skipped ratingCount
+        //Skipped hoursSaved
+        this.serviceEndTime = null == queue.getServiceEndTime() ? "NA" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+
+        //TODO remove queueStatus
+        this.queueStatus = QueueStatusEnum.S;
         this.token = queue.getTokenNumber();
     }
 

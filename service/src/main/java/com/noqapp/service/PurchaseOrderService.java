@@ -11,6 +11,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.json.JsonTokenAndQueue;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.PurchaseOrderManager;
@@ -26,7 +27,9 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
@@ -159,5 +162,24 @@ public class PurchaseOrderService {
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
                 .setTransactionId(purchaseOrder.getTransactionId())
                 .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
+    }
+
+    private List<PurchaseOrderEntity> findAllByQid(String qid) {
+        return purchaseOrderManager.findAllByQid(qid);
+    }
+
+    @Mobile
+    public List<JsonTokenAndQueue> findAllByQidAsJson(String qid) {
+        List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
+        List<PurchaseOrderEntity> purchaseOrders = findAllByQid(qid);
+        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            BizStoreEntity bizStore = bizService.findByCodeQR(purchaseOrder.getCodeQR());
+            bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
+
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, bizStore);
+            jsonTokenAndQueues.add(jsonTokenAndQueue);
+        }
+
+        return jsonTokenAndQueues;
     }
 }
