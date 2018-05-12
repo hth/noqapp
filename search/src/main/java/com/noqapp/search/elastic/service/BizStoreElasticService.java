@@ -320,7 +320,7 @@ public class BizStoreElasticService {
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
         while (bizStoreElasticSet.size() < PaginationEnum.THREE.getLimit() && hits < 3) {
-            LOG.info("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId());
+            LOG.debug("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10, bizStoreElastics.getScrollId().length()));
             BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
             bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
