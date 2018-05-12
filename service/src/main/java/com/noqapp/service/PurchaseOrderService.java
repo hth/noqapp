@@ -47,7 +47,6 @@ public class PurchaseOrderService {
     private BizService bizService;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
-    private AccountService accountService;
     private StoreProductService storeProductService;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseProductOrderManager purchaseProductOrderManager;
@@ -57,7 +56,6 @@ public class PurchaseOrderService {
             BizService bizService,
             TokenQueueService tokenQueueService,
             StoreHourManager storeHourManager,
-            AccountService accountService,
             StoreProductService storeProductService,
             PurchaseOrderManager purchaseOrderManager,
             PurchaseProductOrderManager purchaseProductOrderManager
@@ -65,7 +63,6 @@ public class PurchaseOrderService {
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
-        this.accountService = accountService;
         this.storeProductService = storeProductService;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseProductOrderManager = purchaseProductOrderManager;
