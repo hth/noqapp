@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEntity> {
 
-    List<PurchaseOrderEntity> findAllByQid(String qid);
+    List<PurchaseOrderEntity> findAllOpenOrder(String qid);
 }

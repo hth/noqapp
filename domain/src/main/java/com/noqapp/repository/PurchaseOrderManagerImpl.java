@@ -54,7 +54,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public List<PurchaseOrderEntity> findAllByQid(String qid) {
+    public List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
         return mongoTemplate.find(
                 Query.query(where("QID").is(qid).and("PS").ne(PurchaseOrderStateEnum.OD)),
                 PurchaseOrderEntity.class,
