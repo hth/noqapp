@@ -32,8 +32,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -251,6 +251,37 @@ public class BizStoreElasticService {
     }
 
     @Mobile
+    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String query, String cityName, String geoHash, String filters, String scrollId) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+                searchSourceBuilder.query(QueryBuilders.matchAllQuery().queryName(query));
+                searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
+    }
+
+    @Mobile
     public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
@@ -273,44 +304,46 @@ public class BizStoreElasticService {
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
-            SearchHits hits = searchResponse.getHits();
-            SearchHit[] searchHits = hits.getHits();
-            if (searchHits != null && searchHits.length > 0) {
-                for (SearchHit hit : searchHits) {
-                    Map<String, Object> map = hit.getSourceAsMap();
-                    BizStoreElastic bizStoreElastic = new BizStoreElastic()
-                            .setId(map.containsKey("id") ? map.get("id").toString() : "")
-                            .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
-                            .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
-                            .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
-                            .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
-                            .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
-                            .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
-                            .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
-                            .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")
-                            .setStoreHourElasticList(map.containsKey("SH") ? (List<StoreHourElastic>) map.get("SH") : new ArrayList<>())
-                            .setState(map.containsKey("ST") ? map.get("ST").toString() : "")
-                            .setStateShortName(map.containsKey("SS") ? map.get("SS").toString() : "")
-                            .setCountry(map.containsKey("CC") ? map.get("CC").toString() : "")
-                            .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
-                            .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
-                            .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
-                            .setRating(map.containsKey("RA") ? Float.valueOf(map.get("RA").toString()) : 3.0f)
-                            .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
-                            .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
-                            .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
-                            .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
-                            .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
-                            .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
-                            .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
-                            .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
-                    bizStoreElastics.addBizStoreElastic(bizStoreElastic);
-                }
-            }
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
             return bizStoreElastics;
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
+        }
+    }
+
+    private void populateSearchData(BizStoreElasticList bizStoreElastics, SearchHit[] searchHits) {
+        if (searchHits != null && searchHits.length > 0) {
+            for (SearchHit hit : searchHits) {
+                Map<String, Object> map = hit.getSourceAsMap();
+                BizStoreElastic bizStoreElastic = new BizStoreElastic()
+                        .setId(map.containsKey("id") ? map.get("id").toString() : "")
+                        .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
+                        .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
+                        .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
+                        .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
+                        .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
+                        .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
+                        .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
+                        .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")
+                        .setStoreHourElasticList(map.containsKey("SH") ? (List<StoreHourElastic>) map.get("SH") : new ArrayList<>())
+                        .setState(map.containsKey("ST") ? map.get("ST").toString() : "")
+                        .setStateShortName(map.containsKey("SS") ? map.get("SS").toString() : "")
+                        .setCountry(map.containsKey("CC") ? map.get("CC").toString() : "")
+                        .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
+                        .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
+                        .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
+                        .setRating(map.containsKey("RA") ? Float.valueOf(map.get("RA").toString()) : 3.0f)
+                        .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
+                        .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
+                        .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
+                        .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
+                        .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
+                        .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
+                        .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
+                        .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
+                bizStoreElastics.addBizStoreElastic(bizStoreElastic);
+            }
         }
     }
 
