@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
@@ -47,7 +48,6 @@ public class PurchaseOrderService {
     private BizService bizService;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
-    private AccountService accountService;
     private StoreProductService storeProductService;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseProductOrderManager purchaseProductOrderManager;
@@ -57,7 +57,6 @@ public class PurchaseOrderService {
             BizService bizService,
             TokenQueueService tokenQueueService,
             StoreHourManager storeHourManager,
-            AccountService accountService,
             StoreProductService storeProductService,
             PurchaseOrderManager purchaseOrderManager,
             PurchaseProductOrderManager purchaseProductOrderManager
@@ -65,7 +64,6 @@ public class PurchaseOrderService {
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
-        this.accountService = accountService;
         this.storeProductService = storeProductService;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseProductOrderManager = purchaseProductOrderManager;
@@ -164,14 +162,16 @@ public class PurchaseOrderService {
                 .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
     }
 
-    private List<PurchaseOrderEntity> findAllByQid(String qid) {
-        return purchaseOrderManager.findAllByQid(qid);
+    private List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
+        return purchaseOrderManager.findAllOpenOrder(qid);
     }
 
     @Mobile
-    public List<JsonTokenAndQueue> findAllByQidAsJson(String qid) {
+    public List<JsonTokenAndQueue> findAllOpenOrderAsJson(String qid) {
+        Validate.isValidQid(qid);
+
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
-        List<PurchaseOrderEntity> purchaseOrders = findAllByQid(qid);
+        List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
         for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizService.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
