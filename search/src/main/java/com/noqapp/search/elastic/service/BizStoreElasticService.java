@@ -66,6 +66,7 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 @Service
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
+    public static final long MINUTES = 5L;
 
     private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "FF", "DI"};
     private static String[] excludeFields = new String[] {"_type"};
@@ -257,7 +258,7 @@ public class BizStoreElasticService {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
@@ -267,7 +268,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
             }
@@ -288,7 +289,7 @@ public class BizStoreElasticService {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
@@ -298,7 +299,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
             }
