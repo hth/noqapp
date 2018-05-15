@@ -8,6 +8,9 @@ import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedMinorPerson;
 import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.stats.DoctorStats;
+import com.noqapp.domain.stats.NewRepeatCustomers;
+import com.noqapp.domain.stats.YearlyData;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -286,5 +289,35 @@ public class QueueService {
 
     public void updateServiceBeginTime(String id) {
         queueManager.updateServiceBeginTime(id);
+    }
+
+    private List<YearlyData> lastTwelveMonthVisits(String codeQR) {
+        return new ArrayList<YearlyData>() {
+            {
+                add(new YearlyData().setYearMonth(1).setValue(10));
+                add(new YearlyData().setYearMonth(2).setValue(20));
+                add(new YearlyData().setYearMonth(3).setValue(15));
+                add(new YearlyData().setYearMonth(4).setValue(10));
+                add(new YearlyData().setYearMonth(5).setValue(5));
+                add(new YearlyData().setYearMonth(6).setValue(12));
+                add(new YearlyData().setYearMonth(7).setValue(16));
+                add(new YearlyData().setYearMonth(8).setValue(19));
+                add(new YearlyData().setYearMonth(9).setValue(10));
+                add(new YearlyData().setYearMonth(10).setValue(8));
+                add(new YearlyData().setYearMonth(11).setValue(16));
+                add(new YearlyData().setYearMonth(12).setValue(21));
+            }
+        };
+    }
+
+    private NewRepeatCustomers repeatAndNewCustomers(String codeQR) {
+        return new NewRepeatCustomers().setCustomerNew(5).setCustomerRepeat(20);
+    }
+
+    @Mobile
+    public DoctorStats doctorStat(String codeQR) {
+        return new DoctorStats()
+                .setRepeatCustomers(repeatAndNewCustomers(codeQR))
+                .setTwelveMonths(lastTwelveMonthVisits(codeQR));
     }
 }
