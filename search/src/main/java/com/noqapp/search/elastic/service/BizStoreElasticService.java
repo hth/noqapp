@@ -66,9 +66,12 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 @Service
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
-    public static final long MINUTES = 5L;
+    private static final long MINUTES = 10L;
 
-    private static String[] includeFields = new String[] {"N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH", "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR", "GH", "WL", "FF", "DI"};
+    private static String[] includeFields = new String[] {
+            "N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH",
+            "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR",
+            "GH", "WL", "FF", "DI"};
     private static String[] excludeFields = new String[] {"_type"};
 
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
@@ -162,7 +165,7 @@ public class BizStoreElasticService {
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.THREE.getLimit());
+        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.TEN.getLimit());
     }
 
     public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter) {
@@ -198,7 +201,7 @@ public class BizStoreElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
                 .setFrom(0)
-                .setSize(PaginationEnum.THREE.getLimit())
+                .setSize(PaginationEnum.TEN.getLimit())
                 .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -266,7 +269,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
                 searchSourceBuilder.query(QueryBuilders.matchAllQuery().queryName(query));
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
@@ -297,7 +300,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
                 //searchSourceBuilder.query(matchQuery("CC", "India"));
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
@@ -353,7 +356,7 @@ public class BizStoreElasticService {
         BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
-        while (bizStoreElasticSet.size() < PaginationEnum.THREE.getLimit() && hits < 3) {
+        while (bizStoreElasticSet.size() < PaginationEnum.TEN.getLimit() && hits < 3) {
             LOG.debug("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10, bizStoreElastics.getScrollId().length()));
             BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
