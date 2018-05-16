@@ -31,6 +31,9 @@ public class UserAddressEntity extends BaseEntity {
     @Field ("AD")
     private String address;
 
+    @Field ("GH")
+    private String geoHash;
+
     @Field ("CS")
     private String countryShortName;
 
@@ -54,6 +57,15 @@ public class UserAddressEntity extends BaseEntity {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getGeoHash() {
+        return geoHash;
+    }
+
+    public UserAddressEntity setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
+        return this;
     }
 
     public String getCountryShortName() {

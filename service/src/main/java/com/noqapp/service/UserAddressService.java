@@ -4,9 +4,11 @@ import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.json.JsonUserAddressList;
+import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.repository.UserAddressManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.Asserts;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,12 @@ import java.util.List;
 public class UserAddressService {
 
     private UserAddressManager userAddressManager;
+    private ExternalService externalService;
 
     @Autowired
-    public UserAddressService(UserAddressManager userAddressManager) {
+    public UserAddressService(UserAddressManager userAddressManager, ExternalService externalService) {
         this.userAddressManager = userAddressManager;
+        this.externalService = externalService;
     }
 
     @Mobile
@@ -32,9 +36,14 @@ public class UserAddressService {
     public void saveAddress(String id, String qid, String address) {
         Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
 
-        UserAddressEntity userAddress = new UserAddressEntity(qid, address);
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(address), 0);
+        GeoPoint geoPoint = new GeoPoint(decodedAddress.getCoordinate()[1], decodedAddress.getCoordinate()[0]);
+
+        UserAddressEntity userAddress = new UserAddressEntity(qid, address)
+                .setLastUsed()
+                .setCountryShortName(decodedAddress.getCountryShortName())
+                .setGeoHash(geoPoint.getGeohash());
         userAddress.setId(id);
-        userAddress.setLastUsed();
         userAddressManager.save(userAddress);
     }
 
@@ -56,9 +65,17 @@ public class UserAddressService {
         for (UserAddressEntity userAddress : userAddresses) {
             jsonUserAddressList.addJsonUserAddresses(new JsonUserAddress()
                     .setId(userAddress.getId())
-                    .setAddress(userAddress.getAddress()));
+                    .setAddress(userAddress.getAddress())
+                    .setGeoHash(userAddress.getGeoHash())
+                    .setCountryShortName(userAddress.getCountryShortName()));
         }
 
         return jsonUserAddressList;
+    }
+
+    @Mobile
+    @Async
+    public void addressLastUsed(String address, String qid) {
+        userAddressManager.updateLastUsedAddress(address, qid);
     }
 }

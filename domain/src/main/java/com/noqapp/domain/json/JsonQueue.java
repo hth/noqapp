@@ -26,42 +26,42 @@ import java.util.TimeZone;
  * User: hitender
  * Date: 12/1/16 9:28 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable",
         "unused"
 })
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueue extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
 
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty ("c")
+    @JsonProperty("c")
     private String codeQR;
 
     @JsonProperty("gh")
     private String geoHash;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String businessName;
 
-    @JsonProperty ("d")
+    @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("bt")
+    @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("sa")
+    @JsonProperty("sa")
     private String storeAddress;
 
     @JsonProperty("ar")
@@ -70,102 +70,113 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("to")
     private String town;
 
-    @JsonProperty ("cs")
+    @JsonProperty("cs")
     private String countryShortName;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String storePhone;
 
-    @JsonProperty ("f")
+    @JsonProperty("f")
     private int tokenAvailableFrom;
 
     /* Store business start hour. */
-    @JsonProperty ("b")
+    @JsonProperty("b")
     private int startHour;
 
-    @JsonProperty ("m")
+    @JsonProperty("m")
     private int tokenNotAvailableFrom;
 
     /* Store business end hour. */
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("de")
+    @JsonProperty("de")
     private int delayedInMinutes;
 
-    @JsonProperty ("pj")
+    @JsonProperty("pj")
     private boolean preventJoining;
 
-    @JsonProperty ("dc")
+    @JsonProperty("dc")
     private boolean dayClosed = false;
 
-    @JsonProperty ("o")
+    @JsonProperty("o")
     private String topic;
 
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
-    @JsonProperty ("l")
+    @JsonProperty("l")
     private int lastNumber;
 
-    @JsonProperty ("q")
+    @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("se")
+    @JsonProperty("se")
     private String serviceEndTime;
 
-    @JsonProperty ("rj")
+    @JsonProperty("rj")
     private int remoteJoinCount;
 
-    @JsonProperty ("u")
+    @JsonProperty("u")
     private String created;
 
-    @JsonProperty ("ra")
+    @JsonProperty("ra")
     private float rating;
 
-    @JsonProperty ("rc")
+    @JsonProperty("rc")
     private int ratingCount;
 
-    @JsonProperty ("as")
+    @JsonProperty("as")
     private long averageServiceTime;
 
-    @JsonProperty ("ja")
+    @JsonProperty("ja")
     private boolean remoteJoinAvailable = false;
 
-    @JsonProperty ("lu")
+    @JsonProperty("lu")
     private boolean allowLoggedInUser = false;
 
-    @JsonProperty ("at")
+    @JsonProperty("at")
     private int availableTokenCount;
 
-    @JsonProperty ("bc")
+    @JsonProperty("bc")
     private String bizCategoryId;
 
     @JsonProperty("ff")
     private String famousFor;
 
-    @JsonProperty ("dd")
+    @JsonProperty("dd")
     private int discount = 15;
 
-    @JsonProperty ("md")
+    @JsonProperty("md")
     private int minimumDeliveryOrder = 100;
 
-    @JsonProperty ("si")
+    @JsonProperty("dr")
+    private int deliveryRange;
+
+    @JsonProperty("si")
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
-    @JsonProperty ("ii")
+    @JsonProperty("ii")
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
-    @JsonProperty ("pm")
-    private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{add(PaymentTypeEnum.AP); add(PaymentTypeEnum.CA); add(PaymentTypeEnum.CC); add(PaymentTypeEnum.DC); }};
+    @JsonProperty("pm")
+    private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{
+        add(PaymentTypeEnum.AP);
+        add(PaymentTypeEnum.CA);
+        add(PaymentTypeEnum.CC);
+        add(PaymentTypeEnum.DC);
+    }};
 
-    @JsonProperty ("dm")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<DeliveryTypeEnum>() {{add(DeliveryTypeEnum.HD); add(DeliveryTypeEnum.TO);}};
+    @JsonProperty("dm")
+    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<DeliveryTypeEnum>() {{
+        add(DeliveryTypeEnum.HD);
+        add(DeliveryTypeEnum.TO);
+    }};
 
-    @JsonProperty ("am")
+    @JsonProperty("am")
     private List<AmenityEnum> amenities = new LinkedList<>();
 
-    @JsonProperty ("fa")
+    @JsonProperty("fa")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     public JsonQueue() {
@@ -478,6 +489,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setMinimumDeliveryOrder(int minimumDeliveryOrder) {
         this.minimumDeliveryOrder = minimumDeliveryOrder;
+        return this;
+    }
+
+    public int getDeliveryRange() {
+        return deliveryRange;
+    }
+
+    public JsonQueue setDeliveryRange(int deliveryRange) {
+        this.deliveryRange = deliveryRange;
         return this;
     }
 

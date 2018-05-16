@@ -12,12 +12,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * hitender
@@ -83,6 +86,16 @@ public class UserAddressManagerImpl implements UserAddressManager {
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
                 query(where("QID").is(qid)).with(new Sort(ASC, "LU")),
+                UserAddressEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void updateLastUsedAddress(String address, String qid) {
+        mongoTemplate.updateFirst(
+                query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+                entityUpdate(update("LU", new Date())),
                 UserAddressEntity.class,
                 TABLE
         );

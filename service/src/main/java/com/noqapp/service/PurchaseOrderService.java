@@ -51,6 +51,7 @@ public class PurchaseOrderService {
     private StoreProductService storeProductService;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseProductOrderManager purchaseProductOrderManager;
+    private UserAddressService userAddressService;
 
     @Autowired
     public PurchaseOrderService(
@@ -59,7 +60,8 @@ public class PurchaseOrderService {
             StoreHourManager storeHourManager,
             StoreProductService storeProductService,
             PurchaseOrderManager purchaseOrderManager,
-            PurchaseProductOrderManager purchaseProductOrderManager
+            PurchaseProductOrderManager purchaseProductOrderManager,
+            UserAddressService userAddressService
     ) {
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
@@ -67,6 +69,7 @@ public class PurchaseOrderService {
         this.storeProductService = storeProductService;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseProductOrderManager = purchaseProductOrderManager;
+        this.userAddressService = userAddressService;
     }
 
     @Mobile
@@ -154,6 +157,7 @@ public class PurchaseOrderService {
                 .addOrderState(PurchaseOrderStateEnum.VB)
                 .addOrderState(PurchaseOrderStateEnum.PO);
         purchaseOrderManager.save(purchaseOrder);
+        userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
 
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
                 .setToken(purchaseOrder.getTokenNumber())
