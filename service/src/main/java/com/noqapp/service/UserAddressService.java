@@ -61,4 +61,10 @@ public class UserAddressService {
 
         return jsonUserAddressList;
     }
+
+    @Mobile
+    @Async
+    public void addressLastUsed(String address, String qid) {
+        userAddressManager.updateLastUsedAddress(address, qid);
+    }
 }
