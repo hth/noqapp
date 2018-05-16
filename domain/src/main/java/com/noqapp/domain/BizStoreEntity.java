@@ -172,6 +172,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("MD")
     private int minimumDeliveryOrder;
 
+    @Field ("DR")
+    private int deliveryRange = 5;
+
     @Field ("SI")
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
@@ -530,6 +533,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setMinimumDeliveryOrder(int minimumDeliveryOrder) {
         this.minimumDeliveryOrder = minimumDeliveryOrder;
+        return this;
+    }
+
+    public int getDeliveryRange() {
+        return deliveryRange;
+    }
+
+    public BizStoreEntity setDeliveryRange(int deliveryRange) {
+        this.deliveryRange = deliveryRange;
         return this;
     }
 
