@@ -56,16 +56,11 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void save(UserAddressEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
-            mongoTemplate.save(object, TABLE);
-        } else {
-            while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
-                UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
-                mongoTemplate.remove(leastUsed);
-            }
-            mongoTemplate.save(object, TABLE);
+        while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
+            UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
+            mongoTemplate.remove(leastUsed);
         }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
