@@ -18,6 +18,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseProductOrderManager;
 import com.noqapp.repository.StoreHourManager;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -185,5 +187,52 @@ public class PurchaseOrderService {
         }
 
         return jsonTokenAndQueues;
+    }
+
+    public List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
+        return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
+    }
+
+    @Mobile
+    public List<JsonPurchaseOrder> findAllOpenOrderByCodeAsJson(String codeQR) {
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrderByCodeQR(codeQR);
+
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
+        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            List<PurchaseOrderProductEntity> products = purchaseProductOrderManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+            for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
+                JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                        .setProductId(purchaseOrderProduct.getId())
+                        .setProductName(purchaseOrderProduct.getProductName())
+                        .setProductPrice(purchaseOrderProduct.getProductPrice())
+                        .setProductDiscount(purchaseOrderProduct.getProductDiscount())
+                        .setProductQuantity(purchaseOrderProduct.getProductQuantity());
+
+                jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
+            }
+
+            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                    .setBizStoreId(purchaseOrder.getBizStoreId())
+                    .setCustomerPhone(purchaseOrder.getCustomerPhone())
+                    .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
+                    .setStoreDiscount(purchaseOrder.getStoreDiscount())
+                    .setOrderPrice(purchaseOrder.getOrderPrice())
+                    .setDeliveryType(purchaseOrder.getDeliveryType())
+                    .setPaymentType(purchaseOrder.getPaymentType())
+                    .setBusinessType(purchaseOrder.getBusinessType())
+                    .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
+                    //Serving Number not set for Merchant
+                    .setToken(purchaseOrder.getTokenNumber())
+                    .setCustomerName(purchaseOrder.getCustomerName())
+                    //ExpectedServiceBegin not set for Merchant
+                    .setTransactionId(purchaseOrder.getTransactionId())
+                    .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
+                    .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+
+            jsonPurchaseOrders.add(jsonPurchaseOrder);
+        }
+
+        return  jsonPurchaseOrders;
     }
 }

@@ -7,7 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * hitender
@@ -45,5 +50,14 @@ public class PurchaseProductOrderManagerImpl implements PurchaseProductOrderMana
     @Override
     public void deleteHard(PurchaseOrderProductEntity object) {
 
+    }
+
+    @Override
+    public List<PurchaseOrderProductEntity> getAllByPurchaseOrderId(String purchaseOrderId) {
+        return mongoTemplate.find(
+                Query.query(where("PO").is(purchaseOrderId)),
+                PurchaseOrderProductEntity.class,
+                TABLE
+        );
     }
 }
