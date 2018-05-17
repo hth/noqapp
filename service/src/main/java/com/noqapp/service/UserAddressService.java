@@ -8,7 +8,6 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.repository.UserAddressManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.Asserts;
-import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -37,12 +36,10 @@ public class UserAddressService {
         Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
 
         DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(address), 0);
-        GeoPoint geoPoint = new GeoPoint(decodedAddress.getCoordinate()[1], decodedAddress.getCoordinate()[0]);
-
         UserAddressEntity userAddress = new UserAddressEntity(qid, address)
                 .setLastUsed()
                 .setCountryShortName(decodedAddress.getCountryShortName())
-                .setGeoHash(geoPoint.getGeohash());
+                .setGeoHash(decodedAddress.getGeoPoint() == null ? null : decodedAddress.getGeoPoint().getGeohash());
         userAddress.setId(id);
         userAddressManager.save(userAddress);
     }

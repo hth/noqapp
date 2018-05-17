@@ -3,10 +3,12 @@ package com.noqapp.domain.shared;
 import com.google.maps.model.AddressComponent;
 import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import java.beans.Transient;
 import java.io.Serializable;
 
 /**
@@ -144,6 +146,15 @@ public class DecodedAddress implements Serializable {
 
     public boolean isNotBlank() {
         return !blank;
+    }
+
+    @Transient
+    public GeoPoint getGeoPoint() {
+        if (null != coordinate && coordinate.length == 2) {
+            return new GeoPoint(coordinate[1], coordinate[0]);
+        }
+
+        return null;
     }
 }
 
