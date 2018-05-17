@@ -32,6 +32,9 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
     @JsonProperty("pi")
     private String productId;
 
+    @JsonProperty("pn")
+    private String productName;
+
     @JsonProperty("pp")
     private int productPrice;
 
@@ -47,6 +50,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     public JsonPurchaseOrderProduct setProductId(String productId) {
         this.productId = productId;
+        return this;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public JsonPurchaseOrderProduct setProductName(String productName) {
+        this.productName = productName;
         return this;
     }
 

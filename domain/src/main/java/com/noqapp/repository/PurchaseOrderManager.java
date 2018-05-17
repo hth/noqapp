@@ -11,4 +11,6 @@ import java.util.List;
 public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEntity> {
 
     List<PurchaseOrderEntity> findAllOpenOrder(String qid);
+
+    List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR);
 }

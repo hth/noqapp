@@ -82,6 +82,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("os")
     private PurchaseOrderStateEnum purchaseOrderState;
 
+    @JsonProperty ("c")
+    private String created;
+
     public JsonPurchaseOrder() {
     }
 
@@ -222,6 +225,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
         this.purchaseOrderState = purchaseOrderState;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonPurchaseOrder setCreated(String created) {
+        this.created = created;
         return this;
     }
 }
