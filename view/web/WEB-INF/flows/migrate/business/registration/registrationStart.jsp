@@ -116,8 +116,9 @@
                                         <div class="clearFix"></div>
                                     </li>
 
+                                    <c:set var="displayedTownAndArea" value="false"/>
                                     <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <c:if test="${message.source eq 'registerBusiness.area' or message.source eq 'registerBusiness.town'}">
+                                    <c:if test="${message.source eq 'registerBusiness.area' or message.source eq 'registerBusiness.town' and displayedTownAndArea eq false}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="area" cssErrorClass="lb_error">Business Town</form:label>
@@ -136,6 +137,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <c:set var="displayedTownAndArea" value="true"/>
                                     </c:if>
                                     </c:forEach>
 
