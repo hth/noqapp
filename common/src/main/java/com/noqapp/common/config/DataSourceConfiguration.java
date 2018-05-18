@@ -27,7 +27,7 @@ public class DataSourceConfiguration {
     private String mysqlPassword;
 
     @Bean
-    public DataSource dataSource() {
+    DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setJdbcUrl("jdbc:mysql://" + mysql_host + ":3306/" + mysql_db);

@@ -1,12 +1,8 @@
 package com.noqapp.common.config;
 
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 /**
  * hitender
@@ -16,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class OkHttpClientConfiguration {
 
     @Bean
-    public OkHttpClient getOkHttpClient() {
+    OkHttpClient getOkHttpClient() {
         return new OkHttpClient();
     }
 }
