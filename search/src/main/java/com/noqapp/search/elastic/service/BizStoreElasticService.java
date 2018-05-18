@@ -267,7 +267,13 @@ public class BizStoreElasticService {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
-                searchSourceBuilder.query(QueryBuilders.matchAllQuery().queryName(query));
+
+                /* Choose field match or matchAllQuery. */
+                searchSourceBuilder.query(QueryBuilders.multiMatchQuery(query, "N", "BC"));
+
+                /* Term for exact query. */
+                //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
+
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
@@ -298,7 +304,6 @@ public class BizStoreElasticService {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
-                //searchSourceBuilder.query(matchQuery("CC", "India"));
                 searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
