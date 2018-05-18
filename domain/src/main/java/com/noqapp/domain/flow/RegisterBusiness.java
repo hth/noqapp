@@ -552,6 +552,8 @@ public class RegisterBusiness implements Serializable {
         this.displayName = bizStore.getDisplayName();
         this.storeBusinessType = bizStore.getBusinessType();
         this.addressStore = bizStore.getAddress();
+        this.areaStore = bizStore.getArea();
+        this.townStore = bizStore.getTown();
         this.countryShortNameStore = bizStore.getCountryShortName();
         this.phoneStore = Formatter.phoneNationalFormat(bizStore.getPhoneRaw(), bizStore.getCountryShortName());
         this.timeZoneStore = bizStore.getTimeZone();
