@@ -82,9 +82,9 @@
                             <td nowrap style="border: 0px;">
                                 <a href="../${elasticBizStoreSource.bizStoreElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSource.bizStoreElastic.displayName}</a>
                                 <c:choose>
-                                <c:when test="${!empty elasticBizStoreSource.bizStoreElastic.category}">
+                                <c:when test="${!empty elasticBizStoreSource.bizStoreElastic.bizCategoryName}">
                                 <span style="display:block; font-size:13px;">
-                                    ${elasticBizStoreSource.bizStoreElastic.businessType.description}, ${elasticBizStoreSource.bizStoreElastic.category}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
+                                    ${elasticBizStoreSource.bizStoreElastic.businessType.description}, ${elasticBizStoreSource.bizStoreElastic.bizCategoryName}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
                                         <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
                                 </c:when>
