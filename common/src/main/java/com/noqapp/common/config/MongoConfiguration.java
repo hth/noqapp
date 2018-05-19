@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.WriteResultChecking;
@@ -42,7 +43,7 @@ public class MongoConfiguration {
      * @return Mongo Template ready to use
      */
     @Bean
-    public MongoTemplate mongoTemplate() {
+    MongoTemplate mongoTemplate() {
         MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(), mongoConverter());
 
         mongoTemplate.setReadPreference(ReadPreference.nearest());
@@ -58,7 +59,7 @@ public class MongoConfiguration {
      * @return a ready to use MongoDbFactory
      */
     @Bean
-    public MongoDbFactory mongoDbFactory() {
+    MongoDbFactory mongoDbFactory() {
         // Mongo Client
         MongoClient mongoClient = new MongoClient(getMongoSeeds());
 
@@ -69,12 +70,12 @@ public class MongoConfiguration {
     }
 
     @Bean
-    public MongoMappingContext mongoMappingContext() {
+    MongoMappingContext mongoMappingContext() {
         return new MongoMappingContext();
     }
 
     @Bean
-    public MappingMongoConverter mongoConverter() {
+    MappingMongoConverter mongoConverter() {
         MappingMongoConverter converter = new MappingMongoConverter(
                 new DefaultDbRefResolver(mongoDbFactory()),
                 mongoMappingContext());
@@ -83,7 +84,7 @@ public class MongoConfiguration {
     }
 
     @Bean
-    public MongoTypeMapper mongoTypeMapper() {
+    MongoTypeMapper mongoTypeMapper() {
         return new DefaultMongoTypeMapper(null);
     }
 
@@ -102,5 +103,10 @@ public class MongoConfiguration {
         }
 
         return serverAddresses;
+    }
+
+    @Bean
+    MongoTransactionManager transactionManager(MongoDbFactory dbFactory) {
+        return new MongoTransactionManager(dbFactory);
     }
 }

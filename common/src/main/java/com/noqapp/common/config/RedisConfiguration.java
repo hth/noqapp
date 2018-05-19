@@ -30,24 +30,24 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     private int redisPort;
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
+    JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
     }
 
     @Bean
-    public RedisCacheWriter redisCacheWriter(JedisConnectionFactory jedisConnectionFactory) {
+    RedisCacheWriter redisCacheWriter(JedisConnectionFactory jedisConnectionFactory) {
         return RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
     }
 
     @Bean
-    public RedisCacheConfiguration redisCacheConfiguration() {
+    RedisCacheConfiguration redisCacheConfiguration() {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
 
         /* Number of seconds before expiration. Defaults to unlimited (0) */
@@ -58,7 +58,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisCacheManager cacheManager(RedisCacheWriter redisCacheWriter, RedisCacheConfiguration redisCacheConfiguration) {
+    RedisCacheManager cacheManager(RedisCacheWriter redisCacheWriter, RedisCacheConfiguration redisCacheConfiguration) {
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
@@ -68,7 +68,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
      * @return
      */
     @Bean
-    public KeyGenerator customKeyGenerator() {
+    KeyGenerator customKeyGenerator() {
         return (o, method, objects) -> {
             // This will generate a unique key of the class name, the method name,
             // and all method parameters appended.
