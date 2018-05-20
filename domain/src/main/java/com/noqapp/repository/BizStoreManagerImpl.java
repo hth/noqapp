@@ -185,7 +185,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                         where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
                         .with(new Sort(Sort.Direction.DESC, "C"))
                         .limit(limit),
-                BizStoreEntity.class
+                BizStoreEntity.class,
+                TABLE
         );
     }
 
@@ -196,7 +197,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                         where("BIZ_NAME.$id").is(new ObjectId(bizNameId)))
                         .with(new Sort(Sort.Direction.DESC, "C"))
                 ,
-                BizStoreEntity.class
+                BizStoreEntity.class,
+                TABLE
         );
     }
 
@@ -215,7 +217,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                                         where("VC").lt(validationCountTry)
                                 )
                 ).skip(skip).limit(limit),
-                BizStoreEntity.class
+                BizStoreEntity.class,
+                TABLE
         );
     }
 
@@ -226,7 +229,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                         where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
                                 .andOperator(isNotDeleted())
                 ),
-                BizStoreEntity.class
+                BizStoreEntity.class,
+                TABLE
         );
     }
 
@@ -237,18 +241,21 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                         where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
                                 .andOperator(isNotDeleted())
                 ).with(new Sort(ASC, "DN")),
-                BizStoreEntity.class
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
         );
     }
 
     @Override
     public BizStoreEntity findByCodeQR(String codeQR) {
-        return mongoTemplate.findOne(query(where("QR").is(codeQR)), BizStoreEntity.class);
+        return mongoTemplate.findOne(query(where("QR").is(codeQR)), BizStoreEntity.class, TABLE);
     }
 
     @Override
     public boolean isValidCodeQR(String codeQR) {
-        return mongoTemplate.exists(query(where("QR").is(codeQR)), BizStoreEntity.class);
+        return mongoTemplate.exists(query(where("QR").is(codeQR)), BizStoreEntity.class, TABLE);
     }
 
     @Override
