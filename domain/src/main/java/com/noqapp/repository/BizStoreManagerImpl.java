@@ -245,6 +245,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 TABLE
         );
     }
+
+    @Override
+    public List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId) {
+        return mongoTemplate.find(
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress)),
+                BizStoreEntity.class,
+                TABLE
         );
     }
 

@@ -92,6 +92,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      */
     List<BizStoreEntity> getAllBizStores(String bizNameId);
 
+    List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId);
+
     BizStoreEntity findByCodeQR(String codeQR);
 
     boolean isValidCodeQR(String codeQR);
