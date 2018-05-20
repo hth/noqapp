@@ -5,6 +5,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class DomainConversion {
                 break;
             default:
                 bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
+                if (StringUtils.isBlank(bannerImage)) {
+                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                }
 
         }
 
