@@ -20,6 +20,16 @@ public class DomainConversion {
             BizStoreEntity bizStore,
             List<StoreHourEntity> storeHours
     ) {
+        String bannerImage;
+        switch (bizStore.getBusinessType()) {
+            case DO:
+                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                break;
+            default:
+                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
+
+        }
+
         return new BizStoreElastic()
                 .setId(bizStore.getId())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
@@ -54,7 +64,7 @@ public class DomainConversion {
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
                 .setFamousFor(bizStore.getFamousFor())
-                .setDisplayImage(bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next())
+                .setDisplayImage(bannerImage)
                 .setStoreHourElasticList(getStoreHourElastics(storeHours))
                 .setBizServiceImages(bizStore.getBizName().getBusinessServiceImages());
     }
