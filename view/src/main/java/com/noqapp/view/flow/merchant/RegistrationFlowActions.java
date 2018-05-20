@@ -40,6 +40,7 @@ class RegistrationFlowActions {
     private TokenQueueService tokenQueueService;
     private BizStoreElasticService bizStoreElasticService;
 
+    /** When in same thread use Executor and not @Async. */
     private ExecutorService executorService;
 
     RegistrationFlowActions(

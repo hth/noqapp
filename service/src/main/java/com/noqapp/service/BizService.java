@@ -159,6 +159,11 @@ public class BizService {
         return bizStoreManager.getAllBizStores(bizNameId);
     }
 
+    @Mobile
+    public List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId) {
+        return bizStoreManager.getAllBizStoresMatchingAddress(bizStoreAddress, bizNameId);
+    }
+
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
     }
