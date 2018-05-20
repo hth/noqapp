@@ -6,6 +6,8 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
  * 11/21/17 6:01 PM
  */
 public class DomainConversion {
+    private static final Logger LOG = LoggerFactory.getLogger(DomainConversion.class);
+
     public static BizStoreElastic getAsBizStoreElastic(
             BizStoreEntity bizStore,
             List<StoreHourEntity> storeHours
@@ -31,7 +35,10 @@ public class DomainConversion {
                 if (StringUtils.isBlank(bannerImage)) {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
+        }
 
+        if (StringUtils.isBlank(bannerImage)) {
+            LOG.warn("No Banner Image for bizName={} bizId={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
         }
 
         return new BizStoreElastic()
