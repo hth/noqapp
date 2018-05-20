@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -173,11 +174,27 @@ class RegistrationFlowActions {
 
             bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
+            updateAllStoresWhenBizNameUpdated(bizName);
             return bizName;
         } catch(Exception e) {
             LOG.error("Error saving business reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving business");
         }
+    }
+
+    @Async
+    void updateAllStoresWhenBizNameUpdated(BizNameEntity bizName) {
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
+        for (BizStoreEntity bizStore : bizStores) {
+            List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
+            updateBizStoreElastic(bizStore, storeHours);
+        }
+    }
+
+    @Async
+    void updateBizStoreElastic(BizStoreEntity bizStore, List<StoreHourEntity> storeHours) {
+        BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHours);
+        bizStoreElasticService.save(bizStoreElastic);
     }
 
     /**
@@ -270,8 +287,7 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
-            BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHours);
-            bizStoreElasticService.save(bizStoreElastic);
+            updateBizStoreElastic(bizStore, storeHours);
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",
