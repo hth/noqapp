@@ -27,6 +27,9 @@ public class JsonTopic extends JsonToken {
     @JsonProperty ("o")
     private String topic;
 
+    @JsonProperty("hour")
+    private JsonHour hour;
+
     private JsonTopic() {
         super();
     }
@@ -38,5 +41,14 @@ public class JsonTopic extends JsonToken {
 
     public String getTopic() {
         return topic;
+    }
+
+    public JsonHour getHour() {
+        return hour;
+    }
+
+    public JsonTopic setHour(JsonHour hour) {
+        this.hour = hour;
+        return this;
     }
 }
