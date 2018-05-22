@@ -1,8 +1,5 @@
 package com.noqapp.common.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -10,6 +7,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

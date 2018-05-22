@@ -3,10 +3,12 @@ package com.noqapp.service;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.QueueSupervisor;
+import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
@@ -16,8 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import static java.util.Comparator.comparing;
 
@@ -40,6 +45,7 @@ public class BusinessUserStoreService {
     private BusinessUserService businessUserService;
     private TokenQueueService tokenQueueService;
     private AccountService accountService;
+    private BizService bizService;
 
     @Autowired
     public BusinessUserStoreService(
@@ -49,13 +55,15 @@ public class BusinessUserStoreService {
             BusinessUserStoreManager businessUserStoreManager,
             BusinessUserService businessUserService,
             TokenQueueService tokenQueueService,
-            AccountService accountService
+            AccountService accountService,
+            BizService bizService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
         this.businessUserService = businessUserService;
         this.tokenQueueService = tokenQueueService;
         this.accountService = accountService;
+        this.bizService = bizService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -106,11 +114,25 @@ public class BusinessUserStoreService {
         LOG.info("tokenQueues found count={} for queueLimit={}", tokenQueues.size(), queueLimit);
         List<JsonTopic> jsonTopics = new ArrayList<>();
         for (TokenQueueEntity tokenQueue : tokenQueues) {
-            jsonTopics.add(new JsonTopic(tokenQueue));
+            JsonHour jsonHour = getJsonHour(tokenQueue.getId());
+            jsonTopics.add(new JsonTopic(tokenQueue).setHour(jsonHour));
         }
 
         LOG.info("Sending jsonTopic count={}", jsonTopics.size());
         return jsonTopics;
+    }
+
+    @Mobile
+    public JsonHour getJsonHour(String codeQR) {
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        StoreHourEntity storeHour = bizService.findStoreHour(codeQR, dayOfWeek);
+        return new JsonHour()
+                .setDayOfWeek(storeHour.getDayOfWeek())
+                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setStartHour(storeHour.getStartHour())
+                .setEndHour(storeHour.getEndHour());
     }
 
     /**
