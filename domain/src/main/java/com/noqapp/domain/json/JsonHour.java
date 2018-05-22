@@ -41,6 +41,17 @@ public class JsonHour extends AbstractDomain {
     @JsonProperty ("eh")
     private int endHour;
 
+    @JsonProperty("pj")
+    private boolean preventJoining;
+
+    @JsonProperty ("dc")
+    private boolean dayClosed = false;
+
+    /* TODO(hth) This includes temp day close and temp preventJoining. All this resets on next day. */
+    /* When business queue delays the start time. Delayed by minutes. */
+    @JsonProperty ("de")
+    private int delayedInMinutes = 0;
+
     public int getDayOfWeek() {
         return dayOfWeek;
     }
@@ -83,6 +94,33 @@ public class JsonHour extends AbstractDomain {
 
     public JsonHour setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public boolean isPreventJoining() {
+        return preventJoining;
+    }
+
+    public JsonHour setPreventJoining(boolean preventJoining) {
+        this.preventJoining = preventJoining;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public JsonHour setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
+    }
+
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public JsonHour setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
         return this;
     }
 }
