@@ -181,8 +181,8 @@ public class BusinessUserStoreService {
     }
 
     public List<QueueSupervisor> getAuthorizedUsersForBusiness(String bizNameId) {
-        List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizNameId);
         List<QueueSupervisor> queueSupervisors = new ArrayList<>();
+        List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizNameId);
 
         for (BusinessUserEntity businessUser : businessUsers) {
             QueueSupervisor queueSupervisor = populateQueueSupervisorFromQid(null, bizNameId, businessUser.getQueueUserId());

@@ -7,6 +7,7 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.time.ZonedDateTime;
@@ -41,6 +42,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     @JsonProperty ("n")
     private String businessName;
+
+    @JsonProperty("di")
+    private String displayImage;
 
     @JsonProperty ("d")
     private String displayName;
@@ -110,6 +114,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.codeQR = jsonQueue.getCodeQR();
         this.geoHash = jsonQueue.getGeoHash();
         this.businessName = jsonQueue.getBusinessName();
+        //this.displayImage = jsonQueue.getStoreServiceImages().isEmpty() ? "" : jsonQueue.getStoreServiceImages().iterator().next();
+        this.displayImage = ""; //TODO(hth) replace later
         this.displayName = jsonQueue.getDisplayName();
         this.storeAddress = jsonQueue.getStoreAddress();
         this.area = jsonQueue.getArea();
@@ -133,12 +139,25 @@ public class JsonTokenAndQueue extends AbstractDomain {
     }
 
     public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
+        String bannerImage;
+        switch (bizStore.getBusinessType()) {
+            case DO:
+                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                break;
+            default:
+                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
+                if (StringUtils.isBlank(bannerImage)) {
+                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                }
+        }
+
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         this.codeQR = queue.getCodeQR();
         this.geoHash = bizStore.getGeoPoint().getGeohash();
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = bizStore.getDisplayName();
+        this.displayImage = bannerImage;
         this.storeAddress = bizStore.getAddress();
         this.area = bizStore.getArea();
         this.town = bizStore.getTown();
@@ -200,6 +219,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public String getBusinessName() {
         return businessName;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
     }
 
     public String getDisplayName() {
