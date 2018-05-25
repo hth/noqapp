@@ -144,7 +144,7 @@ public class FileUtil {
         try {
             tikaIS = TikaInputStream.get(file);
 
-            /**
+            /*
              * You might not want to provide the file's name. If you provide an Excel
              * document with a .xls extension, it will get it correct right away; but
              * if you provide an Excel document with .doc extension, it will guess it
