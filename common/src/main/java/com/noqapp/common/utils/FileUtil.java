@@ -140,11 +140,9 @@ public class FileUtil {
      * @throws IOException
      */
     public static String detectMimeType(final InputStream file) throws IOException {
-        TikaInputStream tikaIS = null;
-        try {
-            tikaIS = TikaInputStream.get(file);
+        try (TikaInputStream tikaIS = TikaInputStream.get(file)) {
 
-            /**
+            /*
              * You might not want to provide the file's name. If you provide an Excel
              * document with a .xls extension, it will get it correct right away; but
              * if you provide an Excel document with .doc extension, it will guess it
@@ -154,10 +152,6 @@ public class FileUtil {
             // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
 
             return DETECTOR.detect(tikaIS, metadata).toString();
-        } finally {
-            if (tikaIS != null) {
-                tikaIS.close();
-            }
         }
     }
 
