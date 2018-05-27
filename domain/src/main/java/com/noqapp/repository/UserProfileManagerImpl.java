@@ -201,4 +201,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE
         );
     }
+
+    @Override
+    public void addUserProfileImage(String qid, String profileImage) {
+        mongoTemplate.updateFirst(query(where("QID").is(qid)), entityUpdate(update("PI", profileImage)), UserProfileEntity.class, TABLE);
+    }
 }
