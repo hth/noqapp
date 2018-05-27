@@ -1,9 +1,9 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.springframework.data.annotation.Transient;
@@ -18,7 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.IntStream;
 
 /**
  * User: hitender
@@ -43,6 +42,9 @@ public class UserProfileEntity extends BaseEntity {
     @NotNull
     @Field ("QID")
     private String queueUserId;
+
+    @Field ("PI")
+    private String profileImage;
 
     @Field ("FN")
     private String firstName;
@@ -128,6 +130,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public UserProfileEntity setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
     }
 
     public String getFirstName() {

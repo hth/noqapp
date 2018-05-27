@@ -621,4 +621,8 @@ public class AccountService {
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
+
+    public void addUserProfileImage(String qid, String profileImage) {
+        userProfileManager.addUserProfileImage(qid, profileImage);
+    }
 }

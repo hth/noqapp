@@ -3,8 +3,6 @@ package com.noqapp.service;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
-import com.noqapp.common.config.OkHttpClientConfiguration;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;

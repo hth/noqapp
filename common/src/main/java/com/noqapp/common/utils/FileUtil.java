@@ -20,6 +20,7 @@ import com.noqapp.common.type.FileExtensionTypeEnum;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
 
 /**
  * User: hitender
@@ -40,13 +41,19 @@ public class FileUtil {
 
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
-    private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
+
+    private static char[][] pairs = {{'a', 'z'}, {'0', '9'}};
+    private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange(pairs).build();
 
     private FileUtil() {
     }
 
-    private static String getTmpDir() {
-        return System.getProperty("java.io.tmpdir");
+    public static String getTmpDir() {
+        return FileUtils.getTempDirectoryPath();
+    }
+
+    public static String getFileSeparator() {
+        return FileSystems.getDefault().getSeparator();
     }
 
     public static File getFileFromTmpDir(String filename) {
@@ -68,8 +75,12 @@ public class FileUtil {
         }
     }
 
-    public static String createRandomFilename() {
-        return randomStringGenerator.generate(16);
+    public static String createRandomFilenameOf16Chars() {
+        return createRandomFilename(16);
+    }
+
+    public static String createRandomFilename(int size) {
+        return randomStringGenerator.generate(size);
     }
 
     /**
@@ -80,7 +91,7 @@ public class FileUtil {
      * @return
      */
     private String createRandomFilename(FileExtensionTypeEnum fileExtension) {
-        return addFileExtension(createRandomFilename(), fileExtension);
+        return addFileExtension(createRandomFilenameOf16Chars(), fileExtension);
     }
 
     private String addFileExtension(String filename, FileExtensionTypeEnum fileExtension) {
@@ -118,6 +129,10 @@ public class FileUtil {
             extension = "jpg";
         }
         return extension;
+    }
+
+    public static String getFileExtensionWithDot(String filename) {
+        return DOT + getFileExtension(filename);
     }
 
     /**
