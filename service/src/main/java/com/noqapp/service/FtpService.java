@@ -57,7 +57,7 @@ public class FtpService {
 
         try {
             manager.init();
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + filename), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory + File.separator + filename), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
                 return remoteFile.getContent().getInputStream();
             }
@@ -65,6 +65,20 @@ public class FtpService {
             return null;
         } catch (FileSystemException e) {
             LOG.error("Failed to get file={} reason={}", filename, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    public FileObject[] getAllFilesInDirectory(String directory) {
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
+
+        try {
+            manager.init();
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory), fileSystemOptions);
+            LOG.info("Found directory={} status={}", directory, remoteFile.exists());
+            return remoteFile.getChildren();
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", directory, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -109,7 +123,7 @@ public class FtpService {
 
             if (remoteFile.exists()) {
                 remoteFile.delete();
-                LOG.info("Existing excel file={} deleted", filename);
+                LOG.info("Deleted file={}", filename);
                 return true;
             }
 

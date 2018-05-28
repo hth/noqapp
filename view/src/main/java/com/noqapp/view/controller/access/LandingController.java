@@ -1,11 +1,19 @@
 package com.noqapp.view.controller.access;
 
+import com.noqapp.common.utils.FileUtil;
+import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.FileService;
+import com.noqapp.service.QueueService;
+import com.noqapp.view.form.LandingForm;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,16 +21,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.WebUtils;
 
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.QueueService;
-import com.noqapp.view.form.LandingForm;
-
+import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
+
+import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 
 /**
  * User: hitender
@@ -51,6 +61,7 @@ public class LandingController {
     private QueueService queueService;
     private ApiHealthService apiHealthService;
     private AccountService accountService;
+    private FileService fileService;
 
     @Autowired
     public LandingController(
@@ -63,7 +74,8 @@ public class LandingController {
             BusinessUserService businessUserService,
             QueueService queueService,
             ApiHealthService apiHealthService,
-            AccountService accountService
+            AccountService accountService,
+            FileService fileService
     ) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
@@ -72,6 +84,7 @@ public class LandingController {
         this.queueService = queueService;
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
+        this.fileService = fileService;
     }
 
     @GetMapping(value = "/landing")
@@ -112,5 +125,64 @@ public class LandingController {
     public String businessMigrate() {
         LOG.info("Requested business registration {}", migrateToBusinessRegistrationFlowActions);
         return migrateToBusinessRegistrationFlowActions;
+    }
+
+    /**
+     * For uploading profile image.
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping (
+            method = RequestMethod.POST,
+            value = "/upload")
+    public String upload(HttpServletRequest httpServletRequest) {
+        Instant start = Instant.now();
+        LOG.info("uploading image");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if (isMultipart) {
+            MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
+            final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
+
+            if (!files.isEmpty()) {
+                MultipartFile multipartFile = files.iterator().next();
+
+                try {
+                    BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+                    String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+                    if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+                        String filename = FileUtil.createRandomFilename(8) + getFileExtensionWithDot(multipartFile.getOriginalFilename());
+                        fileService.addProfileImage(filename, multipartFile, bufferedImage);
+                        accountService.addUserProfileImage(queueUser.getQueueUserId(), filename);
+                        return "redirect:" + nextPage + ".htm";
+                    } else {
+                        return "redirect:" + nextPage + ".htm";
+                    }
+                } catch (Exception e) {
+                    LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
+                    apiHealthService.insert(
+                            "/upload",
+                            "upload",
+                            LandingController.class.getName(),
+                            Duration.between(start, Instant.now()),
+                            HealthStatusEnum.F);
+                }
+
+                return "redirect:" + nextPage + ".htm";
+            }
+        }
+        return "redirect:" + nextPage + ".htm";
+    }
+
+    private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
+        final List<MultipartFile> files = multipartHttpRequest.getFiles("file");
+
+        if (files.isEmpty()) {
+            LOG.error("Empty or no document uploaded");
+            throw new RuntimeException("Empty or no document uploaded");
+        }
+        return files;
     }
 }

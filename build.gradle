@@ -226,6 +226,7 @@ subprojects {
         compile "org.quartz-scheduler:quartz:$quartz"
 
         /** --- Specific to NoQueue Web Application ---- */
+        compile "com.amazonaws:aws-java-sdk-s3:$amazonaws"
         compile "org.springframework.webflow:spring-webflow:$webflow"
         compile "net.markenwerk:utils-mail-dkim:$dkim"
         /** ------- */

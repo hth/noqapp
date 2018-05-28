@@ -42,7 +42,7 @@ public class FileService {
     }
 
     @Async
-    public void addProfileImage(String filename, MultipartFile multipartFile, BufferedImage bufferedImage) throws IOException {
+    public void addProfileImage(String filename, MultipartFile multipartFile, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
@@ -60,6 +60,9 @@ public class FileService {
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, FtpService.PROFILE);
+
+            //TODO delete from local and from S3
+            ftpService.delete(filename, FtpService.PROFILE);
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
             LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
