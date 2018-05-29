@@ -56,7 +56,5 @@ public class LoaderInitializationBean {
                 }
             }
         }
-
-        LOG.info("FTP directory {} present", directories);
     }
 }
