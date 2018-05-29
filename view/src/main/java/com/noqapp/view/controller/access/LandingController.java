@@ -153,9 +153,8 @@ public class LandingController {
                     BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
                     String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
                     if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
-                        String filename = FileUtil.createRandomFilename(8) + getFileExtensionWithDot(multipartFile.getOriginalFilename());
-                        fileService.addProfileImage(filename, multipartFile, bufferedImage);
-                        accountService.addUserProfileImage(queueUser.getQueueUserId(), filename);
+                        String filename = FileUtil.createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
+                        fileService.addProfileImage(queueUser.getQueueUserId(), filename, multipartFile, bufferedImage);
                         return "redirect:" + nextPage + ".htm";
                     } else {
                         return "redirect:" + nextPage + ".htm";

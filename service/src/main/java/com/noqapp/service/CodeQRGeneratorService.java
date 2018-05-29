@@ -41,6 +41,7 @@ public class CodeQRGeneratorService {
             @Value ("${imageSize:300}")
             int imageSize,
 
+            /* Relative path from base folder. */
             @Value ("${overlayFileLocation:conf/300x300_overlay_code_qr.png}")
             String overlayFileLocation
     ) {

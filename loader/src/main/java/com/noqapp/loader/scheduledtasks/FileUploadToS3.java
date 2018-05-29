@@ -15,10 +15,10 @@ import org.apache.tika.metadata.TikaMimeKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.Transient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -68,7 +68,6 @@ public class FileUploadToS3 {
         this.profileUploadSwitch = profileUploadSwitch;
         this.statsCronService = statsCronService;
         this.ftpService = ftpService;
-//        this.amazonS3Service = amazonS3Service;
         this.amazonS3 = amazonS3;
     }
 
@@ -106,13 +105,12 @@ public class FileUploadToS3 {
         int success = 0, failure = 0;
         try {
             for (FileObject document : fileObjects) {
-                InputStream inputStream = ftpService.getFile(document.getName().getBaseName(), PROFILE);
-                Metadata metadata = FileUtil.populateFileMetadata(inputStream);
+                Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
                 try {
                     success = uploadToS3(
                             success,
                             PROFILE,
-                            computeFileYearMonthDayLocation() + document.getName().getBaseName(),
+                            document.getName().getBaseName(),
                             ftpService.getFile(document.getName().getBaseName(), PROFILE),
                             Long.valueOf(metadata.get(FileUtil.FILE_LENGTH)),
                             metadata.get(TikaMimeKeys.TIKA_MIME_FILE));
@@ -126,7 +124,7 @@ public class FileUploadToS3 {
                                     "AWS Error Code:{} " +
                                     "Error Type:{} " +
                                     "Request ID:{}",
-                            document,
+                            document.getName().getBaseName(),
                             e.getLocalizedMessage(),
                             e.getStatusCode(),
                             e.getErrorCode(),
@@ -139,18 +137,21 @@ public class FileUploadToS3 {
                     LOG.error("Client encountered an internal error while trying to communicate with S3 " +
                                     "document:{} " +
                                     "reason={}",
-                            document,
+                            document.getName().getBaseName(),
                             e.getLocalizedMessage(),
                             e);
 
                     failure++;
                 } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                    LOG.error("S3 image upload failure document={} reason={}",
+                            document.getName().getBaseName(),
+                            e.getLocalizedMessage(),
+                            e);
                     failure++;
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error S3 uploading document reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Error S3 uploading profile reason={}", e.getLocalizedMessage(), e);
         } finally {
             if (0 != success || 0 != failure) {
                 statsCron.addStats("found", success + failure);
@@ -165,17 +166,30 @@ public class FileUploadToS3 {
     }
 
     private int uploadToS3(int success, String folderName, String filenameWithLocation, InputStream inputStream, long fileLength, String contentType) {
-        PutObjectRequest putObject = getPutObjectRequest(folderName, filenameWithLocation, inputStream, fileLength, contentType);
-        amazonS3.putObject(putObject);
-        success++;
-        return success;
+        try {
+            PutObjectRequest putObject = getPutObjectRequest(folderName, filenameWithLocation, inputStream, fileLength, contentType);
+            amazonS3.putObject(putObject);
+            success++;
+            return success;
+        } catch (Exception e) {
+            LOG.error("Failed to upload to S3 reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    LOG.error("Failed to close stream reason={}", e.getLocalizedMessage(), e);
+                }
+            }
+        }
     }
 
     /**
      * Populates PutObjectRequest.
      */
-    private PutObjectRequest getPutObjectRequest(String folderName, String filenameWithLocation, InputStream inputStream, long fileLength, String contentType) {
-        return new PutObjectRequest(bucketName, folderName + "/" + filenameWithLocation, inputStream, getObjectMetadata(fileLength, contentType));
+    private PutObjectRequest getPutObjectRequest(String folderName, String key, InputStream inputStream, long fileLength, String contentType) {
+        return new PutObjectRequest(bucketName, folderName + "/" + key, inputStream, getObjectMetadata(fileLength, contentType));
     }
 
     /**
@@ -190,7 +204,6 @@ public class FileUploadToS3 {
         return metaData;
     }
 
-    @Transient
     private String computeFileYearMonthDayLocation() {
         ZonedDateTime zonedDateTime = getUTCZonedDateTime();
         return String.valueOf(zonedDateTime.getYear()) +

@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.UserProfileEntity;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,20 +35,28 @@ public class FileService {
     public static final String PNG_FORMAT = "png";
     public static final String SCALED_IMAGE_POST_FIX = "_s";
 
+    private AccountService accountService;
     private FtpService ftpService;
 
     @Autowired
-    public FileService(FtpService ftpService) {
+    public FileService(AccountService accountService, FtpService ftpService) {
+        this.accountService = accountService;
         this.ftpService = ftpService;
     }
 
     @Async
-    public void addProfileImage(String filename, MultipartFile multipartFile, BufferedImage bufferedImage) {
+    public void addProfileImage(String qid, String filename, MultipartFile multipartFile, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
 
         try {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            String existingProfileImage = userProfile.getProfileImage();
+
+            /* Delete existing file if user changed profile image before the upload process began. */
+            ftpService.delete(existingProfileImage, FtpService.PROFILE);
+
             toFile = writeToFile(
                     createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
                     bufferedImage);
@@ -60,9 +69,7 @@ public class FileService {
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, FtpService.PROFILE);
-
-            //TODO delete from local and from S3
-            ftpService.delete(filename, FtpService.PROFILE);
+            accountService.addUserProfileImage(qid, filename);
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
             LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
