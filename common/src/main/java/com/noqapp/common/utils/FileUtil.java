@@ -79,6 +79,10 @@ public class FileUtil {
         return createRandomFilename(16);
     }
 
+    public static String createRandomFilenameOf24Chars() {
+        return createRandomFilename(24);
+    }
+
     public static String createRandomFilename(int size) {
         return randomStringGenerator.generate(size);
     }

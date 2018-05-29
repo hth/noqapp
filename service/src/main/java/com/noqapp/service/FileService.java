@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf16Chars;
+import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
 import static com.noqapp.common.utils.FileUtil.createTempFile;
 import static com.noqapp.common.utils.FileUtil.getFileExtension;
 import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
@@ -57,8 +57,11 @@ public class FileService {
             /* Delete existing file if user changed profile image before the upload process began. */
             ftpService.delete(existingProfileImage, FtpService.PROFILE);
 
+            //TODO(hth) delete file
+            //s3client.deleteObject(FtpService.PROFILE, existingProfileImage);
+
             toFile = writeToFile(
-                    createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
                     bufferedImage);
             decreaseResolution = decreaseResolution(toFile, 192, 192);
 
@@ -70,6 +73,7 @@ public class FileService {
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, FtpService.PROFILE);
             accountService.addUserProfileImage(qid, filename);
+
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
             LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
