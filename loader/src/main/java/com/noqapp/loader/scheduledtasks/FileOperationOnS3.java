@@ -88,7 +88,7 @@ public class FileOperationOnS3 {
     }
 
     /**
-     * Upload Receipt to S3.
+     * Upload profile image to S3.
      * Note: Cron string blow run every 5 minutes.
      *
      * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
