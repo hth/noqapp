@@ -3,10 +3,15 @@ package com.noqapp.loader.scheduledtasks;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
+import com.amazonaws.services.s3.model.DeleteObjectsResult;
+import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.repository.S3FileManager;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.StatsCronService;
 import org.apache.commons.vfs2.FileObject;
@@ -25,6 +30,8 @@ import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.noqapp.service.FtpService.PROFILE;
 
@@ -39,36 +46,45 @@ import static com.noqapp.service.FtpService.PROFILE;
         "PMD.LongVariable"
 })
 @Component
-public class FileUploadToS3 {
-    private static final Logger LOG = LoggerFactory.getLogger(FileUploadToS3.class);
+public class FileOperationOnS3 {
+    private static final Logger LOG = LoggerFactory.getLogger(FileOperationOnS3.class);
 
     private static final NumberFormat TWO_DIGIT_FORMAT = new DecimalFormat("00");
 
     private final String bucketName;
     private final String profileUploadSwitch;
+    private final String profileDeleteSwitch;
 
     private StatsCronService statsCronService;
     private FtpService ftpService;
     private AmazonS3 amazonS3;
+    private S3FileManager s3FileManager;
 
     private StatsCronEntity statsCron;
 
-    public FileUploadToS3(
+    public FileOperationOnS3(
             @Value("${aws.s3.bucketName}")
             String bucketName,
 
-            @Value ("${FilesUploadToS3.profile.switch:ON}")
+            @Value ("${FileOperationOnS3.upload.profile.switch:ON}")
             String profileUploadSwitch,
+
+            @Value ("${FileOperationOnS3.delete.profile.switch:ON}")
+            String profileDeleteSwitch,
 
             StatsCronService statsCronService,
             FtpService ftpService,
-            AmazonS3 amazonS3
+            AmazonS3 amazonS3,
+            S3FileManager s3FileManager
     ) {
         this.bucketName = bucketName;
         this.profileUploadSwitch = profileUploadSwitch;
+        this.profileDeleteSwitch = profileDeleteSwitch;
+
         this.statsCronService = statsCronService;
         this.ftpService = ftpService;
         this.amazonS3 = amazonS3;
+        this.s3FileManager = s3FileManager;
     }
 
     /**
@@ -80,7 +96,7 @@ public class FileUploadToS3 {
     @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
     public void profileUpload() {
         statsCron = new StatsCronEntity(
-                FileUploadToS3.class.getName(),
+                FileOperationOnS3.class.getName(),
                 "profileUpload",
                 profileUploadSwitch);
 
@@ -165,9 +181,71 @@ public class FileUploadToS3 {
         }
     }
 
-    private int uploadToS3(int success, String folderName, String filenameWithLocation, InputStream inputStream, long fileLength, String contentType) {
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileDelete}")
+    public void profileDelete() {
+        statsCron = new StatsCronEntity(
+                FileOperationOnS3.class.getName(),
+                "profileDelete",
+                profileDeleteSwitch);
+
+        /**
+         * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
+         * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
+         * fail safe to prevent uploading to dev bucket when connected to test database.
+         */
+        if ("OFF".equalsIgnoreCase(profileDeleteSwitch)) {
+            LOG.debug("feature is {}", profileDeleteSwitch);
+            return;
+        }
+
+        DeleteObjectsResult deleteObjectsResult = null;
+        List<S3FileEntity> s3Files = s3FileManager.findAllWithLimit();
+        if (!s3Files.isEmpty()) {
+            List<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<>();
+            for (S3FileEntity s3File : s3Files) {
+                keys.add(new DeleteObjectsRequest.KeyVersion(s3File.getLocation() + "/" + s3File.getFilename()));
+            }
+
+            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName);
+            deleteObjectsRequest.setKeys(keys);
+            try {
+                deleteObjectsResult = amazonS3.deleteObjects(deleteObjectsRequest);
+                s3Files.forEach(s3FileManager::deleteHard);
+            } catch (MultiObjectDeleteException e) {
+                LOG.error("Failed to delete files on S3 reason={}", e.getMessage(), e);
+                LOG.error("Objects successfully deleted count={}", e.getDeletedObjects().size());
+                LOG.error("Objects failed to delete count={}", e.getErrors().size());
+                LOG.error("Printing error data...");
+                for (MultiObjectDeleteException.DeleteError deleteError : e.getErrors()) {
+                    LOG.warn("Object Key: {} {} {}",
+                            deleteError.getKey(),
+                            deleteError.getCode(),
+                            deleteError.getMessage());
+                }
+            } finally {
+                if (deleteObjectsResult == null) {
+                    statsCron.addStats("found", s3Files.size());
+                    statsCron.addStats("deleted", 0);
+                    statsCronService.save(statsCron);
+
+                    LOG.warn("Failed to find count={} and deleted count failure", s3Files.size());
+                } else {
+                    statsCron.addStats("found", s3Files.size());
+                    statsCron.addStats("deleted", deleteObjectsResult.getDeletedObjects().size());
+                    statsCronService.save(statsCron);
+
+                    LOG.info("Successfully found count={} and deleted count={}",
+                            s3Files.size(),
+                            deleteObjectsResult.getDeletedObjects().size());
+                }
+            }
+        }
+
+    }
+
+    private int uploadToS3(int success, String folderName, String key, InputStream inputStream, long fileLength, String contentType) {
         try {
-            PutObjectRequest putObject = getPutObjectRequest(folderName, filenameWithLocation, inputStream, fileLength, contentType);
+            PutObjectRequest putObject = getPutObjectRequest(folderName, key, inputStream, fileLength, contentType);
             amazonS3.putObject(putObject);
             success++;
             return success;

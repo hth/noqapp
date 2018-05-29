@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.repository.S3FileManager;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf16Chars;
+import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
 import static com.noqapp.common.utils.FileUtil.createTempFile;
 import static com.noqapp.common.utils.FileUtil.getFileExtension;
 import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
@@ -37,11 +39,13 @@ public class FileService {
 
     private AccountService accountService;
     private FtpService ftpService;
+    private S3FileManager s3FileManager;
 
     @Autowired
-    public FileService(AccountService accountService, FtpService ftpService) {
+    public FileService(AccountService accountService, FtpService ftpService, S3FileManager s3FileManager) {
         this.accountService = accountService;
         this.ftpService = ftpService;
+        this.s3FileManager = s3FileManager;
     }
 
     @Async
@@ -56,9 +60,10 @@ public class FileService {
 
             /* Delete existing file if user changed profile image before the upload process began. */
             ftpService.delete(existingProfileImage, FtpService.PROFILE);
+            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
 
             toFile = writeToFile(
-                    createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
                     bufferedImage);
             decreaseResolution = decreaseResolution(toFile, 192, 192);
 
@@ -70,6 +75,7 @@ public class FileService {
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, FtpService.PROFILE);
             accountService.addUserProfileImage(qid, filename);
+
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
             LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
