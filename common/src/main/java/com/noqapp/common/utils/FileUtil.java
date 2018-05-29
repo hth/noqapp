@@ -1,25 +1,25 @@
 package com.noqapp.common.utils;
 
+import com.noqapp.common.type.FileExtensionTypeEnum;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaMimeKeys;
 import org.apache.tika.mime.MimeTypes;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.util.Assert;
-
-import com.noqapp.common.type.FileExtensionTypeEnum;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
 
 /**
  * User: hitender
@@ -35,18 +35,25 @@ public class FileUtil {
     public static final String TEMP_FILE_START_WITH = "NoQueue";
     public static final String DOT = ".";
     public static final String DASH = "-";
+    public static final String FILE_LENGTH = "length";
 
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
-    private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
+
+    private static char[][] pairs = {{'a', 'z'}, {'0', '9'}};
+    private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange(pairs).build();
 
     private FileUtil() {
     }
 
-    private static String getTmpDir() {
-        return System.getProperty("java.io.tmpdir");
+    public static String getTmpDir() {
+        return FileUtils.getTempDirectoryPath();
+    }
+
+    public static String getFileSeparator() {
+        return FileSystems.getDefault().getSeparator();
     }
 
     public static File getFileFromTmpDir(String filename) {
@@ -68,8 +75,12 @@ public class FileUtil {
         }
     }
 
-    public static String createRandomFilename() {
-        return randomStringGenerator.generate(16);
+    public static String createRandomFilenameOf16Chars() {
+        return createRandomFilename(16);
+    }
+
+    public static String createRandomFilename(int size) {
+        return randomStringGenerator.generate(size);
     }
 
     /**
@@ -80,7 +91,7 @@ public class FileUtil {
      * @return
      */
     private String createRandomFilename(FileExtensionTypeEnum fileExtension) {
-        return addFileExtension(createRandomFilename(), fileExtension);
+        return addFileExtension(createRandomFilenameOf16Chars(), fileExtension);
     }
 
     private String addFileExtension(String filename, FileExtensionTypeEnum fileExtension) {
@@ -120,6 +131,10 @@ public class FileUtil {
         return extension;
     }
 
+    public static String getFileExtensionWithDot(String filename) {
+        return DOT + getFileExtension(filename);
+    }
+
     /**
      * Finds content type of a file.
      *
@@ -140,7 +155,11 @@ public class FileUtil {
      * @throws IOException
      */
     public static String detectMimeType(final InputStream file) throws IOException {
-        try (TikaInputStream tikaIS = TikaInputStream.get(file)) {
+        return populateFileMetadata(file).get(TikaMimeKeys.TIKA_MIME_FILE);
+    }
+
+    public static Metadata populateFileMetadata(final InputStream inputStream) throws IOException {
+        try (TikaInputStream tikaIS = TikaInputStream.get(inputStream)) {
 
             /*
              * You might not want to provide the file's name. If you provide an Excel
@@ -148,10 +167,11 @@ public class FileUtil {
              * if you provide an Excel document with .doc extension, it will guess it
              * to be a Word document.
              */
-            final Metadata metadata = new Metadata();
-            // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
+            Metadata metadata = new Metadata();
+            metadata.set(TikaMimeKeys.TIKA_MIME_FILE, DETECTOR.detect(tikaIS, metadata).toString());
+            metadata.set(FILE_LENGTH, String.valueOf(IOUtils.toByteArray(inputStream).length));
 
-            return DETECTOR.detect(tikaIS, metadata).toString();
+            return metadata;
         }
     }
 

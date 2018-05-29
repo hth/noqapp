@@ -6,12 +6,14 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.service.FtpService;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,9 @@ import java.sql.SQLException;
 public class NoQAppInitializationCheckBean {
     private static final Logger LOG = LoggerFactory.getLogger(NoQAppInitializationCheckBean.class);
 
+    @Value("${ftp.location}")
+    private String ftpLocation;
+
     private Environment environment;
     private DataSource dataSource;
     private FirebaseConfig firebaseConfig;
@@ -44,6 +49,7 @@ public class NoQAppInitializationCheckBean {
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
     private DatabaseReader databaseReader;
+    private FtpService ftpService;
 
     @Autowired
     public NoQAppInitializationCheckBean(
@@ -53,7 +59,8 @@ public class NoQAppInitializationCheckBean {
             RestHighLevelClient restHighLevelClient,
             ElasticAdministrationService elasticAdministrationService,
             BizStoreElasticService bizStoreElasticService,
-            DatabaseReader databaseReader
+            DatabaseReader databaseReader,
+            FtpService ftpService
     ) {
         this.environment = environment;
         this.dataSource = dataSource;
@@ -62,6 +69,7 @@ public class NoQAppInitializationCheckBean {
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
         this.databaseReader = databaseReader;
+        this.ftpService = ftpService;
     }
 
     @PostConstruct
@@ -81,6 +89,16 @@ public class NoQAppInitializationCheckBean {
             throw new RuntimeException("RDB could not be connected");
         }
         LOG.info("RDB connected");
+    }
+
+    @PostConstruct
+    public void hasAccessToFileSystem() {
+        if (!ftpService.exist()) {
+            /* Check if access set correctly for the user and remote location exists. */
+            LOG.error("Cannot access file system directory, location={}", ftpLocation);
+            throw new RuntimeException("File server could not be connected");
+        }
+        LOG.info("Found and has access, to remote ftp directory={}\n", ftpLocation);
     }
 
     @PostConstruct

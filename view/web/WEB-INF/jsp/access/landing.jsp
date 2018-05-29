@@ -179,6 +179,18 @@
             </div>
             <!-- Add New Supervisor -->
 
+
+            <!-- File Upload From -->
+            <form:form action="${pageContext.request.contextPath}/access/upload.htm" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <div class="form-group">
+                    <label>Select File</label>
+                    <input class="form-control" type="file" name="file">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Upload</button>
+                </div>
+            </form:form>
         </div>
     </div>
     <!-- content end -->

@@ -74,7 +74,7 @@ public class PdfGenerateService {
     public File createPDF(String xmlContent, String businessName) {
         OutputStream out = null;
         try {
-            File toFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.PDF.name().toLowerCase());
+            File toFile = FileUtil.createTempFile(FileUtil.createRandomFilenameOf16Chars(), FileExtensionTypeEnum.PDF.name().toLowerCase());
             out = new BufferedOutputStream(new FileOutputStream(toFile));
 
             // Step 3: Construct fop with desired output format
@@ -89,7 +89,7 @@ public class PdfGenerateService {
 
             // Step 5: Setup input and output for XSLT transformation
             // Setup input stream
-            File xmlFile = FileUtil.createTempFile(FileUtil.createRandomFilename(), FileExtensionTypeEnum.XML.name().toLowerCase());
+            File xmlFile = FileUtil.createTempFile(FileUtil.createRandomFilenameOf16Chars(), FileExtensionTypeEnum.XML.name().toLowerCase());
             FileUtils.writeStringToFile(xmlFile, xmlContent, Constants.CHAR_SET_UTF8, false);
             Source src = new StreamSource(xmlFile);
 

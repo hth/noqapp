@@ -173,18 +173,9 @@ public class AccountService {
                 userAccount.setPhoneValidated(phoneValidated);
                 userAccount.active();
 
-                /* Login through Mobile. */
-//                if (StringUtils.isBlank(password)) {
-//                    UserAuthenticationEntity userAuthentication = generateUserAuthentication(null);
-//                    userAccount.setUserAuthentication(userAuthentication);
-//                }
                 UserAuthenticationEntity userAuthentication = generateUserAuthentication(password);
                 userAccount.setUserAuthentication(userAuthentication);
                 userAccountManager.save(userAccount);
-                /* Set authentication. This will speed up login through browser. */
-//                if (StringUtils.isNotBlank(password)) {
-//                    executorService.submit(() -> createAuthentication(password, qid));
-//                }
 
                 if (StringUtils.isBlank(mail)) {
                     mail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(firstNameCleanedUp), new ScrubbedInput(lastNameCleanedUp), qid);
@@ -620,5 +611,9 @@ public class AccountService {
         save(userProfile);
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
+    }
+
+    public void addUserProfileImage(String qid, String profileImage) {
+        userProfileManager.addUserProfileImage(qid, profileImage);
     }
 }
