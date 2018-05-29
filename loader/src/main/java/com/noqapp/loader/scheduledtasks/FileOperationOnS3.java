@@ -88,7 +88,7 @@ public class FileOperationOnS3 {
     }
 
     /**
-     * Upload Receipt to S3.
+     * Upload profile image to S3.
      * Note: Cron string blow run every 5 minutes.
      *
      * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
@@ -121,8 +121,8 @@ public class FileOperationOnS3 {
         int success = 0, failure = 0;
         try {
             for (FileObject document : fileObjects) {
-                Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
                 try {
+                    Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
                     success = uploadToS3(
                             success,
                             PROFILE,
