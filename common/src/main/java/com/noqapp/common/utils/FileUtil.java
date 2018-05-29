@@ -3,7 +3,6 @@ package com.noqapp.common.utils;
 import com.noqapp.common.type.FileExtensionTypeEnum;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.tika.detect.DefaultDetector;
@@ -173,7 +172,7 @@ public class FileUtil {
              */
             Metadata metadata = new Metadata();
             metadata.set(TikaMimeKeys.TIKA_MIME_FILE, DETECTOR.detect(tikaIS, metadata).toString());
-            metadata.set(FILE_LENGTH, String.valueOf(IOUtils.toByteArray(inputStream).length));
+            metadata.set(FILE_LENGTH, String.valueOf(tikaIS.getLength()));
 
             return metadata;
         }
