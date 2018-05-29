@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -49,7 +48,7 @@ public class FileService {
     }
 
     @Async
-    public void addProfileImage(String qid, String filename, MultipartFile multipartFile, BufferedImage bufferedImage) {
+    public void addProfileImage(String qid, String filename, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
@@ -63,7 +62,7 @@ public class FileService {
             s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
 
             toFile = writeToFile(
-                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename()),
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
                     bufferedImage);
             decreaseResolution = decreaseResolution(toFile, 192, 192);
 
