@@ -121,8 +121,8 @@ public class FileOperationOnS3 {
         int success = 0, failure = 0;
         try {
             for (FileObject document : fileObjects) {
-                Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
                 try {
+                    Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
                     success = uploadToS3(
                             success,
                             PROFILE,
