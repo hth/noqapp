@@ -48,7 +48,7 @@ public class FileService {
     }
 
     @Async
-    public void addProfileImage(String qid, String filename, BufferedImage bufferedImage) {
+    public void addProfileImage(String qid, String profileFilename, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
@@ -62,22 +62,22 @@ public class FileService {
             s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
 
             toFile = writeToFile(
-                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(profileFilename),
                     bufferedImage);
             decreaseResolution = decreaseResolution(toFile, 192, 192);
 
             String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
                     + getFileSeparator()                                    // FileSeparator /
-                    + filename;                                             // filename.extension
+                    + profileFilename;                                             // filename.extension
 
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
-            ftpService.upload(filename, FtpService.PROFILE);
-            accountService.addUserProfileImage(qid, filename);
+            ftpService.upload(profileFilename, FtpService.PROFILE);
+            accountService.addUserProfileImage(qid, profileFilename);
 
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
-            LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
+            LOG.error("Failed adding profile image={} reason={}", profileFilename, e.getLocalizedMessage(), e);
         } finally {
             if (null != toFile) {
                 toFile.delete();
