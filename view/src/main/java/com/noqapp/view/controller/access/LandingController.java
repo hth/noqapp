@@ -28,6 +28,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -150,15 +151,8 @@ public class LandingController {
                 MultipartFile multipartFile = files.iterator().next();
 
                 try {
-                    BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
-                    String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
-                    if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
-                        String filename = FileUtil.createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
-                        fileService.addProfileImage(queueUser.getQueueUserId(), filename, multipartFile, bufferedImage);
-                        return "redirect:" + nextPage + ".htm";
-                    } else {
-                        return "redirect:" + nextPage + ".htm";
-                    }
+                    processProfileImage(queueUser.getQueueUserId(), multipartFile);
+                    return "redirect:" + nextPage + ".htm";
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -173,6 +167,15 @@ public class LandingController {
             }
         }
         return "redirect:" + nextPage + ".htm";
+    }
+
+    private void processProfileImage(String qid, MultipartFile multipartFile) throws IOException {
+        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+        String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            String filename = FileUtil.createRandomFilenameOf16Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
+            fileService.addProfileImage(qid, filename, bufferedImage);
+        }
     }
 
     private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
