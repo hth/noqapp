@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemOptions;
@@ -52,14 +53,28 @@ public class FtpService {
         this.fileSystemOptions = fileSystemOptions;
     }
 
-    public InputStream getFile(String filename, String directory) {
+    public InputStream getFileAsInputStream(String filename, String directory) {
+        try {
+            FileContent fileContent = getFileContent(filename, directory);
+            if (fileContent != null) {
+                return fileContent.getInputStream();
+            }
+
+            return null;
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get file={} reason={}", filename, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    public FileContent getFileContent(String filename, String directory) {
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
             manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory + File.separator + filename), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
-                return remoteFile.getContent().getInputStream();
+                return remoteFile.getContent();
             }
             LOG.error("Could not find file={}", filename);
             return null;
