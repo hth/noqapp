@@ -121,13 +121,14 @@ public class FileOperationOnS3 {
             for (FileObject document : fileObjects) {
                 try {
                     FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), PROFILE);
+
+                    ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
                     success = uploadToS3(
                             success,
                             PROFILE,
                             document.getName().getBaseName(),
                             fileContent.getInputStream(),
-                            fileContent.getSize(),
-                            fileContent.getContentInfo().getContentType());
+                            objectMetadata);
 
                     ftpService.delete(document.getName().getBaseName(), PROFILE);
                 } catch (AmazonServiceException e) {
@@ -241,9 +242,9 @@ public class FileOperationOnS3 {
 
     }
 
-    private int uploadToS3(int success, String folderName, String key, InputStream inputStream, long fileLength, String contentType) {
+    private int uploadToS3(int success, String folderName, String key, InputStream inputStream, ObjectMetadata objectMetadata) {
         try {
-            PutObjectRequest putObject = getPutObjectRequest(folderName, key, inputStream, fileLength, contentType);
+            PutObjectRequest putObject = getPutObjectRequest(folderName, key, inputStream, objectMetadata);
             amazonS3.putObject(putObject);
             success++;
             return success;
@@ -264,8 +265,8 @@ public class FileOperationOnS3 {
     /**
      * Populates PutObjectRequest.
      */
-    private PutObjectRequest getPutObjectRequest(String folderName, String key, InputStream inputStream, long fileLength, String contentType) {
-        return new PutObjectRequest(bucketName, folderName + "/" + key, inputStream, getObjectMetadata(fileLength, contentType));
+    private PutObjectRequest getPutObjectRequest(String folderName, String key, InputStream inputStream, ObjectMetadata objectMetadata) {
+        return new PutObjectRequest(bucketName, folderName + "/" + key, inputStream, objectMetadata);
     }
 
     /**
