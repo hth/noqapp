@@ -9,7 +9,6 @@ import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.TikaMimeKeys;
 import org.apache.tika.mime.MimeTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,15 +152,11 @@ public class FileUtil {
     /**
      * Finds content type of a file.
      *
-     * @param file
+     * @param inputStream
      * @return
      * @throws IOException
      */
-    public static String detectMimeType(final InputStream file) throws IOException {
-        return populateFileMetadata(file).get(TikaMimeKeys.TIKA_MIME_FILE);
-    }
-
-    public static Metadata populateFileMetadata(final InputStream inputStream) throws IOException {
+    public static String detectMimeType(final InputStream inputStream) throws IOException {
         try (TikaInputStream tikaIS = TikaInputStream.get(inputStream)) {
 
             /*
@@ -171,10 +166,9 @@ public class FileUtil {
              * to be a Word document.
              */
             Metadata metadata = new Metadata();
-            metadata.set(TikaMimeKeys.TIKA_MIME_FILE, DETECTOR.detect(tikaIS, metadata).toString());
-            metadata.set(FILE_LENGTH, String.valueOf(tikaIS.getLength()));
+            // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
 
-            return metadata;
+            return DETECTOR.detect(tikaIS, metadata).toString();
         }
     }
 

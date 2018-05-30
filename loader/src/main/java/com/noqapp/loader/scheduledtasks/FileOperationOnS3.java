@@ -8,15 +8,13 @@ import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.StatsCronService;
+import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.TikaMimeKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,14 +120,14 @@ public class FileOperationOnS3 {
         try {
             for (FileObject document : fileObjects) {
                 try {
-                    Metadata metadata = FileUtil.populateFileMetadata(ftpService.getFile(document.getName().getBaseName(), PROFILE));
+                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), PROFILE);
                     success = uploadToS3(
                             success,
                             PROFILE,
                             document.getName().getBaseName(),
-                            ftpService.getFile(document.getName().getBaseName(), PROFILE),
-                            Long.valueOf(metadata.get(FileUtil.FILE_LENGTH)),
-                            metadata.get(TikaMimeKeys.TIKA_MIME_FILE));
+                            fileContent.getInputStream(),
+                            fileContent.getSize(),
+                            fileContent.getContentInfo().getContentType());
 
                     ftpService.delete(document.getName().getBaseName(), PROFILE);
                 } catch (AmazonServiceException e) {
