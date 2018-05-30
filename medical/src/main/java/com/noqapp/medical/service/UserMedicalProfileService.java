@@ -1,5 +1,6 @@
 package com.noqapp.medical.service;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
@@ -28,10 +29,15 @@ public class UserMedicalProfileService {
         return userMedicalProfileManager.findOne(qid);
     }
 
+    @Mobile
     public JsonUserMedicalProfile findOneAsJson(String qid) {
         UserMedicalProfileEntity userMedicalProfile = findOne(qid);
 
-        return new JsonUserMedicalProfile()
-                .setBloodType(userMedicalProfile.getBloodType());
+        if (null != userMedicalProfile) {
+            return new JsonUserMedicalProfile()
+                    .setBloodType(userMedicalProfile.getBloodType());
+        }
+
+        return new JsonUserMedicalProfile();
     }
 }
