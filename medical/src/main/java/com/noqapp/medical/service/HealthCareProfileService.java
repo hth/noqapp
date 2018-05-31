@@ -58,9 +58,9 @@ public class HealthCareProfileService {
         return new JsonHealthCareProfile()
                 .setCodeQR(codeQR)
                 .setPracticeStart(healthCareProfile.getPracticeStart())
-                .setEducation(healthCareProfile.getEducation())
-                .setLicenses(healthCareProfile.getLicenses())
-                .setAwards(healthCareProfile.getAwards())
+                .setEducation(healthCareProfile.getEducationAsJson())
+                .setLicenses(healthCareProfile.getLicensesAsJson())
+                .setAwards(healthCareProfile.getAwardsAsJson())
                 .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary());
 
     }
