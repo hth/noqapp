@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.helper.NameDatePair;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -39,14 +38,14 @@ public class JsonHealthCareProfile extends AbstractDomain {
 
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
-    private List<NameDatePair> education = new LinkedList<>();
+    private List<JsonNameDatePair> education = new LinkedList<>();
 
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
-    private List<NameDatePair> licenses = new LinkedList<>();
+    private List<JsonNameDatePair> licenses = new LinkedList<>();
 
     @JsonProperty("aw")
-    private List<NameDatePair> awards = new LinkedList<>();
+    private List<JsonNameDatePair> awards = new LinkedList<>();
 
     @JsonProperty("md")
     private String medicalDictionary;
@@ -69,29 +68,29 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return this;
     }
 
-    public List<NameDatePair> getEducation() {
+    public List<JsonNameDatePair> getEducation() {
         return education;
     }
 
-    public JsonHealthCareProfile setEducation(List<NameDatePair> education) {
+    public JsonHealthCareProfile setEducation(List<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
 
-    public List<NameDatePair> getLicenses() {
+    public List<JsonNameDatePair> getLicenses() {
         return licenses;
     }
 
-    public JsonHealthCareProfile setLicenses(List<NameDatePair> licenses) {
+    public JsonHealthCareProfile setLicenses(List<JsonNameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
 
-    public List<NameDatePair> getAwards() {
+    public List<JsonNameDatePair> getAwards() {
         return awards;
     }
 
-    public JsonHealthCareProfile setAwards(List<NameDatePair> awards) {
+    public JsonHealthCareProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
         return this;
     }

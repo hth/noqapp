@@ -2,15 +2,22 @@ package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.helper.NameDatePair;
+import com.noqapp.domain.json.medical.JsonNameDatePair;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
+import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
+
+import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 
 /**
  * hitender
@@ -109,5 +116,31 @@ public class HealthCareProfileEntity extends BaseEntity {
     public HealthCareProfileEntity setPrescriptionDictionary(String prescriptionDictionary) {
         this.prescriptionDictionary = prescriptionDictionary;
         return this;
+    }
+
+    @Transient
+    public List<JsonNameDatePair> getEducationAsJson() {
+        return getJsonNameDatePairs(education);
+    }
+
+    @Transient
+    public List<JsonNameDatePair> getLicensesAsJson() {
+        return getJsonNameDatePairs(licenses);
+    }
+
+    @Transient
+    public List<JsonNameDatePair> getAwardsAsJson() {
+        return getJsonNameDatePairs(awards);
+    }
+
+    private List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
+        List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
+        for(NameDatePair nameDatePair : nameDatePairs) {
+            jsonNameDatePairs.add(new JsonNameDatePair()
+                    .setName(nameDatePair.getName())
+                    .setMonthYear(DateFormatUtils.format(nameDatePair.getMonthYear(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        }
+
+        return jsonNameDatePairs;
     }
 }
