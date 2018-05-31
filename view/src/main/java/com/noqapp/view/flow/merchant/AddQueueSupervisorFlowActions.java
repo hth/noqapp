@@ -12,6 +12,7 @@ import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -54,6 +55,7 @@ public class AddQueueSupervisorFlowActions {
     private BusinessUserStoreService businessUserStoreService;
     private TokenQueueService tokenQueueService;
     private MailService mailService;
+    private HealthCareProfileService healthCareProfileService;
 
     private ExecutorService executorService;
 
@@ -71,7 +73,8 @@ public class AddQueueSupervisorFlowActions {
             BusinessUserService businessUserService,
             BusinessUserStoreService businessUserStoreService,
             TokenQueueService tokenQueueService,
-            MailService mailService
+            MailService mailService,
+            HealthCareProfileService healthCareProfileService
     ) {
         this.queueLimit = queueLimit;
         this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;
@@ -83,6 +86,7 @@ public class AddQueueSupervisorFlowActions {
         this.businessUserStoreService = businessUserStoreService;
         this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
+        this.healthCareProfileService = healthCareProfileService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -341,6 +345,11 @@ public class AddQueueSupervisorFlowActions {
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName()
             );
+        }
+
+        /* Create a health care professional profile. */
+        if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
+            healthCareProfileService.createHealthCareProfile(userAccount.getQueueUserId());
         }
 
         /*

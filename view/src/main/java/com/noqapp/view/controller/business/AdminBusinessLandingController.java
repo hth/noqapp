@@ -12,6 +12,7 @@ import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -73,6 +74,7 @@ public class AdminBusinessLandingController {
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
+    private HealthCareProfileService healthCareProfileService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -107,7 +109,8 @@ public class AdminBusinessLandingController {
             BizDimensionService bizDimensionService,
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
-            AccountService accountService
+            AccountService accountService,
+            HealthCareProfileService healthCareProfileService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -124,6 +127,7 @@ public class AdminBusinessLandingController {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
+        this.healthCareProfileService = healthCareProfileService;
     }
 
     /**
@@ -399,6 +403,7 @@ public class AdminBusinessLandingController {
 
                     businessUserStoreService.removeFromBusiness(qid, businessUser.getBizName().getId());
                     businessUserService.deleteHard(businessUser);
+                    healthCareProfileService.softDeleteHealthCareProfile(qid);
 
                     /*
                      * Downgrade ROLES for QID as it was set to Q_SUPERVISOR when approving.
