@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/toggle/css/toggle-style.css" />
 </head>
 
 <body>
@@ -59,6 +60,7 @@
 
                     <form:form modelAttribute="inviteQueueSupervisor">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                        <input type="hidden" id="doctor" name="doctor" value="false"/>
 
                         <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                             <div class="error-box">
@@ -94,6 +96,20 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+
+                                    <c:if test="${businessType eq BusinessType.DO}">
+                                        <div class="col-lable3">
+                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Person is</form:label></div>
+                                        <div class="col-fields">
+                                            <div class="register-switch form-field-left" style="width: 50%;">
+                                                <input type="radio" name="doctor" value="true" id="notDoctor" class="register-switch-input" onclick="selectClick('true')">
+                                                <label for="notDoctor" class="register-switch-label">Doctor</label>
+                                                <input type="radio" name="doctor" value="false" id="isDoctor" class="register-switch-input" onclick="selectClick('false')" checked>
+                                                <label for="isDoctor" class="register-switch-label">Not A Doctor</label>
+                                            </div>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </c:if>
 
                                     <li class="mB0">
                                         <div class="col-lable3"></div>
@@ -174,6 +190,18 @@
         // separateDialCode: true,
         utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
     });
+</script>
+<script>
+    $(document).ready(function() {
+        if (document.getElementById('doctor').value === 'false') {
+            document.getElementById('notDoctor').checked = false;
+        } else {
+            document.getElementById('isDoctor').checked = true;
+        }
+    });
+    function selectClick(value) {
+        document.getElementById('doctor').value = value;
+    }
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
