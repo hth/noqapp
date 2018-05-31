@@ -1,5 +1,8 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.types.BusinessTypeEnum;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +15,9 @@ public class InviteQueueSupervisor implements Serializable {
     private String countryShortName;
     private int countryCode;
     private String phoneNumber;
-    private String inviteeCode;
+    private ScrubbedInput inviteeCode;
+    private BusinessTypeEnum businessType;
+    private ScrubbedInput doctor;
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -50,12 +55,30 @@ public class InviteQueueSupervisor implements Serializable {
         return this;
     }
 
-    public String getInviteeCode() {
+    public ScrubbedInput getInviteeCode() {
         return inviteeCode;
     }
 
-    public InviteQueueSupervisor setInviteeCode(String inviteeCode) {
+    public InviteQueueSupervisor setInviteeCode(ScrubbedInput inviteeCode) {
         this.inviteeCode = inviteeCode;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public InviteQueueSupervisor setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public ScrubbedInput getDoctor() {
+        return doctor;
+    }
+
+    public InviteQueueSupervisor setDoctor(ScrubbedInput doctor) {
+        this.doctor = doctor;
         return this;
     }
 }

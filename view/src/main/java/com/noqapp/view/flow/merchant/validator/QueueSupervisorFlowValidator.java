@@ -49,7 +49,7 @@ public class QueueSupervisorFlowValidator {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(inviteQueueSupervisor.getInviteeCode())) {
+        if (StringUtils.isBlank(inviteQueueSupervisor.getInviteeCode().getText())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

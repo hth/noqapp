@@ -1,17 +1,30 @@
 package com.noqapp.view.flow.merchant;
 
-import static java.util.concurrent.Executors.newCachedThreadPool;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.medical.service.HealthCareProfileService;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.MailService;
+import com.noqapp.service.TokenQueueService;
+import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
+import com.noqapp.view.flow.utils.WebFlowUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;
@@ -20,25 +33,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.flow.InviteQueueSupervisor;
-import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
-import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.service.MailService;
-import com.noqapp.service.TokenQueueService;
-import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
-import com.noqapp.view.flow.utils.WebFlowUtils;
-
 import java.util.concurrent.ExecutorService;
+
+import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender
@@ -58,6 +55,7 @@ public class AddQueueSupervisorFlowActions {
     private BusinessUserStoreService businessUserStoreService;
     private TokenQueueService tokenQueueService;
     private MailService mailService;
+    private HealthCareProfileService healthCareProfileService;
 
     private ExecutorService executorService;
 
@@ -75,7 +73,8 @@ public class AddQueueSupervisorFlowActions {
             BusinessUserService businessUserService,
             BusinessUserStoreService businessUserStoreService,
             TokenQueueService tokenQueueService,
-            MailService mailService
+            MailService mailService,
+            HealthCareProfileService healthCareProfileService
     ) {
         this.queueLimit = queueLimit;
         this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;
@@ -87,6 +86,7 @@ public class AddQueueSupervisorFlowActions {
         this.businessUserStoreService = businessUserStoreService;
         this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
+        this.healthCareProfileService = healthCareProfileService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -108,7 +108,8 @@ public class AddQueueSupervisorFlowActions {
         InviteQueueSupervisor inviteQueueSupervisor = new InviteQueueSupervisor()
                 .setBizStoreId(bizStoreId)
                 .setCountryShortName(bizStore.getCountryShortName())
-                .setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()));
+                .setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()))
+                .setBusinessType(bizStore.getBusinessType());
 
         return inviteQueueSupervisor;
     }
@@ -140,7 +141,7 @@ public class AddQueueSupervisorFlowActions {
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(Formatter.phoneCleanup(internationalFormat));
         if (null == userProfile) {
             /* Find based on invitee code, in case the numbers don't match. */
-            userProfile = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+            userProfile = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode().getText());
             if (null != userProfile) {
                 /* Check if invitee and store are not in the same country. */
                 if (!userProfile.getCountryShortName().equalsIgnoreCase(inviteQueueSupervisor.getCountryShortName())) {
@@ -161,9 +162,9 @@ public class AddQueueSupervisorFlowActions {
         }
 
         UserProfileEntity userProfileOfInviteeCode = null;
-        if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode())) {
+        if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
             if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
-                userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode());
+                userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode().getText());
                 UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
 
                 /* Force email address validation. */
@@ -344,6 +345,11 @@ public class AddQueueSupervisorFlowActions {
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName()
             );
+        }
+
+        /* Create a health care professional profile. */
+        if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
+            healthCareProfileService.createHealthCareProfile(userAccount.getQueueUserId());
         }
 
         /*
