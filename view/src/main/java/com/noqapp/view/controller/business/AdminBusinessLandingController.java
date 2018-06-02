@@ -409,7 +409,8 @@ public class AdminBusinessLandingController {
                     businessUserStoreService.addToBusinessUserStore(
                             businessUser.getQueueUserId(),
                             bizStore,
-                            businessUser.getBusinessUserRegistrationStatus());
+                            businessUser.getBusinessUserRegistrationStatus(),
+                            userProfile.getLevel());
 
                     if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
                         HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());

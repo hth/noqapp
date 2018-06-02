@@ -11,6 +11,7 @@ import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -253,18 +254,23 @@ public class BusinessUserStoreService {
     }
 
     /**
-     * Adding existing Q_SUPERVISOR or S_MANAGER to manager queue.
+     * Adding existing Q_SUPERVISOR or S_MANAGER to manage queue.
      *
      * @param qid
      * @param bizStore
      * @param businessUserRegistrationStatus
      */
-    public void addToBusinessUserStore(String qid, BizStoreEntity bizStore, BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+    public void addToBusinessUserStore(
+            String qid,
+            BizStoreEntity bizStore,
+            BusinessUserRegistrationStatusEnum businessUserRegistrationStatus,
+            UserLevelEnum userLevel) {
         BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
                 qid,
                 bizStore.getId(),
                 bizStore.getBizName().getId(),
-                bizStore.getCodeQR());
+                bizStore.getCodeQR(),
+                userLevel);
 
         /*
          * Marked as inactive until user signs and agrees to be a queue supervisor.
@@ -277,5 +283,9 @@ public class BusinessUserStoreService {
             businessUserStore.inActive();
         }
         save(businessUserStore);
+    }
+
+    public List<BusinessUserStoreEntity> findAll() {
+        return businessUserStoreManager.findAll();
     }
 }

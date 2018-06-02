@@ -89,7 +89,8 @@ public class AuthorizedQueueUserDetailFlowActions {
                         businessUser.getQueueUserId(),
                         bizStore.getId(),
                         bizStore.getBizName().getId(),
-                        bizStore.getCodeQR());
+                        bizStore.getCodeQR(),
+                        userProfile.getLevel());
 
                 if (businessUserStores.contains(businessUserStore)) {
                     enrolledInStores.add(bizStore);
@@ -117,14 +118,14 @@ public class AuthorizedQueueUserDetailFlowActions {
                         findAny(); //Using findFirst() as findAny() runs in parallel & not sequential. Dataset is unique
 
                 BizStoreEntity bizStore = matchingObject.isPresent() ? matchingObject.get() : null;
-
+                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(authorizedQueueUser.getQid());
                 BusinessUserStoreEntity businessUserStoreEntity = new BusinessUserStoreEntity(
                         authorizedQueueUser.getQid(),
                         bizStoreId,
                         bizStore.getBizName().getId(),
-                        bizStore.getCodeQR()
+                        bizStore.getCodeQR(),
+                        userProfile.getLevel()
                 );
-
 
                 businessUserStoreService.save(businessUserStoreEntity);
             } catch (RuntimeException e) {

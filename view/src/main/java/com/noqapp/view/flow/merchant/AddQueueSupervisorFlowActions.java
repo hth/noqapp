@@ -324,7 +324,8 @@ public class AddQueueSupervisorFlowActions {
         businessUserStoreService.addToBusinessUserStore(
                 qid,
                 bizStore,
-                businessUser.getBusinessUserRegistrationStatus());
+                businessUser.getBusinessUserRegistrationStatus(),
+                userProfile.getLevel());
 
         if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
             /* Send FCM notification. */

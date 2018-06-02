@@ -163,6 +163,11 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty ("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
+    /** MCQ is populated when the BT is of type BusinessTypeEnum.DO. */
+    @Transient
+    @JsonProperty("MCQ")
+    private String managerCodeQR;
+
     public String getId() {
         return id;
     }
@@ -466,6 +471,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public String getManagerCodeQR() {
+        return managerCodeQR;
+    }
+
+    public BizStoreElastic setManagerCodeQR(String managerCodeQR) {
+        this.managerCodeQR = managerCodeQR;
         return this;
     }
 

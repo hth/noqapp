@@ -1,7 +1,5 @@
 package com.noqapp.service.emp;
 
-import java.util.List;
-
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -22,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -90,7 +90,8 @@ public class EmpLandingService {
                     businessUser.getQueueUserId(),
                     bizStore.getId(),
                     bizName.getId(),
-                    bizStore.getCodeQR());
+                    bizStore.getCodeQR(),
+                    userProfile.getLevel());
             businessUserStoreService.save(businessUserStore);
             //End cron job code
 
