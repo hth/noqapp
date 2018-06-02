@@ -13,8 +13,10 @@ import javax.validation.constraints.NotNull;
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
@@ -56,6 +58,9 @@ public class HealthCareProfileEntity extends BaseEntity {
 
     @Field("AW")
     private List<NameDatePair> awards = new LinkedList<>();
+
+    @Field ("MA")
+    private Set<String> managerAtStoreCodeQRs = new HashSet<>();
 
     @Field("PD")
     private String prescriptionDictionary;
@@ -106,6 +111,25 @@ public class HealthCareProfileEntity extends BaseEntity {
 
     public HealthCareProfileEntity setAwards(List<NameDatePair> awards) {
         this.awards = awards;
+        return this;
+    }
+
+    public Set<String> getManagerAtStoreCodeQRs() {
+        return managerAtStoreCodeQRs;
+    }
+
+    public HealthCareProfileEntity setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
+        this.managerAtStoreCodeQRs = managerAtStoreCodeQRs;
+        return this;
+    }
+
+    public HealthCareProfileEntity addManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
+        this.managerAtStoreCodeQRs.add(managerAtStoreCodeQR);
+        return this;
+    }
+
+    public HealthCareProfileEntity removeManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
+        this.managerAtStoreCodeQRs.remove(managerAtStoreCodeQR);
         return this;
     }
 

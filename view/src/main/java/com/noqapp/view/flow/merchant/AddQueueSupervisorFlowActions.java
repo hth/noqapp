@@ -12,6 +12,7 @@ import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -232,6 +233,11 @@ public class AddQueueSupervisorFlowActions {
                 throw new InviteSupervisorException("Cannot invite this person");
             case Q_SUPERVISOR:
             case S_MANAGER:
+                HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(userProfile.getQueueUserId());
+                if (null != healthCareProfile) {
+                    break;
+                }
+
                 LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
                         userProfile.getQueueUserId(),
                         userProfile.getLevel(),
@@ -285,7 +291,13 @@ public class AddQueueSupervisorFlowActions {
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
 
-        if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
+        if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
+            /* Create a health care professional profile when selected as a doctor.
+             * Mark profile as Store/Queue Manager.
+             */
+            healthCareProfileService.createHealthCareProfile(userProfile.getQueueUserId());
+            userProfile.setLevel(UserLevelEnum.S_MANAGER);
+        } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
             userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
         }
         accountService.save(userProfile);
@@ -345,11 +357,6 @@ public class AddQueueSupervisorFlowActions {
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName()
             );
-        }
-
-        /* Create a health care professional profile. */
-        if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
-            healthCareProfileService.createHealthCareProfile(userAccount.getQueueUserId());
         }
 
         /*

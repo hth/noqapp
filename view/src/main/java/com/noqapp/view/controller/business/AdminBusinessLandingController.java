@@ -12,6 +12,7 @@ import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -40,6 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -339,7 +341,9 @@ public class AdminBusinessLandingController {
     }
 
     /**
-     * Approve or reject new supervisor.
+     * Approve or reject new supervisor. If approving a doctor then the role is set of a manager as default.
+     * Each queue will only have one manager. If a doctor is removed from a queue, will not lose its role
+     * as a manager. Once a doctor is a manager then role is set as manager for life.
      */
     @PostMapping(value = "/actionQueueSupervisor")
     public String actionQueueSupervisor(
@@ -361,6 +365,7 @@ public class AdminBusinessLandingController {
             }
 
             UserProfileEntity userProfile;
+            BizStoreEntity bizStore;
             String qid;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "APPROVE":
@@ -370,6 +375,15 @@ public class AdminBusinessLandingController {
                     businessUser.setValidateByQid(queueUser.getQueueUserId());
                     businessUserService.save(businessUser);
                     businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
+
+                    if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
+                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        if (null != healthCareProfile) {
+                            bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                            healthCareProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
+                            healthCareProfileService.save(healthCareProfile);
+                        }
+                    }
                     break;
                 case "ADD":
                     int queueSupervisingCount = businessUserStoreService.findAllStoreQueueAssociated(businessUser.getQueueUserId()).size();
@@ -391,11 +405,20 @@ public class AdminBusinessLandingController {
                         return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
                     }
 
-                    BizStoreEntity bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                    bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                     businessUserStoreService.addToBusinessUserStore(
                             businessUser.getQueueUserId(),
                             bizStore,
                             businessUser.getBusinessUserRegistrationStatus());
+
+                    if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
+                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        if (null != healthCareProfile) {
+                            bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                            healthCareProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
+                            healthCareProfileService.save(healthCareProfile);
+                        }
+                    }
                     break;
                 case "REJECT":
                 case "DELETE":
@@ -412,9 +435,18 @@ public class AdminBusinessLandingController {
                     userProfile = accountService.findProfileByQueueUserId(qid);
                     switch (userProfile.getLevel()) {
                         case Q_SUPERVISOR:
-                        case S_MANAGER:
                         case M_ADMIN:
                             userProfile.setLevel(UserLevelEnum.CLIENT);
+                            break;
+                        case S_MANAGER:
+                            HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                            if (null == healthCareProfile) {
+                                userProfile.setLevel(UserLevelEnum.CLIENT);
+                            } else {
+                                //TODO(hth) currently removes all the code QR, it should only remove the specific code qr of the businesses.
+                                healthCareProfile.setManagerAtStoreCodeQRs(new HashSet<>());
+                                healthCareProfileService.save(healthCareProfile);
+                            }
                             break;
                         default:
                             /*
@@ -439,6 +471,15 @@ public class AdminBusinessLandingController {
                     businessUserStoreService.removeFromStore(
                             businessUser.getQueueUserId(),
                             queueSupervisorActionForm.getBizStoreId().getText());
+
+                    if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
+                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        if (null != healthCareProfile) {
+                            bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                            healthCareProfile.removeManagerAtStoreCodeQR(bizStore.getCodeQR());
+                            healthCareProfileService.save(healthCareProfile);
+                        }
+                    }
                     break;
                 default:
                     LOG.warn("Reached un-reachable condition {}", queueSupervisorActionForm.getAction());

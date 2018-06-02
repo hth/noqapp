@@ -1,5 +1,6 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.common.utils.Formatter;
@@ -248,6 +249,15 @@ public class RegisterUser implements Serializable {
     public RegisterUser setSelectFoundAddress(boolean selectFoundAddress) {
         this.selectFoundAddress = selectFoundAddress;
         return this;
+    }
+
+    @Transient
+    public String getName() {
+        if (StringUtils.isNotBlank(lastName)) {
+            return StringUtils.trim(firstName + UserAccountEntity.BLANK_SPACE + lastName);
+        }
+
+        return firstName;
     }
 
     @Transient
