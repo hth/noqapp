@@ -70,7 +70,6 @@ public class MigrateToBusinessProfileValidator {
 
                 status = "failure";
             } else {
-
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()

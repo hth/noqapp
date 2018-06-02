@@ -1,6 +1,7 @@
 package com.noqapp.medical.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonHealthCareProfile;
 import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.repository.HealthCareProfileManager;
@@ -53,6 +54,7 @@ public class HealthCareProfileService {
         return healthCareProfileManager.findByCodeQR(codeQR);
     }
 
+    @Mobile
     public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
         HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
         return new JsonHealthCareProfile()
@@ -63,5 +65,13 @@ public class HealthCareProfileService {
                 .setAwards(healthCareProfile.getAwardsAsJson())
                 .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary());
 
+    }
+
+    public HealthCareProfileEntity findByQid(String qid) {
+        return healthCareProfileManager.findOne(qid);
+    }
+
+    public void save(HealthCareProfileEntity healthCareProfile) {
+        healthCareProfileManager.save(healthCareProfile);
     }
 }

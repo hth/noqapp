@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.mongodb.client.result.DeleteResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.types.UserLevelEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -117,6 +118,15 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
+    public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
+        return mongoTemplate.find(
+                query(where("BS").is(bizStoreId).and("UL").is(userLevel).andOperator(isNotDeleted())),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
     public long deleteAllManagingStore(String bizStoreId) {
         DeleteResult deleteResult = mongoTemplate.remove(
                 query(where("BS").is(bizStoreId)),
@@ -152,5 +162,10 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
                 query(where("QID").is(qid).and("BS").is(bizStoreId)),
                 BusinessUserStoreEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public List<BusinessUserStoreEntity> findAll() {
+        return mongoTemplate.findAll(BusinessUserStoreEntity.class, TABLE);
     }
 }

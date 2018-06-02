@@ -1,12 +1,15 @@
 package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.BusinessUserStoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,8 @@ public class AnyTask {
     private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
     private Environment environment;
+    private BusinessUserStoreService businessUserStoreService;
+    private AccountService accountService;
 
     @Autowired
     public AnyTask(
@@ -48,7 +53,9 @@ public class AnyTask {
             TokenQueueManager tokenQueueManager,
             BizStoreManager bizStoreManager,
             QueueManager queueManager,
-            Environment environment
+            Environment environment,
+            BusinessUserStoreService businessUserStoreService,
+            AccountService accountService
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
@@ -56,6 +63,8 @@ public class AnyTask {
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
         this.environment = environment;
+        this.businessUserStoreService = businessUserStoreService;
+        this.accountService = accountService;
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
     }
 
@@ -86,6 +95,13 @@ public class AnyTask {
                 queue.setBusinessType(bizStore.getBusinessType());
                 queueManager.save(queue);
             }
+        }
+
+        List<BusinessUserStoreEntity> a = businessUserStoreService.findAll();
+        for (BusinessUserStoreEntity businessUserStoreEntity : a) {
+            UserProfileEntity userProfileEntity = accountService.findProfileByQueueUserId(businessUserStoreEntity.getQueueUserId());
+            businessUserStoreEntity.setUserLevel(userProfileEntity.getLevel());
+            businessUserStoreService.save(businessUserStoreEntity);
         }
     }
 }

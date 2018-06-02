@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.types.UserLevelEnum;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -45,13 +46,17 @@ public class BusinessUserStoreEntity extends BaseEntity {
     @Field ("QR")
     private String codeQR;
 
+    @NotNull
+    @Field ("UL")
+    private UserLevelEnum userLevel;
+
     @SuppressWarnings("unused")
     public BusinessUserStoreEntity() {
         super();
         //Default constructor, required to keep bean happy
     }
 
-    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR) {
+    public BusinessUserStoreEntity(String queueUserId, String bizStoreId, String bizNameId, String codeQR, UserLevelEnum userLevel) {
         Assertions.assertTrue(Validate.isValidQid(queueUserId), "Should be a valid qid");
         this.queueUserId = queueUserId;
 
@@ -62,6 +67,7 @@ public class BusinessUserStoreEntity extends BaseEntity {
         this.bizNameId = bizNameId;
 
         this.codeQR = codeQR;
+        this.userLevel = userLevel;
     }
 
     public String getQueueUserId() {
@@ -78,6 +84,16 @@ public class BusinessUserStoreEntity extends BaseEntity {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
+
+    @Deprecated
+    public BusinessUserStoreEntity setUserLevel(UserLevelEnum userLevel) {
+        this.userLevel = userLevel;
+        return this;
     }
 
     @Override

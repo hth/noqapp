@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId);
 
+    List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel);
+
     long deleteAllManagingStore(String bizStoreId);
 
     void activateAccount(String qid, String bizNameId);
@@ -28,4 +31,8 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
     void removeFromBusiness(String qid, String bizNameId);
 
     void removeFromStore(String qid, String bizStoreId);
+
+    /* Temp code until release. */
+    @Deprecated
+    List<BusinessUserStoreEntity> findAll();
 }
