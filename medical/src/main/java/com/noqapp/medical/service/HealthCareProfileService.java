@@ -56,14 +56,22 @@ public class HealthCareProfileService {
 
     @Mobile
     public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
-        HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
+//        HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
+//        if (healthCareProfile != null) {
+//            return new JsonHealthCareProfile()
+//                    .setCodeQR(codeQR)
+//                    .setPracticeStart(healthCareProfile.getPracticeStart())
+//                    .setEducation(healthCareProfile.getEducationAsJson())
+//                    .setLicenses(healthCareProfile.getLicensesAsJson())
+//                    .setAwards(healthCareProfile.getAwardsAsJson())
+//                    .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary());
+//        } else {
+//            return new JsonHealthCareProfile()
+//                    .setCodeQR(codeQR);
+//        }
+
         return new JsonHealthCareProfile()
-                .setCodeQR(codeQR)
-                .setPracticeStart(healthCareProfile.getPracticeStart())
-                .setEducation(healthCareProfile.getEducationAsJson())
-                .setLicenses(healthCareProfile.getLicensesAsJson())
-                .setAwards(healthCareProfile.getAwardsAsJson())
-                .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary());
+                .setCodeQR(codeQR);
 
     }
 
