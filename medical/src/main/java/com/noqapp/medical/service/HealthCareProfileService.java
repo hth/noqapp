@@ -56,23 +56,22 @@ public class HealthCareProfileService {
 
     @Mobile
     public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
-//        HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
-//        if (healthCareProfile != null) {
-//            return new JsonHealthCareProfile()
-//                    .setCodeQR(codeQR)
-//                    .setPracticeStart(healthCareProfile.getPracticeStart())
-//                    .setEducation(healthCareProfile.getEducationAsJson())
-//                    .setLicenses(healthCareProfile.getLicensesAsJson())
-//                    .setAwards(healthCareProfile.getAwardsAsJson())
-//                    .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary());
-//        } else {
-//            return new JsonHealthCareProfile()
-//                    .setCodeQR(codeQR);
-//        }
-
-        return new JsonHealthCareProfile()
-                .setCodeQR(codeQR);
-
+        HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
+        //TODO this temp, must revert logic
+        if (null == healthCareProfile) {
+            return new JsonHealthCareProfile()
+                    .setCodeQR(codeQR)
+                    .setPracticeStart(healthCareProfile.getPracticeStart())
+                    .setEducation(healthCareProfile.getEducationAsJson())
+                    .setLicenses(healthCareProfile.getLicensesAsJson())
+                    .setAwards(healthCareProfile.getAwardsAsJson())
+                    .setPrescriptionDictionary(healthCareProfile.getPrescriptionDictionary())
+                    .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
+        } else {
+            return new JsonHealthCareProfile()
+                    .setCodeQR(codeQR)
+                    .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
+        }
     }
 
     public HealthCareProfileEntity findByQid(String qid) {
