@@ -48,4 +48,12 @@ public class JsonNameDatePair {
         this.monthYear = monthYear;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonNameDatePair{" +
+                "name='" + name + '\'' +
+                ", monthYear='" + monthYear + '\'' +
+                '}';
+    }
 }

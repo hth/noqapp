@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
     private String codeQR;
 
     @JsonProperty("ps")
-    private Date practiceStart = Date.from(Instant.now().minus(20, ChronoUnit.YEARS));
+    private Date practiceStart = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minus(20, ChronoUnit.MONTHS).toInstant());
 
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
