@@ -5,14 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonStore;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -61,6 +65,12 @@ public class JsonHealthCareProfile extends AbstractDomain {
         add(new JsonNameDatePair().setName("Animal Doctor Award").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
     }};
 
+    @JsonIgnoreProperties
+    private Set<String> managerAtStoreCodeQRs = new HashSet<>();
+
+    @JsonProperty("st")
+    private List<JsonStore> stores = new ArrayList<>();
+
     @JsonProperty("pd")
     private String prescriptionDictionary = "amoxycillin,penicillin";
 
@@ -106,6 +116,29 @@ public class JsonHealthCareProfile extends AbstractDomain {
 
     public JsonHealthCareProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
+        return this;
+    }
+
+    public Set<String> getManagerAtStoreCodeQRs() {
+        return managerAtStoreCodeQRs;
+    }
+
+    public JsonHealthCareProfile setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
+        this.managerAtStoreCodeQRs = managerAtStoreCodeQRs;
+        return this;
+    }
+
+    public List<JsonStore> getStores() {
+        return stores;
+    }
+
+    public JsonHealthCareProfile setStores(List<JsonStore> stores) {
+        this.stores = stores;
+        return this;
+    }
+
+    public JsonHealthCareProfile addStore(JsonStore store) {
+        this.stores.add(store);
         return this;
     }
 
