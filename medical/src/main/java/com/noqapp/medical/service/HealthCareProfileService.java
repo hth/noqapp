@@ -6,7 +6,6 @@ import com.noqapp.domain.json.medical.JsonHealthCareProfile;
 import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.repository.HealthCareProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,22 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class HealthCareProfileService {
 
-    private Environment environment;
     private HealthCareProfileManager healthCareProfileManager;
 
     @Autowired
-    public HealthCareProfileService(
-            Environment environment,
-            HealthCareProfileManager healthCareProfileManager
-    ) {
-        this.environment = environment;
+    public HealthCareProfileService(HealthCareProfileManager healthCareProfileManager) {
         this.healthCareProfileManager = healthCareProfileManager;
     }
 
     public void createHealthCareProfile(String qid) {
         HealthCareProfileEntity healthCareProfile = healthCareProfileManager.findOne(qid);
         if (null == healthCareProfile) {
-            healthCareProfile = new HealthCareProfileEntity(qid, CommonUtil.generateCodeQR(environment.getProperty("build.env")));
+            healthCareProfile = new HealthCareProfileEntity(qid, CommonUtil.generateHexFromObjectId());
             healthCareProfileManager.save(healthCareProfile);
         } else if (healthCareProfile.isDeleted()) {
             /* Remove soft delete when this person is added again to some hospital. */

@@ -123,9 +123,9 @@ public final class CommonUtil {
         switch (environment) {
             case "dev":
             case "sandbox":
-                return CODE_QR_PREFIX + ObjectId.get().toString();
+                return CODE_QR_PREFIX + generateHexFromObjectId();
             case "prod":
-                return ObjectId.get().toString();
+                return generateHexFromObjectId();
             default:
                 LOG.error("Failed finding Environment type={}", environment);
                 throw new UnsupportedOperationException("Could not find Environment type " + environment);
