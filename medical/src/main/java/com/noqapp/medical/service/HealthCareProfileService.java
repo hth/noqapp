@@ -31,7 +31,7 @@ public class HealthCareProfileService {
     public void createHealthCareProfile(String qid) {
         HealthCareProfileEntity healthCareProfile = healthCareProfileManager.findOne(qid);
         if (null == healthCareProfile) {
-            healthCareProfile = new HealthCareProfileEntity(qid, CommonUtil.generateCodeQR(environment.getProperty("build.env")));
+            healthCareProfile = new HealthCareProfileEntity(qid, CommonUtil.generateHexFromObjectId());
             healthCareProfileManager.save(healthCareProfile);
         } else if (healthCareProfile.isDeleted()) {
             /* Remove soft delete when this person is added again to some hospital. */
