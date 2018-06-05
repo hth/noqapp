@@ -438,6 +438,7 @@ public class BizService {
         return storeHourManager.resetStoreHour(id);
     }
 
+    @Mobile
     public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
         return businessUserStoreManager.getAllManagingStoreWithUserLevel(bizStoreId, userLevel);
     }
