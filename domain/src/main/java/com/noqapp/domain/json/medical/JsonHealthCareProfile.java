@@ -42,9 +42,6 @@ public class JsonHealthCareProfile extends AbstractDomain {
     @JsonProperty ("qr")
     private String codeQR;
 
-    @JsonProperty ("pi")
-    private String profileImage;
-
     @JsonProperty("ps")
     private Date practiceStart = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minus(20, ChronoUnit.MONTHS).toInstant());
 
@@ -83,15 +80,6 @@ public class JsonHealthCareProfile extends AbstractDomain {
 
     public JsonHealthCareProfile setCodeQR(String codeQR) {
         this.codeQR = codeQR;
-        return this;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public JsonHealthCareProfile setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
         return this;
     }
 

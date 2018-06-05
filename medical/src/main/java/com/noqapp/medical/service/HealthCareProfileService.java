@@ -1,12 +1,10 @@
 package com.noqapp.medical.service;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonHealthCareProfile;
 import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.repository.HealthCareProfileManager;
-import com.noqapp.repository.UserProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +16,10 @@ import org.springframework.stereotype.Service;
 public class HealthCareProfileService {
 
     private HealthCareProfileManager healthCareProfileManager;
-    private UserProfileManager userProfileManager;
 
     @Autowired
-    public HealthCareProfileService(HealthCareProfileManager healthCareProfileManager, UserProfileManager userProfileManager) {
+    public HealthCareProfileService(HealthCareProfileManager healthCareProfileManager) {
         this.healthCareProfileManager = healthCareProfileManager;
-        this.userProfileManager = userProfileManager;
     }
 
     public void createHealthCareProfile(String qid) {
@@ -55,12 +51,10 @@ public class HealthCareProfileService {
     @Mobile
     public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
         HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(healthCareProfile.getQueueUserId());
         //TODO this temp, must revert logic
         if (null == healthCareProfile) {
             return new JsonHealthCareProfile()
                     .setCodeQR(codeQR)
-                    .setProfileImage(userProfile.getProfileImage())
                     .setPracticeStart(healthCareProfile.getPracticeStart())
                     .setEducation(healthCareProfile.getEducationAsJson())
                     .setLicenses(healthCareProfile.getLicensesAsJson())
@@ -70,7 +64,6 @@ public class HealthCareProfileService {
         } else {
             return new JsonHealthCareProfile()
                     .setCodeQR(codeQR)
-                    .setProfileImage(userProfile.getProfileImage())
                     .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
         }
     }
