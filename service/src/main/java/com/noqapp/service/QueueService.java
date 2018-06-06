@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * User: hitender
@@ -292,26 +293,28 @@ public class QueueService {
     }
 
     private List<YearlyData> lastTwelveMonthVisits(String codeQR) {
+        Random rand = new Random();
         return new ArrayList<YearlyData>() {
             {
-                add(new YearlyData().setYearMonth(1).setValue(10));
-                add(new YearlyData().setYearMonth(2).setValue(20));
-                add(new YearlyData().setYearMonth(3).setValue(15));
-                add(new YearlyData().setYearMonth(4).setValue(10));
-                add(new YearlyData().setYearMonth(5).setValue(5));
-                add(new YearlyData().setYearMonth(6).setValue(12));
-                add(new YearlyData().setYearMonth(7).setValue(16));
-                add(new YearlyData().setYearMonth(8).setValue(19));
-                add(new YearlyData().setYearMonth(9).setValue(10));
-                add(new YearlyData().setYearMonth(10).setValue(8));
-                add(new YearlyData().setYearMonth(11).setValue(16));
-                add(new YearlyData().setYearMonth(12).setValue(21));
+                add(new YearlyData().setYearMonth(1).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(2).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(3).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(4).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(5).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(6).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(7).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(8).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(9).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(10).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(11).setValue(rand.nextInt(50) + 1));
+                add(new YearlyData().setYearMonth(12).setValue(rand.nextInt(50) + 1));
             }
         };
     }
 
     private NewRepeatCustomers repeatAndNewCustomers(String codeQR) {
-        return new NewRepeatCustomers().setCustomerNew(5).setCustomerRepeat(20);
+        Random rand = new Random();
+        return new NewRepeatCustomers().setCustomerNew(rand.nextInt(50) + 1).setCustomerRepeat(rand.nextInt(50) + 1);
     }
 
     @Mobile
