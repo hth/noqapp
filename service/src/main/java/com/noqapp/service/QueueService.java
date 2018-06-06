@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -8,12 +9,15 @@ import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedMinorPerson;
 import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.JsonToken;
-import com.noqapp.domain.stats.DoctorStats;
+import com.noqapp.domain.stats.HealthCareStat;
+import com.noqapp.domain.stats.HealthCareStatList;
 import com.noqapp.domain.stats.NewRepeatCustomers;
 import com.noqapp.domain.stats.YearlyData;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import org.slf4j.Logger;
@@ -37,18 +41,21 @@ public class QueueService {
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private TokenQueueService tokenQueueService;
+    private BusinessUserStoreManager businessUserStoreManager;
 
     @Autowired
     public QueueService(
             AccountService accountService,
             QueueManager queueManager,
             QueueManagerJDBC queueManagerJDBC,
-            TokenQueueService tokenQueueService
+            TokenQueueService tokenQueueService,
+            BusinessUserStoreManager businessUserStoreManager
     ) {
         this.accountService = accountService;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.tokenQueueService = tokenQueueService;
+        this.businessUserStoreManager = businessUserStoreManager;
     }
 
     @Mobile
@@ -318,9 +325,16 @@ public class QueueService {
     }
 
     @Mobile
-    public DoctorStats doctorStat(String codeQR) {
-        return new DoctorStats()
-                .setRepeatCustomers(repeatAndNewCustomers(codeQR))
-                .setTwelveMonths(lastTwelveMonthVisits(codeQR));
+    public HealthCareStatList healthCareStats(String qid) {
+        HealthCareStatList healthCareStatList = new HealthCareStatList();
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getAllManagingStoreWithUserLevel(qid, UserLevelEnum.S_MANAGER);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            healthCareStatList.addHealthCareStat(
+                    new HealthCareStat()
+                            .setCodeQR(businessUserStore.getCodeQR())
+                            .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
+                            .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
+        }
+        return healthCareStatList;
     }
 }

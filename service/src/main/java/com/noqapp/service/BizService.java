@@ -6,12 +6,10 @@ import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -436,10 +434,5 @@ public class BizService {
     public boolean resetStoreHour(String id) {
         LOG.debug("StoreHour id={}", id);
         return storeHourManager.resetStoreHour(id);
-    }
-
-    @Mobile
-    public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
-        return businessUserStoreManager.getAllManagingStoreWithUserLevel(bizStoreId, userLevel);
     }
 }

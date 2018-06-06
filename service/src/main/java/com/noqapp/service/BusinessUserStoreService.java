@@ -288,4 +288,8 @@ public class BusinessUserStoreService {
     public List<BusinessUserStoreEntity> findAll() {
         return businessUserStoreManager.findAll();
     }
+
+    public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
+        return businessUserStoreManager.getAllManagingStoreWithUserLevel(qid, userLevel);
+    }
 }
