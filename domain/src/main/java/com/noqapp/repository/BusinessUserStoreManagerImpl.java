@@ -120,7 +120,13 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("UL").is(userLevel).andOperator(isNotDeleted())),
+                query(where("QID").is(qid)
+                        .and("UL").is(userLevel)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
