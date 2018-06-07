@@ -22,7 +22,9 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId);
 
-    List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel);
+    BusinessUserStoreEntity findUserManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel);
+
+    List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel);
 
     long deleteAllManagingStore(String bizStoreId);
 
