@@ -118,8 +118,8 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public List<BusinessUserStoreEntity> getAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
-        return mongoTemplate.find(
+    public BusinessUserStoreEntity findUserManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
+        return mongoTemplate.findOne(
                 query(where("QID").is(qid)
                         .and("UL").is(userLevel)
                         .andOperator(
@@ -127,6 +127,15 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
                                 isNotDeleted()
                         )
                 ),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
+        return mongoTemplate.find(
+                query(where("BS").is(bizStoreId).and("UL").is(userLevel).andOperator(isNotDeleted())),
                 BusinessUserStoreEntity.class,
                 TABLE
         );
