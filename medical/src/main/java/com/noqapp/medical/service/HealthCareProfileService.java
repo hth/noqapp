@@ -51,10 +51,14 @@ public class HealthCareProfileService {
     @Mobile
     public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
         HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
+        return getJsonHealthCareProfile(healthCareProfile);
+    }
+
+    private JsonHealthCareProfile getJsonHealthCareProfile(HealthCareProfileEntity healthCareProfile) {
         //TODO this temp, must revert logic
         if (null == healthCareProfile) {
             return new JsonHealthCareProfile()
-                    .setCodeQR(codeQR)
+                    .setCodeQR(healthCareProfile.getCodeQR())
                     .setPracticeStart(healthCareProfile.getPracticeStart())
                     .setEducation(healthCareProfile.getEducationAsJson())
                     .setLicenses(healthCareProfile.getLicensesAsJson())
@@ -63,13 +67,18 @@ public class HealthCareProfileService {
                     .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
         } else {
             return new JsonHealthCareProfile()
-                    .setCodeQR(codeQR)
+                    .setCodeQR(healthCareProfile.getCodeQR())
                     .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
         }
     }
 
     public HealthCareProfileEntity findByQid(String qid) {
         return healthCareProfileManager.findOne(qid);
+    }
+
+    public JsonHealthCareProfile getJsonHealthCareProfileByQid(String qid) {
+        HealthCareProfileEntity healthCareProfile = healthCareProfileManager.findOne(qid);
+        return getJsonHealthCareProfile(healthCareProfile);
     }
 
     public void save(HealthCareProfileEntity healthCareProfile) {

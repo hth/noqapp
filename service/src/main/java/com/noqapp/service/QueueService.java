@@ -120,6 +120,7 @@ public class QueueService {
     }
 
     /** Finds all clients in a queue. */
+    @Mobile
     public JsonQueuePersonList findAllClient(String codeQR) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
