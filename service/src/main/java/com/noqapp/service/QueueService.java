@@ -114,6 +114,22 @@ public class QueueService {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
         List<QueueEntity> queues = queueManager.findAllClientQueuedOrAborted(codeQR);
+        populateInJsonQueuePersonList(queuedPeople, queues);
+
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
+    /** Finds all clients in a queue. */
+    public JsonQueuePersonList findAllClient(String codeQR) {
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+        List<QueueEntity> queues = queueManager.findByCodeQR(codeQR);
+        populateInJsonQueuePersonList(queuedPeople, queues);
+
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
+    private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
             JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
                     .setQueueUserId(queue.getQueueUserId())
@@ -143,8 +159,6 @@ public class QueueService {
 
             queuedPeople.add(jsonQueuedPerson);
         }
-
-        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
     /**
