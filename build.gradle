@@ -121,7 +121,7 @@ subprojects {
 
     pmd {
         ignoreFailures = true
-        toolVersion = '6.3.0'
+        toolVersion = '6.4.0'
 
         ruleSets = [
                 "java-basic",
@@ -167,7 +167,7 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.8.0"
+        toolVersion = "0.8.1"
     }
 
     jacocoTestReport {
