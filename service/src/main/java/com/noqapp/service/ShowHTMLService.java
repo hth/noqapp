@@ -1,26 +1,30 @@
 package com.noqapp.service;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
 import com.google.zxing.WriterException;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.json.medical.JsonHealthCareProfile;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Generate store HTML page at runtime.
@@ -70,7 +74,7 @@ public class ShowHTMLService {
         this.codeQRGeneratorService = codeQRGeneratorService;
 
         try {
-            Map<String, String> rootMap = new HashMap<>();
+            Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("parentHost", parentHost);
             rootMap.put("domain", domain);
             rootMap.put("https", https);
@@ -81,6 +85,7 @@ public class ShowHTMLService {
         }
     }
 
+    @Deprecated
     public String showStoreByCodeQR(String codeQR) {
         if (Validate.isValidObjectId(codeQR)) {
             return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
@@ -89,7 +94,7 @@ public class ShowHTMLService {
     }
 
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         try {
             if (null == bizStore) {
                 LOG.warn("No such store found. Showing blank store.");
@@ -121,7 +126,7 @@ public class ShowHTMLService {
     }
 
     private String showBusinessByWebLocation(BizNameEntity bizName) {
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         try {
             if (null == bizName) {
                 LOG.warn("No such business found. Showing blank business.");
@@ -144,7 +149,7 @@ public class ShowHTMLService {
     }
 
     public boolean populateStore(
-            Map<String, String> rootMap,
+            Map<String, Object> rootMap,
             BizStoreEntity bizStore
     ) {
         
@@ -160,6 +165,8 @@ public class ShowHTMLService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         rootMap.put("parentHost", parentHost);
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
         rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
         rootMap.put("phone", bizStore.getPhoneFormatted());
@@ -172,8 +179,6 @@ public class ShowHTMLService {
         rootMap.put("rating", String.valueOf(bizStore.getRatingFormatted()));
         rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
-        rootMap.put("domain", domain);
-        rootMap.put("https", https);
         rootMap.put("codeQR", bizStore.getCodeQRInBase64());
 
         int i = zonedDateTime.getDayOfWeek().getValue();
@@ -213,8 +218,41 @@ public class ShowHTMLService {
         return true;
     }
 
+    public boolean populateMedicalProfile(
+            Map<String, Map<String, Object>> rootMap,
+            UserProfileEntity userProfile,
+            JsonHealthCareProfile jsonHealthCareProfile,
+            List<BizStoreEntity> bizStores
+    ) {
+
+        Map<String, Object> page = new HashMap<>();
+        page.put("parentHost", parentHost);
+        page.put("domain", domain);
+        page.put("https", https);
+        rootMap.put("page", page);
+
+        Map<String, Object> profile = new HashMap<>();
+        profile.put("name", userProfile.getName());
+        profile.put("gender", userProfile.getGender().name());
+        profile.put("experienceDuration", jsonHealthCareProfile.experienceDuration());
+        profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage()) ? "" : userProfile.getProfileImage());
+
+        profile.put("awards", jsonHealthCareProfile.getAwards());
+        profile.put("education", jsonHealthCareProfile.getEducation());
+        rootMap.put("profile", profile);
+
+        Map<String, Object> stores = new HashMap<>();
+        for (BizStoreEntity bizStore : bizStores) {
+            Map<String, Object> storeData = new HashMap<>();
+            populateStore(storeData, bizStore);
+            stores.put(bizStore.getCodeQR(), storeData);
+        }
+        rootMap.put("stores", stores);
+        return true;
+    }
+
     private void computeQueueStatus(
-            Map<String, String> rootMap,
+            Map<String, Object> rootMap,
             ZonedDateTime zonedDateTime,
             StoreHourEntity storeHour
     ) {

@@ -28,7 +28,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
-import static com.noqapp.common.utils.DateUtil.DF_YYYY_MM_DD;
+import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
 
 /**
  * User: hitender
@@ -96,7 +96,7 @@ public class GenerateStoreQueueHTML {
             Files.deleteIfExists(pathToTxtFile);
             Files.createDirectories(pathToTxtFile.getParent());
             Files.createFile(pathToTxtFile);
-            String modifiedDate = DF_YYYY_MM_DD.format(new Date());
+            String modifiedDate = SDF_YYYY_MM_DD.format(new Date());
             SiteMapIndex siteMapIndex = new SiteMapIndex();
 
             /* Max URL supported is 50_000 per site map. */

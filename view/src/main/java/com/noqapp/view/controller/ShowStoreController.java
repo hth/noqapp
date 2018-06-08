@@ -3,6 +3,10 @@ package com.noqapp.view.controller;
 import com.noqapp.common.type.FileExtensionTypeEnum;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.medical.service.ShowHealthCareHTMLService;
+import com.noqapp.service.BizService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.view.helper.WebUtil;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +27,7 @@ import java.io.InputStream;
  * User: hitender
  * Date: 1/16/17 8:12 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -34,24 +38,41 @@ public class ShowStoreController {
     private static final Logger LOG = LoggerFactory.getLogger(ShowStoreController.class);
 
     private ShowHTMLService showHTMLService;
+    private ShowHealthCareHTMLService showHealthCareHTMLService;
+    private BizService bizService;
 
     @Autowired
-    public ShowStoreController(ShowHTMLService showHTMLService) {
+    public ShowStoreController(ShowHTMLService showHTMLService, ShowHealthCareHTMLService showHealthCareHTMLService, BizService bizService) {
         this.showHTMLService = showHTMLService;
+        this.showHealthCareHTMLService = showHealthCareHTMLService;
+        this.bizService = bizService;
     }
 
     /**
      * Loads biz store page when code scanned is not from our app but some other code scanning app.
      * {@link com.noqapp.domain.BizStoreEntity#getCodeQRInALink}
-     *
+     * <p>
      * Do not change the mapping as it will break all QR Code Mapping.
      *
      * @return
      */
     @GetMapping(value = "/{codeQR}/q", produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String showStoreByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
-        return showHTMLService.showStoreByCodeQR(codeQR.getText());
+    public String showStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
+        if (Validate.isValidObjectId(codeQR.getText())) {
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
+            if (null == bizStore) {
+                return showHTMLService.showStoreByWebLocation(null);
+            }
+
+            switch (bizStore.getBusinessType()) {
+                case DO:
+                    return showHealthCareHTMLService.showStoreByWebLocation(bizStore);
+                default:
+                    return showHTMLService.showStoreByWebLocation(bizStore);
+            }
+        }
+        return showHTMLService.showStoreByWebLocation(null);
     }
 
     /**
@@ -59,14 +80,14 @@ public class ShowStoreController {
      */
     @GetMapping(value = "/{codeQR}/b", produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String showBusinessByCodeQR(@PathVariable ("codeQR") ScrubbedInput codeQR) {
+    public String showBusinessByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showBusinessByCodeQR(codeQR.getText());
     }
 
     /**
      * Fetch the requested file image.
      */
-    @GetMapping (value = "/i/{fileName}")
+    @GetMapping(value = "/i/{fileName}")
     public void getFileImage(
             @PathVariable("fileName")
             ScrubbedInput fileName,
@@ -86,7 +107,11 @@ public class ShowStoreController {
                     e);
         } finally {
             if (inputStream != null) {
-                IOUtils.closeQuietly(inputStream);
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    LOG.error("Failed closing stream reason={}", e.getLocalizedMessage(), e);
+                }
             }
         }
     }

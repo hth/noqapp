@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class WebJoinQueueForm {
     private ScrubbedInput codeQR;
-    private Map<String, String> rootMap = new HashMap<>();
+    private Map<String, Object> rootMap = new HashMap<>();
     private ScrubbedInput uid;
     private ScrubbedInput phone;
 
@@ -24,11 +24,11 @@ public class WebJoinQueueForm {
         return this;
     }
 
-    public Map<String, String> getRootMap() {
+    public Map<String, Object> getRootMap() {
         return rootMap;
     }
 
-    public WebJoinQueueForm setRootMap(Map<String, String> rootMap) {
+    public WebJoinQueueForm setRootMap(Map<String, Object> rootMap) {
         this.rootMap = rootMap;
         return this;
     }

@@ -1,10 +1,12 @@
 package com.noqapp.domain.json.medical;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.json.JsonStore;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -18,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+
+import static com.noqapp.common.utils.DateUtil.SDF_MMM_YYYY;
 
 /**
  * hitender
@@ -39,30 +43,32 @@ import java.util.TimeZone;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHealthCareProfile extends AbstractDomain {
 
+    //Change to web profile id
     @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty("ps")
-    private Date practiceStart = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minus(20, ChronoUnit.MONTHS).toInstant());
+    private Date practiceStart = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minus(20, ChronoUnit.YEARS).toInstant());
 
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
+    //TODO should be studies
     private List<JsonNameDatePair> education = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("KJ Somaiya").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("Dako Baiya University").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("KJ Somaiya").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Dako Baiya University").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
     }};
 
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
     private List<JsonNameDatePair> licenses = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("M.B.B.S").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("M.D").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("M.B.B.S").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("M.D").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
     }};
 
     @JsonProperty("aw")
     private List<JsonNameDatePair> awards = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("Awards Prestigious Award").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("Animal Doctor Award").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Awards Prestigious Award").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Animal Doctor Award").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
     }};
 
     @JsonIgnoreProperties
@@ -149,5 +155,10 @@ public class JsonHealthCareProfile extends AbstractDomain {
     public JsonHealthCareProfile setPrescriptionDictionary(String prescriptionDictionary) {
         this.prescriptionDictionary = prescriptionDictionary;
         return this;
+    }
+
+    @JsonIgnore
+    public int experienceDuration() {
+        return DateUtil.getYearsBetween(practiceStart, new Date());
     }
 }

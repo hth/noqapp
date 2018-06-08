@@ -1,10 +1,5 @@
 package com.noqapp.service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.MailEntity;
@@ -19,6 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -118,7 +118,7 @@ public class MailService {
      * @return
      */
     public boolean accountValidationMail(String userId, String name, String auth) {
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("to", name);
         rootMap.put("contact_email", userId);
         rootMap.put("link", auth);
@@ -153,7 +153,7 @@ public class MailService {
         if (null == userAccount) {
             LOG.warn("Could not recover user={}", userId);
 
-            Map<String, String> rootMap = new HashMap<>();
+            Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("contact_email", userId);
             rootMap.put("domain", domain);
             rootMap.put("https", https);
@@ -179,7 +179,7 @@ public class MailService {
             ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
                     userAccount.getQueueUserId());
 
-            Map<String, String> rootMap = new HashMap<>();
+            Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("to", userAccount.getName());
             rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
             rootMap.put("domain", domain);
@@ -225,7 +225,7 @@ public class MailService {
             String displayName
     ) {
         LOG.info("Invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
         rootMap.put("profileName", profileName);
@@ -258,7 +258,7 @@ public class MailService {
                 userId,
                 displayName);
 
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
         rootMap.put("displayName", displayName);
         rootMap.put("profileName", profileName);
@@ -287,7 +287,7 @@ public class MailService {
             long androidDeviceRegistered,
             long iPhoneDeviceRegistered
     ) {
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("registeredUser", Long.toString(registeredUser));
         rootMap.put("awaitingBusinessApproval", Long.toString(awaitingBusinessApproval));
         rootMap.put("deviceRegistered", Long.toString(deviceRegistered));

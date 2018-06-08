@@ -111,10 +111,10 @@ public class WebJoinQueueController {
         }
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
-        Map<String, String> rootMap = new HashMap<>();
+        Map<String, Object> rootMap = new HashMap<>();
         showHTMLService.populateStore(rootMap, bizStore);
 
-        webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(rootMap.get("codeQR")));
+        webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
         return joinQueuePage;
     }
 
@@ -144,7 +144,7 @@ public class WebJoinQueueController {
                     }
 
                     BizStoreEntity bizStore = bizService.findByCodeQR(data[0]);
-                    Map<String, String> rootMap = new HashMap<>();
+                    Map<String, Object> rootMap = new HashMap<>();
                     showHTMLService.populateStore(rootMap, bizStore);
 
                     rootMap.put("token", data[1]);

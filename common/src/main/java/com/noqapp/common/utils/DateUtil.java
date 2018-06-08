@@ -41,8 +41,9 @@ public final class DateUtil {
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-    private static final DateTimeFormatter DF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
-    public static final SimpleDateFormat DF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private static final DateTimeFormatter DTF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
+    public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
     private DateUtil() {
@@ -122,7 +123,7 @@ public final class DateUtil {
     }
 
     public static Date convertToDate(String date) {
-        return convertToDate(date, DF_MM_DD_YYYY);
+        return convertToDate(date, DTF_MM_DD_YYYY);
     }
 
     private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter) {
@@ -142,7 +143,7 @@ public final class DateUtil {
     }
 
     public static String dateToString(Date date) {
-        return dateToString(date, DF_MM_DD_YYYY);
+        return dateToString(date, DTF_MM_DD_YYYY);
     }
 
     public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
@@ -161,6 +162,13 @@ public final class DateUtil {
         Assert.notNull(end, "End date is null");
         Interval interval = new Interval(start.getTime(), end.getTime());
         return interval.toPeriod(PeriodType.days()).getDays();
+    }
+
+    public static int getYearsBetween(Date start, Date end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        return interval.toPeriod(PeriodType.years()).getYears();
     }
 
     public static int getMillisBetween(Date start, Date end) {
