@@ -39,6 +39,8 @@ public class ShowHTMLService {
     private String parentHost;
     private String domain;
     private String https;
+    private String awsEndPoint;
+    private String awsBucket;
 
     private BizService bizService;
     private FreemarkerService freemarkerService;
@@ -59,6 +61,13 @@ public class ShowHTMLService {
             @Value ("${https}")
             String https,
 
+            @Value("${aws.s3.endpoint}")
+            String awsEndPoint,
+
+            @Value("${aws.s3.bucketName}")
+            String awsBucket,
+
+
             BizService bizService,
             FreemarkerService freemarkerService,
             TokenQueueService tokenQueueService,
@@ -67,6 +76,8 @@ public class ShowHTMLService {
         this.parentHost = parentHost;
         this.domain = domain;
         this.https = https;
+        this.awsEndPoint = awsEndPoint;
+        this.awsBucket = awsBucket;
 
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
@@ -235,7 +246,7 @@ public class ShowHTMLService {
         profile.put("name", userProfile.getName());
         profile.put("gender", userProfile.getGender().name());
         profile.put("experienceDuration", jsonHealthCareProfile.experienceDuration());
-        profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage()) ? "" : userProfile.getProfileImage());
+        profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage()) ? "" : awsEndPoint + awsBucket + userProfile.getProfileImage());
 
         profile.put("awards", jsonHealthCareProfile.getAwards());
         profile.put("education", jsonHealthCareProfile.getEducation());
