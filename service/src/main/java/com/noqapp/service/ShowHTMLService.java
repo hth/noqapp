@@ -67,7 +67,6 @@ public class ShowHTMLService {
             @Value("${aws.s3.bucketName}")
             String awsBucket,
 
-
             BizService bizService,
             FreemarkerService freemarkerService,
             TokenQueueService tokenQueueService,

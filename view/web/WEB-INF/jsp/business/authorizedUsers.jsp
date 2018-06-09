@@ -98,21 +98,22 @@
                                                     <td nowrap>
                                                         <c:choose>
                                                             <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                                <a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a>
+                                                                <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a></span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                ${queueSupervisor.name}
+                                                                <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td>${queueSupervisor.address}
-                                                        <p>Phone: ${queueSupervisor.phone}</p>
+                                                    <td>
+                                                        <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                        <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
                                                     </td>
-                                                    <td>${queueSupervisor.email}</td>
+                                                    <td><span style="display:block; font-size:13px;">${queueSupervisor.email}</span></td>
                                                     <td nowrap>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                            <select path="userLevel" class="form-field-select single-dropdown">
+                                                            <select path="userLevel" class="form-field-select single-dropdown" style="display:block; font-size:13px;">
                                                                 <c:forEach var="item" items="${userLevelEnumValues}">
                                                                     <%--//TODO Add ajax call to change user role--%>
                                                                     <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
@@ -120,12 +121,12 @@
                                                             </select>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            ${queueSupervisor.userLevel.description}
+                                                            <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                     </td>
                                                     <td nowrap>
-                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
+                                                        <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                                     </td>
                                                     <td class="Tleft" nowrap>
                                                     <c:choose>

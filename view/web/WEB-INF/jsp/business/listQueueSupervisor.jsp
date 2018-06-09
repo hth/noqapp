@@ -92,16 +92,17 @@
                                             <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
-                                                    <td nowrap>${queueSupervisor.name}</td>
-                                                    <td>${queueSupervisor.address}
-                                                        <p>Phone: ${queueSupervisor.phone}</p>
+                                                    <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
+                                                    <td>
+                                                        <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                        <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
                                                     </td>
-                                                    <td>${queueSupervisor.email}</td>
+                                                    <td><span style="display:block; font-size:13px;">${queueSupervisor.email}</span></td>
                                                     <td nowrap>
-                                                        ${queueSupervisor.userLevel.description}
+                                                        <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
                                                     </td>
                                                     <td nowrap>
-                                                        <fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/>
+                                                        <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                                     </td>
                                                     <td class="Tleft" nowrap>
                                                         <c:choose>
