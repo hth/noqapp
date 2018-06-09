@@ -16,5 +16,5 @@ public interface HealthCareProfileManager extends RepositoryManager<HealthCarePr
     /** Remove soft delete when the person is added again. */
     void removeMarkedAsDeleted(String qid);
 
-    HealthCareProfileEntity findByCodeQR(String codeQR);
+    HealthCareProfileEntity findByWebProfileId(String webProfileId);
 }

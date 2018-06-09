@@ -81,9 +81,9 @@ public class HealthCareProfileManagerImpl implements HealthCareProfileManager {
     }
 
     @Override
-    public HealthCareProfileEntity findByCodeQR(String codeQR) {
+    public HealthCareProfileEntity findByWebProfileId(String webProfileId) {
         return mongoTemplate.findOne(
-                query(where("QR").is(codeQR)),
+                query(where("WP").is(webProfileId)),
                 HealthCareProfileEntity.class,
                 TABLE
         );
