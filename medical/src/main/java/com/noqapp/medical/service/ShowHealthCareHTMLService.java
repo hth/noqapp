@@ -32,10 +32,6 @@ import java.util.Set;
 public class ShowHealthCareHTMLService {
     private static final Logger LOG = LoggerFactory.getLogger(ShowHealthCareHTMLService.class);
 
-    private String parentHost;
-    private String domain;
-    private String https;
-
     private BizService bizService;
     private FreemarkerService freemarkerService;
     private ShowHTMLService showHTMLService;
@@ -64,10 +60,6 @@ public class ShowHealthCareHTMLService {
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService
     ) {
-        this.parentHost = parentHost;
-        this.domain = domain;
-        this.https = https;
-
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
         this.showHTMLService = showHTMLService;
