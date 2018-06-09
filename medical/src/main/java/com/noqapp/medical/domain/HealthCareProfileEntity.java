@@ -42,8 +42,8 @@ public class HealthCareProfileEntity extends BaseEntity {
     private String queueUserId;
 
     @NotNull
-    @Field ("QR")
-    private String codeQR;
+    @Field ("WP")
+    private String webProfileId;
 
     @Field("PS")
     private Date practiceStart;
@@ -65,17 +65,17 @@ public class HealthCareProfileEntity extends BaseEntity {
     @Field("PD")
     private String prescriptionDictionary;
 
-    public HealthCareProfileEntity(@NotNull String queueUserId, @NotNull String codeQR) {
+    public HealthCareProfileEntity(@NotNull String queueUserId, @NotNull String webProfileId) {
         this.queueUserId = queueUserId;
-        this.codeQR = codeQR;
+        this.webProfileId = webProfileId;
     }
 
     public String getQueueUserId() {
         return queueUserId;
     }
 
-    public String getCodeQR() {
-        return codeQR;
+    public String getWebProfileId() {
+        return webProfileId;
     }
 
     public Date getPracticeStart() {

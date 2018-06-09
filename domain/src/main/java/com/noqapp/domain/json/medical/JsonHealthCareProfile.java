@@ -43,9 +43,8 @@ import static com.noqapp.common.utils.DateUtil.SDF_MMM_YYYY;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHealthCareProfile extends AbstractDomain {
 
-    //Change to web profile id
-    @JsonProperty ("qr")
-    private String codeQR;
+    @JsonProperty ("wp")
+    private String webProfileId;
 
     @JsonProperty("ps")
     private Date practiceStart = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minus(20, ChronoUnit.YEARS).toInstant());
@@ -80,12 +79,12 @@ public class JsonHealthCareProfile extends AbstractDomain {
     @JsonProperty("pd")
     private String prescriptionDictionary = "amoxycillin,penicillin";
 
-    public String getCodeQR() {
-        return codeQR;
+    public String getWebProfileId() {
+        return webProfileId;
     }
 
-    public JsonHealthCareProfile setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
+    public JsonHealthCareProfile setWebProfileId(String webProfileId) {
+        this.webProfileId = webProfileId;
         return this;
     }
 

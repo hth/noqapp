@@ -44,13 +44,13 @@ public class HealthCareProfileService {
         }
     }
 
-    public HealthCareProfileEntity findByCodeQR(String codeQR) {
-        return healthCareProfileManager.findByCodeQR(codeQR);
+    public HealthCareProfileEntity findByWebProfileId(String webProfileId) {
+        return healthCareProfileManager.findByWebProfileId(webProfileId);
     }
 
     @Mobile
-    public JsonHealthCareProfile findByCodeQRAsJson(String codeQR) {
-        HealthCareProfileEntity healthCareProfile = findByCodeQR(codeQR);
+    public JsonHealthCareProfile findByWebProfileIdAsJson(String webProfileId) {
+        HealthCareProfileEntity healthCareProfile = findByWebProfileId(webProfileId);
         return getJsonHealthCareProfile(healthCareProfile);
     }
 
@@ -58,7 +58,7 @@ public class HealthCareProfileService {
         //TODO this temp, must revert logic
         if (null == healthCareProfile) {
             return new JsonHealthCareProfile()
-                    .setCodeQR(healthCareProfile.getCodeQR())
+                    .setWebProfileId(healthCareProfile.getWebProfileId())
                     .setPracticeStart(healthCareProfile.getPracticeStart())
                     .setEducation(healthCareProfile.getEducationAsJson())
                     .setLicenses(healthCareProfile.getLicensesAsJson())
@@ -67,7 +67,7 @@ public class HealthCareProfileService {
                     .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
         } else {
             return new JsonHealthCareProfile()
-                    .setCodeQR(healthCareProfile.getCodeQR())
+                    .setWebProfileId(healthCareProfile.getWebProfileId())
                     .setManagerAtStoreCodeQRs(healthCareProfile.getManagerAtStoreCodeQRs());
         }
     }
