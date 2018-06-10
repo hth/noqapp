@@ -32,6 +32,7 @@
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/business/editBusiness.htm">Edit Business</a>
                         <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
