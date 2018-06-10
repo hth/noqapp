@@ -107,7 +107,7 @@
                     <div class="admin-content">
                         <div class="add-new">
                             <img src="${userProfileForm.profileImage}" alt="Profile Image" class="img-profile-circle" />
-                            <br/><br/>
+
                             <ul class="list-form">
                                 <li>
                                     <div class="col-lable3">
