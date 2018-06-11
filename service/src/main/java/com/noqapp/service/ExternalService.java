@@ -78,7 +78,7 @@ public class ExternalService {
             Geocode geocode = Geocode.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
             DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
             if (decodedAddress.isNotBlank()) {
-                if(bizStore.getAddressOrigin() != AddressOriginEnum.S) {
+                if (bizStore.getAddressOrigin() != AddressOriginEnum.S) {
                     bizStore.setAddress(decodedAddress.getFormattedAddress());
                 } else {
                     bizStore.setAddress(geocode.getAddress());
