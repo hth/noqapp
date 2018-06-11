@@ -157,7 +157,7 @@
                                         <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
