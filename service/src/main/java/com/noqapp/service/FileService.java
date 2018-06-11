@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +37,28 @@ public class FileService {
     public static final String PNG_FORMAT = "png";
     public static final String SCALED_IMAGE_POST_FIX = "_s";
 
+    private int imageProfileWidth;
+    private int imageProfileHeight;
+
     private AccountService accountService;
     private FtpService ftpService;
     private S3FileManager s3FileManager;
 
     @Autowired
-    public FileService(AccountService accountService, FtpService ftpService, S3FileManager s3FileManager) {
+    public FileService(
+            @Value ("${image.profile.width:192}")
+            int imageProfileWidth,
+
+            @Value ("${image.profile.height:192}")
+            int imageProfileHeight,
+
+            AccountService accountService,
+            FtpService ftpService,
+            S3FileManager s3FileManager
+    ) {
+        this.imageProfileWidth = imageProfileWidth;
+        this.imageProfileHeight = imageProfileHeight;
+
         this.accountService = accountService;
         this.ftpService = ftpService;
         this.s3FileManager = s3FileManager;
@@ -64,11 +81,11 @@ public class FileService {
             toFile = writeToFile(
                     createRandomFilenameOf24Chars() + getFileExtensionWithDot(profileFilename),
                     bufferedImage);
-            decreaseResolution = decreaseResolution(toFile, 192, 192);
+            decreaseResolution = decreaseResolution(toFile, imageProfileWidth, imageProfileHeight);
 
             String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
                     + getFileSeparator()                                    // FileSeparator /
-                    + profileFilename;                                             // filename.extension
+                    + profileFilename;                                      // filename.extension
 
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
