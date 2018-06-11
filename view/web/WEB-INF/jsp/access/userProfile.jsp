@@ -106,7 +106,7 @@
                     </div>
                     <div class="admin-content">
                         <div class="add-new">
-                            <img src="${userProfileForm.profileImage}" alt="Profile Image" class="img-profile-circle" />
+                            <img src="${userProfileForm.profileImage}" class="img-profile-circle" />
 
                             <ul class="list-form">
                                 <li>

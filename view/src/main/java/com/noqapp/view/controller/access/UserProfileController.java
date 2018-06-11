@@ -1,6 +1,7 @@
 package com.noqapp.view.controller.access;
 
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -98,13 +99,13 @@ public class UserProfileController {
         userProfileForm
                 .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage()) ? "" : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
                 .setGender(userProfile.getGender())
-                .setEmail(userProfile.getEmail())
-                .setLastName(userProfile.getLastName())
-                .setFirstName(userProfile.getFirstName())
-                .setBirthday(userProfile.getBirthday())
-                .setAddress(userProfile.getAddress())
-                .setPhone(userProfile.getPhone())
-                .setTimeZone(userProfile.getTimeZone())
+                .setEmail(new ScrubbedInput(userProfile.getEmail()))
+                .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setPhone(new ScrubbedInput(userProfile.getPhone()))
+                .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
 

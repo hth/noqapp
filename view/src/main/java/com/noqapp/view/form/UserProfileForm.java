@@ -1,5 +1,6 @@
 package com.noqapp.view.form;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.GenderEnum;
 
 /**
@@ -9,18 +10,18 @@ import com.noqapp.domain.types.GenderEnum;
 public class UserProfileForm {
 
     private String profileImage;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String address;
+    private ScrubbedInput email;
+    private ScrubbedInput firstName;
+    private ScrubbedInput lastName;
+    private ScrubbedInput address;
 
-    private String phone;
-    private String timeZone;
+    private ScrubbedInput phone;
+    private ScrubbedInput timeZone;
     private boolean emailValidated;
     private boolean phoneValidated;
 
     private GenderEnum gender;
-    private String birthday;
+    private ScrubbedInput birthday;
 
     public String getProfileImage() {
         return profileImage;
@@ -31,56 +32,56 @@ public class UserProfileForm {
         return this;
     }
 
-    public String getEmail() {
+    public ScrubbedInput getEmail() {
         return email;
     }
 
-    public UserProfileForm setEmail(String email) {
+    public UserProfileForm setEmail(ScrubbedInput email) {
         this.email = email;
         return this;
     }
 
-    public String getFirstName() {
+    public ScrubbedInput getFirstName() {
         return firstName;
     }
 
-    public UserProfileForm setFirstName(String firstName) {
+    public UserProfileForm setFirstName(ScrubbedInput firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public String getLastName() {
+    public ScrubbedInput getLastName() {
         return lastName;
     }
 
-    public UserProfileForm setLastName(String lastName) {
+    public UserProfileForm setLastName(ScrubbedInput lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public String getAddress() {
+    public ScrubbedInput getAddress() {
         return address;
     }
 
-    public UserProfileForm setAddress(String address) {
+    public UserProfileForm setAddress(ScrubbedInput address) {
         this.address = address;
         return this;
     }
 
-    public String getPhone() {
+    public ScrubbedInput getPhone() {
         return phone;
     }
 
-    public UserProfileForm setPhone(String phone) {
+    public UserProfileForm setPhone(ScrubbedInput phone) {
         this.phone = phone;
         return this;
     }
 
-    public String getTimeZone() {
+    public ScrubbedInput getTimeZone() {
         return timeZone;
     }
 
-    public UserProfileForm setTimeZone(String timeZone) {
+    public UserProfileForm setTimeZone(ScrubbedInput timeZone) {
         this.timeZone = timeZone;
         return this;
     }
@@ -112,11 +113,11 @@ public class UserProfileForm {
         return this;
     }
 
-    public String getBirthday() {
+    public ScrubbedInput getBirthday() {
         return birthday;
     }
 
-    public UserProfileForm setBirthday(String birthday) {
+    public UserProfileForm setBirthday(ScrubbedInput birthday) {
         this.birthday = birthday;
         return this;
     }
