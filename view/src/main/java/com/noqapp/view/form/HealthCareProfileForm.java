@@ -4,10 +4,8 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.helper.NameDatePair;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * hitender
@@ -18,9 +16,9 @@ public class HealthCareProfileForm {
     private ScrubbedInput webProfileId;
     private Date practiceStart;
 
+    private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
     private List<NameDatePair> licenses = new LinkedList<>();
-    private List<NameDatePair> awards = new LinkedList<>();
 
     public ScrubbedInput getWebProfileId() {
         return webProfileId;
@@ -40,6 +38,15 @@ public class HealthCareProfileForm {
         return this;
     }
 
+    public List<NameDatePair> getAwards() {
+        return awards;
+    }
+
+    public HealthCareProfileForm setAwards(List<NameDatePair> awards) {
+        this.awards = awards;
+        return this;
+    }
+
     public List<NameDatePair> getEducation() {
         return education;
     }
@@ -55,15 +62,6 @@ public class HealthCareProfileForm {
 
     public HealthCareProfileForm setLicenses(List<NameDatePair> licenses) {
         this.licenses = licenses;
-        return this;
-    }
-
-    public List<NameDatePair> getAwards() {
-        return awards;
-    }
-
-    public HealthCareProfileForm setAwards(List<NameDatePair> awards) {
-        this.awards = awards;
         return this;
     }
 }

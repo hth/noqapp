@@ -245,7 +245,9 @@ public class ShowHTMLService {
         profile.put("name", userProfile.getName());
         profile.put("gender", userProfile.getGender().name());
         profile.put("experienceDuration", jsonHealthCareProfile.experienceDuration());
-        profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage()) ? "" : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
+        profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage())
+                ? "/static2/internal/img/profile-image-192x192.png"
+                : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonHealthCareProfile.getAwards());
         profile.put("education", jsonHealthCareProfile.getEducation());

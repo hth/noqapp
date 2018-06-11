@@ -274,6 +274,39 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+                                <c:forEach items="${healthCareProfileForm.awards}" var="nameDatePair" varStatus="status">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                </c:forEach>
+                                <c:forEach items="${healthCareProfileForm.education}" var="nameDatePair" varStatus="status">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                </c:forEach>
+                                <c:forEach items="${healthCareProfileForm.licenses}" var="nameDatePair" varStatus="status">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
