@@ -4,12 +4,14 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.service.FileService;
 import com.noqapp.view.form.HealthCareProfileForm;
 import com.noqapp.view.form.UserProfileForm;
@@ -65,6 +67,7 @@ public class UserProfileController {
     private AccountService accountService;
     private HealthCareProfileService healthCareProfileService;
     private FileService fileService;
+    private ExternalService externalService;
 
     @Autowired
     public UserProfileController(
@@ -148,8 +151,21 @@ public class UserProfileController {
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
-        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
 
+        //TODO(hth) to support change of address, this will need to be changed to flow
+        RegisterUser registerUser = new RegisterUser()
+                .setEmail(new ScrubbedInput(userProfile.getEmail()))
+                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+                .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+                .setBirthday(userProfileForm.getBirthday())
+                .setAddressOrigin(userProfile.getAddressOrigin())
+                .setFirstName(userProfileForm.getFirstName())
+                .setLastName(userProfileForm.getLastName())
+                .setGender(userProfileForm.getGender())
+                .setQueueUserId(userProfile.getQueueUserId());
+        accountService.updateUserProfile(registerUser, userProfile.getEmail());
 
         apiHealthService.insert(
                 "/",
@@ -157,7 +173,7 @@ public class UserProfileController {
                 UserProfileController.class.getName(),
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);
-        return nextPage;
+        return "redirect:/access/userProfile.htm";
     }
 
     @PostMapping(value = "/updateHealthCareProfile")
@@ -178,7 +194,7 @@ public class UserProfileController {
                 UserProfileController.class.getName(),
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);
-        return nextPage;
+        return "redirect:/access/userProfile.htm";
     }
 
     /**

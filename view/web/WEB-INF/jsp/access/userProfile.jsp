@@ -157,7 +157,8 @@
                                         <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via NoQApp)</span>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -190,7 +191,7 @@
                                         <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -199,7 +200,7 @@
                                         <form:label path="email" cssErrorClass="lb_error">Email Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="email" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -208,7 +209,7 @@
                                         <form:label path="timeZone" cssErrorClass="lb_error">Time Zone</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="timeZone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        <form:input path="timeZone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -233,9 +234,9 @@
                                     <div class="left-btn">
                                         <input name="update" class="next-btn" value="UPDATE" type="submit">
                                     </div>
-                                    <div class="right-btn">
-                                        <input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">
-                                    </div>
+                                    <%--<div class="right-btn">--%>
+                                        <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                    <%--</div>--%>
                                     <div class="clearFix"></div>
                                 </div>
                                 <div class="clearFix"></div>
@@ -316,9 +317,9 @@
                                     <div class="left-btn">
                                         <input name="update" class="next-btn" value="UPDATE" type="submit">
                                     </div>
-                                    <div class="right-btn">
-                                        <input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">
-                                    </div>
+                                    <%--<div class="right-btn">--%>
+                                        <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                    <%--</div>--%>
                                     <div class="clearFix"></div>
                                 </div>
                                 <div class="clearFix"></div>
