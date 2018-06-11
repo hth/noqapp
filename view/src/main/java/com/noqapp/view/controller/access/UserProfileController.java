@@ -107,7 +107,9 @@ public class UserProfileController {
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
 
         userProfileForm
-                .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage()) ? "" : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
+                .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
+                        ? "/static2/internal/img/profile-image-192x192.png"
+                        : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
                 .setGender(userProfile.getGender())
                 .setEmail(new ScrubbedInput(userProfile.getEmail()))
                 .setLastName(new ScrubbedInput(userProfile.getLastName()))
