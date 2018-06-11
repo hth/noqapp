@@ -88,7 +88,7 @@
                     </div>
                 </form:form>
 
-                <form:form modelAttribute="userProfileForm">
+                <form:form method="post" action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" modelAttribute="userProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="admin-title">
                         <h2>Profile</h2>
@@ -106,7 +106,9 @@
                     </div>
                     <div class="admin-content">
                         <div class="add-new">
-                            <img src="${userProfileForm.profileImage}" class="img-profile-circle" />
+                            <img src="${userProfileForm.profileImage}"
+                                 onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                                 class="img-profile-circle" />
 
                             <ul class="list-form">
                                 <li>
@@ -243,8 +245,8 @@
                     </div>
                 </form:form>
 
-                <c:if test="${!empty healthCareProfileForm}">
-                <form:form modelAttribute="healthCareProfileForm">
+                <c:if test="${!empty healthCareProfileForm.education}">
+                <form:form method="post" action="${pageContext.request.contextPath}/access/userProfile/updateHealthCareProfile.htm" modelAttribute="healthCareProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <div class="admin-title">
@@ -307,6 +309,20 @@
                                     <div class="clearFix"></div>
                                 </li>
                                 </c:forEach>
+
+                                <c:if test="${userProfileForm.emailValidated}">
+                                <div class="col-lable3"></div>
+                                <div class="col-fields">
+                                    <div class="left-btn">
+                                        <input name="update" class="next-btn" value="UPDATE" type="submit">
+                                    </div>
+                                    <div class="right-btn">
+                                        <input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </div>
+                                <div class="clearFix"></div>
+                                </c:if>
                             </ul>
                         </div>
                     </div>

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -20,6 +19,7 @@ import java.io.Writer;
 public abstract class AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDomain.class);
 
+    /* ISO date format 8601. */
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     /**

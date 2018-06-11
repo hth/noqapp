@@ -124,7 +124,6 @@ public class UserProfileController {
         HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(queueUser.getQueueUserId());
         if (null != healthCareProfile) {
             healthCareProfileForm
-                    .setWebProfileId(new ScrubbedInput(healthCareProfile.getWebProfileId()))
                     .setPracticeStart(healthCareProfile.getPracticeStart())
                     .setEducation(healthCareProfile.getEducation())
                     .setLicenses(healthCareProfile.getLicenses())
@@ -140,8 +139,8 @@ public class UserProfileController {
         return nextPage;
     }
 
-    @PostMapping
-    public String update(
+    @PostMapping(value = "/updateProfile")
+    public String updateProfile(
             @ModelAttribute("userProfileForm")
             UserProfileForm userProfileForm
     ) {
@@ -154,7 +153,28 @@ public class UserProfileController {
 
         apiHealthService.insert(
                 "/",
-                "landing",
+                "updateProfile",
+                UserProfileController.class.getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
+        return nextPage;
+    }
+
+    @PostMapping(value = "/updateHealthCareProfile")
+    public String updateHealthCareProfile(
+            @ModelAttribute("healthCareProfileForm")
+            HealthCareProfileForm healthCareProfileForm
+    ) {
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
+
+
+        apiHealthService.insert(
+                "/",
+                "updateHealthCareProfile",
                 UserProfileController.class.getName(),
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);

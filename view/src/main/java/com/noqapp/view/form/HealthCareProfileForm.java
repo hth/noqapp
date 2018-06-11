@@ -1,6 +1,5 @@
 package com.noqapp.view.form;
 
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.helper.NameDatePair;
 
 import java.util.Date;
@@ -12,22 +11,11 @@ import java.util.List;
  * 6/11/18 3:24 PM
  */
 public class HealthCareProfileForm {
-
-    private ScrubbedInput webProfileId;
     private Date practiceStart;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
     private List<NameDatePair> licenses = new LinkedList<>();
-
-    public ScrubbedInput getWebProfileId() {
-        return webProfileId;
-    }
-
-    public HealthCareProfileForm setWebProfileId(ScrubbedInput webProfileId) {
-        this.webProfileId = webProfileId;
-        return this;
-    }
 
     public Date getPracticeStart() {
         return practiceStart;
