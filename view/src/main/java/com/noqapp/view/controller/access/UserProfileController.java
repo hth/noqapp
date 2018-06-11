@@ -7,8 +7,11 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.medical.domain.HealthCareProfileEntity;
+import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
+import com.noqapp.view.form.HealthCareProfileForm;
 import com.noqapp.view.form.UserProfileForm;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,6 +63,7 @@ public class UserProfileController {
 
     private ApiHealthService apiHealthService;
     private AccountService accountService;
+    private HealthCareProfileService healthCareProfileService;
     private FileService fileService;
 
     @Autowired
@@ -74,6 +79,7 @@ public class UserProfileController {
 
             ApiHealthService apiHealthService,
             AccountService accountService,
+            HealthCareProfileService healthCareProfileService,
             FileService fileService
     ) {
         this.nextPage = nextPage;
@@ -82,13 +88,17 @@ public class UserProfileController {
 
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
+        this.healthCareProfileService = healthCareProfileService;
         this.fileService = fileService;
     }
 
     @GetMapping
     public String landing(
             @ModelAttribute("userProfileForm")
-            UserProfileForm userProfileForm
+            UserProfileForm userProfileForm,
+
+            @ModelAttribute("healthCareProfileForm")
+            HealthCareProfileForm healthCareProfileForm
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -108,6 +118,37 @@ public class UserProfileController {
                 .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
+
+        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(queueUser.getQueueUserId());
+        if (null != healthCareProfile) {
+            healthCareProfileForm
+                    .setWebProfileId(new ScrubbedInput(healthCareProfile.getWebProfileId()))
+                    .setPracticeStart(healthCareProfile.getPracticeStart())
+                    .setEducation(healthCareProfile.getEducation())
+                    .setLicenses(healthCareProfile.getLicenses())
+                    .setAwards(healthCareProfile.getAwards());
+        }
+
+        apiHealthService.insert(
+                "/",
+                "landing",
+                UserProfileController.class.getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
+        return nextPage;
+    }
+
+    @PostMapping
+    public String update(
+            @ModelAttribute("userProfileForm")
+            UserProfileForm userProfileForm
+    ) {
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
+
 
         apiHealthService.insert(
                 "/",
