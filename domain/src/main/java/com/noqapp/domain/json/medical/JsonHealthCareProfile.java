@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
-import static com.noqapp.common.utils.DateUtil.SDF_MMM_YYYY;
-
 /**
  * hitender
  * 5/31/18 2:21 PM
@@ -53,21 +51,21 @@ public class JsonHealthCareProfile extends AbstractDomain {
     @JsonProperty("ed")
     //TODO should be studies
     private List<JsonNameDatePair> education = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("KJ Somaiya").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("Dako Baiya University").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("KJ Somaiya").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Dako Baiya University").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
     }};
 
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
     private List<JsonNameDatePair> licenses = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("M.B.B.S").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("M.D").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("M.B.B.S").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("M.D").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
     }};
 
     @JsonProperty("aw")
     private List<JsonNameDatePair> awards = new LinkedList<JsonNameDatePair>() {{
-        add(new JsonNameDatePair().setName("Awards Prestigious Award").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
-        add(new JsonNameDatePair().setName("Animal Doctor Award").setMonthYear(DateFormatUtils.format(new Date(), SDF_MMM_YYYY.toPattern(), TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Awards Prestigious Award").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+        add(new JsonNameDatePair().setName("Animal Doctor Award").setMonthYear(DateFormatUtils.format(new Date(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
     }};
 
     @JsonIgnoreProperties
