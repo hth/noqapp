@@ -242,6 +242,43 @@
                         </div>
                     </div>
                 </form:form>
+
+                <c:if test="${!empty healthCareProfileForm}">
+                <form:form modelAttribute="healthCareProfileForm">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                    <div class="admin-title">
+                        <h2>Health Care Professional Profile</h2>
+                    </div>
+                    <div class="error-box">
+                        <div class="error-txt">
+                                <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
+                                <%--<ul>--%>
+                                <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
+                                <%--<li>${message.text}</li>--%>
+                                <%--</c:forEach>--%>
+                                <%--</ul>--%>
+                                <%--</c:if>--%>
+                        </div>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+
+                            <ul class="list-form">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="practiceStart" cssErrorClass="lb_error">Practicing Since</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="practiceStart" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </form:form>
+                </c:if>
             </div>
             <!-- Complete profile -->
         </div>
