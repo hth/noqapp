@@ -342,12 +342,15 @@ public class QueueService {
     @Mobile
     public HealthCareStatList healthCareStats(String qid) {
         HealthCareStatList healthCareStatList = new HealthCareStatList();
-        BusinessUserStoreEntity businessUserStore = businessUserStoreManager.findUserManagingStoreWithUserLevel(qid, UserLevelEnum.S_MANAGER);
-        healthCareStatList.addHealthCareStat(
-                new HealthCareStat()
-                        .setCodeQR(businessUserStore.getCodeQR())
-                        .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
-                        .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, 0);
+
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            healthCareStatList.addHealthCareStat(
+                    new HealthCareStat()
+                            .setCodeQR(businessUserStore.getCodeQR())
+                            .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
+                            .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
+        }
 
         return healthCareStatList;
     }
