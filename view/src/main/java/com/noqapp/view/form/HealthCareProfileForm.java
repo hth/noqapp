@@ -11,11 +11,21 @@ import java.util.List;
  * 6/11/18 3:24 PM
  */
 public class HealthCareProfileForm {
+    private boolean healthCareProfile;
     private Date practiceStart;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
     private List<NameDatePair> licenses = new LinkedList<>();
+
+    public boolean isHealthCareProfile() {
+        return healthCareProfile;
+    }
+
+    public HealthCareProfileForm setHealthCareProfile(boolean healthCareProfile) {
+        this.healthCareProfile = healthCareProfile;
+        return this;
+    }
 
     public Date getPracticeStart() {
         return practiceStart;
