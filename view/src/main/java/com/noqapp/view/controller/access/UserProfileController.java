@@ -250,8 +250,8 @@ public class UserProfileController {
         final List<MultipartFile> files = multipartHttpRequest.getFiles("file");
 
         if (files.isEmpty()) {
-            LOG.error("Empty or no document uploaded");
-            throw new RuntimeException("Empty or no document uploaded");
+            LOG.error("Empty or no image uploaded");
+            throw new RuntimeException("Empty or no image uploaded");
         }
         return files;
     }
