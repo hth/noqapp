@@ -11,7 +11,6 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.domain.HealthCareProfileEntity;
 import com.noqapp.medical.service.HealthCareProfileService;
 import com.noqapp.service.AccountService;
-import com.noqapp.service.ExternalService;
 import com.noqapp.service.FileService;
 import com.noqapp.view.form.HealthCareProfileForm;
 import com.noqapp.view.form.UserProfileForm;
@@ -67,7 +66,6 @@ public class UserProfileController {
     private AccountService accountService;
     private HealthCareProfileService healthCareProfileService;
     private FileService fileService;
-    private ExternalService externalService;
 
     @Autowired
     public UserProfileController(
