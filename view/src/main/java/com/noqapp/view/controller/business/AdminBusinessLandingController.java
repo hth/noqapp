@@ -12,8 +12,8 @@ import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.medical.domain.HealthCareProfileEntity;
-import com.noqapp.medical.service.HealthCareProfileService;
+import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -76,7 +76,7 @@ public class AdminBusinessLandingController {
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
-    private HealthCareProfileService healthCareProfileService;
+    private ProfessionalProfileService professionalProfileService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -112,7 +112,7 @@ public class AdminBusinessLandingController {
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService,
-            HealthCareProfileService healthCareProfileService
+            ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -129,7 +129,7 @@ public class AdminBusinessLandingController {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
-        this.healthCareProfileService = healthCareProfileService;
+        this.professionalProfileService = professionalProfileService;
     }
 
     /**
@@ -377,11 +377,11 @@ public class AdminBusinessLandingController {
                     businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
 
                     if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
-                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                         if (null != healthCareProfile) {
                             bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                             healthCareProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
-                            healthCareProfileService.save(healthCareProfile);
+                            professionalProfileService.save(healthCareProfile);
                         }
                     }
                     break;
@@ -413,11 +413,11 @@ public class AdminBusinessLandingController {
                             userProfile.getLevel());
 
                     if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
-                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                         if (null != healthCareProfile) {
                             bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                             healthCareProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
-                            healthCareProfileService.save(healthCareProfile);
+                            professionalProfileService.save(healthCareProfile);
                         }
                     }
                     break;
@@ -427,7 +427,7 @@ public class AdminBusinessLandingController {
 
                     businessUserStoreService.removeFromBusiness(qid, businessUser.getBizName().getId());
                     businessUserService.deleteHard(businessUser);
-                    healthCareProfileService.softDeleteHealthCareProfile(qid);
+                    professionalProfileService.softDeleteHealthCareProfile(qid);
 
                     /*
                      * Downgrade ROLES for QID as it was set to Q_SUPERVISOR when approving.
@@ -440,13 +440,13 @@ public class AdminBusinessLandingController {
                             userProfile.setLevel(UserLevelEnum.CLIENT);
                             break;
                         case S_MANAGER:
-                            HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                            ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                             if (null == healthCareProfile) {
                                 userProfile.setLevel(UserLevelEnum.CLIENT);
                             } else {
                                 //TODO(hth) currently removes all the code QR, it should only remove the specific code qr of the businesses.
                                 healthCareProfile.setManagerAtStoreCodeQRs(new HashSet<>());
-                                healthCareProfileService.save(healthCareProfile);
+                                professionalProfileService.save(healthCareProfile);
                             }
                             break;
                         default:
@@ -474,11 +474,11 @@ public class AdminBusinessLandingController {
                             queueSupervisorActionForm.getBizStoreId().getText());
 
                     if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
-                        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(businessUser.getQueueUserId());
+                        ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                         if (null != healthCareProfile) {
                             bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                             healthCareProfile.removeManagerAtStoreCodeQR(bizStore.getCodeQR());
-                            healthCareProfileService.save(healthCareProfile);
+                            professionalProfileService.save(healthCareProfile);
                         }
                     }
                     break;

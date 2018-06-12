@@ -1,7 +1,7 @@
-package com.noqapp.medical.repository;
+package com.noqapp.repository;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.medical.domain.HealthCareProfileEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +25,22 @@ import static org.springframework.data.mongodb.core.query.Query.query;
         "PMD.LongVariable"
 })
 @Repository
-public class HealthCareProfileManagerImpl implements HealthCareProfileManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+public class ProfessionalProfileManagerImpl implements ProfessionalProfileManager {
+    private static final Logger LOG = LoggerFactory.getLogger(ProfessionalProfileManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            HealthCareProfileEntity.class,
+            ProfessionalProfileEntity.class,
             Document.class,
             "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public HealthCareProfileManagerImpl(MongoTemplate mongoTemplate) {
+    public ProfessionalProfileManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(HealthCareProfileEntity object) {
+    public void save(ProfessionalProfileEntity object) {
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -48,7 +48,7 @@ public class HealthCareProfileManagerImpl implements HealthCareProfileManager {
     }
 
     @Override
-    public void deleteHard(HealthCareProfileEntity object) {
+    public void deleteHard(ProfessionalProfileEntity object) {
 
     }
 
@@ -56,16 +56,16 @@ public class HealthCareProfileManagerImpl implements HealthCareProfileManager {
     public boolean existsQid(String qid) {
         return mongoTemplate.exists(
                 query(where("QID").is(qid)),
-                HealthCareProfileEntity.class,
+                ProfessionalProfileEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public HealthCareProfileEntity findOne(String qid) {
+    public ProfessionalProfileEntity findOne(String qid) {
         return mongoTemplate.findOne(
                 query(where("QID").is(qid)),
-                HealthCareProfileEntity.class,
+                ProfessionalProfileEntity.class,
                 TABLE
         );
     }
@@ -75,16 +75,16 @@ public class HealthCareProfileManagerImpl implements HealthCareProfileManager {
         mongoTemplate.updateFirst(
                 query(where("QID").is(qid)),
                 entityUpdate(Update.update("D", false)),
-                HealthCareProfileEntity.class,
+                ProfessionalProfileEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public HealthCareProfileEntity findByWebProfileId(String webProfileId) {
+    public ProfessionalProfileEntity findByWebProfileId(String webProfileId) {
         return mongoTemplate.findOne(
                 query(where("WP").is(webProfileId)),
-                HealthCareProfileEntity.class,
+                ProfessionalProfileEntity.class,
                 TABLE
         );
     }

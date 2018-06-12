@@ -12,8 +12,8 @@ import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.medical.domain.HealthCareProfileEntity;
-import com.noqapp.medical.service.HealthCareProfileService;
+import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -56,7 +56,7 @@ public class AddQueueSupervisorFlowActions {
     private BusinessUserStoreService businessUserStoreService;
     private TokenQueueService tokenQueueService;
     private MailService mailService;
-    private HealthCareProfileService healthCareProfileService;
+    private ProfessionalProfileService professionalProfileService;
 
     private ExecutorService executorService;
 
@@ -75,7 +75,7 @@ public class AddQueueSupervisorFlowActions {
             BusinessUserStoreService businessUserStoreService,
             TokenQueueService tokenQueueService,
             MailService mailService,
-            HealthCareProfileService healthCareProfileService
+            ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
         this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;
@@ -87,7 +87,7 @@ public class AddQueueSupervisorFlowActions {
         this.businessUserStoreService = businessUserStoreService;
         this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
-        this.healthCareProfileService = healthCareProfileService;
+        this.professionalProfileService = professionalProfileService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -233,7 +233,7 @@ public class AddQueueSupervisorFlowActions {
                 throw new InviteSupervisorException("Cannot invite this person");
             case Q_SUPERVISOR:
             case S_MANAGER:
-                HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(userProfile.getQueueUserId());
+                ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(userProfile.getQueueUserId());
                 if (null != healthCareProfile) {
                     break;
                 }
@@ -295,7 +295,7 @@ public class AddQueueSupervisorFlowActions {
             /* Create a health care professional profile when selected as a doctor.
              * Mark profile as Store/Queue Manager.
              */
-            healthCareProfileService.createHealthCareProfile(userProfile.getQueueUserId());
+            professionalProfileService.createHealthCareProfile(userProfile.getQueueUserId());
             userProfile.setLevel(UserLevelEnum.S_MANAGER);
         } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
             userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);

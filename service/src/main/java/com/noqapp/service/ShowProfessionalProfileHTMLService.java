@@ -1,15 +1,10 @@
-package com.noqapp.medical.service;
+package com.noqapp.service;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.json.medical.JsonHealthCareProfile;
+import com.noqapp.domain.json.medical.JsonProfessionalProfile;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.service.FreemarkerService;
-import com.noqapp.service.ShowHTMLService;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +24,13 @@ import java.util.Set;
  * 6/3/18 12:15 AM
  */
 @Service
-public class ShowHealthCareHTMLService {
-    private static final Logger LOG = LoggerFactory.getLogger(ShowHealthCareHTMLService.class);
+public class ShowProfessionalProfileHTMLService {
+    private static final Logger LOG = LoggerFactory.getLogger(ShowProfessionalProfileHTMLService.class);
 
     private BizService bizService;
     private FreemarkerService freemarkerService;
     private ShowHTMLService showHTMLService;
-    private HealthCareProfileService healthCareProfileService;
+    private ProfessionalProfileService professionalProfileService;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
 
@@ -43,7 +38,7 @@ public class ShowHealthCareHTMLService {
     private static String showBusinessBlank;
 
     @Autowired
-    public ShowHealthCareHTMLService(
+    public ShowProfessionalProfileHTMLService(
             @Value("${parentHost}")
             String parentHost,
 
@@ -56,14 +51,14 @@ public class ShowHealthCareHTMLService {
             BizService bizService,
             FreemarkerService freemarkerService,
             ShowHTMLService showHTMLService,
-            HealthCareProfileService healthCareProfileService,
+            ProfessionalProfileService professionalProfileService,
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService
     ) {
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;
         this.showHTMLService = showHTMLService;
-        this.healthCareProfileService = healthCareProfileService;
+        this.professionalProfileService = professionalProfileService;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
 
@@ -96,10 +91,10 @@ public class ShowHealthCareHTMLService {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
-                JsonHealthCareProfile jsonHealthCareProfile = healthCareProfileService.getJsonHealthCareProfileByQid(businessUserStore.getQueueUserId());
+                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonHealthCareProfileByQid(businessUserStore.getQueueUserId());
 
                 List<BizStoreEntity> bizStores = new ArrayList<>();
-                Set<String> managersAtStoreCodeQRs = jsonHealthCareProfile.getManagerAtStoreCodeQRs();
+                Set<String> managersAtStoreCodeQRs = jsonProfessionalProfile.getManagerAtStoreCodeQRs();
                 if (!managersAtStoreCodeQRs.isEmpty()) {
                     for (String managersAtStoreCodeQR : managersAtStoreCodeQRs) {
                         BizStoreEntity bizStore = bizService.findByCodeQR(managersAtStoreCodeQR);
@@ -109,7 +104,7 @@ public class ShowHealthCareHTMLService {
                 UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUserStore.getQueueUserId());
 
                 Map<String, Map<String, Object>> rootMap = new HashMap<>();
-                showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonHealthCareProfile, bizStores);
+                showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonProfessionalProfile, bizStores);
                 return freemarkerService.freemarkerToStringComplex("html/show-store-healthCare.ftl", rootMap);
             }
         } catch (IOException | TemplateException | NullPointerException e) {

@@ -8,8 +8,8 @@ import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.medical.domain.HealthCareProfileEntity;
-import com.noqapp.medical.service.HealthCareProfileService;
+import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.view.form.HealthCareProfileForm;
@@ -64,7 +64,7 @@ public class UserProfileController {
 
     private ApiHealthService apiHealthService;
     private AccountService accountService;
-    private HealthCareProfileService healthCareProfileService;
+    private ProfessionalProfileService professionalProfileService;
     private FileService fileService;
 
     @Autowired
@@ -80,7 +80,7 @@ public class UserProfileController {
 
             ApiHealthService apiHealthService,
             AccountService accountService,
-            HealthCareProfileService healthCareProfileService,
+            ProfessionalProfileService professionalProfileService,
             FileService fileService
     ) {
         this.nextPage = nextPage;
@@ -89,7 +89,7 @@ public class UserProfileController {
 
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
-        this.healthCareProfileService = healthCareProfileService;
+        this.professionalProfileService = professionalProfileService;
         this.fileService = fileService;
     }
 
@@ -122,7 +122,7 @@ public class UserProfileController {
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
 
-        HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(queueUser.getQueueUserId());
+        ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
         if (null != healthCareProfile) {
             healthCareProfileForm
                     .setHealthCareProfile(true)
@@ -250,8 +250,8 @@ public class UserProfileController {
         final List<MultipartFile> files = multipartHttpRequest.getFiles("file");
 
         if (files.isEmpty()) {
-            LOG.error("Empty or no document uploaded");
-            throw new RuntimeException("Empty or no document uploaded");
+            LOG.error("Empty or no image uploaded");
+            throw new RuntimeException("Empty or no image uploaded");
         }
         return files;
     }

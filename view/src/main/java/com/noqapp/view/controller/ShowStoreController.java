@@ -5,7 +5,7 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.medical.service.ShowHealthCareHTMLService;
+import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.view.helper.WebUtil;
@@ -38,13 +38,13 @@ public class ShowStoreController {
     private static final Logger LOG = LoggerFactory.getLogger(ShowStoreController.class);
 
     private ShowHTMLService showHTMLService;
-    private ShowHealthCareHTMLService showHealthCareHTMLService;
+    private ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService;
     private BizService bizService;
 
     @Autowired
-    public ShowStoreController(ShowHTMLService showHTMLService, ShowHealthCareHTMLService showHealthCareHTMLService, BizService bizService) {
+    public ShowStoreController(ShowHTMLService showHTMLService, ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService, BizService bizService) {
         this.showHTMLService = showHTMLService;
-        this.showHealthCareHTMLService = showHealthCareHTMLService;
+        this.showProfessionalProfileHTMLService = showProfessionalProfileHTMLService;
         this.bizService = bizService;
     }
 
@@ -67,7 +67,7 @@ public class ShowStoreController {
 
             switch (bizStore.getBusinessType()) {
                 case DO:
-                    return showHealthCareHTMLService.showStoreByWebLocation(bizStore);
+                    return showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore);
                 default:
                     return showHTMLService.showStoreByWebLocation(bizStore);
             }

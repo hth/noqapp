@@ -82,7 +82,9 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td>
-                                            <a href="/business/detail/store/${store.id}.htm">${store.address}</a>
+                                            <a href="/business/detail/store/${store.id}.htm">
+                                                <span style="display:block; font-size:13px;">${store.address}</span>
+                                            </a>
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.ST eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" target="_blank">Product List</a> | <a href="/business/store/category/${store.id}.htm" target="_blank">Store Category</a></span>
@@ -93,25 +95,27 @@
                                             </c:choose>
                                         </td>
                                         <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                            <a href="/${store.codeQR}/q.htm" target="_blank">
+                                                <span style="display:block; font-size:13px;">${store.displayName}</span>
+                                            </a>
                                         </td>
                                         <td>
-                                            ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
+                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
-                                            ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}
+                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
-                                            ${store.ratingFormatted}
+                                            <span style="display:block; font-size:13px;">${store.ratingFormatted}</span>
                                         </td>
                                         <td>
-                                            ${store.ratingCount}
+                                            <span style="display:block; font-size:13px;">${store.ratingCount}</span>
                                         </td>
                                         <td nowrap>
-                                            ${store.averageServiceTimeFormatted}
+                                            <span style="display:block; font-size:13px;">${store.averageServiceTimeFormatted}</span>
                                         </td>
                                         <td nowrap>
-                                            <fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/></span>
                                         </td>
                                     </tr>
                                     </c:forEach>

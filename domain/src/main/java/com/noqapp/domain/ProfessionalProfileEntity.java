@@ -1,6 +1,5 @@
-package com.noqapp.medical.domain;
+package com.noqapp.domain;
 
-import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.medical.JsonNameDatePair;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -31,11 +30,11 @@ import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "HEALTH_CARE_PROFILE")
+@Document(collection = "PROFESSIONAL_PROFILE")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "health_care_profile_idx", def = "{'QID' : 1}", unique = true),
+        @CompoundIndex(name = "professional_profile_idx", def = "{'QID' : 1}", unique = true),
 })
-public class HealthCareProfileEntity extends BaseEntity {
+public class ProfessionalProfileEntity extends BaseEntity {
 
     @NotNull
     @Field("QID")
@@ -62,10 +61,10 @@ public class HealthCareProfileEntity extends BaseEntity {
     @Field ("MA")
     private Set<String> managerAtStoreCodeQRs = new HashSet<>();
 
-    @Field("PD")
-    private String prescriptionDictionary;
+    @Field("DD")
+    private String dataDictionary;
 
-    public HealthCareProfileEntity(@NotNull String queueUserId, @NotNull String webProfileId) {
+    public ProfessionalProfileEntity(@NotNull String queueUserId, @NotNull String webProfileId) {
         this.queueUserId = queueUserId;
         this.webProfileId = webProfileId;
     }
@@ -82,7 +81,7 @@ public class HealthCareProfileEntity extends BaseEntity {
         return practiceStart;
     }
 
-    public HealthCareProfileEntity setPracticeStart(Date practiceStart) {
+    public ProfessionalProfileEntity setPracticeStart(Date practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -91,7 +90,7 @@ public class HealthCareProfileEntity extends BaseEntity {
         return education;
     }
 
-    public HealthCareProfileEntity setEducation(List<NameDatePair> education) {
+    public ProfessionalProfileEntity setEducation(List<NameDatePair> education) {
         this.education = education;
         return this;
     }
@@ -100,7 +99,7 @@ public class HealthCareProfileEntity extends BaseEntity {
         return licenses;
     }
 
-    public HealthCareProfileEntity setLicenses(List<NameDatePair> licenses) {
+    public ProfessionalProfileEntity setLicenses(List<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
@@ -109,7 +108,7 @@ public class HealthCareProfileEntity extends BaseEntity {
         return awards;
     }
 
-    public HealthCareProfileEntity setAwards(List<NameDatePair> awards) {
+    public ProfessionalProfileEntity setAwards(List<NameDatePair> awards) {
         this.awards = awards;
         return this;
     }
@@ -118,27 +117,27 @@ public class HealthCareProfileEntity extends BaseEntity {
         return managerAtStoreCodeQRs;
     }
 
-    public HealthCareProfileEntity setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
+    public ProfessionalProfileEntity setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
         this.managerAtStoreCodeQRs = managerAtStoreCodeQRs;
         return this;
     }
 
-    public HealthCareProfileEntity addManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
+    public ProfessionalProfileEntity addManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
         this.managerAtStoreCodeQRs.add(managerAtStoreCodeQR);
         return this;
     }
 
-    public HealthCareProfileEntity removeManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
+    public ProfessionalProfileEntity removeManagerAtStoreCodeQR(String managerAtStoreCodeQR) {
         this.managerAtStoreCodeQRs.remove(managerAtStoreCodeQR);
         return this;
     }
 
-    public String getPrescriptionDictionary() {
-        return prescriptionDictionary;
+    public String getDataDictionary() {
+        return dataDictionary;
     }
 
-    public HealthCareProfileEntity setPrescriptionDictionary(String prescriptionDictionary) {
-        this.prescriptionDictionary = prescriptionDictionary;
+    public ProfessionalProfileEntity setDataDictionary(String dataDictionary) {
+        this.dataDictionary = dataDictionary;
         return this;
     }
 
