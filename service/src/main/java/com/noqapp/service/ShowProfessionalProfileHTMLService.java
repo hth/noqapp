@@ -91,7 +91,7 @@ public class ShowProfessionalProfileHTMLService {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
-                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonHealthCareProfileByQid(businessUserStore.getQueueUserId());
+                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfileByQid(businessUserStore.getQueueUserId());
 
                 List<BizStoreEntity> bizStores = new ArrayList<>();
                 Set<String> managersAtStoreCodeQRs = jsonProfessionalProfile.getManagerAtStoreCodeQRs();

@@ -233,8 +233,8 @@ public class AddQueueSupervisorFlowActions {
                 throw new InviteSupervisorException("Cannot invite this person");
             case Q_SUPERVISOR:
             case S_MANAGER:
-                ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(userProfile.getQueueUserId());
-                if (null != healthCareProfile) {
+                ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(userProfile.getQueueUserId());
+                if (null != professionalProfile) {
                     break;
                 }
 
@@ -295,7 +295,7 @@ public class AddQueueSupervisorFlowActions {
             /* Create a health care professional profile when selected as a doctor.
              * Mark profile as Store/Queue Manager.
              */
-            professionalProfileService.createHealthCareProfile(userProfile.getQueueUserId());
+            professionalProfileService.createProfessionalProfile(userProfile.getQueueUserId());
             userProfile.setLevel(UserLevelEnum.S_MANAGER);
         } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
             userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);

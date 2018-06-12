@@ -12,7 +12,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
-import com.noqapp.view.form.HealthCareProfileForm;
+import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -98,8 +98,8 @@ public class UserProfileController {
             @ModelAttribute("userProfileForm")
             UserProfileForm userProfileForm,
 
-            @ModelAttribute("healthCareProfileForm")
-            HealthCareProfileForm healthCareProfileForm
+            @ModelAttribute("professionalProfileForm")
+            ProfessionalProfileForm professionalProfileForm
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -122,14 +122,14 @@ public class UserProfileController {
                 .setEmailValidated(userAccount.isAccountValidated())
                 .setPhoneValidated(userAccount.isPhoneValidated());
 
-        ProfessionalProfileEntity healthCareProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
-        if (null != healthCareProfile) {
-            healthCareProfileForm
-                    .setHealthCareProfile(true)
-                    .setPracticeStart(healthCareProfile.getPracticeStart())
-                    .setEducation(healthCareProfile.getEducation())
-                    .setLicenses(healthCareProfile.getLicenses())
-                    .setAwards(healthCareProfile.getAwards());
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+        if (null != professionalProfile) {
+            professionalProfileForm
+                    .setProfessionalProfile(true)
+                    .setPracticeStart(professionalProfile.getPracticeStart())
+                    .setEducation(professionalProfile.getEducation())
+                    .setLicenses(professionalProfile.getLicenses())
+                    .setAwards(professionalProfile.getAwards());
         }
 
         apiHealthService.insert(
@@ -167,7 +167,7 @@ public class UserProfileController {
         accountService.updateUserProfile(registerUser, userProfile.getEmail());
 
         apiHealthService.insert(
-                "/",
+                "/updateProfile",
                 "updateProfile",
                 UserProfileController.class.getName(),
                 Duration.between(start, Instant.now()),
@@ -175,10 +175,10 @@ public class UserProfileController {
         return "redirect:/access/userProfile.htm";
     }
 
-    @PostMapping(value = "/updateHealthCareProfile")
-    public String updateHealthCareProfile(
-            @ModelAttribute("healthCareProfileForm")
-            HealthCareProfileForm healthCareProfileForm
+    @PostMapping(value = "/updateProfessionalProfile")
+    public String updateProfessionalProfile(
+            @ModelAttribute("professionalProfileForm")
+            ProfessionalProfileForm professionalProfileForm
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -188,8 +188,8 @@ public class UserProfileController {
 
 
         apiHealthService.insert(
-                "/",
-                "updateHealthCareProfile",
+                "/updateProfessionalProfile",
+                "updateProfessionalProfile",
                 UserProfileController.class.getName(),
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);

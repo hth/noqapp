@@ -249,8 +249,8 @@
                     </div>
                 </form:form>
 
-                <c:if test="${healthCareProfileForm.healthCareProfile}">
-                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateHealthCareProfile.htm" method="post" modelAttribute="healthCareProfileForm">
+                <c:if test="${professionalProfileForm.professionalProfile}">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfessionalProfile.htm" method="post" modelAttribute="professionalProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <div class="admin-title">
@@ -280,7 +280,7 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-                                <c:forEach items="${healthCareProfileForm.awards}" var="nameDatePair" varStatus="status">
+                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
@@ -291,7 +291,7 @@
                                     <div class="clearFix"></div>
                                 </li>
                                 </c:forEach>
-                                <c:forEach items="${healthCareProfileForm.education}" var="nameDatePair" varStatus="status">
+                                <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
@@ -302,7 +302,7 @@
                                     <div class="clearFix"></div>
                                 </li>
                                 </c:forEach>
-                                <c:forEach items="${healthCareProfileForm.licenses}" var="nameDatePair" varStatus="status">
+                                <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
