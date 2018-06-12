@@ -1,7 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.helper.NameDatePair;
-import com.noqapp.domain.json.medical.JsonNameDatePair;
+import com.noqapp.domain.json.JsonNameDatePair;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

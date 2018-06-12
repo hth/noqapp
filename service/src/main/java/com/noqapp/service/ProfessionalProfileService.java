@@ -2,7 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.json.medical.JsonProfessionalProfile;
+import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.repository.ProfessionalProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
