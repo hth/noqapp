@@ -39,7 +39,7 @@ import java.util.TimeZone;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonHealthCareProfile extends AbstractDomain {
+public class JsonProfessionalProfile extends AbstractDomain {
 
     @JsonProperty ("wp")
     private String webProfileId;
@@ -74,14 +74,14 @@ public class JsonHealthCareProfile extends AbstractDomain {
     @JsonProperty("st")
     private List<JsonStore> stores = new ArrayList<>();
 
-    @JsonProperty("pd")
-    private String prescriptionDictionary = "amoxycillin,penicillin";
+    @JsonProperty("dd")
+    private String dataDictionary = "amoxycillin,penicillin";
 
     public String getWebProfileId() {
         return webProfileId;
     }
 
-    public JsonHealthCareProfile setWebProfileId(String webProfileId) {
+    public JsonProfessionalProfile setWebProfileId(String webProfileId) {
         this.webProfileId = webProfileId;
         return this;
     }
@@ -90,7 +90,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return practiceStart;
     }
 
-    public JsonHealthCareProfile setPracticeStart(Date practiceStart) {
+    public JsonProfessionalProfile setPracticeStart(Date practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -99,7 +99,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return education;
     }
 
-    public JsonHealthCareProfile setEducation(List<JsonNameDatePair> education) {
+    public JsonProfessionalProfile setEducation(List<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
@@ -108,7 +108,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return licenses;
     }
 
-    public JsonHealthCareProfile setLicenses(List<JsonNameDatePair> licenses) {
+    public JsonProfessionalProfile setLicenses(List<JsonNameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
@@ -117,7 +117,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return awards;
     }
 
-    public JsonHealthCareProfile setAwards(List<JsonNameDatePair> awards) {
+    public JsonProfessionalProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
         return this;
     }
@@ -126,7 +126,7 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return managerAtStoreCodeQRs;
     }
 
-    public JsonHealthCareProfile setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
+    public JsonProfessionalProfile setManagerAtStoreCodeQRs(Set<String> managerAtStoreCodeQRs) {
         this.managerAtStoreCodeQRs = managerAtStoreCodeQRs;
         return this;
     }
@@ -135,22 +135,22 @@ public class JsonHealthCareProfile extends AbstractDomain {
         return stores;
     }
 
-    public JsonHealthCareProfile setStores(List<JsonStore> stores) {
+    public JsonProfessionalProfile setStores(List<JsonStore> stores) {
         this.stores = stores;
         return this;
     }
 
-    public JsonHealthCareProfile addStore(JsonStore store) {
+    public JsonProfessionalProfile addStore(JsonStore store) {
         this.stores.add(store);
         return this;
     }
 
-    public String getPrescriptionDictionary() {
-        return prescriptionDictionary;
+    public String getDataDictionary() {
+        return dataDictionary;
     }
 
-    public JsonHealthCareProfile setPrescriptionDictionary(String prescriptionDictionary) {
-        this.prescriptionDictionary = prescriptionDictionary;
+    public JsonProfessionalProfile setDataDictionary(String dataDictionary) {
+        this.dataDictionary = dataDictionary;
         return this;
     }
 

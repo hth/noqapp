@@ -9,7 +9,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.json.medical.JsonHealthCareProfile;
+import com.noqapp.domain.json.medical.JsonProfessionalProfile;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -231,7 +231,7 @@ public class ShowHTMLService {
     public boolean populateMedicalProfile(
             Map<String, Map<String, Object>> rootMap,
             UserProfileEntity userProfile,
-            JsonHealthCareProfile jsonHealthCareProfile,
+            JsonProfessionalProfile jsonProfessionalProfile,
             List<BizStoreEntity> bizStores
     ) {
 
@@ -244,13 +244,13 @@ public class ShowHTMLService {
         Map<String, Object> profile = new HashMap<>();
         profile.put("name", userProfile.getName());
         profile.put("gender", userProfile.getGender().name());
-        profile.put("experienceDuration", jsonHealthCareProfile.experienceDuration());
+        profile.put("experienceDuration", jsonProfessionalProfile.experienceDuration());
         profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage())
                 ? "/static2/internal/img/profile-image-192x192.png"
                 : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
-        profile.put("awards", jsonHealthCareProfile.getAwards());
-        profile.put("education", jsonHealthCareProfile.getEducation());
+        profile.put("awards", jsonProfessionalProfile.getAwards());
+        profile.put("education", jsonProfessionalProfile.getEducation());
         rootMap.put("profile", profile);
 
         Map<String, Object> stores = new HashMap<>();
