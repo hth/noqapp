@@ -3,7 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.json.medical.JsonProfessionalProfile;
+import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.types.UserLevelEnum;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -91,7 +91,7 @@ public class ShowProfessionalProfileHTMLService {
                 return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
-                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonHealthCareProfileByQid(businessUserStore.getQueueUserId());
+                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfileByQid(businessUserStore.getQueueUserId());
 
                 List<BizStoreEntity> bizStores = new ArrayList<>();
                 Set<String> managersAtStoreCodeQRs = jsonProfessionalProfile.getManagerAtStoreCodeQRs();

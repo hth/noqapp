@@ -1,4 +1,4 @@
-package com.noqapp.domain.json.medical;
+package com.noqapp.domain.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.domain.json.JsonStore;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.time.ZoneOffset;

@@ -10,20 +10,20 @@ import java.util.List;
  * hitender
  * 6/11/18 3:24 PM
  */
-public class HealthCareProfileForm {
-    private boolean healthCareProfile;
+public class ProfessionalProfileForm {
+    private boolean professionalProfile;
     private Date practiceStart;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
     private List<NameDatePair> licenses = new LinkedList<>();
 
-    public boolean isHealthCareProfile() {
-        return healthCareProfile;
+    public boolean isProfessionalProfile() {
+        return professionalProfile;
     }
 
-    public HealthCareProfileForm setHealthCareProfile(boolean healthCareProfile) {
-        this.healthCareProfile = healthCareProfile;
+    public ProfessionalProfileForm setProfessionalProfile(boolean professionalProfile) {
+        this.professionalProfile = professionalProfile;
         return this;
     }
 
@@ -31,7 +31,7 @@ public class HealthCareProfileForm {
         return practiceStart;
     }
 
-    public HealthCareProfileForm setPracticeStart(Date practiceStart) {
+    public ProfessionalProfileForm setPracticeStart(Date practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -40,7 +40,7 @@ public class HealthCareProfileForm {
         return awards;
     }
 
-    public HealthCareProfileForm setAwards(List<NameDatePair> awards) {
+    public ProfessionalProfileForm setAwards(List<NameDatePair> awards) {
         this.awards = awards;
         return this;
     }
@@ -49,7 +49,7 @@ public class HealthCareProfileForm {
         return education;
     }
 
-    public HealthCareProfileForm setEducation(List<NameDatePair> education) {
+    public ProfessionalProfileForm setEducation(List<NameDatePair> education) {
         this.education = education;
         return this;
     }
@@ -58,7 +58,7 @@ public class HealthCareProfileForm {
         return licenses;
     }
 
-    public HealthCareProfileForm setLicenses(List<NameDatePair> licenses) {
+    public ProfessionalProfileForm setLicenses(List<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }

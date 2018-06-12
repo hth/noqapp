@@ -9,7 +9,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.json.medical.JsonProfessionalProfile;
+import com.noqapp.domain.json.JsonProfessionalProfile;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
