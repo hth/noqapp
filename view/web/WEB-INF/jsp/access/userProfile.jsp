@@ -246,7 +246,7 @@
                     </div>
                 </form:form>
 
-                <c:if test="${!empty healthCareProfileForm.education}">
+                <c:if test="${healthCareProfileForm.healthCareProfile}">
                 <form:form method="post" action="${pageContext.request.contextPath}/access/userProfile/updateHealthCareProfile.htm" modelAttribute="healthCareProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 

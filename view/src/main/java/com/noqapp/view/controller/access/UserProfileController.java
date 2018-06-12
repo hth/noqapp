@@ -127,6 +127,7 @@ public class UserProfileController {
         HealthCareProfileEntity healthCareProfile = healthCareProfileService.findByQid(queueUser.getQueueUserId());
         if (null != healthCareProfile) {
             healthCareProfileForm
+                    .setHealthCareProfile(true)
                     .setPracticeStart(healthCareProfile.getPracticeStart())
                     .setEducation(healthCareProfile.getEducation())
                     .setLicenses(healthCareProfile.getLicenses())
