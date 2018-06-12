@@ -158,7 +158,7 @@
                                     </div>
                                     <div class="col-fields">
                                         <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via NoQApp)</span>
+                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via App)</span>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
