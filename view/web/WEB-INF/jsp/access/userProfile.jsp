@@ -3,6 +3,9 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
@@ -88,7 +91,7 @@
                     </div>
                 </form:form>
 
-                <form:form method="post" action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" modelAttribute="userProfileForm">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" method="post" modelAttribute="userProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="admin-title">
                         <h2>Profile</h2>
@@ -247,7 +250,7 @@
                 </form:form>
 
                 <c:if test="${healthCareProfileForm.healthCareProfile}">
-                <form:form method="post" action="${pageContext.request.contextPath}/access/userProfile/updateHealthCareProfile.htm" modelAttribute="healthCareProfileForm">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateHealthCareProfile.htm" method="post" modelAttribute="healthCareProfileForm">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <div class="admin-title">
