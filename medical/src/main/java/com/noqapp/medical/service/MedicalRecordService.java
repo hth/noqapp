@@ -2,10 +2,13 @@ package com.noqapp.medical.service;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.PhysicalEntity;
+import com.noqapp.medical.domain.json.JsonMedicalPhysicalExamination;
+import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.form.MedicalPhysicalForm;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalPhysicalExaminationManager;
@@ -81,6 +84,75 @@ public class MedicalRecordService {
                 diagnosedById);
         medicalRecordManager.save(medicalRecord);
         LOG.info("Saved medical record={}", medicalRecord);
+    }
+
+    @Mobile
+    public void addMedicalRecord(JsonMedicalRecord jsonMedicalRecord) {
+        LOG.info("Add medical record");
+        BizStoreEntity bizStore = bizService.findByCodeQR(jsonMedicalRecord.getCodeQR());
+
+        MedicalRecordEntity medicalRecord = new MedicalRecordEntity(jsonMedicalRecord.getQueueUserId());
+        /* Setting its own ObjectId. */
+        medicalRecord.setId(CommonUtil.generateHexFromObjectId());
+        medicalRecord
+                .setBusinessType(jsonMedicalRecord.getBusinessType())
+                .setChiefComplain(StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
+                .setPastHistory(StringUtils.capitalize(jsonMedicalRecord.getPastHistory().trim()))
+                .setFamilyHistory(StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
+                .setKnownAllergies(StringUtils.capitalize(jsonMedicalRecord.getKnownAllergies().trim()))
+                .setClinicalFinding(StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
+                .setProvisionalDifferentialDiagnosis(
+                        StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
+                .setDiagnosedById(jsonMedicalRecord.getDiagnosedBy())
+                .setBusinessName(bizStore.getBizName().getBusinessName())
+                .setBizCategoryId(bizStore.getBizCategoryId());
+
+        populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
+
+        //TODO remove this temp code below for record access
+        medicalRecord.addRecordAccessed(
+                Instant.now().toEpochMilli(),
+                jsonMedicalRecord.getDiagnosedBy());
+        medicalRecordManager.save(medicalRecord);
+        LOG.info("Saved medical record={}", medicalRecord);
+    }
+
+    private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        try {
+            LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
+
+            if (jsonMedicalRecord.getMedicalPhysicalExaminations() != null) {
+                MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(jsonMedicalRecord.getQueueUserId());
+                /* Setting its own ObjectId. */
+                medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
+
+                Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
+                for (JsonMedicalPhysicalExamination jsonMedicalPhysicalExamination : jsonMedicalRecord.getMedicalPhysicalExaminations()) {
+                    MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
+                    /* Setting its own ObjectId. */
+                    medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
+                    medicalPhysicalExamination
+                            .setMedicalPhysicalReferenceId(medicalPhysical.getId())
+                            .setPhysicalReferenceId(medicalPhysicalExamination.getPhysicalReferenceId())
+                            .setQueueUserId(medicalPhysicalExamination.getQueueUserId())
+                            .setName(jsonMedicalPhysicalExamination.getName())
+                            .setTestResult(StringUtils.capitalize(jsonMedicalPhysicalExamination.getValue().trim()));
+
+                    medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
+                    medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
+                }
+
+                medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
+                LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
+                medicalPhysicalManager.save(medicalPhysical);
+
+                /* Add the Medical Physical to Medical Record. */
+                medicalRecord.setMedicalPhysical(medicalPhysical);
+            }
+            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
+        } catch (Exception e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+        }
     }
 
     private void populateWithMedicalPhysical(MedicalRecordForm medicalRecordForm, MedicalRecordEntity medicalRecord) {
