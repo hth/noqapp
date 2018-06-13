@@ -44,7 +44,8 @@ public class MedicalRecordService {
             MedicalPhysicalManager medicalPhysicalManager,
             MedicalPhysicalExaminationManager medicalPhysicalExaminationManager,
             PhysicalManager physicalManager,
-            BizService bizService) {
+            BizService bizService
+    ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalPhysicalExaminationManager = medicalPhysicalExaminationManager;
