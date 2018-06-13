@@ -64,7 +64,7 @@ public class MedicalRecordService {
         /* Setting its own ObjectId. */
         medicalRecord.setId(CommonUtil.generateHexFromObjectId());
         medicalRecord
-                .setBusinessType(medicalRecordForm.getBusinessType())
+                .setBusinessType(bizStore.getBusinessType())
                 .setChiefComplain(StringUtils.capitalize(medicalRecordForm.getChiefComplain().trim()))
                 .setPastHistory(StringUtils.capitalize(medicalRecordForm.getPastHistory().trim()))
                 .setFamilyHistory(StringUtils.capitalize(medicalRecordForm.getFamilyHistory().trim()))
@@ -95,7 +95,7 @@ public class MedicalRecordService {
         /* Setting its own ObjectId. */
         medicalRecord.setId(CommonUtil.generateHexFromObjectId());
         medicalRecord
-                .setBusinessType(jsonMedicalRecord.getBusinessType())
+                .setBusinessType(bizStore.getBusinessType())
                 .setChiefComplain(StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
                 .setPastHistory(StringUtils.capitalize(jsonMedicalRecord.getPastHistory().trim()))
                 .setFamilyHistory(StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
