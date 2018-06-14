@@ -1,7 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.types.MedicationRouteEnum;
+import com.noqapp.domain.types.MedicationTypeEnum;
 import com.noqapp.domain.types.MedicationWithFoodEnum;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -43,14 +43,20 @@ public class MedicalMedicineEntity extends BaseEntity {
     @Field("NA")
     private String name;
 
-    @Field("TI")
-    private int times;
+    @Field("ST")
+    private String strength;
+
+    @Field("DF")
+    private int dailyFrequency;
+
+    @Field("DU")
+    private int duration;
 
     @Field("MF")
     private MedicationWithFoodEnum medicationWithFood;
 
-    @Field ("MR")
-    private MedicationRouteEnum medicationRoute;
+    @Field ("MT")
+    private MedicationTypeEnum medicationType;
 
     public String getMedicalMedicationReferenceId() {
         return medicalMedicationReferenceId;
@@ -88,12 +94,30 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public int getTimes() {
-        return times;
+    public String getStrength() {
+        return strength;
     }
 
-    public MedicalMedicineEntity setTimes(int times) {
-        this.times = times;
+    public MedicalMedicineEntity setStrength(String strength) {
+        this.strength = strength;
+        return this;
+    }
+
+    public int getDailyFrequency() {
+        return dailyFrequency;
+    }
+
+    public MedicalMedicineEntity setDailyFrequency(int dailyFrequency) {
+        this.dailyFrequency = dailyFrequency;
+        return this;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public MedicalMedicineEntity setDuration(int duration) {
+        this.duration = duration;
         return this;
     }
 
@@ -106,12 +130,12 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public MedicationRouteEnum getMedicationRoute() {
-        return medicationRoute;
+    public MedicationTypeEnum getMedicationType() {
+        return medicationType;
     }
 
-    public MedicalMedicineEntity setMedicationRoute(MedicationRouteEnum medicationRoute) {
-        this.medicationRoute = medicationRoute;
+    public MedicalMedicineEntity setMedicationType(MedicationTypeEnum medicationType) {
+        this.medicationType = medicationType;
         return this;
     }
 }
