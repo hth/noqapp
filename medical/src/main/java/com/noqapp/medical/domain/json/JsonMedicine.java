@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.MedicationRouteEnum;
+import com.noqapp.domain.types.MedicationTypeEnum;
 import com.noqapp.domain.types.MedicationWithFoodEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +37,17 @@ public class JsonMedicine extends AbstractDomain {
     @JsonProperty("st")
     private int strength;
 
-    @JsonProperty("ti")
-    private int times;
+    @JsonProperty("df")
+    private int dailyFrequency;
+
+    @JsonProperty("du")
+    private int duration;
 
     @JsonProperty("mf")
     private MedicationWithFoodEnum medicationWithFood;
 
-    @JsonProperty ("mr")
-    private MedicationRouteEnum medicationRoute;
+    @JsonProperty("mt")
+    private MedicationTypeEnum medicationType;
 
     public String getName() {
         return name;
@@ -64,12 +67,21 @@ public class JsonMedicine extends AbstractDomain {
         return this;
     }
 
-    public int getTimes() {
-        return times;
+    public int getDailyFrequency() {
+        return dailyFrequency;
     }
 
-    public JsonMedicine setTimes(int times) {
-        this.times = times;
+    public JsonMedicine setDailyFrequency(int dailyFrequency) {
+        this.dailyFrequency = dailyFrequency;
+        return this;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public JsonMedicine setDuration(int duration) {
+        this.duration = duration;
         return this;
     }
 
@@ -82,12 +94,12 @@ public class JsonMedicine extends AbstractDomain {
         return this;
     }
 
-    public MedicationRouteEnum getMedicationRoute() {
-        return medicationRoute;
+    public MedicationTypeEnum getMedicationType() {
+        return medicationType;
     }
 
-    public JsonMedicine setMedicationRoute(MedicationRouteEnum medicationRoute) {
-        this.medicationRoute = medicationRoute;
+    public JsonMedicine setMedicationType(MedicationTypeEnum medicationType) {
+        this.medicationType = medicationType;
         return this;
     }
 }

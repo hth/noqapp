@@ -2,18 +2,18 @@ package com.noqapp.domain.types;
 
 /**
  * hitender
- * 3/5/18 3:06 AM
+ * 6/14/18 1:49 PM
  */
-public enum MedicationRouteEnum {
-    OR("OR", "Oral"),
-    IM("IM", "After Food"),
-    IV("IV", "Intravenous"),
-    SC("SC", "After Food");
+public enum MedicationTypeEnum {
+    TA("TA", "Tablet"),
+    IN("IN", "Injection"),
+    CA("CA", "Capsule"),
+    SY("SY", "Syrup");
 
     private final String name;
     private final String description;
 
-    MedicationRouteEnum(String name, String description) {
+    MedicationTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
