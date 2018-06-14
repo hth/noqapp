@@ -49,8 +49,8 @@ public class MedicalMedicineEntity extends BaseEntity {
     @Field("DF")
     private int dailyFrequency;
 
-    @Field("DU")
-    private int duration;
+    @Field("CO")
+    private int course;
 
     @Field("MF")
     private MedicationWithFoodEnum medicationWithFood;
@@ -112,12 +112,12 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getCourse() {
+        return course;
     }
 
-    public MedicalMedicineEntity setDuration(int duration) {
-        this.duration = duration;
+    public MedicalMedicineEntity setCourse(int course) {
+        this.course = course;
         return this;
     }
 
