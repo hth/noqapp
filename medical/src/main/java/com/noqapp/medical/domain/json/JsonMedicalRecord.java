@@ -208,6 +208,11 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
+    public JsonMedicalRecord addMedicine(JsonMedicine medicine) {
+        this.medicines.add(medicine);
+        return this;
+    }
+
     public String getDiagnosedById() {
         return diagnosedById;
     }

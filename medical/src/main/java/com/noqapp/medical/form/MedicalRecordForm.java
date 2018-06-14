@@ -5,6 +5,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
+import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
@@ -44,7 +45,8 @@ public class MedicalRecordForm {
     private String provisionalDifferentialDiagnosis;
     private MedicalPathologyEntity medicalLaboratory = new MedicalPathologyEntity();
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
-    private MedicalMedicationEntity medication = new MedicalMedicationEntity();
+    private MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
+    private List<MedicalMedicineEntity> medicalMedicines = new ArrayList<>();
     private Map<Date, String> recordAccessed = new HashMap<>();
 
     @SuppressWarnings("unused")
@@ -242,12 +244,21 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicalMedicationEntity getMedication() {
-        return medication;
+    public MedicalMedicationEntity getMedicalMedication() {
+        return medicalMedication;
     }
 
-    public MedicalRecordForm setMedication(MedicalMedicationEntity medication) {
-        this.medication = medication;
+    public MedicalRecordForm setMedicalMedication(MedicalMedicationEntity medicalMedication) {
+        this.medicalMedication = medicalMedication;
+        return this;
+    }
+
+    public List<MedicalMedicineEntity> getMedicalMedicines() {
+        return medicalMedicines;
+    }
+
+    public MedicalRecordForm setMedicalMedicines(List<MedicalMedicineEntity> medicalMedicines) {
+        this.medicalMedicines = medicalMedicines;
         return this;
     }
 
@@ -290,7 +301,7 @@ public class MedicalRecordForm {
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
                 ", medicalLaboratory=" + medicalLaboratory +
                 ", medicalRadiology=" + medicalRadiology +
-                ", medication=" + medication +
+                ", medicalMedication=" + medicalMedication +
                 ", recordAccessed=" + recordAccessed +
                 '}';
     }

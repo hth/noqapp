@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class MedicalMedicationEntity extends BaseEntity {
     private String queueUserId;
 
     @Field("MD")
-    private List<String> medicineIds;
+    private List<String> medicineIds = new ArrayList<>();
 
     public String getQueueUserId() {
         return queueUserId;
@@ -47,6 +48,11 @@ public class MedicalMedicationEntity extends BaseEntity {
 
     public MedicalMedicationEntity setMedicineIds(List<String> medicineIds) {
         this.medicineIds = medicineIds;
+        return this;
+    }
+
+    public MedicalMedicationEntity addMedicineId(String medicineId) {
+        this.medicineIds.add(medicineId);
         return this;
     }
 }
