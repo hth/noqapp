@@ -103,7 +103,7 @@ public class MedicalRecordService {
                 .setClinicalFinding(StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
                 .setProvisionalDifferentialDiagnosis(
                         StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
-                .setDiagnosedById(jsonMedicalRecord.getDiagnosedBy())
+                .setDiagnosedById(jsonMedicalRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
@@ -112,7 +112,7 @@ public class MedicalRecordService {
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
                 Instant.now().toEpochMilli(),
-                jsonMedicalRecord.getDiagnosedBy());
+                jsonMedicalRecord.getDiagnosedById());
         medicalRecordManager.save(medicalRecord);
         LOG.info("Saved medical record={}", medicalRecord);
     }
