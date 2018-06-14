@@ -47,10 +47,10 @@ public class MedicalMedicineEntity extends BaseEntity {
     private String strength;
 
     @Field("DF")
-    private int dailyFrequency;
+    private String dailyFrequency;
 
     @Field("CO")
-    private int course;
+    private String course;
 
     @Field("MF")
     private MedicationWithFoodEnum medicationWithFood;
@@ -103,20 +103,20 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public int getDailyFrequency() {
+    public String getDailyFrequency() {
         return dailyFrequency;
     }
 
-    public MedicalMedicineEntity setDailyFrequency(int dailyFrequency) {
+    public MedicalMedicineEntity setDailyFrequency(String dailyFrequency) {
         this.dailyFrequency = dailyFrequency;
         return this;
     }
 
-    public int getCourse() {
+    public String getCourse() {
         return course;
     }
 
-    public MedicalMedicineEntity setCourse(int course) {
+    public MedicalMedicineEntity setCourse(String course) {
         this.course = course;
         return this;
     }
