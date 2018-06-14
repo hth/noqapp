@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.MedicationTypeEnum;
 import com.noqapp.domain.types.MedicationWithFoodEnum;
+import com.noqapp.medical.domain.MedicalMedicineEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,5 +102,15 @@ public class JsonMedicine extends AbstractDomain {
     public JsonMedicine setMedicationType(MedicationTypeEnum medicationType) {
         this.medicationType = medicationType;
         return this;
+    }
+
+    public static JsonMedicine fromMedicalMedicine(MedicalMedicineEntity medicalMedicine) {
+        return new JsonMedicine()
+                .setName(medicalMedicine.getName())
+                .setStrength(medicalMedicine.getStrength())
+                .setDailyFrequency(medicalMedicine.getDailyFrequency())
+                .setCourse(medicalMedicine.getCourse())
+                .setMedicationWithFood(medicalMedicine.getMedicationWithFood())
+                .setMedicationType(medicalMedicine.getMedicationType());
     }
 }

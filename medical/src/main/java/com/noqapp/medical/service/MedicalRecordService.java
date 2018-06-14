@@ -3,14 +3,19 @@ package com.noqapp.medical.service;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.medical.domain.MedicalMedicationEntity;
+import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.PhysicalEntity;
 import com.noqapp.medical.domain.json.JsonMedicalPhysicalExamination;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
+import com.noqapp.medical.domain.json.JsonMedicine;
 import com.noqapp.medical.form.MedicalPhysicalForm;
 import com.noqapp.medical.form.MedicalRecordForm;
+import com.noqapp.medical.repository.MedicalMedicationManager;
+import com.noqapp.medical.repository.MedicalMedicineManager;
 import com.noqapp.medical.repository.MedicalPhysicalExaminationManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
@@ -37,6 +42,8 @@ public class MedicalRecordService {
 
     private MedicalRecordManager medicalRecordManager;
     private MedicalPhysicalManager medicalPhysicalManager;
+    private MedicalMedicationManager medicalMedicationManager;
+    private MedicalMedicineManager medicalMedicineManager;
     private MedicalPhysicalExaminationManager medicalPhysicalExaminationManager;
     private PhysicalManager physicalManager;
     private BizService bizService;
@@ -45,12 +52,16 @@ public class MedicalRecordService {
     public MedicalRecordService(
             MedicalRecordManager medicalRecordManager,
             MedicalPhysicalManager medicalPhysicalManager,
+            MedicalMedicationManager medicalMedicationManager,
+            MedicalMedicineManager medicalMedicineManager,
             MedicalPhysicalExaminationManager medicalPhysicalExaminationManager,
             PhysicalManager physicalManager,
             BizService bizService
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
+        this.medicalMedicationManager = medicalMedicationManager;
+        this.medicalMedicineManager = medicalMedicineManager;
         this.medicalPhysicalExaminationManager = medicalPhysicalExaminationManager;
         this.physicalManager = physicalManager;
         this.bizService = bizService;
@@ -108,6 +119,7 @@ public class MedicalRecordService {
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
         populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
+        populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
 
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
@@ -115,6 +127,32 @@ public class MedicalRecordService {
                 jsonMedicalRecord.getDiagnosedById());
         medicalRecordManager.save(medicalRecord);
         LOG.info("Saved medical record={}", medicalRecord);
+    }
+
+    private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
+        medicalMedication.setQueueUserId(jsonMedicalRecord.getQueueUserId());
+
+        for (JsonMedicine jsonMedicine : jsonMedicalRecord.getMedicines()) {
+            MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
+            medicalMedicine
+                    .setName(jsonMedicine.getName())
+                    .setStrength(jsonMedicine.getStrength())
+                    .setDailyFrequency(jsonMedicine.getDailyFrequency())
+                    .setCourse(jsonMedicine.getCourse())
+                    .setMedicationWithFood(jsonMedicine.getMedicationWithFood())
+                    .setMedicationType(jsonMedicine.getMedicationType())
+                    .setMedicalMedicationReferenceId("")    //TODO
+                    .setPharmacyReferenceId("")             //TODO
+                    .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                    .setId(CommonUtil.generateHexFromObjectId());
+
+            medicalMedicineManager.save(medicalMedicine);
+            medicalMedication.addMedicineId(medicalMedicine.getId());
+        }
+
+        medicalMedicationManager.save(medicalMedication);
+        medicalRecord.setMedicalMedication(medicalMedication);
     }
 
     private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -203,5 +241,9 @@ public class MedicalRecordService {
 
     public List<PhysicalEntity> findAll() {
         return physicalManager.findAll();
+    }
+
+    public List<MedicalMedicineEntity> findByIds(String... ids) {
+        return medicalMedicineManager.findByIds(ids);
     }
 }

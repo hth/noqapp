@@ -1,0 +1,73 @@
+package com.noqapp.medical.repository;
+
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.medical.domain.MedicalMedicineEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+/**
+ * hitender
+ * 6/15/18 12:07 AM
+ */
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable"
+})
+@Repository
+public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+            MedicalMedicineEntity.class,
+            Document.class,
+            "collection");
+
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public MedicalMedicineManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    public void save(MedicalMedicineEntity object) {
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public void deleteHard(MedicalMedicineEntity object) {
+
+    }
+
+    @Override
+    public List<MedicalMedicineEntity> findByQid(String qid) {
+        return mongoTemplate.find(
+                query(where("QID").is(qid)),
+                MedicalMedicineEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<MedicalMedicineEntity> findByIds(String[] ids) {
+        LOG.info("Ids={}", String.join(",", ids));
+        return mongoTemplate.find(
+                query(where("id").in(String.join(",", ids))),
+                MedicalMedicineEntity.class,
+                TABLE
+        );
+    }
+}

@@ -10,6 +10,7 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.PhysicalEntity;
@@ -155,8 +156,11 @@ public class MedicalRecordController {
                         .setFamilyHistory(medicalRecord.getFamilyHistory())
                         .setKnownAllergies(medicalRecord.getKnownAllergies())
                         .setClinicalFinding(medicalRecord.getClinicalFinding())
-                        .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis());
+                        .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
+                        .setMedicalMedication(medicalRecord.getMedicalMedication());
 
+                List<MedicalMedicineEntity> medicalMedicines = medicalRecordService.findByIds(String.join(",", historicalMedicalRecordForm.getMedicalMedication().getMedicineIds()));
+                historicalMedicalRecordForm.setMedicalMedicines(medicalMedicines);
                 historicalMedicalRecordForms.add(historicalMedicalRecordForm);
             }
 

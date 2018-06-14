@@ -68,7 +68,7 @@ public class MedicalRecordEntity extends BaseEntity {
 
     @DBRef
     @Field("ME")
-    private MedicalMedicationEntity medication;
+    private MedicalMedicationEntity medicalMedication;
 
     /* Always doctors id who looked or was booked for. */
     @NotNull
@@ -189,12 +189,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalMedicationEntity getMedication() {
-        return medication;
+    public MedicalMedicationEntity getMedicalMedication() {
+        return medicalMedication;
     }
 
-    public MedicalRecordEntity setMedication(MedicalMedicationEntity medication) {
-        this.medication = medication;
+    public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
+        this.medicalMedication = medicalMedication;
         return this;
     }
 
@@ -253,7 +253,7 @@ public class MedicalRecordEntity extends BaseEntity {
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
                 ", medicalLaboratory=" + medicalLaboratory +
                 ", medicalRadiology=" + medicalRadiology +
-                ", medication=" + medication +
+                ", medicalMedication=" + medicalMedication +
                 ", diagnosedById='" + diagnosedById + '\'' +
                 ", recordAccessed=" + recordAccessed +
                 ", businessName='" + businessName + '\'' +
