@@ -88,6 +88,7 @@ public class MedicalRecordService {
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
         populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
+        populateWithMedicalMedicine(medicalRecordForm, medicalRecord);
 
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
@@ -131,7 +132,9 @@ public class MedicalRecordService {
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
         MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
-        medicalMedication.setQueueUserId(jsonMedicalRecord.getQueueUserId());
+        medicalMedication
+                .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                .setId(CommonUtil.generateHexFromObjectId());
 
         for (JsonMedicine jsonMedicine : jsonMedicalRecord.getMedicines()) {
             MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
@@ -142,11 +145,25 @@ public class MedicalRecordService {
                     .setCourse(jsonMedicine.getCourse())
                     .setMedicationWithFood(jsonMedicine.getMedicationWithFood())
                     .setMedicationType(jsonMedicine.getMedicationType())
-                    .setMedicalMedicationReferenceId("")    //TODO
-                    .setPharmacyReferenceId("")             //TODO
+                    .setMedicalMedicationReferenceId(medicalMedication.getId())
+                    .setPharmacyReferenceId("")             //TODO(hth) with store id
                     .setQueueUserId(jsonMedicalRecord.getQueueUserId())
                     .setId(CommonUtil.generateHexFromObjectId());
 
+            medicalMedicineManager.save(medicalMedicine);
+            medicalMedication.addMedicineId(medicalMedicine.getId());
+        }
+
+        medicalMedicationManager.save(medicalMedication);
+        medicalRecord.setMedicalMedication(medicalMedication);
+    }
+
+    //TODO(hth) not tested web logic
+    private void populateWithMedicalMedicine(MedicalRecordForm medicalRecordForm, MedicalRecordEntity medicalRecord) {
+        MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
+        medicalMedication.setQueueUserId(medicalRecordForm.getQueueUserId());
+
+        for (MedicalMedicineEntity medicalMedicine : medicalRecordForm.getMedicalMedicines()) {
             medicalMedicineManager.save(medicalMedicine);
             medicalMedication.addMedicineId(medicalMedicine.getId());
         }
