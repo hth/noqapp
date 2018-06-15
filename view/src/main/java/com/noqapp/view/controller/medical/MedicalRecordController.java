@@ -144,7 +144,7 @@ public class MedicalRecordController {
             for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
                 List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = new ArrayList<>();
                 if (null != medicalRecord.getMedicalPhysical()) {
-                    medicalPhysicalExaminations = medicalRecordService.findByRefId(medicalRecord.getMedicalPhysical().getId());
+                    medicalPhysicalExaminations = medicalRecordService.findByPhysicalRefId(medicalRecord.getMedicalPhysical().getId());
                 }
 
                 MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
@@ -159,7 +159,7 @@ public class MedicalRecordController {
                         .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
                         .setMedicalMedication(medicalRecord.getMedicalMedication());
 
-                List<MedicalMedicineEntity> medicalMedicines = medicalRecordService.findByIds(String.join(",", historicalMedicalRecordForm.getMedicalMedication().getMedicineIds()));
+                List<MedicalMedicineEntity> medicalMedicines = medicalRecordService.findByMedicationRefId(medicalRecord.getMedicalMedication().getId());
                 historicalMedicalRecordForm.setMedicalMedicines(medicalMedicines);
                 historicalMedicalRecordForms.add(historicalMedicalRecordForm);
             }

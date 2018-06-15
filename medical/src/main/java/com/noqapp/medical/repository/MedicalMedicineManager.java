@@ -13,5 +13,7 @@ public interface MedicalMedicineManager extends RepositoryManager<MedicalMedicin
 
     List<MedicalMedicineEntity> findByQid(String qid);
 
+    List<MedicalMedicineEntity> findByMedicationRefId(String medicalMedicineReferenceId);
+
     List<MedicalMedicineEntity> findByIds(String[] ids);
 }
