@@ -87,8 +87,13 @@ public class MedicalRecordService {
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
-        populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
-        populateWithMedicalMedicine(medicalRecordForm, medicalRecord);
+        if (null != medicalRecordForm.getMedicalPhysicalForms()) {
+            populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
+        }
+
+        if (null != medicalRecordForm.getMedicalMedicines()) {
+            populateWithMedicalMedicine(medicalRecordForm, medicalRecord);
+        }
 
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
@@ -119,8 +124,13 @@ public class MedicalRecordService {
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
-        populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
-        populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
+        if (null != jsonMedicalRecord.getMedicalPhysicalExaminations()) {
+            populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
+        }
+
+        if (null != jsonMedicalRecord.getMedicines()) {
+            populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
+        }
 
         //TODO remove this temp code below for record access
         medicalRecord.addRecordAccessed(
