@@ -62,6 +62,15 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     }
 
     @Override
+    public List<MedicalMedicineEntity> findByMedicationRefId(String medicalMedicineReferenceId) {
+        return mongoTemplate.find(
+                query(where("MRI").is(medicalMedicineReferenceId)),
+                MedicalMedicineEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
     public List<MedicalMedicineEntity> findByIds(String[] ids) {
         LOG.info("Ids={}", String.join(",", ids));
         return mongoTemplate.find(

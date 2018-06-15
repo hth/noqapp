@@ -252,8 +252,8 @@ public class MedicalRecordService {
         return medicalRecordManager.historicalRecords(qid, 5);
     }
 
-    public List<MedicalPhysicalExaminationEntity> findByRefId(String referenceId) {
-        return medicalPhysicalExaminationManager.findByRefId(referenceId);
+    public List<MedicalPhysicalExaminationEntity> findByPhysicalRefId(String referenceId) {
+        return medicalPhysicalExaminationManager.findByPhysicalRefId(referenceId);
     }
 
     public List<PhysicalEntity> findAll() {
@@ -262,5 +262,9 @@ public class MedicalRecordService {
 
     public List<MedicalMedicineEntity> findByIds(String... ids) {
         return medicalMedicineManager.findByIds(ids);
+    }
+
+    public List<MedicalMedicineEntity> findByMedicationRefId(String referenceId) {
+        return medicalMedicineManager.findByMedicationRefId(referenceId);
     }
 }
