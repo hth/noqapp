@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
+ * This code was for dynamically creating physical test fields. It can be expanded to create fields specific to
+ * business need by adding business name id.
+ * <p>
  * hitender
  * 4/4/18 9:34 PM
  */
