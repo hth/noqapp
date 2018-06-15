@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicine extends AbstractDomain {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonMedicine.class);
+public class JsonMedicalMedicine extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalMedicine.class);
 
     @JsonProperty("na")
     private String name;
@@ -54,7 +54,7 @@ public class JsonMedicine extends AbstractDomain {
         return name;
     }
 
-    public JsonMedicine setName(String name) {
+    public JsonMedicalMedicine setName(String name) {
         this.name = name;
         return this;
     }
@@ -63,7 +63,7 @@ public class JsonMedicine extends AbstractDomain {
         return strength;
     }
 
-    public JsonMedicine setStrength(String strength) {
+    public JsonMedicalMedicine setStrength(String strength) {
         this.strength = strength;
         return this;
     }
@@ -72,7 +72,7 @@ public class JsonMedicine extends AbstractDomain {
         return dailyFrequency;
     }
 
-    public JsonMedicine setDailyFrequency(String dailyFrequency) {
+    public JsonMedicalMedicine setDailyFrequency(String dailyFrequency) {
         this.dailyFrequency = dailyFrequency;
         return this;
     }
@@ -81,7 +81,7 @@ public class JsonMedicine extends AbstractDomain {
         return course;
     }
 
-    public JsonMedicine setCourse(String course) {
+    public JsonMedicalMedicine setCourse(String course) {
         this.course = course;
         return this;
     }
@@ -90,7 +90,7 @@ public class JsonMedicine extends AbstractDomain {
         return medicationWithFood;
     }
 
-    public JsonMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public JsonMedicalMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
         return this;
     }
@@ -99,13 +99,13 @@ public class JsonMedicine extends AbstractDomain {
         return medicationType;
     }
 
-    public JsonMedicine setMedicationType(MedicationTypeEnum medicationType) {
+    public JsonMedicalMedicine setMedicationType(MedicationTypeEnum medicationType) {
         this.medicationType = medicationType;
         return this;
     }
 
-    public static JsonMedicine fromMedicalMedicine(MedicalMedicineEntity medicalMedicine) {
-        return new JsonMedicine()
+    public static JsonMedicalMedicine fromMedicalMedicine(MedicalMedicineEntity medicalMedicine) {
+        return new JsonMedicalMedicine()
                 .setName(medicalMedicine.getName())
                 .setStrength(medicalMedicine.getStrength())
                 .setDailyFrequency(medicalMedicine.getDailyFrequency())
