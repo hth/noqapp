@@ -70,7 +70,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays = new ArrayList<>();
 
     @JsonProperty("me")
-    private List<JsonMedicalMedicine> medicines = new ArrayList<>();
+    private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
 
     @JsonProperty("dbi")
     private String diagnosedById;
@@ -199,17 +199,17 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public List<JsonMedicalMedicine> getMedicines() {
-        return medicines;
+    public List<JsonMedicalMedicine> getMedicalMedicines() {
+        return medicalMedicines;
     }
 
-    public JsonMedicalRecord setMedicines(List<JsonMedicalMedicine> medicines) {
-        this.medicines = medicines;
+    public JsonMedicalRecord setMedicalMedicines(List<JsonMedicalMedicine> medicalMedicines) {
+        this.medicalMedicines = medicalMedicines;
         return this;
     }
 
     public JsonMedicalRecord addMedicine(JsonMedicalMedicine medicine) {
-        this.medicines.add(medicine);
+        this.medicalMedicines.add(medicine);
         return this;
     }
 

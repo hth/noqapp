@@ -128,7 +128,7 @@ public class MedicalRecordService {
             populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
         }
 
-        if (null != jsonMedicalRecord.getMedicines()) {
+        if (null != jsonMedicalRecord.getMedicalMedicines()) {
             populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
         }
 
@@ -146,7 +146,7 @@ public class MedicalRecordService {
                 .setQueueUserId(jsonMedicalRecord.getQueueUserId())
                 .setId(CommonUtil.generateHexFromObjectId());
 
-        for (JsonMedicalMedicine jsonMedicalMedicine : jsonMedicalRecord.getMedicines()) {
+        for (JsonMedicalMedicine jsonMedicalMedicine : jsonMedicalRecord.getMedicalMedicines()) {
             MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
             medicalMedicine
                     .setName(jsonMedicalMedicine.getName())
