@@ -11,7 +11,7 @@ import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.PhysicalEntity;
 import com.noqapp.medical.domain.json.JsonMedicalPhysicalExamination;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
-import com.noqapp.medical.domain.json.JsonMedicine;
+import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.form.MedicalPhysicalForm;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
@@ -146,15 +146,15 @@ public class MedicalRecordService {
                 .setQueueUserId(jsonMedicalRecord.getQueueUserId())
                 .setId(CommonUtil.generateHexFromObjectId());
 
-        for (JsonMedicine jsonMedicine : jsonMedicalRecord.getMedicines()) {
+        for (JsonMedicalMedicine jsonMedicalMedicine : jsonMedicalRecord.getMedicines()) {
             MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
             medicalMedicine
-                    .setName(jsonMedicine.getName())
-                    .setStrength(jsonMedicine.getStrength())
-                    .setDailyFrequency(jsonMedicine.getDailyFrequency())
-                    .setCourse(jsonMedicine.getCourse())
-                    .setMedicationWithFood(jsonMedicine.getMedicationWithFood())
-                    .setMedicationType(jsonMedicine.getMedicationType())
+                    .setName(jsonMedicalMedicine.getName())
+                    .setStrength(jsonMedicalMedicine.getStrength())
+                    .setDailyFrequency(jsonMedicalMedicine.getDailyFrequency())
+                    .setCourse(jsonMedicalMedicine.getCourse())
+                    .setMedicationWithFood(jsonMedicalMedicine.getMedicationWithFood())
+                    .setMedicationType(jsonMedicalMedicine.getMedicationType())
                     .setMedicalMedicationReferenceId(medicalMedication.getId())
                     .setPharmacyReferenceId("")             //TODO(hth) with store id
                     .setQueueUserId(jsonMedicalRecord.getQueueUserId())
