@@ -132,7 +132,9 @@ public class MedicalRecordService {
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
         MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
-        medicalMedication.setQueueUserId(jsonMedicalRecord.getQueueUserId());
+        medicalMedication
+                .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                .setId(CommonUtil.generateHexFromObjectId());
 
         for (JsonMedicine jsonMedicine : jsonMedicalRecord.getMedicines()) {
             MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
@@ -143,7 +145,7 @@ public class MedicalRecordService {
                     .setCourse(jsonMedicine.getCourse())
                     .setMedicationWithFood(jsonMedicine.getMedicationWithFood())
                     .setMedicationType(jsonMedicine.getMedicationType())
-                    .setMedicalMedicationReferenceId("")    //TODO(hth) for medication id
+                    .setMedicalMedicationReferenceId(medicalMedication.getId())
                     .setPharmacyReferenceId("")             //TODO(hth) with store id
                     .setQueueUserId(jsonMedicalRecord.getQueueUserId())
                     .setId(CommonUtil.generateHexFromObjectId());
