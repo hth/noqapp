@@ -33,6 +33,16 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("PD")
     private Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
 
+    @Field("PL")
+    private String pluse;
+
+    @Field("BP")
+    private String[] bloodPressure;
+
+    //WT in kg
+    @Field("WT")
+    private String weight;
+
     public MedicalPhysicalEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
     }
@@ -47,6 +57,33 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public MedicalPhysicalEntity setMedicalPhysicalExaminationIds(Set<String> medicalPhysicalExaminationIds) {
         this.medicalPhysicalExaminationIds = medicalPhysicalExaminationIds;
+        return this;
+    }
+
+    public String getPluse() {
+        return pluse;
+    }
+
+    public MedicalPhysicalEntity setPluse(String pluse) {
+        this.pluse = pluse;
+        return this;
+    }
+
+    public String[] getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public MedicalPhysicalEntity setBloodPressure(String[] bloodPressure) {
+        this.bloodPressure = bloodPressure;
+        return this;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public MedicalPhysicalEntity setWeight(String weight) {
+        this.weight = weight;
         return this;
     }
 

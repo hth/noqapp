@@ -32,6 +32,10 @@ public class UserMedicalProfileEntity extends BaseEntity {
     @Field("BT")
     private BloodTypeEnum bloodType;
 
+    //Height in cms
+    @Field("HT")
+    private int height;
+
     public UserMedicalProfileEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
     }
@@ -46,6 +50,15 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     public UserMedicalProfileEntity setBloodType(BloodTypeEnum bloodType) {
         this.bloodType = bloodType;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public UserMedicalProfileEntity setHeight(int height) {
+        this.height = height;
         return this;
     }
 }

@@ -1,7 +1,6 @@
 package com.noqapp.medical.repository;
 
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
-import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.repository.RepositoryManager;
 
 import java.util.List;
@@ -12,5 +11,5 @@ import java.util.List;
  */
 public interface MedicalPhysicalManager extends RepositoryManager<MedicalPhysicalEntity> {
 
-
+    List<MedicalPhysicalEntity> findByQid(String qid);
 }

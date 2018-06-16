@@ -179,15 +179,61 @@
                                 <div class="clearFix"></div>
                             </li>
                         </ul>
-                        <c:forEach items="${medicalRecordForm.medicalPhysicalForms}" var="medicalPhysicalForms" varStatus="status">
                         <ul class="list-form">
                             <li>
-                                <form:hidden path="medicalPhysicalForms[${status.index}].physicalReferenceId" value="${medicalPhysicalForms.physicalReferenceId}" />
                                 <div class="col-lable3">
-                                    <form:label path="medicalPhysicalForms[${status.index}].name" cssErrorClass="lb_error">${medicalPhysicalForms.name}</form:label>
+                                    <form:label path="medicalPhysical.pluse" cssErrorClass="lb_error">Pluse</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="medicalPhysicalForms[${status.index}].value" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    <form:input path="medicalPhysical.pluse" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="medicalPhysical.bloodPressure" cssErrorClass="lb_error">Blood Pressure</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="medicalPhysical.bloodPressure" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="medicalPhysical.weight" cssErrorClass="lb_error">Weight</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="medicalPhysical.weight" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                        </ul>
+                        <c:forEach items="${medicalRecordForm.medicalPhysicalHistoricals}" var="medicalPhysicalHistoricals" varStatus="status">
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="medicalPhysicalHistoricals[${status.index}].pluse" cssErrorClass="lb_error">Pluse</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="medicalPhysicalHistoricals[${status.index}].pluse" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="medicalPhysicalHistoricals[${status.index}].bloodPressure" cssErrorClass="lb_error">Blood Pressure</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="medicalPhysicalHistoricals[${status.index}].bloodPressure" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="medicalPhysicalHistoricals[${status.index}].weight" cssErrorClass="lb_error">Weight</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="medicalPhysicalHistoricals[${status.index}].weight" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>

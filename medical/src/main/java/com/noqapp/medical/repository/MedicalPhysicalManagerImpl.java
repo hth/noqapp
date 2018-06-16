@@ -2,8 +2,6 @@ package com.noqapp.medical.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
-import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
-import com.noqapp.medical.domain.MedicalRecordEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +50,14 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     @Override
     public void deleteHard(MedicalPhysicalEntity object) {
 
+    }
+
+    @Override
+    public List<MedicalPhysicalEntity> findByQid(String qid) {
+        return mongoTemplate.find(
+                Query.query(where("QID").is(qid)),
+                MedicalPhysicalEntity.class,
+                TABLE
+        );
     }
 }
