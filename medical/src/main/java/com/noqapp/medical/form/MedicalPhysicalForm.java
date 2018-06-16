@@ -6,43 +6,35 @@ package com.noqapp.medical.form;
  */
 public class MedicalPhysicalForm {
 
-    private String physicalReferenceId;
-    private String name;
-    private String value;
+    private String pluse;
+    private String[] bloodPressure;
+    //WT in kg
+    private String weight;
 
-    public String getPhysicalReferenceId() {
-        return physicalReferenceId;
+    public String getPluse() {
+        return pluse;
     }
 
-    public MedicalPhysicalForm setPhysicalReferenceId(String physicalReferenceId) {
-        this.physicalReferenceId = physicalReferenceId;
+    public MedicalPhysicalForm setPluse(String pluse) {
+        this.pluse = pluse;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String[] getBloodPressure() {
+        return bloodPressure;
     }
 
-    public MedicalPhysicalForm setName(String name) {
-        this.name = name;
+    public MedicalPhysicalForm setBloodPressure(String[] bloodPressure) {
+        this.bloodPressure = bloodPressure;
         return this;
     }
 
-    public String getValue() {
-        return value;
+    public String getWeight() {
+        return weight;
     }
 
-    public MedicalPhysicalForm setValue(String value) {
-        this.value = value;
+    public MedicalPhysicalForm setWeight(String weight) {
+        this.weight = weight;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "MedicalPhysicalForm{" +
-                "physicalReferenceId='" + physicalReferenceId + '\'' +
-                ", name='" + name + '\'' +
-                ", value='" + value + '\'' +
-                '}';
     }
 }

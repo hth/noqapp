@@ -6,20 +6,14 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
-import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
-import com.noqapp.medical.domain.PhysicalEntity;
-import com.noqapp.medical.domain.json.JsonMedicalPhysicalExamination;
-import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
-import com.noqapp.medical.form.MedicalPhysicalForm;
+import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicineManager;
-import com.noqapp.medical.repository.MedicalPhysicalExaminationManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
-import com.noqapp.medical.repository.PhysicalManager;
 import com.noqapp.service.BizService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * hitender
@@ -44,8 +36,6 @@ public class MedicalRecordService {
     private MedicalPhysicalManager medicalPhysicalManager;
     private MedicalMedicationManager medicalMedicationManager;
     private MedicalMedicineManager medicalMedicineManager;
-    private MedicalPhysicalExaminationManager medicalPhysicalExaminationManager;
-    private PhysicalManager physicalManager;
     private BizService bizService;
 
     @Autowired
@@ -54,16 +44,12 @@ public class MedicalRecordService {
             MedicalPhysicalManager medicalPhysicalManager,
             MedicalMedicationManager medicalMedicationManager,
             MedicalMedicineManager medicalMedicineManager,
-            MedicalPhysicalExaminationManager medicalPhysicalExaminationManager,
-            PhysicalManager physicalManager,
             BizService bizService
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalMedicationManager = medicalMedicationManager;
         this.medicalMedicineManager = medicalMedicineManager;
-        this.medicalPhysicalExaminationManager = medicalPhysicalExaminationManager;
-        this.physicalManager = physicalManager;
         this.bizService = bizService;
     }
 
@@ -87,7 +73,7 @@ public class MedicalRecordService {
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
-        if (null != medicalRecordForm.getMedicalPhysicalForms()) {
+        if (null != medicalRecordForm.getMedicalPhysicalHistoricals()) {
             populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
         }
 
@@ -124,7 +110,7 @@ public class MedicalRecordService {
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
-        if (null != jsonMedicalRecord.getMedicalPhysicalExaminations()) {
+        if (null != jsonMedicalRecord.getMedicalPhysical()) {
             populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
         }
 
@@ -186,28 +172,15 @@ public class MedicalRecordService {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
 
-            if (jsonMedicalRecord.getMedicalPhysicalExaminations() != null) {
+            if (jsonMedicalRecord.getMedicalPhysical() != null) {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(jsonMedicalRecord.getQueueUserId());
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
+                medicalPhysical
+                        .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
+                        .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
+                        .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight());
 
-                Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
-                for (JsonMedicalPhysicalExamination jsonMedicalPhysicalExamination : jsonMedicalRecord.getMedicalPhysicalExaminations()) {
-                    MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
-                    /* Setting its own ObjectId. */
-                    medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
-                    medicalPhysicalExamination
-                            .setMedicalPhysicalReferenceId(medicalPhysical.getId())
-                            .setPhysicalReferenceId(medicalPhysicalExamination.getPhysicalReferenceId())
-                            .setQueueUserId(medicalPhysicalExamination.getQueueUserId())
-                            .setName(jsonMedicalPhysicalExamination.getName())
-                            .setTestResult(StringUtils.capitalize(jsonMedicalPhysicalExamination.getValue().trim()));
-
-                    medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
-                    medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
-                }
-
-                medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
 
@@ -224,28 +197,15 @@ public class MedicalRecordService {
         try {
             LOG.info("Populate medical physical qid={}", medicalRecordForm.getQueueUserId());
 
-            if (medicalRecordForm.getMedicalPhysicalForms() != null) {
+            if (medicalRecordForm.getMedicalPhysical() != null) {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(medicalRecordForm.getQueueUserId());
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
+                medicalPhysical
+                        .setBloodPressure(medicalPhysical.getBloodPressure())
+                        .setPluse(medicalPhysical.getPluse())
+                        .setWeight(medicalPhysical.getWeight());
 
-                Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
-                for (MedicalPhysicalForm medicalPhysicalForm : medicalRecordForm.getMedicalPhysicalForms()) {
-                    MedicalPhysicalExaminationEntity medicalPhysicalExamination = new MedicalPhysicalExaminationEntity();
-                    /* Setting its own ObjectId. */
-                    medicalPhysicalExamination.setId(CommonUtil.generateHexFromObjectId());
-                    medicalPhysicalExamination
-                            .setMedicalPhysicalReferenceId(medicalPhysical.getId())
-                            .setPhysicalReferenceId(medicalPhysicalForm.getPhysicalReferenceId())
-                            .setQueueUserId(medicalRecordForm.getQueueUserId())
-                            .setName(medicalPhysicalForm.getName())
-                            .setTestResult(StringUtils.capitalize(medicalPhysicalForm.getValue().trim()));
-
-                    medicalPhysicalExaminationManager.save(medicalPhysicalExamination);
-                    medicalPhysicalExaminationIds.add(medicalPhysicalExamination.getId());
-                }
-
-                medicalPhysical.setMedicalPhysicalExaminationIds(medicalPhysicalExaminationIds);
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
 
@@ -262,12 +222,8 @@ public class MedicalRecordService {
         return medicalRecordManager.historicalRecords(qid, 5);
     }
 
-    public List<MedicalPhysicalExaminationEntity> findByPhysicalRefId(String referenceId) {
-        return medicalPhysicalExaminationManager.findByPhysicalRefId(referenceId);
-    }
-
-    public List<PhysicalEntity> findAll() {
-        return physicalManager.findAll();
+    public List<MedicalPhysicalEntity> findByQid(String qid) {
+        return medicalPhysicalManager.findByQid(qid);
     }
 
     public List<MedicalMedicineEntity> findByIds(String... ids) {

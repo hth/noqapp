@@ -11,9 +11,8 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
-import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
+import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
-import com.noqapp.medical.domain.PhysicalEntity;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.service.MedicalRecordService;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -110,10 +109,7 @@ public class MedicalRecordController {
             String qid = recordReference[1];
             String recordOwner = recordReference[2];
 
-            List<PhysicalEntity> physicals = medicalRecordService.findAll();
-            MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner)
-                    .populateEmptyForm(physicals);
-
+            MedicalRecordForm medicalRecordForm = new MedicalRecordForm(recordOwner);
             QueueEntity queue = tokenQueueService.findOne(codeQR.getText(), token);
             if (null == queue.getServiceBeginTime()) {
                 queueService.updateServiceBeginTime(queue.getId());
@@ -142,14 +138,14 @@ public class MedicalRecordController {
             List<MedicalRecordEntity> historicalMedicalRecords = medicalRecordService.historicalRecords(recordOwner);
             List<MedicalRecordForm> historicalMedicalRecordForms = new LinkedList<>();
             for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
-                List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations = new ArrayList<>();
+                List<MedicalPhysicalEntity> medicalPhysicals = new ArrayList<>();
                 if (null != medicalRecord.getMedicalPhysical()) {
-                    medicalPhysicalExaminations = medicalRecordService.findByPhysicalRefId(medicalRecord.getMedicalPhysical().getId());
+                    medicalPhysicals = medicalRecordService.findByQid(medicalRecord.getQueueUserId());
                 }
 
                 MedicalRecordForm historicalMedicalRecordForm = new MedicalRecordForm(medicalRecord.getQueueUserId());
                 historicalMedicalRecordForm
-                        .populateHistoricalPhysicalForm(medicalPhysicalExaminations)
+                        .populatePhysicalHistoricalForm(medicalPhysicals)
                         .setBusinessType(medicalRecord.getBusinessType())
                         .setChiefComplain(medicalRecord.getChiefComplain())
                         .setPastHistory(medicalRecord.getPastHistory())

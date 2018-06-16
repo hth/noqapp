@@ -7,9 +7,8 @@ import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
-import com.noqapp.medical.domain.MedicalPhysicalExaminationEntity;
+import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
-import com.noqapp.medical.domain.PhysicalEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import java.beans.Transient;
@@ -40,7 +39,8 @@ public class MedicalRecordForm {
     private String pastHistory;
     private String familyHistory;
     private String knownAllergies;
-    private List<MedicalPhysicalForm> medicalPhysicalForms;
+    private MedicalPhysicalForm medicalPhysical = new MedicalPhysicalForm();
+    private List<MedicalPhysicalForm> medicalPhysicalHistoricals;
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
     private MedicalPathologyEntity medicalLaboratory = new MedicalPathologyEntity();
@@ -58,24 +58,13 @@ public class MedicalRecordForm {
         this.queueUserId = queueUserId;
     }
 
-    public MedicalRecordForm populateEmptyForm(List<PhysicalEntity> physicals) {
-        medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{
-            for (PhysicalEntity physical : physicals) {
+    public MedicalRecordForm populatePhysicalHistoricalForm(List<MedicalPhysicalEntity> medicalPhysicals) {
+        medicalPhysicalHistoricals = new ArrayList<MedicalPhysicalForm>() {{
+            for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
                 add(new MedicalPhysicalForm()
-                        .setPhysicalReferenceId(physical.getId())
-                        .setName(physical.getName()));
-            }
-        }};
-        return this;
-    }
-
-    public MedicalRecordForm populateHistoricalPhysicalForm(List<MedicalPhysicalExaminationEntity> medicalPhysicalExaminations) {
-        medicalPhysicalForms = new ArrayList<MedicalPhysicalForm>() {{
-            for (MedicalPhysicalExaminationEntity physical : medicalPhysicalExaminations) {
-                add(new MedicalPhysicalForm()
-                        .setPhysicalReferenceId(physical.getId())
-                        .setName(physical.getName())
-                        .setValue(physical.getTestResult()));
+                    .setBloodPressure(medicalPhysical.getBloodPressure())
+                    .setPluse(medicalPhysical.getPluse())
+                    .setWeight(medicalPhysical.getWeight()));
             }
         }};
         return this;
@@ -199,12 +188,21 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public List<MedicalPhysicalForm> getMedicalPhysicalForms() {
-        return medicalPhysicalForms;
+    public MedicalPhysicalForm getMedicalPhysical() {
+        return medicalPhysical;
     }
 
-    public MedicalRecordForm setMedicalPhysicalForms(List<MedicalPhysicalForm> medicalPhysicalForms) {
-        this.medicalPhysicalForms = medicalPhysicalForms;
+    public MedicalRecordForm setMedicalPhysical(MedicalPhysicalForm medicalPhysical) {
+        this.medicalPhysical = medicalPhysical;
+        return this;
+    }
+
+    public List<MedicalPhysicalForm> getMedicalPhysicalHistoricals() {
+        return medicalPhysicalHistoricals;
+    }
+
+    public MedicalRecordForm setMedicalPhysicalHistoricals(List<MedicalPhysicalForm> medicalPhysicalHistoricals) {
+        this.medicalPhysicalHistoricals = medicalPhysicalHistoricals;
         return this;
     }
 
@@ -296,7 +294,7 @@ public class MedicalRecordForm {
                 ", pastHistory='" + pastHistory + '\'' +
                 ", familyHistory='" + familyHistory + '\'' +
                 ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicalPhysicalForms=" + medicalPhysicalForms +
+                ", medicalPhysicalHistoricals=" + medicalPhysicalHistoricals +
                 ", clinicalFinding='" + clinicalFinding + '\'' +
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
                 ", medicalLaboratory=" + medicalLaboratory +
