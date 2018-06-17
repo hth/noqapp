@@ -53,6 +53,7 @@ public class MedicalRecordService {
         this.bizService = bizService;
     }
 
+    //TODO add check for qid
     public void addMedicalRecord(MedicalRecordForm medicalRecordForm, String diagnosedById, String codeQR) {
         LOG.info("Add medical record");
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
