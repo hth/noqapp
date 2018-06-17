@@ -66,7 +66,6 @@ public class EmpMedicalLandingController {
 
         empMedicalLandingForm.setCountPathology(medicalMasterDataService.countPathology());
         empMedicalLandingForm.setCountPharmacy(medicalMasterDataService.countPharmacy());
-        empMedicalLandingForm.setCountPhysical(medicalMasterDataService.countPhysical());
         empMedicalLandingForm.setCountRadiology(medicalMasterDataService.countRadiology());
 
         return empMedicalLanding;
