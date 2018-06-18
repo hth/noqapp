@@ -214,7 +214,7 @@ public class AccountService {
 
                 if (notAdult) {
                     UserProfileEntity guardianUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
-                    guardianUserProfile.addGuardianToQueueUserId(userProfile.getQueueUserId());
+                    guardianUserProfile.addQidOfDependent(userProfile.getQueueUserId());
                     userProfileManager.save(guardianUserProfile);
 
                     LOG.info("Update guardian profile qid={} & minor qid={}",
