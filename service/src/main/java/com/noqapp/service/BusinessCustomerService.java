@@ -50,5 +50,11 @@ public class BusinessCustomerService {
         return accountService.findProfileByQueueUserId(businessCustomer.getQueueUserId());
     }
 
-
+    public UserProfileEntity findByBusinessCustomerIdAndBizNameId(String businessCustomerId, String bizNameId) {
+        BusinessCustomerEntity businessCustomer = businessCustomerManager.findOne(businessCustomerId, bizNameId);
+        if (null == businessCustomer) {
+            return null;
+        }
+        return accountService.findProfileByQueueUserId(businessCustomer.getQueueUserId());
+    }
 }
