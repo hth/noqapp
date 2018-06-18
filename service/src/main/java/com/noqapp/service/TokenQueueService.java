@@ -296,8 +296,11 @@ public class TokenQueueService {
             queue.setCustomerName(userProfile.getName());
             queue.setCustomerPhone(userProfile.getPhone());
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
-            if (null != userProfile.getGuardianToQueueUserId() && !userProfile.getGuardianToQueueUserId().isEmpty()) {
-                queue.setGuardianToQueueUserId(userProfile.getGuardianToQueueUserId());
+            if (null != userProfile.getQidOfDependents() && !userProfile.getQidOfDependents().isEmpty()) {
+                queue.setGuardianQid(qid);
+            } else if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+                queue.setGuardianQid(guardianProfile.getQueueUserId());
             }
             queueManager.save(queue);
         }

@@ -19,6 +19,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,10 +140,10 @@ public class QueueService {
                     .setToken(queue.getTokenNumber())
                     .setServerDeviceId(queue.getServerDeviceId());
 
-            if (null != queue.getGuardianToQueueUserId() && !queue.getGuardianToQueueUserId().isEmpty()) {
-                LOG.info("Is a guardian qid={}", queue.getQueueUserId());
+            if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
 
-                for (String qid : queue.getGuardianToQueueUserId()) {
+                for (String qid : guardianProfile.getQidOfDependents()) {
                     UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
                     jsonQueuedPerson.addDependent(
                             new JsonQueuedDependent()
@@ -155,6 +156,18 @@ public class QueueService {
                                     .setAge(userProfile.getAge())
                                     .setGender(userProfile.getGender()));
                 }
+
+                /* Add Guardian at the end. */
+                jsonQueuedPerson.addDependent(
+                        new JsonQueuedDependent()
+                                .setToken(queue.getTokenNumber())
+                                .setQueueUserId(guardianProfile.getQueueUserId())
+                                .setCustomerName(guardianProfile.getName())
+                                .setGuardianPhone(queue.getCustomerPhone())
+                                .setGuardianQueueUserId(queue.getQueueUserId())
+                                .setQueueUserState(queue.getQueueUserState())
+                                .setAge(guardianProfile.getAge())
+                                .setGender(guardianProfile.getGender()));
             }
 
             queuedPeople.add(jsonQueuedPerson);

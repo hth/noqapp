@@ -89,8 +89,9 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("GP")
     private String guardianPhone;
 
-    @Field ("GT")
-    private List<String> guardianToQueueUserId;
+    /* Is populated when the user has dependents. */
+    @Field ("DP")
+    private List<String> qidOfDependents;
 
     @NotNull
     @Field ("IC")
@@ -264,20 +265,20 @@ public class UserProfileEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getGuardianToQueueUserId() {
-        return guardianToQueueUserId;
+    public List<String> getQidOfDependents() {
+        return qidOfDependents;
     }
 
-    public UserProfileEntity setGuardianToQueueUserId(List<String> guardianToQueueUserId) {
-        this.guardianToQueueUserId = guardianToQueueUserId;
+    public UserProfileEntity setQidOfDependents(List<String> qidOfDependents) {
+        this.qidOfDependents = qidOfDependents;
         return this;
     }
 
-    public UserProfileEntity addGuardianToQueueUserId(String qid) {
-        if (null == this.guardianToQueueUserId) {
-            this.guardianToQueueUserId = new ArrayList<>();
+    public UserProfileEntity addQidOfDependent(String qid) {
+        if (null == this.qidOfDependents) {
+            this.qidOfDependents = new ArrayList<>();
         }
-        this.guardianToQueueUserId.add(qid);
+        this.qidOfDependents.add(qid);
         return this;
     }
 
