@@ -91,7 +91,7 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QID").is(qid).and("QS").is(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("QID").is(qid).and("QS").is(QueueUserStateEnum.Q));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
