@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.Transient;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -56,8 +55,12 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("sid")
     private String serverDeviceId = "";
 
-    @JsonProperty ("min")
-    private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
+    /* Dependents can be anyone minor or other elderly family members. */
+    @JsonProperty ("dp")
+    private List<JsonQueuedDependent> dependents = new ArrayList<>();
+
+    @JsonProperty("bc")
+    private String businessCustomerId;
 
     public int getToken() {
         return token;
@@ -113,12 +116,21 @@ public class JsonQueuedPerson extends AbstractDomain {
         return this;
     }
 
-    public List<JsonQueuedMinorPerson> getMinors() {
-        return minors;
+    public List<JsonQueuedDependent> getDependents() {
+        return dependents;
     }
 
-    public JsonQueuedPerson addMinors(JsonQueuedMinorPerson minor) {
-        this.minors.add(minor);
+    public JsonQueuedPerson addDependent(JsonQueuedDependent dependent) {
+        this.dependents.add(dependent);
+        return this;
+    }
+
+    public String getBusinessCustomerId() {
+        return businessCustomerId;
+    }
+
+    public JsonQueuedPerson setBusinessCustomerId(String businessCustomerId) {
+        this.businessCustomerId = businessCustomerId;
         return this;
     }
 

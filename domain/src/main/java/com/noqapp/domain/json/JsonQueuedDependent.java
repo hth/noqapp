@@ -31,7 +31,7 @@ import java.util.Base64;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonQueuedMinorPerson extends AbstractDomain {
+public class JsonQueuedDependent extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueuedPerson.class);
 
     @JsonProperty("t")
@@ -62,7 +62,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return token;
     }
 
-    public JsonQueuedMinorPerson setToken(int token) {
+    public JsonQueuedDependent setToken(int token) {
         this.token = token;
         return this;
     }
@@ -71,7 +71,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return queueUserId;
     }
 
-    public JsonQueuedMinorPerson setQueueUserId(String queueUserId) {
+    public JsonQueuedDependent setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
@@ -80,7 +80,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return customerName;
     }
 
-    public JsonQueuedMinorPerson setCustomerName(String customerName) {
+    public JsonQueuedDependent setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
@@ -89,7 +89,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return guardianPhone;
     }
 
-    public JsonQueuedMinorPerson setGuardianPhone(String guardianPhone) {
+    public JsonQueuedDependent setGuardianPhone(String guardianPhone) {
         this.guardianPhone = guardianPhone;
         return this;
     }
@@ -98,7 +98,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return guardianQueueUserId;
     }
 
-    public JsonQueuedMinorPerson setGuardianQueueUserId(String guardianQueueUserId) {
+    public JsonQueuedDependent setGuardianQueueUserId(String guardianQueueUserId) {
         this.guardianQueueUserId = guardianQueueUserId;
         return this;
     }
@@ -107,7 +107,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return queueUserState;
     }
 
-    public JsonQueuedMinorPerson setQueueUserState(QueueUserStateEnum queueUserState) {
+    public JsonQueuedDependent setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
         return this;
     }
@@ -116,7 +116,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return age;
     }
 
-    public JsonQueuedMinorPerson setAge(long age) {
+    public JsonQueuedDependent setAge(long age) {
         this.age = age;
         return this;
     }
@@ -125,7 +125,7 @@ public class JsonQueuedMinorPerson extends AbstractDomain {
         return gender;
     }
 
-    public JsonQueuedMinorPerson setGender(GenderEnum gender) {
+    public JsonQueuedDependent setGender(GenderEnum gender) {
         this.gender = gender;
         return this;
     }

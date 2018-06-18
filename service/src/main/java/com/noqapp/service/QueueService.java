@@ -6,7 +6,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonQueuePersonList;
-import com.noqapp.domain.json.JsonQueuedMinorPerson;
+import com.noqapp.domain.json.JsonQueuedDependent;
 import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.stats.HealthCareStat;
@@ -16,7 +16,6 @@ import com.noqapp.domain.stats.YearlyData;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -145,8 +144,8 @@ public class QueueService {
 
                 for (String qid : queue.getGuardianToQueueUserId()) {
                     UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-                    jsonQueuedPerson.addMinors(
-                            new JsonQueuedMinorPerson()
+                    jsonQueuedPerson.addDependent(
+                            new JsonQueuedDependent()
                                     .setToken(queue.getTokenNumber())
                                     .setQueueUserId(qid)
                                     .setCustomerName(userProfile.getName())
