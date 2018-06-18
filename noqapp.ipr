@@ -264,10 +264,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:2.1.0.M3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:2.1.0.M3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.0.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.337" />
             <element id="library" level="project" name="Gradle: software.amazon.ion:ion-java:1.0.2" />
             <element id="library" level="project" name="Gradle: com.github.jai-imageio:jai-imageio-core:1.3.1" />
             <element id="library" level="project" name="Gradle: com.github.openjson:openjson:1.0.10" />
@@ -364,6 +360,10 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.7.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.349" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.349" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.349" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.349" />
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -474,7 +474,6 @@
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.337" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.7" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0" />
@@ -496,8 +495,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:8.0.11" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.337" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.27.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.45.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.27.0" />
@@ -526,7 +523,6 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.12.0" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:5.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.337" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.db:maxmind-db:1.2.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.5" />
@@ -736,6 +732,10 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/d65cb0df4d04184cbea39be33e33666cca906383/aws-java-sdk-s3-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/4151583ce46ceaeb715b1d00c507c9c4f029a4bd/aws-java-sdk-kms-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/d6152048e26a4946d23bc234bb8007f12564061/aws-java-sdk-core-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/1c18cba2cf2df9b63ad36e840e4de799372ccbcb/jmespath-java-1.11.349.jar" />
           </element>
         </element>
       </root>
@@ -817,7 +817,6 @@
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.337" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.7" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0" />
@@ -839,8 +838,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:8.0.11" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.337" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.27.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.45.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.27.0" />
@@ -869,7 +866,6 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.12.0" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:5.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.337" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.db:maxmind-db:1.2.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.5" />
@@ -1080,6 +1076,10 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/d65cb0df4d04184cbea39be33e33666cca906383/aws-java-sdk-s3-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/4151583ce46ceaeb715b1d00c507c9c4f029a4bd/aws-java-sdk-kms-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/d6152048e26a4946d23bc234bb8007f12564061/aws-java-sdk-core-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/1c18cba2cf2df9b63ad36e840e4de799372ccbcb/jmespath-java-1.11.349.jar" />
           </element>
         </element>
       </root>
@@ -1173,7 +1173,6 @@
             <element id="library" level="project" name="Gradle: edu.ucar:grib:4.5.5" />
             <element id="library" level="project" name="Gradle: edu.ucar:cdm:4.5.5" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.337" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-mail-dkim:1.1.9" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.2.7" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0" />
@@ -1195,8 +1194,6 @@
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.3.1.Final" />
             <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:8.0.11" />
             <element id="library" level="project" name="Gradle: org.elasticsearch:elasticsearch:6.3.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.337" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.337" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-storage:1.27.0" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-firestore:0.45.0-beta" />
             <element id="library" level="project" name="Gradle: com.google.cloud:google-cloud-core-http:1.27.0" />
@@ -1225,7 +1222,6 @@
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.geoip2:geoip2:2.12.0" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:5.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.11.337" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.5" />
             <element id="library" level="project" name="Gradle: com.maxmind.db:maxmind-db:1.2.2" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.5" />
@@ -1452,6 +1448,10 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/d65cb0df4d04184cbea39be33e33666cca906383/aws-java-sdk-s3-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/4151583ce46ceaeb715b1d00c507c9c4f029a4bd/aws-java-sdk-kms-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/d6152048e26a4946d23bc234bb8007f12564061/aws-java-sdk-core-1.11.349.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/1c18cba2cf2df9b63ad36e840e4de799372ccbcb/jmespath-java-1.11.349.jar" />
           </element>
         </element>
       </root>
@@ -1933,48 +1933,48 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.adobe.xmp/xmpcore/5.1.3/908013b9ec0696467b3f0e4156b510ae0f6c84d/xmpcore-5.1.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.337">
+    <library name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.349">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.337/11e9307717bd723c14a1ba2b9b9efb954228cbdd/aws-java-sdk-core-1.11.337.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/d6152048e26a4946d23bc234bb8007f12564061/aws-java-sdk-core-1.11.349.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.337/5706a5c283e58218c5dbe3d92fee194f5098006c/aws-java-sdk-core-1.11.337-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/abc08a9fb0402fcfacc243bf19d3aa18c6e53bd3/aws-java-sdk-core-1.11.349-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.337/6b84e433d0e38b356824545339c06e909c254589/aws-java-sdk-core-1.11.337-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.349/ddd477ad870a963b2d64c9eb42ef4bddaafba7e/aws-java-sdk-core-1.11.349-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.337">
+    <library name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.349">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.337/ec9a65f7bce0e1f3ff2445cd447f540dd814c43c/aws-java-sdk-kms-1.11.337.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/4151583ce46ceaeb715b1d00c507c9c4f029a4bd/aws-java-sdk-kms-1.11.349.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.337/f5028a50c77160ce974072ace6a02e6c3885aea/aws-java-sdk-kms-1.11.337-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/b9ab7b816eccedef4bf5f9b479bbf3f6488d1926/aws-java-sdk-kms-1.11.349-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.337/a2017cea7b0bb94efcd6afc4bf382a15718dc279/aws-java-sdk-kms-1.11.337-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.349/adb0243a1dddaf3f515daa25a197112c726c5270/aws-java-sdk-kms-1.11.349-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.337">
+    <library name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.349">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.337/9a62840e0a14793ddf41b3a4f3ff188f002d814b/aws-java-sdk-s3-1.11.337.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/d65cb0df4d04184cbea39be33e33666cca906383/aws-java-sdk-s3-1.11.349.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.337/2dd13f24a09652cf0635a06cd8633b8d9d10929b/aws-java-sdk-s3-1.11.337-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/2dae5180694576b79c6ebe59b7f6fcb69fe49e1d/aws-java-sdk-s3-1.11.349-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.337/904c4fd0b68e32c4a87c3a2305963e6f43ef5e11/aws-java-sdk-s3-1.11.337-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.349/f87a61fe3b35466b4877803758500fa3643ee8ca/aws-java-sdk-s3-1.11.349-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.amazonaws:jmespath-java:1.11.337">
+    <library name="Gradle: com.amazonaws:jmespath-java:1.11.349">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.337/3ed2e775aaf011c8f512abaebd756724f28571a8/jmespath-java-1.11.337.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/1c18cba2cf2df9b63ad36e840e4de799372ccbcb/jmespath-java-1.11.349.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.337/dbd2d0e4adfce1d816679c70b5e0a6b0d79dbfb1/jmespath-java-1.11.337-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/9e625456d2ceab3c49e6a43ff908862a51538a6f/jmespath-java-1.11.349-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.337/7045fc4e0c844c1fa4857a515c596c88575efcc1/jmespath-java-1.11.337-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.11.349/72bb671583d49e54f4cd5200c011ba2f88622f12/jmespath-java-1.11.349-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.beust:jcommander:1.35">
