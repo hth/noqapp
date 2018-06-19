@@ -198,60 +198,77 @@ public class QueueHistory {
      * @param bizNameId
      * @param queues
      */
-    private StatsBizStoreDailyEntity saveDailyStat(String bizStoreId, String bizNameId, String codeQR, List<QueueEntity> queues) {
-        long totalServiceTimeInMilliSeconds = 0, totalHoursSaved = 0;
-        int totalServiced = 0, totalNoShow = 0, totalAbort = 0, totalRating = 0, totalCustomerRated = 0, clientsVisitedThisStore = 0;
+    private StatsBizStoreDailyEntity saveDailyStat(
+            String bizStoreId,
+            String bizNameId,
+            String codeQR,
+            List<QueueEntity> queues
+    ) {
+        long totalServiceTimeInMilliSeconds = 0,
+                totalHoursSaved = 0;
+
+        int totalServiced = 0,
+                totalNoShow = 0,
+                totalAbort = 0,
+                totalRating = 0,
+                totalCustomerRated = 0,
+                clientsVisitedThisStore = 0;
+
         for (QueueEntity queue : queues) {
-            if (queue.hasClientVisitedThisStore()) {
-                clientsVisitedThisStore++;
-            }
+            try {
+                if (queue.hasClientVisitedThisStore()) {
+                    clientsVisitedThisStore++;
+                }
 
-            switch (queue.getQueueUserState()) {
-                case S:
-                    totalServiceTimeInMilliSeconds += queue.timeTakenForServiceInMilliSeconds();
-                    if (queue.getRatingCount() > 0) {
-                        totalRating += queue.getRatingCount();
-                        totalCustomerRated++;
-                    }
-                    totalServiced++;
-                    int hours;
-                    switch (queue.getHoursSaved()) {
-                        case 1:
-                            /* Half hour. */
-                            hours = 30;
-                            break;
-                        case 2:
-                            /* One hour. */
-                            hours = 30 * 2;
-                            break;
-                        case 3:
-                            /* Two hours. */
-                            hours = 30 * 4;
-                            break;
-                        case 4:
-                            /* Three hours. */
-                            hours = 30 * 6;
-                            break;
-                        case 5:
-                            /* Four hours. */
-                            hours = 30 * 8;
-                            break;
-                        default:
-                            /* Eight hours. */
-                            hours = 30 * 16;
-                    }
+                switch (queue.getQueueUserState()) {
+                    case S:
+                        totalServiceTimeInMilliSeconds += queue.timeTakenForServiceInMilliSeconds();
+                        if (queue.getRatingCount() > 0) {
+                            totalRating += queue.getRatingCount();
+                            totalCustomerRated++;
+                        }
+                        totalServiced++;
+                        int hours;
+                        switch (queue.getHoursSaved()) {
+                            case 1:
+                                /* Half hour. */
+                                hours = 30;
+                                break;
+                            case 2:
+                                /* One hour. */
+                                hours = 30 * 2;
+                                break;
+                            case 3:
+                                /* Two hours. */
+                                hours = 30 * 4;
+                                break;
+                            case 4:
+                                /* Three hours. */
+                                hours = 30 * 6;
+                                break;
+                            case 5:
+                                /* Four hours. */
+                                hours = 30 * 8;
+                                break;
+                            default:
+                                /* Eight hours. */
+                                hours = 30 * 16;
+                        }
 
-                    totalHoursSaved += hours * 60 * 1000;
-                    break;
-                case A:
-                    totalAbort += 1;
-                    break;
-                case N:
-                    totalNoShow += 1;
-                    break;
-                case Q:
-                    LOG.warn("Cannot be queued at this stage. Anyhow should be computed NoShow");
-                    break;
+                        totalHoursSaved += hours * 60 * 1000;
+                        break;
+                    case A:
+                        totalAbort += 1;
+                        break;
+                    case N:
+                        totalNoShow += 1;
+                        break;
+                    case Q:
+                        LOG.warn("Cannot be queued at this stage. Anyhow should be computed NoShow");
+                        break;
+                }
+            } catch (Exception e) {
+                LOG.error("Failed computing daily stat QueueHistory id={}", queue.getId());
             }
         }
         StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
