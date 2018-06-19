@@ -156,6 +156,7 @@ public class TokenQueueService {
             String codeQR,
             String did,
             String qid,
+            String guardianQid,
             long averageServiceTime,
             TokenServiceEnum tokenService
     ) {
@@ -191,6 +192,10 @@ public class TokenQueueService {
 
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
+                    if (StringUtils.isNotBlank(guardianQid)) {
+                        /* Set this field when client is really a guardian and has at least one dependent in profile. */
+                        queue.setGuardianQid(guardianQid);
+                    }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
                     queue.setExpectedServiceBegin(expectedServiceBegin);
                     queueManager.insert(queue);

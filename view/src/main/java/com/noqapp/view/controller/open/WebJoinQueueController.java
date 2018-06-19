@@ -210,10 +210,16 @@ public class WebJoinQueueController {
                 String did = UUID.randomUUID().toString();
                 UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
 
+                String guardianQid = null;
+                if (null != userProfile && StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                    guardianQid = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone()).getQueueUserId();
+                }
+
                 jsonToken = tokenQueueService.getNextToken(
                         codeQRDecoded,
                         did,
                         null != userProfile ? userProfile.getQueueUserId() : null,
+                        guardianQid,
                         bizStore.getAverageServiceTime(),
                         TokenServiceEnum.W
                 );
