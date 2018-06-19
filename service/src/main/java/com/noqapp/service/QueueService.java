@@ -106,7 +106,7 @@ public class QueueService {
     }
 
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
-        return queueManager.findAllQueuedByQid(codeQR, did, qid);
+        return queueManager.findQueuedOne(codeQR, did, qid);
     }
 
     /** Finds clients who are yet to be serviced. */
