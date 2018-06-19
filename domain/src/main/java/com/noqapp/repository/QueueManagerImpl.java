@@ -91,9 +91,13 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("QID").is(qid).and("QS").is(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)
+                    .orOperator(
+                            where("QID").is(qid),
+                            where("GQ").is(qid)
+                    ));
         } else {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("DID").is(did));
         }
 
         return mongoTemplate.findOne(
@@ -116,7 +120,11 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findToAbort(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q).and("QID").is(qid));
+            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q)
+                    .orOperator(
+                            where("QID").is(qid),
+                            where("GQ").is(qid)
+                    ));
         } else {
             query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
         }
@@ -261,7 +269,12 @@ public class QueueManagerImpl implements QueueManager {
 
     public List<QueueEntity> findAllQueuedByQid(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "C")),
+                query(where("QS").is(QueueUserStateEnum.Q)
+                        .orOperator(
+                                where("QID").is(qid),
+                                where("GQ").is(qid)
+                        )
+                ).with(new Sort(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -280,7 +293,12 @@ public class QueueManagerImpl implements QueueManager {
 //        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
 
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("QS").ne(QueueUserStateEnum.Q)).with(new Sort(DESC, "C")),
+                query(where("QS").ne(QueueUserStateEnum.Q)
+                        .orOperator(
+                                where("QID").is(qid),
+                                where("GQ").is(qid)
+                        )
+                ).with(new Sort(DESC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -342,7 +360,10 @@ public class QueueManagerImpl implements QueueManager {
                             .and("QS").ne(QueueUserStateEnum.Q)
                             .and("RA").is(0)
                             .and("HR").is(0)
-                            .and("QID").is(qid));
+                            .orOperator(
+                                    where("QID").is(qid),
+                                    where("GQ").is(qid)
+                            ));
         } else {
             query = query(
                     where("QR").is(codeQR)
