@@ -268,7 +268,7 @@ public class QueueHistory {
                         break;
                 }
             } catch (Exception e) {
-                LOG.error("Failed computing daily stat QueueHistory id={}", queue.getId());
+                LOG.error("Failed computing daily stat QueueHistory id={} reason={}", queue.getId(), e.getLocalizedMessage(), e);
             }
         }
         StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
