@@ -161,7 +161,7 @@ public class TokenQueueService {
             TokenServiceEnum tokenService
     ) {
         try {
-            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
+            QueueEntity queue = queueManager.findAllQueuedByQid(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {

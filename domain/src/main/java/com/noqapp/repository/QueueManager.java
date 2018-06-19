@@ -19,7 +19,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void abort(String id);
 
     /** Find the one that has been queued. */
-    QueueEntity findQueuedOne(String codeQR, String did, String qid);
+    List<QueueEntity> findAllQueuedByQid(String codeQR, String did, String qid);
 
     QueueEntity findOne(String codeQR, int tokenNumber);
 
