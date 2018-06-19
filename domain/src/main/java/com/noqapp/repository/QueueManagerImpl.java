@@ -88,7 +88,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public List<QueueEntity> findAllQueuedByQid(String codeQR, String did, String qid) {
+    public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
             query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)
@@ -100,7 +100,7 @@ public class QueueManagerImpl implements QueueManager {
             query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q).and("DID").is(did));
         }
 
-        return mongoTemplate.find(
+        return mongoTemplate.findOne(
                 query,
                 QueueEntity.class,
                 TABLE
@@ -116,7 +116,6 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
-    //TODO (abort to correct one, use token number)
     @Override
     public QueueEntity findToAbort(String codeQR, String did, String qid) {
         Query query;
