@@ -21,7 +21,9 @@ Next Release Update Mongo
 
     1. Make sure BusinessType in Token_QUEUE is not HO
     2. Change BusinessType in Business NAME from HO to DO
-
+    
+### Drop index
+    queue_idx from QueueEntity    
 
 ### Mysql 
 

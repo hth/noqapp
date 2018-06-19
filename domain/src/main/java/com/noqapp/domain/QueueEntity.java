@@ -25,7 +25,7 @@ import java.util.Date;
 })
 @Document (collection = "QUEUE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "queue_idx", def = "{'QR' : -1, 'DID': -1, 'QID': -1}", unique = false, background = true, sparse = true),
+        @CompoundIndex (name = "queue_idx", def = "{'QR' : -1, 'DID': -1, 'QID': -1, 'GQ' : -1}", unique = false, background = true, sparse = true),
         @CompoundIndex (name = "queue_tn_idx", def = "{'QR' : -1, 'TN': -1}", unique = true, background = true)
 })
 public class QueueEntity extends BaseEntity {

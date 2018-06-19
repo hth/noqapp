@@ -90,6 +90,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty ("qid")
+    private String queueUserId;
+
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
@@ -110,7 +113,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
     }
 
     /* For Active Queue. */
-    public JsonTokenAndQueue(int token, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
+    public JsonTokenAndQueue(int token, String qid, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
         this.codeQR = jsonQueue.getCodeQR();
         this.geoHash = jsonQueue.getGeoHash();
         this.businessName = jsonQueue.getBusinessName();
@@ -127,6 +130,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.startHour = jsonQueue.getStartHour();
         this.endHour = jsonQueue.getEndHour();
         this.topic = jsonQueue.getTopic();
+        this.queueUserId = qid;
         this.servingNumber = jsonQueue.getServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
         //Skipped ratingCount
@@ -168,6 +172,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
+        this.queueUserId = queue.getQueueUserId();
         //Skipped serving number
         //Skipped last number
         this.serviceEndTime = DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
@@ -197,6 +202,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
+        this.queueUserId = queue.getQueueUserId();
         this.servingNumber = 0;
         this.lastNumber = 0;
         //Skipped ratingCount
