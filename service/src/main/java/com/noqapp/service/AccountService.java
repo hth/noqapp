@@ -143,7 +143,7 @@ public class AccountService {
             String password,
             String inviteCode,
             boolean phoneValidated,
-            boolean notAdult
+            boolean dependent
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
@@ -152,7 +152,7 @@ public class AccountService {
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
 
         UserProfileEntity existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
-        if (notAdult) {
+        if (dependent) {
             existingUserProfile = null;
         }
 
@@ -192,7 +192,7 @@ public class AccountService {
                         birthday
                 );
 
-                if (notAdult) {
+                if (dependent) {
                     existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
                     userProfile.setPhone(qid);
                     userProfile.setPhoneRaw(qid);
@@ -212,7 +212,7 @@ public class AccountService {
                 userProfile.setInviteCode(generatedInviteCode);
                 userProfileManager.save(userProfile);
 
-                if (notAdult) {
+                if (dependent) {
                     UserProfileEntity guardianUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
                     guardianUserProfile.addQidOfDependent(userProfile.getQueueUserId());
                     userProfileManager.save(guardianUserProfile);
