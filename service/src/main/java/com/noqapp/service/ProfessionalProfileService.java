@@ -55,7 +55,7 @@ public class ProfessionalProfileService {
     }
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile) {
-        //TODO this temp, must revert logic
+        //TODO this temp, must revert logic. Remove else and populate with Entity data
         if (null == professionalProfile) {
             return new JsonProfessionalProfile()
                     .setWebProfileId(professionalProfile.getWebProfileId())

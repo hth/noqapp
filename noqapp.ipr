@@ -1506,38 +1506,24 @@
   </component>
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="common_integration" target="1.8" />
       <module name="common_main" target="1.8" />
       <module name="common_test" target="1.8" />
-      <module name="domain_integration" target="1.8" />
       <module name="domain_main" target="1.8" />
       <module name="domain_test" target="1.8" />
-      <module name="health_integration" target="1.8" />
       <module name="health_main" target="1.8" />
       <module name="health_test" target="1.8" />
-      <module name="loader_integration" target="1.8" />
       <module name="loader_main" target="1.8" />
       <module name="loader_test" target="1.8" />
       <module name="medical_main" target="1.8" />
       <module name="medical_test" target="1.8" />
-      <module name="noqapp-health_integration" target="1.8" />
-      <module name="noqapp-health_main" target="1.8" />
-      <module name="noqapp-health_test" target="1.8" />
-      <module name="noqapp_main" target="1.8" />
-      <module name="noqapp_test" target="1.8" />
-      <module name="search_integration" target="1.8" />
       <module name="search_main" target="1.8" />
       <module name="search_test" target="1.8" />
-      <module name="security_integration" target="1.8" />
       <module name="security_main" target="1.8" />
       <module name="security_test" target="1.8" />
-      <module name="service_integration" target="1.8" />
       <module name="service_main" target="1.8" />
       <module name="service_test" target="1.8" />
-      <module name="social_integration" target="1.8" />
       <module name="social_main" target="1.8" />
       <module name="social_test" target="1.8" />
-      <module name="view_integration" target="1.8" />
       <module name="view_main" target="1.8" />
       <module name="view_test" target="1.8" />
     </bytecodeTargetLevel>
