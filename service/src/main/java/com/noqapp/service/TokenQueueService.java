@@ -3,6 +3,7 @@ package com.noqapp.service;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -69,6 +70,7 @@ public class TokenQueueService {
     private QueueManagerJDBC queueManagerJDBC;
     private StoreHourManager storeHourManager;
     private BizStoreManager bizStoreManager;
+    private BusinessCustomerService businessCustomerService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -83,6 +85,7 @@ public class TokenQueueService {
             QueueManagerJDBC queueManagerJDBC,
             StoreHourManager storeHourManager,
             BizStoreManager bizStoreManager,
+            BusinessCustomerService businessCustomerService,
             ApiHealthService apiHealthService
     ) {
         this.tokenQueueManager = tokenQueueManager;
@@ -93,6 +96,7 @@ public class TokenQueueService {
         this.queueManagerJDBC = queueManagerJDBC;
         this.storeHourManager = storeHourManager;
         this.bizStoreManager = bizStoreManager;
+        this.businessCustomerService = businessCustomerService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -307,6 +311,16 @@ public class TokenQueueService {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
                 queue.setGuardianQid(guardianProfile.getQueueUserId());
             }
+
+            /* Add business customer id if any associated with qid and codeQR. */
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(
+                    qid,
+                    bizStoreManager.findByCodeQR(codeQR).getBizName().getId());
+
+            if (null != businessCustomer) {
+                queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId());
+            }
+
             queueManager.save(queue);
         }
     }

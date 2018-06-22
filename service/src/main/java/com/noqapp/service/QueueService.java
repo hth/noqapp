@@ -130,7 +130,8 @@ public class QueueService {
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
-    private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
+    @Mobile
+    public void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
             JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
                     .setQueueUserId(queue.getQueueUserId())
@@ -138,7 +139,8 @@ public class QueueService {
                     .setCustomerPhone(queue.getCustomerPhone())
                     .setQueueUserState(queue.getQueueUserState())
                     .setToken(queue.getTokenNumber())
-                    .setServerDeviceId(queue.getServerDeviceId());
+                    .setServerDeviceId(queue.getServerDeviceId())
+                    .setBusinessCustomerId(queue.getBusinessCustomerId());
 
             if (StringUtils.isNotBlank(queue.getGuardianQid())) {
                 UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());

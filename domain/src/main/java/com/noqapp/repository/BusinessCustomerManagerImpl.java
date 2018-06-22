@@ -48,9 +48,18 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
     }
 
     @Override
-    public BusinessCustomerEntity findOne(String businessCustomerId, String bizNameId) {
+    public BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId) {
         return mongoTemplate.findOne(
                 query(where("BC").is(businessCustomerId).and("BN").is(bizNameId)),
+                BusinessCustomerEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
+        return mongoTemplate.findOne(
+                query(where("QID").is(qid).and("BN").is(bizNameId)),
                 BusinessCustomerEntity.class,
                 TABLE
         );
