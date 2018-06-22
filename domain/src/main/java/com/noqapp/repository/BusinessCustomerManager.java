@@ -8,6 +8,7 @@ import com.noqapp.domain.BusinessCustomerEntity;
  */
 public interface BusinessCustomerManager extends RepositoryManager<BusinessCustomerEntity> {
 
-    BusinessCustomerEntity findOne(String businessCustomerId, String bizNameId);
+    BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId);
+
     BusinessCustomerEntity findOneByQid(String qid, String bizNameId);
 }

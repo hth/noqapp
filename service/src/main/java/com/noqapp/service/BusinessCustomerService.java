@@ -46,7 +46,7 @@ public class BusinessCustomerService {
     @Mobile
     public UserProfileEntity findByBusinessCustomerId(String businessCustomerId, String codeQR) {
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-        BusinessCustomerEntity businessCustomer = businessCustomerManager.findOne(businessCustomerId, bizStore.getBizName().getId());
+        BusinessCustomerEntity businessCustomer = findOneByCustomerId(businessCustomerId, bizStore.getBizName().getId());
         if (null == businessCustomer) {
             return null;
         }
@@ -55,14 +55,19 @@ public class BusinessCustomerService {
 
     @Mobile
     public UserProfileEntity findByBusinessCustomerIdAndBizNameId(String businessCustomerId, String bizNameId) {
-        BusinessCustomerEntity businessCustomer = businessCustomerManager.findOne(businessCustomerId, bizNameId);
+        BusinessCustomerEntity businessCustomer = findOneByCustomerId(businessCustomerId, bizNameId);
         if (null == businessCustomer) {
             return null;
         }
         return accountService.findProfileByQueueUserId(businessCustomer.getQueueUserId());
     }
 
-    public BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
+    protected BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
        return businessCustomerManager.findOneByQid(qid, bizNameId);
+    }
+
+    @Mobile
+    public BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId) {
+        return businessCustomerManager.findOneByCustomerId(businessCustomerId, bizNameId);
     }
 }

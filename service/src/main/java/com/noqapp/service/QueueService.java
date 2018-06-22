@@ -130,7 +130,8 @@ public class QueueService {
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
-    private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
+    @Mobile
+    public void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
             JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
                     .setQueueUserId(queue.getQueueUserId())
