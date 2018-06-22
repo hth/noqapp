@@ -4,7 +4,9 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessCustomerManager;
+import com.noqapp.repository.UserProfileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +18,18 @@ import org.springframework.stereotype.Service;
 public class BusinessCustomerService {
 
     private BusinessCustomerManager businessCustomerManager;
-    private BizService bizService;
-    private AccountService accountService;
+    private BizStoreManager bizStoreManager;
+    private UserProfileManager userProfileManager;
 
     @Autowired
     public BusinessCustomerService(
             BusinessCustomerManager businessCustomerManager,
-            BizService bizService,
-            AccountService accountService
+            BizStoreManager bizStoreManager,
+            UserProfileManager userProfileManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
-        this.bizService = bizService;
-        this.accountService = accountService;
+        this.bizStoreManager = bizStoreManager;
+        this.userProfileManager = userProfileManager;
     }
 
     /**
@@ -35,7 +37,7 @@ public class BusinessCustomerService {
      */
     @Mobile
     public void addBusinessCustomer(String qid, String codeQR, String businessCustomerId) {
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         businessCustomerManager.save(new BusinessCustomerEntity(
                 qid,
                 bizStore.getBizName().getId(),
@@ -45,12 +47,12 @@ public class BusinessCustomerService {
 
     @Mobile
     public UserProfileEntity findByBusinessCustomerId(String businessCustomerId, String codeQR) {
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         BusinessCustomerEntity businessCustomer = findOneByCustomerId(businessCustomerId, bizStore.getBizName().getId());
         if (null == businessCustomer) {
             return null;
         }
-        return accountService.findProfileByQueueUserId(businessCustomer.getQueueUserId());
+        return userProfileManager.findByQueueUserId(businessCustomer.getQueueUserId());
     }
 
     @Mobile
@@ -59,7 +61,7 @@ public class BusinessCustomerService {
         if (null == businessCustomer) {
             return null;
         }
-        return accountService.findProfileByQueueUserId(businessCustomer.getQueueUserId());
+        return userProfileManager.findByQueueUserId(businessCustomer.getQueueUserId());
     }
 
     protected BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
