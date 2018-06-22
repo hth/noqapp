@@ -105,6 +105,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("GQ")
     private String guardianQid;
 
+    @Field ("BC")
+    private String businessCustomerId;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -300,6 +303,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setGuardianQid(String guardianQid) {
         this.guardianQid = guardianQid;
+        return this;
+    }
+
+    public String getBusinessCustomerId() {
+        return businessCustomerId;
+    }
+
+    public QueueEntity setBusinessCustomerId(String businessCustomerId) {
+        this.businessCustomerId = businessCustomerId;
         return this;
     }
 
