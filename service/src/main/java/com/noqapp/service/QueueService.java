@@ -64,6 +64,20 @@ public class QueueService {
     }
 
     @Mobile
+    public List<QueueEntity> findInAQueueByQid(String qid, String codeQR) {
+        return queueManager.findInAQueueByQid(qid, codeQR);
+    }
+
+    /** Get person with QID in a specific queue. Including when queued as guardian*/
+    @Mobile
+    public String getQueuedPerson(String qid, String codeQR) {
+        List<QueueEntity> queues = findInAQueueByQid(qid, codeQR);
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+        populateInJsonQueuePersonList(queuedPeople, queues);
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
+    }
+
+    @Mobile
     public List<QueueEntity> findAllNotQueuedByQid(String qid) {
         return queueManager.findAllNotQueuedByQid(qid);
     }
@@ -130,8 +144,7 @@ public class QueueService {
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
-    @Mobile
-    public void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
+    private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
             JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
                     .setQueueUserId(queue.getQueueUserId())
@@ -367,5 +380,15 @@ public class QueueService {
         }
 
         return healthCareStatList;
+    }
+
+    @Mobile
+    public boolean doesExistsByQid(String codeQR, int tokenNumber, String qid) {
+        return queueManager.doesExistsByQid(codeQR, tokenNumber, qid);
+    }
+
+    @Mobile
+    public QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId) {
+        return queueManager.changeUserInQueue(codeQR, tokenNumber, existingQueueUserId, changeToQueueUserId);
     }
 }
