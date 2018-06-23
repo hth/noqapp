@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -111,6 +112,15 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findOne(String codeQR, int tokenNumber) {
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
+                QueueEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public boolean doesExistsByQid(String codeQR, int tokenNumber, String qid) {
+        return mongoTemplate.exists(
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QID").is(qid)),
                 QueueEntity.class,
                 TABLE
         );
@@ -270,6 +280,18 @@ public class QueueManagerImpl implements QueueManager {
     public List<QueueEntity> findAllQueuedByQid(String qid) {
         return mongoTemplate.find(
                 query(where("QS").is(QueueUserStateEnum.Q)
+                        .orOperator(
+                                where("QID").is(qid),
+                                where("GQ").is(qid)
+                        )
+                ).with(new Sort(ASC, "C")),
+                QueueEntity.class,
+                TABLE);
+    }
+
+    public List<QueueEntity> findInAQueueByQid(String qid, String codeQR) {
+        return mongoTemplate.find(
+                query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)
                         .orOperator(
                                 where("QID").is(qid),
                                 where("GQ").is(qid)
@@ -466,6 +488,17 @@ public class QueueManagerImpl implements QueueManager {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(update("SB", new Date())),
+                QueueEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId) {
+        return mongoTemplate.findAndModify(
+                query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QID").is(existingQueueUserId)),
+                entityUpdate(update("QID", changeToQueueUserId)),
+                FindAndModifyOptions.options().returnNew(true),
                 QueueEntity.class,
                 TABLE
         );

@@ -665,7 +665,7 @@ public class TokenQueueService {
         return queueManager.findOne(codeQR, tokenNumber);
     }
 
-    public void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
+    void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
         tokenQueueManager.changeQueueStatus(codeQR, queueStatus);
     }
 }

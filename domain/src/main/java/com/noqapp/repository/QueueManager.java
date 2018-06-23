@@ -23,6 +23,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     QueueEntity findOne(String codeQR, int tokenNumber);
 
+    boolean doesExistsByQid(String codeQR, int tokenNumber, String qid);
+
     QueueEntity findToAbort(String codeQR, String did, String qid);
 
     @Mobile
@@ -72,6 +74,9 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /** Find all based on registered user. */
     List<QueueEntity> findAllQueuedByQid(String qid);
 
+    /** Find queued in a specific queue. */
+    List<QueueEntity> findInAQueueByQid(String qid, String codeQR);
+
     /** Get all the queues that have been serviced for today by DID. */
     @Mobile
     List<QueueEntity> findAllNotQueuedByDid(String did);
@@ -113,4 +118,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     long markAllAbortWhenQueueClosed(String codeQR, String serverDeviceId);
 
     void updateServiceBeginTime(String id);
+
+    QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId);
 }
