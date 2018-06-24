@@ -98,7 +98,7 @@ public class FtpService {
         }
     }
 
-    public void upload(String filename, String directory) {
+    void upload(String filename, String directory) {
         File file = new File(FileUtils.getTempDirectoryPath() + File.separator + filename);
         if (!file.exists()) {
             throw new RuntimeException("Error. Local file not found");

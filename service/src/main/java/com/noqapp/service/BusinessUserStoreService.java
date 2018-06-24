@@ -289,7 +289,7 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.findAll();
     }
 
-    public List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
+    List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
         return businessUserStoreManager.findAllManagingStoreWithUserLevel(qid, userLevel);
     }
 }

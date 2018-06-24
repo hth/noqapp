@@ -34,8 +34,8 @@ import static com.noqapp.common.utils.FileUtil.getTmpDir;
 @Service
 public class FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
-    public static final String PNG_FORMAT = "png";
-    public static final String SCALED_IMAGE_POST_FIX = "_s";
+    private static final String PNG_FORMAT = "png";
+    private static final String SCALED_IMAGE_POST_FIX = "_s";
 
     private int imageProfileWidth;
     private int imageProfileHeight;
@@ -117,7 +117,7 @@ public class FileService {
      * @return
      * @throws IOException
      */
-    public File decreaseResolution(File file, int width, int height) throws IOException {
+    private File decreaseResolution(File file, int width, int height) throws IOException {
         BufferedImage image = bufferedImage(file);
 
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
@@ -155,7 +155,7 @@ public class FileService {
      * @return
      * @throws IOException
      */
-    public BufferedImage bufferedImage(File file) throws IOException {
+    private BufferedImage bufferedImage(File file) throws IOException {
         return bufferedImage(new FileInputStream(file));
     }
 
@@ -163,13 +163,13 @@ public class FileService {
         return ImageIO.read(is);
     }
 
-    public File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
+    private File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
         File toFile = createTempFile(FilenameUtils.getBaseName(filename), getFileExtension(filename));
         writeToFile(toFile, bufferedImage);
         return toFile;
     }
 
-    public void writeToFile(File file, BufferedImage bufferedImage) throws IOException {
+    private void writeToFile(File file, BufferedImage bufferedImage) throws IOException {
         ImageIO.write(bufferedImage, PNG_FORMAT, file);
     }
 
