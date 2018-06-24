@@ -98,7 +98,7 @@ public class FtpService {
         }
     }
 
-    public void upload(String filename, String directory) {
+    void upload(String filename, String directory) {
         File file = new File(FileUtils.getTempDirectoryPath() + File.separator + filename);
         if (!file.exists()) {
             throw new RuntimeException("Error. Local file not found");
@@ -159,7 +159,7 @@ public class FtpService {
             FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation), fileSystemOptions);
             return remoteFile.isFolder() && remoteFile.isWriteable() && remoteFile.isReadable();
         } catch (FileSystemException e) {
-            /* Check if access set correctly for the user and remote location exists. */
+            /* Check access set correctly for user and remote location exists. Base directory above needs access by user. */
             LOG.error("Could not find remote file={} reason={}", ftpLocation, e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         } finally {
@@ -178,7 +178,7 @@ public class FtpService {
             }
             return remoteFile.isFolder() && remoteFile.isWriteable() && remoteFile.isReadable();
         } catch (FileSystemException e) {
-            /* Check if access set correctly for the user and remote location exists. */
+            /* Check access set correctly for user and remote location exists. Base directory above needs access by user. */
             LOG.error("Could not find remote file={} reason={}", ftpLocation, e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         } finally {
