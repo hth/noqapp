@@ -61,7 +61,17 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                <c:choose>
+                                    <c:when test="${not empty storeManagerForm.businessTypeMap[BusinessTypeEnum.DO]}">
+                                        <div class="alert-info" style="text-align: left">
+                                            <p>Contact Administrator to modify details</p>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!-- Currently Managers are not supported to add new store. -->
+                                        <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="store-table">
                             <c:choose>
