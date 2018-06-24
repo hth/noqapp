@@ -2,7 +2,6 @@ package com.noqapp.view.form;
 
 import com.noqapp.domain.helper.NameDatePair;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public class ProfessionalProfileForm {
     private boolean professionalProfile;
-    private Date practiceStart;
+    private String practiceStart;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
@@ -27,11 +26,11 @@ public class ProfessionalProfileForm {
         return this;
     }
 
-    public Date getPracticeStart() {
+    public String getPracticeStart() {
         return practiceStart;
     }
 
-    public ProfessionalProfileForm setPracticeStart(Date practiceStart) {
+    public ProfessionalProfileForm setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }

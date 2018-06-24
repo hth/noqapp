@@ -233,7 +233,7 @@
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
                                     <div class="left-btn">
-                                        <input name="updateProfile" class="next-btn" value="UPDATE" type="submit">
+                                        <input name="update" class="next-btn" value="UPDATE" type="submit">
                                     </div>
                                     <%--<div class="right-btn">--%>
                                         <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
@@ -271,7 +271,7 @@
                                     <form:label path="practiceStart" cssErrorClass="lb_error">Practicing Since</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="practiceStart" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    <form:input path="practiceStart" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM"/>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
@@ -279,7 +279,7 @@
                             <div class="col-lable3"></div>
                             <div class="col-fields">
                                 <div class="left-btn">
-                                    <input name="updateProfessionalProfile" class="next-btn" value="UPDATE" type="submit">
+                                    <input name="update" class="next-btn" value="UPDATE" type="submit">
                                 </div>
                                     <%--<div class="right-btn">--%>
                                     <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
