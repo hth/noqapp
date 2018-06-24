@@ -292,50 +292,77 @@
 
                             <fieldset>
                                 <legend>Awards</legend>
-                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-                                <a href="">Add/Edit Awards</a>
+                                <div class="store-table">
+                                    <c:choose>
+                                        <c:when test="${!empty professionalProfileForm.awards}">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
+                                                    <tr>
+                                                        <td width="5%">${status.count}&nbsp;</td>
+                                                        <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                        <td width="20%">${nameDatePair.monthYear}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert-info">
+                                                <p>No award information added.</p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify.htm" class="add-btn">Add/Edit Awards</a>
                             </fieldset>
 
                             <fieldset>
                                 <legend>Education</legend>
-                                <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-                                <a href="">Add/Edit Education</a>
+                                <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty professionalProfileForm.education}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
+                                                <tr>
+                                                    <td width="5%">${status.count}&nbsp;</td>
+                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                    <td width="20%">${nameDatePair.monthYear}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>No education information added.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify.htm" class="add-btn">Add/Edit Education</a>
                             </fieldset>
 
                             <fieldset>
                                 <legend>Licenses</legend>
-                                <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-                                <a href="">Add/Edit Licenses</a>
+                                <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty professionalProfileForm.licenses}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
+                                                <tr>
+                                                    <td width="5%">${status.count}&nbsp;</td>
+                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                    <td width="20%">${nameDatePair.monthYear}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>No license information added.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
                             </fieldset>
                         </ul>
                     </div>

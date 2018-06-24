@@ -2,16 +2,18 @@ package com.noqapp.view.controller.access;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.domain.ProfessionalProfileEntity;
-import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
+import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.view.form.ProfessionalProfileEditForm;
 import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -22,11 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
@@ -183,9 +181,10 @@ public class UserProfileController {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
-        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
 
+        professionalProfile.setPracticeStart(professionalProfileForm.getPracticeStart());
+        professionalProfileService.save(professionalProfile);
 
         apiHealthService.insert(
                 "/updateProfessionalProfile",
@@ -196,15 +195,136 @@ public class UserProfileController {
         return "redirect:/access/userProfile.htm";
     }
 
+    @GetMapping(value = "/userProfessionalDetail/{action}/modify")
+    public String modify(
+        @PathVariable("action")
+        ScrubbedInput action,
+
+        @ModelAttribute("professionalProfileEditForm")
+        ProfessionalProfileEditForm professionalProfileEditForm
+    ) {
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+        if (null == professionalProfile) {
+            return "redirect:/access/userProfile.htm";
+        } else {
+            professionalProfileEditForm.setProfessionalProfile(true);
+        }
+
+        switch(action.getText()) {
+            case "awards":
+                professionalProfileEditForm
+                    .setAction(action.getText())
+                    .setNameDatePairs(professionalProfile.getAwards());
+                break;
+            case "education":
+                professionalProfileEditForm
+                    .setAction(action.getText())
+                    .setNameDatePairs(professionalProfile.getEducation());
+                break;
+            case "licenses":
+                professionalProfileEditForm
+                    .setAction(action.getText())
+                    .setNameDatePairs(professionalProfile.getLicenses());
+                break;
+            default:
+                LOG.error("Reached unsupported condition qid={} action={}", queueUser.getQueueUserId(), action.getText());
+                throw new UnsupportedOperationException("Un-supported action. Contact Support");
+        }
+
+        apiHealthService.insert(
+            "/userProfessionalDetail/{action}/modify",
+            "modify",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return "/access/userProfessionalDetailEdit";
+    }
+
+    @PostMapping(value = "/userProfessionalDetail/add", params = "add")
+    public String add(
+        @ModelAttribute("professionalProfileEditForm")
+        ProfessionalProfileEditForm professionalProfileEditForm
+    ) {
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+
+        switch(professionalProfileEditForm.getAction()) {
+            case "awards":
+                professionalProfile.getAwards().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            case "education":
+                professionalProfile.getEducation().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            case "licenses":
+                professionalProfile.getLicenses().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            default:
+                LOG.error("Reached unsupported condition qid={} action={}", queueUser.getQueueUserId(), professionalProfileEditForm.getAction());
+                throw new UnsupportedOperationException("Un-supported action. Contact Support");
+        }
+        professionalProfileService.save(professionalProfile);
+
+        apiHealthService.insert(
+            "/userProfessionalDetail/add",
+            "add",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+    }
+
+    @PostMapping(value = "/userProfessionalDetail/add", params = "cancel")
+    public String cancel() {
+        return "redirect:/access/userProfile.htm";
+    }
+
+    @PostMapping(value = "/userProfessionalDetail/delete")
+    public String delete(
+        @ModelAttribute("professionalProfileEditForm")
+        ProfessionalProfileEditForm professionalProfileEditForm
+    ) {
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+
+        switch(professionalProfileEditForm.getAction()) {
+            case "awards":
+                professionalProfile.getAwards().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            case "education":
+                professionalProfile.getEducation().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            case "licenses":
+                professionalProfile.getLicenses().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                break;
+            default:
+                LOG.error("Reached unsupported condition qid={} action={}", queueUser.getQueueUserId(), professionalProfileEditForm.getAction());
+                throw new UnsupportedOperationException("Un-supported action. Contact Support");
+        }
+        professionalProfileService.save(professionalProfile);
+
+        apiHealthService.insert(
+            "/userProfessionalDetail/delete",
+            "delete",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+    }
+
     /**
      * For uploading profile image.
      *
      * @param httpServletRequest
      * @return
      */
-    @RequestMapping (
-            method = RequestMethod.POST,
-            value = "/upload")
+    @PostMapping (value = "/upload")
     public String upload(HttpServletRequest httpServletRequest) {
         Instant start = Instant.now();
         LOG.info("uploading image");

@@ -41,7 +41,7 @@ public final class DateUtil {
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-    private static final DateTimeFormatter DTF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
+    private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
@@ -123,7 +123,7 @@ public final class DateUtil {
     }
 
     public static Date convertToDate(String date) {
-        return convertToDate(date, DTF_MM_DD_YYYY);
+        return convertToDate(date, DTF_YYYY_MM_DD);
     }
 
     private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter) {
@@ -143,7 +143,7 @@ public final class DateUtil {
     }
 
     public static String dateToString(Date date) {
-        return dateToString(date, DTF_MM_DD_YYYY);
+        return dateToString(date, DTF_YYYY_MM_DD);
     }
 
     public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
