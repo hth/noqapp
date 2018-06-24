@@ -2,7 +2,6 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonNameDatePair;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,15 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.beans.Transient;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+import java.util.*;
 
 /**
  * hitender
@@ -45,7 +36,7 @@ public class ProfessionalProfileEntity extends BaseEntity {
     private String webProfileId;
 
     @Field("PS")
-    private Date practiceStart;
+    private String practiceStart;
 
     /* Required to mark as a valid profile. */
     @Field("ED")
@@ -77,11 +68,11 @@ public class ProfessionalProfileEntity extends BaseEntity {
         return webProfileId;
     }
 
-    public Date getPracticeStart() {
+    public String getPracticeStart() {
         return practiceStart;
     }
 
-    public ProfessionalProfileEntity setPracticeStart(Date practiceStart) {
+    public ProfessionalProfileEntity setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -158,10 +149,10 @@ public class ProfessionalProfileEntity extends BaseEntity {
 
     private List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
         List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
-        for(NameDatePair nameDatePair : nameDatePairs) {
+        for (NameDatePair nameDatePair : nameDatePairs) {
             jsonNameDatePairs.add(new JsonNameDatePair()
-                    .setName(nameDatePair.getName())
-                    .setMonthYear(DateFormatUtils.format(nameDatePair.getMonthYear(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+                .setName(nameDatePair.getName())
+                .setMonthYear(nameDatePair.getMonthYear()));
         }
 
         return jsonNameDatePairs;

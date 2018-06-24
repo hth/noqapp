@@ -56,7 +56,6 @@
             <div class="admin-main">
                 <!-- File Upload From -->
                 <form:form action="${pageContext.request.contextPath}/access/userProfile/upload.htm" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="admin-title">
                         <h2>Profile Image</h2>
                     </div>
@@ -92,7 +91,6 @@
                 </form:form>
 
                 <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" method="post" modelAttribute="userProfileForm">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="admin-title">
                         <h2>Profile</h2>
                     </div>
@@ -250,87 +248,125 @@
                 </form:form>
 
                 <c:if test="${professionalProfileForm.professionalProfile}">
-                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfessionalProfile.htm" method="post" modelAttribute="professionalProfileForm">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                    <div class="admin-title">
-                        <h2>Health Care Professional Profile</h2>
+                <div class="admin-title">
+                    <h2>Health Care Professional Profile</h2>
+                </div>
+                <div class="error-box">
+                    <div class="error-txt">
+                            <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
+                            <%--<ul>--%>
+                            <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
+                            <%--<li>${message.text}</li>--%>
+                            <%--</c:forEach>--%>
+                            <%--</ul>--%>
+                            <%--</c:if>--%>
                     </div>
-                    <div class="error-box">
-                        <div class="error-txt">
-                                <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
-                                <%--<ul>--%>
-                                <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
-                                <%--<li>${message.text}</li>--%>
-                                <%--</c:forEach>--%>
-                                <%--</ul>--%>
-                                <%--</c:if>--%>
-                        </div>
-                    </div>
-                    <div class="admin-content">
-                        <div class="add-new">
-
-                            <ul class="list-form">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="practiceStart" cssErrorClass="lb_error">Practicing Since</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="practiceStart" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-                                <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-                                <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="nameDatePair.name" cssErrorClass="lb_error">Name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="nameDatePair.name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:forEach>
-
-                                <c:if test="${userProfileForm.emailValidated}">
-                                <div class="col-lable3"></div>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form">
+                            <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfessionalProfile.htm" method="post" modelAttribute="professionalProfileForm">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="practiceStart" cssErrorClass="lb_error">Practicing Since</form:label>
+                                </div>
                                 <div class="col-fields">
-                                    <div class="left-btn">
-                                        <input name="update" class="next-btn" value="UPDATE" type="submit">
-                                    </div>
-                                    <%--<div class="right-btn">--%>
-                                        <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
-                                    <div class="clearFix"></div>
+                                    <form:input path="practiceStart" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM"/>
                                 </div>
                                 <div class="clearFix"></div>
-                                </c:if>
-                            </ul>
-                        </div>
+                            </li>
+                            <c:if test="${userProfileForm.emailValidated}">
+                            <div class="col-lable3"></div>
+                            <div class="col-fields">
+                                <div class="left-btn">
+                                    <input name="update" class="next-btn" value="UPDATE" type="submit">
+                                </div>
+                                    <%--<div class="right-btn">--%>
+                                    <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                    <%--</div>--%>
+                                <div class="clearFix"></div>
+                            </div>
+                            <div class="clearFix"></div>
+                            </c:if>
+                            </form:form>
+
+                            <fieldset>
+                                <legend>Awards</legend>
+                                <div class="store-table">
+                                    <c:choose>
+                                        <c:when test="${!empty professionalProfileForm.awards}">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
+                                                    <tr>
+                                                        <td width="5%">${status.count}&nbsp;</td>
+                                                        <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                        <td width="20%">${nameDatePair.monthYear}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert-info">
+                                                <p>No award information added.</p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify.htm" class="add-btn">Add/Edit Awards</a>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Education</legend>
+                                <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty professionalProfileForm.education}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
+                                                <tr>
+                                                    <td width="5%">${status.count}&nbsp;</td>
+                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                    <td width="20%">${nameDatePair.monthYear}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>No education information added.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify.htm" class="add-btn">Add/Edit Education</a>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Licenses</legend>
+                                <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty professionalProfileForm.licenses}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
+                                                <tr>
+                                                    <td width="5%">${status.count}&nbsp;</td>
+                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                    <td width="20%">${nameDatePair.monthYear}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>No license information added.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
+                            </fieldset>
+                        </ul>
                     </div>
-                </form:form>
+                </div>
                 </c:if>
             </div>
             <!-- Complete profile -->

@@ -85,6 +85,7 @@ public class StoreManagerLandingController {
         LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        storeManagerForm.populateBusinessTypeMaps(businessUser.getBizName().getBusinessTypes());
         List<BusinessUserStoreEntity> businessUserStores =
                 businessUserStoreService.findAllStoreQueueAssociated(queueUser.getQueueUserId());
 
