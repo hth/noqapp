@@ -64,7 +64,7 @@ public class BusinessCustomerService {
         return userProfileManager.findByQueueUserId(businessCustomer.getQueueUserId());
     }
 
-    protected BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
+    BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
        return businessCustomerManager.findOneByQid(qid, bizNameId);
     }
 
