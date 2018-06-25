@@ -34,7 +34,7 @@ public class JsonTopicData extends JsonData {
     @JsonProperty ("cs")
     private int currentlyServing;
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty ("q")

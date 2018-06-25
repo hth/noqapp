@@ -36,7 +36,7 @@ import java.util.TimeZone;
 public class JsonToken extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonToken.class);
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty ("d")

@@ -34,7 +34,7 @@ import java.util.TimeZone;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueue extends AbstractDomain {
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty("gh")

@@ -26,7 +26,7 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonClientData extends JsonData {
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty ("u")
