@@ -88,7 +88,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty ("u")
     private String createDate;
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     public BusinessTypeEnum getBusinessType() {

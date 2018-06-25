@@ -46,7 +46,7 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("gh")

@@ -30,7 +30,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HealthCareStat extends AbstractDomain {
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("yearly")
