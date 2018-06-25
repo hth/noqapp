@@ -301,6 +301,13 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    public QueueEntity findOneQueueByQid(String qid, String codeQR) {
+        return mongoTemplate.findOne(
+                query(where("QR").is(codeQR).and("QID").is(qid)),
+                QueueEntity.class,
+                TABLE);
+    }
+
     public List<QueueEntity> findAllNotQueuedByDid(String did) {
         Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
