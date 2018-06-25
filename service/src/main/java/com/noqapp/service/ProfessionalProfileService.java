@@ -55,21 +55,14 @@ public class ProfessionalProfileService {
     }
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile) {
-        //TODO this temp, must revert logic. Remove else and populate with Entity data
-        if (null == professionalProfile) {
-            return new JsonProfessionalProfile()
-                    .setWebProfileId(professionalProfile.getWebProfileId())
-                    .setPracticeStart(professionalProfile.getPracticeStart())
-                    .setEducation(professionalProfile.getEducationAsJson())
-                    .setLicenses(professionalProfile.getLicensesAsJson())
-                    .setAwards(professionalProfile.getAwardsAsJson())
-                    .setDataDictionary(professionalProfile.getDataDictionary())
-                    .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
-        } else {
-            return new JsonProfessionalProfile()
-                    .setWebProfileId(professionalProfile.getWebProfileId())
-                    .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
-        }
+        return new JsonProfessionalProfile()
+                .setWebProfileId(professionalProfile.getWebProfileId())
+                .setPracticeStart(professionalProfile.getPracticeStart())
+                .setEducation(professionalProfile.getEducationAsJson())
+                .setLicenses(professionalProfile.getLicensesAsJson())
+                .setAwards(professionalProfile.getAwardsAsJson())
+                .setDataDictionary(professionalProfile.getDataDictionary())
+                .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
     }
 
     public ProfessionalProfileEntity findByQid(String qid) {
