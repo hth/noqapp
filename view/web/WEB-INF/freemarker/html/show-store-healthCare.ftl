@@ -48,14 +48,14 @@
                     <h4>Education</h4>
                     <div class="qr-address">
                         <#list profile["education"] as nameDatePair>
-                            <p>${nameDatePair.monthYear?date("yyyy-MM-dd'T'HH:mm:ss.SSSZ")?string["MMM, yyyy"]} - ${nameDatePair.name}</p>
+                            <p>${nameDatePair.monthYear?date("yyyy-MM-dd")?string["MMM, yyyy"]} - ${nameDatePair.name}</p>
                         </#list>
                     </div>
 
                     <h4>Awards</h4>
                     <div class="qr-address">
                         <#list profile["awards"] as nameDatePair>
-                            <p>${nameDatePair.monthYear?date("yyyy-MM-dd'T'HH:mm:ss.SSSZ")?string["MMM, yyyy"]} - ${nameDatePair.name}</p>
+                            <p>${nameDatePair.monthYear?date("yyyy-MM-dd")?string["MMM, yyyy"]} - ${nameDatePair.name}</p>
                         </#list>
                     </div>
 
