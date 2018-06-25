@@ -44,7 +44,7 @@ public class ProfessionalProfileService {
         }
     }
 
-    public ProfessionalProfileEntity findByWebProfileId(String webProfileId) {
+    private ProfessionalProfileEntity findByWebProfileId(String webProfileId) {
         return professionalProfileManager.findByWebProfileId(webProfileId);
     }
 
@@ -69,6 +69,7 @@ public class ProfessionalProfileService {
         return professionalProfileManager.findOne(qid);
     }
 
+    @Mobile
     public JsonProfessionalProfile getJsonProfessionalProfileByQid(String qid) {
         ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
         return getJsonProfessionalProfile(professionalProfile);
