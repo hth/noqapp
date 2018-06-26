@@ -25,7 +25,11 @@ import java.io.File;
 public class LoaderInitializationBean {
     private static final Logger LOG = LoggerFactory.getLogger(LoaderInitializationBean.class);
 
-    private String[] directories = new String[] {FtpService.PROFILE, FtpService.SERVICE};
+    private String[] directories = new String[] {
+            File.separator + FtpService.PROFILE,
+            File.separator + FtpService.SERVICE
+    };
+
     private String ftpLocation;
 
     private FtpService ftpService;
