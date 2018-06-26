@@ -115,7 +115,7 @@ public class FtpService {
             FileObject localFile = manager.resolveFile(file.getAbsolutePath());
 
             /* Create remote file object. */
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory + File.separator + filename), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
 
             /* Copy local file to sftp server. */
             remoteFile.copyFrom(localFile, Selectors.SELECT_SELF);
