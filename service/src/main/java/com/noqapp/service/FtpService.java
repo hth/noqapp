@@ -87,7 +87,7 @@ public class FtpService {
     }
 
     public FileObject[] getAllFilesInDirectory(String directory) {
-        Assert.isTrue(directory.startsWith(File.separator), "should start with file path");
+        Assert.isTrue(directory.startsWith(FileUtil.getFileSeparator()), "should start with file path");
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
@@ -116,7 +116,7 @@ public class FtpService {
             FileObject localFile = manager.resolveFile(file.getAbsolutePath());
 
             /* Create remote file object. */
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + FileUtil.getFileSeparator() + filename), fileSystemOptions);
 
             /* Copy local file to sftp server. */
             remoteFile.copyFrom(localFile, Selectors.SELECT_SELF);
