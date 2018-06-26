@@ -1,6 +1,5 @@
 package com.noqapp.loader.listener;
 
-import com.noqapp.common.utils.FileUtil;
 import com.noqapp.service.FtpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +24,7 @@ import java.io.File;
 public class LoaderInitializationBean {
     private static final Logger LOG = LoggerFactory.getLogger(LoaderInitializationBean.class);
 
-    private String[] directories = new String[] {
-            File.separator + FtpService.PROFILE,
-            File.separator + FtpService.SERVICE
-    };
+    private String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE};
 
     private String ftpLocation;
 
@@ -48,7 +44,7 @@ public class LoaderInitializationBean {
     @PostConstruct
     public void checkIfDirectoryExists() {
         for (String directoryName : directories) {
-            File directory = new File(ftpLocation + FileUtil.getFileSeparator() + directoryName);
+            File directory = new File(ftpLocation + directoryName);
             if (directory.exists()) {
                 LOG.info("Directory found={}", directory.toURI());
             } else {
