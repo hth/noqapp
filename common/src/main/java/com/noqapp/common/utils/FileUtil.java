@@ -55,7 +55,7 @@ public class FileUtil {
     }
 
     public static File getFileFromTmpDir(String filename) {
-        return new File(getTmpDir() + File.separator + filename);
+        return new File(getTmpDir() + getFileSeparator() + filename);
     }
 
     public static File createTempFile(String name, String ext) throws IOException {

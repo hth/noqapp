@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
@@ -32,8 +33,8 @@ import java.io.InputStream;
 public class FtpService {
     private static final Logger LOG = LoggerFactory.getLogger(FtpService.class);
 
-    public static String PROFILE = File.separator + "profile";
-    public static String SERVICE = File.separator + "service";
+    public static String PROFILE = FileUtil.getFileSeparator() + "profile";
+    public static String SERVICE = FileUtil.getFileSeparator() + "service";
 
     @Value("${fileserver.ftp.host}")
     private String host;
