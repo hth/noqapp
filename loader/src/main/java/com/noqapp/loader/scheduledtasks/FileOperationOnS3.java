@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.S3FileManager;
@@ -266,7 +267,11 @@ public class FileOperationOnS3 {
      * Populates PutObjectRequest.
      */
     private PutObjectRequest getPutObjectRequest(String folderName, String key, InputStream inputStream, ObjectMetadata objectMetadata) {
-        return new PutObjectRequest(bucketName, folderName + "/" + key, inputStream, objectMetadata);
+        return new PutObjectRequest(
+                bucketName,
+                folderName.replaceFirst(FileUtil.getFileSeparator(), "") + FileUtil.getFileSeparator() + key,
+                inputStream,
+                objectMetadata);
     }
 
     /**
