@@ -360,8 +360,7 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName())
-                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
+                    .setCustomerName(queue.getCustomerName());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
@@ -396,8 +395,7 @@ public class TokenQueueService {
                     .setServingNumber(serving)
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName())
-                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
+                    .setCustomerName(queue.getCustomerName());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())

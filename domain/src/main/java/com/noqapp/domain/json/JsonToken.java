@@ -60,9 +60,6 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("v")
-    private boolean clientVisitedThisStore;
-
     /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
 
@@ -162,15 +159,6 @@ public class JsonToken extends AbstractDomain {
         if (null != expectedServiceBegin) {
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
         }
-        return this;
-    }
-
-    public boolean isClientVisitedThisStore() {
-        return clientVisitedThisStore;
-    }
-
-    public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
-        this.clientVisitedThisStore = clientVisitedThisStore;
         return this;
     }
 
