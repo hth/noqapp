@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.InputStream;
@@ -31,8 +32,8 @@ import java.io.InputStream;
 public class FtpService {
     private static final Logger LOG = LoggerFactory.getLogger(FtpService.class);
 
-    public static String PROFILE = "profile";
-    public static String SERVICE = "service";
+    public static String PROFILE = File.separator + "profile";
+    public static String SERVICE = File.separator + "service";
 
     @Value("${fileserver.ftp.host}")
     private String host;
@@ -72,7 +73,7 @@ public class FtpService {
 
         try {
             manager.init();
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory + File.separator + filename), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
                 return remoteFile.getContent();
             }
@@ -85,11 +86,12 @@ public class FtpService {
     }
 
     public FileObject[] getAllFilesInDirectory(String directory) {
+        Assert.isTrue(directory.startsWith(File.separator), "should start with file path");
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
             manager.init();
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory), fileSystemOptions);
             LOG.info("Found directory={} status={}", directory, remoteFile.exists());
             return remoteFile.getChildren();
         } catch (FileSystemException e) {
@@ -134,7 +136,7 @@ public class FtpService {
             manager.init();
 
             /* Create remote object. */
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + File.separator + directory + File.separator + filename), fileSystemOptions);
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
 
             if (remoteFile.exists()) {
                 remoteFile.delete();
