@@ -1,27 +1,23 @@
 package com.noqapp.view.controller.business;
 
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.*;
 import com.noqapp.domain.analytic.BizDimensionEntity;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.domain.ProfessionalProfileEntity;
-import com.noqapp.service.ProfessionalProfileService;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.service.*;
 import com.noqapp.service.analytic.BizDimensionService;
+import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +28,22 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
@@ -77,6 +77,8 @@ public class AdminBusinessLandingController {
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
     private ProfessionalProfileService professionalProfileService;
+    private FileService fileService;
+    private ApiHealthService apiHealthService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -112,7 +114,9 @@ public class AdminBusinessLandingController {
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService,
-            ProfessionalProfileService professionalProfileService
+            ProfessionalProfileService professionalProfileService,
+            FileService fileService
+            ApiHealthService apiHealthService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -130,6 +134,8 @@ public class AdminBusinessLandingController {
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
         this.professionalProfileService = professionalProfileService;
+        this.fileService = fileService;
+        this.apiHealthService = apiHealthService;
     }
 
     /**
@@ -567,5 +573,61 @@ public class AdminBusinessLandingController {
 
         redirectAttrs.addFlashAttribute("bizNameId", businessUser.getBizName().getId());
         return editBusinessFlow;
+    }
+
+    /**
+     * For uploading profile image.
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @PostMapping (value = "/upload")
+    public String upload(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
+        Instant start = Instant.now();
+        LOG.info("uploading image");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if (isMultipart) {
+            MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
+            final List<MultipartFile> files = UserProfileController.getMultipartFiles(multipartHttpRequest);
+
+            if (!files.isEmpty()) {
+                MultipartFile multipartFile = files.iterator().next();
+
+                try {
+                    processProfileImage(businessUser.getBizName().getId(), multipartFile);
+                    return "redirect:" + nextPage + ".htm";
+                } catch (Exception e) {
+                    LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
+                    apiHealthService.insert(
+                        "/upload",
+                        "upload",
+                        AdminBusinessLandingController.class.getName(),
+                        Duration.between(start, Instant.now()),
+                        HealthStatusEnum.F);
+                }
+
+                return "redirect:" + nextPage + ".htm";
+            }
+        }
+        return "redirect:" + nextPage + ".htm";
+    }
+
+    private void processProfileImage(String bizNameId, MultipartFile multipartFile) throws IOException {
+        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+        String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            String profileFilename = FileUtil.createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
+            fileService.addProfileImage(bizNameId, profileFilename, bufferedImage);
+        }
     }
 }

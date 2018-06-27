@@ -110,6 +110,52 @@ public class FileService {
         }
     }
 
+    @Async
+    public void addBizImage(String qid, String bizNameid, String profileFilename, BufferedImage bufferedImage) {
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+
+        try {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            String existingProfileImage = userProfile.getProfileImage();
+
+            /* Delete existing file if user changed profile image before the upload process began. */
+            ftpService.delete(existingProfileImage, FtpService.SERVICE);
+            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.SERVICE));
+
+            toFile = writeToFile(
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(profileFilename),
+                    bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageProfileWidth, imageProfileHeight);
+
+            String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
+                    + getFileSeparator()                                    // FileSeparator /
+                    + profileFilename;                                      // filename.extension
+
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(profileFilename, FtpService.PROFILE);
+            accountService.addUserProfileImage(qid, profileFilename);
+
+            LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
+        } catch (IOException e) {
+            LOG.error("Failed adding profile image={} reason={}", profileFilename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
     /**
      * Decrease the resolution of image with PNG file format for better resolution.
      *
