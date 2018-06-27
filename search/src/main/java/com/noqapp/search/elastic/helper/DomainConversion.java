@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.helper;
 
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Helps transform data for persisting in Elastic.
@@ -21,23 +24,50 @@ import java.util.List;
 public class DomainConversion {
     private static final Logger LOG = LoggerFactory.getLogger(DomainConversion.class);
 
+    /**
+     * Sets business images based on business types. Keep updating these based on business type.
+     *
+     * @param bizStore
+     * @return
+     */
+    public static BusinessImageHolder populateBizAndStoreImages(BizStoreEntity bizStore) {
+        String bannerImage = "";
+        Set<String> serviceImages;
+        
+        String codeQR;
+        switch (bizStore.getBusinessType()) {
+            case DO:
+                codeQR = bizStore.getBizName().getCodeQR();
+                if (!bizStore.getBizName().getBusinessServiceImages().isEmpty()) {
+                    bannerImage = codeQR + FileUtil.getFileSeparator() + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                }
+                serviceImages = bizStore.getBizName().getBusinessServiceImages().stream().map(x -> codeQR + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
+                break;
+            default:
+                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + FileUtil.getFileSeparator() + bizStore.getStoreServiceImages().iterator().next();
+                if (StringUtils.isBlank(bannerImage)) {
+                    /* Put business name first image as banner image. */
+                    codeQR = bizStore.getBizName().getCodeQR();
+                    if (!bizStore.getBizName().getBusinessServiceImages().isEmpty()) {
+                        bannerImage = codeQR + FileUtil.getFileSeparator() + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                    }
+                    serviceImages = bizStore.getBizName().getBusinessServiceImages().stream().map(x -> codeQR + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
+                } else {
+                    serviceImages = bizStore.getStoreServiceImages().stream().map(x -> bizStore.getCodeQR() + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
+                }
+        }
+
+        return new BusinessImageHolder()
+            .setBannerImage(bannerImage)
+            .setServiceImages(serviceImages);
+    }
+
     public static BizStoreElastic getAsBizStoreElastic(
             BizStoreEntity bizStore,
             List<StoreHourEntity> storeHours
     ) {
-        String bannerImage;
-        switch (bizStore.getBusinessType()) {
-            case DO:
-                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                break;
-            default:
-                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
-                if (StringUtils.isBlank(bannerImage)) {
-                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                }
-        }
-
-        if (StringUtils.isBlank(bannerImage)) {
+        BusinessImageHolder businessImageHolder = populateBizAndStoreImages(bizStore);
+        if (StringUtils.isBlank(businessImageHolder.getBannerImage())) {
             LOG.warn("No Banner Image for bizName={} bizId={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
         }
 
@@ -75,9 +105,9 @@ public class DomainConversion {
                 .setGeoHash(bizStore.getGeoPoint().getGeohash())
                 .setWebLocation(bizStore.getWebLocation())
                 .setFamousFor(bizStore.getFamousFor())
-                .setDisplayImage(bannerImage)
+                .setDisplayImage(businessImageHolder.getBannerImage())
                 .setStoreHourElasticList(getStoreHourElastics(storeHours))
-                .setBizServiceImages(bizStore.getBizName().getBusinessServiceImages());
+                .setBizServiceImages(businessImageHolder.getServiceImages());
     }
 
     @Mobile
