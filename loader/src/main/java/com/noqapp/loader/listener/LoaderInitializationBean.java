@@ -24,8 +24,6 @@ import java.io.File;
 public class LoaderInitializationBean {
     private static final Logger LOG = LoggerFactory.getLogger(LoaderInitializationBean.class);
 
-    private String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE};
-
     private String ftpLocation;
 
     private FtpService ftpService;
@@ -43,7 +41,7 @@ public class LoaderInitializationBean {
 
     @PostConstruct
     public void checkIfDirectoryExists() {
-        for (String directoryName : directories) {
+        for (String directoryName : FtpService.directories) {
             File directory = new File(ftpLocation + directoryName);
             if (directory.exists()) {
                 LOG.info("Directory found={}", directory.toURI());

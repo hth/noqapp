@@ -56,39 +56,52 @@
             <div class="admin-main">
                 <!-- File Upload From -->
                 <form:form action="${pageContext.request.contextPath}/business/upload.htm" method="post" enctype="multipart/form-data">
-                    <div class="admin-title">
-                        <h2>Profile Image</h2>
-                    </div>
+                <div class="admin-title">
+                    <h2>Add Business Photo</h2>
+                </div>
 
-                    <div class="admin-content">
-                        <div class="add-new">
-                            <ul class="list-form">
-                                <li>
-                                    <div class="col-lable3" style="padding-top: 30px;">
-                                        <label>Select Profile Image</label>
-                                        <%--<form:label path="firstName" cssErrorClass="lb_error">Select File</form:label>--%>
-                                    </div>
-                                    <div class="col-fields">
-                                        <input class="next-btn" type="file" name="file">
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                            </ul>
-
-                            <div class="col-lable3"></div>
-                            <div class="col-fields">
-                                <div class="left-btn">
-                                    <input name="upload" class="next-btn" value="UPLOAD PROFILE IMAGE" type="submit">
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3" style="padding-top: 30px;">
+                                    <label>Select Profile Image</label>
+                                    <%--<form:label path="firstName" cssErrorClass="lb_error">Select File</form:label>--%>
                                 </div>
-                                <%--<div class="right-btn">--%>
-                                    <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                <%--</div>--%>
+                                <div class="col-fields">
+                                    <input class="next-btn" type="file" name="file">
+                                </div>
                                 <div class="clearFix"></div>
+                            </li>
+                        </ul>
+
+                        <div class="col-lable3"></div>
+                        <div class="col-fields">
+                            <div class="left-btn">
+                                <input name="upload" class="next-btn" value="UPLOAD PROFILE IMAGE" type="submit">
                             </div>
+                            <%--<div class="right-btn">--%>
+                                <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
+                            <%--</div>--%>
                             <div class="clearFix"></div>
                         </div>
+                        <div class="clearFix"></div>
                     </div>
+                </div>
                 </form:form>
+
+                <div class="admin-title">
+                    <h2>Business Photos</h2>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <c:forEach items="${businessServiceImages}" var="businessServiceImage" varStatus="status">
+                            <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${businessServiceImage}"
+                                 onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                                 class="img-profile-circle" />
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
             <!-- Complete profile -->
         </div>

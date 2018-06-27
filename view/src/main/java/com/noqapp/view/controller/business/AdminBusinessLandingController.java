@@ -2,7 +2,12 @@ package com.noqapp.view.controller.business;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.domain.*;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
@@ -11,7 +16,12 @@ import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.service.*;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.FileService;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.QueueSupervisorActionForm;
@@ -28,7 +38,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -70,6 +84,7 @@ public class AdminBusinessLandingController {
     private String listQueueSupervisorPage;
     private String authorizedUsersPage;
     private String editBusinessFlow;
+    private String bucketName;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -109,13 +124,16 @@ public class AdminBusinessLandingController {
             @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
             String editBusinessFlow,
 
+            @Value("${aws.s3.bucketName}")
+            String bucketName,
+
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
             AccountService accountService,
             ProfessionalProfileService professionalProfileService,
-            FileService fileService
+            FileService fileService,
             ApiHealthService apiHealthService
     ) {
         this.queueLimit = queueLimit;
@@ -127,6 +145,7 @@ public class AdminBusinessLandingController {
         this.listQueueSupervisorPage = listQueueSupervisorPage;
         this.authorizedUsersPage = authorizedUsersPage;
         this.editBusinessFlow = editBusinessFlow;
+        this.bucketName = bucketName;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.bizDimensionService = bizDimensionService;
@@ -576,10 +595,32 @@ public class AdminBusinessLandingController {
     }
 
     /**
-     * For uploading profile image.
-     *
-     * @param httpServletRequest
-     * @return
+     * For uploading service image.
+     */
+    @GetMapping (value = "/upload")
+    public String uploadLanding(
+            Model model,
+            HttpServletResponse response
+    ) throws IOException {
+        LOG.info("Loading business image");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        model.addAttribute("businessServiceImages", businessUser.getBizName().getBusinessServiceImages());
+        model.addAttribute("codeQR", businessUser.getBizName().getCodeQR());
+        model.addAttribute("bucketName", bucketName);
+        return "/business/servicePhoto";
+    }
+
+    /**
+     * For uploading service image.
      */
     @PostMapping (value = "/upload")
     public String upload(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
@@ -592,7 +633,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
@@ -604,8 +645,8 @@ public class AdminBusinessLandingController {
                 MultipartFile multipartFile = files.iterator().next();
 
                 try {
-                    processProfileImage(businessUser.getBizName().getId(), multipartFile);
-                    return "redirect:" + nextPage + ".htm";
+                    processServiceImage(queueUser.getQueueUserId(), businessUser.getBizName().getId(), multipartFile);
+                    return "redirect:/business/upload.htm";
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -616,18 +657,18 @@ public class AdminBusinessLandingController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:" + nextPage + ".htm";
+                return "redirect:/business/upload.htm";
             }
         }
-        return "redirect:" + nextPage + ".htm";
+        return "redirect:/business/upload.htm";
     }
 
-    private void processProfileImage(String bizNameId, MultipartFile multipartFile) throws IOException {
+    private void processServiceImage(String qid, String bizNameId, MultipartFile multipartFile) throws IOException {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
             String profileFilename = FileUtil.createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
-            fileService.addProfileImage(bizNameId, profileFilename, bufferedImage);
+            fileService.addBizImage(qid, bizNameId, profileFilename, bufferedImage);
         }
     }
 }
