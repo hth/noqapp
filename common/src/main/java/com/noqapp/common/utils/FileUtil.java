@@ -124,7 +124,7 @@ public class FileUtil {
      * @return
      */
     public static String getFileExtension(String filename) {
-        Assert.isTrue(filename.contains("."), "Filename should contain .");
+        Assert.isTrue(filename.contains("."), "Filename '" + filename + "' should contain .");
 
         String extension = FilenameUtils.getExtension(filename);
         if (extension.endsWith("jpeg")) {
