@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.FileUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -35,6 +36,7 @@ public class FtpService {
 
     public static String PROFILE = FileUtil.getFileSeparator() + "profile";
     public static String SERVICE = FileUtil.getFileSeparator() + "service";
+    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE};
 
     @Value("${fileserver.ftp.host}")
     private String host;
@@ -55,9 +57,9 @@ public class FtpService {
         this.fileSystemOptions = fileSystemOptions;
     }
 
-    public InputStream getFileAsInputStream(String filename, String directory) {
+    public InputStream getFileAsInputStream(String filename, String directory, String parentDirectory) {
         try {
-            FileContent fileContent = getFileContent(filename, directory);
+            FileContent fileContent = getFileContent(filename, directory, parentDirectory);
             if (fileContent != null) {
                 return fileContent.getInputStream();
             }
@@ -69,12 +71,13 @@ public class FtpService {
         }
     }
 
-    public FileContent getFileContent(String filename, String directory) {
+    public FileContent getFileContent(String filename, String codeQR, String parentDirectory) {
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
             manager.init();
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
+            String filePath = ftpLocation + parentDirectory + FileUtil.getFileSeparator() + codeQR + FileUtil.getFileSeparator() + filename;
+            FileObject remoteFile = manager.resolveFile(createConnectionString(filePath), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
                 return remoteFile.getContent();
             }
@@ -101,14 +104,13 @@ public class FtpService {
         }
     }
 
-    void upload(String filename, String directory) {
+    void upload(String filename, String directory, String parent) {
         File file = new File(FileUtils.getTempDirectoryPath() + File.separator + filename);
         if (!file.exists()) {
             throw new RuntimeException("Error. Local file not found");
         }
 
-        StandardFileSystemManager manager = new StandardFileSystemManager();
-
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
             manager.init();
 
@@ -116,7 +118,12 @@ public class FtpService {
             FileObject localFile = manager.resolveFile(file.getAbsolutePath());
 
             /* Create remote file object. */
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + FileUtil.getFileSeparator() + filename), fileSystemOptions);
+            FileObject remoteFile;
+            if (StringUtils.isBlank(directory)) {
+                remoteFile = manager.resolveFile(createConnectionString(ftpLocation + parent + FileUtil.getFileSeparator() + filename), fileSystemOptions);
+            } else {
+                remoteFile = manager.resolveFile(createConnectionString(ftpLocation + parent + FileUtil.getFileSeparator() + directory + FileUtil.getFileSeparator() + filename), fileSystemOptions);
+            }
 
             /* Copy local file to sftp server. */
             remoteFile.copyFrom(localFile, Selectors.SELECT_SELF);
@@ -130,22 +137,37 @@ public class FtpService {
         }
     }
 
-    public boolean delete(String filename, String directory) {
-        StandardFileSystemManager manager = new StandardFileSystemManager();
-
+    public boolean delete(String filename, String codeQR, String parentDirectory) {
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
             manager.init();
 
             /* Create remote object. */
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory + File.separator + filename), fileSystemOptions);
-
-            if (remoteFile.exists()) {
-                remoteFile.delete();
-                LOG.info("Deleted file={}", filename);
-                return true;
+            FileObject remoteFile;
+            if (StringUtils.isBlank(codeQR)) {
+                remoteFile = manager.resolveFile(
+                        createConnectionString(ftpLocation + parentDirectory + FileUtil.getFileSeparator() + filename),
+                        fileSystemOptions);
+            } else {
+                remoteFile = manager.resolveFile(
+                        createConnectionString(ftpLocation + parentDirectory + FileUtil.getFileSeparator() + codeQR + FileUtil.getFileSeparator() + filename),
+                        fileSystemOptions);
             }
 
-            return false;
+            boolean deletedFile = false;
+            if (remoteFile.exists()) {
+                deletedFile = remoteFile.delete();
+                LOG.info("Deleted file={}", filename);
+            }
+
+            if (StringUtils.isNotBlank(codeQR)) {
+                if (remoteFile.getParent().isFolder() && 0 == remoteFile.getParent().getChildren().length) {
+                    remoteFile.getParent().delete();
+                    LOG.info("Deleted folder={} or codeQR={}", remoteFile.getParent(), codeQR);
+                }
+            }
+
+            return deletedFile;
         } catch (FileSystemException e) {
             LOG.error("ftp delete remote {}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e);

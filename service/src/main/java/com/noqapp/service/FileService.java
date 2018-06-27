@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.repository.S3FileManager;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
 import static com.noqapp.common.utils.FileUtil.createTempFile;
@@ -39,10 +41,14 @@ public class FileService {
 
     private int imageProfileWidth;
     private int imageProfileHeight;
+    private int imageServiceWidth;
+    private int imageServiceHeight;
+
 
     private AccountService accountService;
     private FtpService ftpService;
     private S3FileManager s3FileManager;
+    private BizService bizService;
 
     @Autowired
     public FileService(
@@ -52,20 +58,30 @@ public class FileService {
             @Value ("${image.profile.height:192}")
             int imageProfileHeight,
 
+            @Value ("${image.service.width:300}")
+            int imageServiceWidth,
+
+            @Value ("${image.service.height:150}")
+            int imageServiceHeight,
+
             AccountService accountService,
             FtpService ftpService,
-            S3FileManager s3FileManager
+            S3FileManager s3FileManager,
+            BizService bizService
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
+        this.imageServiceWidth = imageServiceWidth;
+        this.imageServiceHeight = imageServiceHeight;
 
         this.accountService = accountService;
         this.ftpService = ftpService;
         this.s3FileManager = s3FileManager;
+        this.bizService = bizService;
     }
 
     @Async
-    public void addProfileImage(String qid, String profileFilename, BufferedImage bufferedImage) {
+    public void addProfileImage(String qid, String filename, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
@@ -75,26 +91,81 @@ public class FileService {
             String existingProfileImage = userProfile.getProfileImage();
 
             /* Delete existing file if user changed profile image before the upload process began. */
-            ftpService.delete(existingProfileImage, FtpService.PROFILE);
+            ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
             s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
 
             toFile = writeToFile(
-                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(profileFilename),
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
                     bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageProfileWidth, imageProfileHeight);
 
             String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
                     + getFileSeparator()                                    // FileSeparator /
-                    + profileFilename;                                      // filename.extension
+                    + filename;                                             // filename.extension
 
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
-            ftpService.upload(profileFilename, FtpService.PROFILE);
-            accountService.addUserProfileImage(qid, profileFilename);
+            ftpService.upload(filename, null, FtpService.PROFILE);
+            accountService.addUserProfileImage(qid, filename);
 
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
-            LOG.error("Failed adding profile image={} reason={}", profileFilename, e.getLocalizedMessage(), e);
+            LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
+    @Async
+    public void addBizImage(String qid, String bizNameId, String filename, BufferedImage bufferedImage) {
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+
+        try {
+            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
+            Set<String> businessServiceImages = bizName.getBusinessServiceImages();
+
+            while (businessServiceImages.size() >= 10) {
+                String lastImage = businessServiceImages.stream().findFirst().get();
+
+                /* Delete existing file business service image before the upload process began. */
+                ftpService.delete(lastImage, bizName.getCodeQR(), FtpService.SERVICE);
+                S3FileEntity s3File = new S3FileEntity(qid, lastImage, FtpService.SERVICE)
+                        .setCodeQR(bizName.getCodeQR());
+                s3FileManager.save(s3File);
+                businessServiceImages.remove(lastImage);
+            }
+
+            toFile = writeToFile(
+                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
+                    bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
+                    + getFileSeparator()                                    // FileSeparator /
+                    + filename;                                             // filename.extension
+
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, bizName.getCodeQR(), FtpService.SERVICE);
+
+            businessServiceImages.add(filename);
+            bizService.saveName(bizName);
+
+            LOG.debug("Uploaded bizName service file={}", toFileAbsolutePath);
+        } catch (IOException e) {
+            LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
         } finally {
             if (null != toFile) {
                 toFile.delete();

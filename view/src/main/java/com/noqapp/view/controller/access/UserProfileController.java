@@ -366,7 +366,7 @@ public class UserProfileController {
         }
     }
 
-    private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
+    public static List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
         final List<MultipartFile> files = multipartHttpRequest.getFiles("file");
 
         if (files.isEmpty()) {

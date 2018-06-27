@@ -28,6 +28,10 @@ public class S3FileEntity extends BaseEntity {
     private String qid;
 
     @NotNull
+    @Field ("QR")
+    private String codeQR;
+
+    @NotNull
     @Field ("FL")
     private String filename;
 
@@ -43,6 +47,15 @@ public class S3FileEntity extends BaseEntity {
 
     public String getQid() {
         return qid;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public S3FileEntity setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
     }
 
     public String getFilename() {

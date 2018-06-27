@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.noqapp.service.FtpService.PROFILE;
+import static com.noqapp.service.FtpService.SERVICE;
 
 /**
  * hitender
@@ -121,7 +122,7 @@ public class FileOperationOnS3 {
         try {
             for (FileObject document : fileObjects) {
                 try {
-                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), PROFILE);
+                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE);
 
                     ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
                     success = uploadToS3(
@@ -131,7 +132,7 @@ public class FileOperationOnS3 {
                             fileContent.getInputStream(),
                             objectMetadata);
 
-                    ftpService.delete(document.getName().getBaseName(), PROFILE);
+                    ftpService.delete(document.getName().getBaseName(), null, PROFILE);
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                     "document:{} " +
@@ -168,6 +169,97 @@ public class FileOperationOnS3 {
             }
         } catch (Exception e) {
             LOG.error("Error S3 uploading profile reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            if (0 != success || 0 != failure) {
+                statsCron.addStats("found", success + failure);
+                statsCron.addStats("success", success);
+                statsCron.addStats("failure", failure);
+                statsCronService.save(statsCron);
+
+                /* Without if condition its too noisy. */
+                LOG.info("Complete found={} success={} failure={}", success + failure, success, failure);
+            }
+        }
+    }
+
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
+    public void serviceUpload() {
+        statsCron = new StatsCronEntity(
+                FileOperationOnS3.class.getName(),
+                "serviceUpload",
+                profileUploadSwitch);
+
+        /**
+         * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
+         * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
+         * fail safe to prevent uploading to dev bucket when connected to test database.
+         */
+        if ("OFF".equalsIgnoreCase(profileUploadSwitch)) {
+            LOG.debug("feature is {}", profileUploadSwitch);
+            return;
+        }
+
+        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(SERVICE);
+        if (fileObjects.length == 0) {
+            /* No image to upload. */
+            return;
+        } else {
+            LOG.info("Files to upload to cloud, count={}", fileObjects.length);
+        }
+
+        int success = 0, failure = 0;
+        try {
+            for (FileObject document : fileObjects) {
+                try {
+                    for (FileObject fileObject : document.getChildren()) {
+                        FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
+
+                        ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
+                        success = uploadToS3(
+                                success,
+                                SERVICE,
+                                document.getName().getBaseName() + FileUtil.getFileSeparator() + fileObject.getName().getBaseName(),
+                                fileContent.getInputStream(),
+                                objectMetadata);
+
+                        ftpService.delete(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
+                    }
+                } catch (AmazonServiceException e) {
+                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                    "document:{} " +
+                                    "Error Message:{} " +
+                                    "HTTP Status Code:{} " +
+                                    "AWS Error Code:{} " +
+                                    "Error Type:{} " +
+                                    "Request ID:{}",
+                            document.getName().getBaseName(),
+                            e.getLocalizedMessage(),
+                            e.getStatusCode(),
+                            e.getErrorCode(),
+                            e.getErrorType(),
+                            e.getRequestId(),
+                            e);
+
+                    failure++;
+                } catch (AmazonClientException e) {
+                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                    "document:{} " +
+                                    "reason={}",
+                            document.getName().getBaseName(),
+                            e.getLocalizedMessage(),
+                            e);
+
+                    failure++;
+                } catch (Exception e) {
+                    LOG.error("S3 image upload failure document={} reason={}",
+                            document.getName().getBaseName(),
+                            e.getLocalizedMessage(),
+                            e);
+                    failure++;
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Error S3 uploading service reason={}", e.getLocalizedMessage(), e);
         } finally {
             if (0 != success || 0 != failure) {
                 statsCron.addStats("found", success + failure);

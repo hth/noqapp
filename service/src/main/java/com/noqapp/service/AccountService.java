@@ -610,7 +610,7 @@ public class AccountService {
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
 
-    public void addUserProfileImage(String qid, String profileImage) {
+    void addUserProfileImage(String qid, String profileImage) {
         userProfileManager.addUserProfileImage(qid, profileImage);
     }
 }
