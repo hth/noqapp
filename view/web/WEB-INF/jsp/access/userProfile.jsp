@@ -249,17 +249,21 @@
 
                 <c:if test="${professionalProfileForm.professionalProfile}">
                 <div class="admin-title">
-                    <h2>Health Care Professional Profile</h2>
+                    <h2>Professional Profile</h2>
                 </div>
                 <div class="error-box">
                     <div class="error-txt">
-                            <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
-                            <%--<ul>--%>
-                            <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
-                            <%--<li>${message.text}</li>--%>
-                            <%--</c:forEach>--%>
-                            <%--</ul>--%>
-                            <%--</c:if>--%>
+                        <spring:hasBindErrors name="professionalProfileForm">
+                            <div class="error-box">
+                                <div class="error-txt">
+                                    <ul>
+                                        <c:forEach items="${errors.allErrors}" var="message">
+                                            <li><spring:message message="${message}" /></li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </spring:hasBindErrors>
                     </div>
                 </div>
                 <div class="admin-content">
@@ -316,7 +320,7 @@
                             </fieldset>
 
                             <fieldset>
-                                <legend>Education</legend>
+                                <legend>Education <span style="color: red">**</span></legend>
                                 <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty professionalProfileForm.education}">
@@ -341,7 +345,7 @@
                             </fieldset>
 
                             <fieldset>
-                                <legend>Licenses</legend>
+                                <legend>Licenses <span style="color: red">**</span></legend>
                                 <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty professionalProfileForm.licenses}">

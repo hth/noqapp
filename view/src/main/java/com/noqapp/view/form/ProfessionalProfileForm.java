@@ -10,12 +10,22 @@ import java.util.List;
  * 6/11/18 3:24 PM
  */
 public class ProfessionalProfileForm {
+    private String qid;
     private boolean professionalProfile;
     private String practiceStart;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
     private List<NameDatePair> licenses = new LinkedList<>();
+
+    public String getQid() {
+        return qid;
+    }
+
+    public ProfessionalProfileForm setQid(String qid) {
+        this.qid = qid;
+        return this;
+    }
 
     public boolean isProfessionalProfile() {
         return professionalProfile;

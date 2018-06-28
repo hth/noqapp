@@ -60,13 +60,17 @@
                     </div>
                     <div class="error-box">
                         <div class="error-txt">
-                                <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
-                                <%--<ul>--%>
-                                <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
-                                <%--<li>${message.text}</li>--%>
-                                <%--</c:forEach>--%>
-                                <%--</ul>--%>
-                                <%--</c:if>--%>
+                            <spring:hasBindErrors name="professionalProfileEditForm">
+                            <div class="error-box">
+                                <div class="error-txt">
+                                    <ul>
+                                        <c:forEach items="${errors.allErrors}" var="message">
+                                        <li><spring:message message="${message}" /></li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                            </spring:hasBindErrors>
                         </div>
                     </div>
                     <div class="admin-content">
