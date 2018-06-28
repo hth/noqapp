@@ -5,6 +5,8 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.repository.ProfessionalProfileManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProfessionalProfileService {
+    private static final Logger LOG = LoggerFactory.getLogger(ProfessionalProfileService.class);
 
     private ProfessionalProfileManager professionalProfileManager;
 
@@ -38,9 +41,14 @@ public class ProfessionalProfileService {
      */
     public void softDeleteProfessionalProfileProfile(String qid) {
         ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
-        if (professionalProfile.getLicenses().isEmpty() || professionalProfile.getEducation().isEmpty()) {
+        if (null == professionalProfile.getLicenses()
+            || null == professionalProfile.getEducation()
+            || professionalProfile.getLicenses().isEmpty()
+            || professionalProfile.getEducation().isEmpty()) {
             professionalProfile.markAsDeleted();
             professionalProfileManager.save(professionalProfile);
+        } else {
+            LOG.warn("Skip deleting professional profile qid={}", qid);
         }
     }
 
