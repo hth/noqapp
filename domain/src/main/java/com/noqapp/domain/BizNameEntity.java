@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class BizNameEntity extends BaseEntity {
     private String codeQR;
 
     @Field ("BT")
-    private List<BusinessTypeEnum> businessTypes = new ArrayList<>();
+    private BusinessTypeEnum businessType;
 
     /* Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
     @Value ("${phoneNumberBlank:000_000_0000}")
@@ -182,18 +181,13 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
-    public List<BusinessTypeEnum> getBusinessTypes() {
-        return businessTypes;
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
-    @SuppressWarnings("unused")
-    public BizNameEntity setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
-        this.businessTypes = businessTypes;
+    public BizNameEntity setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
-    }
-
-    public void addBusinessType(BusinessTypeEnum businessType) {
-        this.businessTypes.add(businessType);
     }
 
     /**

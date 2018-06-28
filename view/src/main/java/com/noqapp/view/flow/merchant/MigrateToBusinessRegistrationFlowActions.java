@@ -142,10 +142,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     public void additionalAttributes(RegisterBusiness registerBusiness, String modelType) {
         switch (modelType) {
             case "bizName":
-                for (BusinessTypeEnum businessType : registerBusiness.getBusinessTypes()) {
-                    addAvailableAmenities(registerBusiness, businessType, modelType);
-                    addAvailableFacilities(registerBusiness, businessType, modelType);
-                }
+                addAvailableAmenities(registerBusiness, registerBusiness.getBusinessType(), modelType);
+                addAvailableFacilities(registerBusiness,  registerBusiness.getBusinessType(), modelType);
                 break;
             case "bizStore":
                 addAvailableAmenities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);

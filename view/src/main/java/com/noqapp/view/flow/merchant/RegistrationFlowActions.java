@@ -157,7 +157,7 @@ class RegistrationFlowActions {
         }
 
         bizName.setBusinessName(registerBusiness.getName())
-                .setBusinessTypes(registerBusiness.getBusinessTypes())
+                .setBusinessType(registerBusiness.getBusinessType())
                 .setPhone(registerBusiness.getPhoneWithCountryCode())
                 .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
                 .setAddress(registerBusiness.getAddress())

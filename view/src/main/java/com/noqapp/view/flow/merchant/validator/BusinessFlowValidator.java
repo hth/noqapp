@@ -1,21 +1,10 @@
 package com.noqapp.view.flow.merchant.validator;
 
 import com.google.maps.model.LatLng;
-
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.types.BusinessTypeEnum;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
-import org.springframework.stereotype.Component;
-
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
@@ -25,9 +14,15 @@ import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
-import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.controller.access.LandingController;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.binding.message.MessageBuilder;
+import org.springframework.binding.message.MessageContext;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -78,11 +73,11 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (null == registerBusiness.getBusinessTypes() && mode.equalsIgnoreCase("create")) {
+        if (null == registerBusiness.getBusinessType() && mode.equalsIgnoreCase("create")) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("registerBusiness.businessTypes")
+                            .source("registerBusiness.businessType")
                             .defaultText("Business Type is not selected")
                             .build());
             status = "failure";
@@ -224,9 +219,9 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (mode.equalsIgnoreCase("edit") && registerBusiness.getBusinessTypes() == null) {
+        if (mode.equalsIgnoreCase("edit") && registerBusiness.getBusinessType() == null) {
             BizNameEntity bizName = bizService.getByBizNameId(registerBusiness.getBizId());
-            registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
+            registerBusiness.setBusinessType(bizName.getBusinessType());
         }
 
         if (status.equalsIgnoreCase("success") && mode.equalsIgnoreCase("create")) {
@@ -413,11 +408,9 @@ public class BusinessFlowValidator {
         }
 
         boolean foundInStoreBusinessSelection = false;
-        if (null != registerBusiness.getBusinessTypes()) {
-            for (BusinessTypeEnum businessType : registerBusiness.getBusinessTypes()) {
-                if (businessType == registerBusiness.getStoreBusinessType()) {
-                    foundInStoreBusinessSelection = true;
-                }
+        if (null != registerBusiness.getBusinessType()) {
+            if (registerBusiness.getBusinessType() == registerBusiness.getStoreBusinessType()) {
+                foundInStoreBusinessSelection = true;
             }
         }
 
