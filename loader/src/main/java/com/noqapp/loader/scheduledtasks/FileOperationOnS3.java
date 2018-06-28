@@ -315,7 +315,7 @@ public class FileOperationOnS3 {
                 if(deleteObjectsResult.getDeletedObjects().size() == s3Files.size()) {
                     LOG.info("Deleted file on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
                 } else {
-                    LOG.error("Deleted file on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
+                    LOG.error("Deleted file Mis-match on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
                 }
                 s3Files.forEach(s3FileManager::deleteHard);
             } catch (MultiObjectDeleteException e) {
