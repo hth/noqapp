@@ -16,6 +16,7 @@ import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
 import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
+import com.noqapp.view.validator.ProfessionalProfileValidator;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,9 +25,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +67,7 @@ public class UserProfileController {
     private ApiHealthService apiHealthService;
     private AccountService accountService;
     private ProfessionalProfileService professionalProfileService;
+    private ProfessionalProfileValidator professionalProfileValidator;
     private FileService fileService;
 
     @Autowired
@@ -79,6 +84,7 @@ public class UserProfileController {
             ApiHealthService apiHealthService,
             AccountService accountService,
             ProfessionalProfileService professionalProfileService,
+            ProfessionalProfileValidator professionalProfileValidator,
             FileService fileService
     ) {
         this.nextPage = nextPage;
@@ -88,6 +94,7 @@ public class UserProfileController {
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
         this.professionalProfileService = professionalProfileService;
+        this.professionalProfileValidator = professionalProfileValidator;
         this.fileService = fileService;
     }
 
@@ -97,7 +104,9 @@ public class UserProfileController {
             UserProfileForm userProfileForm,
 
             @ModelAttribute("professionalProfileForm")
-            ProfessionalProfileForm professionalProfileForm
+            ProfessionalProfileForm professionalProfileForm,
+
+            Model model
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -128,6 +137,13 @@ public class UserProfileController {
                     .setEducation(professionalProfile.getEducation())
                     .setLicenses(professionalProfile.getLicenses())
                     .setAwards(professionalProfile.getAwards());
+
+            //Gymnastic to show BindingResult errors if any
+            if (model.asMap().containsKey("result")) {
+                model.addAttribute(
+                    "org.springframework.validation.BindingResult.professionalProfileForm",
+                    model.asMap().get("result"));
+            }
         }
 
         apiHealthService.insert(
@@ -139,6 +155,7 @@ public class UserProfileController {
         return nextPage;
     }
 
+    /** Updates basic profile. */
     @PostMapping(value = "/updateProfile")
     public String updateProfile(
             @ModelAttribute("userProfileForm")
@@ -173,15 +190,27 @@ public class UserProfileController {
         return "redirect:/access/userProfile.htm";
     }
 
+    /** Updated practising since of professional profile. */
     @PostMapping(value = "/updateProfessionalProfile")
     public String updateProfessionalProfile(
             @ModelAttribute("professionalProfileForm")
-            ProfessionalProfileForm professionalProfileForm
+            ProfessionalProfileForm professionalProfileForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+
+        professionalProfileValidator.validateProfessionalProfileForm(professionalProfileForm.setQid(queueUser.getQueueUserId()), result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/access/userProfile.htm";
+        }
 
         professionalProfile.setPracticeStart(professionalProfileForm.getPracticeStart());
         professionalProfileService.save(professionalProfile);
@@ -195,13 +224,19 @@ public class UserProfileController {
         return "redirect:/access/userProfile.htm";
     }
 
+    /**
+     * Adds awards, education and licenses to professional profile.
+     * Gymnastic for PRG.
+     */
     @GetMapping(value = "/userProfessionalDetail/{action}/modify")
     public String modify(
         @PathVariable("action")
         ScrubbedInput action,
 
         @ModelAttribute("professionalProfileEditForm")
-        ProfessionalProfileEditForm professionalProfileEditForm
+        ProfessionalProfileEditForm professionalProfileEditForm,
+
+        Model model
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -211,6 +246,12 @@ public class UserProfileController {
             return "redirect:/access/userProfile.htm";
         } else {
             professionalProfileEditForm.setProfessionalProfile(true);
+            //Gymnastic to show BindingResult errors if any
+            if (model.asMap().containsKey("result")) {
+                model.addAttribute(
+                    "org.springframework.validation.BindingResult.professionalProfileEditForm",
+                    model.asMap().get("result"));
+            } 
         }
 
         switch(action.getText()) {
@@ -243,25 +284,46 @@ public class UserProfileController {
         return "/access/userProfessionalDetailEdit";
     }
 
+    /** After add its goes back to get the action for next action on the page. */
     @PostMapping(value = "/userProfessionalDetail/add", params = "add")
     public String add(
         @ModelAttribute("professionalProfileEditForm")
-        ProfessionalProfileEditForm professionalProfileEditForm
+        ProfessionalProfileEditForm professionalProfileEditForm,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
 
-        switch(professionalProfileEditForm.getAction()) {
+        professionalProfileValidator.validate(professionalProfileEditForm.setQid(queueUser.getQueueUserId()), result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+        }
+
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
+        switch (professionalProfileEditForm.getAction()) {
             case "awards":
-                professionalProfile.getAwards().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getAwards().add(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             case "education":
-                professionalProfile.getEducation().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getEducation().add(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             case "licenses":
-                professionalProfile.getLicenses().add(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getLicenses().add(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             default:
                 LOG.error("Reached unsupported condition qid={} action={}", queueUser.getQueueUserId(), professionalProfileEditForm.getAction());
@@ -293,15 +355,24 @@ public class UserProfileController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
 
-        switch(professionalProfileEditForm.getAction()) {
+        switch (professionalProfileEditForm.getAction()) {
             case "awards":
-                professionalProfile.getAwards().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getAwards().remove(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             case "education":
-                professionalProfile.getEducation().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getEducation().remove(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             case "licenses":
-                professionalProfile.getLicenses().remove(new NameDatePair().setName(professionalProfileEditForm.getName()).setMonthYear(professionalProfileEditForm.getMonthYear()));
+                professionalProfile.getLicenses().remove(
+                    new NameDatePair()
+                        .setName(professionalProfileEditForm.getName())
+                        .setMonthYear(professionalProfileEditForm.getMonthYear()));
                 break;
             default:
                 LOG.error("Reached unsupported condition qid={} action={}", queueUser.getQueueUserId(), professionalProfileEditForm.getAction());

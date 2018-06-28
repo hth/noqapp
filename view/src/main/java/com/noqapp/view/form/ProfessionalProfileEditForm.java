@@ -12,10 +12,20 @@ import java.util.List;
 public class ProfessionalProfileEditForm {
     private boolean professionalProfile;
 
+    private String qid;
     private String action;
     private String name;
     private String monthYear;
     private List<NameDatePair> nameDatePairs = new LinkedList<>();
+
+    public String getQid() {
+        return qid;
+    }
+
+    public ProfessionalProfileEditForm setQid(String qid) {
+        this.qid = qid;
+        return this;
+    }
 
     public boolean isProfessionalProfile() {
         return professionalProfile;
