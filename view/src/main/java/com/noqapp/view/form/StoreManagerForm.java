@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class StoreManagerForm {
 
@@ -36,11 +34,11 @@ public class StoreManagerForm {
      * This condition of allowing managers to modify store is not supported or asked for yet. It can be completely
      * be removed.
      *
-     * @param businessTypes
+     * @param businessType
      * @return
      */
-    public StoreManagerForm populateBusinessTypeMaps(List<BusinessTypeEnum> businessTypes) {
-        businessTypeMap = businessTypes.stream().collect(Collectors.toMap(Function.identity(), Function.identity()));
+    public StoreManagerForm populateBusinessTypeMaps(BusinessTypeEnum businessType) {
+        businessTypeMap.put(businessType, businessType);
         return this;
     }
 

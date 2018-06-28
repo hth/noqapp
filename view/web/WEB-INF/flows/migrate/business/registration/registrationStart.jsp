@@ -96,12 +96,12 @@
                                         <div class="col-fields">
                                             <c:choose>
                                                 <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
-                                                    <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                    <form:select path="businessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
                                                         <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
                                                     </form:select>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <form:select path="businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                    <form:select path="businessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
                                                         <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
                                                     </form:select>
                                                 </c:otherwise>

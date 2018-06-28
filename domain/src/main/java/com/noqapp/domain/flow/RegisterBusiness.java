@@ -86,7 +86,7 @@ public class RegisterBusiness implements Serializable {
 
     /* Business types are initialized in flow. Why? Show off. */
     @Transient
-    private List<BusinessTypeEnum> businessTypes;
+    private BusinessTypeEnum businessType;
 
     @Transient
     private boolean selectFoundAddress;
@@ -125,12 +125,12 @@ public class RegisterBusiness implements Serializable {
         this.name = name.getText();
     }
 
-    public List<BusinessTypeEnum> getBusinessTypes() {
-        return businessTypes;
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
-    public void setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
-        this.businessTypes = businessTypes;
+    public void setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
     }
 
     public String getAddress() {
@@ -582,7 +582,7 @@ public class RegisterBusiness implements Serializable {
         registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
         registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
         registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
-        registerBusiness.setBusinessTypes(bizName.getBusinessTypes());
+        registerBusiness.setBusinessType(bizName.getBusinessType());
         return registerBusiness;
     }
 
@@ -613,7 +613,7 @@ public class RegisterBusiness implements Serializable {
         return "RegisterBusiness{" +
                 "bizId='" + bizId + '\'' +
                 ", name='" + name + '\'' +
-                ", businessTypes=" + businessTypes +
+                ", businessType=" + businessType +
                 ", address='" + address + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
                 ", phone='" + phone + '\'' +
