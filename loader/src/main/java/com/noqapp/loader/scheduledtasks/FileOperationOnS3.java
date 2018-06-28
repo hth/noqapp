@@ -210,8 +210,8 @@ public class FileOperationOnS3 {
         int success = 0, failure = 0;
         try {
             for (FileObject document : fileObjects) {
-                try {
-                    for (FileObject fileObject : document.getChildren()) {
+                for (FileObject fileObject : document.getChildren()) {
+                    try {
                         FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
 
                         ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
@@ -223,39 +223,39 @@ public class FileOperationOnS3 {
                                 objectMetadata);
 
                         ftpService.delete(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
+                    } catch (AmazonServiceException e) {
+                        LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                        "document:{} " +
+                                        "Error Message:{} " +
+                                        "HTTP Status Code:{} " +
+                                        "AWS Error Code:{} " +
+                                        "Error Type:{} " +
+                                        "Request ID:{}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e.getStatusCode(),
+                                e.getErrorCode(),
+                                e.getErrorType(),
+                                e.getRequestId(),
+                                e);
+
+                        failure++;
+                    } catch (AmazonClientException e) {
+                        LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                        "document:{} " +
+                                        "reason={}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e);
+
+                        failure++;
+                    } catch (Exception e) {
+                        LOG.error("S3 image upload failure document={} reason={}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e);
+                        failure++;
                     }
-                } catch (AmazonServiceException e) {
-                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
-                                    "document:{} " +
-                                    "Error Message:{} " +
-                                    "HTTP Status Code:{} " +
-                                    "AWS Error Code:{} " +
-                                    "Error Type:{} " +
-                                    "Request ID:{}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e.getStatusCode(),
-                            e.getErrorCode(),
-                            e.getErrorType(),
-                            e.getRequestId(),
-                            e);
-
-                    failure++;
-                } catch (AmazonClientException e) {
-                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                                    "document:{} " +
-                                    "reason={}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e);
-
-                    failure++;
-                } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e);
-                    failure++;
                 }
             }
         } catch (Exception e) {
