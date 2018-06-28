@@ -14,6 +14,7 @@ import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.StatsCronService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
 import org.slf4j.Logger;
@@ -53,7 +54,8 @@ public class FileOperationOnS3 {
 
     private final String bucketName;
     private final String profileUploadSwitch;
-    private final String profileDeleteSwitch;
+    private final String serviceUploadSwitch;
+    private final String s3DeleteSwitch;
 
     private StatsCronService statsCronService;
     private FtpService ftpService;
@@ -69,8 +71,11 @@ public class FileOperationOnS3 {
             @Value ("${FileOperationOnS3.upload.profile.switch:ON}")
             String profileUploadSwitch,
 
-            @Value ("${FileOperationOnS3.delete.profile.switch:ON}")
-            String profileDeleteSwitch,
+            @Value ("${FileOperationOnS3.upload.service.switch:ON}")
+            String serviceUploadSwitch,
+
+            @Value ("${FileOperationOnS3.delete.s3.switch:ON}")
+            String s3DeleteSwitch,
 
             StatsCronService statsCronService,
             FtpService ftpService,
@@ -79,7 +84,8 @@ public class FileOperationOnS3 {
     ) {
         this.bucketName = bucketName;
         this.profileUploadSwitch = profileUploadSwitch;
-        this.profileDeleteSwitch = profileDeleteSwitch;
+        this.serviceUploadSwitch = serviceUploadSwitch;
+        this.s3DeleteSwitch = s3DeleteSwitch;
 
         this.statsCronService = statsCronService;
         this.ftpService = ftpService;
@@ -187,15 +193,15 @@ public class FileOperationOnS3 {
         statsCron = new StatsCronEntity(
                 FileOperationOnS3.class.getName(),
                 "serviceUpload",
-                profileUploadSwitch);
+                serviceUploadSwitch);
 
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
-        if ("OFF".equalsIgnoreCase(profileUploadSwitch)) {
-            LOG.debug("feature is {}", profileUploadSwitch);
+        if ("OFF".equalsIgnoreCase(serviceUploadSwitch)) {
+            LOG.debug("feature is {}", serviceUploadSwitch);
             return;
         }
 
@@ -210,8 +216,8 @@ public class FileOperationOnS3 {
         int success = 0, failure = 0;
         try {
             for (FileObject document : fileObjects) {
-                try {
-                    for (FileObject fileObject : document.getChildren()) {
+                for (FileObject fileObject : document.getChildren()) {
+                    try {
                         FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
 
                         ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
@@ -223,39 +229,39 @@ public class FileOperationOnS3 {
                                 objectMetadata);
 
                         ftpService.delete(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
+                    } catch (AmazonServiceException e) {
+                        LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                        "document:{} " +
+                                        "Error Message:{} " +
+                                        "HTTP Status Code:{} " +
+                                        "AWS Error Code:{} " +
+                                        "Error Type:{} " +
+                                        "Request ID:{}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e.getStatusCode(),
+                                e.getErrorCode(),
+                                e.getErrorType(),
+                                e.getRequestId(),
+                                e);
+
+                        failure++;
+                    } catch (AmazonClientException e) {
+                        LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                        "document:{} " +
+                                        "reason={}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e);
+
+                        failure++;
+                    } catch (Exception e) {
+                        LOG.error("S3 image upload failure document={} reason={}",
+                                document.getName().getBaseName(),
+                                e.getLocalizedMessage(),
+                                e);
+                        failure++;
                     }
-                } catch (AmazonServiceException e) {
-                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
-                                    "document:{} " +
-                                    "Error Message:{} " +
-                                    "HTTP Status Code:{} " +
-                                    "AWS Error Code:{} " +
-                                    "Error Type:{} " +
-                                    "Request ID:{}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e.getStatusCode(),
-                            e.getErrorCode(),
-                            e.getErrorType(),
-                            e.getRequestId(),
-                            e);
-
-                    failure++;
-                } catch (AmazonClientException e) {
-                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                                    "document:{} " +
-                                    "reason={}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e);
-
-                    failure++;
-                } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}",
-                            document.getName().getBaseName(),
-                            e.getLocalizedMessage(),
-                            e);
-                    failure++;
                 }
             }
         } catch (Exception e) {
@@ -273,20 +279,20 @@ public class FileOperationOnS3 {
         }
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileDelete}")
-    public void profileDelete() {
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.deleteOnS3}")
+    public void deleteOnS3() {
         statsCron = new StatsCronEntity(
                 FileOperationOnS3.class.getName(),
-                "profileDelete",
-                profileDeleteSwitch);
+                "deleteOnS3",
+                s3DeleteSwitch);
 
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
-        if ("OFF".equalsIgnoreCase(profileDeleteSwitch)) {
-            LOG.debug("feature is {}", profileDeleteSwitch);
+        if ("OFF".equalsIgnoreCase(s3DeleteSwitch)) {
+            LOG.debug("feature is {}", s3DeleteSwitch);
             return;
         }
 
@@ -295,13 +301,22 @@ public class FileOperationOnS3 {
         if (!s3Files.isEmpty()) {
             List<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<>();
             for (S3FileEntity s3File : s3Files) {
-                keys.add(new DeleteObjectsRequest.KeyVersion(s3File.getLocation() + "/" + s3File.getFilename()));
+                if (StringUtils.isBlank(s3File.getCodeQR())) {
+                    keys.add(new DeleteObjectsRequest.KeyVersion(s3File.getLocation() + FileUtil.getFileSeparator() + s3File.getFilename()));
+                } else {
+                    keys.add(new DeleteObjectsRequest.KeyVersion(s3File.getLocation() + FileUtil.getFileSeparator() + s3File.getCodeQR() + FileUtil.getFileSeparator() + s3File.getFilename()));
+                }
             }
 
             DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName);
             deleteObjectsRequest.setKeys(keys);
             try {
                 deleteObjectsResult = amazonS3.deleteObjects(deleteObjectsRequest);
+                if(deleteObjectsResult.getDeletedObjects().size() == s3Files.size()) {
+                    LOG.info("Deleted file on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
+                } else {
+                    LOG.error("Deleted file Mis-match on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
+                }
                 s3Files.forEach(s3FileManager::deleteHard);
             } catch (MultiObjectDeleteException e) {
                 LOG.error("Failed to delete files on S3 reason={}", e.getMessage(), e);
