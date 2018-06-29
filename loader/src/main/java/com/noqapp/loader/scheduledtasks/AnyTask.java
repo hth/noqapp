@@ -1,10 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserStoreEntity;
-import com.noqapp.domain.QueueEntity;
-import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.*;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -102,6 +99,21 @@ public class AnyTask {
             UserProfileEntity userProfileEntity = accountService.findProfileByQueueUserId(businessUserStoreEntity.getQueueUserId());
             businessUserStoreEntity.setUserLevel(userProfileEntity.getLevel());
             businessUserStoreService.save(businessUserStoreEntity);
+        }
+
+        /* Add Business Type to UserProfile. */
+        List<UserProfileEntity> userProfiles = accountService.findAll();
+        for (UserProfileEntity userProfile : userProfiles) {
+            List<BusinessUserStoreEntity> businessUserStores = businessUserStoreService.findAllStoreQueueAssociated(userProfile.getQueueUserId());
+            for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+                BusinessTypeEnum businessType = bizStoreManager.getAllBizStores(businessUserStore.getBizNameId()).get(0).getBizName().getBusinessType();
+                if (userProfile.getBusinessType() == null) {
+                    userProfile.setBusinessType(businessType);
+                    accountService.save(userProfile);
+                } else {
+                    LOG.info("Found userProfile with businessType={} updating with {}", userProfile.getBusinessType(), businessType);
+                }
+            }
         }
     }
 }

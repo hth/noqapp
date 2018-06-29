@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -99,6 +100,9 @@ public class UserProfileEntity extends BaseEntity {
 
     @Field ("AO")
     private AddressOriginEnum addressOrigin;
+
+    @Field("BT")
+    private BusinessTypeEnum businessType;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -288,6 +292,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public UserProfileEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
         this.addressOrigin = addressOrigin;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public UserProfileEntity setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 
