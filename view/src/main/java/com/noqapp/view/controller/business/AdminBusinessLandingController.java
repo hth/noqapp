@@ -446,6 +446,10 @@ public class AdminBusinessLandingController {
                             professionalProfileService.save(professionalProfile);
                         }
                     }
+
+                    /* Update UserProfile Business Type. */
+                    userProfile.setBusinessType(bizStore.getBusinessType());
+                    accountService.save(userProfile);
                     break;
                 case "REJECT":
                 case "DELETE":
@@ -463,12 +467,14 @@ public class AdminBusinessLandingController {
                     switch (userProfile.getLevel()) {
                         case Q_SUPERVISOR:
                         case M_ADMIN:
-                            userProfile.setLevel(UserLevelEnum.CLIENT);
+                            userProfile.setLevel(UserLevelEnum.CLIENT)
+                                .setBusinessType(null);
                             break;
                         case S_MANAGER:
                             ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                             if (null == professionalProfile) {
-                                userProfile.setLevel(UserLevelEnum.CLIENT);
+                                userProfile.setLevel(UserLevelEnum.CLIENT)
+                                    .setBusinessType(null);
                             } else {
                                 //TODO(hth) currently removes all the code QR, it should only remove the specific code qr of the businesses.
                                 professionalProfile.setManagerAtStoreCodeQRs(new HashSet<>());

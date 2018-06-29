@@ -207,8 +207,9 @@ public class UserProfileEntity extends BaseEntity {
         return level;
     }
 
-    public void setLevel(UserLevelEnum level) {
+    public UserProfileEntity setLevel(UserLevelEnum level) {
         this.level = level;
+        return this;
     }
 
     public String getAddress() {
