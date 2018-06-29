@@ -69,6 +69,7 @@ public class EmpLandingService {
         /* Change profile user level on approval of business. */
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
         userProfile.setLevel(UserLevelEnum.M_ADMIN);
+        userProfile.setBusinessType(bizName.getBusinessType());
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
