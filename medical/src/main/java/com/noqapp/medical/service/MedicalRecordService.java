@@ -3,6 +3,8 @@ package com.noqapp.medical.service;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
@@ -15,6 +17,7 @@ import com.noqapp.medical.repository.MedicalMedicineManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserStoreService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,7 @@ public class MedicalRecordService {
     private MedicalMedicationManager medicalMedicationManager;
     private MedicalMedicineManager medicalMedicineManager;
     private BizService bizService;
+    private BusinessUserStoreService businessUserStoreService;
 
     @Autowired
     public MedicalRecordService(
@@ -44,13 +48,15 @@ public class MedicalRecordService {
             MedicalPhysicalManager medicalPhysicalManager,
             MedicalMedicationManager medicalMedicationManager,
             MedicalMedicineManager medicalMedicineManager,
-            BizService bizService
+            BizService bizService,
+            BusinessUserStoreService businessUserStoreService
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalMedicationManager = medicalMedicationManager;
         this.medicalMedicineManager = medicalMedicineManager;
         this.bizService = bizService;
+        this.businessUserStoreService = businessUserStoreService;
     }
 
     //TODO add check for qid
@@ -93,7 +99,21 @@ public class MedicalRecordService {
     @Mobile
     public void addMedicalRecord(JsonMedicalRecord jsonMedicalRecord) {
         LOG.info("Add medical record");
+
+        /* Check if user has proper role to allow adding of medical record. */
+        if (!businessUserStoreService.hasAccessWithUserLevel(jsonMedicalRecord.getDiagnosedById(), jsonMedicalRecord.getCodeQR(), UserLevelEnum.S_MANAGER)) {
+            LOG.info("Your are not authorized to add medical record mail={}", jsonMedicalRecord.getDiagnosedById());
+            return;
+        }
+
+        /* Check if business type is of Hospital or Doctor to allow adding record. */
         BizStoreEntity bizStore = bizService.findByCodeQR(jsonMedicalRecord.getCodeQR());
+        if (bizStore.getBusinessType() != BusinessTypeEnum.DO && bizStore.getBizName().getBusinessType() != BusinessTypeEnum.DO) {
+            LOG.error("Failed as its not a Doctor or Hospital business type, found store={} biz={}",
+                    bizStore.getBusinessType(),
+                    bizStore.getBizName().getBusinessType());
+            return;
+        }
 
         MedicalRecordEntity medicalRecord = new MedicalRecordEntity(jsonMedicalRecord.getQueueUserId());
         /* Setting its own ObjectId. */

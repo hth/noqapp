@@ -292,4 +292,9 @@ public class BusinessUserStoreService {
     List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
         return businessUserStoreManager.findAllManagingStoreWithUserLevel(qid, userLevel);
     }
+
+    @Mobile
+    public boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel) {
+        return businessUserStoreManager.hasAccessWithUserLevel(qid, codeQR, userLevel);
+    }
 }

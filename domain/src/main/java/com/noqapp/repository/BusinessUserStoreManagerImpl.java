@@ -60,6 +60,14 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
+    public boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel) {
+        return mongoTemplate.exists(
+                query(where("QID").is(qid).and("QR").is(codeQR).and("UL").is(userLevel)),
+                BusinessUserStoreEntity.class,
+                TABLE);
+    }
+
+    @Override
     public boolean hasAccessUsingStoreId(String qid, String bizStoreId) {
         return mongoTemplate.exists(query(where("QID").is(qid).and("BS").is(bizStoreId)), BusinessUserStoreEntity.class, TABLE);
     }
