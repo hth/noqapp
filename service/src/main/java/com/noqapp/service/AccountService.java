@@ -153,6 +153,10 @@ public class AccountService {
 
         UserProfileEntity existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
         if (dependent) {
+            if (null == existingUserProfile) {
+                LOG.error("Checked as dependent for phone={} but not found any one registered on it", phoneWithCountryCode);
+                throw new RuntimeException("No one registered with this number.");
+            }
             existingUserProfile = null;
         }
 
@@ -201,10 +205,10 @@ public class AccountService {
                 } else {
                     userProfile.setPhone(phoneWithCountryCode);
                     userProfile.setPhoneRaw(phoneRaw);
+                    userProfile.setTimeZone(timeZone);
                 }
                 userProfile.setGender(gender);
                 userProfile.setCountryShortName(countryShortName);
-                userProfile.setTimeZone(timeZone);
                 String generatedInviteCode = RandomString.generateInviteCode(firstNameCleanedUp, lastNameCleanedUp, qid);
                 while (null != userProfileManager.inviteCodeExists(generatedInviteCode)) {
                     generatedInviteCode = RandomString.generateInviteCode(firstNameCleanedUp, lastNameCleanedUp, qid);

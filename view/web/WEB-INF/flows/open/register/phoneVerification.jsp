@@ -66,8 +66,8 @@
                         <p class="mB20 Tcenter">Please enter a valid phone number to continue sign up</p>
                         <c:if test="${merchantRegistration.notAdult}">
                             <br/>
-                            <span class="left-remember"><form:checkbox id="guardian" path="merchantRegistration.notAdult" />
-                            Uncheck if this phone number belongs to the Minor registering
+                            <span class="left-remember" style="padding-bottom: 15px;"><form:checkbox id="guardian" path="merchantRegistration.notAdult" />
+                            Based on date of birth provide, we find you a minor. Uncheck if this phone number is owned by you.
                             </span>
                         </c:if>
                         <input name="phone" id="phone" type="tel" class="form-fe" pattern="\+[0-9\s\-\(\)]+" placeholder="Please fill the phone number" />
@@ -80,6 +80,7 @@
                         <div class="button-btn">
                             <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit()">CONTINUE SIGN UP</button>
                         </div>
+                        <span class="left-remember" style="padding-top: 15px;">We abide by our strict no solicitation policy and nor we share your phone number with third party.</span>
                         <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
                     </form>
 
