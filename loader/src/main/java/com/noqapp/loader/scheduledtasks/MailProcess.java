@@ -1,10 +1,17 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.domain.MailEntity;
+import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.types.MailStatusEnum;
+import com.noqapp.repository.MailManager;
+import com.noqapp.service.StatsCronService;
+import net.markenwerk.utils.mail.dkim.Canonicalization;
+import net.markenwerk.utils.mail.dkim.DkimMessage;
+import net.markenwerk.utils.mail.dkim.DkimSigner;
+import net.markenwerk.utils.mail.dkim.SigningAlgorithm;
 import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -16,26 +23,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.noqapp.domain.MailEntity;
-import com.noqapp.domain.StatsCronEntity;
-import com.noqapp.domain.types.MailStatusEnum;
-import com.noqapp.repository.MailManager;
-import com.noqapp.service.StatsCronService;
-import net.markenwerk.utils.mail.dkim.Canonicalization;
-import net.markenwerk.utils.mail.dkim.DkimMessage;
-import net.markenwerk.utils.mail.dkim.DkimSigner;
-import net.markenwerk.utils.mail.dkim.SigningAlgorithm;
-
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  * User: hitender
@@ -160,6 +156,11 @@ public class MailProcess {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.F);
                         skipped++;
                     }
+                } catch (NoSuchMethodError e) {
+                    /* Normally when DKIM issue. */
+                    LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
+                    mailManager.updateMail(mail.getId(), MailStatusEnum.N);
+                    failure++;
                 }
             }
         } catch (Exception e) {
