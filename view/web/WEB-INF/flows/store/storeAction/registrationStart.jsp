@@ -91,25 +91,13 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
                                             <form:label path="bizCategoryId" cssErrorClass="lb_error">Category</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <c:choose>
                                                 <c:when test="${!empty registerBusiness.categories}">
                                                     <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                        <form:option value="" label="--- Select ---"/>
                                                         <form:options items="${registerBusiness.categories}" />
                                                     </form:select>
                                                 </c:when>
@@ -201,16 +189,6 @@
                                         <div class="col-fields">
                                             <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
                                             <span style="display:block; font-size:14px;">(Store Address, Phone is same as Business)</span>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Store Image</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="businessServiceImageStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                        placeholder="Show the best image of your store"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

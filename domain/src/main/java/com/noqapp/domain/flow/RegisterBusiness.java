@@ -42,7 +42,6 @@ public class RegisterBusiness implements Serializable {
     private String town;
     private String countryShortName;
     private String phone;
-    private String businessServiceImage;
     private String timeZone;
     private List<AmenityEnum> amenities = new ArrayList<>();
     private List<FacilityEnum> facilities = new ArrayList<>();
@@ -59,7 +58,6 @@ public class RegisterBusiness implements Serializable {
     private String townStore;
     private String countryShortNameStore;
     private String phoneStore;
-    private String businessServiceImageStore;
     private String timeZoneStore;
     private List<AmenityEnum> amenitiesStore = new ArrayList<>();
     private List<FacilityEnum> facilitiesStore = new ArrayList<>();
@@ -193,15 +191,6 @@ public class RegisterBusiness implements Serializable {
 
     public void setPhone(ScrubbedInput phone) {
         this.phone = phone.getText();
-    }
-
-    public String getBusinessServiceImage() {
-        return businessServiceImage;
-    }
-
-    public RegisterBusiness setBusinessServiceImage(String businessServiceImage) {
-        this.businessServiceImage = businessServiceImage;
-        return this;
     }
 
     public String getTimeZone() {
@@ -358,15 +347,6 @@ public class RegisterBusiness implements Serializable {
         }
 
         return null;
-    }
-
-    public String getBusinessServiceImageStore() {
-        return businessServiceImageStore;
-    }
-
-    public RegisterBusiness setBusinessServiceImageStore(String businessServiceImageStore) {
-        this.businessServiceImageStore = businessServiceImageStore;
-        return this;
     }
 
     public String getCountryShortNameStore() {
@@ -563,7 +543,6 @@ public class RegisterBusiness implements Serializable {
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
-        this.businessServiceImageStore = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getStoreServiceImages().iterator().next();
         this.famousFor = bizStore.getFamousFor();
         this.amenitiesStore = bizStore.getAmenities();
         this.facilitiesStore = bizStore.getFacilities();
@@ -581,7 +560,6 @@ public class RegisterBusiness implements Serializable {
         registerBusiness.setInviteeCode(bizName.getInviteeCode());
         registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
         registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
-        registerBusiness.setBusinessServiceImage(bizName.getBusinessServiceImages().isEmpty() ? null : bizName.getBusinessServiceImages().iterator().next());
         registerBusiness.setBusinessType(bizName.getBusinessType());
         return registerBusiness;
     }

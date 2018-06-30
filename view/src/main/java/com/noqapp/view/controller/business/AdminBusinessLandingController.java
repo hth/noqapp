@@ -284,7 +284,10 @@ public class AdminBusinessLandingController {
         return listQueueSupervisorPage;
     }
 
-    /** Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. */
+    /**
+     * Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. S_MANAGER with
+     * Business Type of DO, will not have this option either.
+     */
     @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
     public String addStore(HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

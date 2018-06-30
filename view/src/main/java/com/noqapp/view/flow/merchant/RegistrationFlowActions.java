@@ -166,7 +166,6 @@ class RegistrationFlowActions {
                 .setTimeZone(registerBusiness.getTimeZone())
                 .setInviteeCode(registerBusiness.getInviteeCode())
                 .setAddressOrigin(registerBusiness.getAddressOrigin())
-                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage())
                 .setAmenities(registerBusiness.getAmenities())
                 .setFacilities(registerBusiness.getFacilities());
         validateAddress(bizName);
@@ -250,7 +249,6 @@ class RegistrationFlowActions {
                 .setRemoteJoin(registerBusiness.isRemoteJoin())
                 .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
                 .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
-                .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore())
                 .setFamousFor(registerBusiness.getFamousFor())
                 .setFacilities(registerBusiness.getFacilitiesStore())
                 .setAmenities(registerBusiness.getAmenitiesStore());
