@@ -147,7 +147,8 @@ public class MailProcess {
                     sendMail(mail, message, helper);
                     mailManager.updateMail(mail.getId(), MailStatusEnum.S);
                     success++;
-                } catch (MessagingException | UnsupportedEncodingException e) {
+                } catch (MessagingException | UnsupportedEncodingException | NoSuchMethodError e) {
+                    /* NoSuchMethodError normally happens when DKIM issue. */
                     LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
                     if (sendAttempt < mail.getAttempts()) {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.N);
@@ -156,11 +157,6 @@ public class MailProcess {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.F);
                         skipped++;
                     }
-                } catch (NoSuchMethodError e) {
-                    /* Normally when DKIM issue. */
-                    LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
-                    mailManager.updateMail(mail.getId(), MailStatusEnum.N);
-                    failure++;
                 }
             }
         } catch (Exception e) {
