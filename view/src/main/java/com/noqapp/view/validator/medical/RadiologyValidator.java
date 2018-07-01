@@ -3,7 +3,6 @@ package com.noqapp.view.validator.medical;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.medical.service.MedicalMasterDataService;
 import com.noqapp.view.form.emp.medical.RadiologyForm;
-import com.noqapp.view.validator.BusinessCategoryValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import static com.noqapp.common.utils.Constants.WORD_PATTERN;
 })
 @Component
 public class RadiologyValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCategoryValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RadiologyValidator.class);
 
     private MedicalMasterDataService medicalMasterDataService;
 
