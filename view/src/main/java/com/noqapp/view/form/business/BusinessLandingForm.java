@@ -1,6 +1,5 @@
 package com.noqapp.view.form.business;
 
-import com.noqapp.domain.BizCategoryEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.json.JsonTopic;
@@ -19,7 +18,7 @@ public class BusinessLandingForm {
     private String bizCodeQR;
     private List<BizStoreEntity> bizStores;
     private Map<String, QueueDetail> queueDetails = new HashMap<>();
-    private Map<String, BizCategoryEntity>  categories = new HashMap<>();
+    private Map<String, String>  categories = new HashMap<>();
 
     /* Used when Queue Supervisor logs in. */
     private List<JsonTopic> jsonTopics;
@@ -69,11 +68,11 @@ public class BusinessLandingForm {
         return this;
     }
 
-    public Map<String, BizCategoryEntity> getCategories() {
+    public Map<String, String> getCategories() {
         return categories;
     }
 
-    public BusinessLandingForm setCategories(Map<String, BizCategoryEntity> categories) {
+    public BusinessLandingForm setCategories(Map<String, String> categories) {
         this.categories = categories;
         return this;
     }

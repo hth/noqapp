@@ -9,6 +9,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
@@ -221,7 +222,7 @@ public class AdminBusinessLandingController {
 
         businessLandingForm
                 .setBizCodeQR(bizName.getCodeQR())
-                .setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+                .setCategories(CommonHelper.getCategories(bizName.getBusinessType()));
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.domain.BizCategoryEntity;
-import com.noqapp.repository.BizCategoryManager;
+import com.noqapp.domain.helper.CommonHelper;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteRequest;
@@ -17,11 +17,7 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.ClearScrollRequest;
-import org.elasticsearch.action.search.ClearScrollResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -38,11 +34,9 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
@@ -61,21 +55,18 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
-    private BizCategoryManager bizCategoryManager;
 
     //Set cache parameters
-    private final Cache<String, Map<String, BizCategoryEntity>> cache = CacheBuilder.newBuilder()
+    private final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(2, TimeUnit.MINUTES)
             .build();
 
     @Autowired
     public BizStoreElasticManagerImpl(
-            RestHighLevelClient restHighLevelClient,
-            BizCategoryManager bizCategoryManager
+            RestHighLevelClient restHighLevelClient
     ) {
         this.restHighLevelClient = restHighLevelClient;
-        this.bizCategoryManager = bizCategoryManager;
     }
 
     @Override
@@ -200,26 +191,24 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     private void replaceCategoryIdWithCategoryName(BizStoreElastic bizStoreElastic) {
-        Map<String, BizCategoryEntity> categories;
-        categories = cache.getIfPresent(bizStoreElastic.getBizNameId());
+        Map<String, String> categories = categoryCache.getIfPresent(bizStoreElastic.getBusinessType());
         if (null == categories) {
-            List<BizCategoryEntity> bizCategories = bizCategoryManager.getByBizNameId(bizStoreElastic.getBizNameId());
-            if (!bizCategories.isEmpty()) {
-                categories = bizCategories.stream().collect(Collectors.toMap(BizCategoryEntity::getId, s1 -> s1));
-                cache.put(bizStoreElastic.getBizNameId(), categories);
-            } else {
-                categories = new HashMap<>();
-                cache.put(bizStoreElastic.getBizNameId(), categories);
+            Map<String, String> bizCategories = CommonHelper.getCategories(bizStoreElastic.getBusinessType());
+            if (null != bizCategories) {
+                categoryCache.put(bizStoreElastic.getBusinessType(), bizCategories);
+                categories = bizCategories;
             }
         }
 
-        BizCategoryEntity cacheOfBizCategory = categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null);
-        if (null != cacheOfBizCategory) {
-            bizStoreElastic.setBizCategoryName(cacheOfBizCategory.getCategoryName());
-            bizStoreElastic.setBizCategoryDisplayImage(cacheOfBizCategory.getDisplayImage());
-        } else {
-            bizStoreElastic.setBizCategoryName("");
-            bizStoreElastic.setBizCategoryDisplayImage("");
+        if (categories != null) {
+            String categoryDescription = categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null);
+            if (null != categoryDescription) {
+                bizStoreElastic.setBizCategoryName(categoryDescription);
+                bizStoreElastic.setBizCategoryDisplayImage("");
+            } else {
+                bizStoreElastic.setBizCategoryName("");
+                bizStoreElastic.setBizCategoryDisplayImage("");
+            }
         }
     }
 

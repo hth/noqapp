@@ -102,12 +102,7 @@
                                                     </form:select>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <div class="form-field-select">
-                                                        No Category has been created by Business. This is optional. Read more about category by clicking below
-                                                        <div class="addbtn-store">
-                                                            <a href="/business/category.htm" class="add-btn">Add Business Category</a>
-                                                        </div>
-                                                    </div>
+                                                    <div class="form-field-select">Not Applicable</div>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>

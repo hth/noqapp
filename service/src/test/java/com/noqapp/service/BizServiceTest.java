@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
@@ -23,7 +22,6 @@ class BizServiceTest {
     @Mock private BizNameManager bizNameManager;
     @Mock private BizStoreManager bizStoreManager;
     @Mock private StoreHourManager storeHourManager;
-    @Mock private BizCategoryManager bizCategoryManager;
     @Mock private TokenQueueService tokenQueueService;
     @Mock private QueueService queueService;
     @Mock private BusinessUserStoreManager businessUserStoreManager;
@@ -39,7 +37,6 @@ class BizServiceTest {
                 bizNameManager,
                 bizStoreManager,
                 storeHourManager,
-                bizCategoryManager,
                 tokenQueueService,
                 queueService,
                 businessUserStoreManager);

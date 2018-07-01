@@ -256,8 +256,9 @@ class RegistrationFlowActions {
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
         try {
+            String area = StringUtils.isBlank(registerBusiness.getAreaStore()) ? bizStore.getArea() : new ScrubbedInput(registerBusiness.getAreaStore()).getText();
             String webLocation = bizService.buildWebLocationForStore(
-                    bizStore.getArea(),
+                    area,
                     bizStore.getTown(),
                     bizStore.getStateShortName(),
                     registerBusiness.getCountryShortNameStore(),
@@ -265,7 +266,9 @@ class RegistrationFlowActions {
                     registerBusiness.getDisplayName(),
                     bizStore.getId());
 
-            bizStore.setWebLocation(webLocation);
+            bizStore
+                .setWebLocation(webLocation)
+                .setArea(area);
             bizService.saveStore(bizStore);
 
             String bizStoreId = bizStore.getId();

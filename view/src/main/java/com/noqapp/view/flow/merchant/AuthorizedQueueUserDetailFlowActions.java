@@ -5,6 +5,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.AuthorizedQueueUser;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -104,7 +105,7 @@ public class AuthorizedQueueUserDetailFlowActions {
                 .setName(userProfile.getName())
                 .setEnrolledInStores(enrolledInStores)
                 .setBizStores(bizStores)
-                .setCategories(bizService.getBusinessCategoriesForDropDown(businessUser.getBizName().getId()));
+                .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType()));
 
         return authorizedQueueUser;
     }
