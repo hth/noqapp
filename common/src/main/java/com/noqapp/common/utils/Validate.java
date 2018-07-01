@@ -4,8 +4,6 @@ import org.springframework.util.Assert;
 
 import java.util.regex.Pattern;
 
-import static com.noqapp.common.utils.CommonUtil.CODE_QR_PREFIX;
-
 /**
  * User: hitender
  * Date: 11/24/16 3:37 PM
@@ -29,9 +27,6 @@ public class Validate {
 
     public static boolean isValidObjectId(String text) {
         Assert.hasText(text, "Not a valid text");
-        if (text.startsWith(CODE_QR_PREFIX)) {
-            return objectIdPattern.matcher(text.replace(CODE_QR_PREFIX, "")).matches();
-        }
         return objectIdPattern.matcher(text).matches();
     }
 
