@@ -122,7 +122,7 @@
                                         <form:label path="businessUser.bizName.businessType" cssErrorClass="lb_error">Business Type</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="businessUser.bizName.businessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
+                                        <form:select path="businessUser.bizName.businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:options items="${businessAwaitingApprovalForm.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
                                         </form:select>
                                     </div>

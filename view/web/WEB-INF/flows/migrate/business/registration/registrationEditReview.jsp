@@ -121,15 +121,6 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.businessServiceImage" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
                                     </ul>
                                 </div>
 

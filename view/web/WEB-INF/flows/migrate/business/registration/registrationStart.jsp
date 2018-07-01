@@ -91,17 +91,17 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="businessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                            <form:label path="businessType" cssErrorClass="lb_error">Business Type</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <c:choose>
                                                 <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
-                                                    <form:select path="businessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
+                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                         <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
                                                     </form:select>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <form:select path="businessType" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="false">
+                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                         <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description"/>
                                                     </form:select>
                                                 </c:otherwise>
@@ -174,16 +174,6 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="businessServiceImage" cssErrorClass="lb_error">Business Image</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="businessServiceImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                        placeholder="Show the best image of your business"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

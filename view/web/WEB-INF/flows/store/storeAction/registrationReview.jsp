@@ -74,18 +74,6 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="storeBusinessType" cssErrorClass="lb_error">Queue for</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:select path="storeBusinessType" cssClass="form-field-select single-dropdown" multiple="false" disabled="true">
-                                                    <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                    <form:options items="${registerBusiness.businessTypes}" itemValue="name" itemLabel="description"/>
-                                                </form:select>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
                                         <c:if test="${!empty registerBusiness.categories}">
                                         <li>
                                             <div class="col-lable3">
@@ -93,7 +81,7 @@
                                             </div>
                                             <div class="col-fields">
                                                 <form:select path="bizCategoryId" cssClass="form-field-select single-dropdown" multiple="false" disabled="true">
-                                                    <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
+                                                    <form:option value="" label="--- Select ---"/>
                                                     <form:options items="${registerBusiness.categories}" />
                                                 </form:select>
                                             </div>
@@ -138,15 +126,6 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="businessServiceImageStore" cssErrorClass="lb_error">Store Image</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="businessServiceImageStore" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
                                                 <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
                                             </div>
                                             <div class="col-fields">
@@ -159,7 +138,7 @@
                                                 <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:checkbox path="remoteJoin" cssClass="form-field-admin" disabled="true"/>
+                                                <form:checkbox path="remoteJoin" cssClass="form-check-box" disabled="true"/>
                                                 <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
                                             </div>
                                             <div class="clearFix"></div>
@@ -169,7 +148,7 @@
                                                 <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:checkbox path="allowLoggedInUser" cssClass="form-field-admin" disabled="true"/>
+                                                <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" disabled="true"/>
                                                 <span style="display:block; font-size:14px;">(Will limit registered users joining this queue)</span>
                                             </div>
                                             <div class="clearFix"></div>

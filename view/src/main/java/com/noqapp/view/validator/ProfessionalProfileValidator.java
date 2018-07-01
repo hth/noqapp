@@ -27,7 +27,7 @@ import org.springframework.validation.Validator;
 })
 @Component
 public class ProfessionalProfileValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCategoryValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProfessionalProfileValidator.class);
 
     private ProfessionalProfileService professionalProfileService;
 

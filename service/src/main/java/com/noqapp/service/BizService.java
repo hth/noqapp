@@ -3,18 +3,10 @@ package com.noqapp.service;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
-import com.noqapp.domain.BizCategoryEntity;
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.*;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
-import com.noqapp.repository.BizCategoryManager;
-import com.noqapp.repository.BizNameManager;
-import com.noqapp.repository.BizStoreManager;
-import com.noqapp.repository.BusinessUserStoreManager;
-import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: hitender
@@ -51,7 +37,6 @@ public class BizService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
-    private BizCategoryManager bizCategoryManager;
     private TokenQueueService tokenQueueService;
     private QueueService queueService;
     private BusinessUserStoreManager businessUserStoreManager;
@@ -67,7 +52,6 @@ public class BizService {
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
             StoreHourManager storeHourManager,
-            BizCategoryManager bizCategoryManager,
             TokenQueueService tokenQueueService,
             QueueService queueService,
             BusinessUserStoreManager businessUserStoreManager
@@ -77,7 +61,6 @@ public class BizService {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
-        this.bizCategoryManager = bizCategoryManager;
         this.tokenQueueService = tokenQueueService;
         this.queueService = queueService;
         this.businessUserStoreManager = businessUserStoreManager;
@@ -207,65 +190,6 @@ public class BizService {
     @Mobile
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
-    }
-
-    @Mobile
-    public List<BizCategoryEntity> getBusinessCategories(String bizNameId) {
-        return bizCategoryManager.getByBizNameId(bizNameId);
-    }
-
-    /** Used in drop downs for key value listing of data. */
-    public Map<String, String> getBusinessCategoriesForDropDown(String bizNameId) {
-        List<BizCategoryEntity> bizCategories = getBusinessCategories(bizNameId);
-
-        Map<String, String> bizCategoriesAsMap = new LinkedHashMap<>();
-        for (BizCategoryEntity bizCategory : bizCategories) {
-            bizCategoriesAsMap.put(bizCategory.getId(), bizCategory.getCategoryName());
-        }
-
-        return bizCategoriesAsMap;
-    }
-
-    public Map<String, BizCategoryEntity> getBusinessCategoriesAsMap(String bizNameId) {
-        List<BizCategoryEntity> bizCategories = getBusinessCategories(bizNameId);
-
-        Map<String, BizCategoryEntity> bizCategoriesAsMap = new LinkedHashMap<>();
-        for (BizCategoryEntity bizCategory : bizCategories) {
-            bizCategoriesAsMap.put(bizCategory.getId(), bizCategory);
-        }
-
-        return bizCategoriesAsMap;
-    }
-
-    public void addCategory(String categoryName, String bizNameId, String displayImage) {
-        if (!existCategory(categoryName, bizNameId)) {
-            BizCategoryEntity bizCategory = new BizCategoryEntity()
-                    .setBizNameId(bizNameId)
-                    .setCategoryName(categoryName)
-                    .setDisplayImage(displayImage);
-            bizCategoryManager.save(bizCategory);
-        }
-    }
-
-    public boolean existCategory(String categoryName, String bizNameId) {
-        return bizCategoryManager.existCategory(categoryName, bizNameId);
-    }
-
-    public BizCategoryEntity findByBizCategoryId(String id) {
-        return bizCategoryManager.findById(id);
-    }
-
-    public String getNameOfCategory(String bizCategoryId) {
-        String categoryName = null;
-        BizCategoryEntity bizCategory = findByBizCategoryId(bizCategoryId);
-        if (null != bizCategory) {
-            categoryName = bizCategory.getCategoryName();
-        }
-        return categoryName;
-    }
-
-    public void updateBizCategoryName(String bizCategoryId, String categoryName, String displayImage) {
-        bizCategoryManager.updateBizCategoryName(bizCategoryId, categoryName, displayImage);
     }
 
     public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {

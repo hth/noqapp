@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex(name = "store_category_name_idx", def = "{'BN': -1, 'BS': -1, 'CN' : -1}", unique = true),
 })
 public class StoreCategoryEntity extends BaseEntity {
-    private static final Logger LOG = LoggerFactory.getLogger(BizCategoryEntity.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StoreCategoryEntity.class);
 
     @NotNull
     @Field ("BN")

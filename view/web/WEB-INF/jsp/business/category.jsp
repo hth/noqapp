@@ -60,127 +60,11 @@
                         </div>
                     </div>
 
-                    <c:choose>
-                        <c:when test="${!empty categoryLanding.bizCategoryId}">
-                            <form:form method="post" action="${pageContext.request.contextPath}/business/category/edit.htm" modelAttribute="categoryLanding">
-                                <form:hidden path="bizNameId" />
-                                <form:hidden path="bizCategoryId" />
-                                <spring:hasBindErrors name="categoryLanding">
-                                <div class="error-box">
-                                    <div class="error-txt">
-                                        <ul>
-                                            <c:if test="${errors.hasFieldErrors('categoryName')}">
-                                            <li><form:errors path="categoryName"/></li>
-                                            </c:if>
-                                        </ul>
-                                    </div>
-                                </div>
-                                </spring:hasBindErrors>
-
-                                <div class="admin-content">
-                                    <div class="add-new">
-                                        <ul class="list-form">
-                                            <li>
-                                                <div class="col-lable3">
-                                                    <form:label path="categoryName" cssErrorClass="lb_error">New Category</form:label>
-                                                </div>
-                                                <div class="col-fields">
-                                                    <form:input path="categoryName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Vegetarian Food, Drinks, Cardiologist, Orthopedics, ENT"/>
-                                                </div>
-                                                <div class="clearFix"></div>
-                                            </li>
-                                            <li>
-                                                <div class="col-lable3">
-                                                    <form:label path="displayImage" cssErrorClass="lb_error">Category Image</form:label>
-                                                </div>
-                                                <div class="col-fields">
-                                                    <form:input path="displayImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Upload image for category"/>
-                                                </div>
-                                                <div class="clearFix"></div>
-                                            </li>
-                                        </ul>
-
-                                        <div class="col-lable3"></div>
-                                        <div class="col-fields">
-                                            <%--<div class="left-btn">--%>
-                                                <%--<input name="edit" class="next-btn" value="EDIT" type="submit">--%>
-                                            <%--</div>--%>
-                                            <%--<div class="right-btn">--%>
-                                                <%--<input name="cancel_Edit" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                            <%--</div>--%>
-                                            <div class="button-btn">
-                                                <button name="edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
-                                                <button name="cancel_Edit" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </div>
-                                </div>
-                            </form:form>
-                        </c:when>
-                        <c:otherwise>
-                            <form:form method="post" action="${pageContext.request.contextPath}/business/category/add.htm" modelAttribute="categoryLanding">
-                                <form:hidden path="bizNameId" />
-                                <spring:hasBindErrors name="categoryLanding">
-                                    <div class="error-box">
-                                        <div class="error-txt">
-                                            <ul>
-                                                <c:if test="${errors.hasFieldErrors('categoryName')}">
-                                                <li><form:errors path="categoryName"/></li>
-                                                </c:if>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </spring:hasBindErrors>
-
-                                <div class="admin-content">
-                                    <div class="add-new">
-                                        <ul class="list-form">
-                                            <li>
-                                                <div class="col-lable3">
-                                                    <form:label path="categoryName" cssErrorClass="lb_error">New Category</form:label>
-                                                </div>
-                                                <div class="col-fields">
-                                                    <form:input path="categoryName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Vegetarian Food, Drinks, Cardiologist, Orthopedics, ENT"/>
-                                                </div>
-                                                <div class="clearFix"></div>
-                                            </li>
-                                            <li>
-                                                <div class="col-lable3">
-                                                    <form:label path="displayImage" cssErrorClass="lb_error">Category Image</form:label>
-                                                </div>
-                                                <div class="col-fields">
-                                                    <form:input path="displayImage" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Upload image for category"/>
-                                                </div>
-                                                <div class="clearFix"></div>
-                                            </li>
-                                        </ul>
-
-                                        <div class="col-lable3"></div>
-                                        <div class="col-fields">
-                                            <%--<div class="left-btn">--%>
-                                                <%--<input name="add" class="next-btn" value="ADD" type="submit">--%>
-                                            <%--</div>--%>
-                                            <%--<div class="right-btn">--%>
-                                                <%--<input name="cancel_Add" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                            <%--</div>--%>
-                                            <div class="button-btn">
-                                                <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
-                                                <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </div>
-                                </div>
-                            </form:form>
-                        </c:otherwise>
-                    </c:choose>
+                    <div class="alert-info">
+                        <p>
+                            Contact NoQueue Support to add categories.
+                        </p>
+                    </div>
 
                     <div class="store-table">
                     <c:choose>
@@ -194,23 +78,15 @@
                                     <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                          alt="Sort" height="16px;"/>
                                 </th>
-                                <th>Category Image</th>
                                 <th>Referred Count</th>
-                                <th nowrap>Edit</th>
                             </tr>
                             <c:forEach items="${categoryLanding.categories}" var="category" varStatus="status">
                             <tr>
                                 <td>${status.count}&nbsp;</td>
-                                <td nowrap>${category.value.categoryName}</td>
-                                <td>${category.value.displayImage}</td>
+                                <td nowrap>${category.value}</td>
                                 <td nowrap>
                                     <a href="/business/category/${category.key}/storeByCategory.htm">
                                             ${categoryLanding.categoryCounts.get(category.key)}
-                                    </a>
-                                </td>
-                                <td nowrap>
-                                    <a href="/business/category/${category.key}/edit.htm" class="add-btn">
-                                        Edit
                                     </a>
                                 </td>
                             </tr>
@@ -219,13 +95,16 @@
                     </c:when>
                     <c:otherwise>
                         <div class="alert-info">
-                            <p>No category added.</p>
+                            <p>No category defined.</p>
                             <p>
                                 What's Category?
                                 Category clubs similar or shared characteristics.
                                 Like different kinds of Mangoes in one category of Mango. Or
                                 category to distinguish Vegetarian and Non-Vegetarian foods.
                                 Similarly, you can club all Cardiologist Doctors under one category.
+                            </p>
+                            <p>
+                                Contact administrator to add categories.
                             </p>
                             <p>
                                 Note: You need a minimum of two categories to distinguish.

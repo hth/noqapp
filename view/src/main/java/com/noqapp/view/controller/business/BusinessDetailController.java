@@ -1,19 +1,25 @@
 package com.noqapp.view.controller.business;
 
 import com.google.zxing.WriterException;
-
+import com.noqapp.common.type.FileExtensionTypeEnum;
+import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.json.xml.XmlBusinessCodeQR;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.CodeQRGeneratorService;
 import com.noqapp.service.PdfGenerateService;
+import com.noqapp.view.form.business.StoreLandingForm;
 import com.noqapp.view.helper.WebUtil;
 import org.apache.commons.io.IOUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,22 +29,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.BizService;
-import com.noqapp.service.CodeQRGeneratorService;
-import com.noqapp.common.type.FileExtensionTypeEnum;
-import com.noqapp.common.utils.FileUtil;
-import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.view.form.business.StoreLandingForm;
-
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -109,7 +104,7 @@ public class BusinessDetailController {
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
         String category = null;
         if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
-            category = bizService.getNameOfCategory(bizStore.getBizCategoryId());
+            category = bizStore.getBizCategoryId();
         }
 
         storeLandingForm

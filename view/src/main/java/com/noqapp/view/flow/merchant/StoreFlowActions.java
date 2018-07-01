@@ -5,6 +5,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
@@ -63,8 +64,8 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
-        registerBusiness.setCategories(bizService.getBusinessCategoriesForDropDown(businessUser.getBizName().getId()));
-
+        registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
+        registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType()));
         return registerBusiness;
     }
 

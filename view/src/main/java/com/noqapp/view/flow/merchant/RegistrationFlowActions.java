@@ -166,7 +166,6 @@ class RegistrationFlowActions {
                 .setTimeZone(registerBusiness.getTimeZone())
                 .setInviteeCode(registerBusiness.getInviteeCode())
                 .setAddressOrigin(registerBusiness.getAddressOrigin())
-                .addBusinessServiceImages(registerBusiness.getBusinessServiceImage())
                 .setAmenities(registerBusiness.getAmenities())
                 .setFacilities(registerBusiness.getFacilities());
         validateAddress(bizName);
@@ -250,7 +249,6 @@ class RegistrationFlowActions {
                 .setRemoteJoin(registerBusiness.isRemoteJoin())
                 .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
                 .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
-                .addStoreServiceImage(registerBusiness.getBusinessServiceImageStore())
                 .setFamousFor(registerBusiness.getFamousFor())
                 .setFacilities(registerBusiness.getFacilitiesStore())
                 .setAmenities(registerBusiness.getAmenitiesStore());
@@ -258,8 +256,9 @@ class RegistrationFlowActions {
         //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
         validateAddress(bizStore);
         try {
+            String area = StringUtils.isBlank(registerBusiness.getAreaStore()) ? bizStore.getArea() : new ScrubbedInput(registerBusiness.getAreaStore()).getText();
             String webLocation = bizService.buildWebLocationForStore(
-                    bizStore.getArea(),
+                    area,
                     bizStore.getTown(),
                     bizStore.getStateShortName(),
                     registerBusiness.getCountryShortNameStore(),
@@ -267,7 +266,9 @@ class RegistrationFlowActions {
                     registerBusiness.getDisplayName(),
                     bizStore.getId());
 
-            bizStore.setWebLocation(webLocation);
+            bizStore
+                .setWebLocation(webLocation)
+                .setArea(area);
             bizService.saveStore(bizStore);
 
             String bizStoreId = bizStore.getId();

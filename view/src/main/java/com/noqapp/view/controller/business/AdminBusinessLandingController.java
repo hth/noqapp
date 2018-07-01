@@ -9,6 +9,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
@@ -221,7 +222,7 @@ public class AdminBusinessLandingController {
 
         businessLandingForm
                 .setBizCodeQR(bizName.getCodeQR())
-                .setCategories(bizService.getBusinessCategoriesAsMap(businessUser.getBizName().getId()));
+                .setCategories(CommonHelper.getCategories(bizName.getBusinessType()));
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
@@ -284,7 +285,10 @@ public class AdminBusinessLandingController {
         return listQueueSupervisorPage;
     }
 
-    /** Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. */
+    /**
+     * Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. S_MANAGER with
+     * Business Type of DO, will not have this option either.
+     */
     @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
     public String addStore(HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

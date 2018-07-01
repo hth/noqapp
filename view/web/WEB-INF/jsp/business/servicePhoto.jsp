@@ -95,11 +95,20 @@
                 </div>
                 <div class="admin-content">
                     <div class="add-new">
+                        <c:choose>
+                        <c:when test="${!empty businessServiceImages}">
                         <c:forEach items="${businessServiceImages}" var="businessServiceImage" varStatus="status">
                             <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${businessServiceImage}"
                                  onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
                                  class="img-profile-circle" />
                         </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="alert-info">
+                                <div class="no-approve">Please upload business related photographs.</div>
+                            </div>
+                        </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
