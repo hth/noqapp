@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Vegetarian Food, Drinks, Cardiologist, Orthopedics, ENT"/>
+                                                                placeholder="Medicine Name"/>
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
@@ -133,7 +133,7 @@
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Vegetarian Food, Drinks, Cardiologist, Orthopedics, ENT"/>
+                                                                placeholder="Medicine Name"/>
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </li>
