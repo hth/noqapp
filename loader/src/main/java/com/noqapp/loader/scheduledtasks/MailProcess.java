@@ -123,7 +123,7 @@ public class MailProcess {
     public void sendMail() {
         StatsCronEntity statsCron = new StatsCronEntity(
                 MailProcess.class.getName(),
-                "SendMail",
+                "sendMail",
                 emailSwitch);
 
         if ("OFF".equalsIgnoreCase(emailSwitch)) {
