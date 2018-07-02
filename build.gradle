@@ -168,6 +168,7 @@ subprojects {
 
     jacoco {
         toolVersion = "0.8.1"
+        applyTo junitPlatformTest
     }
 
     junitPlatformTest {
