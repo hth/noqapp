@@ -1,10 +1,6 @@
 package com.noqapp.service;
 
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.PendingResult;
-import com.google.maps.PlacesApi;
-import com.google.maps.TimeZoneApi;
+import com.google.maps.*;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.PlaceDetails;
@@ -23,14 +19,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
 
 /**
  * User: hitender
@@ -45,8 +41,7 @@ import java.util.TimeZone;
 @Service
 public class ExternalService {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
 
     private GeoApiContext context;
     private BizStoreManager bizStoreManager;
@@ -185,12 +180,12 @@ public class ExternalService {
             }
             
             GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
-            if (geocodingResults.length != 0) {
+            if (0 != geocodingResults.length) {
                 return geocodingResults;
             }
 
             int index;
-            if(address.contains(",")) {
+            if (address.contains(",")) {
                 index = address.indexOf(",") + 1;
             } else {
                 index = address.indexOf(" ") + 1;
@@ -212,7 +207,7 @@ public class ExternalService {
     /**
      * External call to find types and rating for a particular store.
      */
-    PlaceDetails getPlaceDetails(String placeId) {
+    private PlaceDetails getPlaceDetails(String placeId) {
         try {
             LOG.info("Google Place API called placeId={}", placeId);
             Assert.hasText(placeId, "PlaceId is empty");
@@ -287,9 +282,9 @@ public class ExternalService {
     public ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
-            String str = df.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
+            String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
             /* Compute next run. New Date technically gives us today's run date. */
-            LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+            LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
             LocalDateTime tomorrow = localDateTime.plusDays(1);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
 

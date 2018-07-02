@@ -1,24 +1,17 @@
 package com.noqapp.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.PeriodType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.util.Assert;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -42,8 +35,8 @@ public final class DateUtil {
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
-    public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-    public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
+    public static final DateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    public static final DateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
     private DateUtil() {
