@@ -1,18 +1,18 @@
-package com.noqapp.domain.types.medical;
+package com.noqapp.domain.types.catgeory;
 
 /**
- * hitender
- * 6/25/18 6:38 PM
+ * User: hitender
+ * Date: 7/2/18 12:16 PM
  */
-public enum MedicalDepartmentEnum {
-    DNT("DNT", "Dentist"),
-    CRD("CRD", "Cardiologist"),
-    GYN("GYN", "Gynaecology");
+public enum BankDepartmentEnum {
+    OTH("OTH", "Cheque/Withdrawal/Deposit"),
+    LON("LON", "Loan"),
+    ACL("ACL", "Account Link");
 
     private final String description;
     private final String name;
 
-    MedicalDepartmentEnum(String name, String description) {
+    BankDepartmentEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
