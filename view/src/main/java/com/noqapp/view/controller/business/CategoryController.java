@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,8 +101,8 @@ public class CategoryController {
         Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType());
         categoryLanding
                 .setBizNameId(new ScrubbedInput(bizNameId))
-                .setCategories(categories)
-                .setCategoryCounts(bizService.countCategoryUse(categories.keySet(), bizNameId));
+                .setCategories(null == categories ? new HashMap<>() : categories)
+                .setCategoryCounts(null == categories ? new HashMap<>() : bizService.countCategoryUse(categories.keySet(), bizNameId));
         return nextPage;
     }
 

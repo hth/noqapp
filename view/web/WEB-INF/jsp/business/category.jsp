@@ -62,7 +62,7 @@
 
                     <div class="alert-info">
                         <p>
-                            Contact NoQueue Support to add categories.
+                            Contact NoQueue Support to add business categories. These are global categories available to all stores.
                         </p>
                     </div>
 

@@ -405,7 +405,8 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        if (registerBusiness.getStoreBusinessType() != BusinessTypeEnum.DO) {
+        /* This piece of code is not required as we have moved away from having business category. */
+        if (registerBusiness.getStoreBusinessType() != BusinessTypeEnum.DO && registerBusiness.getStoreBusinessType() != BusinessTypeEnum.BK) {
             if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
                 if (!Validate.isValidObjectId(registerBusiness.getBizCategoryId())) {
                     LOG.error("BizCategoryId should be ObjectId but its {}", registerBusiness.getBizCategoryId());
