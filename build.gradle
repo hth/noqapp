@@ -170,11 +170,9 @@ subprojects {
         toolVersion = "0.8.1"
     }
 
-    jacocoTestReport {
-        reports {
-            xml.enabled false
-            csv.enabled false
-            html.setDestination(file("${buildDir}/reports/jacocoHtml"))
+    junitPlatformTest {
+        jacoco {
+            destinationFile = file("${buildDir}/jacoco/test.exec")
         }
     }
 
