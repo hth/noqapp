@@ -7,8 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * hitender
@@ -30,9 +29,6 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("PD")
-    private Set<String> medicalPhysicalExaminationIds = new LinkedHashSet<>();
-
     @Field("PL")
     private String pluse;
 
@@ -49,15 +45,6 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public String getQueueUserId() {
         return queueUserId;
-    }
-
-    public Set<String> getMedicalPhysicalExaminationIds() {
-        return medicalPhysicalExaminationIds;
-    }
-
-    public MedicalPhysicalEntity setMedicalPhysicalExaminationIds(Set<String> medicalPhysicalExaminationIds) {
-        this.medicalPhysicalExaminationIds = medicalPhysicalExaminationIds;
-        return this;
     }
 
     public String getPluse() {
@@ -91,7 +78,9 @@ public class MedicalPhysicalEntity extends BaseEntity {
     public String toString() {
         return "MedicalPhysicalEntity{" +
                 "queueUserId='" + queueUserId + '\'' +
-                ", medicalPhysicalExaminationIds=" + medicalPhysicalExaminationIds +
+                ", pluse='" + pluse + '\'' +
+                ", bloodPressure=" + Arrays.toString(bloodPressure) +
+                ", weight='" + weight + '\'' +
                 '}';
     }
 }
