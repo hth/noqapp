@@ -74,7 +74,7 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     public List<MedicalMedicineEntity> findByIds(String[] ids) {
         LOG.info("Ids={}", String.join(",", ids));
         return mongoTemplate.find(
-                query(where("id").in(String.join(",", ids))),
+                query(where("id").in(String.join(",", ids).replaceAll(",", "\",\""))),
                 MedicalMedicineEntity.class,
                 TABLE
         );
