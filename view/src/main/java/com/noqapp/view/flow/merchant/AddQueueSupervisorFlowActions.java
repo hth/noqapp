@@ -233,6 +233,7 @@ public class AddQueueSupervisorFlowActions {
                 throw new InviteSupervisorException("Cannot invite this person");
             case Q_SUPERVISOR:
             case S_MANAGER:
+                /* User already has a role set to Q_SUPERVISOR or S_MANAGER, and hence could not be invited. */
                 ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(userProfile.getQueueUserId());
                 if (null != professionalProfile) {
                     break;
