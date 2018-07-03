@@ -218,6 +218,7 @@ public class FtpService {
     }
 
     private String createConnectionString(String filePath) {
+        LOG.info("FTP Filepath {}", filePath);
         return "sftp://" + ftpUser + ":" + ftpPassword + "@" + host + "/" + filePath;
     }
 }
