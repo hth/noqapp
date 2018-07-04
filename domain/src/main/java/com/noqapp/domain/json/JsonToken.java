@@ -72,11 +72,6 @@ public class JsonToken extends AbstractDomain {
         this.businessType = tokenQueue.getBusinessType();
     }
 
-    public JsonToken(QueueStatusEnum queueStatus, BusinessTypeEnum businessType) {
-        this.queueStatus = queueStatus;
-        this.businessType = businessType;
-    }
-
     public JsonToken(String codeQR, BusinessTypeEnum businessType) {
         this.codeQR = codeQR;
         this.businessType = businessType;
