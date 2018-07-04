@@ -1,5 +1,6 @@
 package com.noqapp.medical.repository;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -46,7 +47,7 @@ class MedicalMedicineManagerImplTest {
 
     @Test
     void findByIds() {
-        String[] ids = new String[] {"abc", "123"};
+        String[] ids = new String[] {CommonUtil.generateHexFromObjectId(), CommonUtil.generateHexFromObjectId()};
         when(medicalMedicineManager.findByIds(ids)).thenReturn(Arrays.asList(medicalMedicine1, medicalMedicine2));
         List<MedicalMedicineEntity> found = medicalMedicineManager.findByIds(ids);
         Assertions.assertEquals(2, found.size());
