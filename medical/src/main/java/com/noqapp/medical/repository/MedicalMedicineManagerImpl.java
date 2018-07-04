@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
         List<MedicalMedicineEntity> a = new LinkedList<>();
         for (String id : ids) {
             a.add(mongoTemplate.findOne(
-                query(where("id").is(id)),
+                query(where("id").is(new ObjectId(id))),
                 MedicalMedicineEntity.class,
                 TABLE
             ));
