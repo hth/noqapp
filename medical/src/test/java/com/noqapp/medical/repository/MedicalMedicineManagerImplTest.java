@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,7 +48,11 @@ class MedicalMedicineManagerImplTest {
 
     @Test
     void findByIds() {
-        String[] ids = new String[] {CommonUtil.generateHexFromObjectId(), CommonUtil.generateHexFromObjectId()};
+        List<String> ids = new ArrayList<String>(){{
+            add(CommonUtil.generateHexFromObjectId());
+            add(CommonUtil.generateHexFromObjectId());
+        }};
+
         when(medicalMedicineManager.findByIds(ids)).thenReturn(Arrays.asList(medicalMedicine1, medicalMedicine2));
         List<MedicalMedicineEntity> found = medicalMedicineManager.findByIds(ids);
         Assertions.assertEquals(2, found.size());
