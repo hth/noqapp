@@ -303,7 +303,11 @@ public class TokenQueueService {
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             queue.setCustomerName(userProfile.getName());
-            queue.setCustomerPhone(userProfile.getPhone());
+            if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
+                queue.setCustomerPhone(userProfile.getPhone());
+            } else {
+                queue.setCustomerPhone(userProfile.getGuardianPhone());
+            }
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
             if (null != userProfile.getQidOfDependents() && !userProfile.getQidOfDependents().isEmpty()) {
                 queue.setGuardianQid(qid);
