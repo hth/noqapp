@@ -1,6 +1,7 @@
 package com.noqapp.domain.types;
 
 /**
+ * These messages are agnostic to any client type or merchant type.
  * User: hitender
  * Date: 3/7/17 10:58 PM
  */
