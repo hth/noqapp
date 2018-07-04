@@ -76,10 +76,10 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="registerBusiness.businessTypes" cssErrorClass="lb_error">Business Type</form:label>
+                                                <form:label path="registerBusiness.businessType" cssErrorClass="lb_error">Business Type</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:select path="registerBusiness.businessTypes" cssClass="form-field-select" cssErrorClass="form-field-select error-field" multiple="true">
+                                                <form:select path="registerBusiness.businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                     <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
                                                 </form:select>
                                             </div>

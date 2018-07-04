@@ -28,7 +28,11 @@ Next Release Update Mongo
     db.﻿BIZ_STORE.update({"BT" : "HO"},  { $set : {"BT" : "DO"}}, false, true);
     
 ### Drop index
-    queue_idx from QueueEntity    
+    queue_idx from QueueEntity  
+    
+    OR
+      
+    db.QUEUE.drop();  
 
 ### Mysql 
 
