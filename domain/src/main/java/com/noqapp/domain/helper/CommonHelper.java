@@ -28,6 +28,7 @@ public class CommonHelper {
             case PH:
             case RS:
             case ST:
+            case SC:
                 return null;
             default:
                 LOG.error("Un-supported businessType={}", businessType);
