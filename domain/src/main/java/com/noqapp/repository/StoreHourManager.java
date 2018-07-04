@@ -36,4 +36,6 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
     );
 
     boolean resetStoreHour(String id);
+
+    void resetQueueSettingWhenQueueStarts(String bizStoreId, DayOfWeek dayOfWeek);
 }

@@ -666,4 +666,14 @@ public class TokenQueueService {
     void changeQueueStatus(String codeQR, QueueStatusEnum queueStatus) {
         tokenQueueManager.changeQueueStatus(codeQR, queueStatus);
     }
+
+    @Mobile
+    @Async
+    public void resetQueueSettingWhenQueueStarts(String codeQR) {
+        LOG.info("Resetting queue when status started codeQR={}", codeQR);
+
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        storeHourManager.resetQueueSettingWhenQueueStarts(bizStore.getId(), dayOfWeek);
+    }
 }
