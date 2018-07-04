@@ -2,7 +2,6 @@ package com.noqapp.medical.repository;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -74,17 +72,16 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     }
 
     @Override
-    public List<MedicalMedicineEntity> findByIds(String[] ids) {
-        LOG.info("Ids={}", String.join(",", ids));
-        Collection<ObjectId> a = new ArrayList<>();
+    public List<MedicalMedicineEntity> findByIds(List<String> ids) {
+        LOG.info("Ids={}", ids);
+        List<MedicalMedicineEntity> a = new LinkedList<>();
         for (String id : ids) {
-            a.add(new ObjectId(id));
-        }
-        
-        return mongoTemplate.find(
-                query(where("id").in(a)),
+            a.add(mongoTemplate.findOne(
+                query(where("id").is(id)),
                 MedicalMedicineEntity.class,
                 TABLE
-        );
+            ));
+        }
+        return a;
     }
 }
