@@ -2,11 +2,14 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.domain.*;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
+import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserStoreService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,18 +44,20 @@ public class AnyTask {
     private Environment environment;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
+    private BizCategoryManager bizCategoryManager;
 
     @Autowired
     public AnyTask(
-            @Value("${oneTimeStatusSwitch:ON}")
-            String oneTimeStatusSwitch,
+        @Value("${oneTimeStatusSwitch:ON}")
+        String oneTimeStatusSwitch,
 
-            TokenQueueManager tokenQueueManager,
-            BizStoreManager bizStoreManager,
-            QueueManager queueManager,
-            Environment environment,
-            BusinessUserStoreService businessUserStoreService,
-            AccountService accountService
+        TokenQueueManager tokenQueueManager,
+        BizStoreManager bizStoreManager,
+        QueueManager queueManager,
+        Environment environment,
+        BusinessUserStoreService businessUserStoreService,
+        AccountService accountService,
+        BizCategoryManager bizCategoryManager
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
@@ -62,6 +67,8 @@ public class AnyTask {
         this.environment = environment;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
+        this.bizCategoryManager = bizCategoryManager;
+
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
     }
 
@@ -112,6 +119,20 @@ public class AnyTask {
                     accountService.save(userProfile);
                 } else {
                     LOG.info("Found userProfile with businessType={} updating with {}", userProfile.getBusinessType(), businessType);
+                }
+            }
+        }
+
+        /* Update Business Category. */
+        List<BizStoreEntity> bizStores = bizStoreManager.getAll(0, 1000);
+        for (BizStoreEntity bizStore : bizStores) {
+            if (StringUtils.isNotBlank(bizStore.getBizCategoryId()) && bizStore.getBizCategoryId().length() > 3) {
+                BizCategoryEntity bizCategory = bizCategoryManager.findById(bizStore.getBizCategoryId());
+                for (MedicalDepartmentEnum medicalDepartment : MedicalDepartmentEnum.values()) {
+                    if (medicalDepartment.getDescription().equalsIgnoreCase(bizCategory.getCategoryName())) {
+                        bizStore.setBizCategoryId(medicalDepartment.getName());
+                        bizStoreManager.save(bizStore);
+                    }
                 }
             }
         }
