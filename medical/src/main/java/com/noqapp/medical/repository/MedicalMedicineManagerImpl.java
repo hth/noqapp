@@ -74,7 +74,6 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
 
     @Override
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
-        LOG.info("Ids={}", ids);
         List<MedicalMedicineEntity> medicalMedicines = new LinkedList<>();
         for (String id : ids) {
             medicalMedicines.add(mongoTemplate.findOne(

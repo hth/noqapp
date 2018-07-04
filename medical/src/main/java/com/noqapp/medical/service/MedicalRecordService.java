@@ -247,6 +247,7 @@ public class MedicalRecordService {
         return medicalPhysicalManager.findByQid(qid);
     }
 
+    @Mobile
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         return medicalMedicineManager.findByIds(ids);
     }
