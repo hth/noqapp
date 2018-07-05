@@ -38,8 +38,11 @@ Next Release Update Mongo
 
 Update all HO to DO in mysql
 
+    ALTER TABLE `noqapp`.`QUEUE` 
+    ADD COLUMN `BT` VARCHAR(2) NOT NULL DEFAULT 'DO' AFTER `DN`;
+
     SET SQL_SAFE_UPDATES = 0;
-    UPDATE noqapp_test.QUEUE 
+    UPDATE noqapp.QUEUE 
     SET
         BT = "DO"
     WHERE 
