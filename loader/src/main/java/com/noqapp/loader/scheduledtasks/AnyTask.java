@@ -1,10 +1,13 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.*;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.repository.BizCategoryManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.AccountService;
@@ -45,6 +48,7 @@ public class AnyTask {
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
     private BizCategoryManager bizCategoryManager;
+    private ProfessionalProfileManager professionalProfileManager;
 
     @Autowired
     public AnyTask(
@@ -57,7 +61,8 @@ public class AnyTask {
         Environment environment,
         BusinessUserStoreService businessUserStoreService,
         AccountService accountService,
-        BizCategoryManager bizCategoryManager
+        BizCategoryManager bizCategoryManager,
+        ProfessionalProfileManager professionalProfileManager
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
@@ -68,6 +73,7 @@ public class AnyTask {
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
         this.bizCategoryManager = bizCategoryManager;
+        this.professionalProfileManager = professionalProfileManager;
 
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
     }
@@ -109,6 +115,7 @@ public class AnyTask {
         }
 
         /* Add Business Type to UserProfile. */
+        int roleCount = 0;
         List<UserProfileEntity> userProfiles = accountService.findAll();
         for (UserProfileEntity userProfile : userProfiles) {
             List<BusinessUserStoreEntity> businessUserStores = businessUserStoreService.findAllStoreQueueAssociated(userProfile.getQueueUserId());
@@ -116,12 +123,30 @@ public class AnyTask {
                 BusinessTypeEnum businessType = bizStoreManager.getAllBizStores(businessUserStore.getBizNameId()).get(0).getBizName().getBusinessType();
                 if (userProfile.getBusinessType() == null) {
                     userProfile.setBusinessType(businessType);
+                    if (businessType == BusinessTypeEnum.DO) {
+                        if (!userProfile.getEmail().equalsIgnoreCase("vinay.wagh1982@gmail.com")
+                                && !userProfile.getEmail().equalsIgnoreCase("vinay_wagh1982@yahoo.in")
+                                && !userProfile.getEmail().equalsIgnoreCase("ssdhospital@gmail.com")) {
+                            userProfile.setLevel(UserLevelEnum.S_MANAGER);
+                            accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+
+                            ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(userProfile.getQueueUserId());
+                            if (null == professionalProfile) {
+                                professionalProfile = new ProfessionalProfileEntity(userProfile.getQueueUserId(), CommonUtil.generateHexFromObjectId());
+                                professionalProfileManager.save(professionalProfile);
+                            }
+
+                            roleCount ++;
+                        }
+                    }
                     accountService.save(userProfile);
+
                 } else {
                     LOG.info("Found userProfile with businessType={} updating with {}", userProfile.getBusinessType(), businessType);
                 }
             }
         }
+        LOG.info("Changed role count {}", roleCount);
 
         /* Update Business Category. */
         List<BizStoreEntity> bizStores = bizStoreManager.getAll(0, 1000);
