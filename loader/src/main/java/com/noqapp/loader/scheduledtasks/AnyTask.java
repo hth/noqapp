@@ -1,7 +1,13 @@
 package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.domain.*;
+import com.noqapp.domain.BizCategoryEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
@@ -18,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,7 +57,7 @@ public class AnyTask {
 
     @Autowired
     public AnyTask(
-        @Value("${oneTimeStatusSwitch:ON}")
+        @Value("${oneTimeStatusSwitch:OFF}")
         String oneTimeStatusSwitch,
 
         TokenQueueManager tokenQueueManager,
@@ -82,7 +87,7 @@ public class AnyTask {
      * Runs any requested task underneath.
      * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
-    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
+    //@Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
             return;
