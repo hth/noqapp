@@ -95,7 +95,13 @@ public class ServicedPersonalFCM {
             found = queues.size();
 
             for (QueueEntity queue : queues) {
-                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(queue.getQueueUserId(), queue.getDid());
+                RegisteredDeviceEntity registeredDevice;
+                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                    registeredDevice = registeredDeviceManager.findFCMToken(queue.getGuardianQid(), queue.getDid());
+                } else {
+                    registeredDevice = registeredDeviceManager.findFCMToken(queue.getQueueUserId(), queue.getDid());
+                }
+
                 //TODO add cache Redis.
                 if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
                     LOG.info("Skipped sending message qid={} did={}", queue.getQueueUserId(), queue.getDid());
