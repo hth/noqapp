@@ -55,7 +55,7 @@
             <!-- Complete profile -->
             <div class="admin-main">
                 <!-- File Upload From -->
-                <form:form action="${pageContext.request.contextPath}/business/upload.htm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/uploadServicePhoto.htm" method="post" enctype="multipart/form-data">
                 <div class="admin-title">
                     <h2>Add Business Photo</h2>
                 </div>
@@ -142,4 +142,5 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 </html>

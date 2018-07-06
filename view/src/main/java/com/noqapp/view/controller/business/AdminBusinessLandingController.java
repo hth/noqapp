@@ -607,8 +607,8 @@ public class AdminBusinessLandingController {
     /**
      * For uploading service image.
      */
-    @GetMapping (value = "/upload")
-    public String uploadLanding(
+    @GetMapping (value = "/uploadServicePhoto")
+    public String uploadServicePhoto(
             Model model,
             HttpServletResponse response
     ) throws IOException {
@@ -632,8 +632,8 @@ public class AdminBusinessLandingController {
     /**
      * For uploading service image.
      */
-    @PostMapping (value = "/upload")
-    public String upload(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
+    @PostMapping (value = "/uploadServicePhoto")
+    public String uploadServicePhoto(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
         Instant start = Instant.now();
         LOG.info("uploading image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -656,21 +656,21 @@ public class AdminBusinessLandingController {
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), businessUser.getBizName().getId(), multipartFile);
-                    return "redirect:/business/upload.htm";
+                    return "redirect:/business/uploadServicePhoto.htm";
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
-                        "/upload",
-                        "upload",
+                        "/uploadServicePhoto",
+                        "uploadServicePhoto",
                         AdminBusinessLandingController.class.getName(),
                         Duration.between(start, Instant.now()),
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/upload.htm";
+                return "redirect:/business/uploadServicePhoto.htm";
             }
         }
-        return "redirect:/business/upload.htm";
+        return "redirect:/business/uploadServicePhoto.htm";
     }
 
     private void processServiceImage(String qid, String bizNameId, MultipartFile multipartFile) throws IOException {
