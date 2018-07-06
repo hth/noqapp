@@ -55,6 +55,11 @@ public class ProfessionalProfileEntity extends BaseEntity {
     @Field("DD")
     private String dataDictionary;
 
+    @SuppressWarnings("unused")
+    public ProfessionalProfileEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
     public ProfessionalProfileEntity(@NotNull String queueUserId, @NotNull String webProfileId) {
         this.queueUserId = queueUserId;
         this.webProfileId = webProfileId;
