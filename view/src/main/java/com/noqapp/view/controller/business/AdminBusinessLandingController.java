@@ -57,6 +57,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -627,6 +628,29 @@ public class AdminBusinessLandingController {
         model.addAttribute("codeQR", businessUser.getBizName().getCodeQR());
         model.addAttribute("bucketName", bucketName);
         return "/business/servicePhoto";
+    }
+
+    @PostMapping (value = "/deleteServicePhoto")
+    public String deleteServicePhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOG.info("Delete image");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        LOG.info("Delete businessServiceImage={}", request.getParameter("businessServiceImage"));
+        fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("businessServiceImage"), businessUser.getBizName().getCodeQR());
+
+        BizNameEntity bizName = businessUser.getBizName();
+        Set<String> businessServiceImages = bizName.getBusinessServiceImages();
+        businessServiceImages.remove(request.getParameter("businessServiceImage"));
+        bizService.saveName(bizName);
+        return "redirect:/business/uploadServicePhoto.htm";
     }
 
     /**

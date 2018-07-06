@@ -138,12 +138,8 @@ public class FileService {
 
             while (businessServiceImages.size() >= 10) {
                 String lastImage = businessServiceImages.stream().findFirst().get();
-
-                /* Delete existing file business service image before the upload process began. */
-                ftpService.delete(lastImage, bizName.getCodeQR(), FtpService.SERVICE);
-                S3FileEntity s3File = new S3FileEntity(qid, lastImage, FtpService.SERVICE)
-                        .setCodeQR(bizName.getCodeQR());
-                s3FileManager.save(s3File);
+                deleteImage(qid, lastImage, bizName.getCodeQR());
+                /* Delete local reference. */
                 businessServiceImages.remove(lastImage);
             }
 
@@ -179,6 +175,16 @@ public class FileService {
                 tempFile.delete();
             }
         }
+    }
+
+    public void deleteImage(String qid, String imageName, String codeQR) {
+        /* Delete existing file business service image before the upload process began. */
+        ftpService.delete(imageName, codeQR, FtpService.SERVICE);
+
+        /* Delete from S3. */
+        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE)
+                .setCodeQR(codeQR);
+        s3FileManager.save(s3File);
     }
 
     /**
