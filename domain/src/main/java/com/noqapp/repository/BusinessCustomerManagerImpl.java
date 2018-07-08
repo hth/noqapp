@@ -1,7 +1,10 @@
 package com.noqapp.repository;
 
+import com.mongodb.DuplicateKeyException;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,6 +25,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 })
 @Repository
 public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessCustomerManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BusinessCustomerEntity.class,
             Document.class,
@@ -36,10 +40,16 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
 
     @Override
     public void save(BusinessCustomerEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
+        try {
+            if (object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } catch (DuplicateKeyException e) {
+            LOG.error("Already exists {} {} reason={}",
+                    object.getQueueUserId(), object.getBusinessCustomerId(), e.getLocalizedMessage(), e);
+
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override
