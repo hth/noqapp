@@ -53,4 +53,9 @@ public class BusinessCustomerEntity extends BaseEntity {
     public String getBusinessCustomerId() {
         return businessCustomerId;
     }
+
+    public BusinessCustomerEntity setBusinessCustomerId(String businessCustomerId) {
+        this.businessCustomerId = businessCustomerId;
+        return this;
+    }
 }
