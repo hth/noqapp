@@ -188,6 +188,15 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
+    public BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid).and("QR").is(codeQR)),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<BusinessUserStoreEntity> findAll() {
         return mongoTemplate.findAll(BusinessUserStoreEntity.class, TABLE);
     }

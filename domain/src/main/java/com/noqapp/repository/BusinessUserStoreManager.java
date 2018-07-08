@@ -35,6 +35,8 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     void removeFromStore(String qid, String bizStoreId);
 
+    BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR);
+
     /* Temp code until release. */
     @Deprecated
     List<BusinessUserStoreEntity> findAll();

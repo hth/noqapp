@@ -41,11 +41,10 @@ public class BusinessCustomerService {
      * Business Customer Id mapping with NoQueue QID.
      */
     @Mobile
-    public void addBusinessCustomer(String qid, String codeQR, String businessCustomerId) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+    public void addBusinessCustomer(String qid, String codeQR, String bizNameId, String businessCustomerId) {
         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(
                 qid,
-                bizStore.getBizName().getId(),
+                bizNameId,
                 businessCustomerId
         );
         businessCustomerManager.save(businessCustomer);
@@ -57,6 +56,18 @@ public class BusinessCustomerService {
     }
 
     @Mobile
+    public void editBusinessCustomer(String qid, String codeQR, String bizNameId, String businessCustomerId) {
+        BusinessCustomerEntity businessCustomer = businessCustomerManager.findOneByQid(qid, bizNameId);
+        businessCustomer.setBusinessCustomerId(businessCustomerId);
+        businessCustomerManager.save(businessCustomer);
+
+        /* Update queue with business customer id. */
+        QueueEntity queue = queueManager.findOneQueueByQid(qid, codeQR);
+        queue.setBusinessCustomerId(businessCustomerId);
+        queueManager.save(queue);
+    }
+
+        @Mobile
     public UserProfileEntity findByBusinessCustomerIdAndBizNameId(String businessCustomerId, String bizNameId) {
         BusinessCustomerEntity businessCustomer = findOneByCustomerId(businessCustomerId, bizNameId);
         if (null == businessCustomer) {
@@ -65,7 +76,7 @@ public class BusinessCustomerService {
         return userProfileManager.findByQueueUserId(businessCustomer.getQueueUserId());
     }
 
-    BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
+    public BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
        return businessCustomerManager.findOneByQid(qid, bizNameId);
     }
 

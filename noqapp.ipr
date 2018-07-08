@@ -466,6 +466,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.8.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.11.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -735,7 +736,6 @@
             <element id="library" level="project" name="Gradle: javax.ws.rs:javax.ws.rs-api:2.0.1" />
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.8.0/d9d56e3f038524c29c86afcd2db3d38a19c3bc11/mongo-java-driver-3.8.0.jar" />
           </element>
         </element>
       </root>
@@ -809,6 +809,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.8.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.11.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -1079,7 +1080,6 @@
             <element id="library" level="project" name="Gradle: javax.annotation:javax.annotation-api:1.2" />
             <element id="library" level="project" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.11" />
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.8.0/d9d56e3f038524c29c86afcd2db3d38a19c3bc11/mongo-java-driver-3.8.0.jar" />
           </element>
         </element>
       </root>
@@ -1165,6 +1165,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:5.0.7.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-crypto:5.0.0.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.8.0" />
             <element id="library" level="project" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.0" />
             <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.11.0" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
@@ -1451,7 +1452,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/security/out/production/resources" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.8.0/d9d56e3f038524c29c86afcd2db3d38a19c3bc11/mongo-java-driver-3.8.0.jar" />
           </element>
         </element>
       </root>

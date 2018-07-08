@@ -297,4 +297,9 @@ public class BusinessUserStoreService {
     public boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel) {
         return businessUserStoreManager.hasAccessWithUserLevel(qid, codeQR, userLevel);
     }
+
+    @Mobile
+    public BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR) {
+        return businessUserStoreManager.findOneByQidAndCodeQR(qid, codeQR);
+    }
 }

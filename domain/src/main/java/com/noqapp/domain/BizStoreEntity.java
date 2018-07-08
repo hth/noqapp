@@ -706,7 +706,7 @@ public class BizStoreEntity extends BaseEntity {
             }
         }
 
-        LOG.info("Average Service time {} in milliSeconds={}", time, averageServiceTime);
+        LOG.debug("Average Service time {} in milliSeconds={}", time, averageServiceTime);
         return time;
     }
 
