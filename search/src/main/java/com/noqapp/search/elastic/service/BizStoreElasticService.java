@@ -255,7 +255,13 @@ public class BizStoreElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String query, String cityName, String geoHash, String filters, String scrollId) {
+    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(
+            String query,
+            String cityName,
+            String geoHash,
+            String filters,
+            String scrollId
+    ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -275,12 +281,15 @@ public class BizStoreElasticService {
                 /* Term for exact query. */
                 //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
 
-                searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+                LOG.info("Search N={} GH={}", query, geoHash);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
@@ -305,7 +314,9 @@ public class BizStoreElasticService {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
-                searchSourceBuilder.query(geoDistanceQuery("GH").geohash(geoHash).distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
