@@ -269,7 +269,8 @@ public class BizStoreElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
                 /* Choose field match or matchAllQuery. */
-                searchSourceBuilder.query(QueryBuilders.multiMatchQuery(query, "N", "BC"));
+                //searchSourceBuilder.query(QueryBuilders.multiMatchQuery(query, "N", "BC"));
+                searchSourceBuilder.query(QueryBuilders.matchPhrasePrefixQuery("N", query));
 
                 /* Term for exact query. */
                 //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
