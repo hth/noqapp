@@ -276,7 +276,10 @@ public class BizStoreElasticService {
 
                 /* Choose field match or matchAllQuery. */
                 //searchSourceBuilder.query(QueryBuilders.multiMatchQuery(query, "N", "BC"));
-                searchSourceBuilder.query(QueryBuilders.matchPhrasePrefixQuery("N", query));
+                searchSourceBuilder.query(QueryBuilders
+                        .matchPhrasePrefixQuery("N", query)
+                        /* to limit the number of wildcard matches that can possibly match. */
+                        .maxExpansions(10));
 
                 /* Term for exact query. */
                 //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
