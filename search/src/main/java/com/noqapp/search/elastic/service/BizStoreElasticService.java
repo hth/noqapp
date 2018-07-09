@@ -289,6 +289,7 @@ public class BizStoreElasticService {
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+                LOG.info("Search N={} GH={}", query, geoHash);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
