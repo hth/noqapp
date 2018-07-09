@@ -89,7 +89,7 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>
                                             <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px;">${store.address}</a>
-                                            <span style="display:block; font-size:13px;">${store.town}, ${store.area}</span>
+                                            <span style="display:block; font-size:13px;">${store.area}, ${store.town}</span>
                                             <br/>
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.RS eq store.businessType
