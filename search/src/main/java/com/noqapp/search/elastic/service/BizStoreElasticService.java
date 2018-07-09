@@ -279,7 +279,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.query(QueryBuilders
                         .matchPhrasePrefixQuery("N", query)
                         /* to limit the number of wildcard matches that can possibly match. */
-                        .maxExpansions(10));
+                        .maxExpansions(1));
 
                 /* Term for exact query. */
                 //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
