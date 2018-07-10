@@ -179,7 +179,7 @@ public class ShowHTMLService {
         rootMap.put("domain", domain);
         rootMap.put("https", https);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
-        rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
+        rootMap.put("storeAddress", bizStore.getAddressWrappedFunky());
         rootMap.put("phone", bizStore.getPhoneFormatted());
         rootMap.put("displayName", bizStore.getDisplayName());
         rootMap.put("categoryName", CommonHelper.findCategoryName(bizStore));

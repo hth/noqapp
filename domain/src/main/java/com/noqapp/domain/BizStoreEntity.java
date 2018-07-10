@@ -235,8 +235,30 @@ public class BizStoreEntity extends BaseEntity {
         return split[split.length - 3] + ", " + (split[split.length - 2]).trim().split(" ")[0];
     }
 
+    @Deprecated
     public String getAddressWrappedMore() {
         return getAddressWrapped().replaceFirst(",", "<br/>");
+    }
+
+    @Transient
+    public String getAddressWrappedFunky() {
+        if (StringUtils.isNotBlank(area)) {
+            String[] split = address.split(area);
+            String address = split[0] + "<br/>";
+            if (StringUtils.isNotBlank(area)) {
+                address += area + ", ";
+            }
+
+            if (StringUtils.isNotBlank(area)) {
+                address += town + "," + "<br/>";
+            }
+
+            address += split[1].replace(", " + town + ",", "");
+            return address;
+        } else {
+            LOG.warn("Returning old address wrapping");
+            return getAddressWrappedMore();
+        }
     }
 
     /**
