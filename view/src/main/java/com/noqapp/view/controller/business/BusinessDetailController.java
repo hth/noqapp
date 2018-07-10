@@ -10,6 +10,8 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.json.xml.XmlBusinessCodeQR;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CodeQRGeneratorService;
@@ -102,9 +104,22 @@ public class BusinessDetailController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
-        String category = null;
-        if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
-            category = bizStore.getBizCategoryId();
+        String categoryName = null;
+        try {
+            if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
+                switch (bizStore.getBusinessType()) {
+                    case DO:
+                        categoryName = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
+                    case BK:
+                        categoryName = BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
+                    default:
+                        categoryName = bizStore.getBizCategoryId();
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting category {} {}", bizStore.getId(), bizStore.getBusinessType());
         }
 
         storeLandingForm
@@ -112,7 +127,7 @@ public class BusinessDetailController {
                 .setAddress(bizStore.getAddress())
                 .setPhone(bizStore.getPhoneFormatted())
                 .setDisplayName(bizStore.getDisplayName())
-                .setCategoryName(category)
+                .setCategoryName(categoryName)
                 .setStoreHours(storeHours);
 
         try {
