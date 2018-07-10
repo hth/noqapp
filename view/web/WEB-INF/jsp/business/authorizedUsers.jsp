@@ -117,7 +117,7 @@
                                                             <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">${queueSupervisor.email}</a>
                                                         </span>
                                                     </td>
-                                                    <td nowrap>
+                                                    <td nowrap width="130px;">
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
                                                             <select path="userLevel" class="form-field-select single-dropdown" style="display:block; font-size:13px;">
@@ -135,7 +135,7 @@
                                                     <td nowrap>
                                                         <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                                     </td>
-                                                    <td class="Tleft" nowrap>
+                                                    <td class="Tleft" width="90px" nowrap>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
                                                             <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
