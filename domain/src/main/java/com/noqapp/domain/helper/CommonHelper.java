@@ -1,8 +1,10 @@
 package com.noqapp.domain.helper;
 
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,5 +36,32 @@ public class CommonHelper {
                 LOG.error("Un-supported businessType={}", businessType);
                 throw new UnsupportedOperationException("Reached un-supported condition");
         }
+    }
+
+    /**
+     * Finds category name based on business type.
+     *
+     * @param bizStore
+     * @return
+     */
+    public static String findCategoryName(BizStoreEntity bizStore) {
+        String categoryName = null;
+        try {
+            if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
+                switch (bizStore.getBusinessType()) {
+                    case DO:
+                        categoryName = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
+                    case BK:
+                        categoryName = BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
+                    default:
+                        categoryName = bizStore.getBizCategoryId();
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting category {} {}", bizStore.getId(), bizStore.getBusinessType());
+        }
+        return categoryName;
     }
 }
