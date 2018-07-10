@@ -8,6 +8,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.xml.XmlBusinessCodeQR;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
@@ -17,7 +18,6 @@ import com.noqapp.service.PdfGenerateService;
 import com.noqapp.view.form.business.StoreLandingForm;
 import com.noqapp.view.helper.WebUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,17 +102,13 @@ public class BusinessDetailController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
-        String category = null;
-        if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
-            category = bizStore.getBizCategoryId();
-        }
 
         storeLandingForm
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setAddress(bizStore.getAddress())
                 .setPhone(bizStore.getPhoneFormatted())
                 .setDisplayName(bizStore.getDisplayName())
-                .setCategoryName(category)
+                .setCategoryName(CommonHelper.findCategoryName(bizStore))
                 .setStoreHours(storeHours);
 
         try {

@@ -9,6 +9,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
@@ -181,6 +182,7 @@ public class ShowHTMLService {
         rootMap.put("storeAddress", bizStore.getAddressWrappedMore());
         rootMap.put("phone", bizStore.getPhoneFormatted());
         rootMap.put("displayName", bizStore.getDisplayName());
+        rootMap.put("categoryName", CommonHelper.findCategoryName(bizStore));
         rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
         rootMap.put("tokenAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek())));
         rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));

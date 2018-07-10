@@ -65,23 +65,32 @@
                                         <td><h3><span>${storeLandingForm.businessName}</span></h3></td>
                                     </tr>
                                     <tr>
-                                        <td>${storeLandingForm.displayName}</td>
+                                        <td style="font-weight: bold; color: #222;">${storeLandingForm.displayName}</td>
                                     </tr>
                                     <c:if test="${!empty storeLandingForm.categoryName}">
                                     <tr>
-                                        <td>${storeLandingForm.categoryName}</td>
+                                        <td><strong>${storeLandingForm.categoryName}</strong></td>
                                     </tr>
                                     </c:if>
-                                    <tr>
-                                        <td>${storeLandingForm.address}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>${storeLandingForm.phone}</td>
-                                    </tr>
                                     <tr>
                                         <td>&nbsp;</td>
                                     </tr>
                                 </table>
+
+                                <div class="store-hours">
+                                    <p><strong>Location</strong></p>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>${storeLandingForm.address}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${storeLandingForm.phone}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </div>
 
                                 <div class="store-hours">
                                     <p><strong>Open & Closed Hours</strong></p>
