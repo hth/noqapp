@@ -2,6 +2,7 @@ package com.noqapp.view.controller.access;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -11,6 +12,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
@@ -69,6 +71,7 @@ public class UserProfileController {
     private ProfessionalProfileService professionalProfileService;
     private ProfessionalProfileValidator professionalProfileValidator;
     private FileService fileService;
+    private BusinessUserService businessUserService;
 
     @Autowired
     public UserProfileController(
@@ -85,7 +88,8 @@ public class UserProfileController {
             AccountService accountService,
             ProfessionalProfileService professionalProfileService,
             ProfessionalProfileValidator professionalProfileValidator,
-            FileService fileService
+            FileService fileService,
+            BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
         this.awsEndPoint = awsEndPoint;
@@ -96,6 +100,7 @@ public class UserProfileController {
         this.professionalProfileService = professionalProfileService;
         this.professionalProfileValidator = professionalProfileValidator;
         this.fileService = fileService;
+        this.businessUserService = businessUserService;
     }
 
     @GetMapping
@@ -111,40 +116,7 @@ public class UserProfileController {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
-        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
-
-        userProfileForm
-                .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
-                        ? "/static2/internal/img/profile-image-192x192.png"
-                        : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
-                .setGender(userProfile.getGender())
-                .setEmail(new ScrubbedInput(userProfile.getEmail()))
-                .setLastName(new ScrubbedInput(userProfile.getLastName()))
-                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
-                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                .setAddress(new ScrubbedInput(userProfile.getAddress()))
-                .setPhone(new ScrubbedInput(userProfile.getPhone()))
-                .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
-                .setEmailValidated(userAccount.isAccountValidated())
-                .setPhoneValidated(userAccount.isPhoneValidated());
-
-        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
-        if (null != professionalProfile) {
-            professionalProfileForm
-                    .setProfessionalProfile(true)
-                    .setPracticeStart(professionalProfile.getPracticeStart())
-                    .setEducation(professionalProfile.getEducation())
-                    .setLicenses(professionalProfile.getLicenses())
-                    .setAwards(professionalProfile.getAwards());
-
-            //Gymnastic to show BindingResult errors if any
-            if (model.asMap().containsKey("result")) {
-                model.addAttribute(
-                    "org.springframework.validation.BindingResult.professionalProfileForm",
-                    model.asMap().get("result"));
-            }
-        }
+        populateProfile(userProfileForm, professionalProfileForm, queueUser.getQueueUserId(), model);
 
         apiHealthService.insert(
                 "/",
@@ -153,6 +125,75 @@ public class UserProfileController {
                 Duration.between(start, Instant.now()),
                 HealthStatusEnum.G);
         return nextPage;
+    }
+
+    /** Supports read only profile for Admin. */
+    @GetMapping(value = "/show")
+    public String showProfileForBusinessAdmin(
+        @ModelAttribute("userProfileForm")
+        UserProfileForm userProfileForm,
+
+        @ModelAttribute("professionalProfileForm")
+        ProfessionalProfileForm professionalProfileForm,
+
+        Model model
+    ) {
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String businessUserId = (String) model.asMap().get("businessUserId");
+        LOG.info("Landed on profile page qid={} for businessUserId={}", queueUser.getQueueUserId(), businessUserId);
+        BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
+        populateProfile(userProfileForm, professionalProfileForm, businessUser.getQueueUserId(), model);
+
+        apiHealthService.insert(
+            "/",
+            "landing",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return nextPage;
+    }
+
+    public void populateProfile(
+        UserProfileForm userProfileForm,
+        ProfessionalProfileForm professionalProfileForm,
+        String queueUserId,
+        Model model
+    ) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUserId);
+        UserAccountEntity userAccount = accountService.findByQueueUserId(queueUserId);
+
+        userProfileForm
+            .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
+                ? "/static2/internal/img/profile-image-192x192.png"
+                : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
+            .setGender(userProfile.getGender())
+            .setEmail(new ScrubbedInput(userProfile.getEmail()))
+            .setLastName(new ScrubbedInput(userProfile.getLastName()))
+            .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+            .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setPhone(new ScrubbedInput(userProfile.getPhone()))
+            .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+            .setEmailValidated(userAccount.isAccountValidated())
+            .setPhoneValidated(userAccount.isPhoneValidated());
+
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUserId);
+        if (null != professionalProfile) {
+            professionalProfileForm
+                .setProfessionalProfile(true)
+                .setPracticeStart(professionalProfile.getPracticeStart())
+                .setEducation(professionalProfile.getEducation())
+                .setLicenses(professionalProfile.getLicenses())
+                .setAwards(professionalProfile.getAwards());
+
+            //Gymnastic to show BindingResult errors if any
+            if (model.asMap().containsKey("result")) {
+                model.addAttribute(
+                    "org.springframework.validation.BindingResult.professionalProfileForm",
+                    model.asMap().get("result"));
+            }
+        }
     }
 
     /** Updates basic profile. */
