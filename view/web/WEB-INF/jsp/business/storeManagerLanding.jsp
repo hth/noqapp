@@ -93,7 +93,7 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>
                                             <a href="/business/detail/store/${store.id}.htm">
-                                                <span style="display:block; font-size:13px;">${store.address}</span>
+                                                <span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span>
                                             </a>
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.ST eq store.businessType}">
