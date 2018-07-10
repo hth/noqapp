@@ -105,7 +105,7 @@ public class BusinessDetailController {
 
         storeLandingForm
                 .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setAddress(bizStore.getAddress())
+                .setAddress(bizStore.getAddressWrappedFunky())
                 .setPhone(bizStore.getPhoneFormatted())
                 .setDisplayName(bizStore.getDisplayName())
                 .setCategoryName(CommonHelper.findCategoryName(bizStore))
