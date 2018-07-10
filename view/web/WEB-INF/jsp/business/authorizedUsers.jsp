@@ -112,7 +112,11 @@
                                                         <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
                                                         <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
                                                     </td>
-                                                    <td><span style="display:block; font-size:13px;">${queueSupervisor.email}</span></td>
+                                                    <td>
+                                                        <span style="display:block; font-size:13px;">
+                                                            <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">${queueSupervisor.email}</a>
+                                                        </span>
+                                                    </td>
                                                     <td nowrap>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">

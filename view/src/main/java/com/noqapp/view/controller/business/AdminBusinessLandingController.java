@@ -371,6 +371,28 @@ public class AdminBusinessLandingController {
         return queueUserDetailFlow;
     }
 
+    @GetMapping (value ="/queueUserProfile/{businessUserId}", produces = "text/html;charset=UTF-8")
+    public String queueUserProfile(
+        @PathVariable ("businessUserId")
+        ScrubbedInput businessUserId,
+
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("QueueUserDetail businessUserId={} {}", businessUserId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), queueUserDetailFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        redirectAttributes.addFlashAttribute("businessUserId", businessUserId.getText());
+        return "redirect:/access/userProfile/show.htm";
+    }
+
     /**
      * Approve or reject new supervisor. If approving a doctor then the role is set of a manager as default.
      * Each queue will only have one manager. If a doctor is removed from a queue, will not lose its role

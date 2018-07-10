@@ -55,6 +55,7 @@
             <!-- Complete profile -->
             <div class="admin-main">
                 <!-- File Upload From -->
+                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                 <form:form action="${pageContext.request.contextPath}/access/userProfile/upload.htm" method="post" enctype="multipart/form-data">
                     <div class="admin-title">
                         <h2>Profile Image</h2>
@@ -89,6 +90,7 @@
                         </div>
                     </div>
                 </form:form>
+                </c:if>
 
                 <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" method="post" modelAttribute="userProfileForm">
                     <div class="admin-title">
@@ -229,7 +231,7 @@
                                 </li>
                                 </c:if>
 
-                                <c:if test="${userProfileForm.emailValidated}">
+                                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
                                     <div class="left-btn">
@@ -279,7 +281,7 @@
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
-                            <c:if test="${userProfileForm.emailValidated}">
+                            <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                             <div class="col-lable3"></div>
                             <div class="col-fields">
                                 <div class="left-btn">
@@ -316,7 +318,10 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
+
+                                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify.htm" class="add-btn">Add/Edit Awards</a>
+                                </c:if>
                             </fieldset>
 
                             <fieldset>
@@ -341,7 +346,10 @@
                                     </c:otherwise>
                                 </c:choose>
                                 </div>
+
+                                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify.htm" class="add-btn">Add/Edit Education</a>
+                                </c:if>
                             </fieldset>
 
                             <fieldset>
@@ -366,7 +374,10 @@
                                     </c:otherwise>
                                 </c:choose>
                                 </div>
+
+                                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
+                                </c:if>
                             </fieldset>
                         </ul>
                     </div>
