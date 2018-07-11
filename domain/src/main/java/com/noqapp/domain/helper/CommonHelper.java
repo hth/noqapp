@@ -45,6 +45,7 @@ public class CommonHelper {
      * @return
      */
     public static String findCategoryName(BizStoreEntity bizStore) {
+        /* Pass blank category name as FTL fails to process when its null OR add IF condition in FTL. */
         String categoryName = null;
         try {
             if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
