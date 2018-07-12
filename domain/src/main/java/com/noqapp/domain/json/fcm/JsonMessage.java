@@ -11,38 +11,38 @@ import org.slf4j.LoggerFactory;
  * User: hitender
  * Date: 1/1/17 7:04 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
-@JsonAutoDetect (
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonMessage extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMessage.class);
 
     /* Can be topic or token. */
-    @JsonProperty ("to")
+    @JsonProperty("to")
     private String to;
 
-    @JsonProperty ("priority")
+    @JsonProperty("priority")
     private String priority = "high";
 
-    @JsonProperty ("content_available")
+    @JsonProperty("content_available")
     private boolean content_available = true;
 
-    @JsonProperty ("data")
+    @JsonProperty("data")
     private JsonData data;
 
-    @JsonProperty ("notification")
+    @JsonProperty("notification")
     private JsonNotification notification;
 
     /**

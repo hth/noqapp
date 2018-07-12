@@ -9,33 +9,33 @@ import com.noqapp.domain.types.QueueUserStateEnum;
  * User: hitender
  * Date: 3/7/17 11:07 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
-@JsonAutoDetect (
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonClientData extends JsonData {
 
-    @JsonProperty ("qr")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("u")
+    @JsonProperty("u")
     private QueueUserStateEnum queueUserState;
 
-    @JsonProperty ("o")
+    @JsonProperty("o")
     private String topic;
 
     public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType) {
