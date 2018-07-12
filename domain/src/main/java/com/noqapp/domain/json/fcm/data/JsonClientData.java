@@ -29,6 +29,9 @@ public class JsonClientData extends JsonData {
     @JsonProperty ("qr")
     private String codeQR;
 
+    @JsonProperty("t")
+    private int token;
+
     @JsonProperty ("u")
     private QueueUserStateEnum queueUserState;
 
@@ -45,6 +48,15 @@ public class JsonClientData extends JsonData {
 
     public JsonClientData setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public JsonClientData setToken(int token) {
+        this.token = token;
         return this;
     }
 
