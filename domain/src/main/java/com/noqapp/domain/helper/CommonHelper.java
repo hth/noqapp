@@ -25,7 +25,6 @@ public class CommonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(CommonHelper.class);
 
     public static Map<String, String> getCategories(BusinessTypeEnum businessType) {
-        Map<String, String> map;
         switch (businessType) {
             case DO:
                 List<MedicalDepartmentEnum> medicalDepartmentEnums = Stream.of(MedicalDepartmentEnum.values())
@@ -40,7 +39,7 @@ public class CommonHelper {
                     .sorted(Comparator.comparing(BankDepartmentEnum::getDescription))
                     .collect(Collectors.toList());
 
-                map = new LinkedHashMap<>();
+                Map<String, String> map = new LinkedHashMap<>();
                 for (BankDepartmentEnum bankDepartment : bankDepartmentEnums) {
                     map.put(bankDepartment.name(), bankDepartment.getDescription());
                 }
