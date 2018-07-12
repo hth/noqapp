@@ -90,12 +90,6 @@ public class BusinessUserStoreEntity extends BaseEntity {
         return userLevel;
     }
 
-    @Deprecated
-    public BusinessUserStoreEntity setUserLevel(UserLevelEnum userLevel) {
-        this.userLevel = userLevel;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

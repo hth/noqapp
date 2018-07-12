@@ -256,7 +256,7 @@ public class BizStoreEntity extends BaseEntity {
             address += split[1].replace(", " + town + ",", "");
             return address;
         } else {
-            LOG.warn("Returning old address wrapping");
+            LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
             return getAddressWrappedMore();
         }
     }
