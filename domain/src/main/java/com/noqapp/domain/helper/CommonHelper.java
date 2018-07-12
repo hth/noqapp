@@ -8,9 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * User: hitender
@@ -20,13 +25,26 @@ public class CommonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(CommonHelper.class);
 
     public static Map<String, String> getCategories(BusinessTypeEnum businessType) {
+        Map<String, String> map;
         switch (businessType) {
             case DO:
-                return Stream.of(MedicalDepartmentEnum.values())
-                    .collect(Collectors.toMap(MedicalDepartmentEnum::getName, MedicalDepartmentEnum::getDescription));
+                List<MedicalDepartmentEnum> medicalDepartmentEnums = Stream.of(MedicalDepartmentEnum.values())
+                    .sorted(Comparator.comparing(MedicalDepartmentEnum::getDescription))
+                    .collect(Collectors.toList());
+
+                /* https://javarevisited.blogspot.com/2017/07/how-to-sort-map-by-keys-in-java-8.html */
+                return medicalDepartmentEnums.stream()
+                    .collect(toMap(MedicalDepartmentEnum::getName, MedicalDepartmentEnum::getDescription, (e1, e2) -> e2, LinkedHashMap::new));
             case BK:
-                return Stream.of(BankDepartmentEnum.values())
-                    .collect(Collectors.toMap(BankDepartmentEnum::getName, BankDepartmentEnum::getDescription));
+                List<BankDepartmentEnum> bankDepartmentEnums = Stream.of(BankDepartmentEnum.values())
+                    .sorted(Comparator.comparing(BankDepartmentEnum::getDescription))
+                    .collect(Collectors.toList());
+
+                map = new LinkedHashMap<>();
+                for (BankDepartmentEnum bankDepartment : bankDepartmentEnums) {
+                    map.put(bankDepartment.name(), bankDepartment.getDescription());
+                }
+                return map;
             case PH:
             case RS:
             case ST:
