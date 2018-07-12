@@ -6,39 +6,39 @@ import com.fasterxml.jackson.annotation.*;
  * User: hitender
  * Date: 1/7/17 1:42 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
-@JsonAutoDetect (
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonNotification {
 
-    @JsonProperty ("title")
+    @JsonProperty("title")
     private String title;
 
-    @JsonProperty ("title-loc-key")
+    @JsonProperty("title-loc-key")
     private String titleLocKey;
 
-    @JsonProperty ("title-loc-args")
+    @JsonProperty("title-loc-args")
     private String[] titleLocArgs;
 
-    @JsonProperty ("body")
+    @JsonProperty("body")
     private String body;
 
-    @JsonProperty ("loc-key")
+    @JsonProperty("loc-key")
     private String locKey;
 
-    @JsonProperty ("loc-args")
+    @JsonProperty("loc-args")
     private String[] locArgs;
 
     public String getTitle() {

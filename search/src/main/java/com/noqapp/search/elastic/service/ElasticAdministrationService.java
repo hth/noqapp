@@ -129,11 +129,7 @@ public class ElasticAdministrationService {
         }
     }
 
-    /**
-     * Delete all indices.
-     *
-     * @return
-     */
+    /** Delete all indices. */
     public boolean deleteAllIndices() {
         return deleteIndex("*");
     }
