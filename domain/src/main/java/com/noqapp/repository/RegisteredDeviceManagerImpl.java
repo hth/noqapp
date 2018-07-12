@@ -4,6 +4,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,19 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 query,
                 RegisteredDeviceEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, String token, boolean sinceBeginning) {
+        return mongoTemplate.updateFirst(
+            query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+            update("QID", qid)
+                .set("DT", deviceType)
+                .set("TK", token)
+                .set("SB", sinceBeginning),
+            RegisteredDeviceEntity.class,
+            TABLE
+        ).getModifiedCount() > 0;
     }
 
     @Override
