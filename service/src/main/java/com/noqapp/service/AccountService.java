@@ -617,9 +617,4 @@ public class AccountService {
     void addUserProfileImage(String qid, String profileImage) {
         userProfileManager.addUserProfileImage(qid, profileImage);
     }
-
-    @Deprecated
-    public List<UserProfileEntity> findAll() {
-        return userProfileManager.findAll();
-    }
 }

@@ -155,12 +155,6 @@ public class QueueEntity extends BaseEntity {
         return businessType;
     }
 
-    @Deprecated
-    public QueueEntity setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
-        return this;
-    }
-
     public QueueUserStateEnum getQueueUserState() {
         return queueUserState;
     }
