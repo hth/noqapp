@@ -29,13 +29,13 @@ public class FreemarkerService {
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
-    public String freemarkerToString(String ftl, Map<String, Object> rootMap) throws IOException, TemplateException {
+    String freemarkerToString(String ftl, Map<String, Object> rootMap) throws IOException, TemplateException {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
         Template template = cfg.getTemplate(ftl);
         return processTemplateIntoString(template, rootMap);
     }
 
-    public String freemarkerToStringComplex(String ftl, Map<String, Map<String, Object>> rootMap) throws IOException, TemplateException {
+    String freemarkerToStringComplex(String ftl, Map<String, Map<String, Object>> rootMap) throws IOException, TemplateException {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
         Template template = cfg.getTemplate(ftl);
         return processTemplateIntoString(template, rootMap);
