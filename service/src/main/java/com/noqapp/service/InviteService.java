@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.InviteEntity;
-import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.InviteManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +30,5 @@ public class InviteService {
 
     public void save(InviteEntity invite) {
         inviteManager.save(invite);
-    }
-
-    @Mobile
-    public int getRemoteJoinCount(String qid) {
-        return inviteManager.getRemoteJoinCount(qid);
-    }
-
-    @Mobile
-    public boolean deductRemoteJoinCount(String qid) {
-        return inviteManager.deductRemoteJoinCount(qid);
     }
 }
