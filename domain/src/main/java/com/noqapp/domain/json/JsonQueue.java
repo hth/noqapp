@@ -126,7 +126,10 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("as")
     private long averageServiceTime;
 
-    @JsonProperty("ja")
+    //***************************/
+    //*  Queue Settings Starts. */
+    //***************************/
+    @JsonProperty("rj")
     private boolean remoteJoinAvailable = false;
 
     @JsonProperty("lu")
@@ -134,6 +137,9 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty("at")
     private int availableTokenCount;
+    //***************************/
+    //*  Queue Settings Ends.   */
+    //***************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;
