@@ -210,10 +210,4 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 UserProfileEntity.class,
                 TABLE);
     }
-
-    @Deprecated
-    @Override
-    public List<UserProfileEntity> findAll() {
-        return mongoTemplate.findAll(UserProfileEntity.class);
-    }
 }
