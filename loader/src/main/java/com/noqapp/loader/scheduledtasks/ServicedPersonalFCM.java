@@ -151,6 +151,7 @@ public class ServicedPersonalFCM {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P)
                 .setCodeQR(queue.getCodeQR())
+                .setQueueUserId(queue.getQueueUserId())
                 .setToken(queue.getTokenNumber())
                 .setQueueUserState(queue.getQueueUserState())
                 .setTopic(topic);
