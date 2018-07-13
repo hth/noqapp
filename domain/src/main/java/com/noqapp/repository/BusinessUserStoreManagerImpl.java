@@ -1,9 +1,12 @@
 package com.noqapp.repository;
 
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.types.UserLevelEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,6 +32,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 })
 @Repository
 public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessUserStoreManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BusinessUserStoreEntity.class,
             Document.class,
@@ -197,7 +201,15 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public List<BusinessUserStoreEntity> findAll() {
-        return mongoTemplate.findAll(BusinessUserStoreEntity.class, TABLE);
+    public long updateUserLevel(String qid, UserLevelEnum userLevel) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+                query(where("QID").is(qid)),
+                entityUpdate(update("UL", userLevel)),
+                BusinessUserStoreEntity.class,
+                TABLE
+        );
+
+        LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
+        return updateResult.getModifiedCount();
     }
 }
