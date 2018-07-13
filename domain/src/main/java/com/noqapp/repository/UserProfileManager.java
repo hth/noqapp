@@ -47,4 +47,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     List<UserProfileEntity> findMinorProfiles(String phone);
 
     void addUserProfileImage(String qid, String profileImage);
+
+    List<UserProfileEntity> findAll();
 }

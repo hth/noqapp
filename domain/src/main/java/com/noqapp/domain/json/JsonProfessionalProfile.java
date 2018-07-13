@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -133,6 +134,10 @@ public class JsonProfessionalProfile extends AbstractDomain {
 
     @JsonIgnore
     public int experienceDuration() {
-        return DateUtil.getYearsBetween(DateUtil.convertToDate(practiceStart), new Date());
+        if (StringUtils.isNotBlank(practiceStart)) {
+            return DateUtil.getYearsBetween(DateUtil.convertToDate(practiceStart), new Date());
+        }
+
+        return 0;
     }
 }

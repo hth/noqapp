@@ -230,7 +230,7 @@ public class ShowHTMLService {
         return true;
     }
 
-    public boolean populateMedicalProfile(
+    boolean populateMedicalProfile(
             Map<String, Map<String, Object>> rootMap,
             UserProfileEntity userProfile,
             JsonProfessionalProfile jsonProfessionalProfile,
