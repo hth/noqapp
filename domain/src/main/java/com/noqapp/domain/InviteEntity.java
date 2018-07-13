@@ -1,7 +1,6 @@
 package com.noqapp.domain;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,6 +31,7 @@ public class InviteEntity extends BaseEntity {
     @Field ("QID")
     private String queueUserId;
 
+    @Deprecated
     /* RJQ maps to QID. */
     @NotNull
     @Field ("RJQ")
@@ -45,6 +45,7 @@ public class InviteEntity extends BaseEntity {
     @Field ("IID")
     private String inviterId;
 
+    @Deprecated
     /* IID maps to RJI. */
     @NotNull
     @Field ("RJI")
