@@ -45,7 +45,7 @@ public class AnyTask {
      * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
     @SuppressWarnings("all")
-//    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
+    //@Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
             return;
