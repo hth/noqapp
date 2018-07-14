@@ -473,7 +473,8 @@ public class TokenQueueService {
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(tokenQueue.getId())
                     .setQueueStatus(queueStatus)
-                    .setGoTo("");
+                    .setGoTo("")
+                    .setBusinessType(tokenQueue.getBusinessType());
 
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
@@ -516,7 +517,8 @@ public class TokenQueueService {
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(codeQR)
                     .setQueueStatus(queueStatus)
-                    .setGoTo(goTo);
+                    .setGoTo(goTo)
+                    .setBusinessType(tokenQueue.getBusinessType());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
@@ -603,7 +605,8 @@ public class TokenQueueService {
                     .setCurrentlyServing(tokenNumber)
                     .setCodeQR(codeQR)
                     .setQueueStatus(queueStatus)
-                    .setGoTo(goTo);
+                    .setGoTo(goTo)
+                    .setBusinessType(tokenQueue.getBusinessType());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
