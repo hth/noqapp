@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.fasterxml.jackson.annotation.*;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
@@ -42,6 +43,9 @@ public class JsonTopicData extends JsonData {
 
     @JsonProperty("g")
     private String goTo;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     public JsonTopicData(FirebaseMessageTypeEnum firebaseMessageType) {
         super(firebaseMessageType);
@@ -98,6 +102,15 @@ public class JsonTopicData extends JsonData {
 
     public JsonTopicData setGoTo(String goTo) {
         this.goTo = goTo;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonTopicData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 }
