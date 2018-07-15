@@ -101,7 +101,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void increaseAttemptToSendNotificationCount(String id);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review);
 
     @Mobile
     List<QueueEntity> findAllClientQueuedOrAborted(String codeQR);

@@ -3,7 +3,6 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByQid(String qid, Date lastAccessed);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review);
 
     @Mobile
     boolean hasClientVisitedThisStore(String codeQR, String qid);

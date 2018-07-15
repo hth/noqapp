@@ -25,6 +25,7 @@ as a value, then it gets endless connections.
         NS TINYINT(1),
         RA TINYINT(1),
         HR TINYINT(1),
+        RV VARCHAR(256),
         SN VARCHAR(20),
         SB DATETIME,
         SE DATETIME,
@@ -49,7 +50,13 @@ as a value, then it gets endless connections.
     ADD COLUMN `XX` TINYINT(1) NULL DEFAULT NULL AFTER `XY`,
     ADD COLUMN `TS` VARCHAR(1) NOT NULL DEFAULT 'C' AFTER `DID`,
     ADD COLUMN `BT` VARCHAR(2) NOT NULL DEFAULT 'DO' AFTER `DN`,
+    ADD COLUMN `RV` VARCHAR(256) AFTER `HR`,
     ADD COLUMN `XA` DATETIME NULL DEFAULT NULL AFTER `XX`;
+    
+#### Alter Table
+        
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `RV` VARCHAR(256) AFTER `HR`;
     
 #### Insert System Date
     

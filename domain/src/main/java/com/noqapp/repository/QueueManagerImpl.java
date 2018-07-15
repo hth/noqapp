@@ -379,7 +379,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved) {
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
             query = query(
@@ -405,7 +405,7 @@ public class QueueManagerImpl implements QueueManager {
 
         return mongoTemplate.updateFirst(
                 query,
-                entityUpdate(update("RA", ratingCount).set("HR", hoursSaved)),
+                entityUpdate(update("RA", ratingCount).set("HR", hoursSaved).set("RV", review)),
                 QueueEntity.class,
                 TABLE
         ).getModifiedCount() > 0;
