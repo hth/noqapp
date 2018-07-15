@@ -51,143 +51,143 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN')">
-                <div class="admin-main">
-                    <form:form modelAttribute="register">
-                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                        <div class="admin-title">
-                            <h2>Edit business details</h2>
-                        </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <div id="storeDetail">
-                                    <div class="admin-title pT30">
-                                        <h2>Review Business details</h2>
-                                    </div>
-                                    <ul class="list-form">
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.name" cssErrorClass="lb_error">Business Name</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.name" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.businessType" cssErrorClass="lb_error">Business Type</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:select path="registerBusiness.businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                    <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
-                                                </form:select>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.address" cssErrorClass="lb_error">Business Address</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:textarea path="registerBusiness.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.area" cssErrorClass="lb_error">Business Town</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.area" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.town" cssErrorClass="lb_error">Business City</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.town" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        <li>
-                                            <div class="col-lable3">
-                                                <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
-                                            </div>
-                                            <div class="col-fields">
-                                                <form:input path="registerBusiness.phone" cssClass="form-field-admin" readonly="true"/>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                    </ul>
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_SUPERVISOR')">
+            <div class="admin-main">
+                <form:form modelAttribute="register">
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                    <div class="admin-title">
+                        <h2>Edit business details</h2>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <div id="storeDetail">
+                                <div class="admin-title pT30">
+                                    <h2>Review Business details</h2>
                                 </div>
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.name" cssErrorClass="lb_error">Business Name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.name" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.businessType" cssErrorClass="lb_error">Business Type</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="registerBusiness.businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.address" cssErrorClass="lb_error">Business Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="registerBusiness.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.area" cssErrorClass="lb_error">Business Town</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.area" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.town" cssErrorClass="lb_error">Business City</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.town" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.phone" cssErrorClass="lb_error">Business Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.phone" cssClass="form-field-admin" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                </ul>
+                            </div>
 
-                                <div class="full">
-                                    <div class="admin-title pT30">
-                                        <h2>Business Amenities</h2>
-                                    </div>
-                                    <ul class="col3-grid">
-                                        <c:choose>
-                                            <c:when test="${!empty register.registerBusiness.amenities}">
-                                                <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenities}" disabled="true"/>
-                                                <div class="clearFix"></div>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="alert-info">
-                                                    <p>
-                                                        No amenity has been selected
-                                                    </p>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </ul>
-
-                                    <div class="admin-title pT30">
-                                        <h2>Business Facilities</h2>
-                                    </div>
-                                    <ul class="col3-grid">
-                                        <c:choose>
-                                            <c:when test="${!empty register.registerBusiness.facilities}">
-                                                <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilities}" disabled="true"/>
-                                                <div class="clearFix"></div>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="alert-info">
-                                                    <p>
-                                                        No facility has been selected
-                                                    </p>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </ul>
+                            <div class="full">
+                                <div class="admin-title pT30">
+                                    <h2>Business Amenities</h2>
                                 </div>
+                                <ul class="col3-grid">
+                                    <c:choose>
+                                        <c:when test="${!empty register.registerBusiness.amenities}">
+                                            <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenities}" disabled="true"/>
+                                            <div class="clearFix"></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert-info">
+                                                <p>
+                                                    No amenity has been selected
+                                                </p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </ul>
 
-                                <div class="btn-hours">
-                                    <div class="button-btn">
-                                        <button name="_eventId_update" class="ladda-button next-btn" style="width:32%; float: left">Update</button>
-                                        <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
-                                        <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
-                                    </div>
-                                    <%--<c:if test="${register.registerUser.emailValidated}">--%>
-                                    <%--<div class="first-btn">--%>
-                                    <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
-                                    <%--</div>--%>
-                                    <%--</c:if>--%>
-                                    <%--<div class="center-btn">--%>
-                                    <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
-                                    <%--</div>--%>
-                                    <%--<div class="last-btn">--%>
-                                    <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
-                                    <div class="clearFix"></div>
+                                <div class="admin-title pT30">
+                                    <h2>Business Facilities</h2>
                                 </div>
+                                <ul class="col3-grid">
+                                    <c:choose>
+                                        <c:when test="${!empty register.registerBusiness.facilities}">
+                                            <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilities}" disabled="true"/>
+                                            <div class="clearFix"></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert-info">
+                                                <p>
+                                                    No facility has been selected
+                                                </p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </ul>
+                            </div>
+
+                            <div class="btn-hours">
+                                <div class="button-btn">
+                                    <button name="_eventId_update" class="ladda-button next-btn" style="width:32%; float: left">Update</button>
+                                    <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
+                                    <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
+                                </div>
+                                <%--<c:if test="${register.registerUser.emailValidated}">--%>
+                                <%--<div class="first-btn">--%>
+                                <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
+                                <%--</div>--%>
+                                <%--</c:if>--%>
+                                <%--<div class="center-btn">--%>
+                                <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
+                                <%--</div>--%>
+                                <%--<div class="last-btn">--%>
+                                <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                <%--</div>--%>
+                                <div class="clearFix"></div>
                             </div>
                         </div>
-                    </form:form>
-                </div>
-                <!-- Add New Supervisor -->
+                    </div>
+                </form:form>
+            </div>
+            <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>
