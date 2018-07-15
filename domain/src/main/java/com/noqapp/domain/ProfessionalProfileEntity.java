@@ -2,14 +2,20 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonNameDatePair;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.beans.Transient;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * hitender

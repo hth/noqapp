@@ -1,12 +1,14 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
-import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.repository.ProfessionalProfileManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,8 +2,10 @@ package com.noqapp.view.validator;
 
 import com.noqapp.view.form.ForgotRecoverForm;
 import com.noqapp.view.form.SearchForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

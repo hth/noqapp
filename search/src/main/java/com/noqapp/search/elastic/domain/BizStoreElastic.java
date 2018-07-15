@@ -1,6 +1,7 @@
 package com.noqapp.search.elastic.domain;
 
-import com.fasterxml.jackson.annotation.*;
+import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
@@ -10,13 +11,26 @@ import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.helper.BusinessImageHolder;
 import com.noqapp.search.elastic.helper.DomainConversion;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 
-import java.util.*;
-
-import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Json for elastic search.

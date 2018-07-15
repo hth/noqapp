@@ -3,11 +3,11 @@ package com.noqapp.view.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.pieroxy.ua.detection.UserAgentDetectionResult;
 import net.pieroxy.ua.detection.UserAgentDetector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 

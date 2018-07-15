@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -9,6 +8,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

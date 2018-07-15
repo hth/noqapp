@@ -3,8 +3,10 @@ package com.noqapp.view.flow.open;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.service.MailService;
 import com.noqapp.view.form.MerchantRegistrationForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 /**

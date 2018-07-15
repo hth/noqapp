@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
@@ -23,10 +25,13 @@ import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.DuplicateAccountException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,8 +43,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender

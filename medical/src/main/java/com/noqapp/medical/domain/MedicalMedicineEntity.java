@@ -3,6 +3,7 @@ package com.noqapp.medical.domain;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.MedicationTypeEnum;
 import com.noqapp.domain.types.MedicationWithFoodEnum;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;

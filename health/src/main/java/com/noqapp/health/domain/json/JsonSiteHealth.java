@@ -1,12 +1,14 @@
 package com.noqapp.health.domain.json;
 
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonQueue;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.json.JsonQueue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

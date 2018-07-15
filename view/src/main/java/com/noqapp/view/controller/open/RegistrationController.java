@@ -1,7 +1,15 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.common.utils.ParseJsonStringToMap;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.MailService;
 import com.noqapp.service.exceptions.DuplicateAccountException;
+import com.noqapp.view.form.MerchantRegistrationForm;
+import com.noqapp.view.helper.AvailabilityStatus;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -15,14 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.MailService;
-import com.noqapp.common.utils.ParseJsonStringToMap;
-import com.noqapp.view.form.MerchantRegistrationForm;
-import com.noqapp.view.helper.AvailabilityStatus;
 
 import java.io.IOException;
 

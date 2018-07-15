@@ -1,5 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -19,17 +21,18 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutorService;
-
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender

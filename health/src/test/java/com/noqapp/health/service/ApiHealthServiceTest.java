@@ -1,18 +1,19 @@
 package com.noqapp.health.service;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+
 import com.noqapp.health.domain.ApiHealthNowEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.Duration;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 
 /**
  * hitender

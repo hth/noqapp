@@ -1,6 +1,5 @@
 package com.noqapp.view.flow.merchant.validator;
 
-import com.google.maps.model.LatLng;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
@@ -16,10 +15,15 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
+
+import com.google.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;

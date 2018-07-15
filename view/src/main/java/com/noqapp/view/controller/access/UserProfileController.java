@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.access;
 
+import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
+
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
@@ -19,30 +21,36 @@ import com.noqapp.view.form.ProfessionalProfileEditForm;
 import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
 import com.noqapp.view.validator.ProfessionalProfileValidator;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * hitender

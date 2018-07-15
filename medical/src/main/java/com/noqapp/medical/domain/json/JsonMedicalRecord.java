@@ -1,11 +1,13 @@
 package com.noqapp.medical.domain.json;
 
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.BusinessTypeEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.BusinessTypeEnum;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

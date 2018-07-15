@@ -1,15 +1,18 @@
 package com.noqapp.search.elastic.domain;
 
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonCategory;
+import com.noqapp.search.elastic.json.ElasticBizStoreSource;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.json.JsonCategory;
-import com.noqapp.search.elastic.json.ElasticBizStoreSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;

@@ -1,11 +1,18 @@
 package com.noqapp.domain.json;
 
-import com.fasterxml.jackson.annotation.*;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

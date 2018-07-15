@@ -1,11 +1,12 @@
 package com.noqapp.domain.json.xml;
 
+import com.noqapp.common.utils.AbstractDomain;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.noqapp.common.utils.AbstractDomain;
 
 import java.net.URI;
 

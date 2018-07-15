@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.access;
 
+import com.noqapp.domain.site.QueueUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,8 +11,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.noqapp.domain.site.QueueUser;
 
 import java.io.IOException;
 

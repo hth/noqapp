@@ -1,11 +1,23 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.result.UpdateResult;
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.InviteEntity;
 import com.noqapp.domain.aggregate.GroupedValue;
+
+import com.mongodb.client.result.UpdateResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -17,13 +29,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.List;
-
-import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender

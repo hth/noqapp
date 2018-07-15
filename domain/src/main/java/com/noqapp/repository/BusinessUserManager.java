@@ -1,7 +1,6 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 
 import java.util.List;
 

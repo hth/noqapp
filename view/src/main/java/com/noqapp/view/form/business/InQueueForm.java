@@ -3,8 +3,6 @@ package com.noqapp.view.form.business;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
-import java.beans.Transient;
-
 /**
  * hitender
  * 3/6/18 3:29 AM

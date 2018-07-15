@@ -2,8 +2,10 @@ package com.noqapp.view.flow.merchant.validator;
 
 import com.noqapp.domain.flow.AuthorizedQueueUser;
 import com.noqapp.view.controller.access.LandingController;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;

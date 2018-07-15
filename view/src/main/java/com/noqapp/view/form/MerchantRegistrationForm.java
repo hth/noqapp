@@ -1,8 +1,9 @@
 package com.noqapp.view.form;
 
-import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.types.MailTypeEnum;
+
 import org.junit.jupiter.api.Assertions;
 
 import java.beans.Transient;

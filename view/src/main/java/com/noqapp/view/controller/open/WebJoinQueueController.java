@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.open;
 
+import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
@@ -15,9 +17,12 @@ import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -28,8 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -40,7 +43,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * hitender

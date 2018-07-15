@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.common.utils.DateUtil;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;

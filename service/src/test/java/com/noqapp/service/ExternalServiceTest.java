@@ -1,7 +1,12 @@
 package com.noqapp.service;
 
-import com.google.maps.model.GeocodingResult;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.noqapp.repository.BizStoreManager;
+
+import com.google.maps.model.GeocodingResult;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +16,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * User: hitender

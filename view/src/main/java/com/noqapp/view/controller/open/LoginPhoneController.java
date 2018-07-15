@@ -1,5 +1,11 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.FirebaseAuthenticateService;
+import com.noqapp.view.form.UserLoginPhoneForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,15 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.FirebaseAuthenticateService;
-import com.noqapp.view.form.UserLoginPhoneForm;
 
 import javax.servlet.http.HttpServletResponse;
 

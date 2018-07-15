@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.Comparator.comparing;
+
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
@@ -13,8 +15,10 @@ import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,8 +28,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-
-import static java.util.Comparator.comparing;
 
 /**
  * User: hitender

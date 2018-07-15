@@ -1,6 +1,5 @@
 package com.noqapp.domain;
 
-import com.google.maps.model.LatLng;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.MathUtil;
@@ -11,11 +10,15 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
+
+import com.google.maps.model.LatLng;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.elasticsearch.common.geo.GeoPoint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -25,7 +28,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotNull;
+import org.elasticsearch.common.geo.GeoPoint;
+
 import java.time.DayOfWeek;
 import java.util.Base64;
 import java.util.Date;
@@ -34,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

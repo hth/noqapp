@@ -1,5 +1,10 @@
 package com.noqapp.view.flow.merchant.validator;
 
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.service.AccountService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,11 +13,6 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.AccountService;
 
 /**
  * User: hitender

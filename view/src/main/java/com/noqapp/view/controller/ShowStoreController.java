@@ -5,23 +5,27 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ShowHTMLService;
+import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.view.helper.WebUtil;
+
 import org.apache.commons.io.IOUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

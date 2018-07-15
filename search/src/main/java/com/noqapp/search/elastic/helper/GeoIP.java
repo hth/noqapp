@@ -1,8 +1,10 @@
 package com.noqapp.search.elastic.helper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.geo.GeoPoint;
+
 import org.springframework.data.annotation.Transient;
+
+import org.elasticsearch.common.geo.GeoPoint;
 
 /**
  * hitender

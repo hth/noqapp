@@ -6,6 +6,7 @@ import com.noqapp.medical.domain.RadiologyEntity;
 import com.noqapp.medical.repository.PathologyManager;
 import com.noqapp.medical.repository.PharmacyManager;
 import com.noqapp.medical.repository.RadiologyManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

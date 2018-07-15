@@ -3,19 +3,33 @@ package com.noqapp.service;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
-import com.noqapp.domain.*;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
-import com.noqapp.repository.*;
+import com.noqapp.repository.BizNameManager;
+import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.BusinessUserStoreManager;
+import com.noqapp.repository.StoreHourManager;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User: hitender

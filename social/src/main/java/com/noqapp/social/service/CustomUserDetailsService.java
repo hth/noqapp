@@ -1,5 +1,12 @@
 package com.noqapp.social.service;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.RoleEnum;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.UserProfilePreferenceService;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -13,13 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.RoleEnum;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.UserProfilePreferenceService;
 
 import java.util.ArrayList;
 import java.util.Collection;

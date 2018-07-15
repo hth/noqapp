@@ -1,13 +1,16 @@
 package com.noqapp.search.elastic.config;
 
 import org.apache.http.HttpHost;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 /**
  * User: hitender
@@ -18,7 +21,7 @@ public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
     /* Helps in migrating to new index by adding new name like v1 to v2 to string array. */
-    private static final String[] INDEX_VERSION = {"v0"};
+    private static final String[] INDEX_VERSION = {"v0", "v1"};
 
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];

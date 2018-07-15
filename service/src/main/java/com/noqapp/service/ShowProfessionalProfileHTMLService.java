@@ -5,12 +5,15 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.types.UserLevelEnum;
-import freemarker.template.TemplateException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import freemarker.template.TemplateException;
 
 import java.io.IOException;
 import java.util.ArrayList;

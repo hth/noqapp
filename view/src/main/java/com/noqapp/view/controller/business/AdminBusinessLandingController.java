@@ -1,5 +1,8 @@
 package com.noqapp.view.controller.business;
 
+import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
@@ -28,9 +31,12 @@ import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,8 +55,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
@@ -59,8 +63,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

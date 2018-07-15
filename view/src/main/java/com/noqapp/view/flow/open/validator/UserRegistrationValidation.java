@@ -1,16 +1,19 @@
 package com.noqapp.view.flow.open.validator;
 
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.service.AccountService;
-import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.Validate;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.flow.merchant.validator.MigrateToBusinessProfileValidator;
 import com.noqapp.view.form.MerchantRegistrationForm;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;

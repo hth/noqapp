@@ -1,6 +1,7 @@
 package com.noqapp.view.controller.business;
 
-import com.google.zxing.WriterException;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import com.noqapp.common.type.FileExtensionTypeEnum;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -17,9 +18,14 @@ import com.noqapp.service.CodeQRGeneratorService;
 import com.noqapp.service.PdfGenerateService;
 import com.noqapp.view.form.business.StoreLandingForm;
 import com.noqapp.view.helper.WebUtil;
+
+import com.google.zxing.WriterException;
+
 import org.apache.commons.io.IOUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,13 +35,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

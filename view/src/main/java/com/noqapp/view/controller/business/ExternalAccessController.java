@@ -1,5 +1,8 @@
 package com.noqapp.view.controller.business;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ExternalAccessEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -7,8 +10,10 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalAccessService;
 import com.noqapp.view.form.business.ExternalAccessForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,13 +23,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Manages access

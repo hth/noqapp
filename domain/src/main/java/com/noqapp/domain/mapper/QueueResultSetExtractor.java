@@ -4,6 +4,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
@@ -27,14 +28,15 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int NS = 10;
     private static final int RA = 11;
     private static final int HR = 12;
-    private static final int SN = 13;
-    private static final int SB = 14;
-    private static final int SE = 15;
-    private static final int V = 16;
-    private static final int U = 17;
-    private static final int C = 18;
-    private static final int A = 19;
-    private static final int D = 20;
+    private static final int RV = 13;
+    private static final int SN = 14;
+    private static final int SB = 15;
+    private static final int SE = 16;
+    private static final int V = 17;
+    private static final int U = 18;
+    private static final int C = 19;
+    private static final int A = 20;
+    private static final int D = 21;
 
     @Override
     public QueueEntity extractData(ResultSet rs) throws SQLException {
@@ -52,6 +54,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setNotifiedOnService(rs.getInt(NS) == 1);
         queue.setRatingCount(rs.getInt(RA));
         queue.setHoursSaved(rs.getInt(HR));
+        queue.setReview(rs.getString(RV));
         queue.setServerName(rs.getString(SN));
         queue.setServiceBeginTime(rs.getTimestamp(SB));
         queue.setServiceEndTime(rs.getTimestamp(SE));

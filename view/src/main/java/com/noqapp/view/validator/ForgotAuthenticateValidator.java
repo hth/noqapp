@@ -1,5 +1,7 @@
 package com.noqapp.view.validator;
 
+import com.noqapp.view.form.ForgotAuthenticateForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,8 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.noqapp.view.form.ForgotAuthenticateForm;
 
 /**
  * User: hitender

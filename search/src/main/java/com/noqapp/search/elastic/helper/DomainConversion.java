@@ -6,7 +6,9 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

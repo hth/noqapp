@@ -1,18 +1,23 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.DistinctIterable;
-import com.mongodb.client.model.Filters;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BizStoreEntity;
+
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.model.Filters;
+
 import org.apache.commons.lang3.StringUtils;
-import org.bson.conversions.Bson;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -22,10 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender

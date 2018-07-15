@@ -1,7 +1,12 @@
 package com.noqapp.medical.repository;
 
+import static org.mockito.Mockito.when;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,13 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 /**
  * hitender

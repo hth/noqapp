@@ -2,6 +2,7 @@ package com.noqapp.service.analytic;
 
 import com.noqapp.domain.analytic.BizDimensionEntity;
 import com.noqapp.repository.analytic.BizDimensionManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

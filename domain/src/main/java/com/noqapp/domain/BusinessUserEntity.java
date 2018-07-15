@@ -2,12 +2,14 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import org.junit.jupiter.api.Assertions;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import org.junit.jupiter.api.Assertions;
 
 import javax.validation.constraints.NotNull;
 

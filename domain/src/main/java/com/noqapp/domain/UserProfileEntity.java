@@ -5,20 +5,23 @@ import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: hitender

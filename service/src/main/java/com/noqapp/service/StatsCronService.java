@@ -1,15 +1,17 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.repository.StatsCronManager;
+
+import com.mongodb.client.DistinctIterable;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.mongodb.client.DistinctIterable;
-import com.noqapp.domain.StatsCronEntity;
-import com.noqapp.repository.StatsCronManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * User: hitender

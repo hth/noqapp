@@ -1,10 +1,14 @@
 package com.noqapp.domain.helper;
 
+import static java.util.stream.Collectors.toMap;
+
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toMap;
 
 /**
  * User: hitender

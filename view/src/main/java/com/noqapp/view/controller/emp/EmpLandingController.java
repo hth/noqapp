@@ -1,7 +1,17 @@
 package com.noqapp.view.controller.emp;
 
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.emp.EmpLandingService;
+import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
+import com.noqapp.view.form.emp.EmpLandingForm;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,16 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.emp.EmpLandingService;
-import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
-import com.noqapp.view.form.emp.EmpLandingForm;
 
 /**
  * User: hitender

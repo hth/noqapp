@@ -1,5 +1,9 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.repository.ForgotRecoverManager;
+import com.noqapp.service.StatsCronService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import com.noqapp.domain.StatsCronEntity;
-import com.noqapp.repository.ForgotRecoverManager;
-import com.noqapp.service.StatsCronService;
 
 /**
  * User: hitender

@@ -1,30 +1,43 @@
 package com.noqapp.medical.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
+import com.noqapp.medical.domain.json.JsonMedicalPhysical;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
+import com.noqapp.medical.domain.json.JsonMedicalRecordList;
+import com.noqapp.medical.domain.json.JsonRecordAccess;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicineManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
+import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,6 +54,7 @@ public class MedicalRecordService {
     private MedicalMedicineManager medicalMedicineManager;
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
+    private UserProfileManager userProfileManager;
 
     @Autowired
     public MedicalRecordService(
@@ -49,7 +63,8 @@ public class MedicalRecordService {
             MedicalMedicationManager medicalMedicationManager,
             MedicalMedicineManager medicalMedicineManager,
             BizService bizService,
-            BusinessUserStoreService businessUserStoreService
+            BusinessUserStoreService businessUserStoreService,
+            UserProfileManager userProfileManager
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
@@ -57,6 +72,7 @@ public class MedicalRecordService {
         this.medicalMedicineManager = medicalMedicineManager;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
+        this.userProfileManager = userProfileManager;
     }
 
     //TODO add check for qid
@@ -254,5 +270,70 @@ public class MedicalRecordService {
 
     public List<MedicalMedicineEntity> findByMedicationRefId(String referenceId) {
         return medicalMedicineManager.findByMedicationRefId(referenceId);
+    }
+
+    @Mobile
+    public JsonMedicalRecordList populateMedicalHistory(String qid) {
+        JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
+
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findMinorProfiles(qid);
+        List<String> queueUserIds = new LinkedList<String>() {{
+            add(qid);
+        }};
+
+        for (UserProfileEntity userProfile : dependentUserProfiles) {
+            queueUserIds.add(userProfile.getQueueUserId());
+        }
+
+        for (String queueUserId : queueUserIds) {
+            List<MedicalRecordEntity> medicalRecords = historicalRecords(queueUserId);
+            for (MedicalRecordEntity medicalRecord : medicalRecords) {
+                JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+                jsonMedicalRecord
+                    .setBusinessType(medicalRecord.getBusinessType())
+                    .setQueueUserId(medicalRecord.getQueueUserId())
+                    .setChiefComplain(medicalRecord.getChiefComplain())
+                    .setPastHistory(medicalRecord.getPastHistory())
+                    .setFamilyHistory(medicalRecord.getFamilyHistory())
+                    .setKnownAllergies(medicalRecord.getKnownAllergies())
+                    .setClinicalFinding(medicalRecord.getClinicalFinding())
+                    .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
+                    .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
+                    .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
+                    .setBusinessName(medicalRecord.getBusinessName())
+                    .setBizCategoryName(medicalRecord.getBizCategoryId() == null
+                        ? "NA"
+                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+
+                if (null != medicalRecord.getMedicalPhysical()) {
+                    jsonMedicalRecord.setMedicalPhysical(
+                        new JsonMedicalPhysical()
+                            .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
+                            .setPluse(medicalRecord.getMedicalPhysical().getPluse())
+                            .setWeight(medicalRecord.getMedicalPhysical().getWeight()));
+                }
+
+                if (null != medicalRecord.getMedicalMedication()) {
+                    List<MedicalMedicineEntity> medicalMedicines = findByIds(medicalRecord.getMedicalMedication().getMedicineIds());
+                    for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
+                        jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
+                    }
+                }
+
+                List<JsonRecordAccess> jsonRecordAccesses = new ArrayList<>();
+                for (Long date : medicalRecord.getRecordAccessed().keySet()) {
+                    String accessedBy = medicalRecord.getRecordAccessed().get(date);
+                    JsonRecordAccess jsonRecordAccess = new JsonRecordAccess()
+                        .setRecordAccessedDate(DateUtil.dateToString(new Date(date)))
+                        .setRecordAccessedQid("#######");
+
+                    jsonRecordAccesses.add(jsonRecordAccess);
+                }
+                jsonMedicalRecord.setRecordAccess(jsonRecordAccesses);
+                jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
+            }
+        }
+
+        return jsonMedicalRecordList;
     }
 }

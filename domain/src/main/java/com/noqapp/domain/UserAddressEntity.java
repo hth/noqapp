@@ -5,8 +5,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * hitender

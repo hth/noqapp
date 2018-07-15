@@ -6,8 +6,10 @@ import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.json.JsonUserAddressList;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.repository.UserAddressManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.Asserts;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
