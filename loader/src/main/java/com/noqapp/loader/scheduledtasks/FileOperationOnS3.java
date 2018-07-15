@@ -1,5 +1,15 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.service.FtpService.PROFILE;
+import static com.noqapp.service.FtpService.SERVICE;
+
+import com.noqapp.common.utils.FileUtil;
+import com.noqapp.domain.S3FileEntity;
+import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.repository.S3FileManager;
+import com.noqapp.service.FtpService;
+import com.noqapp.service.StatsCronService;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -8,17 +18,14 @@ import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.MultiObjectDeleteException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.noqapp.common.utils.FileUtil;
-import com.noqapp.domain.S3FileEntity;
-import com.noqapp.domain.StatsCronEntity;
-import com.noqapp.repository.S3FileManager;
-import com.noqapp.service.FtpService;
-import com.noqapp.service.StatsCronService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,9 +39,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.noqapp.service.FtpService.PROFILE;
-import static com.noqapp.service.FtpService.SERVICE;
 
 /**
  * hitender

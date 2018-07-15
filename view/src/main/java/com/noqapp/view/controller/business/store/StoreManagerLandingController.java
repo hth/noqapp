@@ -1,7 +1,18 @@
 package com.noqapp.view.controller.business.store;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.TokenQueueService;
+import com.noqapp.view.form.StoreManagerForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +24,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserStoreEntity;
-import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.service.TokenQueueService;
-import com.noqapp.view.form.StoreManagerForm;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Shows current state and analytics of each queue to users with Store Manager Role.

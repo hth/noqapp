@@ -4,6 +4,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;

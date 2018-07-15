@@ -9,6 +9,7 @@ import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.beans.Transient;

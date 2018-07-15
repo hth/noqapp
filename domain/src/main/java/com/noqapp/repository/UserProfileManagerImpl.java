@@ -1,12 +1,22 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.result.DeleteResult;
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
+
+import com.mongodb.client.result.DeleteResult;
+
 import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -19,12 +29,6 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
-
-import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender

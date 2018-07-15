@@ -1,10 +1,10 @@
 package com.noqapp.view.form.emp;
 
-import org.springframework.data.annotation.Transient;
-
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+
+import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 

@@ -1,13 +1,13 @@
 package com.noqapp.security.repository;
 
+import com.noqapp.domain.RememberMeTokenEntity;
+import com.noqapp.repository.social.RememberMeTokenManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
-
-import com.noqapp.domain.RememberMeTokenEntity;
-import com.noqapp.repository.social.RememberMeTokenManager;
 
 import java.util.Date;
 

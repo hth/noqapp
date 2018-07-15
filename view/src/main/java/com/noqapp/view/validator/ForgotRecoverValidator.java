@@ -1,5 +1,7 @@
 package com.noqapp.view.validator;
 
+import com.noqapp.view.form.ForgotRecoverForm;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -10,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import com.noqapp.view.form.ForgotRecoverForm;
 
 /**
  * User: hitender

@@ -11,9 +11,12 @@ import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 

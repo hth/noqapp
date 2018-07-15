@@ -1,11 +1,20 @@
 package com.noqapp.repository;
 
-import com.mongodb.client.result.UpdateResult;
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StoreHourEntity;
+
+import com.mongodb.client.result.UpdateResult;
+
 import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -15,11 +24,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
 import java.util.List;
-
-import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender

@@ -1,5 +1,17 @@
 package com.noqapp.view.flow.merchant.validator;
 
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
+import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.service.ExternalService;
+import com.noqapp.view.controller.access.LandingController;
+
 import com.google.maps.model.LatLng;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,18 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
-
-import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.domain.shared.DecodedAddress;
-import com.noqapp.domain.shared.Geocode;
-import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.service.ExternalService;
-import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.common.utils.Validate;
-import com.noqapp.view.controller.access.LandingController;
 
 import java.util.Map;
 

@@ -1,5 +1,19 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.security.OnLoginAuthenticationSuccessHandler;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.LoginService;
+import com.noqapp.social.service.CustomUserDetailsService;
+import com.noqapp.view.cache.CachedUserAgentStringParser;
+import com.noqapp.view.form.UserLoginForm;
+import com.noqapp.view.form.UserLoginPhoneForm;
+import com.noqapp.view.util.HttpRequestResponseParser;
+
+import net.pieroxy.ua.detection.UserAgentDetectionResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,19 +31,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.site.QueueUser;
-import com.noqapp.security.OnLoginAuthenticationSuccessHandler;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.LoginService;
-import com.noqapp.social.service.CustomUserDetailsService;
-import com.noqapp.view.cache.CachedUserAgentStringParser;
-import com.noqapp.view.form.UserLoginForm;
-import com.noqapp.view.form.UserLoginPhoneForm;
-import com.noqapp.view.util.HttpRequestResponseParser;
-import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
 import java.util.Collection;
 import java.util.Locale;

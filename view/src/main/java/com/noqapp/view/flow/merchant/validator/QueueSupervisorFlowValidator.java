@@ -1,5 +1,9 @@
 package com.noqapp.view.flow.merchant.validator;
 
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.flow.InviteQueueSupervisor;
+import com.noqapp.view.controller.access.LandingController;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -8,10 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
-
-import com.noqapp.domain.flow.InviteQueueSupervisor;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.view.controller.access.LandingController;
 
 /**
  * User: hitender

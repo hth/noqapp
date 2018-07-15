@@ -5,6 +5,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ExternalAccessEntity;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.repository.ExternalAccessManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,13 @@
 package com.noqapp.domain.site;
 
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.ExternalPermissionEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.ExternalPermissionEnum;
 
 /**
  * hitender

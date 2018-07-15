@@ -1,6 +1,7 @@
 package com.noqapp.domain.mapper;
 
 import com.noqapp.domain.QueueEntity;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

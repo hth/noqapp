@@ -1,18 +1,27 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
+import static com.noqapp.common.utils.FileUtil.createTempFile;
+import static com.noqapp.common.utils.FileUtil.getFileExtension;
+import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
+import static com.noqapp.common.utils.FileUtil.getFileSeparator;
+import static com.noqapp.common.utils.FileUtil.getTmpDir;
+
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.repository.S3FileManager;
+
 import org.apache.commons.io.FilenameUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,12 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
-import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
-import static com.noqapp.common.utils.FileUtil.createTempFile;
-import static com.noqapp.common.utils.FileUtil.getFileExtension;
-import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
-import static com.noqapp.common.utils.FileUtil.getFileSeparator;
-import static com.noqapp.common.utils.FileUtil.getTmpDir;
+import javax.imageio.ImageIO;
 
 /**
  * hitender

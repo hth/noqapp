@@ -1,12 +1,14 @@
 package com.noqapp.domain.json;
 
+import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.ProductTypeEnum;
-import com.noqapp.domain.types.UnitOfMeasurementEnum;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

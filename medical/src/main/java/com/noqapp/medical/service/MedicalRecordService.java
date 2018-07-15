@@ -12,7 +12,11 @@ import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
-import com.noqapp.medical.domain.json.*;
+import com.noqapp.medical.domain.json.JsonMedicalMedicine;
+import com.noqapp.medical.domain.json.JsonMedicalPhysical;
+import com.noqapp.medical.domain.json.JsonMedicalRecord;
+import com.noqapp.medical.domain.json.JsonMedicalRecordList;
+import com.noqapp.medical.domain.json.JsonRecordAccess;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicineManager;
@@ -21,9 +25,12 @@ import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,14 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.GenderEnum;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 

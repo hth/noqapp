@@ -1,5 +1,21 @@
 package com.noqapp.view.controller.open;
 
+import com.noqapp.common.utils.HashText;
+import com.noqapp.common.utils.RandomString;
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.ForgotRecoverEntity;
+import com.noqapp.domain.UserAuthenticationEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.MailTypeEnum;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.MailService;
+import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.view.form.ForgotAuthenticateForm;
+import com.noqapp.view.form.ForgotRecoverForm;
+import com.noqapp.view.util.HttpRequestResponseParser;
+import com.noqapp.view.validator.ForgotAuthenticateValidator;
+import com.noqapp.view.validator.ForgotRecoverValidator;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -14,25 +30,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.noqapp.domain.ForgotRecoverEntity;
-import com.noqapp.domain.UserAuthenticationEntity;
-import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.types.MailTypeEnum;
-import com.noqapp.service.AccountService;
-import com.noqapp.service.MailService;
-import com.noqapp.service.UserProfilePreferenceService;
-import com.noqapp.common.utils.HashText;
-import com.noqapp.common.utils.RandomString;
-import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.view.form.ForgotAuthenticateForm;
-import com.noqapp.view.form.ForgotRecoverForm;
-import com.noqapp.view.util.HttpRequestResponseParser;
-import com.noqapp.view.validator.ForgotAuthenticateValidator;
-import com.noqapp.view.validator.ForgotRecoverValidator;
 
 import java.io.IOException;
 

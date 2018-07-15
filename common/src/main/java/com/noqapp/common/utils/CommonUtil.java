@@ -1,14 +1,18 @@
 package com.noqapp.common.utils;
 
 import com.google.maps.model.LatLng;
+
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+
 import org.bson.types.ObjectId;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;

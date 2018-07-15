@@ -1,5 +1,8 @@
 package com.noqapp.service;
 
+import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -28,14 +31,18 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import org.junit.jupiter.api.Assertions;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -50,9 +57,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static com.noqapp.domain.BizStoreEntity.*;
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender

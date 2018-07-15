@@ -1,17 +1,19 @@
 package com.noqapp.health.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.health.domain.ApiHealthNowEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
-
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * User: hitender

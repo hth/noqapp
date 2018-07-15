@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.business.store.queue;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -12,8 +14,10 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.QueueService;
 import com.noqapp.view.form.business.BusinessLandingForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,11 +27,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender

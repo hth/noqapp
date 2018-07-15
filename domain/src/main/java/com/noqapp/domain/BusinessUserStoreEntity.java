@@ -2,14 +2,17 @@ package com.noqapp.domain;
 
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.types.UserLevelEnum;
-import org.junit.jupiter.api.Assertions;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
+import org.junit.jupiter.api.Assertions;
+
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Contains relation of Business_Manager with specific store access.

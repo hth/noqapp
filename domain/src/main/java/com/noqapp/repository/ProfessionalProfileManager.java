@@ -1,7 +1,6 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.ProfessionalProfileEntity;
-import com.noqapp.repository.RepositoryManager;
 
 /**
  * hitender

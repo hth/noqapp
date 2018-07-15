@@ -1,13 +1,17 @@
 package com.noqapp.service;
 
-import com.google.api.core.ApiFuture;
-import com.google.firebase.auth.UserRecord;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.UserProfileEntity;
+
+import com.google.api.core.ApiFuture;
+import com.google.firebase.auth.UserRecord;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

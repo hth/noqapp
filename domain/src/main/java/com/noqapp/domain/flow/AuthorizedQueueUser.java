@@ -1,6 +1,7 @@
 package com.noqapp.domain.flow;
 
 import com.noqapp.domain.BizStoreEntity;
+
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;

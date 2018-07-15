@@ -4,6 +4,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

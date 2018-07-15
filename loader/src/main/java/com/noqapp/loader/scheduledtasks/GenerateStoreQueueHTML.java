@@ -1,10 +1,18 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
+
 import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.loader.domain.SiteMap;
 import com.noqapp.loader.domain.SiteMapIndex;
 import com.noqapp.loader.domain.SiteUrl;
 import com.noqapp.loader.domain.SiteUrlMap;
+import com.noqapp.repository.BizStoreManager;
+import com.noqapp.service.ShowHTMLService;
+import com.noqapp.service.StatsCronService;
+
 import org.apache.commons.io.FileUtils;
 
 import org.slf4j.Logger;
@@ -15,20 +23,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.StatsCronEntity;
-import com.noqapp.repository.BizStoreManager;
-import com.noqapp.service.ShowHTMLService;
-import com.noqapp.service.StatsCronService;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
-
-import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
 
 /**
  * User: hitender

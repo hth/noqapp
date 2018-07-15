@@ -2,15 +2,17 @@ package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * hitender
