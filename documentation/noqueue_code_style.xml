@@ -4,38 +4,46 @@
   <option name="IMPORT_LAYOUT_TABLE">
     <value>
       <package name="" withSubpackages="true" static="true" />
-      <emptyLine />
-      <package name="com.fasterxml" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="com.braintreegateway" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="com.google" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="com.mongodb" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="com.receiptofi" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="net.logstash" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="net.sf" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.apache" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.bson" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.hibernate" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.joda" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.slf4j" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="org.springframework" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="java" withSubpackages="true" static="false" />
-      <emptyLine />
-      <package name="javax" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.noqapp" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.amazonaws" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.braintreegateway" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.fasterxml" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.google" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="net.logstash" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com.mongodb" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="com" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="net.sf" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="net" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.apache" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.bson" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.hibernate" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.joda" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.slf4j" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org.springframework" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="org" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="java" withSubpackages="true" static="false" />
+        <emptyLine />
+        <package name="javax" withSubpackages="true" static="false" />
     </value>
   </option>
   <option name="RIGHT_MARGIN" value="140" />
