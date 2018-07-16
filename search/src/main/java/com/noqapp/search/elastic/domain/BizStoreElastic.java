@@ -4,6 +4,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -172,6 +173,11 @@ public class BizStoreElastic extends AbstractDomain {
     @Transient
     @JsonProperty("WP")
     private String webProfileId;
+
+    /** ED is populated when the BT is of type BusinessTypeEnum.DO. */
+    @Transient
+    @JsonProperty("ED")
+    private List<JsonNameDatePair> education;
 
     public String getId() {
         return id;
@@ -485,6 +491,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setWebProfileId(String webProfileId) {
         this.webProfileId = webProfileId;
+        return this;
+    }
+
+    public List<JsonNameDatePair> getEducation() {
+        return education;
+    }
+
+    public BizStoreElastic setEducation(List<JsonNameDatePair> education) {
+        this.education = education;
         return this;
     }
 

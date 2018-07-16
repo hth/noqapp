@@ -45,7 +45,6 @@ public class JsonProfessionalProfile extends AbstractDomain {
 
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
-    //TODO should be studies
     private List<JsonNameDatePair> education;
 
     /* Required to mark as a valid profile. */
