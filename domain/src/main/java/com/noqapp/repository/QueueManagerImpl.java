@@ -408,12 +408,15 @@ public class QueueManagerImpl implements QueueManager {
                             .and("HR").is(0));
         }
 
-        return mongoTemplate.updateFirst(
-                query,
-                entityUpdate(update("RA", ratingCount).set("HR", hoursSaved).set("RV", review)),
-                QueueEntity.class,
-                TABLE
-        ).getModifiedCount() > 0;
+        /* Review has to be null. If not null and the text is null then that is an issue. */
+        Update update;
+        if (StringUtils.isBlank(review)) {
+            update = entityUpdate(update("RA", ratingCount).set("HR", hoursSaved));
+        } else {
+            update = entityUpdate(update("RA", ratingCount).set("HR", hoursSaved).set("RV", review));
+        }
+
+        return mongoTemplate.updateFirst(query, update, QueueEntity.class, TABLE).getModifiedCount() > 0;
     }
 
     @Override
