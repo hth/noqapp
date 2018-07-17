@@ -101,7 +101,10 @@ public class ExternalService {
 
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
-                    bizStore.setPlaceType(placeDetails.types);
+                    String[] types = getPlaceDetailTypes(placeDetails);
+                    if (types.length > 0) {
+                        bizStore.setPlaceType(types);
+                    }
 
                     if (AddressOriginEnum.S != bizStore.getAddressOrigin()) {
                         /*
@@ -155,7 +158,11 @@ public class ExternalService {
 
                 PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
-                    bizName.setPlaceType(placeDetails.types);
+                    String[] types = getPlaceDetailTypes(placeDetails);
+                    if (types.length > 0) {
+                        bizName.setPlaceType(types);
+                    }
+                    
                     if (StringUtils.isBlank(bizName.getPhone()) && StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         /* Append country code to phone number. */
                         String phone = Formatter.phoneNumberWithCountryCode(placeDetails.formattedPhoneNumber, bizName.getCountryShortName());
@@ -175,6 +182,14 @@ public class ExternalService {
             LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
                     bizName.getId(), bizName.getAddress(), e.getLocalizedMessage(), e);
         }
+    }
+
+    private String[] getPlaceDetailTypes(PlaceDetails placeDetails) {
+        String[] types = new String[placeDetails.types.length];
+        for (int i = 0; i < placeDetails.types.length; i++) {
+            types[i] = placeDetails.types[i].toString();
+        }
+        return types;
     }
 
     /**
