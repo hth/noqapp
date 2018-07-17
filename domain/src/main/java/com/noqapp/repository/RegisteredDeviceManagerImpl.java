@@ -9,6 +9,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -95,11 +96,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, String token, boolean sinceBeginning) {
+    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, boolean sinceBeginning) {
         return mongoTemplate.updateFirst(
                 query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
                 entityUpdate(update("QID", qid)
                         .set("DT", deviceType)
+                        .set("AF", appFlavor)
                         .set("TK", token)
                         .set("SB", sinceBeginning)),
                 RegisteredDeviceEntity.class,
@@ -205,18 +207,20 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, String token) {
+    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
         Update update;
         if (StringUtils.isBlank(qid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
                     .unset("QID")
                     .set("DT", deviceType)
-                    .set("TK", token);
+                    .set("TK", token)
+                    .set("AF", appFlavor);
         } else {
             update = update("U", DateTime.now().minusYears(100).toDate())
                     .set("QID", qid)
                     .set("DT", deviceType)
-                    .set("TK", token);
+                    .set("TK", token)
+                    .set("AF", appFlavor);
         }
 
         return mongoTemplate.updateFirst(

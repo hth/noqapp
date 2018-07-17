@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,10 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("DT")
     private DeviceTypeEnum deviceType;
 
+    @NotNull
+    @Field ("AF")
+    private AppFlavorEnum appFlavor;
+
     /** FCM token for sending push notification. */
     @Field ("TK")
     private String token;
@@ -61,7 +66,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         super();
     }
 
-    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
+    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
         super();
         this.queueUserId = queueUserId;
         this.deviceId = deviceId;
@@ -69,18 +74,24 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.token = token;
     }
 
-    private RegisteredDeviceEntity(String deviceId, DeviceTypeEnum deviceType, String token) {
+    private RegisteredDeviceEntity(String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
         super();
         this.deviceId = deviceId;
         this.deviceType = deviceType;
         this.token = token;
     }
 
-    public static RegisteredDeviceEntity newInstance(String queueUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
+    public static RegisteredDeviceEntity newInstance(
+            String queueUserId,
+            String deviceId,
+            DeviceTypeEnum deviceType,
+            AppFlavorEnum appFlavor,
+            String token
+    ) {
         if (StringUtils.isBlank(queueUserId)) {
-            return new RegisteredDeviceEntity(deviceId, deviceType, token);
+            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token);
         } else {
-            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, token);
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token);
         }
     }
 
@@ -102,6 +113,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setDeviceType(DeviceTypeEnum deviceType) {
         this.deviceType = deviceType;
+    }
+
+    public AppFlavorEnum getAppFlavor() {
+        return appFlavor;
+    }
+
+    public RegisteredDeviceEntity setAppFlavor(AppFlavorEnum appFlavor) {
+        this.appFlavor = appFlavor;
+        return this;
     }
 
     public String getToken() {

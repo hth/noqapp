@@ -162,7 +162,7 @@ public class ExternalService {
                     if (types.length > 0) {
                         bizName.setPlaceType(types);
                     }
-                    
+
                     if (StringUtils.isBlank(bizName.getPhone()) && StringUtils.isNotBlank(placeDetails.formattedPhoneNumber)) {
                         /* Append country code to phone number. */
                         String phone = Formatter.phoneNumberWithCountryCode(placeDetails.formattedPhoneNumber, bizName.getCountryShortName());

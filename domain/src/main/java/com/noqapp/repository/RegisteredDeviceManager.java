@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     RegisteredDeviceEntity find(String qid, String did);
 
     @Mobile
-    boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, String token, boolean sinceBeginning);
+    boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, boolean sinceBeginning);
 
     @Mobile
     List<RegisteredDeviceEntity> findAll(String qid, String did);
@@ -41,14 +42,9 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     /**
      * When existing did, update with latest info. This happens when one user logs out and another user
      * logs in without deleting the app.
-     *
-     * @param did
-     * @param qid
-     * @param deviceType
-     * @param token
      */
     @Mobile
-    boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, String token);
+    boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token);
 
     /**
      * When data is fetched since beginning. This helps set to prevent fetching from beginning going forward.
