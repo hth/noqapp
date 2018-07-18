@@ -71,6 +71,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.queueUserId = queueUserId;
         this.deviceId = deviceId;
         this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
         this.token = token;
     }
 
@@ -78,6 +79,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         super();
         this.deviceId = deviceId;
         this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
         this.token = token;
     }
 
