@@ -57,19 +57,15 @@
             Registered New Android Devices ${androidDeviceRegistered} <br/>
             Registered New iPhone Devices ${iPhoneDeviceRegistered} <br/>
 
-            <#if profile["androidFlavoredDevices"]?has_content>
-            Android Flavor
+            Android Flavors Breakdown:
             <#list androidFlavoredDevices?keys as key>
                 ${key} = ${androidFlavoredDevices[key]}
             </#list>
-            </#if>
 
-            <#if profile["iPhoneFlavoredDevices"]?has_content>
-            Iphone Flavor
+            Iphone Flavor Breakdown:
             <#list iPhoneFlavoredDevices?keys as key>
                 ${key} = ${iPhoneFlavoredDevices[key]}
             </#list>
-            </#if>
         </p>
         <p style="font-family: 'Roboto', sans-serif;">
             Thanks, <br/>
