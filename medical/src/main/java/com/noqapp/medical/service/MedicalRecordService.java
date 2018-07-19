@@ -214,8 +214,10 @@ public class MedicalRecordService {
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
                 medicalPhysical
+                        .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
                         .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
                         .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
+                        .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
                         .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight());
 
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
@@ -239,8 +241,10 @@ public class MedicalRecordService {
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
                 medicalPhysical
+                        .setTemperature(medicalPhysical.getTemperature())
                         .setBloodPressure(medicalPhysical.getBloodPressure())
                         .setPluse(medicalPhysical.getPluse())
+                        .setOxygen(medicalPhysical.getOxygen())
                         .setWeight(medicalPhysical.getWeight());
 
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
