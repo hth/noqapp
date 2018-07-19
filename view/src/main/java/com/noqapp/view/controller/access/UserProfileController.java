@@ -17,9 +17,11 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
 import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
+import com.noqapp.view.validator.ImageValidator;
 import com.noqapp.view.validator.ProfessionalProfileValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -80,6 +82,7 @@ public class UserProfileController {
     private ProfessionalProfileValidator professionalProfileValidator;
     private FileService fileService;
     private BusinessUserService businessUserService;
+    private ImageValidator imageValidator;
 
     @Autowired
     public UserProfileController(
@@ -97,7 +100,8 @@ public class UserProfileController {
             ProfessionalProfileService professionalProfileService,
             ProfessionalProfileValidator professionalProfileValidator,
             FileService fileService,
-            BusinessUserService businessUserService
+            BusinessUserService businessUserService,
+            ImageValidator imageValidator
     ) {
         this.nextPage = nextPage;
         this.awsEndPoint = awsEndPoint;
@@ -109,8 +113,13 @@ public class UserProfileController {
         this.professionalProfileValidator = professionalProfileValidator;
         this.fileService = fileService;
         this.businessUserService = businessUserService;
+        this.imageValidator = imageValidator;
     }
 
+    /**
+     * Gymnastic for PRG.
+     * @return
+     */
     @GetMapping
     public String landing(
             @ModelAttribute("userProfileForm")
@@ -119,12 +128,22 @@ public class UserProfileController {
             @ModelAttribute("professionalProfileForm")
             ProfessionalProfileForm professionalProfileForm,
 
+            @ModelAttribute("fileUploadForm")
+            FileUploadForm fileUploadForm,
+
             Model model
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         populateProfile(userProfileForm, professionalProfileForm, queueUser.getQueueUserId(), model);
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("resultImage")) {
+            model.addAttribute(
+                    "org.springframework.validation.BindingResult.fileUploadForm",
+                    model.asMap().get("resultImage"));
+        }
 
         apiHealthService.insert(
                 "/",
@@ -162,11 +181,11 @@ public class UserProfileController {
         return nextPage;
     }
 
-    public void populateProfile(
-        UserProfileForm userProfileForm,
-        ProfessionalProfileForm professionalProfileForm,
-        String queueUserId,
-        Model model
+    private void populateProfile(
+            UserProfileForm userProfileForm,
+            ProfessionalProfileForm professionalProfileForm,
+            String queueUserId,
+            Model model
     ) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUserId);
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUserId);
@@ -445,7 +464,14 @@ public class UserProfileController {
      * @return
      */
     @PostMapping (value = "/upload")
-    public String upload(HttpServletRequest httpServletRequest) {
+    public String upload(
+            @ModelAttribute("fileUploadForm")
+            FileUploadForm fileUploadForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs,
+            HttpServletRequest httpServletRequest
+    ) {
         Instant start = Instant.now();
         LOG.info("uploading image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -457,6 +483,14 @@ public class UserProfileController {
 
             if (!files.isEmpty()) {
                 MultipartFile multipartFile = files.iterator().next();
+
+                imageValidator.validate(multipartFile, result);
+                if (result.hasErrors()) {
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    LOG.warn("Failed validation");
+                    //Re-direct to prevent resubmit
+                    return "redirect:/access/userProfile.htm";
+                }
 
                 try {
                     processProfileImage(queueUser.getQueueUserId(), multipartFile);

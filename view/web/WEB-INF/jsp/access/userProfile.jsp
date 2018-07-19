@@ -56,21 +56,32 @@
             <div class="admin-main">
                 <!-- File Upload From -->
                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                <form:form action="${pageContext.request.contextPath}/access/userProfile/upload.htm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/upload.htm" modelAttribute="fileUploadForm"  method="post" enctype="multipart/form-data">
                     <div class="admin-title">
                         <h2>Profile Image</h2>
                     </div>
+
+                    <spring:hasBindErrors name="fileUploadForm">
+                    <div class="error-box">
+                        <div class="error-txt">
+                            <ul>
+                                <c:if test="${errors.hasFieldErrors('file')}">
+                                <li><form:errors path="file"/></li>
+                                </c:if>
+                            </ul>
+                        </div>
+                    </div>
+                    </spring:hasBindErrors>
 
                     <div class="admin-content">
                         <div class="add-new">
                             <ul class="list-form">
                                 <li>
                                     <div class="col-lable3" style="padding-top: 30px;">
-                                        <label>Select Profile Image</label>
-                                        <%--<form:label path="firstName" cssErrorClass="lb_error">Select File</form:label>--%>
+                                        <form:label path="file" cssErrorClass="lb_error">Select Profile Image</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <input class="next-btn" type="file" name="file">
+                                        <form:input class="next-btn" type="file" path="file" id="file"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
