@@ -28,9 +28,11 @@ import com.noqapp.service.FileService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.view.controller.access.UserProfileController;
+import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
+import com.noqapp.view.validator.ImageValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -100,6 +102,7 @@ public class AdminBusinessLandingController {
     private ProfessionalProfileService professionalProfileService;
     private FileService fileService;
     private ApiHealthService apiHealthService;
+    private ImageValidator imageValidator;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -140,7 +143,8 @@ public class AdminBusinessLandingController {
             AccountService accountService,
             ProfessionalProfileService professionalProfileService,
             FileService fileService,
-            ApiHealthService apiHealthService
+            ApiHealthService apiHealthService,
+            ImageValidator imageValidator
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -161,6 +165,7 @@ public class AdminBusinessLandingController {
         this.professionalProfileService = professionalProfileService;
         this.fileService = fileService;
         this.apiHealthService = apiHealthService;
+        this.imageValidator = imageValidator;
     }
 
     /**
@@ -636,6 +641,9 @@ public class AdminBusinessLandingController {
      */
     @GetMapping (value = "/uploadServicePhoto")
     public String uploadServicePhoto(
+            @ModelAttribute("fileUploadForm")
+            FileUploadForm fileUploadForm,
+
             Model model,
             HttpServletResponse response
     ) throws IOException {
@@ -649,6 +657,13 @@ public class AdminBusinessLandingController {
         }
         LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("resultImage")) {
+            model.addAttribute(
+                    "org.springframework.validation.BindingResult.fileUploadForm",
+                    model.asMap().get("resultImage"));
+        }
 
         model.addAttribute("businessServiceImages", businessUser.getBizName().getBusinessServiceImages());
         model.addAttribute("codeQR", businessUser.getBizName().getCodeQR());
@@ -683,7 +698,15 @@ public class AdminBusinessLandingController {
      * For uploading service image.
      */
     @PostMapping (value = "/uploadServicePhoto")
-    public String uploadServicePhoto(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
+    public String uploadServicePhoto(
+            @ModelAttribute("fileUploadForm")
+            FileUploadForm fileUploadForm,
+
+            BindingResult result,
+            RedirectAttributes redirectAttrs,
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse response
+    ) throws IOException {
         Instant start = Instant.now();
         LOG.info("uploading image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -703,6 +726,14 @@ public class AdminBusinessLandingController {
 
             if (!files.isEmpty()) {
                 MultipartFile multipartFile = files.iterator().next();
+
+                imageValidator.validate(multipartFile, result);
+                if (result.hasErrors()) {
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    LOG.warn("Failed validation");
+                    //Re-direct to prevent resubmit
+                    return "redirect:/business/uploadServicePhoto.htm";
+                }
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), businessUser.getBizName().getId(), multipartFile);
