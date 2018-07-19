@@ -31,14 +31,29 @@ import org.slf4j.LoggerFactory;
 public class JsonMedicalPhysical extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalMedicine.class);
 
+    @JsonProperty("te")
+    private String temperature;
+
     @JsonProperty("pl")
     private String pluse;
 
     @JsonProperty("bp")
     private String[] bloodPressure;
 
+    @JsonProperty("ox")
+    private String oxygen;
+
     @JsonProperty("wt")
     private String weight;
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public JsonMedicalPhysical setTemperature(String temperature) {
+        this.temperature = temperature;
+        return this;
+    }
 
     public String getPluse() {
         return pluse;
@@ -64,6 +79,15 @@ public class JsonMedicalPhysical extends AbstractDomain {
 
     public JsonMedicalPhysical setWeight(String weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public String getOxygen() {
+        return oxygen;
+    }
+
+    public JsonMedicalPhysical setOxygen(String oxygen) {
+        this.oxygen = oxygen;
         return this;
     }
 }

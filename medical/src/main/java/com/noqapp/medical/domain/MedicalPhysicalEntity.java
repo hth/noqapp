@@ -12,6 +12,7 @@ import java.util.Arrays;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Contains General Examination, Systemic Examination, Local Examination.
  * hitender
  * 3/7/18 9:31 PM
  */
@@ -31,15 +32,24 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
+    /** General Physical Exam Starts. */
+    @Field("TE")
+    private String temperature;
+
     @Field("PL")
     private String pluse;
 
     @Field("BP")
     private String[] bloodPressure;
 
+    @Field("OX")
+    private String oxygen;
+
     //WT in kg
     @Field("WT")
     private String weight;
+
+    /** General Physical Exam Ends. */
 
     public MedicalPhysicalEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
@@ -47,6 +57,15 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public String getQueueUserId() {
         return queueUserId;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public MedicalPhysicalEntity setTemperature(String temperature) {
+        this.temperature = temperature;
+        return this;
     }
 
     public String getPluse() {
@@ -64,6 +83,15 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public MedicalPhysicalEntity setBloodPressure(String[] bloodPressure) {
         this.bloodPressure = bloodPressure;
+        return this;
+    }
+
+    public String getOxygen() {
+        return oxygen;
+    }
+
+    public MedicalPhysicalEntity setOxygen(String oxygen) {
+        this.oxygen = oxygen;
         return this;
     }
 
