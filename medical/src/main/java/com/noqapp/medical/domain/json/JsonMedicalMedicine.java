@@ -1,8 +1,6 @@
 package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.MedicationTypeEnum;
-import com.noqapp.domain.types.MedicationWithFoodEnum;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -47,10 +45,10 @@ public class JsonMedicalMedicine extends AbstractDomain {
     private String course;
 
     @JsonProperty("mf")
-    private MedicationWithFoodEnum medicationWithFood;
+    private String medicationWithFood;
 
     @JsonProperty("mt")
-    private MedicationTypeEnum medicationType;
+    private String medicationType;
 
     public String getName() {
         return name;
@@ -88,20 +86,20 @@ public class JsonMedicalMedicine extends AbstractDomain {
         return this;
     }
 
-    public MedicationWithFoodEnum getMedicationWithFood() {
+    public String getMedicationWithFood() {
         return medicationWithFood;
     }
 
-    public JsonMedicalMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public JsonMedicalMedicine setMedicationWithFood(String medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
         return this;
     }
 
-    public MedicationTypeEnum getMedicationType() {
+    public String getMedicationType() {
         return medicationType;
     }
 
-    public JsonMedicalMedicine setMedicationType(MedicationTypeEnum medicationType) {
+    public JsonMedicalMedicine setMedicationType(String medicationType) {
         this.medicationType = medicationType;
         return this;
     }

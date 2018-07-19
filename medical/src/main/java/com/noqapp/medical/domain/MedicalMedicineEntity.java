@@ -1,8 +1,6 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.types.MedicationTypeEnum;
-import com.noqapp.domain.types.MedicationWithFoodEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -54,10 +52,10 @@ public class MedicalMedicineEntity extends BaseEntity {
     private String course;
 
     @Field("MF")
-    private MedicationWithFoodEnum medicationWithFood;
+    private String medicationWithFood;
 
     @Field ("MT")
-    private MedicationTypeEnum medicationType;
+    private String medicationType;
 
     public String getMedicalMedicationReferenceId() {
         return medicalMedicationReferenceId;
@@ -122,20 +120,20 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public MedicationWithFoodEnum getMedicationWithFood() {
+    public String getMedicationWithFood() {
         return medicationWithFood;
     }
 
-    public MedicalMedicineEntity setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public MedicalMedicineEntity setMedicationWithFood(String medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
         return this;
     }
 
-    public MedicationTypeEnum getMedicationType() {
+    public String getMedicationType() {
         return medicationType;
     }
 
-    public MedicalMedicineEntity setMedicationType(MedicationTypeEnum medicationType) {
+    public MedicalMedicineEntity setMedicationType(String medicationType) {
         this.medicationType = medicationType;
         return this;
     }
