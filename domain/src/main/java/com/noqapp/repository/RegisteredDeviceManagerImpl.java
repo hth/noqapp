@@ -266,6 +266,22 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
+    public long countRegisteredBetweenDates(Date from, Date to, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor) {
+        Query query = new Query();
+        if (null == deviceType) {
+            query.addCriteria(where("C").gte(from).lt(to));
+        } else {
+            query.addCriteria(where("DT").is(deviceType).and("AP").is(appFlavor)).addCriteria(where("C").gte(from).lt(to));
+        }
+
+        return mongoTemplate.count(
+                query,
+                RegisteredDeviceEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
     public RegisteredDeviceEntity findAnyDeviceId(String qid) {
         return mongoTemplate.findOne(
                 query(where("QID").is(qid)).with(new Sort(Sort.Direction.DESC, "U")),
