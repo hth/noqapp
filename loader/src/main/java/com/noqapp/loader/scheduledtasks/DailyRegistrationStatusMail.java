@@ -2,6 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -19,12 +20,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * hitender
  * 12/29/17 5:00 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -90,14 +93,29 @@ public class DailyRegistrationStatusMail {
             awaitingBusinessApproval = businessUserService.awaitingBusinessApprovalCount();
             deviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, null);
             androidDeviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A);
+            Map<String, Long> androidFlavoredDevices = new LinkedHashMap<>();
+            for (AppFlavorEnum appFlavor : AppFlavorEnum.values()) {
+                androidFlavoredDevices.put(
+                        appFlavor.getDescription(),
+                        registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A, appFlavor));
+            }
+
             iPhoneDeviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.I);
+            Map<String, Long> iPhoneFlavoredDevices = new LinkedHashMap<>();
+            for (AppFlavorEnum appFlavor : AppFlavorEnum.values()) {
+                iPhoneFlavoredDevices.put(
+                        appFlavor.getDescription(),
+                        registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.I, appFlavor));
+            }
 
             mailType = mailService.registrationStatusMail(
                     awaitingBusinessApproval,
                     registeredUser,
                     deviceRegistered,
                     androidDeviceRegistered,
-                    iPhoneDeviceRegistered
+                    androidFlavoredDevices,
+                    iPhoneDeviceRegistered,
+                    iPhoneFlavoredDevices
             );
 
             if (mailType == MailTypeEnum.FAILURE) {

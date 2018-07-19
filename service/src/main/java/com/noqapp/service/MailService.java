@@ -289,14 +289,18 @@ public class MailService {
             long registeredUser,
             long deviceRegistered,
             long androidDeviceRegistered,
-            long iPhoneDeviceRegistered
+            Map<String, Long> androidFlavoredDevices,
+            long iPhoneDeviceRegistered,
+            Map<String, Long> iPhoneFlavoredDevices
     ) {
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("registeredUser", Long.toString(registeredUser));
         rootMap.put("awaitingBusinessApproval", Long.toString(awaitingBusinessApproval));
         rootMap.put("deviceRegistered", Long.toString(deviceRegistered));
         rootMap.put("androidDeviceRegistered", Long.toString(androidDeviceRegistered));
+        rootMap.put("androidFlavoredDevices", androidFlavoredDevices);
         rootMap.put("iPhoneDeviceRegistered", Long.toString(iPhoneDeviceRegistered));
+        rootMap.put("iPhoneFlavoredDevices", iPhoneFlavoredDevices);
         rootMap.put("parentHost", parentHost);
 
         try {
