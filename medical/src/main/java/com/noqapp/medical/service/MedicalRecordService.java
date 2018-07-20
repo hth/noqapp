@@ -319,7 +319,9 @@ public class MedicalRecordService {
                         new JsonMedicalPhysical()
                             .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
                             .setPluse(medicalRecord.getMedicalPhysical().getPluse())
-                            .setWeight(medicalRecord.getMedicalPhysical().getWeight()));
+                            .setWeight(medicalRecord.getMedicalPhysical().getWeight())
+                            .setTemperature(medicalRecord.getMedicalPhysical().getTemperature())
+                            .setOxygen(medicalRecord.getMedicalPhysical().getOxygen()));
                 }
 
                 if (null != medicalRecord.getMedicalMedication()) {
