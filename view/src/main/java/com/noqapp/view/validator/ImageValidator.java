@@ -33,6 +33,7 @@ public class ImageValidator implements Validator {
             MultipartFile file = (MultipartFile) target;
 
             if (file.isEmpty() || file.getSize() == 0) {
+                LOG.error("Please select a file to upload");
                 errors.rejectValue("file", "field.fileNotUploaded", new Object[]{""}, "Please select a file to upload");
             }
 
@@ -41,7 +42,12 @@ public class ImageValidator implements Validator {
                         && (!file.getContentType().toLowerCase().equals("image/jpg")
                         || !file.getContentType().toLowerCase().equals("image/jpeg")
                         || !file.getContentType().toLowerCase().equals("image/png"))) {
-                    errors.rejectValue("file", "field.fileNotSupported", new Object[]{"jpg/png"}, "Supported file formats are jpg/png");
+                    LOG.error("Supported file formats are jpg/png");
+                    errors.rejectValue(
+                        "file",
+                        "field.fileNotSupported",
+                        new Object[]{"jpg/png"},
+                        "Supported file formats are jpg/png");
                 }
 
                 if (file.getSize() > 0) {
@@ -53,12 +59,13 @@ public class ImageValidator implements Validator {
                     long fileSizeInMB = fileSizeInKB / 1024;
 
                     if (fileSizeInMB > 5) {
+                        LOG.error("Selected file size exceeds 5MB");
                         errors.rejectValue("file", "field.fileSizeExceed", new Object[]{"5MB"}, "Selected file size exceeds 5MB");
                     }
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed validating file");
+            LOG.error("Failed validating image file reason={}", e.getLocalizedMessage(), e);
             errors.reject("field.fileNotUploaded");
         }
     }
