@@ -48,8 +48,11 @@ public class MedicalPhysicalEntity extends BaseEntity {
     //WT in kg
     @Field("WT")
     private String weight;
-
     /** General Physical Exam Ends. */
+
+    @NotNull
+    @Field("DBI")
+    private String diagnosedById;
 
     public MedicalPhysicalEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
@@ -101,6 +104,15 @@ public class MedicalPhysicalEntity extends BaseEntity {
 
     public MedicalPhysicalEntity setWeight(String weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public String getDiagnosedById() {
+        return diagnosedById;
+    }
+
+    public MedicalPhysicalEntity setDiagnosedById(String diagnosedById) {
+        this.diagnosedById = diagnosedById;
         return this;
     }
 

@@ -48,6 +48,8 @@ public class MedicalRecordForm {
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
     private MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
     private List<MedicalMedicineEntity> medicalMedicines = new ArrayList<>();
+    private String planToPatient;
+    private String followUpInDays;
     private Map<Date, String> recordAccessed = new HashMap<>();
 
     @SuppressWarnings("unused")
@@ -258,6 +260,24 @@ public class MedicalRecordForm {
 
     public MedicalRecordForm setMedicalMedicines(List<MedicalMedicineEntity> medicalMedicines) {
         this.medicalMedicines = medicalMedicines;
+        return this;
+    }
+
+    public String getPlanToPatient() {
+        return planToPatient;
+    }
+
+    public MedicalRecordForm setPlanToPatient(String planToPatient) {
+        this.planToPatient = planToPatient;
+        return this;
+    }
+
+    public String getFollowUpInDays() {
+        return followUpInDays;
+    }
+
+    public MedicalRecordForm setFollowUpInDays(String followUpInDays) {
+        this.followUpInDays = followUpInDays;
         return this;
     }
 

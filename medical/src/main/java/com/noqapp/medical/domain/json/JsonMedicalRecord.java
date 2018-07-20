@@ -74,6 +74,12 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("me")
     private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
 
+    @JsonProperty("pp")
+    private String planToPatient;
+
+    @JsonProperty("fp")
+    private String followUpInDays;
+
     @JsonProperty("dbi")
     private String diagnosedById;
 
@@ -212,6 +218,24 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord addMedicine(JsonMedicalMedicine medicine) {
         this.medicalMedicines.add(medicine);
+        return this;
+    }
+
+    public String getPlanToPatient() {
+        return planToPatient;
+    }
+
+    public JsonMedicalRecord setPlanToPatient(String planToPatient) {
+        this.planToPatient = planToPatient;
+        return this;
+    }
+
+    public String getFollowUpInDays() {
+        return followUpInDays;
+    }
+
+    public JsonMedicalRecord setFollowUpInDays(String followUpInDays) {
+        this.followUpInDays = followUpInDays;
         return this;
     }
 
