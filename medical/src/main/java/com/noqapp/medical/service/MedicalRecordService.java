@@ -221,7 +221,9 @@ public class MedicalRecordService {
                     .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
                     .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
                     .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
-                    .setDiagnosedById(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
+                    .setDiagnosedById(StringUtils.isBlank(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById())
+                        ? jsonMedicalRecord.getDiagnosedById()
+                        : jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
 
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
