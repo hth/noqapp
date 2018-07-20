@@ -487,7 +487,7 @@ public class UserProfileController {
                 imageValidator.validate(multipartFile, result);
                 if (result.hasErrors()) {
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    LOG.warn("Failed validation");
+                    LOG.warn("Failed image validation");
                     //Re-direct to prevent resubmit
                     return "redirect:/access/userProfile.htm";
                 }
