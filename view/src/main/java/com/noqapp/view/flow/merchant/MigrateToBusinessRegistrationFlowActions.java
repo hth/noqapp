@@ -89,9 +89,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             businessUser = BusinessUserEntity.newInstance(qid, UserLevelEnum.M_ADMIN);
             businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
         } else {
-            /* Should never reach here. */
-            LOG.error("Reached unexpected condition for user={}", queueUser.getQueueUserId());
-            throw new UnsupportedOperationException("Failed loading Business");
+            LOG.info("Un-approved business being edited qid={}", businessUser.getQueueUserId());
         }
 
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);

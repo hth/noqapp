@@ -202,7 +202,7 @@ public class BusinessFlowValidator {
         } else if (mode.equalsIgnoreCase("create")) {
             LOG.info("Checking if business exists with phone={}", registerBusiness.getPhoneWithCountryCode());
             BizNameEntity bizName = bizService.findByPhone(registerBusiness.getPhoneWithCountryCode());
-            if (null != bizName) {
+            if (null != bizName && !bizName.getId().equalsIgnoreCase(registerBusiness.getBizId())) {
                 LOG.warn("Business exists with phone={} existing bizName={}", registerBusiness.getPhoneWithCountryCode(), bizName.getBusinessName());
                 messageContext.addMessage(
                         new MessageBuilder()
