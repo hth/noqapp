@@ -90,8 +90,9 @@ public class MedicalRecordService {
                 .setFamilyHistory(StringUtils.capitalize(medicalRecordForm.getFamilyHistory().trim()))
                 .setKnownAllergies(StringUtils.capitalize(medicalRecordForm.getKnownAllergies().trim()))
                 .setClinicalFinding(StringUtils.capitalize(medicalRecordForm.getClinicalFinding().trim()))
-                .setProvisionalDifferentialDiagnosis(
-                        StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
+                .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
+                .setPlanToPatient(medicalRecord.getPlanToPatient())
+                .setFollowUpInDays(medicalRecord.getFollowUpInDays())
                 .setDiagnosedById(diagnosedById)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
@@ -141,8 +142,9 @@ public class MedicalRecordService {
                 .setFamilyHistory(StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
                 .setKnownAllergies(StringUtils.capitalize(jsonMedicalRecord.getKnownAllergies().trim()))
                 .setClinicalFinding(StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
-                .setProvisionalDifferentialDiagnosis(
-                        StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
+                .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
+                .setPlanToPatient(jsonMedicalRecord.getPlanToPatient())
+                .setFollowUpInDays(jsonMedicalRecord.getFollowUpInDays())
                 .setDiagnosedById(jsonMedicalRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
@@ -218,7 +220,8 @@ public class MedicalRecordService {
                         .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
                         .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
                         .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
-                        .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight());
+                        .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
+                        .setDiagnosedById(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
 
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
@@ -307,7 +310,9 @@ public class MedicalRecordService {
                     .setBusinessName(medicalRecord.getBusinessName())
                     .setBizCategoryName(medicalRecord.getBizCategoryId() == null
                         ? "NA"
-                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription())
+                    .setPlanToPatient(medicalRecord.getPlanToPatient())
+                    .setFollowUpInDays(medicalRecord.getFollowUpInDays());
 
                 if (null != medicalRecord.getMedicalPhysical()) {
                     jsonMedicalRecord.setMedicalPhysical(

@@ -72,6 +72,12 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("ME")
     private MedicalMedicationEntity medicalMedication;
 
+    @Field("PP")
+    private String planToPatient;
+
+    @Field("FP")
+    private String followUpInDays;
+
     /* Always doctors id who looked or was booked for. */
     @NotNull
     @Field("DBI")
@@ -197,6 +203,24 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
         this.medicalMedication = medicalMedication;
+        return this;
+    }
+
+    public String getPlanToPatient() {
+        return planToPatient;
+    }
+
+    public MedicalRecordEntity setPlanToPatient(String planToPatient) {
+        this.planToPatient = planToPatient;
+        return this;
+    }
+
+    public String getFollowUpInDays() {
+        return followUpInDays;
+    }
+
+    public MedicalRecordEntity setFollowUpInDays(String followUpInDays) {
+        this.followUpInDays = followUpInDays;
         return this;
     }
 
