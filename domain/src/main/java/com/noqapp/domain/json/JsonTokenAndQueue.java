@@ -16,6 +16,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 
@@ -39,6 +42,7 @@ import java.util.TimeZone;
 @JsonIgnoreProperties (ignoreUnknown = true)
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueue extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonTokenAndQueue.class);
 
     @JsonProperty ("qr")
     private String codeQR;
@@ -160,6 +164,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
+        LOG.info("banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
