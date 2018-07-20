@@ -46,10 +46,24 @@ public class CommonHelper {
                     map.put(bankDepartment.name(), bankDepartment.getDescription());
                 }
                 return map;
-            case PH:
             case RS:
+            case BA:
             case ST:
+            case LD:
+            case SM:
+            case MT:
+            case GA:
             case SC:
+            case GS:
+            case CF:
+            case PH:
+            case PW:
+            case MU:
+            case TA:
+            case NC:
+            case AT:
+            case GY:
+            case PA:
                 return null;
             default:
                 LOG.error("Un-supported businessType={}", businessType);
