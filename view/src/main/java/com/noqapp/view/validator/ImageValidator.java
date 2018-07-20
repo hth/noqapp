@@ -38,10 +38,8 @@ public class ImageValidator implements Validator {
             }
 
             if (!errors.hasErrors()) {
-                if (null != file.getContentType()
-                        && (!file.getContentType().toLowerCase().equals("image/jpg")
-                        || !file.getContentType().toLowerCase().equals("image/jpeg")
-                        || !file.getContentType().toLowerCase().equals("image/png"))) {
+                String s = file.getContentType().toLowerCase();
+                if (!s.equals("image/jpg") && !s.equals("image/jpeg") && !s.equals("image/png")) {
                     LOG.error("Supported file formats are jpg/png");
                     errors.rejectValue(
                         "file",
