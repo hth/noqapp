@@ -217,9 +217,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public boolean updateDependentDetailsOnPhoneMigration(String qid, String phone, String newPhone, String countryShortName, String timeZone) {
+    public boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
-                query(where("QID").is(qid).and("GP").is(phone)),
+                query(where("QID").is(qid).and("PH").is(qid)),
                 entityUpdate(update("GP", newPhone).set("CS", countryShortName).set("TZ", timeZone)),
                 UserProfileEntity.class,
                 TABLE);

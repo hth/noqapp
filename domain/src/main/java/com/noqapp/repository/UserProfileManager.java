@@ -48,5 +48,5 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     void addUserProfileImage(String qid, String profileImage);
 
-    boolean updateDependentDetailsOnPhoneMigration(String qid, String phone, String newPhone, String countryShortName, String timeZone);
+    boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone);
 }
