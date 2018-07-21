@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -53,7 +54,7 @@ public class BizStoreElasticList extends AbstractDomain {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new HashSet<>();
 
     public String getScrollId() {
         return scrollId;
@@ -91,7 +92,7 @@ public class BizStoreElasticList extends AbstractDomain {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(Collection<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
