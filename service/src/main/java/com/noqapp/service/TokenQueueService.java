@@ -169,14 +169,6 @@ public class TokenQueueService {
             TokenServiceEnum tokenService
     ) {
         try {
-            LOG.info("Next token codeQR={} did={} qid={} guardianQid={} averageServiceTime={} tokenService={}",
-                    codeQR,
-                    did,
-                    qid, 
-                    guardianQid,
-                    averageServiceTime,
-                    tokenService);
-
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
