@@ -92,7 +92,7 @@ public class LandingController {
             landingForm
                     .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                     .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
-                    .setMinorUserProfiles(accountService.findMinorProfiles(queueUser.getQueueUserId()));
+                    .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()));
 
             LOG.info("Current size={} and Historical size={}",
                     landingForm.getCurrentQueues().size(),

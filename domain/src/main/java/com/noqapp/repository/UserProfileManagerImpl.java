@@ -11,6 +11,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
 
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 import org.bson.types.ObjectId;
 
@@ -198,7 +199,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public List<UserProfileEntity> findMinorProfiles(String phone) {
+    public List<UserProfileEntity> findDependentProfiles(String phone) {
         return mongoTemplate.find(
                 query(where("GP").is(phone)),
                 UserProfileEntity.class,
@@ -213,5 +214,16 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 entityUpdate(update("PI", profileImage)),
                 UserProfileEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public boolean updateDependentDetailsOnPhoneMigration(String qid, String phone, String newPhone, String countryShortName, String timeZone) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
+                query(where("QID").is(qid).and("GP").is(phone)),
+                entityUpdate(update("GP", newPhone).set("CS", countryShortName).set("TZ", timeZone)),
+                UserProfileEntity.class,
+                TABLE);
+
+        return updateResult.getModifiedCount() == 1;
     }
 }
