@@ -285,7 +285,7 @@ public class MedicalRecordService {
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
-        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findMinorProfiles(qid);
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfiles(qid);
         List<String> queueUserIds = new LinkedList<String>() {{
             add(qid);
         }};

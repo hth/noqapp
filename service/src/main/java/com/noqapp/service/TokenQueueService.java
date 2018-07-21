@@ -325,7 +325,12 @@ public class TokenQueueService {
                 queue.setGuardianQid(qid);
             } else if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-                queue.setGuardianQid(guardianProfile.getQueueUserId());
+                if (guardianProfile == null) {
+                    /* Failure could be because of phone migration or other reason. Investigate. */
+                    LOG.error("Failed to find guardianPhone={} qid={}", userProfile.getGuardianPhone(), userProfile.getQueueUserId());
+                } else {
+                    queue.setGuardianQid(guardianProfile.getQueueUserId());
+                }
             }
 
             /* Add business customer id if any associated with qid and codeQR. */

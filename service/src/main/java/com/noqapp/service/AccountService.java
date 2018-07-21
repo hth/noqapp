@@ -339,9 +339,9 @@ public class AccountService {
         }
     }
 
-    public List<UserProfileEntity> findMinorProfiles(String qid) {
+    public List<UserProfileEntity> findDependentProfiles(String qid) {
         UserProfileEntity userProfile = findProfileByQueueUserId(qid);
-        return userProfileManager.findMinorProfiles(userProfile.getPhone());
+        return userProfileManager.findDependentProfiles(userProfile.getPhone());
     }
 
     /**
@@ -613,8 +613,23 @@ public class AccountService {
         userProfile.setTimeZone(registerUser.getTimeZone());
 
         save(userProfile);
+        executorService.submit(() -> updateDependentsPhoneNumber(registerUser, userProfile.getPhone()));
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
+    }
+
+    private void updateDependentsPhoneNumber(RegisterUser registerUser, String phone) {
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfiles(phone);
+        for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
+            boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
+                    dependentUserProfile.getQueueUserId(),
+                    dependentUserProfile.getGuardianPhone(),
+                    registerUser.getPhoneWithCountryCode(),
+                    registerUser.getCountryShortName(),
+                    registerUser.getTimeZone()
+            );
+            LOG.info("Guardian phone updated status={} for qid={}", status, dependentUserProfile.getQueueUserId());
+        }
     }
 
     void addUserProfileImage(String qid, String profileImage) {
