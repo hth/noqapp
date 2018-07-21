@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * hitender
@@ -92,7 +91,7 @@ public class BizStoreElasticList extends AbstractDomain {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(Collection<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
