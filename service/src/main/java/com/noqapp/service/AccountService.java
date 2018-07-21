@@ -623,7 +623,6 @@ public class AccountService {
         for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
             boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
                     dependentUserProfile.getQueueUserId(),
-                    dependentUserProfile.getGuardianPhone(),
                     registerUser.getPhoneWithCountryCode(),
                     registerUser.getCountryShortName(),
                     registerUser.getTimeZone()
