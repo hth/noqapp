@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * hitender
  * 12/21/17 1:15 PM
@@ -36,7 +34,7 @@ public class JsonCategory extends AbstractDomain {
     private String categoryName;
 
     @JsonProperty("di")
-    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+    private String displayImage;
 
     public String getBizCategoryId() {
         return bizCategoryId;
@@ -61,10 +59,7 @@ public class JsonCategory extends AbstractDomain {
     }
 
     public JsonCategory setDisplayImage(String displayImage) {
-        //TODO(hth) remove the check
-        if (StringUtils.isNotBlank(displayImage)) {
-            this.displayImage = displayImage;
-        }
+        this.displayImage = displayImage;
         return this;
     }
 }
