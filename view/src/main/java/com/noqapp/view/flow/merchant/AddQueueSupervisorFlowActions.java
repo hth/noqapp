@@ -297,12 +297,14 @@ public class AddQueueSupervisorFlowActions {
 
         if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
             /* Create a health care professional profile when selected as a doctor.
-             * Mark profile as Store/Queue Manager.
+             * Mark profile as Store/Queue Manager and set business type. 
              */
             professionalProfileService.createProfessionalProfile(userProfile.getQueueUserId());
-            userProfile.setLevel(UserLevelEnum.S_MANAGER);
+            userProfile.setLevel(UserLevelEnum.S_MANAGER)
+                    .setBusinessType(bizStore.getBusinessType());
         } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
-            userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+            userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR)
+                    .setBusinessType(bizStore.getBusinessType());
         }
         accountService.save(userProfile);
 
