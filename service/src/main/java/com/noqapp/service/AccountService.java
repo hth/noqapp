@@ -613,19 +613,23 @@ public class AccountService {
         userProfile.setTimeZone(registerUser.getTimeZone());
 
         save(userProfile);
-        executorService.submit(() -> updateDependentsPhoneNumber(registerUser, userProfile.getPhone()));
+        executorService.submit(() -> updateDependentsPhoneNumber(
+                registerUser.getPhoneWithCountryCode(),
+                registerUser.getCountryShortName(),
+                registerUser.getTimeZone(),
+                userProfile.getPhone()));
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
 
-    private void updateDependentsPhoneNumber(RegisterUser registerUser, String phone) {
+    private void updateDependentsPhoneNumber(String newPhone, String countryShortName, String timeZone, String phone) {
         List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfiles(phone);
         for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
             boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
                     dependentUserProfile.getQueueUserId(),
-                    registerUser.getPhoneWithCountryCode(),
-                    registerUser.getCountryShortName(),
-                    registerUser.getTimeZone()
+                    newPhone,
+                    countryShortName,
+                    timeZone
             );
             LOG.info("Guardian phone updated status={} for qid={}", status, dependentUserProfile.getQueueUserId());
         }

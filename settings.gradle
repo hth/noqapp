@@ -1,3 +1,6 @@
+//For Publishing feature in Gradle 5.0
+enableFeaturePreview('STABLE_PUBLISHING')
+
 include "common",
         "domain",
         "health",
