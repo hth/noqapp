@@ -251,7 +251,8 @@ public class BizStoreEntity extends BaseEntity {
         if (StringUtils.isNotBlank(area)) {
             String[] split = address.split(area);
             String address = split[0] + "<br/>";
-            if (StringUtils.isNotBlank(area)) {
+            /* Compare name of area and town to ignore repeat of it. */
+            if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
                 address += area + ", ";
             }
 
@@ -259,7 +260,8 @@ public class BizStoreEntity extends BaseEntity {
                 address += town + "," + "<br/>";
             }
 
-            address += split[1].replace(", " + town + ",", "");
+            address += split[1].replace(", " + town + ",", "").replaceFirst(",","").trim();
+            LOG.debug("Address={}", address);
             return address;
         } else {
             LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
