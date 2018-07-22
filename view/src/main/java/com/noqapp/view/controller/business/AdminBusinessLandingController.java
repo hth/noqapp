@@ -446,6 +446,12 @@ public class AdminBusinessLandingController {
                             professionalProfileService.save(professionalProfile);
                         }
                     }
+
+                    bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                    userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+                    /* Update UserProfile Business Type when profile is approved. */
+                    userProfile.setBusinessType(bizStore.getBusinessType());
+                    accountService.save(userProfile);
                     break;
                 case "ADD":
                     int queueSupervisingCount = businessUserStoreService.findAllStoreQueueAssociated(businessUser.getQueueUserId()).size();
@@ -482,10 +488,6 @@ public class AdminBusinessLandingController {
                             professionalProfileService.save(professionalProfile);
                         }
                     }
-
-                    /* Update UserProfile Business Type. */
-                    userProfile.setBusinessType(bizStore.getBusinessType());
-                    accountService.save(userProfile);
                     break;
                 case "REJECT":
                 case "DELETE":
