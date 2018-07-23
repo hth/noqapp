@@ -41,21 +41,14 @@
                     <div class="qr-address">
                         <img src="${profile['profileImage']}" alt="Profile Image" class="img-profile-circle" />
                         <h3>Dr. ${profile['name']}</h3>
+                        <p>${profile['education']}</p>
                         <p>${profile['categoryName']}</p>
                         <#--<p>${profile['gender']}</p>-->
                         <#if profile['experienceDuration'] != 0>
                             <p>${profile['experienceDuration']}+ years of experience</p>
                         </#if>
                     </div>
-                    <br/><br/>
-                    <#if profile["education"]?has_content>
-                    <h4>Education</h4>
-                    <div class="qr-address">
-                        <#list profile["education"] as nameDatePair>
-                            <p>${nameDatePair.monthYear?date("yyyy-MM-dd")?string["MMM, yyyy"]} - ${nameDatePair.name}</p>
-                        </#list>
-                    </div>
-                    </#if>
+                    <br/>
 
                     <#if profile["awards"]?has_content>
                     <h4>Awards</h4>
