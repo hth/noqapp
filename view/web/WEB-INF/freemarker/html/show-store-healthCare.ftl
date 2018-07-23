@@ -41,7 +41,9 @@
                     <div class="qr-address">
                         <img src="${profile['profileImage']}" alt="Profile Image" class="img-profile-circle" />
                         <h3>Dr. ${profile['name']}</h3>
-                        <p>${profile['education']}</p>
+                        <#if profile["education"]?has_content>
+                            <p>${profile['education']}</p>
+                        </#if>
                         <p>${profile['categoryName']}</p>
                         <#--<p>${profile['gender']}</p>-->
                         <#if profile['experienceDuration'] != 0>
