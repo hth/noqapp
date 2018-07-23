@@ -271,7 +271,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         if (null == deviceType) {
             query.addCriteria(where("C").gte(from).lt(to));
         } else {
-            query.addCriteria(where("DT").is(deviceType).and("AP").is(appFlavor)).addCriteria(where("C").gte(from).lt(to));
+            query.addCriteria(where("DT").is(deviceType).and("AF").is(appFlavor)).addCriteria(where("C").gte(from).lt(to));
         }
 
         return mongoTemplate.count(
