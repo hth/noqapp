@@ -259,8 +259,10 @@ public class ShowHTMLService {
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
         StringBuilder education = new StringBuilder();
-        for (JsonNameDatePair jsonNameDatePair : jsonProfessionalProfile.getEducation()) {
-            education.append(jsonNameDatePair.getName()).append(", ");
+        if (null != jsonProfessionalProfile.getEducation()) {
+            for (JsonNameDatePair jsonNameDatePair : jsonProfessionalProfile.getEducation()) {
+                education.append(jsonNameDatePair.getName()).append(", ");
+            }
         }
         profile.put("education", education.substring(0, education.lastIndexOf(", ")));
 
