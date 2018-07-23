@@ -258,7 +258,6 @@ public class ShowHTMLService {
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
         profile.put("education", jsonProfessionalProfile.getEducation());
-        rootMap.put("profile", profile);
 
         Map<String, Object> stores = new HashMap<>();
         for (BizStoreEntity bizStore : bizStores) {
@@ -268,6 +267,7 @@ public class ShowHTMLService {
             stores.put(bizStore.getCodeQR(), storeData);
         }
         rootMap.put("stores", stores);
+        rootMap.put("profile", profile);
         return true;
     }
 
