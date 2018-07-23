@@ -264,6 +264,7 @@ public class ShowHTMLService {
         for (BizStoreEntity bizStore : bizStores) {
             Map<String, Object> storeData = new HashMap<>();
             populateStore(storeData, bizStore);
+            profile.put("categoryName", CommonHelper.findCategoryName(bizStore));
             stores.put(bizStore.getCodeQR(), storeData);
         }
         rootMap.put("stores", stores);
