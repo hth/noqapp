@@ -262,7 +262,7 @@ public class ShowHTMLService {
 
         String education = jsonProfessionalProfile.getEducation().stream()
             .map(JsonNameDatePair::getName)
-            .collect(Collectors.joining(","));
+            .collect(Collectors.joining(", "));
 
         if (StringUtils.isNotBlank(education)) {
             profile.put("education", education);
