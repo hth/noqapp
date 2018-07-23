@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 /**
  * Generate store HTML page at runtime.
@@ -258,13 +259,13 @@ public class ShowHTMLService {
                 : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
-        StringBuilder education = new StringBuilder();
-        for (JsonNameDatePair jsonNameDatePair : jsonProfessionalProfile.getEducation()) {
-            education.append(jsonNameDatePair.getName()).append(", ");
-        }
+
+        String education = jsonProfessionalProfile.getEducation().stream()
+            .map(JsonNameDatePair::getName)
+            .collect(Collectors.joining(","));
 
         if (StringUtils.isNotBlank(education)) {
-            profile.put("education", education.substring(0, education.lastIndexOf(", ")));
+            profile.put("education", education);
         }
 
         Map<String, Object> stores = new HashMap<>();
