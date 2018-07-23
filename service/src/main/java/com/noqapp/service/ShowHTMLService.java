@@ -9,6 +9,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.helper.CommonHelper;
+import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 
 import com.google.zxing.WriterException;
@@ -257,7 +258,11 @@ public class ShowHTMLService {
                 : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
-        profile.put("education", jsonProfessionalProfile.getEducation());
+        StringBuilder education = new StringBuilder();
+        for (JsonNameDatePair jsonNameDatePair : jsonProfessionalProfile.getEducation()) {
+            education.append(jsonNameDatePair.getName()).append(", ");
+        }
+        profile.put("education", education.substring(0, education.lastIndexOf(", ")));
 
         Map<String, Object> stores = new HashMap<>();
         for (BizStoreEntity bizStore : bizStores) {
