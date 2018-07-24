@@ -5,8 +5,9 @@ package com.noqapp.domain.types.medical;
  * 7/24/18 10:51 AM
  */
 public enum FormVersionEnum {
-    GEV1("GEV1", "General Form v1", "Since 2018", "Exp 2019"),
-    GEV2("GEV2", "General Form v2", "Since 2018", "Exp 2019");
+    /* Format of four letters, A1 to A9 and then B1 to B9 and so on. */
+    GFA1("GFA1", "General Form a1", "Since 2018", "Exp 2019"),
+    GFA2("GFA2", "General Form a2", "Since 2018", "Exp 2019");
 
     private final String name;
     private final String description;
