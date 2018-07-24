@@ -10,16 +10,21 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
+import com.noqapp.medical.domain.MedicalPathologyEntity;
+import com.noqapp.medical.domain.MedicalPathologyTestEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
+import com.noqapp.medical.domain.json.JsonPathology;
 import com.noqapp.medical.domain.json.JsonRecordAccess;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicineManager;
+import com.noqapp.medical.repository.MedicalPathologyManager;
+import com.noqapp.medical.repository.MedicalPathologyTestManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.UserProfileManager;
@@ -52,6 +57,8 @@ public class MedicalRecordService {
     private MedicalPhysicalManager medicalPhysicalManager;
     private MedicalMedicationManager medicalMedicationManager;
     private MedicalMedicineManager medicalMedicineManager;
+    private MedicalPathologyManager medicalPathologyManager;
+    private MedicalPathologyTestManager medicalPathologyTestManager;
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private UserProfileManager userProfileManager;
@@ -64,7 +71,9 @@ public class MedicalRecordService {
         MedicalMedicineManager medicalMedicineManager,
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        MedicalPathologyManager medicalPathologyManager,
+        MedicalPathologyTestManager medicalPathologyTestManager
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
@@ -73,6 +82,8 @@ public class MedicalRecordService {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
+        this.medicalPathologyManager = medicalPathologyManager;
+        this.medicalPathologyTestManager = medicalPathologyTestManager;
     }
 
     //TODO add check for qid
@@ -168,6 +179,10 @@ public class MedicalRecordService {
                 populateWithMedicalMedicine(medical, medicalRecord);
             }
 
+            if (null != medical.getPathologies()) {
+                populateWithPathologies(medical, medicalRecord);
+            }
+
             //TODO remove this temp code below for record access
 //            medicalRecord.addRecordAccessed(
 //                Instant.now().toEpochMilli(),
@@ -177,6 +192,28 @@ public class MedicalRecordService {
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), medical, e);
         }
+    }
+
+    private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        if (jsonMedicalRecord.getPathologies().isEmpty()) {
+            return;
+        }
+
+        MedicalPathologyEntity medicalPathology = new MedicalPathologyEntity();
+        medicalPathology
+            .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+            .setId(CommonUtil.generateHexFromObjectId());
+
+        for (JsonPathology jsonPathology : jsonMedicalRecord.getPathologies()) {
+            MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity();
+            medicalPathologyTest.setName(jsonPathology.getName());
+            medicalPathologyTest.setMedicalPathologyReferenceId(medicalPathology.getId());
+            medicalPathologyTestManager.save(medicalPathologyTest);
+            medicalPathology.addMedicalPathologyTestId(medicalPathologyTest.getId());
+        }
+
+        medicalPathologyManager.save(medicalPathology);
+        medicalRecord.setMedicalLaboratory(medicalPathology);
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -264,7 +301,7 @@ public class MedicalRecordService {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
 
             if (jsonMedicalRecord.getMedicalPhysical() != null) {
-                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord,  medicalRecord.getMedicalPhysical());
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalRecord.getMedicalPhysical());
             }
             LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
         } catch (Exception e) {
@@ -306,10 +343,14 @@ public class MedicalRecordService {
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return medicalPhysicalManager.findByQid(qid);
     }
-
-    @Mobile
+    
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         return medicalMedicineManager.findByIds(ids);
+    }
+
+    @Mobile
+    public List<MedicalPathologyTestEntity> findPathologyTestByIds(String referenceId) {
+        return medicalPathologyTestManager.findPathologyTestByIds(referenceId);
     }
 
     public List<MedicalMedicineEntity> findByMedicationRefId(String referenceId) {
@@ -362,9 +403,16 @@ public class MedicalRecordService {
                 }
 
                 if (null != medicalRecord.getMedicalMedication()) {
-                    List<MedicalMedicineEntity> medicalMedicines = findByIds(medicalRecord.getMedicalMedication().getMedicineIds());
+                    List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedication().getId());
                     for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
                         jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
+                    }
+                }
+
+                if (null != medicalRecord.getMedicalLaboratory()) {
+                    List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
+                    for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
+                        jsonMedicalRecord.addPathology(new JsonPathology().setName(medicalPathologyTest.getName()));
                     }
                 }
 
