@@ -2,6 +2,7 @@ package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.medical.FormVersionEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -91,6 +92,9 @@ public class MedicalRecordEntity extends BaseEntity {
 
     @Field ("BCI")
     private String bizCategoryId;
+
+    @Field ("FV")
+    private FormVersionEnum formVersion;
 
     private MedicalRecordEntity() {}
 
@@ -262,6 +266,15 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public MedicalRecordEntity setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 

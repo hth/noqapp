@@ -259,14 +259,9 @@ public class ShowHTMLService {
                 : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
-
-        String education = jsonProfessionalProfile.getEducation().stream()
-            .map(JsonNameDatePair::getName)
-            .collect(Collectors.joining(", "));
-
-        if (StringUtils.isNotBlank(education)) {
-            profile.put("education", education);
-        }
+        profile.put("education", jsonProfessionalProfile.getEducation().stream()
+                .map(JsonNameDatePair::getName)
+                .collect(Collectors.joining(", ")));
 
         Map<String, Object> stores = new HashMap<>();
         for (BizStoreEntity bizStore : bizStores) {

@@ -2,6 +2,7 @@ package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.medical.FormVersionEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -98,6 +99,9 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty ("qr")
     private String codeQR;
+
+    @JsonProperty("fv")
+    private FormVersionEnum formVersion;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -290,6 +294,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 }
