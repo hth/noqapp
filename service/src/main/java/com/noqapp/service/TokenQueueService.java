@@ -206,9 +206,7 @@ public class TokenQueueService {
                         queue.setGuardianQid(guardianQid);
                     }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    queue
-                        .setExpectedServiceBegin(expectedServiceBegin)
-                        .setRecordReferenceId(CommonUtil.generateHexFromObjectId());
+                    queue.setExpectedServiceBegin(expectedServiceBegin);
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -221,8 +219,7 @@ public class TokenQueueService {
                         .setServingNumber(tokenQueue.getCurrentlyServing())
                         .setDisplayName(tokenQueue.getDisplayName())
                         .setQueueStatus(tokenQueue.getQueueStatus())
-                        .setExpectedServiceBegin(queue.getExpectedServiceBegin())
-                        .setRecordReferenceId(queue.getRecordReferenceId());
+                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             }
 
             TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
@@ -310,7 +307,9 @@ public class TokenQueueService {
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            queue.setCustomerName(userProfile.getName());
+            queue
+                .setCustomerName(userProfile.getName())
+                .setRecordReferenceId(CommonUtil.generateHexFromObjectId());
             if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
                 queue.setCustomerPhone(userProfile.getPhone());
             } else {

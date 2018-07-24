@@ -68,6 +68,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    @JsonProperty ("rr")
+    private String recordReferenceId;
+
     public int getToken() {
         return token;
     }
@@ -146,6 +149,11 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public JsonQueuedPerson setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 
