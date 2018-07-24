@@ -68,6 +68,7 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    /** This record reference has to be used when submitting a form. */
     @JsonProperty ("rr")
     private String recordReferenceId;
 
