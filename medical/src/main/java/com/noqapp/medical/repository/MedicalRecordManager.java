@@ -12,4 +12,6 @@ import java.util.List;
 public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEntity> {
 
     List<MedicalRecordEntity> historicalRecords(String qid, int limit);
+
+    MedicalRecordEntity findById(String id);
 }

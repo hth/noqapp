@@ -132,9 +132,15 @@ public class MedicalRecordService {
             return;
         }
 
-        MedicalRecordEntity medicalRecord = new MedicalRecordEntity(jsonMedicalRecord.getQueueUserId());
-        /* Setting its own ObjectId. */
-        medicalRecord.setId(CommonUtil.generateHexFromObjectId());
+        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonMedicalRecord.getRecordReferenceId());
+        if (null == medicalRecord) {
+            medicalRecord = new MedicalRecordEntity(jsonMedicalRecord.getQueueUserId());
+            /* Setting its own ObjectId when not set. */
+            medicalRecord.setId(StringUtils.isBlank(jsonMedicalRecord.getRecordReferenceId())
+                ? CommonUtil.generateHexFromObjectId()
+                : jsonMedicalRecord.getRecordReferenceId());
+        }
+
         medicalRecord
             .setBusinessType(bizStore.getBusinessType())
             .setChiefComplain(StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
@@ -149,8 +155,12 @@ public class MedicalRecordService {
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBizCategoryId(bizStore.getBizCategoryId());
 
-        if (null != jsonMedicalRecord.getMedicalPhysical()) {
-            populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
+        if (null == medicalRecord.getMedicalPhysical()) {
+            if (null != jsonMedicalRecord.getMedicalPhysical()) {
+                populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
+            }
+        } else {
+            updateMedicalPhysical(jsonMedicalRecord, medicalRecord);
         }
 
         if (null != jsonMedicalRecord.getMedicalMedicines()) {
@@ -215,21 +225,38 @@ public class MedicalRecordService {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(jsonMedicalRecord.getQueueUserId());
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
-                medicalPhysical
-                    .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
-                    .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
-                    .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
-                    .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
-                    .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
-                    .setDiagnosedById(StringUtils.isBlank(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById())
-                        ? jsonMedicalRecord.getDiagnosedById()
-                        : jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical);
+            }
+            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
+        } catch (Exception e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+        }
+    }
 
-                LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
-                medicalPhysicalManager.save(medicalPhysical);
+    private void updateMedicalPhysicalData(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, MedicalPhysicalEntity medicalPhysical) {
+        medicalPhysical
+            .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
+            .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
+            .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
+            .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
+            .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
+            .setDiagnosedById(StringUtils.isBlank(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById())
+                ? jsonMedicalRecord.getDiagnosedById()
+                : jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
 
-                /* Add the Medical Physical to Medical Record. */
-                medicalRecord.setMedicalPhysical(medicalPhysical);
+        LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
+        medicalPhysicalManager.save(medicalPhysical);
+
+        /* Add the Medical Physical to Medical Record. */
+        medicalRecord.setMedicalPhysical(medicalPhysical);
+    }
+
+    private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        try {
+            LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
+
+            if (jsonMedicalRecord.getMedicalPhysical() != null) {
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord,  medicalRecord.getMedicalPhysical());
             }
             LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
         } catch (Exception e) {

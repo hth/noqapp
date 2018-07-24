@@ -111,6 +111,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("BC")
     private String businessCustomerId;
 
+    /* This data is associated to record that needs to be created against this queue entry. */
+    @Field ("RR")
+    private String recordReferenceId;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -309,6 +313,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setBusinessCustomerId(String businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public QueueEntity setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 
