@@ -169,9 +169,9 @@ public class MedicalRecordService {
             }
 
             //TODO remove this temp code below for record access
-            medicalRecord.addRecordAccessed(
-                Instant.now().toEpochMilli(),
-                medical.getDiagnosedById());
+//            medicalRecord.addRecordAccessed(
+//                Instant.now().toEpochMilli(),
+//                medical.getDiagnosedById());
             medicalRecordManager.save(medicalRecord);
             LOG.info("Saved medical record={}", medicalRecord);
         } catch (Exception e) {
@@ -180,6 +180,10 @@ public class MedicalRecordService {
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        if (jsonMedicalRecord.getMedicalMedicines().isEmpty()) {
+            return;
+        }
+
         MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
         medicalMedication
             .setQueueUserId(jsonMedicalRecord.getQueueUserId())
