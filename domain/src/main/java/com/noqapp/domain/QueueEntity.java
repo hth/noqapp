@@ -186,8 +186,9 @@ public class QueueEntity extends BaseEntity {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
+    public QueueEntity setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
     }
 
     public String getCustomerPhone() {

@@ -157,7 +157,8 @@ public class QueueService {
                     .setToken(queue.getTokenNumber())
                     .setServerDeviceId(queue.getServerDeviceId())
                     .setBusinessCustomerId(queue.getBusinessCustomerId())
-                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore());
+                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+                    .setRecordReferenceId(queue.getRecordReferenceId());
 
             if (StringUtils.isNotBlank(queue.getGuardianQid())) {
                 UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
