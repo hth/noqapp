@@ -65,7 +65,7 @@ public class FileService {
             @Value ("${image.service.width:600}")
             int imageServiceWidth,
 
-            @Value ("${image.service.height:300}")
+            @Value ("${image.service.height:400}")
             int imageServiceHeight,
 
             AccountService accountService,
