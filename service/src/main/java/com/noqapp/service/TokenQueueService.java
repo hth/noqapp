@@ -337,6 +337,7 @@ public class TokenQueueService {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId());
             }
 
+            LOG.debug("Updated Queue={}", queue);
             queueManager.save(queue);
         }
     }
