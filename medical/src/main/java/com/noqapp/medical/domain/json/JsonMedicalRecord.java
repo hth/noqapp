@@ -103,6 +103,9 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("fv")
     private FormVersionEnum formVersion;
 
+    @JsonProperty("rr")
+    private String recordReferenceId;
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -303,6 +306,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
         this.formVersion = formVersion;
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 }

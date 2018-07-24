@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -205,7 +206,9 @@ public class TokenQueueService {
                         queue.setGuardianQid(guardianQid);
                     }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    queue.setExpectedServiceBegin(expectedServiceBegin);
+                    queue
+                        .setExpectedServiceBegin(expectedServiceBegin)
+                        .setRecordReferenceId(CommonUtil.generateHexFromObjectId());
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -218,7 +221,8 @@ public class TokenQueueService {
                         .setServingNumber(tokenQueue.getCurrentlyServing())
                         .setDisplayName(tokenQueue.getDisplayName())
                         .setQueueStatus(tokenQueue.getQueueStatus())
-                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                        .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                        .setRecordReferenceId(queue.getRecordReferenceId());
             }
 
             TokenQueueEntity tokenQueue = findByCodeQR(codeQR);

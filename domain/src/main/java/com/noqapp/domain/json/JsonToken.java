@@ -67,6 +67,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
+    @JsonProperty ("rr")
+    private String recordReferenceId;
+
     /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
 
@@ -161,6 +164,15 @@ public class JsonToken extends AbstractDomain {
         if (null != expectedServiceBegin) {
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
         }
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public JsonToken setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 
