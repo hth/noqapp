@@ -329,19 +329,30 @@ public class QueueEntity extends BaseEntity {
     @Override
     public String toString() {
         return "QueueEntity{" +
-                "codeQR='" + codeQR + '\'' +
-                ", did='" + did + '\'' +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", tokenNumber=" + tokenNumber +
-                ", displayName='" + displayName + '\'' +
-                ", queueUserState=" + queueUserState +
-                ", serverName=" + serverName +
-                ", notifiedOnService=" + notifiedOnService +
-                ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
-                ", customerName='" + customerName + '\'' +
-                ", ratingCount=" + ratingCount +
-                ", hoursSaved=" + hoursSaved +
-                ", serviceEndTime=" + serviceEndTime +
-                '}';
+            "codeQR='" + codeQR + '\'' +
+            ", did='" + did + '\'' +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", tokenNumber=" + tokenNumber +
+            ", displayName='" + displayName + '\'' +
+            ", businessType=" + businessType +
+            ", queueUserState=" + queueUserState +
+            ", notifiedOnService=" + notifiedOnService +
+            ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
+            ", customerName='" + customerName + '\'' +
+            ", customerPhone='" + customerPhone + '\'' +
+            ", ratingCount=" + ratingCount +
+            ", hoursSaved=" + hoursSaved +
+            ", review='" + review + '\'' +
+            ", serverName='" + serverName + '\'' +
+            ", serverDeviceId='" + serverDeviceId + '\'' +
+            ", serviceBeginTime=" + serviceBeginTime +
+            ", serviceEndTime=" + serviceEndTime +
+            ", expectedServiceBegin=" + expectedServiceBegin +
+            ", tokenService=" + tokenService +
+            ", clientVisitedThisStore=" + clientVisitedThisStore +
+            ", guardianQid='" + guardianQid + '\'' +
+            ", businessCustomerId='" + businessCustomerId + '\'' +
+            ", recordReferenceId='" + recordReferenceId + '\'' +
+            '}';
     }
 }
