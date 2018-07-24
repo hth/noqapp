@@ -196,6 +196,11 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
+    public JsonMedicalRecord addPathology(JsonPathology pathology) {
+        this.pathologies.add(pathology);
+        return this;
+    }
+
     public String getPathologyTestResult() {
         return pathologyTestResult;
     }

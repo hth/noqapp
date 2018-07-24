@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class MedicalPathologyEntity extends BaseEntity {
     private String queueUserId;
 
     @Field("PD")
-    private List<String> medicalPathologyTestIds;
+    private List<String> medicalPathologyTestIds = new LinkedList<>();
 
     public String getQueueUserId() {
         return queueUserId;
@@ -49,6 +50,11 @@ public class MedicalPathologyEntity extends BaseEntity {
 
     public MedicalPathologyEntity setMedicalPathologyTestIds(List<String> medicalPathologyTestIds) {
         this.medicalPathologyTestIds = medicalPathologyTestIds;
+        return this;
+    }
+
+    public MedicalPathologyEntity addMedicalPathologyTestId(String medicalPathologyTestId) {
+        this.medicalPathologyTestIds.add(medicalPathologyTestId);
         return this;
     }
 }
