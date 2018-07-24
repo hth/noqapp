@@ -343,7 +343,7 @@ public class MedicalRecordService {
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return medicalPhysicalManager.findByQid(qid);
     }
-    
+
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         return medicalMedicineManager.findByIds(ids);
     }
