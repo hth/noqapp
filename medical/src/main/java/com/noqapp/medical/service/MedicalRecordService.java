@@ -357,6 +357,7 @@ public class MedicalRecordService {
         return medicalMedicineManager.findByMedicationRefId(referenceId);
     }
 
+    /** Populate data for client case histories.*/
     @Mobile
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
