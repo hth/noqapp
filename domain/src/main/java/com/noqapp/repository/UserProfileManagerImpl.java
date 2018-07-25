@@ -226,4 +226,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
         return updateResult.getModifiedCount() == 1;
     }
+
+    @Override
+    public List<UserProfileEntity> findAll() {
+        return mongoTemplate.findAll(UserProfileEntity.class);
+    }
 }
