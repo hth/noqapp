@@ -157,19 +157,33 @@ public class MedicalRecordService {
             medicalRecord
                 .setBusinessType(bizStore.getBusinessType())
                 .setChiefComplain(
-                    StringUtils.isBlank(jsonMedicalRecord.getChiefComplain()) ? null : StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getChiefComplain())
+                        ? null
+                        : StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
                 .setPastHistory(
-                    StringUtils.isBlank(jsonMedicalRecord.getPastHistory()) ? null : StringUtils.capitalize(jsonMedicalRecord.getPastHistory().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getPastHistory())
+                        ? null
+                        : StringUtils.capitalize(jsonMedicalRecord.getPastHistory().trim()))
                 .setFamilyHistory(
-                    StringUtils.isBlank(jsonMedicalRecord.getFamilyHistory()) ? null : StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getFamilyHistory())
+                        ? null
+                        : StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
                 .setKnownAllergies(
-                    StringUtils.isBlank(jsonMedicalRecord.getKnownAllergies()) ? null : StringUtils.capitalize(jsonMedicalRecord.getKnownAllergies().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getKnownAllergies())
+                        ? null :
+                        StringUtils.capitalize(jsonMedicalRecord.getKnownAllergies().trim()))
                 .setClinicalFinding(
-                    StringUtils.isBlank(jsonMedicalRecord.getClinicalFinding()) ? null : StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getClinicalFinding())
+                        ? null
+                        : StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
                 .setProvisionalDifferentialDiagnosis(
-                    StringUtils.isBlank(jsonMedicalRecord.getProvisionalDifferentialDiagnosis()) ? null : StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
+                    StringUtils.isBlank(jsonMedicalRecord.getProvisionalDifferentialDiagnosis())
+                        ? null
+                        : StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
                 .setPlanToPatient(
-                    StringUtils.isBlank(jsonMedicalRecord.getPlanToPatient()) ? null : jsonMedicalRecord.getPlanToPatient())
+                    StringUtils.isBlank(jsonMedicalRecord.getPlanToPatient())
+                        ? null
+                        : jsonMedicalRecord.getPlanToPatient())
                 .setFollowUpInDays(jsonMedicalRecord.getFollowUpInDays())
                 .setDiagnosedById(jsonMedicalRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
