@@ -69,21 +69,22 @@ public class MedicalRecordService {
         MedicalPhysicalManager medicalPhysicalManager,
         MedicalMedicationManager medicalMedicationManager,
         MedicalMedicineManager medicalMedicineManager,
+        MedicalPathologyManager medicalPathologyManager,
+        MedicalPathologyTestManager medicalPathologyTestManager,
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
-        UserProfileManager userProfileManager,
-        MedicalPathologyManager medicalPathologyManager,
-        MedicalPathologyTestManager medicalPathologyTestManager
+        UserProfileManager userProfileManager
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalMedicationManager = medicalMedicationManager;
         this.medicalMedicineManager = medicalMedicineManager;
+        this.medicalPathologyManager = medicalPathologyManager;
+        this.medicalPathologyTestManager = medicalPathologyTestManager;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
-        this.medicalPathologyManager = medicalPathologyManager;
-        this.medicalPathologyTestManager = medicalPathologyTestManager;
+
     }
 
     //TODO add check for qid
@@ -125,18 +126,18 @@ public class MedicalRecordService {
     }
 
     @Mobile
-    public void addMedicalRecord(JsonMedicalRecord medical) {
+    public void addMedicalRecord(JsonMedicalRecord jsonMedicalRecord) {
         try {
             LOG.info("Add medical record");
 
             /* Check if user has proper role to allow adding of medical record. */
-            if (!businessUserStoreService.hasAccessWithUserLevel(medical.getDiagnosedById(), medical.getCodeQR(), UserLevelEnum.S_MANAGER)) {
-                LOG.info("Your are not authorized to add medical record mail={}", medical.getDiagnosedById());
+            if (!businessUserStoreService.hasAccessWithUserLevel(jsonMedicalRecord.getDiagnosedById(), jsonMedicalRecord.getCodeQR(), UserLevelEnum.S_MANAGER)) {
+                LOG.info("Your are not authorized to add medical record mail={}", jsonMedicalRecord.getDiagnosedById());
                 return;
             }
 
             /* Check if business type is of Hospital or Doctor to allow adding record. */
-            BizStoreEntity bizStore = bizService.findByCodeQR(medical.getCodeQR());
+            BizStoreEntity bizStore = bizService.findByCodeQR(jsonMedicalRecord.getCodeQR());
             if (bizStore.getBusinessType() != BusinessTypeEnum.DO && bizStore.getBizName().getBusinessType() != BusinessTypeEnum.DO) {
                 LOG.error("Failed as its not a Doctor or Hospital business type, found store={} biz={}",
                     bizStore.getBusinessType(),
@@ -144,43 +145,50 @@ public class MedicalRecordService {
                 return;
             }
 
-            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(medical.getRecordReferenceId());
+            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonMedicalRecord.getRecordReferenceId());
             if (null == medicalRecord) {
-                medicalRecord = new MedicalRecordEntity(medical.getQueueUserId());
+                medicalRecord = new MedicalRecordEntity(jsonMedicalRecord.getQueueUserId());
                 /* Setting its own ObjectId when not set. */
-                medicalRecord.setId(StringUtils.isBlank(medical.getRecordReferenceId())
+                medicalRecord.setId(StringUtils.isBlank(jsonMedicalRecord.getRecordReferenceId())
                     ? CommonUtil.generateHexFromObjectId()
-                    : medical.getRecordReferenceId());
+                    : jsonMedicalRecord.getRecordReferenceId());
             }
 
             medicalRecord
                 .setBusinessType(bizStore.getBusinessType())
-                .setChiefComplain(StringUtils.capitalize(medical.getChiefComplain().trim()))
-                .setPastHistory(StringUtils.capitalize(medical.getPastHistory().trim()))
-                .setFamilyHistory(StringUtils.capitalize(medical.getFamilyHistory().trim()))
-                .setKnownAllergies(StringUtils.capitalize(medical.getKnownAllergies().trim()))
-                .setClinicalFinding(StringUtils.capitalize(medical.getClinicalFinding().trim()))
-                .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medical.getProvisionalDifferentialDiagnosis().trim()))
-                .setPlanToPatient(medical.getPlanToPatient())
-                .setFollowUpInDays(medical.getFollowUpInDays())
-                .setDiagnosedById(medical.getDiagnosedById())
+                .setChiefComplain(
+                    StringUtils.isBlank(jsonMedicalRecord.getChiefComplain()) ? null : StringUtils.capitalize(jsonMedicalRecord.getChiefComplain().trim()))
+                .setPastHistory(
+                    StringUtils.isBlank(jsonMedicalRecord.getPastHistory()) ? null : StringUtils.capitalize(jsonMedicalRecord.getPastHistory().trim()))
+                .setFamilyHistory(
+                    StringUtils.isBlank(jsonMedicalRecord.getFamilyHistory()) ? null : StringUtils.capitalize(jsonMedicalRecord.getFamilyHistory().trim()))
+                .setKnownAllergies(
+                    StringUtils.isBlank(jsonMedicalRecord.getKnownAllergies()) ? null : StringUtils.capitalize(jsonMedicalRecord.getKnownAllergies().trim()))
+                .setClinicalFinding(
+                    StringUtils.isBlank(jsonMedicalRecord.getClinicalFinding()) ? null : StringUtils.capitalize(jsonMedicalRecord.getClinicalFinding().trim()))
+                .setProvisionalDifferentialDiagnosis(
+                    StringUtils.isBlank(jsonMedicalRecord.getProvisionalDifferentialDiagnosis()) ? null : StringUtils.capitalize(jsonMedicalRecord.getProvisionalDifferentialDiagnosis().trim()))
+                .setPlanToPatient(
+                    StringUtils.isBlank(jsonMedicalRecord.getPlanToPatient()) ? null : jsonMedicalRecord.getPlanToPatient())
+                .setFollowUpInDays(jsonMedicalRecord.getFollowUpInDays())
+                .setDiagnosedById(jsonMedicalRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId());
 
             if (null == medicalRecord.getMedicalPhysical()) {
-                if (null != medical.getMedicalPhysical()) {
-                    populateWithMedicalPhysical(medical, medicalRecord);
+                if (null != jsonMedicalRecord.getMedicalPhysical()) {
+                    populateWithMedicalPhysical(jsonMedicalRecord, medicalRecord);
                 }
             } else {
-                updateMedicalPhysical(medical, medicalRecord);
+                updateMedicalPhysical(jsonMedicalRecord, medicalRecord);
             }
 
-            if (null != medical.getMedicalMedicines()) {
-                populateWithMedicalMedicine(medical, medicalRecord);
+            if (null != jsonMedicalRecord.getMedicalMedicines()) {
+                populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
             }
 
-            if (null != medical.getPathologies()) {
-                populateWithPathologies(medical, medicalRecord);
+            if (null != jsonMedicalRecord.getPathologies()) {
+                populateWithPathologies(jsonMedicalRecord, medicalRecord);
             }
 
             //TODO remove this temp code below for record access
@@ -190,7 +198,8 @@ public class MedicalRecordService {
             medicalRecordManager.save(medicalRecord);
             LOG.info("Saved medical record={}", medicalRecord);
         } catch (Exception e) {
-            LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), medical, e);
+            LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonMedicalRecord, e);
+            throw e;
         }
     }
 
