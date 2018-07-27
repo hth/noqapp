@@ -12,6 +12,7 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
+import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.JsonTokenAndQueue;
@@ -197,7 +198,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public List<JsonPurchaseOrder> findAllOpenOrderByCodeAsJson(String codeQR) {
+    public String findAllOpenOrderByCodeAsJson(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrderByCodeQR(codeQR);
 
@@ -236,6 +237,6 @@ public class PurchaseOrderService {
             jsonPurchaseOrders.add(jsonPurchaseOrder);
         }
 
-        return jsonPurchaseOrders;
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 }
