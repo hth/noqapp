@@ -12,6 +12,7 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
+import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.JsonTokenAndQueue;
@@ -60,13 +61,13 @@ public class PurchaseOrderService {
 
     @Autowired
     public PurchaseOrderService(
-            BizService bizService,
-            TokenQueueService tokenQueueService,
-            StoreHourManager storeHourManager,
-            StoreProductService storeProductService,
-            PurchaseOrderManager purchaseOrderManager,
-            PurchaseProductOrderManager purchaseProductOrderManager,
-            UserAddressService userAddressService
+        BizService bizService,
+        TokenQueueService tokenQueueService,
+        StoreHourManager storeHourManager,
+        StoreProductService storeProductService,
+        PurchaseOrderManager purchaseOrderManager,
+        PurchaseProductOrderManager purchaseProductOrderManager,
+        UserAddressService userAddressService
     ) {
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
@@ -79,11 +80,11 @@ public class PurchaseOrderService {
 
     @Mobile
     public JsonToken getNextOrder(
-            String codeQR,
-            String did,
-            String qid,
-            long averageServiceTime,
-            TokenServiceEnum tokenService
+        String codeQR,
+        String did,
+        String qid,
+        long averageServiceTime,
+        TokenServiceEnum tokenService
     ) {
         try {
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
@@ -94,11 +95,11 @@ public class PurchaseOrderService {
             Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                    .setToken(tokenQueue.getLastNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(expectedServiceBegin);
+                .setToken(tokenQueue.getLastNumber())
+                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setQueueStatus(tokenQueue.getQueueStatus())
+                .setExpectedServiceBegin(expectedServiceBegin);
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
@@ -121,54 +122,54 @@ public class PurchaseOrderService {
         }
 
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(
-                        qid,
-                        jsonPurchaseOrder.getBizStoreId(),
-                        bizStore.getBizName().getId(),
-                        bizStore.getCodeQR())
-                .setDid(did)
-                .setCustomerName(jsonPurchaseOrder.getCustomerName())
-                .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
-                .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
-                .setStoreDiscount(bizStore.getDiscount())
-                .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
-                .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
-                .setPaymentType(jsonPurchaseOrder.getPaymentType())
-                .setBusinessType(bizStore.getBusinessType())
-                .setTokenNumber(jsonToken.getToken())
-                .setExpectedServiceBegin(expectedServiceBegin)
-                .setTokenService(tokenService)
-                .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
+            qid,
+            jsonPurchaseOrder.getBizStoreId(),
+            bizStore.getBizName().getId(),
+            bizStore.getCodeQR())
+            .setDid(did)
+            .setCustomerName(jsonPurchaseOrder.getCustomerName())
+            .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
+            .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
+            .setStoreDiscount(bizStore.getDiscount())
+            .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
+            .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
+            .setPaymentType(jsonPurchaseOrder.getPaymentType())
+            .setBusinessType(bizStore.getBusinessType())
+            .setTokenNumber(jsonToken.getToken())
+            .setExpectedServiceBegin(expectedServiceBegin)
+            .setTokenService(tokenService)
+            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
         purchaseOrderManager.save(purchaseOrder);
 
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
             PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity()
-                    .setProductId(jsonPurchaseOrderProduct.getProductId())
-                    .setProductName(storeProduct.getProductName())
-                    .setProductPrice(storeProduct.getProductPrice())
-                    .setProductDiscount(storeProduct.getProductDiscount())
-                    .setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
-                    .setQueueUserId(qid)
-                    .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
-                    .setBizNameId(bizStore.getBizName().getId())
-                    .setCodeQR(bizStore.getCodeQR())
-                    .setBusinessType(bizStore.getBusinessType())
-                    .setPurchaseOrderId(purchaseOrder.getId());
+                .setProductId(jsonPurchaseOrderProduct.getProductId())
+                .setProductName(storeProduct.getProductName())
+                .setProductPrice(storeProduct.getProductPrice())
+                .setProductDiscount(storeProduct.getProductDiscount())
+                .setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
+                .setQueueUserId(qid)
+                .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
+                .setBizNameId(bizStore.getBizName().getId())
+                .setCodeQR(bizStore.getCodeQR())
+                .setBusinessType(bizStore.getBusinessType())
+                .setPurchaseOrderId(purchaseOrder.getId());
             purchaseProductOrderManager.save(purchaseOrderProduct);
         }
 
         purchaseOrder
-                .addOrderState(PurchaseOrderStateEnum.VB)
-                .addOrderState(PurchaseOrderStateEnum.PO);
+            .addOrderState(PurchaseOrderStateEnum.VB)
+            .addOrderState(PurchaseOrderStateEnum.PO);
         purchaseOrderManager.save(purchaseOrder);
         userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
 
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
-                .setToken(purchaseOrder.getTokenNumber())
-                .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
-                .setTransactionId(purchaseOrder.getTransactionId())
-                .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
+            .setToken(purchaseOrder.getTokenNumber())
+            .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
+            .setTransactionId(purchaseOrder.getTransactionId())
+            .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
     }
 
     private List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
@@ -181,7 +182,7 @@ public class PurchaseOrderService {
 
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
-        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizService.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
 
@@ -197,45 +198,45 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public List<JsonPurchaseOrder> findAllOpenOrderByCodeAsJson(String codeQR) {
+    public String findAllOpenOrderByCodeAsJson(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrderByCodeQR(codeQR);
 
         List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
-        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> products = purchaseProductOrderManager.getAllByPurchaseOrderId(purchaseOrder.getId());
             for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
                 JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
-                        .setProductId(purchaseOrderProduct.getId())
-                        .setProductName(purchaseOrderProduct.getProductName())
-                        .setProductPrice(purchaseOrderProduct.getProductPrice())
-                        .setProductDiscount(purchaseOrderProduct.getProductDiscount())
-                        .setProductQuantity(purchaseOrderProduct.getProductQuantity());
+                    .setProductId(purchaseOrderProduct.getId())
+                    .setProductName(purchaseOrderProduct.getProductName())
+                    .setProductPrice(purchaseOrderProduct.getProductPrice())
+                    .setProductDiscount(purchaseOrderProduct.getProductDiscount())
+                    .setProductQuantity(purchaseOrderProduct.getProductQuantity());
 
                 jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
             }
 
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                    .setBizStoreId(purchaseOrder.getBizStoreId())
-                    .setCustomerPhone(purchaseOrder.getCustomerPhone())
-                    .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
-                    .setStoreDiscount(purchaseOrder.getStoreDiscount())
-                    .setOrderPrice(purchaseOrder.getOrderPrice())
-                    .setDeliveryType(purchaseOrder.getDeliveryType())
-                    .setPaymentType(purchaseOrder.getPaymentType())
-                    .setBusinessType(purchaseOrder.getBusinessType())
-                    .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
-                    //Serving Number not set for Merchant
-                    .setToken(purchaseOrder.getTokenNumber())
-                    .setCustomerName(purchaseOrder.getCustomerName())
-                    //ExpectedServiceBegin not set for Merchant
-                    .setTransactionId(purchaseOrder.getTransactionId())
-                    .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
-                    .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+                .setBizStoreId(purchaseOrder.getBizStoreId())
+                .setCustomerPhone(purchaseOrder.getCustomerPhone())
+                .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
+                .setStoreDiscount(purchaseOrder.getStoreDiscount())
+                .setOrderPrice(purchaseOrder.getOrderPrice())
+                .setDeliveryType(purchaseOrder.getDeliveryType())
+                .setPaymentType(purchaseOrder.getPaymentType())
+                .setBusinessType(purchaseOrder.getBusinessType())
+                .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
+                //Serving Number not set for Merchant
+                .setToken(purchaseOrder.getTokenNumber())
+                .setCustomerName(purchaseOrder.getCustomerName())
+                //ExpectedServiceBegin not set for Merchant
+                .setTransactionId(purchaseOrder.getTransactionId())
+                .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
+                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
             jsonPurchaseOrders.add(jsonPurchaseOrder);
         }
 
-        return  jsonPurchaseOrders;
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 }
