@@ -45,19 +45,19 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 11/23/16 4:28 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "BIZ_STORE")
-@CompoundIndexes (value = {
+@Document(collection = "BIZ_STORE")
+@CompoundIndexes(value = {
         /* Business name with address and phone makes it a unique store. */
-        @CompoundIndex (name = "biz_store_ph_idx", def = "{'PH': 1}", unique = false),
-        @CompoundIndex (name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
-        @CompoundIndex (name = "biz_store_wl_idx", def = "{'WL': 1}", unique = true),
-        @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
+        @CompoundIndex(name = "biz_store_ph_idx", def = "{'PH': 1}", unique = false),
+        @CompoundIndex(name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
+        @CompoundIndex(name = "biz_store_wl_idx", def = "{'WL': 1}", unique = true),
+        @CompoundIndex(name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreEntity.class);
@@ -68,147 +68,147 @@ public class BizStoreEntity extends BaseEntity {
     public static final String UNDER_SCORE = "_";
 
     /** Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
-    @Value ("${phoneNumberBlank:000_000_0000}")
+    @Value("${phoneNumberBlank:000_000_0000}")
     private String phoneNumberBlank;
 
     @NotNull
-    @Field ("AD")
+    @Field("AD")
     private String address;
 
-    @Field ("AR")
+    @Field("AR")
     private String area;
 
-    @Field ("TO")
+    @Field("TO")
     private String town;
 
-    @Field ("DT")
+    @Field("DT")
     private String district;
 
-    @Field ("ST")
+    @Field("ST")
     private String state;
 
-    @Field ("SS")
+    @Field("SS")
     private String stateShortName;
 
     /* Postal code could be empty for few countries. */
-    @Field ("PC")
+    @Field("PC")
     private String postalCode;
 
-    @Field ("CC")
+    @Field("CC")
     private String country;
 
     @NotNull
-    @Field ("CS")
+    @Field("CS")
     private String countryShortName;
 
     /* Phone number saved with country code. */
     @NotNull
-    @Field ("PH")
+    @Field("PH")
     private String phone;
 
     /* To not loose user entered phone number. */
-    @Field ("PR")
+    @Field("PR")
     private String phoneRaw;
 
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
     /* Format Longitude and then Latitude. */
-    @Field ("COR")
+    @Field("COR")
     private double[] coordinate;
 
-    @Field ("PI")
+    @Field("PI")
     private String placeId;
 
-    @Field ("PT")
+    @Field("PT")
     private String[] placeType;
 
-    @Field ("RA")
+    @Field("RA")
     private float rating;
 
-    @Field ("RC")
+    @Field("RC")
     private int ratingCount;
 
     @Field("AS")
     private long averageServiceTime;
 
     @DBRef
-    @Field ("BIZ_NAME")
+    @Field("BIZ_NAME")
     private BizNameEntity bizName;
 
-    @Field ("EA")
+    @Field("EA")
     private boolean validatedUsingExternalAPI;
 
-    @Field ("VC")
+    @Field("VC")
     private int validationCount;
 
-    @Field ("DN")
+    @Field("DN")
     private String displayName;
 
-    @Field ("QR")
+    @Field("QR")
     private String codeQR;
 
-    @Field ("TZ")
+    @Field("TZ")
     private String timeZone;
 
     /* Used when running cron job. */
-    @Field ("QH")
+    @Field("QH")
     private Date queueHistory = new Date();
 
     //TODO(hth) Change to false after sending notification of change
-    @Field ("CQ")
+    @Field("CQ")
     private boolean changedCodeQR = false;
 
     @NotNull
-    @Field ("AO")
+    @Field("AO")
     private AddressOriginEnum addressOrigin;
 
-    @Field ("WL")
+    @Field("WL")
     private String webLocation;
 
-    @Field ("BC")
+    @Field("BC")
     private String bizCategoryId;
 
-    @Field ("FF")
+    @Field("FF")
     private String famousFor;
 
-    @Field ("DD")
+    @Field("DD")
     private int discount;
 
-    @Field ("MD")
+    @Field("MD")
     private int minimumDeliveryOrder;
 
-    @Field ("DR")
+    @Field("DR")
     private int deliveryRange = 5;
 
-    @Field ("SI")
+    @Field("SI")
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
-    @Field ("II")
+    @Field("II")
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
-    @Field ("PM")
+    @Field("PM")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
 
-    @Field ("DM")
+    @Field("DM")
     private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
 
-    @Field ("AM")
+    @Field("AM")
     private List<AmenityEnum> amenities = new LinkedList<>();
 
-    @Field ("FA")
+    @Field("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     //***************************/
     //*  Queue Settings Starts. */
     //***************************/
-    @Field ("RJ")
+    @Field("RJ")
     private boolean remoteJoin = false;
 
-    @Field ("LU")
+    @Field("LU")
     private boolean allowLoggedInUser = false;
 
-    @Field ("AT")
+    @Field("AT")
     private int availableTokenCount;
     //***************************/
     //*  Queue Settings Ends.   */
@@ -250,19 +250,23 @@ public class BizStoreEntity extends BaseEntity {
     public String getAddressWrappedFunky() {
         if (StringUtils.isNotBlank(area)) {
             String[] split = address.split(area);
-            String address = split[0] + "<br/>";
-            /* Compare name of area and town to ignore repeat of it. */
-            if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
-                address += area + ", ";
-            }
+            if (split.length > 1) {
+                String address = split[0] + "<br/>";
+                /* Compare name of area and town to ignore repeat of it. */
+                if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
+                    address += area + ", ";
+                }
 
-            if (StringUtils.isNotBlank(area)) {
-                address += town + "," + "<br/>";
-            }
+                if (StringUtils.isNotBlank(area)) {
+                    address += town + "," + "<br/>";
+                }
 
-            address += split[1].replace(", " + town + ",", "").replaceFirst(",","").trim();
-            LOG.debug("Address={}", address);
-            return address;
+                address += split[1].replace(", " + town + ",", "").replaceFirst(",", "").trim();
+                LOG.debug("Address={}", address);
+                return address;
+            } else {
+                return getAddressWrappedMore();
+            }
         } else {
             LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
             return getAddressWrappedMore();
