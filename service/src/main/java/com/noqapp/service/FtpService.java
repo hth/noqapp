@@ -27,7 +27,7 @@ import java.io.InputStream;
  * hitender
  * 5/26/18 2:35 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -39,18 +39,21 @@ public class FtpService {
 
     public static String PROFILE = FileUtil.getFileSeparator() + "profile";
     public static String SERVICE = FileUtil.getFileSeparator() + "service";
-    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE};
+
+    /** TODO(hth) Medical stores all medical record related images. */
+    public static String MEDICAL = FileUtil.getFileSeparator() + "medical";
+    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL};
 
     @Value("${fileserver.ftp.host}")
     private String host;
 
-    @Value ("${ftp.location}")
+    @Value("${ftp.location}")
     private String ftpLocation;
 
-    @Value ("${fileserver.ftp.username}")
+    @Value("${fileserver.ftp.username}")
     private String ftpUser;
 
-    @Value ("${fileserver.ftp.password}")
+    @Value("${fileserver.ftp.password}")
     private String ftpPassword;
 
     private FileSystemOptions fileSystemOptions;
@@ -84,7 +87,7 @@ public class FtpService {
             } else {
                 filePath = ftpLocation + parentDirectory + FileUtil.getFileSeparator() + codeQR + FileUtil.getFileSeparator() + filename;
             }
-            
+
             manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(filePath), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
