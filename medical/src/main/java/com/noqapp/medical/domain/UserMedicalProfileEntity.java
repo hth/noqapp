@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -33,9 +34,11 @@ public class UserMedicalProfileEntity extends BaseEntity {
     @Field("BT")
     private BloodTypeEnum bloodType;
 
-    //Height in cms
+    @Field("OC")
+    private OccupationEnum occupation;
+
     @Field("HT")
-    private int height;
+    private int height;     //Height in cms
 
     public UserMedicalProfileEntity(@NotNull String queueUserId) {
         this.queueUserId = queueUserId;
@@ -51,6 +54,15 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     public UserMedicalProfileEntity setBloodType(BloodTypeEnum bloodType) {
         this.bloodType = bloodType;
+        return this;
+    }
+
+    public OccupationEnum getOccupation() {
+        return occupation;
+    }
+
+    public UserMedicalProfileEntity setOccupation(OccupationEnum occupation) {
+        this.occupation = occupation;
         return this;
     }
 
