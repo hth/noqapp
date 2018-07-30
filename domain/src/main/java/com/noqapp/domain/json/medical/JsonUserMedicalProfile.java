@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.medical;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -31,12 +32,36 @@ public class JsonUserMedicalProfile extends AbstractDomain {
     @JsonProperty("bt")
     private BloodTypeEnum bloodType;
 
+    @JsonProperty("oc")
+    private OccupationEnum occupation;
+
+    @JsonProperty("ht")
+    private int height;
+
     public BloodTypeEnum getBloodType() {
         return bloodType;
     }
 
     public JsonUserMedicalProfile setBloodType(BloodTypeEnum bloodType) {
         this.bloodType = bloodType;
+        return this;
+    }
+
+    public OccupationEnum getOccupation() {
+        return occupation;
+    }
+
+    public JsonUserMedicalProfile setOccupation(OccupationEnum occupation) {
+        this.occupation = occupation;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public JsonUserMedicalProfile setHeight(int height) {
+        this.height = height;
         return this;
     }
 }

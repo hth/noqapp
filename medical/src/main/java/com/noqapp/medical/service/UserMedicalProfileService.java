@@ -36,7 +36,9 @@ public class UserMedicalProfileService {
 
         if (null != userMedicalProfile) {
             return new JsonUserMedicalProfile()
-                    .setBloodType(userMedicalProfile.getBloodType());
+                .setBloodType(userMedicalProfile.getBloodType())
+                .setOccupation(userMedicalProfile.getOccupation())
+                .setHeight(userMedicalProfile.getHeight());
         }
 
         return new JsonUserMedicalProfile();
