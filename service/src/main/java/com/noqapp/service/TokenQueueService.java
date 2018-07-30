@@ -426,14 +426,32 @@ public class TokenQueueService {
      * Send FCM message to Topic asynchronously.
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
-        executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+            case Q:
+                executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+                break;
+            case O:
+                break;
+            default:
+                LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                throw new UnsupportedOperationException("Reached unreachable condition");
+        }
     }
 
     /**
      * Send FCM message to person with specific token number asynchronously.
      */
     private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
-        executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
+        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+            case Q:
+                executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
+                break;
+            case O:
+                break;
+            default:
+                LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                throw new UnsupportedOperationException("Reached unreachable condition");
+        }
     }
 
     /**

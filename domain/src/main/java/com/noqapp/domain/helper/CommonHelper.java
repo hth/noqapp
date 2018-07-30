@@ -49,10 +49,8 @@ public class CommonHelper {
             case RS:
             case BA:
             case ST:
-            case LD:
             case SM:
             case MT:
-            case GA:
             case SC:
             case GS:
             case CF:
@@ -61,8 +59,6 @@ public class CommonHelper {
             case MU:
             case TA:
             case NC:
-            case AT:
-            case GY:
             case PA:
                 return null;
             default:
