@@ -316,7 +316,7 @@ public class FileOperationOnS3 {
             deleteObjectsRequest.setKeys(keys);
             try {
                 deleteObjectsResult = amazonS3.deleteObjects(deleteObjectsRequest);
-                if(deleteObjectsResult.getDeletedObjects().size() == s3Files.size()) {
+                if (deleteObjectsResult.getDeletedObjects().size() == s3Files.size()) {
                     LOG.info("Deleted file on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
                 } else {
                     LOG.error("Deleted file Mis-match on S3={} Local={}", deleteObjectsResult.getDeletedObjects().size(), s3Files.size());
