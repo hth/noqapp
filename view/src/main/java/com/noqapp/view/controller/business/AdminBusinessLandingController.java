@@ -710,8 +710,8 @@ public class AdminBusinessLandingController {
             HttpServletResponse response
     ) throws IOException {
         Instant start = Instant.now();
-        LOG.info("uploading image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("uploading image qid={}", queueUser.getQueueUserId());
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
