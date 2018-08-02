@@ -64,13 +64,13 @@ public class JsonMedicalRecord extends AbstractDomain {
     private String provisionalDifferentialDiagnosis;
 
     @JsonProperty("le")
-    private List<JsonPathology> pathologies = new ArrayList<>();
+    private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
     @JsonProperty("re")
-    private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays = new ArrayList<>();
+    private List<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
 
     @JsonProperty("me")
     private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
@@ -187,17 +187,17 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public List<JsonPathology> getPathologies() {
-        return pathologies;
+    public List<JsonMedicalPathology> getMedicalPathologies() {
+        return medicalPathologies;
     }
 
-    public JsonMedicalRecord setPathologies(List<JsonPathology> pathologies) {
-        this.pathologies = pathologies;
+    public JsonMedicalRecord setMedicalPathologies(List<JsonMedicalPathology> medicalPathologies) {
+        this.medicalPathologies = medicalPathologies;
         return this;
     }
 
-    public JsonMedicalRecord addPathology(JsonPathology pathology) {
-        this.pathologies.add(pathology);
+    public JsonMedicalRecord addPathology(JsonMedicalPathology pathology) {
+        this.medicalPathologies.add(pathology);
         return this;
     }
 
@@ -210,12 +210,12 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public List<JsonMedicalRadiologyXRay> getMedicalRadiologyXRays() {
-        return medicalRadiologyXRays;
+    public List<JsonMedicalRadiology> getMedicalRadiologies() {
+        return medicalRadiologies;
     }
 
-    public JsonMedicalRecord setMedicalRadiologyXRays(List<JsonMedicalRadiologyXRay> medicalRadiologyXRays) {
-        this.medicalRadiologyXRays = medicalRadiologyXRays;
+    public JsonMedicalRecord setMedicalRadiologies(List<JsonMedicalRadiology> medicalRadiologies) {
+        this.medicalRadiologies = medicalRadiologies;
         return this;
     }
 
