@@ -19,11 +19,11 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document(collection = "M_RADIOLOGY_XRAY")
+@Document(collection = "M_RADIOLOGY_TEST")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_radiology_xray_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_radiology_test_idx", def = "{'QID' : 1}", unique = false),
 })
-public class MedicalRadiologyXRayEntity extends BaseEntity {
+public class MedicalRadiologyTestEntity extends BaseEntity {
 
     /** Maps to MedicalRadiologyEntity Id. */
     @NotNull
@@ -49,7 +49,7 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return medicalRadiologyReferenceId;
     }
 
-    public MedicalRadiologyXRayEntity setMedicalRadiologyReferenceId(String medicalRadiologyReferenceId) {
+    public MedicalRadiologyTestEntity setMedicalRadiologyReferenceId(String medicalRadiologyReferenceId) {
         this.medicalRadiologyReferenceId = medicalRadiologyReferenceId;
         return this;
     }
@@ -58,7 +58,7 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return radiologyReferenceId;
     }
 
-    public MedicalRadiologyXRayEntity setRadiologyReferenceId(String radiologyReferenceId) {
+    public MedicalRadiologyTestEntity setRadiologyReferenceId(String radiologyReferenceId) {
         this.radiologyReferenceId = radiologyReferenceId;
         return this;
     }
@@ -67,7 +67,7 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return queueUserId;
     }
 
-    public MedicalRadiologyXRayEntity setQueueUserId(String queueUserId) {
+    public MedicalRadiologyTestEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
@@ -76,7 +76,7 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return name;
     }
 
-    public MedicalRadiologyXRayEntity setName(String name) {
+    public MedicalRadiologyTestEntity setName(String name) {
         this.name = name;
         return this;
     }
@@ -85,7 +85,7 @@ public class MedicalRadiologyXRayEntity extends BaseEntity {
         return testResult;
     }
 
-    public MedicalRadiologyXRayEntity setTestResult(String testResult) {
+    public MedicalRadiologyTestEntity setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }
