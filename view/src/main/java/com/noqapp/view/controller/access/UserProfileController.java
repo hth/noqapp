@@ -473,8 +473,8 @@ public class UserProfileController {
             HttpServletRequest httpServletRequest
     ) {
         Instant start = Instant.now();
-        LOG.info("uploading image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("uploading image qid={}", queueUser.getQueueUserId());
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
