@@ -52,4 +52,9 @@ public class MedicalRadiologyEntity extends BaseEntity {
         this.medicalRadiologyXRayIds = medicalRadiologyXRayIds;
         return this;
     }
+
+    public MedicalRadiologyEntity addMedicalRadiologyXRayIds(String medicalRadiologyXRayId) {
+        this.medicalRadiologyXRayIds.add(medicalRadiologyXRayId);
+        return this;
+    }
 }

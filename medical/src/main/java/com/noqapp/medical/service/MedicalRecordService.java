@@ -13,12 +13,15 @@ import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
 import com.noqapp.medical.domain.MedicalPathologyTestEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
+import com.noqapp.medical.domain.MedicalRadiologyEntity;
+import com.noqapp.medical.domain.MedicalRadiologyTestEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
+import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
+import com.noqapp.medical.domain.json.JsonMedicalRadiology;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
-import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonRecordAccess;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
@@ -213,8 +216,8 @@ public class MedicalRecordService {
                 populateWithPathologies(jsonMedicalRecord, medicalRecord);
             }
 
-            if(null != jsonMedicalRecord.getMedicalRadiologies()) {
-
+            if (null != jsonMedicalRecord.getMedicalRadiologies()) {
+                populateWithMedicalRadiologies(jsonMedicalRecord, medicalRecord);
             }
 
             //TODO remove this temp code below for record access
@@ -227,6 +230,28 @@ public class MedicalRecordService {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonMedicalRecord, e);
             throw e;
         }
+    }
+
+    private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        if (jsonMedicalRecord.getMedicalRadiologies().isEmpty()) {
+            return;
+        }
+
+        MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
+        medicalRadiology
+            .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+            .setId(CommonUtil.generateHexFromObjectId());
+
+        for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRecord.getMedicalRadiologies()) {
+            MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
+            medicalRadiologyTest.setName(jsonMedicalRadiology.getName());
+            medicalRadiologyTest.setMedicalRadiologyReferenceId(medicalRadiology.getId());
+            medicalRadiologyTestManager.save(medicalRadiologyTest);
+            medicalRadiology.addMedicalRadiologyXRayIds(medicalRadiologyTest.getId());
+        }
+
+        medicalRadiologyManager.save(medicalRadiology);
+        medicalRecord.setMedicalRadiology(medicalRadiology);
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
