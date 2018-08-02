@@ -413,6 +413,11 @@ public class MedicalRecordService {
         return medicalPathologyTestManager.findPathologyTestByIds(referenceId);
     }
 
+    @Mobile
+    public List<MedicalRadiologyTestEntity> findRadiologyTestByIds(String referenceId) {
+        return medicalRadiologyTestManager.findRadiologyTestByIds(referenceId);
+    }
+
     public List<MedicalMedicineEntity> findByMedicationRefId(String referenceId) {
         return medicalMedicineManager.findByMedicationRefId(referenceId);
     }
@@ -473,7 +478,14 @@ public class MedicalRecordService {
                 if (null != medicalRecord.getMedicalLaboratory()) {
                     List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
                     for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
-                        jsonMedicalRecord.addPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+                        jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+                    }
+                }
+
+                if (null != medicalRecord.getMedicalRadiology()) {
+                    List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRecord.getMedicalRadiology().getId());
+                    for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
+                        jsonMedicalRecord.addMedicalRadiology(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
                     }
                 }
 

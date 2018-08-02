@@ -1,7 +1,6 @@
 package com.noqapp.medical.repository;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Repository;
 public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     private static final Logger LOG = LoggerFactory.getLogger(MedicalRadiologyManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-        MedicalPhysicalEntity.class,
+        MedicalRadiologyEntity.class,
         Document.class,
         "collection");
 
@@ -47,6 +46,6 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
 
     @Override
     public void deleteHard(MedicalRadiologyEntity object) {
-
+        throw new UnsupportedOperationException("Method not implemented");
     }
 }

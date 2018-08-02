@@ -1,7 +1,9 @@
 package com.noqapp.medical.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRadiologyTestEntity;
 
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * hitender
@@ -26,7 +30,7 @@ import org.springframework.stereotype.Repository;
 public class MedicalRadiologyTestManagerImpl implements MedicalRadiologyTestManager {
     private static final Logger LOG = LoggerFactory.getLogger(MedicalRadiologyTestManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-        MedicalPhysicalEntity.class,
+        MedicalRadiologyTestEntity.class,
         Document.class,
         "collection");
 
@@ -47,6 +51,15 @@ public class MedicalRadiologyTestManagerImpl implements MedicalRadiologyTestMana
 
     @Override
     public void deleteHard(MedicalRadiologyTestEntity object) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 
+    @Override
+    public List<MedicalRadiologyTestEntity> findRadiologyTestByIds(String medicalRadiologyReferenceId) {
+        return mongoTemplate.find(
+            query(where("RRI").is(medicalRadiologyReferenceId)),
+            MedicalRadiologyTestEntity.class,
+            TABLE
+        );
     }
 }

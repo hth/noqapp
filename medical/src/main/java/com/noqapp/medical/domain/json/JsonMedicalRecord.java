@@ -196,8 +196,8 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public JsonMedicalRecord addPathology(JsonMedicalPathology pathology) {
-        this.medicalPathologies.add(pathology);
+    public JsonMedicalRecord addMedicalPathology(JsonMedicalPathology medicalPathology) {
+        this.medicalPathologies.add(medicalPathology);
         return this;
     }
 
@@ -216,6 +216,11 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setMedicalRadiologies(List<JsonMedicalRadiology> medicalRadiologies) {
         this.medicalRadiologies = medicalRadiologies;
+        return this;
+    }
+
+    public JsonMedicalRecord addMedicalRadiology(JsonMedicalRadiology medicalRadiology) {
+        this.medicalRadiologies.add(medicalRadiology);
         return this;
     }
 
