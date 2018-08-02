@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalRadiologyXRay extends AbstractDomain {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalRadiologyXRay.class);
+public class JsonMedicalRadiology extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonMedicalRadiology.class);
 
     @JsonProperty("na")
     private String name;
@@ -41,7 +41,7 @@ public class JsonMedicalRadiologyXRay extends AbstractDomain {
         return name;
     }
 
-    public JsonMedicalRadiologyXRay setName(String name) {
+    public JsonMedicalRadiology setName(String name) {
         this.name = name;
         return this;
     }
@@ -50,7 +50,7 @@ public class JsonMedicalRadiologyXRay extends AbstractDomain {
         return testResult;
     }
 
-    public JsonMedicalRadiologyXRay setTestResult(String testResult) {
+    public JsonMedicalRadiology setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }

@@ -18,7 +18,7 @@ import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
-import com.noqapp.medical.domain.json.JsonPathology;
+import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonRecordAccess;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
@@ -26,6 +26,8 @@ import com.noqapp.medical.repository.MedicalMedicineManager;
 import com.noqapp.medical.repository.MedicalPathologyManager;
 import com.noqapp.medical.repository.MedicalPathologyTestManager;
 import com.noqapp.medical.repository.MedicalPhysicalManager;
+import com.noqapp.medical.repository.MedicalRadiologyManager;
+import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BizService;
@@ -59,6 +61,8 @@ public class MedicalRecordService {
     private MedicalMedicineManager medicalMedicineManager;
     private MedicalPathologyManager medicalPathologyManager;
     private MedicalPathologyTestManager medicalPathologyTestManager;
+    private MedicalRadiologyManager medicalRadiologyManager;
+    private MedicalRadiologyTestManager medicalRadiologyTestManager;
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private UserProfileManager userProfileManager;
@@ -71,6 +75,8 @@ public class MedicalRecordService {
         MedicalMedicineManager medicalMedicineManager,
         MedicalPathologyManager medicalPathologyManager,
         MedicalPathologyTestManager medicalPathologyTestManager,
+        MedicalRadiologyManager medicalRadiologyManager,
+        MedicalRadiologyTestManager medicalRadiologyTestManager,
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
         UserProfileManager userProfileManager
@@ -81,6 +87,8 @@ public class MedicalRecordService {
         this.medicalMedicineManager = medicalMedicineManager;
         this.medicalPathologyManager = medicalPathologyManager;
         this.medicalPathologyTestManager = medicalPathologyTestManager;
+        this.medicalRadiologyManager = medicalRadiologyManager;
+        this.medicalRadiologyTestManager = medicalRadiologyTestManager;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
@@ -201,8 +209,12 @@ public class MedicalRecordService {
                 populateWithMedicalMedicine(jsonMedicalRecord, medicalRecord);
             }
 
-            if (null != jsonMedicalRecord.getPathologies()) {
+            if (null != jsonMedicalRecord.getMedicalPathologies()) {
                 populateWithPathologies(jsonMedicalRecord, medicalRecord);
+            }
+
+            if(null != jsonMedicalRecord.getMedicalRadiologies()) {
+
             }
 
             //TODO remove this temp code below for record access
@@ -218,7 +230,7 @@ public class MedicalRecordService {
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
-        if (jsonMedicalRecord.getPathologies().isEmpty()) {
+        if (jsonMedicalRecord.getMedicalPathologies().isEmpty()) {
             return;
         }
 
@@ -227,9 +239,9 @@ public class MedicalRecordService {
             .setQueueUserId(jsonMedicalRecord.getQueueUserId())
             .setId(CommonUtil.generateHexFromObjectId());
 
-        for (JsonPathology jsonPathology : jsonMedicalRecord.getPathologies()) {
+        for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
             MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity();
-            medicalPathologyTest.setName(jsonPathology.getName());
+            medicalPathologyTest.setName(jsonMedicalPathology.getName());
             medicalPathologyTest.setMedicalPathologyReferenceId(medicalPathology.getId());
             medicalPathologyTestManager.save(medicalPathologyTest);
             medicalPathology.addMedicalPathologyTestId(medicalPathologyTest.getId());
@@ -436,7 +448,7 @@ public class MedicalRecordService {
                 if (null != medicalRecord.getMedicalLaboratory()) {
                     List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
                     for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
-                        jsonMedicalRecord.addPathology(new JsonPathology().setName(medicalPathologyTest.getName()));
+                        jsonMedicalRecord.addPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
                     }
                 }
 
