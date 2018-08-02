@@ -51,7 +51,7 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
 
     @Override
     public void deleteHard(MedicalPhysicalEntity object) {
-
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
