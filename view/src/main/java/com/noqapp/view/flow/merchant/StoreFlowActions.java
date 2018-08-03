@@ -3,14 +3,20 @@ package com.noqapp.view.flow.merchant;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 
@@ -37,6 +43,8 @@ public class StoreFlowActions extends RegistrationFlowActions {
     private BusinessUserService businessUserService;
     private BizService bizService;
     private BizStoreElasticService bizStoreElasticService;
+    private BusinessUserStoreService businessUserStoreService;
+    private ProfessionalProfileService professionalProfileService;
 
     @SuppressWarnings ("unused")
     @Autowired
@@ -46,12 +54,16 @@ public class StoreFlowActions extends RegistrationFlowActions {
             BizService bizService,
             BusinessUserService businessUserService,
             TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService
+            BizStoreElasticService bizStoreElasticService,
+            BusinessUserStoreService businessUserStoreService,
+            ProfessionalProfileService professionalProfileService
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
         this.businessUserService = businessUserService;
         this.bizService = bizService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.businessUserStoreService = businessUserStoreService;
+        this.professionalProfileService = professionalProfileService;
     }
 
     private RegisterBusiness createStoreRegistration() {
@@ -95,7 +107,25 @@ public class StoreFlowActions extends RegistrationFlowActions {
     @SuppressWarnings("unused")
     public void deleteStore(String bizStoreId) {
         LOG.info("Delete storeId={}", bizStoreId);
+        cleanUpForProfessionalProfile(bizStoreId);
         bizService.deleteStore(bizStoreId);
         bizStoreElasticService.delete(bizStoreId);
+    }
+
+    /** Delete residue from deleting store. */
+    private void cleanUpForProfessionalProfile(String bizStoreId) {
+        BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+        if (BusinessTypeEnum.DO == bizStore.getBusinessType()) {
+            List<BusinessUserStoreEntity> businessUserStores = businessUserStoreService.findAllManagingStoreWithUserLevel(
+                bizStore.getId(),
+                UserLevelEnum.S_MANAGER);
+
+            for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+                String qid = businessUserStore.getQueueUserId();
+                ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(qid);
+                professionalProfile.removeManagerAtStoreCodeQR(bizStore.getCodeQR());
+                professionalProfileService.save(professionalProfile);
+            }
+        }
     }
 }
