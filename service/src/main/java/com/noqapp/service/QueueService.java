@@ -160,34 +160,37 @@ public class QueueService {
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
                     .setRecordReferenceId(queue.getRecordReferenceId());
 
-            if (StringUtils.isNotBlank(queue.getGuardianQid())) {
-                UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
+            /* Get dependents when queue status is queued. */
+            if (queue.getQueueUserState() == QueueUserStateEnum.Q) {
+                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                    UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
 
-                for (String qid : guardianProfile.getQidOfDependents()) {
-                    UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-                    jsonQueuedPerson.addDependent(
+                    for (String qid : guardianProfile.getQidOfDependents()) {
+                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                        jsonQueuedPerson.addDependent(
                             new JsonQueuedDependent()
-                                    .setToken(queue.getTokenNumber())
-                                    .setQueueUserId(qid)
-                                    .setCustomerName(userProfile.getName())
-                                    .setGuardianPhone(queue.getCustomerPhone())
-                                    .setGuardianQueueUserId(queue.getQueueUserId())
-                                    .setQueueUserState(queue.getQueueUserState())
-                                    .setAge(userProfile.getAge())
-                                    .setGender(userProfile.getGender()));
-                }
-
-                /* Add Guardian at the end. */
-                jsonQueuedPerson.addDependent(
-                        new JsonQueuedDependent()
                                 .setToken(queue.getTokenNumber())
-                                .setQueueUserId(guardianProfile.getQueueUserId())
-                                .setCustomerName(guardianProfile.getName())
+                                .setQueueUserId(qid)
+                                .setCustomerName(userProfile.getName())
                                 .setGuardianPhone(queue.getCustomerPhone())
                                 .setGuardianQueueUserId(queue.getQueueUserId())
                                 .setQueueUserState(queue.getQueueUserState())
-                                .setAge(guardianProfile.getAge())
-                                .setGender(guardianProfile.getGender()));
+                                .setAge(userProfile.getAge())
+                                .setGender(userProfile.getGender()));
+                    }
+
+                    /* Add Guardian at the end. */
+                    jsonQueuedPerson.addDependent(
+                        new JsonQueuedDependent()
+                            .setToken(queue.getTokenNumber())
+                            .setQueueUserId(guardianProfile.getQueueUserId())
+                            .setCustomerName(guardianProfile.getName())
+                            .setGuardianPhone(queue.getCustomerPhone())
+                            .setGuardianQueueUserId(queue.getQueueUserId())
+                            .setQueueUserState(queue.getQueueUserState())
+                            .setAge(guardianProfile.getAge())
+                            .setGender(guardianProfile.getGender()));
+                }
             }
 
             queuedPeople.add(jsonQueuedPerson);
