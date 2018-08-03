@@ -287,8 +287,8 @@ public class BusinessUserStoreService {
         save(businessUserStore);
     }
 
-    List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
-        return businessUserStoreManager.findAllManagingStoreWithUserLevel(qid, userLevel);
+    public List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
+        return businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, userLevel);
     }
 
     @Mobile
