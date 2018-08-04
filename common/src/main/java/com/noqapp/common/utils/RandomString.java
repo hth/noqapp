@@ -62,7 +62,7 @@ public final class RandomString {
         if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
             return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".")
                 + "."
-                + StringUtils.lowerCase(lastName.getText())
+                + StringUtils.lowerCase(lastName.getText()).replaceAll("\\s+", ".")
                 + "."
                 + shortenedQid;
         } else if (StringUtils.isNotBlank(firstName.getText())) {
