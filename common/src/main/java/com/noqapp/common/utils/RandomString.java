@@ -60,13 +60,23 @@ public final class RandomString {
         String shortenedQid = qid.replaceFirst(QID_SHORTEN, "");
 
         if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
-            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".") + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
+            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".")
+                + "."
+                + StringUtils.lowerCase(lastName.getText())
+                + "."
+                + shortenedQid;
         } else if (StringUtils.isNotBlank(firstName.getText())) {
-            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".") + "." + shortenedQid;
+            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".")
+                + "."
+                + shortenedQid;
         } else if (StringUtils.isNotBlank(lastName.getText())) {
-            return StringUtils.lowerCase(lastName.getText()).replaceAll("\\s+", ".") + "." + shortenedQid;
+            return StringUtils.lowerCase(lastName.getText()).replaceAll("\\s+", ".")
+                + "."
+                + shortenedQid;
         } else {
-            return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedQid;
+            return StringUtils.lowerCase(RandomString.newInstance(6).nextString())
+                + "."
+                + shortenedQid;
         }
     }
 
