@@ -59,18 +59,15 @@ public final class RandomString {
     private static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
         String shortenedQid = qid.replaceFirst(QID_SHORTEN, "");
 
-        String mail;
         if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
-            mail = StringUtils.lowerCase(firstName.getText()) + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
+            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".") + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
         } else if (StringUtils.isNotBlank(firstName.getText())) {
-            mail = StringUtils.lowerCase(firstName.getText()) + "." + shortenedQid;
+            return StringUtils.lowerCase(firstName.getText()).replaceAll("\\s+", ".") + "." + shortenedQid;
         } else if (StringUtils.isNotBlank(lastName.getText())) {
-            mail = StringUtils.lowerCase(lastName.getText()) + "." + shortenedQid;
+            return StringUtils.lowerCase(lastName.getText()).replaceAll("\\s+", ".") + "." + shortenedQid;
         } else {
-            mail = StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedQid;
+            return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedQid;
         }
-
-        return mail.replaceAll("\\s+", "_");
     }
 
     public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
