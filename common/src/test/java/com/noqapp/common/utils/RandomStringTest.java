@@ -2,7 +2,6 @@ package com.noqapp.common.utils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,22 +14,37 @@ class RandomStringTest {
     void generateEmailAddressWithDomain() {
         assertEquals(
             "my.name.yourname.1@mail.noqapp.com",
-            RandomString.generateEmailAddressWithDomain(new ScrubbedInput("My Name"), new ScrubbedInput("YourName"), "1001"));
+            RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput("My Name"),
+                new ScrubbedInput("YourName"),
+                "1001"));
 
         assertEquals(
             "my.name.your.name.1@mail.noqapp.com",
-            RandomString.generateEmailAddressWithDomain(new ScrubbedInput("My Name"), new ScrubbedInput("Your Name"), "1001"));
+            RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput("My Name"),
+                new ScrubbedInput("Your Name"),
+                "1001"));
 
         assertEquals(
             "my.name.your.name.1@mail.noqapp.com",
-            RandomString.generateEmailAddressWithDomain(new ScrubbedInput("My Name"), new ScrubbedInput("Your     Name   "), "1001"));
+            RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput("My Name"),
+                new ScrubbedInput("Your     Name   "),
+                "1001"));
 
         assertEquals(
             "my.name.yourname.1@mail.noqapp.com",
-            RandomString.generateEmailAddressWithDomain(new ScrubbedInput(" My Name "), new ScrubbedInput("  YourName  "), "1001"));
+            RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput(" My Name "),
+                new ScrubbedInput("  YourName  "),
+                "1001"));
 
         assertEquals(
             "my.name.yourname.1@mail.noqapp.com",
-            RandomString.generateEmailAddressWithDomain(new ScrubbedInput("My     Name"), new ScrubbedInput("YourName"), "1001"));
+            RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput("My     Name"),
+                new ScrubbedInput("YourName"),
+                "1001"));
     }
 }
