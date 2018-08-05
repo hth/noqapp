@@ -1,6 +1,5 @@
 package com.noqapp.view.controller.business;
 
-import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.FileUtil;
@@ -760,8 +759,11 @@ public class AdminBusinessLandingController {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
-            String profileFilename = FileUtil.createRandomFilenameOf24Chars() + getFileExtensionWithDot(multipartFile.getOriginalFilename());
-            fileService.addBizImage(qid, bizNameId, profileFilename, bufferedImage);
+            fileService.addBizImage(
+                qid,
+                bizNameId,
+                FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
+                bufferedImage);
         }
     }
 }
