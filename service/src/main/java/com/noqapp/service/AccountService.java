@@ -189,7 +189,7 @@ public class AccountService {
                     userAccount.setUserId(mail);
                     userAccountManager.save(userAccount);
                 }
-                LOG.info("UserAccount created={}", userAccount);
+                LOG.info("Created UserAccount={}", userAccount);
 
                 userProfile = UserProfileEntity.newInstance(
                         mail,
