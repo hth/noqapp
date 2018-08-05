@@ -189,7 +189,7 @@ public class AccountService {
                     userAccount.setUserId(mail);
                     userAccountManager.save(userAccount);
                 }
-                LOG.info("UserAccount created{}", userAccount);
+                LOG.info("UserAccount created={}", userAccount);
 
                 userProfile = UserProfileEntity.newInstance(
                         mail,
@@ -224,7 +224,7 @@ public class AccountService {
                     guardianUserProfile.addQidOfDependent(userProfile.getQueueUserId());
                     userProfileManager.save(guardianUserProfile);
 
-                    LOG.info("Update guardian profile qid={} & minor qid={}",
+                    LOG.info("Update guardian profile qid={} & dependent qid={}",
                             guardianUserProfile.getQueueUserId(), userProfile.getQueueUserId());
                 }
             } catch (Exception e) {
