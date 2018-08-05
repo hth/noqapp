@@ -175,6 +175,16 @@ public class FileUtil {
         }
     }
 
+    public static String getImageFileExtension(String originalFilename, String contentType) {
+        String fileExtension;
+        if (StringUtils.isEmpty(originalFilename)) {
+            fileExtension = contentType.equalsIgnoreCase("image/jpg") ? ".jpg" : ".png";
+        } else {
+            fileExtension = FileUtil.getFileExtensionWithDot(originalFilename);
+        }
+        return fileExtension;
+    }
+
     public static double fileSizeInMB(long length) {
         return length / FILE_SIZE_IN_MB;
     }
