@@ -21,6 +21,7 @@ import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -101,7 +102,7 @@ public class UserRegistrationValidation {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(merchantRegistration.getBirthday().getText())
+        if (StringUtils.isBlank(merchantRegistration.getBirthday().getText())
                 && !DateUtil.DOB_PATTERN.matcher(merchantRegistration.getBirthday().getText()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
@@ -111,20 +112,30 @@ public class UserRegistrationValidation {
                             .build());
             status = "failure";
         } else {
-            LocalDate startDate = LocalDate.parse(merchantRegistration.getBirthday().getText());
-            LocalDate endDate = LocalDate.now();
+            try {
+                LocalDate startDate = LocalDate.parse(merchantRegistration.getBirthday().getText());
+                LocalDate endDate = LocalDate.now();
 
-            if (ChronoUnit.DAYS.between(startDate, endDate) < 0) {
-                messageContext.addMessage(
+                if (ChronoUnit.DAYS.between(startDate, endDate) < 0) {
+                    messageContext.addMessage(
                         new MessageBuilder()
-                                .error()
-                                .source("birthday")
-                                .defaultText("Date is in future " + merchantRegistration.getBirthday())
-                                .build());
+                            .error()
+                            .source("birthday")
+                            .defaultText("Date is in future " + merchantRegistration.getBirthday())
+                            .build());
+                    status = "failure";
+                }
+
+                merchantRegistration.setNotAdult(underAge > ChronoUnit.YEARS.between(startDate, endDate));
+            } catch (DateTimeParseException e) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("birthday")
+                        .defaultText("Date format not valid " + merchantRegistration.getBirthday())
+                        .build());
                 status = "failure";
             }
-
-            merchantRegistration.setNotAdult(underAge > ChronoUnit.YEARS.between(startDate, endDate));
         }
 
         if (StringUtils.isNotBlank(merchantRegistration.getGender().getText())) {
