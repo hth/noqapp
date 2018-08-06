@@ -13,6 +13,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.repository.S3FileManager;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,11 +93,15 @@ public class FileService {
 
         try {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            String existingProfileImage = userProfile.getProfileImage();
 
-            /* Delete existing file if user changed profile image before the upload process began. */
-            ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
-            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+            /* Delete only if it existed previously. */
+            if (StringUtils.isNotBlank(userProfile.getProfileImage())) {
+                String existingProfileImage = userProfile.getProfileImage();
+
+                /* Delete existing file if user changed profile image before the upload process began. */
+                ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
+                s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+            }
 
             toFile = writeToFile(
                     createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
