@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.AccountService;
@@ -69,9 +70,13 @@ public class AnyTask {
 
         /* Write your method after here. Un-comment @Scheduled. */
         //Update account role
+        int count = 0;
         List<UserProfileEntity> userProfiles = userProfileManager.findAll();
         for (UserProfileEntity userProfile : userProfiles) {
-            accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), userProfile.getLevel());
+            UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), userProfile.getLevel());
+            accountService.save(userAccount);
+            count ++;
         }
+        LOG.info("Updated Roles count={}", count);
     }
 }
