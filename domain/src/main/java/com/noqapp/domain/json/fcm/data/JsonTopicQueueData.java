@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.FCMTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
@@ -31,6 +32,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTopicQueueData extends JsonData {
 
+    @JsonProperty("ft")
+    private FCMTypeEnum fcmType;
+
     @JsonProperty("message")
     private String message;
 
@@ -52,8 +56,13 @@ public class JsonTopicQueueData extends JsonData {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    public JsonTopicQueueData(FirebaseMessageTypeEnum firebaseMessageType) {
+    public JsonTopicQueueData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
+        this.fcmType = fcmType;
+    }
+
+    public FCMTypeEnum getFcmType() {
+        return fcmType;
     }
 
     public String getMessage() {
