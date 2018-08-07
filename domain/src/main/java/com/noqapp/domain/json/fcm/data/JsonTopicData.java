@@ -1,18 +1,19 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
-import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.FCMTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * User: hitender
- * Date: 1/1/17 7:06 AM
+ * hitender
+ * 7/31/18 5:36 PM
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -29,93 +30,54 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTopicData extends JsonData {
+public class JsonTopicData {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonTopicData.class);
 
-    @JsonProperty("message")
-    private String message;
+    private JsonTopicQueueData jsonTopicQueueData;
+    private JsonTopicOrderData jsonTopicOrderData;
+    private JsonDisplayData jsonDisplayData;
 
-    @JsonProperty("ln")
-    private int lastNumber;
-
-    @JsonProperty("cs")
-    private int currentlyServing;
-
-    @JsonProperty("qr")
-    private String codeQR;
-
-    @JsonProperty("q")
-    private QueueStatusEnum queueStatus;
-
-    @JsonProperty("g")
-    private String goTo;
-
-    @JsonProperty("bt")
-    private BusinessTypeEnum businessType;
-
-    public JsonTopicData(FirebaseMessageTypeEnum firebaseMessageType) {
-        super(firebaseMessageType);
+    public JsonTopicData(FCMTypeEnum fcmType, FirebaseMessageTypeEnum firebaseMessageType) {
+        switch (fcmType) {
+            case Q:
+                jsonTopicQueueData = new JsonTopicQueueData(firebaseMessageType, fcmType);
+                break;
+            case O:
+                jsonTopicOrderData = new JsonTopicOrderData(firebaseMessageType, fcmType);
+                break;
+            case D:
+                jsonDisplayData = new JsonDisplayData(firebaseMessageType, fcmType);
+                break;
+            default:
+                LOG.error("Reached unreachable condition {}", fcmType);
+                throw new UnsupportedOperationException("Reached unreachable condition");
+        }
     }
 
-    public String getMessage() {
-        return message;
+    public JsonTopicQueueData getJsonTopicQueueData() {
+        return jsonTopicQueueData;
     }
 
-    public JsonTopicData setMessage(String message) {
-        this.message = message;
+    public JsonTopicData setJsonTopicQueueData(JsonTopicQueueData jsonTopicQueueData) {
+        this.jsonTopicQueueData = jsonTopicQueueData;
         return this;
     }
 
-    public int getLastNumber() {
-        return lastNumber;
+    public JsonTopicOrderData getJsonTopicOrderData() {
+        return jsonTopicOrderData;
     }
 
-    public JsonTopicData setLastNumber(int lastNumber) {
-        this.lastNumber = lastNumber;
+    public JsonTopicData setJsonTopicOrderData(JsonTopicOrderData jsonTopicOrderData) {
+        this.jsonTopicOrderData = jsonTopicOrderData;
         return this;
     }
 
-    public int getCurrentlyServing() {
-        return currentlyServing;
+    public JsonDisplayData getJsonDisplayData() {
+        return jsonDisplayData;
     }
 
-    public JsonTopicData setCurrentlyServing(int currentlyServing) {
-        this.currentlyServing = currentlyServing;
-        return this;
-    }
-
-    public String getCodeQR() {
-        return codeQR;
-    }
-
-    public JsonTopicData setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
-        return this;
-    }
-
-    public QueueStatusEnum getQueueStatus() {
-        return queueStatus;
-    }
-
-    public JsonTopicData setQueueStatus(QueueStatusEnum queueStatus) {
-        this.queueStatus = queueStatus;
-        return this;
-    }
-
-    public String getGoTo() {
-        return goTo;
-    }
-
-    public JsonTopicData setGoTo(String goTo) {
-        this.goTo = goTo;
-        return this;
-    }
-
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
-    }
-
-    public JsonTopicData setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
+    public JsonTopicData setJsonDisplayData(JsonDisplayData jsonDisplayData) {
+        this.jsonDisplayData = jsonDisplayData;
         return this;
     }
 }

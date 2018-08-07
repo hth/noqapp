@@ -22,6 +22,7 @@ import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.FCMTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
@@ -433,7 +434,7 @@ public class TokenQueueService {
             case O:
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
@@ -449,20 +450,18 @@ public class TokenQueueService {
             case O:
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
 
-    /**
-     * Sends any message to a specific user.
-     */
-    public void sendMessageToSpecificUser(String title, String body, String qid) {
+    /** Sends any message to a specific user. */
+    public void sendMessageToSpecificUser(String title, String body, String qid, FCMTypeEnum fcmType) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
-            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P);
+            JsonData jsonData = new JsonTopicData(fcmType, FirebaseMessageTypeEnum.P).getJsonDisplayData();
 
             if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                 jsonMessage.getNotification()
@@ -497,7 +496,7 @@ public class TokenQueueService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
                     //Added additional info to message for Android to not crash as it looks for CodeQR.
                     //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
                     .setLastNumber(tokenQueue.getLastNumber())
@@ -543,7 +542,7 @@ public class TokenQueueService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(tokenQueue.getFirebaseMessageType())
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(codeQR)
@@ -631,7 +630,7 @@ public class TokenQueueService {
                     tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-            JsonData jsonData = new JsonTopicData(FirebaseMessageTypeEnum.P)
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenNumber)
                     .setCodeQR(codeQR)
