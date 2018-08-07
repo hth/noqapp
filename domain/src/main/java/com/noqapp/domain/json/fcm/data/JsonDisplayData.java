@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.UUID;
+
 /**
  * hitender
  * 8/1/18 6:43 PM
@@ -33,9 +35,13 @@ public class JsonDisplayData extends JsonData {
     @JsonProperty("ft")
     private FCMTypeEnum fcmType;
 
+    @JsonProperty("mi")
+    private String messageId;
+
     JsonDisplayData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
         this.fcmType = fcmType;
+        this.messageId = UUID.randomUUID().toString();
     }
 
     public FCMTypeEnum getFcmType() {

@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.UUID;
+
 /**
  * hitender
  * 7/31/18 5:48 PM
@@ -60,9 +62,13 @@ public class JsonTopicOrderData extends JsonData {
     @JsonProperty("os")
     private PurchaseOrderStateEnum purchaseOrderState;
 
+    @JsonProperty("mi")
+    private String messageId;
+
     public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
         this.fcmType = fcmType;
+        this.messageId = UUID.randomUUID().toString();
     }
 
     public String getMessage() {
