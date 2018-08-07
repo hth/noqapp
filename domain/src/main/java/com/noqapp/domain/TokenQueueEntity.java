@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import org.slf4j.Logger;
@@ -136,6 +137,52 @@ public class TokenQueueEntity extends BaseEntity {
                 //Very specific message to send to all on queue closed
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
                 return  getTopicWellFormatted();
+            default:
+                LOG.error("Reached unreachable condition, queueStatus={}", queueStatus);
+                throw new IllegalStateException("Condition set is not defined");
+        }
+    }
+
+    @Transient
+    public String getCorrectTopic(PurchaseOrderStateEnum purchaseOrderState) {
+        switch (purchaseOrderState) {
+            case IN:
+            case PC:
+            case VB:
+            case IB:
+            case FO:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case PO:
+            case NM:
+                firebaseMessageType = FirebaseMessageTypeEnum.M;
+                return getMerchantTopicWellFormatted();
+            case OP:
+            case PR:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case RP:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case RD:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case OW:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return  getTopicWellFormatted();
+            case LO:
+            case FD:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return  getTopicWellFormatted();
+            case OD:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case DA:
+                firebaseMessageType = FirebaseMessageTypeEnum.C;
+                return getTopicWellFormatted();
+            case CO:
+                firebaseMessageType = FirebaseMessageTypeEnum.M;
+                return getMerchantTopicWellFormatted();
             default:
                 LOG.error("Reached unreachable condition, queueStatus={}", queueStatus);
                 throw new IllegalStateException("Condition set is not defined");

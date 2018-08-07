@@ -1,6 +1,6 @@
 package com.noqapp.domain.types;
 
-import static com.noqapp.domain.types.QueueOrderTypeEnum.*;
+import static com.noqapp.domain.types.FCMTypeEnum.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +29,9 @@ public enum BusinessTypeEnum {
 
     private final String description;
     private final String name;
-    private final QueueOrderTypeEnum queueOrderType;
+    private final FCMTypeEnum queueOrderType;
 
-    BusinessTypeEnum(String name, String description, QueueOrderTypeEnum queueOrderType) {
+    BusinessTypeEnum(String name, String description, FCMTypeEnum queueOrderType) {
         this.name = name;
         this.description = description;
         this.queueOrderType = queueOrderType;
@@ -45,7 +45,7 @@ public enum BusinessTypeEnum {
         return description;
     }
 
-    public QueueOrderTypeEnum getQueueOrderType() {
+    public FCMTypeEnum getQueueOrderType() {
         return queueOrderType;
     }
 
