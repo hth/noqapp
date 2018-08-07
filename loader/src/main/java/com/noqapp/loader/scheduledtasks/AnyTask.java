@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class AnyTask {
      * Make sure there are proper locks, limits and or conditions to prevent re-run.
      */
     @SuppressWarnings("all")
-    //@Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
+    @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
             return;
