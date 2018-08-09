@@ -3,6 +3,8 @@ package com.noqapp.view.validator;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.view.form.StoreProductForm;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +66,13 @@ public class StoreProductValidator implements Validator {
                         break;
                     default:
                         //Ignore for rest
+                }
+
+                if (!StringUtils.isNumeric(form.getProductPrice().getText())) {
+                    errors.rejectValue("productPrice",
+                        "field.number",
+                        new Object[]{"Price of Product"},
+                        "Price of Product should be number");
                 }
             }
         }

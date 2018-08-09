@@ -79,6 +79,10 @@
                                                 <c:if test="${errors.hasFieldErrors('productName')}">
                                                 <li><form:errors path="productName"/></li>
                                                 </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
+                                                <li><form:errors path="productPrice"/></li>
+                                                </c:if>
                                             </ul>
                                         </div>
                                     </div>
@@ -226,6 +230,10 @@
                                             <ul>
                                                 <c:if test="${errors.hasFieldErrors('productName')}">
                                                 <li><form:errors path="productName"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
+                                                <li><form:errors path="productPrice"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
