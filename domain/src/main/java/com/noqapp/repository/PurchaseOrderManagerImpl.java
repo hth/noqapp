@@ -10,10 +10,13 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
+
+import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -62,7 +66,12 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public void deleteHard(PurchaseOrderEntity object) {
+        throw new UnsupportedOperationException("This method is not supported");
+    }
 
+    @Override
+    public PurchaseOrderEntity findById(String id) {
+        return mongoTemplate.findById(new ObjectId(id),  PurchaseOrderEntity.class, TABLE);
     }
 
     @Override
@@ -108,7 +117,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
 
-        PurchaseOrderEntity queue = mongoTemplate.findOne(
+        PurchaseOrderEntity purchaseOrder = mongoTemplate.findOne(
             query(where("QR").is(codeQR)
                 .orOperator(
                     where("PS").is(PurchaseOrderStateEnum.PO).and("SN").exists(false),
@@ -122,11 +131,11 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             PurchaseOrderEntity.class,
             TABLE);
 
-        if (updateWhenNextInQueueAcquired(codeQR, goTo, sid, queue)) {
+        if (updateWhenNextInQueueAcquired(codeQR, goTo, sid, purchaseOrder)) {
             return getNext(codeQR, goTo, sid);
         }
 
-        return queue;
+        return purchaseOrder;
     }
 
     @Override
@@ -159,6 +168,43 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         }
 
         return purchaseOrder;
+    }
+
+    @Override
+    public PurchaseOrderEntity updateAndGetNextInQueue(
+        String codeQR,
+        int tokenNumber,
+        PurchaseOrderStateEnum purchaseOrderState,
+        String goTo,
+        String sid,
+        TokenServiceEnum tokenService
+    ) {
+        boolean status = updateServedInQueue(codeQR, goTo, tokenNumber, purchaseOrderState, sid, tokenService);
+        LOG.info("serving status={} codeQR={} tokenNumber={} sid={}", status, codeQR, tokenNumber, sid);
+        return getNext(codeQR, goTo, sid);
+    }
+
+    @Override
+    public boolean updateServedInQueue(String codeQR, String goTo, int tokenNumber, PurchaseOrderStateEnum purchaseOrderState, String sid, TokenServiceEnum tokenService) {
+        Query query;
+        if (TokenServiceEnum.W == tokenService) {
+            query = query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("PS").is(PurchaseOrderStateEnum.PO));
+        } else {
+            query = query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("PS").is(PurchaseOrderStateEnum.PO).and("SID").is(sid));
+        }
+        boolean status = mongoTemplate.updateFirst(
+            /* Do not update if user aborted between beginning of service and before completion of service. */
+            query,
+            entityUpdate(
+                update("SN", goTo)
+                    .set("SID", sid)
+                    .set("PS", PurchaseOrderStateEnum.OP)
+                    .push("OS", PurchaseOrderStateEnum.OP)
+                    .set("SB", new Date())),
+            PurchaseOrderEntity.class,
+            TABLE).getModifiedCount() > 1;
+        LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
+        return status;
     }
 
     private boolean updateWhenNextInQueueAcquired(String codeQR, String goTo, String sid, PurchaseOrderEntity purchaseOrder) {

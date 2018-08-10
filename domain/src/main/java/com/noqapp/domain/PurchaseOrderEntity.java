@@ -15,8 +15,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * hitender
  * 3/29/18 3:36 AM
@@ -91,7 +89,6 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String review;
 
     /* Order Number. */
-    @NotNull
     @Field ("TN")
     private int tokenNumber;
 

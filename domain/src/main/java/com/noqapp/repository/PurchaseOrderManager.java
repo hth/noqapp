@@ -1,6 +1,9 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.List;
 
@@ -9,6 +12,7 @@ import java.util.List;
  * 3/29/18 2:31 PM
  */
 public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEntity> {
+    PurchaseOrderEntity findById(String id);
 
     List<PurchaseOrderEntity> findAllOpenOrder(String qid);
 
@@ -21,4 +25,22 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     PurchaseOrderEntity getNext(String codeQR, String goTo, String sid);
 
     PurchaseOrderEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber);
+
+    @Mobile
+    PurchaseOrderEntity updateAndGetNextInQueue(
+        String codeQR,
+        int tokenNumber,
+        PurchaseOrderStateEnum purchaseOrderState,
+        String goTo,
+        String sid,
+        TokenServiceEnum tokenService);
+
+    @Mobile
+    boolean updateServedInQueue(
+        String codeQR,
+        String goTo,
+        int tokenNumber,
+        PurchaseOrderStateEnum purchaseOrderState,
+        String sid,
+        TokenServiceEnum tokenService);
 }

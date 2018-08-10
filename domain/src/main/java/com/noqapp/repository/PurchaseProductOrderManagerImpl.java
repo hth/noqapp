@@ -51,7 +51,7 @@ public class PurchaseProductOrderManagerImpl implements PurchaseProductOrderMana
 
     @Override
     public void deleteHard(PurchaseOrderProductEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
