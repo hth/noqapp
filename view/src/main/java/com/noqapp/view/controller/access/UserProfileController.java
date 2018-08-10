@@ -210,6 +210,7 @@ public class UserProfileController {
             professionalProfileForm
                 .setProfessionalProfile(true)
                 .setPracticeStart(professionalProfile.getPracticeStart())
+                .setAboutMe(professionalProfile.getAboutMe())
                 .setEducation(professionalProfile.getEducation())
                 .setLicenses(professionalProfile.getLicenses())
                 .setAwards(professionalProfile.getAwards());
@@ -280,7 +281,9 @@ public class UserProfileController {
             return "redirect:/access/userProfile.htm";
         }
 
-        professionalProfile.setPracticeStart(professionalProfileForm.getPracticeStart());
+        professionalProfile
+            .setPracticeStart(professionalProfileForm.getPracticeStart())
+            .setAboutMe(professionalProfileForm.getAboutMe());
         professionalProfileService.save(professionalProfile);
 
         apiHealthService.insert(

@@ -43,6 +43,9 @@ public class JsonProfessionalProfile extends AbstractDomain {
     @JsonProperty("ps")
     private String practiceStart;
 
+    @JsonProperty("am")
+    private String aboutMe;
+
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
     private List<JsonNameDatePair> education;
@@ -79,6 +82,15 @@ public class JsonProfessionalProfile extends AbstractDomain {
 
     public JsonProfessionalProfile setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
+        return this;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public JsonProfessionalProfile setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
         return this;
     }
 
