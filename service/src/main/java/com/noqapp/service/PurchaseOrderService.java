@@ -23,18 +23,18 @@ import com.noqapp.domain.json.JsonTokenAndQueue;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
-import com.noqapp.domain.json.fcm.data.JsonTopicQueueData;
+import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FCMTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
-import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseProductOrderManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.TokenQueueManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -79,6 +79,7 @@ public class PurchaseOrderService {
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
     private RegisteredDeviceManager registeredDeviceManager;
+    private TokenQueueManager tokenQueueManager;
     private AccountService accountService;
 
     private ExecutorService executorService;
@@ -94,6 +95,7 @@ public class PurchaseOrderService {
         UserAddressService userAddressService,
         FirebaseMessageService firebaseMessageService,
         RegisteredDeviceManager registeredDeviceManager,
+        TokenQueueManager tokenQueueManager,
         AccountService accountService
     ) {
         this.bizService = bizService;
@@ -105,6 +107,7 @@ public class PurchaseOrderService {
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
         this.registeredDeviceManager = registeredDeviceManager;
+        this.tokenQueueManager = tokenQueueManager;
         this.accountService = accountService;
 
         this.executorService = newCachedThreadPool();
@@ -187,7 +190,7 @@ public class PurchaseOrderService {
         executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
         userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
 
-        doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()));
+        doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
             .setToken(purchaseOrder.getTokenNumber())
             .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
@@ -205,27 +208,55 @@ public class PurchaseOrderService {
         }
     }
 
-    private void doActionBasedOnQueueStatus(String codeQR, PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue) {
+    private void doActionBasedOnQueueStatus(String codeQR, PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue, String goTo) {
         switch (purchaseOrder.getPresentOrderState()) {
             case IN:
                 break;
             case PC:
-                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, null, purchaseOrder.getTokenNumber());
+                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             case VB:
             case IB:
-                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, null, purchaseOrder.getTokenNumber());
-                break;
-            case PO:
-                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, null);
-                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, null, purchaseOrder.getTokenNumber());
                 break;
             case FO:
-                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, null);
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
                 //Notify Merchant
+                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
+                break;
+            case PO:
+                switch (tokenQueue.getQueueStatus()) {
+                    case D:
+                        tokenQueue.setQueueStatus(QueueStatusEnum.R);
+                        tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
+                        break;
+                    case S:
+                        tokenQueue.setQueueStatus(QueueStatusEnum.S);
+                        break;
+                    case R:
+                        tokenQueue.setQueueStatus(QueueStatusEnum.R);
+                        break;
+                    default:
+                        tokenQueue.setQueueStatus(QueueStatusEnum.N);
+                        break;
+                }
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
+                break;
+            case PR:
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
+                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
+                break;
+            case RP:
+            case RD:
+            case OW:
+            case LO:
+            case FD:
+            case OD:
+            case DA:
+            case CO:
+                sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             default:
-                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, null);
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
                 break;
         }
     }
@@ -267,8 +298,9 @@ public class PurchaseOrderService {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizService.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
+            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(purchaseOrder.getCodeQR());
 
-            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, bizStore);
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, tokenQueue, bizStore);
             jsonTokenAndQueues.add(jsonTokenAndQueue);
         }
 
@@ -283,49 +315,52 @@ public class PurchaseOrderService {
     public String findAllOpenOrderByCodeAsJson(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrderByCodeQR(codeQR);
-
-        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            List<PurchaseOrderProductEntity> products = purchaseProductOrderManager.getAllByPurchaseOrderId(purchaseOrder.getId());
-            for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
-                JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
-                    .setProductId(purchaseOrderProduct.getId())
-                    .setProductName(purchaseOrderProduct.getProductName())
-                    .setProductPrice(purchaseOrderProduct.getProductPrice())
-                    .setProductDiscount(purchaseOrderProduct.getProductDiscount())
-                    .setProductQuantity(purchaseOrderProduct.getProductQuantity());
-
-                jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
-            }
-
-            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                .setBizStoreId(purchaseOrder.getBizStoreId())
-                .setCustomerPhone(purchaseOrder.getCustomerPhone())
-                .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
-                .setStoreDiscount(purchaseOrder.getStoreDiscount())
-                .setOrderPrice(purchaseOrder.getOrderPrice())
-                .setDeliveryType(purchaseOrder.getDeliveryType())
-                .setPaymentType(purchaseOrder.getPaymentType())
-                .setBusinessType(purchaseOrder.getBusinessType())
-                .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
-                //Serving Number not set for Merchant
-                .setToken(purchaseOrder.getTokenNumber())
-                .setCustomerName(purchaseOrder.getCustomerName())
-                //ExpectedServiceBegin not set for Merchant
-                .setTransactionId(purchaseOrder.getTransactionId())
-                .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
-                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
-
-            jsonPurchaseOrders.add(jsonPurchaseOrder);
+            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
 
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 
+    private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
+        List<PurchaseOrderProductEntity> products = purchaseProductOrderManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+        for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                .setProductId(purchaseOrderProduct.getId())
+                .setProductName(purchaseOrderProduct.getProductName())
+                .setProductPrice(purchaseOrderProduct.getProductPrice())
+                .setProductDiscount(purchaseOrderProduct.getProductDiscount())
+                .setProductQuantity(purchaseOrderProduct.getProductQuantity());
+
+            jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
+        }
+
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+            .setBizStoreId(purchaseOrder.getBizStoreId())
+            .setCustomerPhone(purchaseOrder.getCustomerPhone())
+            .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
+            .setStoreDiscount(purchaseOrder.getStoreDiscount())
+            .setOrderPrice(purchaseOrder.getOrderPrice())
+            .setDeliveryType(purchaseOrder.getDeliveryType())
+            .setPaymentType(purchaseOrder.getPaymentType())
+            .setBusinessType(purchaseOrder.getBusinessType())
+            .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
+            //Serving Number not set for Merchant
+            .setToken(purchaseOrder.getTokenNumber())
+            .setCustomerName(purchaseOrder.getCustomerName())
+            //ExpectedServiceBegin not set for Merchant
+            .setTransactionId(purchaseOrder.getTransactionId())
+            .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
+            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+
+        jsonPurchaseOrders.add(jsonPurchaseOrder);
+    }
+
     /**
      * Formulates and send messages to FCM.
      */
-    private void invokeThreadSendMessageToTopic(
+    public void invokeThreadSendMessageToTopic(
         String codeQR,
         PurchaseOrderEntity purchaseOrder,
         TokenQueueEntity tokenQueue,
@@ -408,6 +443,78 @@ public class PurchaseOrderService {
      * When servicing token that's out of order or sequence. Send message as the selected token is being served
      * and mark it Personal.
      */
+//    private void invokeThreadSendMessageToSelectedTokenUser(
+//        String codeQR,
+//        PurchaseOrderEntity purchaseOrder,
+//        TokenQueueEntity tokenQueue,
+//        String goTo,
+//        int tokenNumber
+//    ) {
+//        LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
+//
+//        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
+//        for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
+//            LOG.debug("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
+//                registeredDevice.getQueueUserId(),
+//                registeredDevice.getDeviceId(),
+//                registeredDevice.getDeviceType(),
+//                tokenNumber);
+//
+//            JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+//            JsonData jsonData = new JsonTopicQueueData(FirebaseMessageTypeEnum.P, FCMTypeEnum.O)
+//                .setLastNumber(tokenQueue.getLastNumber())
+//                .setCurrentlyServing(tokenNumber)
+//                .setCodeQR(codeQR)
+//                .setQueueStatus(tokenQueue.getQueueStatus())
+//                .setGoTo(goTo)
+//                .setBusinessType(tokenQueue.getBusinessType());
+//
+//            /*
+//             * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
+//             * As this is a personal message when server is planning to serve a specific token.
+//             */
+//            switch (tokenQueue.getQueueStatus()) {
+//                case S:
+//                case R:
+//                case D:
+//                    LOG.warn("Skipped sending personal message as queue status is not 'Next' but queueStatus={}", tokenQueue.getQueueStatus());
+//                    break;
+//                case P:
+//                case C:
+//                    LOG.error("Cannot reach this state codeQR={}, queueStatus={}", codeQR, tokenQueue.getQueueStatus());
+//                    return;
+//                case N:
+//                default:
+//                    LOG.debug("Personal device is of type={} did={} token={}",
+//                        registeredDevice.getDeviceType(),
+//                        registeredDevice.getDeviceId(),
+//                        registeredDevice.getToken());
+//
+//                    if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+//                        jsonMessage.getNotification()
+//                            .setBody("Now Serving " + tokenNumber)
+//                            .setLocKey("serving")
+//                            .setLocArgs(new String[]{String.valueOf(tokenNumber)})
+//                            .setTitle(tokenQueue.getDisplayName());
+//                    } else {
+//                        jsonMessage.setNotification(null);
+//                        jsonData.setBody("Now Serving " + tokenNumber)
+//                            .setTitle(tokenQueue.getDisplayName());
+//                    }
+//            }
+//
+//            jsonMessage.setData(jsonData);
+//
+//            LOG.debug("Personal FCM message to be sent={}", jsonMessage);
+//            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+//            if (!fcmMessageBroadcast) {
+//                LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
+//            } else {
+//                LOG.debug("Sent Personal topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+//            }
+//        }
+//    }
+
     private void invokeThreadSendMessageToSelectedTokenUser(
         String codeQR,
         PurchaseOrderEntity purchaseOrder,
@@ -426,46 +533,74 @@ public class PurchaseOrderService {
                 tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-            JsonData jsonData = new JsonTopicQueueData(FirebaseMessageTypeEnum.P, FCMTypeEnum.O)
+            JsonData jsonData = new JsonTopicOrderData(FirebaseMessageTypeEnum.P, FCMTypeEnum.O)
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenNumber)
                 .setCodeQR(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
+                .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
                 .setGoTo(goTo)
                 .setBusinessType(tokenQueue.getBusinessType());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
-             * As this is a personal message when server is planning to serve a spacific token.
+             * As this is a personal message when server is planning to serve a specific token.
              */
-            switch (tokenQueue.getQueueStatus()) {
-                case S:
-                case R:
-                case D:
-                    LOG.warn("Skipped sending personal message as queue status is not 'Next' but queueStatus={}", tokenQueue.getQueueStatus());
+            String message = null;
+            switch (purchaseOrder.getPresentOrderState()) {
+                case PC:
+                    message = "Price has changed. Please re-order.";
+                    //Rarely will be sent. No message sent until PO
                     break;
-                case P:
-                case C:
-                    LOG.error("Cannot reach this state codeQR={}, queueStatus={}", codeQR, tokenQueue.getQueueStatus());
-                    return;
-                case N:
+                case FO:
+                    message = "Apologies as we have failed to place order";
+                    break;
+                case OP:
+                    message = "Your order " + tokenNumber + " is being processed";
+                    break;
+                case RP:
+                    message = "Your order is ready for pickup";
+                    break;
+                case RD:
+                    message = "Your order is ready for delivery";
+                    break;
+                case OW:
+                    message = "Your order is on the way";
+                    break;
+                case LO:
+                    message = "Apologies we have lost your order. We are working on it to find your order.";
+                    break;
+                case FD:
+                    message = "We failed to deliver your order";
+                    break;
+                case OD:
+                    message = "Your order has been successfully delivered";
+                    break;
+                case DA:
+                    message = "We are re-attempting to deliver your order";
+                    break;
+                case CO:
+                    message = "Your order was cancelled";
+                    break;
                 default:
-                    LOG.debug("Personal device is of type={} did={} token={}",
+                    LOG.error("Failed condition={} device is of type={} did={} token={}",
+                        purchaseOrder.getPresentOrderState(),
                         registeredDevice.getDeviceType(),
                         registeredDevice.getDeviceId(),
                         registeredDevice.getToken());
+                    throw new RuntimeException("Reached unsupported condition " + purchaseOrder.getPresentOrderState());
+            }
 
-                    if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
-                        jsonMessage.getNotification()
-                            .setBody("Now Serving " + tokenNumber)
-                            .setLocKey("serving")
-                            .setLocArgs(new String[]{String.valueOf(tokenNumber)})
-                            .setTitle(tokenQueue.getDisplayName());
-                    } else {
-                        jsonMessage.setNotification(null);
-                        jsonData.setBody("Now Serving " + tokenNumber)
-                            .setTitle(tokenQueue.getDisplayName());
-                    }
+            if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+                jsonMessage.getNotification()
+                    .setBody(message)
+                    .setLocKey("serving")
+                    .setLocArgs(new String[]{String.valueOf(tokenNumber)})
+                    .setTitle(tokenQueue.getDisplayName());
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setBody(message)
+                    .setTitle(tokenQueue.getDisplayName());
             }
 
             jsonMessage.setData(jsonData);
@@ -484,7 +619,42 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findOne(codeQR, tokenNumber);
     }
 
-    
+    /**
+     * When merchant has served a specific token.
+     *
+     * @param codeQR
+     * @param servedNumber
+     * @param purchaseOrderState
+     * @param goTo           - counter name
+     * @param sid            - server device id
+     * @param tokenService   - Invoked via Web or Device
+     * @return
+     */
+    public JsonToken updateAndGetNextInQueue(
+        String codeQR,
+        int servedNumber,
+        PurchaseOrderStateEnum purchaseOrderState,
+        String goTo,
+        String sid,
+        TokenServiceEnum tokenService
+    ) {
+        LOG.info("Update and getting next in queue codeQR={} servedNumber={} purchaseOrderState={} goTo={} sid={}", codeQR, servedNumber, purchaseOrderState, goTo, sid);
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateAndGetNextInQueue(codeQR, servedNumber, purchaseOrderState, goTo, sid, tokenService);
+        if (null != purchaseOrder) {
+            LOG.info("Found queue codeQR={} servedNumber={} purchaseOrderState={} nextToken={}", codeQR, servedNumber, purchaseOrderState, purchaseOrder.getTokenNumber());
+            return updateServing(codeQR, QueueStatusEnum.N, purchaseOrder.getId(), goTo);
+        }
+
+        LOG.info("Reached condition of not having any more to serve");
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+        tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.D);
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            /* Better to show last number than served number. This is to maintain consistent state. */
+            .setToken(tokenQueue.getCurrentlyServing())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setQueueStatus(QueueStatusEnum.D);
+    }
 
     /**
      * Merchant when starting or re-starting to serve token when QueueState has been either Start or Re-Start.
@@ -495,22 +665,13 @@ public class PurchaseOrderService {
      * @return
      */
     @Mobile
-    public JsonToken getNextInQueue(
-        String codeQR,
-        String goTo,
-        String sid
-    ) {
+    public JsonToken getNextInQueue(String codeQR, String goTo, String sid) {
         LOG.info("Getting next in queue for codeQR={} goTo={} sid={}", codeQR, goTo, sid);
 
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.getNext(codeQR, goTo, sid);
         if (null != purchaseOrder) {
             LOG.info("Found queue codeQR={} token={}", codeQR, purchaseOrder.getTokenNumber());
-
-            JsonToken jsonToken = tokenQueueService.updateServing(
-                codeQR,
-                QueueStatusEnum.N,
-                purchaseOrder.getTokenNumber(),
-                goTo);
+            JsonToken jsonToken = updateServing(codeQR, QueueStatusEnum.N, purchaseOrder.getId(), goTo);
             //TODO(hth) call can be put in thread
             tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.N);
             return jsonToken;
@@ -531,26 +692,16 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonToken getThisAsNextInQueue(
-        String codeQR,
-        String goTo,
-        String sid,
-        int token
-    ) {
-        LOG.info("Getting specific token next in queue for codeQR={} goTo={} sid={} token={}",
-            codeQR,
-            goTo,
-            sid,
-            token);
-
+    public JsonToken getThisAsNextInQueue(String codeQR, String goTo, String sid, int token) {
+        LOG.info("Getting specific token next in queue for codeQR={} goTo={} sid={} token={}", codeQR, goTo, sid, token);
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.getThisAsNext(codeQR, goTo, sid, token);
-        if(null != purchaseOrder) {
+        if (null != purchaseOrder) {
             LOG.info("Found queue codeQR={} token={}", codeQR, purchaseOrder.getTokenNumber());
 
             JsonToken jsonToken = updateThisServing(
                 codeQR,
                 QueueStatusEnum.N,
-                purchaseOrder,
+                purchaseOrder.getId(),
                 goTo);
             //TODO(hth) call can be put in thread
             tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.N);
@@ -560,12 +711,38 @@ public class PurchaseOrderService {
         return null;
     }
 
+    @Mobile
+    public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, String id, String goTo) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findById(id);
+        TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, purchaseOrder.getTokenNumber(), queueStatus);
+        sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
+
+        LOG.info("After sending message to merchant");
+        if (purchaseOrder.getCustomerName() != null) {
+            LOG.info("Sending message to merchant, queue qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
+
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
+                .setQueueStatus(tokenQueue.getQueueStatus())
+                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setToken(tokenQueue.getLastNumber())
+                .setCustomerName(purchaseOrder.getCustomerName());
+        }
+
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            .setQueueStatus(tokenQueue.getQueueStatus())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setToken(tokenQueue.getLastNumber());
+    }
+
     /**
      * This acquires the record of the person being served by server. No one gets informed when the record is
      * acquired other than the person who's record is acquired to be served next.
      */
     @Mobile
-    public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, PurchaseOrderEntity purchaseOrder, String goTo) {
+    public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, String id, String goTo) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findById(id);
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
         /*
@@ -594,4 +771,66 @@ public class PurchaseOrderService {
             .setToken(tokenQueue.getLastNumber());
     }
 
+    @Mobile
+    public JsonPurchaseOrderList processedOrderService(
+        String codeQR,
+        int servedNumber,
+        PurchaseOrderStateEnum purchaseOrderState,
+        String goTo,
+        String sid,
+        TokenServiceEnum tokenService
+    ) {
+        LOG.info("Getting specific token next in queue for codeQR={} goTo={} sid={} token={}", codeQR, goTo, sid, servedNumber);
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findOne(codeQR, servedNumber);
+        if (null != purchaseOrder) {
+            LOG.info("Found queue codeQR={} token={}", codeQR, purchaseOrder.getTokenNumber());
+            switch (purchaseOrder.getPresentOrderState()) {
+                case OP :
+                    switch (purchaseOrder.getDeliveryType()) {
+                        case HD:
+                            purchaseOrder
+                                .addOrderState(PurchaseOrderStateEnum.PR)
+                                .addOrderState(PurchaseOrderStateEnum.RP);
+                            break;
+                        case TO:
+                            purchaseOrder
+                                .addOrderState(PurchaseOrderStateEnum.PR)
+                                .addOrderState(PurchaseOrderStateEnum.RD);
+                            break;
+                        default:
+                            LOG.error("Reached unreachable condition, deliveryType={}", purchaseOrder.getDeliveryType());
+                            throw new UnsupportedOperationException("Reached un-reachable condition for processing order");
+                    }
+                    break;
+                case RP:
+                case RD:
+                    purchaseOrder.addOrderState(PurchaseOrderStateEnum.OD);
+                    break;
+            }
+            purchaseOrderManager.save(purchaseOrder);
+            return markOrderProcessed(codeQR, purchaseOrder, goTo);
+        }
+
+        return null;
+    }
+
+    private JsonPurchaseOrderList markOrderProcessed(String codeQR, PurchaseOrderEntity purchaseOrder, String goTo) {
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+        doActionBasedOnQueueStatus(codeQR, purchaseOrder, tokenQueue, goTo);
+
+//For broadcast message
+//        new JsonTopicOrderData(FirebaseMessageTypeEnum.M, FCMTypeEnum.O)
+//            .setMessage("Order ready for pickup/delivery")
+//            .setLastNumber(tokenQueue.getLastNumber())
+//            .setCurrentlyServing(purchaseOrder.getTokenNumber())
+//            .setCodeQR(purchaseOrder.getCodeQR())
+//            .setQueueStatus(tokenQueue.getQueueStatus())
+//            .setGoTo(goTo)
+//            .setBusinessType(purchaseOrder.getBusinessType())
+//            .setPurchaseOrderState(purchaseOrder.getPresentOrderState());
+
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
+    }
 }

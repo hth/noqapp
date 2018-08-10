@@ -4,7 +4,9 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -106,6 +108,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("os")
+    private PurchaseOrderStateEnum purchaseOrderState;
+
     @JsonProperty ("se")
     private String serviceEndTime;
 
@@ -150,8 +155,11 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         this.queueStatus = queueStatus;
         this.token = token;
+        //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
+        this.purchaseOrderState = PurchaseOrderStateEnum.IN;
     }
 
+    /* For Historical Queues. */
     public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
         String bannerImage;
         switch (bizStore.getBusinessType()) {
@@ -193,13 +201,15 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         //Skipped queueStatus
         this.token = queue.getTokenNumber();
+        //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
+        this.purchaseOrderState = PurchaseOrderStateEnum.IN;
     }
 
     /* For Active Order. */
-    public JsonTokenAndQueue(PurchaseOrderEntity queue, BizStoreEntity bizStore) {
+    public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue, BizStoreEntity bizStore) {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
-        this.codeQR = queue.getCodeQR();
+        this.codeQR = purchaseOrder.getCodeQR();
         this.geoHash = bizStore.getGeoPoint().getGeohash();
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = bizStore.getDisplayName();
@@ -213,17 +223,18 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
-        this.queueUserId = queue.getQueueUserId();
-        this.servingNumber = 0;
-        this.lastNumber = 0;
+        this.queueUserId = purchaseOrder.getQueueUserId();
+        this.servingNumber = tokenQueue.getCurrentlyServing();
+        this.lastNumber = tokenQueue.getLastNumber();
         //Skipped ratingCount
         //Skipped hoursSaved
-        this.serviceEndTime = null == queue.getServiceEndTime() ? "NA" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-        this.createDate = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "NA" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
-        //TODO remove queueStatus
+        //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
         this.queueStatus = QueueStatusEnum.S;
-        this.token = queue.getTokenNumber();
+        this.token = purchaseOrder.getTokenNumber();
+        this.purchaseOrderState = purchaseOrder.getPresentOrderState();
     }
 
     public String getCodeQR() {
@@ -300,6 +311,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public QueueStatusEnum getQueueStatus() {
         return queueStatus;
+    }
+
+    public PurchaseOrderStateEnum getPurchaseOrderState() {
+        return purchaseOrderState;
     }
 
     public String getServiceEndTime() {

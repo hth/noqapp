@@ -44,7 +44,6 @@ public class QueueEntity extends BaseEntity {
     @Field ("QID")
     private String queueUserId;
 
-    @NotNull
     @Field ("TN")
     private int tokenNumber;
 
@@ -55,15 +54,12 @@ public class QueueEntity extends BaseEntity {
     @Field ("BT")
     private BusinessTypeEnum businessType;
 
-    @NotNull
     @Field ("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
-    @NotNull
     @Field ("NS")
     private boolean notifiedOnService = false;
 
-    @NotNull
     @Field ("NC")
     private int attemptToSendNotificationCounts = 0;
 
