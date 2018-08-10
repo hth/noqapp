@@ -265,12 +265,14 @@ public class BizStoreEntity extends BaseEntity {
                 LOG.debug("Address={}", address);
                 return address;
             } else {
-                return getAddressWrappedMore();
+                if (StringUtils.countMatches(address, ",") > 3) {
+                    split = address.split(",", 3);
+                    return split[0] + "<br/>" + split[1] + "<br/>" + split[2];
+                }
             }
-        } else {
-            LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
-            return getAddressWrappedMore();
         }
+        LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
+        return getAddressWrappedMore();
     }
 
     /**

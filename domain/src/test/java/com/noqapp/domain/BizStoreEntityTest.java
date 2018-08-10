@@ -31,7 +31,7 @@ class BizStoreEntityTest {
                 .setState("Maharashtra")
                 .setStateShortName("MH");
 
-        bizStore3.setAddress("Near PHED Office, Ladnun, Nagaur, Rajasthan, India, 341306")
+        bizStore3.setAddress("Near PHED Office, Ladnun, Nagaur, Rajasthan 341306, India")
                 .setArea("Shaheria Bass")
                 .setTown("Ladnun")
                 .setDistrict("Nagaur")
@@ -48,7 +48,7 @@ class BizStoreEntityTest {
         assertEquals("Plot 12-13<br/> Sector 20, Kopar Khairane, Navi Mumbai, Maharashtra 400709, India", address2);
 
         String address3 = bizStore3.getAddressWrapped();
-        assertEquals("Near PHED Office<br/> Ladnun, Nagaur, Rajasthan, India, 341306", address3);
+        assertEquals("Near PHED Office<br/> Ladnun, Nagaur, Rajasthan 341306, India", address3);
     }
 
     @Test
@@ -60,7 +60,7 @@ class BizStoreEntityTest {
         assertEquals("Plot 12-13<br/> Sector 20<br/> Kopar Khairane, Navi Mumbai, Maharashtra 400709, India", address2);
 
         String address3 = bizStore3.getAddressWrappedMore();
-        assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan, India, 341306", address3);
+        assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan 341306, India", address3);
     }
 
     @Test
@@ -72,6 +72,6 @@ class BizStoreEntityTest {
         assertEquals("Plot 12-13, Sector 20, <br/>Kopar Khairane, Navi Mumbai,<br/>Maharashtra 400709 India", address2);
 
         String address3 = bizStore3.getAddressWrappedFunky();
-        assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan, India, 341306", address3);
+        assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan 341306, India", address3);
     }
 }
