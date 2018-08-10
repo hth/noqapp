@@ -44,6 +44,9 @@ public class ProfessionalProfileEntity extends BaseEntity {
     @Field("PS")
     private String practiceStart;
 
+    @Field("AM")
+    private String aboutMe;
+
     /* Required to mark as a valid profile. */
     @Field("ED")
     private List<NameDatePair> education = new LinkedList<>();
@@ -85,6 +88,15 @@ public class ProfessionalProfileEntity extends BaseEntity {
 
     public ProfessionalProfileEntity setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
+        return this;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public ProfessionalProfileEntity setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
         return this;
     }
 

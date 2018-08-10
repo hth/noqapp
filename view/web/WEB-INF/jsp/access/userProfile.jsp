@@ -292,6 +292,16 @@
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="aboutMe" cssErrorClass="lb_error">About Me</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:textarea path="aboutMe" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" rows="6" />
+                                    <span style="display:block; font-size:13px;">About you would be visible in your medical profile</span>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
                             <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                             <div class="col-lable3"></div>
                             <div class="col-fields">
@@ -333,6 +343,7 @@
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify.htm" class="add-btn">Add/Edit Awards</a>
                                 </c:if>
+                                <span style="display:block; font-size:13px; padding-top: 20px;">This information is public</span>
                             </fieldset>
 
                             <fieldset>
@@ -361,6 +372,7 @@
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify.htm" class="add-btn">Add/Edit Education</a>
                                 </c:if>
+                                <span style="display:block; font-size:13px; padding-top: 20px;">This information is public</span>
                             </fieldset>
 
                             <fieldset>
@@ -389,6 +401,7 @@
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
                                 </c:if>
+                                <span style="display:block; font-size:13px; padding-top: 20px;">License information is not visible publicly</span>
                             </fieldset>
                         </ul>
                     </div>

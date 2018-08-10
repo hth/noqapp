@@ -13,6 +13,7 @@ public class ProfessionalProfileForm {
     private String qid;
     private boolean professionalProfile;
     private String practiceStart;
+    private String aboutMe;
 
     private List<NameDatePair> awards = new LinkedList<>();
     private List<NameDatePair> education = new LinkedList<>();
@@ -42,6 +43,15 @@ public class ProfessionalProfileForm {
 
     public ProfessionalProfileForm setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
+        return this;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public ProfessionalProfileForm setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
         return this;
     }
 
