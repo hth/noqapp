@@ -53,10 +53,6 @@ public class JsonUserAddressList extends AbstractDomain {
 
     @Transient
     public void removeJsonUserAddresses(String id) {
-        for (JsonUserAddress jsonUserAddress : jsonUserAddresses) {
-            if (jsonUserAddress.getId().equalsIgnoreCase(id)) {
-                jsonUserAddresses.remove(jsonUserAddress);
-            }
-        }
+        jsonUserAddresses.removeIf(i -> i.getId().equals(id));
     }
 }
