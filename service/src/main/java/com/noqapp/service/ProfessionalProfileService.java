@@ -68,6 +68,7 @@ public class ProfessionalProfileService {
         return new JsonProfessionalProfile()
                 .setWebProfileId(professionalProfile.getWebProfileId())
                 .setPracticeStart(professionalProfile.getPracticeStart())
+                .setAboutMe(professionalProfile.getAboutMe())
                 .setEducation(professionalProfile.getEducationAsJson())
                 .setLicenses(professionalProfile.getLicensesAsJson())
                 .setAwards(professionalProfile.getAwardsAsJson())
