@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -185,8 +186,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
         return mongoTemplate.find(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
                         .with(new Sort(Sort.Direction.DESC, "C"))
                         .limit(limit),
                 BizStoreEntity.class,
@@ -197,10 +197,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public BizStoreEntity findOne(String bizNameId) {
         return mongoTemplate.findOne(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId)))
-                        .with(new Sort(Sort.Direction.DESC, "C"))
-                ,
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(new Sort(Sort.Direction.DESC, "C")),
                 BizStoreEntity.class,
                 TABLE
         );
@@ -229,10 +226,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public long getCountOfStore(String bizNameId) {
         return mongoTemplate.count(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                                .andOperator(isNotDeleted())
-                ),
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())),
                 BizStoreEntity.class,
                 TABLE
         );
@@ -241,10 +235,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                                .andOperator(isNotDeleted())
-                ).with(new Sort(ASC, "DN")),
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(new Sort(ASC, "DN")),
+                BizStoreEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> getAllBizStores(String bizNameId, Point point, double maxDistance) {
+        return mongoTemplate.find(
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).near(point).maxDistance(maxDistance).andOperator(isNotDeleted())),
                 BizStoreEntity.class,
                 TABLE
         );
@@ -351,10 +351,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
         return mongoTemplate.find(
-                query(
-                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
-                                .and("BC").is(bizCategoryId)
-                ).with(new Sort(ASC, "DN")),
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)).with(new Sort(ASC, "DN")),
                 BizStoreEntity.class,
                 TABLE
         );

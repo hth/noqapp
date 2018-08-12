@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -756,6 +757,11 @@ public class BizStoreEntity extends BaseEntity {
     public GeoPoint getGeoPoint() {
         /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    public Point getPoint() {
+        return new Point(coordinate[1], coordinate[0]);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.noqapp.repository;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 
+import org.springframework.data.geo.Point;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -91,6 +93,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     List<BizStoreEntity> getAllBizStores(String bizNameId);
+
+    List<BizStoreEntity> getAllBizStores(String bizNameId, Point point, double maxDistance);
 
     List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId);
 
