@@ -303,7 +303,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         }
 
         /* Do not update the average service time when its zero. */
-        if (0 != averageServiceTime && null != update) {
+        if (0 != averageServiceTime) {
             update.set("AS", averageServiceTime);
         }
 
