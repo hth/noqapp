@@ -48,6 +48,7 @@ public class RegisterBusiness implements Serializable {
     private String timeZone;
     private List<AmenityEnum> amenities = new ArrayList<>();
     private List<FacilityEnum> facilities = new ArrayList<>();
+    private boolean dayClosed = false;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -219,6 +220,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public RegisterBusiness setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
         return this;
     }
 

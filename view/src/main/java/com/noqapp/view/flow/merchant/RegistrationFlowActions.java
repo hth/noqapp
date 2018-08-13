@@ -170,7 +170,8 @@ class RegistrationFlowActions {
                 .setInviteeCode(registerBusiness.getInviteeCode())
                 .setAddressOrigin(registerBusiness.getAddressOrigin())
                 .setAmenities(registerBusiness.getAmenities())
-                .setFacilities(registerBusiness.getFacilities());
+                .setFacilities(registerBusiness.getFacilities())
+                .setDayClosed(registerBusiness.isDayClosed());
         validateAddress(bizName);
 
         try {
