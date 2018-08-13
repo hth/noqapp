@@ -144,6 +144,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("BI")
     private Set<String> businessServiceImages = new LinkedHashSet<>();
 
+    /* When business is closed for national holiday. This automactically respond with all store as closed. */
     @Field ("DC")
     private boolean dayClosed = false;
 
