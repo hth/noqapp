@@ -32,106 +32,106 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 11/23/16 4:28 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
-@Document (collection = "BIZ_NAME")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_ph_idx", def = "{'PH' : 1}", unique = true),
-        @CompoundIndex (name = "biz_qr_idx", def = "{'QR' : 1}", unique = true, background = true),
-        @CompoundIndex (name = "biz_wl_idx", def = "{'WL' : 1}", unique = true, background = true),
+@Document(collection = "BIZ_NAME")
+@CompoundIndexes(value = {
+    @CompoundIndex(name = "biz_ph_idx", def = "{'PH' : 1}", unique = true),
+    @CompoundIndex(name = "biz_qr_idx", def = "{'QR' : 1}", unique = true, background = true),
+    @CompoundIndex(name = "biz_wl_idx", def = "{'WL' : 1}", unique = true, background = true),
 })
 public class BizNameEntity extends BaseEntity {
 
     @NotNull
-    @Field ("N")
+    @Field("N")
     private String businessName;
 
-    @Field ("QR")
+    @Field("QR")
     private String codeQR;
 
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
     /* Better to add a BLANK PHONE then to add nothing when biz does not have a phone number */
-    @Value ("${phoneNumberBlank:000_000_0000}")
+    @Value("${phoneNumberBlank:000_000_0000}")
     private String phoneNumberBlank;
 
     @NotNull
-    @Field ("AD")
+    @Field("AD")
     private String address;
 
-    @Field ("AR")
+    @Field("AR")
     private String area;
 
-    @Field ("TO")
+    @Field("TO")
     private String town;
 
-    @Field ("DT")
+    @Field("DT")
     private String district;
 
-    @Field ("ST")
+    @Field("ST")
     private String state;
 
-    @Field ("SS")
+    @Field("SS")
     private String stateShortName;
 
     /* Postal code could be empty for few countries. */
-    @Field ("PC")
+    @Field("PC")
     private String postalCode;
 
-    @Field ("CC")
+    @Field("CC")
     private String country;
 
     @NotNull
-    @Field ("CS")
+    @Field("CS")
     private String countryShortName;
 
     /* Phone number saved with country code. */
     @NotNull
-    @Field ("PH")
+    @Field("PH")
     private String phone;
 
     /* To not loose user entered phone number. */
-    @Field ("PR")
+    @Field("PR")
     private String phoneRaw;
 
     /* Format Longitude and then Latitude. */
-    @Field ("COR")
+    @Field("COR")
     private double[] coordinate;
 
-    @Field ("PI")
+    @Field("PI")
     private String placeId;
 
-    @Field ("PT")
+    @Field("PT")
     private String[] placeType;
 
-    @Field ("EA")
+    @Field("EA")
     private boolean validatedUsingExternalAPI;
 
-    @Field ("VC")
+    @Field("VC")
     private int validationCount;
 
-    @Field ("TZ")
+    @Field("TZ")
     private String timeZone;
 
-    @Field ("IC")
+    @Field("IC")
     private String inviteeCode;
 
-    @Field ("AM")
+    @Field("AM")
     private List<AmenityEnum> amenities = new LinkedList<>();
 
-    @Field ("FA")
+    @Field("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     @NotNull
-    @Field ("AO")
+    @Field("AO")
     private AddressOriginEnum addressOrigin;
 
-    @Field ("WL")
+    @Field("WL")
     private String webLocation;
 
     @Field("BP")
@@ -141,8 +141,11 @@ public class BizNameEntity extends BaseEntity {
     @Field("BS")
     private BillingStatusEnum billingStatus;
 
-    @Field ("BI")
+    @Field("BI")
     private Set<String> businessServiceImages = new LinkedHashSet<>();
+
+    @Field ("DC")
+    private boolean dayClosed = false;
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -479,6 +482,15 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public BizNameEntity setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
+    }
+
     @Transient
     private GeoPointOfQ getGeoPointOfQ() {
         /* Latitude and then Longitude. */
@@ -499,7 +511,7 @@ public class BizNameEntity extends BaseEntity {
     @Override
     public String toString() {
         return "BizNameEntity{" +
-                "businessName='" + businessName + '\'' +
-                '}';
+            "businessName='" + businessName + '\'' +
+            '}';
     }
 }

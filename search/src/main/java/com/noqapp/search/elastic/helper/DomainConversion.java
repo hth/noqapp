@@ -127,4 +127,20 @@ public class DomainConversion {
         }
         return storeHourElastics;
     }
+
+    @Mobile
+    public static List<StoreHourElastic> getStoreHourElasticsWithClosedAsDefault(List<StoreHourEntity> storeHours) {
+        List<StoreHourElastic> storeHourElastics = new LinkedList<>();
+        for (StoreHourEntity storeHour : storeHours) {
+            storeHourElastics.add(new StoreHourElastic()
+                .setDayOfWeek(storeHour.getDayOfWeek())
+                .setStartHour(storeHour.getStartHour())
+                .setEndHour(storeHour.getEndHour())
+                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setDayClosed(true)
+            );
+        }
+        return storeHourElastics;
+    }
 }

@@ -177,6 +177,18 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <c:if test="${not empty register.registerBusiness.businessUser}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="dayClosed" cssErrorClass="lb_error">Business Closed</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="dayClosed" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
+                                            <span style="display:block; font-size:14px;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
                                     <c:if test="${empty register.registerBusiness.businessUser}">
                                     <li>
                                         <div class="col-lable3">
