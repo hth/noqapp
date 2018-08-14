@@ -14,4 +14,8 @@ public interface PreferredBusinessManager extends RepositoryManager<PreferredBus
     List<PreferredBusinessEntity> findAll(String bizNameId);
 
     List<PreferredBusinessEntity> findAll(String bizNameId, BusinessTypeEnum businessType);
+
+    void deleteById(String id);
+
+    boolean exists(String bizNameId, String preferredBizNameId);
 }

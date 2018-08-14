@@ -35,6 +35,7 @@
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/business/editBusiness.htm">Edit Business</a>
                         <a href="${pageContext.request.contextPath}/business/uploadServicePhoto.htm">Business Photo</a>
+                        <a href="${pageContext.request.contextPath}/business/preferredBusiness.htm">Preferred Business</a>
                         <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">

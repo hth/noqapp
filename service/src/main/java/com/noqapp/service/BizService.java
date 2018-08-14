@@ -369,6 +369,15 @@ public class BizService {
         return jsonBusinesses;
     }
 
+    public BizNameEntity findAllBizWithMatchingName(String bizName) {
+        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName);
+        if(bizNames.isEmpty()) {
+            return null;
+        }
+
+        return bizNames.get(0);
+    }
+
     public boolean resetStoreHour(String id) {
         LOG.debug("StoreHour id={}", id);
         return storeHourManager.resetStoreHour(id);
