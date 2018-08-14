@@ -1,5 +1,6 @@
 package com.noqapp.domain.json.fcm.data;
 
+import com.noqapp.domain.types.FCMTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 
@@ -31,6 +32,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonClientData extends JsonData {
 
+    @JsonProperty("ft")
+    private FCMTypeEnum fcmType;
+
     @JsonProperty("qr")
     private String codeQR;
 
@@ -46,8 +50,9 @@ public class JsonClientData extends JsonData {
     @JsonProperty("o")
     private String topic;
 
-    public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType) {
+    public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
+        this.fcmType = fcmType;
     }
 
     public String getCodeQR() {

@@ -6,6 +6,8 @@ package com.noqapp.domain.types;
  */
 public enum FCMTypeEnum {
     Q,  //Queued
+    QR, //Queue Review
     O,  //Order
+    OR, //Order Review
     D   //Display
 }

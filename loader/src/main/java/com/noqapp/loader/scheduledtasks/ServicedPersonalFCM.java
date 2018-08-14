@@ -8,6 +8,7 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonClientData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.types.DeviceTypeEnum;
+import com.noqapp.domain.types.FCMTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -149,7 +150,7 @@ public class ServicedPersonalFCM {
      */
     private JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, String topic, QueueEntity queue) {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-        JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P)
+        JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P, FCMTypeEnum.QR)
                 .setCodeQR(queue.getCodeQR())
                 .setQueueUserId(queue.getQueueUserId())
                 .setToken(queue.getTokenNumber())
