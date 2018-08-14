@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PreferredBusinessEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -31,13 +32,23 @@ public class PreferredBusinessService {
         this.bizStoreManager = bizStoreManager;
     }
 
-    public List<PreferredBusinessEntity> findAll(BizStoreEntity bizStore) {
-        return preferredBusinessManager.findAll(bizStore.getBizName().getId());
+    public boolean addPreferredBusiness(String bizNameId, BizNameEntity bizName) {
+        if (preferredBusinessManager.exists(bizNameId, bizName.getId())) {
+            return false;
+        }
+        PreferredBusinessEntity preferredBusiness = new PreferredBusinessEntity(bizNameId, bizName.getId(), bizName.getBusinessType());
+        preferredBusinessManager.save(preferredBusiness);
+
+        return true;
+    }
+
+    public List<PreferredBusinessEntity> findAll(String bizNameId) {
+        return preferredBusinessManager.findAll(bizNameId);
     }
 
     @Mobile
     public JsonPreferredBusinessList findAllAsJson(BizStoreEntity bizStore) {
-        List<PreferredBusinessEntity> preferredBusinesses = findAll(bizStore);
+        List<PreferredBusinessEntity> preferredBusinesses = findAll(bizStore.getBizName().getId());
         return getJsonPreferredBusinessList(bizStore, preferredBusinesses);
     }
 
@@ -64,5 +75,9 @@ public class PreferredBusinessService {
             jsonPreferredBusinessList.addPreferredBusinesses(jsonPreferredBusinesses);
         }
         return jsonPreferredBusinessList;
+    }
+
+    public void deleteById(String id) {
+        preferredBusinessManager.deleteById(id);
     }
 }

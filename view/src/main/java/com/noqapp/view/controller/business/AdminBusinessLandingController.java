@@ -7,6 +7,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.PreferredBusinessEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -24,12 +25,14 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
+import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
+import com.noqapp.view.form.business.PreferredBusinessForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
 import com.noqapp.view.validator.ImageValidator;
 
@@ -91,6 +94,7 @@ public class AdminBusinessLandingController {
     private String listQueueSupervisorPage;
     private String authorizedUsersPage;
     private String editBusinessFlow;
+    private String preferredBusinessPage;
     private String bucketName;
 
     private BusinessUserService businessUserService;
@@ -102,6 +106,7 @@ public class AdminBusinessLandingController {
     private FileService fileService;
     private ApiHealthService apiHealthService;
     private ImageValidator imageValidator;
+    private PreferredBusinessService preferredBusinessService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -132,6 +137,9 @@ public class AdminBusinessLandingController {
             @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
             String editBusinessFlow,
 
+            @Value ("${preferredBusinessPage:/business/preferredBusiness}")
+            String preferredBusinessPage,
+
             @Value("${aws.s3.bucketName}")
             String bucketName,
 
@@ -143,7 +151,8 @@ public class AdminBusinessLandingController {
             ProfessionalProfileService professionalProfileService,
             FileService fileService,
             ApiHealthService apiHealthService,
-            ImageValidator imageValidator
+            ImageValidator imageValidator,
+            PreferredBusinessService preferredBusinessService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -154,6 +163,7 @@ public class AdminBusinessLandingController {
         this.listQueueSupervisorPage = listQueueSupervisorPage;
         this.authorizedUsersPage = authorizedUsersPage;
         this.editBusinessFlow = editBusinessFlow;
+        this.preferredBusinessPage = preferredBusinessPage;
         this.bucketName = bucketName;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
@@ -165,6 +175,7 @@ public class AdminBusinessLandingController {
         this.fileService = fileService;
         this.apiHealthService = apiHealthService;
         this.imageValidator = imageValidator;
+        this.preferredBusinessService = preferredBusinessService;
     }
 
     /**
@@ -637,9 +648,105 @@ public class AdminBusinessLandingController {
         return editBusinessFlow;
     }
 
-    /**
-     * For uploading service image.
-     */
+    /** For adding preferredBusiness. */
+    @GetMapping(value = "/preferredBusiness")
+    public String getPreferredBusiness(
+        @ModelAttribute("preferredBusinessForm")
+        PreferredBusinessForm preferredBusinessForm,
+
+        Model model,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        List<PreferredBusinessEntity> preferredBusinesses = preferredBusinessService.findAll(businessUser.getBizName().getId());
+        for (PreferredBusinessEntity preferredBusiness : preferredBusinesses) {
+            BizNameEntity bizName = bizService.getByBizNameId(preferredBusiness.getPreferredBizNameId());
+            preferredBusiness.setPreferredBusinessName(bizName.getBusinessName());
+            preferredBusinessForm.addPreferredBusiness(preferredBusiness);
+        }
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.preferredBusinessForm", model.asMap().get("result"));
+            preferredBusinessForm.setBusinessNameToAdd((ScrubbedInput) model.asMap().get("businessNameToAdd"));
+        } else {
+            redirectAttrs.addFlashAttribute("preferredBusinessForm", preferredBusinessForm);
+        }
+
+        return preferredBusinessPage;
+    }
+
+    /** For adding preferredBusiness. */
+    @PostMapping(value = "/preferredBusiness", params = {"add"})
+    public String postPreferredBusinessAdd(
+        @ModelAttribute("preferredBusinessForm")
+        PreferredBusinessForm preferredBusinessForm,
+
+        Model model,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        BizNameEntity bizName = bizService.findAllBizWithMatchingName(preferredBusinessForm.getBusinessNameToAdd().getText());
+        if (null == bizName) {
+            LOG.warn("No business with name={} exists", preferredBusinessForm.getBusinessNameToAdd().getText());
+        } else {
+            boolean success = preferredBusinessService.addPreferredBusiness(businessUser.getBizName().getId(), bizName);
+            if (!success) {
+                LOG.warn("Failed to add preferred business");
+            }
+        }
+
+        LOG.info("Loading preferred business");
+        return "redirect:" + preferredBusinessPage + ".htm";
+    }
+
+    @PostMapping(value = "/preferredBusiness", params = {"cancel_Add"})
+    public String postPreferredBusinessCancel() {
+        LOG.info("Loading preferred business cancelled");
+        return "redirect:/business/landing.htm";
+    }
+
+    @PostMapping(value = "/preferredBusiness", params = {"delete"})
+    public String postPreferredBusinessDelete(
+        @ModelAttribute("preferredBusinessForm")
+        PreferredBusinessForm preferredBusinessForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Delete preferred business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        preferredBusinessService.deleteById(preferredBusinessForm.getRecordId());
+        return "redirect:" + preferredBusinessPage + ".htm";
+    }
+
+    /** For uploading service image. */
     @GetMapping (value = "/uploadServicePhoto")
     public String uploadServicePhoto(
             @ModelAttribute("fileUploadForm")
