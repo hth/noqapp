@@ -161,7 +161,7 @@ public class QueueService {
                     .setRecordReferenceId(queue.getRecordReferenceId());
 
             /* Get dependents when queue status is queued. */
-            if (queue.getQueueUserState() == QueueUserStateEnum.Q) {
+            if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
                 if (StringUtils.isNotBlank(queue.getGuardianQid())) {
                     UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
 
