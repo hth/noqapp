@@ -457,6 +457,7 @@ public class TokenQueueService {
 
     /** Sends any message to a specific user. */
     public void sendMessageToSpecificUser(String title, String body, String qid, FCMTypeEnum fcmType) {
+        LOG.debug("Sending message to specific user title={} body={} qid={} fcmType={}", title, body, qid, fcmType);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
@@ -492,7 +493,6 @@ public class TokenQueueService {
     @Mobile
     public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
         LOG.debug("Sending message to all title={} body={}", title, body);
-
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
@@ -536,13 +536,12 @@ public class TokenQueueService {
             TokenQueueEntity tokenQueue,
             String goTo
     ) {
-        LOG.debug("Sending message codeQR={} goTo={}", codeQR, goTo);
-
+        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, FirebaseMessageTypeEnum.P);
         int timeout = 2;
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), tokenQueue.getFirebaseMessageType()).getJsonTopicQueueData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(codeQR)
@@ -619,7 +618,6 @@ public class TokenQueueService {
             int tokenNumber
     ) {
         LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
-
         QueueEntity queue = findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
