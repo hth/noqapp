@@ -41,10 +41,10 @@ public class JsonProfessionalProfile extends AbstractDomain {
 
     /* Name is not part of professional profile. */
     @Transient
-    @JsonProperty ("nm")
+    @JsonProperty("nm")
     private String name;
 
-    @JsonProperty ("wp")
+    @JsonProperty("wp")
     private String webProfileId;
 
     @JsonProperty("ps")

@@ -15,7 +15,7 @@ import java.util.Date;
  * User: hitender
  * Date: 11/19/16 12:45 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -61,7 +61,7 @@ public class UserProfilePreferenceService {
     }
 
     @Mobile
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
         return userProfileManager.getProfileUpdateSince(qid, since);
     }
