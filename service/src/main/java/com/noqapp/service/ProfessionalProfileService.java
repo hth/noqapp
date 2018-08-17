@@ -2,9 +2,11 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.ProfessionalProfileEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.repository.ProfessionalProfileManager;
+import com.noqapp.repository.UserProfileManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +23,12 @@ public class ProfessionalProfileService {
     private static final Logger LOG = LoggerFactory.getLogger(ProfessionalProfileService.class);
 
     private ProfessionalProfileManager professionalProfileManager;
+    private UserProfileManager userProfileManager;
 
     @Autowired
-    public ProfessionalProfileService(ProfessionalProfileManager professionalProfileManager) {
+    public ProfessionalProfileService(ProfessionalProfileManager professionalProfileManager, UserProfileManager userProfileManager) {
         this.professionalProfileManager = professionalProfileManager;
+        this.userProfileManager = userProfileManager;
     }
 
     public void createProfessionalProfile(String qid) {
@@ -65,15 +69,17 @@ public class ProfessionalProfileService {
     }
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
         return new JsonProfessionalProfile()
-                .setWebProfileId(professionalProfile.getWebProfileId())
-                .setPracticeStart(professionalProfile.getPracticeStart())
-                .setAboutMe(professionalProfile.getAboutMe())
-                .setEducation(professionalProfile.getEducationAsJson())
-                .setLicenses(professionalProfile.getLicensesAsJson())
-                .setAwards(professionalProfile.getAwardsAsJson())
-                .setDataDictionary(professionalProfile.getDataDictionary())
-                .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
+            .setName(userProfile.getName())
+            .setWebProfileId(professionalProfile.getWebProfileId())
+            .setPracticeStart(professionalProfile.getPracticeStart())
+            .setAboutMe(professionalProfile.getAboutMe())
+            .setEducation(professionalProfile.getEducationAsJson())
+            .setLicenses(professionalProfile.getLicensesAsJson())
+            .setAwards(professionalProfile.getAwardsAsJson())
+            .setDataDictionary(professionalProfile.getDataDictionary())
+            .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
     }
 
     public ProfessionalProfileEntity findByQid(String qid) {
