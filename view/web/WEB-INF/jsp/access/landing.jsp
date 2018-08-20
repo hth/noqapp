@@ -89,7 +89,16 @@
                                         <c:forEach items="${landingForm.minorUserProfiles}" var="profile" varStatus="status">
                                         <tr>
                                             <td>${profile.name}</td>
-                                            <td>${profile.email}</td>
+                                            <td>
+                                            <c:choose>
+                                                <c:when test="${fn:endsWith(profile.email, 'mail.noqapp.com')}">
+                                                    NA
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${profile.email}
+                                                </c:otherwise>
+                                            </c:choose>
+                                            </td>
                                             <td>Age ${profile.age} yr</td>
                                         </tr>
                                         </c:forEach>
