@@ -755,13 +755,13 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public GeoPoint getGeoPoint() {
-        /* Latitude and then Longitude. */
+        /* Longitude and then Latitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
     }
 
     @Transient
     public Point getPoint() {
-        return new Point(coordinate[1], coordinate[0]);
+        return new Point(coordinate[0], coordinate[1]);
     }
 
     @Override
