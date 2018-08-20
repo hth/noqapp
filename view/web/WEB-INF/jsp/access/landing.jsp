@@ -83,7 +83,7 @@
 
                             <div class="add-store">
                                 <div class="store-table" style="width: 50%">
-                                    Assigned as guardian to following account. Please log into the account to see details.
+                                    Assigned as guardian to following account. Please log into the account with email to see details.
                                     <br/><br/>
                                     <table width="50%" border="0" cellspacing="0" cellpadding="0">
                                         <c:forEach items="${landingForm.minorUserProfiles}" var="profile" varStatus="status">
@@ -92,7 +92,7 @@
                                             <td>
                                             <c:choose>
                                                 <c:when test="${fn:endsWith(profile.email, 'mail.noqapp.com')}">
-                                                    NA
+                                                    Email: N/A
                                                 </c:when>
                                                 <c:otherwise>
                                                     ${profile.email}
