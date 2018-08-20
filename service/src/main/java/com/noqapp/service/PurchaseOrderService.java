@@ -30,6 +30,7 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseProductOrderManager;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -70,7 +71,7 @@ public class PurchaseOrderService {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
     private StoreProductService storeProductService;
@@ -86,7 +87,7 @@ public class PurchaseOrderService {
 
     @Autowired
     public PurchaseOrderService(
-        BizService bizService,
+        BizStoreManager bizStoreManager,
         TokenQueueService tokenQueueService,
         StoreHourManager storeHourManager,
         StoreProductService storeProductService,
@@ -98,7 +99,7 @@ public class PurchaseOrderService {
         TokenQueueManager tokenQueueManager,
         AccountService accountService
     ) {
-        this.bizService = bizService;
+        this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
         this.storeProductService = storeProductService;
@@ -116,7 +117,7 @@ public class PurchaseOrderService {
     private JsonToken getNextOrder(String codeQR, long averageServiceTime) {
         try {
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
             DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
             StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
@@ -137,7 +138,7 @@ public class PurchaseOrderService {
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
-        BizStoreEntity bizStore = bizService.getByStoreId(jsonPurchaseOrder.getBizStoreId());
+        BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
         JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
 
         Date expectedServiceBegin = null;
@@ -167,13 +168,22 @@ public class PurchaseOrderService {
         purchaseOrderManager.save(purchaseOrder);
 
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
-            StoreProductEntity storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
-            PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity()
-                .setProductId(jsonPurchaseOrderProduct.getProductId())
-                .setProductName(storeProduct.getProductName())
-                .setProductPrice(storeProduct.getProductPrice())
-                .setProductDiscount(storeProduct.getProductDiscount())
-                .setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
+            StoreProductEntity storeProduct = null;
+            if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
+                storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
+            }
+
+            PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
+            if (storeProduct != null) {
+                purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
+                    .setProductName(storeProduct.getProductName())
+                    .setProductPrice(storeProduct.getProductPrice())
+                    .setProductDiscount(storeProduct.getProductDiscount());
+            } else {
+                purchaseOrderProduct.setProductName(jsonPurchaseOrderProduct.getProductName());
+            }
+
+            purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
                 .setQueueUserId(qid)
                 .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
                 .setBizNameId(bizStore.getBizName().getId())
@@ -296,7 +306,7 @@ public class PurchaseOrderService {
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            BizStoreEntity bizStore = bizService.findByCodeQR(purchaseOrder.getCodeQR());
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(purchaseOrder.getCodeQR());
 
@@ -546,7 +556,7 @@ public class PurchaseOrderService {
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
              * As this is a personal message when server is planning to serve a specific token.
              */
-            String message = null;
+            String message;
             switch (purchaseOrder.getPresentOrderState()) {
                 case PC:
                     message = "Price has changed. Please re-order.";

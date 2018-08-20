@@ -1,11 +1,18 @@
 package com.noqapp.medical.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonPurchaseOrder;
+import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentTypeEnum;
+import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
@@ -35,6 +42,7 @@ import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.PurchaseOrderService;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * hitender
@@ -69,6 +78,9 @@ public class MedicalRecordService {
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private UserProfileManager userProfileManager;
+    private PurchaseOrderService purchaseOrderService;
+
+    private ExecutorService executorService;
 
     @Autowired
     public MedicalRecordService(
@@ -82,7 +94,8 @@ public class MedicalRecordService {
         MedicalRadiologyTestManager medicalRadiologyTestManager,
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        PurchaseOrderService purchaseOrderService
     ) {
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
@@ -95,7 +108,9 @@ public class MedicalRecordService {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
+        this.purchaseOrderService = purchaseOrderService;
 
+        this.executorService = newCachedThreadPool();
     }
 
     //TODO add check for qid
@@ -296,7 +311,7 @@ public class MedicalRecordService {
                 .setMedicationWithFood(jsonMedicalMedicine.getMedicationWithFood())
                 .setMedicationType(jsonMedicalMedicine.getMedicationType())
                 .setMedicalMedicationReferenceId(medicalMedication.getId())
-                .setPharmacyReferenceId("")             //TODO(hth) with store id
+                .setPharmacyReferenceId("")             //TODO(hth) with pharmacy medicine id
                 .setQueueUserId(jsonMedicalRecord.getQueueUserId())
                 .setId(CommonUtil.generateHexFromObjectId());
 
@@ -306,6 +321,39 @@ public class MedicalRecordService {
 
         medicalMedicationManager.save(medicalMedication);
         medicalRecord.setMedicalMedication(medicalMedication);
+
+        executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
+    }
+
+    /** Creates order from medicine prescribed. */
+    private void createMedicineOrder(JsonMedicalRecord jsonMedicalRecord) {
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
+        for (JsonMedicalMedicine jsonMedicalMedicine : jsonMedicalRecord.getMedicalMedicines()) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                .setProductName(jsonMedicalMedicine.getName())
+                .setProductPrice(0)
+                .setProductDiscount(0)
+                .setProductId(null)
+                .setProductQuantity(jsonMedicalMedicine.getTimes());
+
+            jsonPurchaseOrder.addPurchaseOrderProduct(jsonPurchaseOrderProduct);
+        }
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
+        jsonPurchaseOrder
+            .setCustomerName(userProfile.getName())
+            .setDeliveryAddress(userProfile.getAddress())
+            .setCustomerPhone(userProfile.getPhone())
+            .setDeliveryType(DeliveryTypeEnum.TO)
+            .setPaymentType(PaymentTypeEnum.CA)
+            .setBizStoreId(jsonMedicalRecord.getStoreIdPharmacy());
+
+        purchaseOrderService.createOrder(
+            jsonPurchaseOrder,
+            jsonMedicalRecord.getQueueUserId(),
+            null,
+            TokenServiceEnum.M
+        );
     }
 
     //TODO(hth) not tested web logic
