@@ -317,7 +317,7 @@ public class AddQueueSupervisorFlowActions {
         if (null == businessUser) {
             LOG.info("Creating new businessUser qid={}", userProfile.getQueueUserId());
             businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
-            if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith("mail.noqapp.com")) {
+            if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM)) {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
             } else {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
