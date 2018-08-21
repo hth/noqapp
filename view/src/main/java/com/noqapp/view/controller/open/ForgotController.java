@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.open;
 
+import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
+
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -125,6 +127,14 @@ public class ForgotController {
             }
 
             return passwordPage;
+        }
+
+        if (forgotRecoverForm.getMail().getText().endsWith(MAIL_NOQAPP_COM)) {
+            LOG.warn("Failed password recovery on domain {} for {}", MAIL_NOQAPP_COM, forgotRecoverForm.getMail().getText());
+
+            /* Always send success when attempting to recover on mail.noqapp.com domain. */
+            redirectAttrs.addFlashAttribute(SUCCESS_EMAIL, MailTypeEnum.SUCCESS);
+            return recoverConfirm;
         }
 
         MailTypeEnum mailType = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());

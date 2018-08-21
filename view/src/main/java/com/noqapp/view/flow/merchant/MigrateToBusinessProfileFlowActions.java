@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.HashText;
@@ -81,7 +82,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         registerUser.setQueueUserId(userAccount.getQueueUserId())
                 .setGender(userProfile.getGender())
                 .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                .setEmail(userProfile.getEmail().endsWith("mail.noqapp.com") ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
+                .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
                 .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
                 .setLastName(new ScrubbedInput(userProfile.getLastName()))
                 .setAddress(new ScrubbedInput(userProfile.getAddress()))
