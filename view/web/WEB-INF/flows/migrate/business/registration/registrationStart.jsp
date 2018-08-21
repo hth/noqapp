@@ -58,7 +58,7 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <c:choose>
-                                <c:when test="${empty register.registerBusiness.businessUser}">
+                                <c:when test="${empty register.registerBusiness.businessUser.validateByQid}">
                                     <h2>Add Business Details</h2>
                                 </c:when>
                                 <c:otherwise>
@@ -177,7 +177,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-                                    <c:if test="${not empty register.registerBusiness.businessUser}">
+                                    <c:if test="${!empty register.registerBusiness.businessUser.validateByQid}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="dayClosed" cssErrorClass="lb_error">Business Closed</form:label>
@@ -189,7 +189,7 @@
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
-                                    <c:if test="${empty register.registerBusiness.businessUser}">
+                                    <c:if test="${empty register.registerBusiness.businessUser.validateByQid}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
@@ -209,7 +209,7 @@
                                     </li>
                                     </c:if>
 
-                                    <c:if test="${empty register.registerBusiness.businessUser}">
+                                    <c:if test="${empty register.registerBusiness.businessUser.validateByQid}">
                                     <li>
                                         <div class="alert-info">
                                             <p>
