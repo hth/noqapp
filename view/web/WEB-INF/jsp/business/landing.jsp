@@ -96,7 +96,11 @@
                                                 || BusinessTypeEnum.BA eq store.businessType
                                                 || BusinessTypeEnum.ST eq store.businessType
                                                 || BusinessTypeEnum.GS eq store.businessType
-                                                || BusinessTypeEnum.CF eq store.businessType}">
+                                                || BusinessTypeEnum.CF eq store.businessType
+                                                || BusinessTypeEnum.PH eq store.businessType
+                                                || BusinessTypeEnum.RA eq store.businessType
+                                                || BusinessTypeEnum.PY eq store.businessType
+                                                || BusinessTypeEnum.PY eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a> | <a href="/business/store/category/${store.id}.htm">Store Category</a></span>
                                                 </c:when>
                                                 <c:otherwise>
