@@ -20,6 +20,7 @@ public final class RandomString {
     private static final char[] SYMBOLS = new char[36];
     private static final String QID_SHORTEN = "^10+(?!$)";
     private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
+    public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
 
     static {
         for (int idx = 0; idx < 10; ++idx) {
@@ -81,7 +82,7 @@ public final class RandomString {
     }
 
     public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
-        return generateEmailAddress(firstName, lastName, qid) + "@mail.noqapp.com";
+        return generateEmailAddress(firstName, lastName, qid) + MAIL_NOQAPP_COM;
     }
 
     public static String generateInviteCode(String firstName, String lastName, String qid) {

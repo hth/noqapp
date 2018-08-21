@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.domain.EmailValidateEntity;
@@ -327,7 +328,7 @@ public class MailService {
      * @param name
      */
     public void sendValidationMailOnAccountCreation(String userId, String qid, String name) {
-        if (StringUtils.isNotBlank(userId) && !userId.endsWith("mail.noqapp.com")) {
+        if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
             executorService.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
         }

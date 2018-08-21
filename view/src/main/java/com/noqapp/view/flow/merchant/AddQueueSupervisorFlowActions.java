@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
@@ -182,7 +183,7 @@ public class AddQueueSupervisorFlowActions {
                     accountService.save(userAccount);
                 }
 
-                if (userProfile.getQueueUserId().endsWith("mail.noqapp.com") || !userAccount.isAccountValidated()) {
+                if (userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM) || !userAccount.isAccountValidated()) {
                     messageContext.addMessage(
                             new MessageBuilder()
                                     .error()
