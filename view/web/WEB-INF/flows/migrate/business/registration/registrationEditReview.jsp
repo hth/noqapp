@@ -121,7 +121,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-                                    <c:if test="${not empty register.registerBusiness.businessUser}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error">Business Closed</form:label>
@@ -132,7 +131,6 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-                                    </c:if>
                                 </ul>
                             </div>
 
