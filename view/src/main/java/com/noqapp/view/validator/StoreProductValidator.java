@@ -56,17 +56,17 @@ public class StoreProductValidator implements Validator {
                             form.getProductName() + " already exists");
                 }
 
-                switch (form.getBusinessType()) {
-                    case PH:
-                        LOG.warn("Cannot add Product when store business type is of pharmacy");
-                        errors.rejectValue("productName",
-                                "unsupported.for.businessType",
-                                new Object[]{"Product", form.getBusinessType().getDescription()},
-                                "Product" + " addition is not supported for " + form.getBusinessType().getDescription());
-                        break;
-                    default:
-                        //Ignore for rest
-                }
+//                switch (form.getBusinessType()) {
+//                    case PH:
+//                        LOG.warn("Cannot add Product when store business type is of pharmacy");
+//                        errors.rejectValue("productName",
+//                                "unsupported.for.businessType",
+//                                new Object[]{"Product", form.getBusinessType().getDescription()},
+//                                "Product" + " addition is not supported for " + form.getBusinessType().getDescription());
+//                        break;
+//                    default:
+//                        //Ignore for rest
+//                }
 
                 if (!StringUtils.isNumeric(form.getProductPrice().getText())) {
                     errors.rejectValue("productPrice",

@@ -3,6 +3,8 @@ package com.noqapp.domain;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -145,5 +147,16 @@ public class StoreProductEntity extends BaseEntity {
     @Transient
     public String getDisplayDiscount() {
         return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+
+    @Transient
+    public String toCommaSeparatedString() {
+        return id + "," + bizStoreId + ","
+            + getDisplayPrice() + ","
+            + productName + ","
+            + (StringUtils.isBlank(productInfo) ? "" : productInfo) + ","
+            + (StringUtils.isBlank(storeCategoryId) ? "" : storeCategoryId) + ","
+            + productType.name() + ","
+            + unitOfMeasurement.getName() + ",";
     }
 }

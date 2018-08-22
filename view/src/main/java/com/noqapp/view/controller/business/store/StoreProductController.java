@@ -10,6 +10,7 @@ import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.FileService;
 import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.view.form.StoreProductForm;
@@ -62,6 +63,7 @@ public class StoreProductController {
     private StoreProductService storeProductService;
     private StoreProductValidator storeProductValidator;
     private BusinessUserStoreService businessUserStoreService;
+    private FileService fileService;
 
     @Autowired
     public StoreProductController(
@@ -72,7 +74,8 @@ public class StoreProductController {
             StoreCategoryService storeCategoryService,
             StoreProductService storeProductService,
             StoreProductValidator storeProductValidator,
-            BusinessUserStoreService businessUserStoreService
+            BusinessUserStoreService businessUserStoreService,
+            FileService fileService
     ) {
         this.nextPage = nextPage;
 
@@ -81,6 +84,7 @@ public class StoreProductController {
         this.storeProductService = storeProductService;
         this.storeProductValidator = storeProductValidator;
         this.businessUserStoreService = businessUserStoreService;
+        this.fileService = fileService;
     }
 
     @GetMapping(value = "/{storeId}", produces = "text/html;charset=UTF-8")
@@ -301,5 +305,29 @@ public class StoreProductController {
         StoreProductEntity storeProduct = storeProductService.findOne(storeProductForm.getStoreProductId().getText());
         storeProductService.delete(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
+    }
+
+    /** Preferred product creates a new zip file for merchant app to download. */
+    @PostMapping(value = "/preferredRefresh")
+    public String preferredRefresh(
+        @ModelAttribute ("storeProductForm")
+        StoreProductForm storeProductForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Forced refresh preferred product bizStoreId={} qid={} level={}",
+            storeProductForm.getBizStoreId().getText(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        fileService.createPreferredBusinessFiles(storeProductForm.getBizStoreId().getText());
+        return "redirect:/business/landing.htm";
     }
 }

@@ -345,10 +345,35 @@
                                 </c:choose>
                             </div>
                             <div class="store-table">
+                                <c:if test="${BusinessTypeEnum.PH eq storeProductForm.businessType
+                                            || BusinessTypeEnum.RA eq store.businessType
+                                            || BusinessTypeEnum.PY eq store.businessType
+                                            || BusinessTypeEnum.PT eq store.businessType}">
+                                    <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh.htm" modelAttribute="storeProductForm">
+                                        <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
+                                        <button name="refresh" class="add-btn">Refresh</button>
+                                        <span style="display:block; font-size:13px;">
+                                            Only 3 forced refresh allowed in a month *. Use this
+                                            when you have made lots of changes to product list
+                                            & would like to push out an update at the earliest
+                                        </span>
+                                    </form:form>
+                                </c:if>
+
                                 <c:choose>
                                 <c:when test="${!empty storeProductForm.storeProducts}">
                                 <div class="alert-info">
-                                    Users can directly purchase product from '${storeProductForm.displayName}' when listed here.
+                                    <c:choose>
+                                        <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType
+                                            || BusinessTypeEnum.RA eq store.businessType
+                                            || BusinessTypeEnum.PY eq store.businessType
+                                            || BusinessTypeEnum.PT eq store.businessType}">
+                                            Preferred business partner can prescribe these.
+                                        </c:when>
+                                        <c:otherwise>
+                                            Users can directly purchase product from '${storeProductForm.displayName}' when listed here.
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                                 <h2>Total Products: <span>${storeProductForm.storeProducts.size()}</span></h2>
 
