@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -161,5 +163,14 @@ public final class BizNameManagerImpl implements BizNameManager {
                 BizNameEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public Stream<BizNameEntity> findByBusinessType(BusinessTypeEnum businessType) {
+        return mongoTemplate.find(
+            query(where("BT").is(businessType)),
+            BizNameEntity.class,
+            TABLE
+        ).stream();
     }
 }

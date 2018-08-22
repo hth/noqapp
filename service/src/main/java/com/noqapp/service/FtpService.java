@@ -42,6 +42,7 @@ public class FtpService {
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + "medical";
+    public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL};
 
     @Value("${fileserver.ftp.host}")
@@ -204,12 +205,34 @@ public class FtpService {
         }
     }
 
+    boolean existFolder(String folderName) {
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
+
+        try {
+            manager.init();
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + folderName), fileSystemOptions);
+            return remoteFile.isFolder() && remoteFile.isWriteable() && remoteFile.isReadable();
+        } catch (FileSystemException e) {
+            /* Check access set correctly for user and remote location exists. Base directory above needs access by user. */
+            LOG.error("Could not find remote file={} reason={}", ftpLocation, e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
+        } finally {
+            manager.close();
+        }
+    }
+
     public boolean createFolder(String folderName) {
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
             manager.init();
-            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + "/" + folderName), fileSystemOptions);
+            String folderLocation;
+            if (folderName.startsWith("/")) {
+                folderLocation = ftpLocation + folderName;
+            } else {
+                folderLocation = ftpLocation + "/" + folderName;
+            }
+            FileObject remoteFile = manager.resolveFile(createConnectionString(folderLocation), fileSystemOptions);
             if (!remoteFile.exists()) {
                 remoteFile.createFolder();
             }

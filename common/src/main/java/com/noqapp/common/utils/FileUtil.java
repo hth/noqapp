@@ -66,9 +66,7 @@ public class FileUtil {
             if (name.startsWith(TEMP_FILE_START_WITH)) {
                 return File.createTempFile(name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
             } else {
-                return File.createTempFile(
-                        TEMP_FILE_START_WITH + DASH + name + DASH,
-                        ext.startsWith(DOT) ? ext : DOT + ext);
+                return File.createTempFile(TEMP_FILE_START_WITH + DASH + name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
             }
         } catch (IOException e) {
             LOG.error("Error creating temp file, reason={}", e.getLocalizedMessage(), e);

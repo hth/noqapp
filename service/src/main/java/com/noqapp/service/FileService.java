@@ -6,14 +6,30 @@ import static com.noqapp.common.utils.FileUtil.getFileExtension;
 import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 import static com.noqapp.common.utils.FileUtil.getFileSeparator;
 import static com.noqapp.common.utils.FileUtil.getTmpDir;
+import static com.noqapp.service.FtpService.PREFERRED_STORE;
 
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.S3FileEntity;
+import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.repository.BizNameManager;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.S3FileManager;
+import com.noqapp.repository.StoreProductManager;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +39,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
@@ -53,7 +83,9 @@ public class FileService {
     private AccountService accountService;
     private FtpService ftpService;
     private S3FileManager s3FileManager;
-    private BizService bizService;
+    private BizNameManager bizNameManager;
+    private BizStoreManager bizStoreManager;
+    private StoreProductManager storeProductManager;
 
     @Autowired
     public FileService(
@@ -72,7 +104,9 @@ public class FileService {
             AccountService accountService,
             FtpService ftpService,
             S3FileManager s3FileManager,
-            BizService bizService
+            BizNameManager bizNameManager,
+            BizStoreManager bizStoreManager,
+            StoreProductManager storeProductManager
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
@@ -82,7 +116,9 @@ public class FileService {
         this.accountService = accountService;
         this.ftpService = ftpService;
         this.s3FileManager = s3FileManager;
-        this.bizService = bizService;
+        this.bizNameManager = bizNameManager;
+        this.bizStoreManager = bizStoreManager;
+        this.storeProductManager = storeProductManager;
     }
 
     @Async
@@ -142,7 +178,7 @@ public class FileService {
         File tempFile = null;
 
         try {
-            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
+            BizNameEntity bizName = bizNameManager.getById(bizNameId);
             Set<String> businessServiceImages = bizName.getBusinessServiceImages();
 
             while (businessServiceImages.size() >= 10) {
@@ -166,7 +202,7 @@ public class FileService {
             ftpService.upload(filename, bizName.getCodeQR(), FtpService.SERVICE);
 
             businessServiceImages.add(filename);
-            bizService.saveName(bizName);
+            bizNameManager.save(bizName);
 
             LOG.debug("Uploaded bizName service file={}", toFileAbsolutePath);
         } catch (IOException e) {
@@ -278,5 +314,112 @@ public class FileService {
         graphics2D.drawImage(image, 0, 0, width, height, null);
         graphics2D.dispose();
         return bufferedImage;
+    }
+
+    /** Generate zip file of CSV format for all business store id. Invoked via cron job. */
+    public void findAllBizStoreWithBusinessType(BusinessTypeEnum businessType) {
+        AtomicLong countBusiness = new AtomicLong(), countStores = new AtomicLong();
+        try (Stream<BizNameEntity> stream = bizNameManager.findByBusinessType(businessType)) {
+            stream.iterator().forEachRemaining(bizName -> {
+                try {
+                    countBusiness.getAndIncrement();
+                    List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizName.getId());
+                    for (BizStoreEntity bizStore : bizStores) {
+                        createPreferredBusinessFiles(bizStore.getId());
+                    }
+
+                    countStores.addAndGet(bizStores.size());
+                } catch (Exception e) {
+                    LOG.error("Failed processing for id={} businessName={}, type={}, reason={}",
+                        bizName.getId(),
+                        bizName.getBusinessName(),
+                        businessType,
+                        e.getLocalizedMessage(),
+                        e);
+                }
+            });
+            LOG.info("Number of business={} and store={} processed for preferred business product", countBusiness, countStores);
+        }
+    }
+
+    /** Create tar file of products for preferred business with store id. */
+    public void createPreferredBusinessFiles(String bizStoreId) throws IOException {
+        List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStoreId);
+
+        if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
+            ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
+        }
+
+        File csv = FileUtil.createTempFile(bizStoreId, "csv");
+        csv.deleteOnExit();
+        Path pathOfCSV = Paths.get(csv.toURI());
+        List<String> strings = new ArrayList<>();
+        for (StoreProductEntity storeProduct : storeProducts) {
+            strings.add(storeProduct.toCommaSeparatedString());
+        }
+        Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
+
+        String fileName = bizStoreId + "_" + DateUtil.dateToString(new Date());
+        File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
+        tar.deleteOnExit();
+        createTarGZ(pathOfCSV.toFile(), tar,  fileName);
+
+        /* Clean up existing file before uploading. */
+        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
+        for (FileObject fileObject : fileObjects) {
+            fileObject.delete();
+        }
+        ftpService.upload(tar.getName(), bizStoreId, PREFERRED_STORE);
+
+        tar.delete();
+        csv.delete();
+    }
+
+    /** Get file of created a new one for bizStoreId. */
+    @Mobile
+    public File getPreferredBusinessTarGZ(String bizStoreId) {
+        if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
+            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
+            if (null != fileObjects && 0 < fileObjects.length) {
+                FileObject fileObject = fileObjects[0];
+                try {
+                    return new File(fileObject.getURL().getPath());
+                } catch (FileSystemException e) {
+                    LOG.error("Failed get URL of a file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
+                }
+            }
+        } else {
+            try {
+                createPreferredBusinessFiles(bizStoreId);
+            } catch (IOException e) {
+                LOG.error("Failed to create file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
+            }
+        }
+        return getPreferredBusinessTarGZ(bizStoreId);
+    }
+
+    private void createTarGZ(File csv, File tar, String fileName) throws IOException {
+        TarArchiveOutputStream tarOut = null;
+        try {
+            tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(tar))));
+            addFileToTarGz(csv, tarOut, fileName);
+        } finally {
+            try {
+                if (null != tarOut) {
+                    tarOut.finish();
+                    tarOut.close();
+                }
+            } catch (IOException e) {
+                LOG.error("Failed to close file path={} fileName={} tar={} reason={}",
+                    csv.toURI(), fileName, tar.toURI(), e.getLocalizedMessage(), e);
+            }
+        }
+    }
+
+    private void addFileToTarGz(File csv, TarArchiveOutputStream tOut, String fileName) throws IOException {
+        TarArchiveEntry tarEntry = new TarArchiveEntry(csv, fileName + ".csv");
+        tOut.putArchiveEntry(tarEntry);
+        IOUtils.copy(new FileInputStream(csv), tOut);
+        tOut.closeArchiveEntry();
     }
 }

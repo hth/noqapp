@@ -1,9 +1,11 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -62,5 +64,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     boolean isValidCodeQR(String codeQR);
 
     boolean doesWebLocationExists(String webLocation, String id);
+
+    Stream<BizNameEntity> findByBusinessType(BusinessTypeEnum businessType);
 }
 

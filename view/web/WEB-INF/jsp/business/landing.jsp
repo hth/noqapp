@@ -100,7 +100,7 @@
                                                 || BusinessTypeEnum.PH eq store.businessType
                                                 || BusinessTypeEnum.RA eq store.businessType
                                                 || BusinessTypeEnum.PY eq store.businessType
-                                                || BusinessTypeEnum.PY eq store.businessType}">
+                                                || BusinessTypeEnum.PT eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a> | <a href="/business/store/category/${store.id}.htm">Store Category</a></span>
                                                 </c:when>
                                                 <c:otherwise>
