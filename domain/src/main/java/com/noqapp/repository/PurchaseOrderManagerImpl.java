@@ -83,6 +83,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         );
     }
 
+    public List<PurchaseOrderEntity> findAllHistoricalOrder(String qid) {
+        return mongoTemplate.find(
+            query(where("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.OD)),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
     @Override
     public List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
         return mongoTemplate.find(
