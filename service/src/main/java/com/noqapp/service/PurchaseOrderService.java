@@ -835,7 +835,9 @@ public class PurchaseOrderService {
                     break;
                 case RP:
                 case RD:
-                    purchaseOrder.addOrderState(PurchaseOrderStateEnum.OD);
+                    purchaseOrder
+                        .addOrderState(PurchaseOrderStateEnum.OD)
+                        .setServiceEndTime(new Date());
                     break;
             }
             purchaseOrderManager.save(purchaseOrder);
