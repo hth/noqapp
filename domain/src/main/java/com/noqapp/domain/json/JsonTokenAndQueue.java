@@ -248,7 +248,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
             default:
                 bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
                 if (StringUtils.isBlank(bannerImage)) {
-                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                    /* If none is found, then get image from bizName. */
+                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
         LOG.info("Banner for order image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
