@@ -326,6 +326,7 @@ public class PurchaseOrderService {
         Validate.isValidQid(qid);
 
         List<PurchaseOrderEntity> purchaseOrders = findAllHistoricalOrder(qid);
+        LOG.info("Total purchase orders completed count={}", purchaseOrders.size());
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
@@ -835,7 +836,9 @@ public class PurchaseOrderService {
                     break;
                 case RP:
                 case RD:
-                    purchaseOrder.addOrderState(PurchaseOrderStateEnum.OD);
+                    purchaseOrder
+                        .addOrderState(PurchaseOrderStateEnum.OD)
+                        .setServiceEndTime(new Date());
                     break;
             }
             purchaseOrderManager.save(purchaseOrder);

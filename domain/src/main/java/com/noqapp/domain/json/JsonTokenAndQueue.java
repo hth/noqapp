@@ -172,7 +172,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
-        LOG.info("Banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
+        LOG.info("Banner for queue image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
@@ -239,6 +239,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     /* For Historical Orders. */
     public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, BizStoreEntity bizStore) {
+        LOG.info("For purchase order={} store={}", purchaseOrder.getId(), bizStore.getId());
         String bannerImage;
         switch (bizStore.getBusinessType()) {
             case DO:
@@ -250,7 +251,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
-        LOG.info("Banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
+        LOG.info("Banner for order image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
