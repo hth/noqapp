@@ -172,7 +172,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
-        LOG.info("banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
+        LOG.info("Banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
@@ -229,6 +229,51 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Skipped ratingCount
         //Skipped hoursSaved
         this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "NA" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+
+        //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
+        this.queueStatus = QueueStatusEnum.S;
+        this.token = purchaseOrder.getTokenNumber();
+        this.purchaseOrderState = purchaseOrder.getPresentOrderState();
+    }
+
+    /* For Historical Orders. */
+    public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, BizStoreEntity bizStore) {
+        String bannerImage;
+        switch (bizStore.getBusinessType()) {
+            case DO:
+                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                break;
+            default:
+                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
+                if (StringUtils.isBlank(bannerImage)) {
+                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                }
+        }
+        LOG.info("Banner image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
+
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+        this.codeQR = purchaseOrder.getCodeQR();
+        this.geoHash = bizStore.getGeoPoint().getGeohash();
+        this.businessName = bizStore.getBizName().getBusinessName();
+        this.displayName = bizStore.getDisplayName();
+        this.storeAddress = bizStore.getAddress();
+        this.area = bizStore.getArea();
+        this.town = bizStore.getTown();
+        this.countryShortName = bizStore.getCountryShortName();
+        this.storePhone = bizStore.getPhone();
+        this.businessType = bizStore.getBusinessType();
+        this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
+        this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
+        this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
+        this.topic = bizStore.getTopic();
+        this.queueUserId = purchaseOrder.getQueueUserId();
+        //Skipped serving number
+        //Skipped last number
+        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "NA" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.ratingCount = purchaseOrder.getRatingCount();
+        this.hoursSaved = purchaseOrder.getHoursSaved();
         this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank

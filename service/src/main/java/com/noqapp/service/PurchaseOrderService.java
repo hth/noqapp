@@ -302,8 +302,19 @@ public class PurchaseOrderService {
     @Mobile
     public List<JsonTokenAndQueue> findAllOpenOrderAsJson(String qid) {
         Validate.isValidQid(qid);
+
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
-        return populateJsonTokenAndQueues(purchaseOrders);
+        List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
+            bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
+            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(purchaseOrder.getCodeQR());
+
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, tokenQueue, bizStore);
+            jsonTokenAndQueues.add(jsonTokenAndQueue);
+        }
+
+        return jsonTokenAndQueues;
     }
 
     private List<PurchaseOrderEntity> findAllHistoricalOrder(String qid) {
@@ -313,18 +324,14 @@ public class PurchaseOrderService {
     @Mobile
     public List<JsonTokenAndQueue> findAllHistoricalOrderAsJson(String qid) {
         Validate.isValidQid(qid);
-        List<PurchaseOrderEntity> purchaseOrders = findAllHistoricalOrder(qid);
-        return populateJsonTokenAndQueues(purchaseOrders);
-    }
 
-    private List<JsonTokenAndQueue> populateJsonTokenAndQueues(List<PurchaseOrderEntity> purchaseOrders) {
+        List<PurchaseOrderEntity> purchaseOrders = findAllHistoricalOrder(qid);
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(purchaseOrder.getCodeQR());
 
-            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, tokenQueue, bizStore);
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, bizStore);
             jsonTokenAndQueues.add(jsonTokenAndQueue);
         }
 
