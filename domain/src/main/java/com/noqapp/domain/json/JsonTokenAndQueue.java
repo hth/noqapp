@@ -239,6 +239,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     /* For Historical Orders. */
     public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, BizStoreEntity bizStore) {
+        LOG.info("For purchase order={} store={}", purchaseOrder.getId(), bizStore.getId());
         String bannerImage;
         switch (bizStore.getBusinessType()) {
             case DO:
