@@ -260,6 +260,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.geoHash = bizStore.getGeoPoint().getGeohash();
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = bizStore.getDisplayName();
+        this.displayImage = bannerImage;
         this.storeAddress = bizStore.getAddress();
         this.area = bizStore.getArea();
         this.town = bizStore.getTown();
