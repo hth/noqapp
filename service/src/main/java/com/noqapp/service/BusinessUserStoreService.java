@@ -45,6 +45,7 @@ public class BusinessUserStoreService {
 
     private int queueLimit;
     private BusinessUserStoreManager businessUserStoreManager;
+    private PreferredBusinessService preferredBusinessService;
     private BusinessUserService businessUserService;
     private TokenQueueService tokenQueueService;
     private AccountService accountService;
@@ -56,6 +57,7 @@ public class BusinessUserStoreService {
             int queueLimit,
 
             BusinessUserStoreManager businessUserStoreManager,
+            PreferredBusinessService preferredBusinessService,
             BusinessUserService businessUserService,
             TokenQueueService tokenQueueService,
             AccountService accountService,
@@ -63,6 +65,7 @@ public class BusinessUserStoreService {
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
+        this.preferredBusinessService = preferredBusinessService;
         this.businessUserService = businessUserService;
         this.tokenQueueService = tokenQueueService;
         this.accountService = accountService;
@@ -92,6 +95,14 @@ public class BusinessUserStoreService {
 
     public boolean hasAccessUsingStoreId(String qid, String bizStoreId) {
         return businessUserStoreManager.hasAccessUsingStoreId(qid, bizStoreId);
+    }
+
+    @Mobile
+    public boolean businessHasThisAsPreferredStoreId(String qid, String codeQR, String preferredBizStoreId) {
+        BusinessUserStoreEntity businessUserStore = businessUserStoreManager.findOneByQidAndCodeQR(qid, codeQR);
+        BizStoreEntity bizStore = bizService.findByCodeQR(businessUserStore.getCodeQR());
+        BizStoreEntity preferredBizStore = bizService.getByStoreId(preferredBizStoreId);
+        return preferredBusinessService.exists(bizStore.getBizName().getId(), preferredBizStore.getBizName().getId());
     }
 
     /**

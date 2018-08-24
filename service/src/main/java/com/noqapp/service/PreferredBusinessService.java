@@ -32,14 +32,18 @@ public class PreferredBusinessService {
         this.bizStoreManager = bizStoreManager;
     }
 
-    public boolean addPreferredBusiness(String bizNameId, BizNameEntity bizName) {
-        if (preferredBusinessManager.exists(bizNameId, bizName.getId())) {
+    public boolean addPreferredBusiness(String bizNameId, BizNameEntity preferredBizName) {
+        if (exists(bizNameId, preferredBizName.getId())) {
             return false;
         }
-        PreferredBusinessEntity preferredBusiness = new PreferredBusinessEntity(bizNameId, bizName.getId(), bizName.getBusinessType());
+        PreferredBusinessEntity preferredBusiness = new PreferredBusinessEntity(bizNameId, preferredBizName.getId(), preferredBizName.getBusinessType());
         preferredBusinessManager.save(preferredBusiness);
 
         return true;
+    }
+
+    public boolean exists(String bizNameId, String preferredBizNameId) {
+        return preferredBusinessManager.exists(bizNameId, preferredBizNameId);
     }
 
     public List<PreferredBusinessEntity> findAll(String bizNameId) {

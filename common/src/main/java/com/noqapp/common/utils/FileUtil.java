@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.apache.commons.vfs2.FileObject;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -185,5 +186,12 @@ public class FileUtil {
 
     public static double fileSizeInMB(long length) {
         return length / FILE_SIZE_IN_MB;
+    }
+
+    /** Used when loading file from ftp. */
+    @SuppressWarnings("unused")
+    public static String getFileName(FileObject fileObject) {
+        String[] a = fileObject.getName().getURI().split("/");
+        return a[a.length - 1];
     }
 }
