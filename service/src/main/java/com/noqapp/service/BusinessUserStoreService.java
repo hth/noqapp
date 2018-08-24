@@ -33,11 +33,11 @@ import java.util.TimeZone;
  * User: hitender
  * Date: 12/14/16 12:19 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class BusinessUserStoreService {
@@ -53,15 +53,15 @@ public class BusinessUserStoreService {
 
     @Autowired
     public BusinessUserStoreService(
-            @Value ("${BusinessUserStoreService.queue.limit}")
+        @Value("${BusinessUserStoreService.queue.limit}")
             int queueLimit,
 
-            BusinessUserStoreManager businessUserStoreManager,
-            PreferredBusinessService preferredBusinessService,
-            BusinessUserService businessUserService,
-            TokenQueueService tokenQueueService,
-            AccountService accountService,
-            BizService bizService
+        BusinessUserStoreManager businessUserStoreManager,
+        PreferredBusinessService preferredBusinessService,
+        BusinessUserService businessUserService,
+        TokenQueueService tokenQueueService,
+        AccountService accountService,
+        BizService bizService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
@@ -142,14 +142,14 @@ public class BusinessUserStoreService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), dayOfWeek);
         return new JsonHour()
-                .setDayOfWeek(storeHour.getDayOfWeek())
-                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
-                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
-                .setStartHour(storeHour.getStartHour())
-                .setEndHour(storeHour.getEndHour())
-                .setPreventJoining(storeHour.isPreventJoining())
-                .setDayClosed(storeHour.isDayClosed())
-                .setDelayedInMinutes(storeHour.getDelayedInMinutes());
+            .setDayOfWeek(storeHour.getDayOfWeek())
+            .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+            .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+            .setStartHour(storeHour.getStartHour())
+            .setEndHour(storeHour.getEndHour())
+            .setPreventJoining(storeHour.isPreventJoining())
+            .setDayClosed(storeHour.isDayClosed())
+            .setDelayedInMinutes(storeHour.getDelayedInMinutes());
     }
 
     /**
@@ -183,8 +183,8 @@ public class BusinessUserStoreService {
             String qid = businessUserStore.getQueueUserId();
             QueueSupervisor queueSupervisor = populateQueueSupervisorFromQid(bizStoreId, businessUserStore.getBizNameId(), qid);
             queueSupervisor
-                    .setCreated(businessUserStore.getCreated())
-                    .setActive(businessUserStore.isActive());
+                .setCreated(businessUserStore.getCreated())
+                .setActive(businessUserStore.isActive());
 
             queueSupervisors.add(queueSupervisor);
         }
@@ -201,8 +201,8 @@ public class BusinessUserStoreService {
         for (BusinessUserEntity businessUser : businessUsers) {
             QueueSupervisor queueSupervisor = populateQueueSupervisorFromQid(null, bizNameId, businessUser.getQueueUserId());
             queueSupervisor
-                    .setCreated(businessUser.getCreated())
-                    .setActive(businessUser.isActive());
+                .setCreated(businessUser.getCreated())
+                .setActive(businessUser.isActive());
 
             queueSupervisors.add(queueSupervisor);
         }
@@ -217,16 +217,16 @@ public class BusinessUserStoreService {
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
         QueueSupervisor queueSupervisor = new QueueSupervisor();
         queueSupervisor.setBusinessUserId(businessUser.getId())
-                .setStoreId(bizStoreId)
-                .setBusinessId(bizNameId)
-                .setName(userProfile.getName())
-                .setPhone(userProfile.getPhone())
-                .setCountryShortName(userProfile.getCountryShortName())
-                .setAddress(userProfile.getAddress())
-                .setEmail(userProfile.getEmail())
-                .setQueueUserId(qid)
-                .setUserLevel(userProfile.getLevel())
-                .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+            .setStoreId(bizStoreId)
+            .setBusinessId(bizNameId)
+            .setName(userProfile.getName())
+            .setPhone(userProfile.getPhone())
+            .setCountryShortName(userProfile.getCountryShortName())
+            .setAddress(userProfile.getAddress())
+            .setEmail(userProfile.getEmail())
+            .setQueueUserId(qid)
+            .setUserLevel(userProfile.getLevel())
+            .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
         return queueSupervisor;
     }
 
@@ -245,22 +245,22 @@ public class BusinessUserStoreService {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
             QueueSupervisor queueSupervisor = new QueueSupervisor();
             queueSupervisor.setBusinessUserId(businessUser.getId())
-                    .setStoreId(bizStoreId)
-                    .setBusinessId(bizNameId)
-                    .setName(userProfile.getName())
-                    .setPhone(userProfile.getPhone())
-                    .setCountryShortName(userProfile.getCountryShortName())
-                    .setAddress(userProfile.getAddress())
-                    .setEmail(userProfile.getEmail())
-                    .setQueueUserId(userProfile.getQueueUserId())
-                    .setUserLevel(userProfile.getLevel())
-                    .setCreated(businessUser.getCreated())
-                    .setActive(businessUser.isActive())
-                    .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+                .setStoreId(bizStoreId)
+                .setBusinessId(bizNameId)
+                .setName(userProfile.getName())
+                .setPhone(userProfile.getPhone())
+                .setCountryShortName(userProfile.getCountryShortName())
+                .setAddress(userProfile.getAddress())
+                .setEmail(userProfile.getEmail())
+                .setQueueUserId(userProfile.getQueueUserId())
+                .setUserLevel(userProfile.getLevel())
+                .setCreated(businessUser.getCreated())
+                .setActive(businessUser.isActive())
+                .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
 
             queueSupervisors.add(queueSupervisor);
         }
-        
+
         /* Sort by name. */
         queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
@@ -274,16 +274,16 @@ public class BusinessUserStoreService {
      * @param businessUserRegistrationStatus
      */
     public void addToBusinessUserStore(
-            String qid,
-            BizStoreEntity bizStore,
-            BusinessUserRegistrationStatusEnum businessUserRegistrationStatus,
-            UserLevelEnum userLevel) {
+        String qid,
+        BizStoreEntity bizStore,
+        BusinessUserRegistrationStatusEnum businessUserRegistrationStatus,
+        UserLevelEnum userLevel) {
         BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                qid,
-                bizStore.getId(),
-                bizStore.getBizName().getId(),
-                bizStore.getCodeQR(),
-                userLevel);
+            qid,
+            bizStore.getId(),
+            bizStore.getBizName().getId(),
+            bizStore.getCodeQR(),
+            userLevel);
 
         /*
          * Marked as inactive until user signs and agrees to be a queue supervisor.
