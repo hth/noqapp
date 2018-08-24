@@ -29,7 +29,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -378,16 +377,11 @@ public class FileService {
 
     /** Get file of created a new one for bizStoreId. */
     @Mobile
-    public File getPreferredBusinessTarGZ(String bizStoreId) {
+    public FileObject getPreferredBusinessTarGZ(String bizStoreId) {
         if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
             FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
             if (null != fileObjects && 0 < fileObjects.length) {
-                FileObject fileObject = fileObjects[0];
-                try {
-                    return new File(fileObject.getURL().getPath());
-                } catch (FileSystemException e) {
-                    LOG.error("Failed get URL of a file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
-                }
+                return fileObjects[0];
             }
         }
 
