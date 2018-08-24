@@ -348,14 +348,7 @@ public class FileService {
 
         if (!ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
             boolean status = ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
-            LOG.info("Folder created successfully={}", status);
-
-            int count = 0;
-            while (!status) {
-                count++;
-                status = ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
-                LOG.info("Folder created successfully={} count={}", status, count);
-            }
+            LOG.debug("Folder created bizStoreId={} successfully={}", bizStoreId, status);
         }
 
         File csv = FileUtil.createTempFile(bizStoreId, "csv");
