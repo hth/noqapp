@@ -347,7 +347,15 @@ public class FileService {
         List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStoreId);
 
         if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
-            ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
+            boolean status = ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
+            LOG.info("Folder created successfully={}", status);
+
+            int count = 0;
+            while (!status) {
+                count++;
+                status = ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
+                LOG.info("Folder created successfully={} count={}", status, count);
+            }
         }
 
         File csv = FileUtil.createTempFile(bizStoreId, "csv");
