@@ -346,7 +346,7 @@ public class FileService {
     public void createPreferredBusinessFiles(String bizStoreId) throws IOException {
         List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStoreId);
 
-        if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
+        if (!ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
             boolean status = ftpService.createFolder(PREFERRED_STORE + "/" + bizStoreId);
             LOG.info("Folder created successfully={}", status);
 
