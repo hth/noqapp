@@ -389,14 +389,15 @@ public class FileService {
                     LOG.error("Failed get URL of a file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
                 }
             }
-        } else {
-            try {
-                createPreferredBusinessFiles(bizStoreId);
-            } catch (IOException e) {
-                LOG.error("Failed to create file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
-            }
         }
-        return getPreferredBusinessTarGZ(bizStoreId);
+
+        try {
+            createPreferredBusinessFiles(bizStoreId);
+        } catch (IOException e) {
+            LOG.error("Failed to create file for bizStoreId={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
+        }
+
+        return null;
     }
 
     private void createTarGZ(File csv, File tar, String fileName) throws IOException {
