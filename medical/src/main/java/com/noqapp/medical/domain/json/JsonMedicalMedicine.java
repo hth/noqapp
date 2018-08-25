@@ -2,7 +2,7 @@ package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.medical.DailyFrequencyEnum;
-import com.noqapp.domain.types.medical.MedicineTypeEnum;
+import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -53,8 +53,8 @@ public class JsonMedicalMedicine extends AbstractDomain {
     @JsonProperty("mf")
     private String medicationWithFood;
 
-    @JsonProperty("mt")
-    private String medicationType;
+    @JsonProperty("pc")
+    private String pharmacyCategory;
 
     public String getName() {
         return name;
@@ -101,12 +101,12 @@ public class JsonMedicalMedicine extends AbstractDomain {
         return this;
     }
 
-    public String getMedicationType() {
-        return medicationType;
+    public String getPharmacyCategory() {
+        return pharmacyCategory;
     }
 
-    public JsonMedicalMedicine setMedicationType(String medicationType) {
-        this.medicationType = medicationType;
+    public JsonMedicalMedicine setPharmacyCategory(String pharmacyCategory) {
+        this.pharmacyCategory = pharmacyCategory;
         return this;
     }
 
@@ -117,14 +117,14 @@ public class JsonMedicalMedicine extends AbstractDomain {
                 .setDailyFrequency(medicalMedicine.getDailyFrequency())
                 .setCourse(medicalMedicine.getCourse())
                 .setMedicationWithFood(medicalMedicine.getMedicationWithFood())
-                .setMedicationType(medicalMedicine.getMedicationType());
+                .setPharmacyCategory(medicalMedicine.getMedicationType());
     }
 
     @Transient
     public int getTimes() {
         try {
-            MedicineTypeEnum medicineTypeEnum = MedicineTypeEnum.valueOf(medicationType);
-            switch (medicineTypeEnum) {
+            PharmacyCategoryEnum pharmacyCategory = PharmacyCategoryEnum.valueOf(this.pharmacyCategory);
+            switch (pharmacyCategory) {
                 case CA:
                 case TA:
                     DailyFrequencyEnum dailyFrequencyEnum = DailyFrequencyEnum.valueOf(dailyFrequency);
