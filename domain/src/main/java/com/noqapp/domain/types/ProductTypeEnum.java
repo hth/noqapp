@@ -13,7 +13,8 @@ public enum ProductTypeEnum {
     GM("GM", "GMO Produce (Fruits/Vegetables)"),
     VE("VE", "Vegetarian Food"),
     NV("NV", "Non-Vegetarian Food"),
-    EL("EL", "Electronic");
+    EL("EL", "Electronic"),
+    PH("PH", "Pharmacy");
 
     private final String name;
     private final String description;

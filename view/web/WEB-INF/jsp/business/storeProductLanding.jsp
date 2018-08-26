@@ -76,12 +76,32 @@
                                     <div class="error-box">
                                         <div class="error-txt">
                                             <ul>
+                                                <c:if test="${errors.hasFieldErrors('storeCategoryId')}">
+                                                <li><form:errors path="storeCategoryId"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('productName')}">
                                                 <li><form:errors path="productName"/></li>
                                                 </c:if>
 
+                                                <c:if test="${errors.hasFieldErrors('unitValue')}">
+                                                <li><form:errors path="unitValue"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('unitOfMeasurement')}">
+                                                <li><form:errors path="unitOfMeasurement"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productType')}">
+                                                <li><form:errors path="productType"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('productPrice')}">
                                                 <li><form:errors path="productPrice"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('packageSize')}">
+                                                <li><form:errors path="packageSize"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
@@ -93,7 +113,29 @@
                                             <ul class="list-form">
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productName" cssErrorClass="lb_error">New Product</form:label>
+                                                        <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="storeCategoryId" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.categories}" var="category" varStatus="cnt">
+                                                                <c:choose>
+                                                                    <c:when test="${category.key eq storeProductForm.storeCategoryId}">
+                                                                        <option value="${category.key}" selected="selected">${category.value}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${category.key}">${category.value}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </form:select>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
                                                     <div class="col-fields">
                                                         <form:input path="productName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -133,51 +175,22 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="storeCategoryId" cssErrorClass="lb_error">Store Category</form:label>
+                                                        <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:select path="storeCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                            <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                            <c:forEach items="${storeProductForm.categories}" var="category" varStatus="cnt">
-                                                                <c:choose>
-                                                                    <c:when test="${category.key eq storeProductForm.storeCategoryId}">
-                                                                        <option value="${category.key}" selected="selected">${category.value}</option>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <option value="${category.key}">${category.value}</option>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </form:select>
+                                                        <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
+                                                        <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:select path="productType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                            <c:forEach items="${storeProductForm.productTypes}" var="productType">
-                                                                <c:choose>
-                                                                    <c:when test="${productType eq storeProductForm.productType.text}">
-                                                                        <option value="${productType.name}" selected="selected">${productType.description}</option>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <option value="${productType.name}">${productType.description}</option>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </form:select>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Unit</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:select path="unitOfMeasurement" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                        <form:select path="unitOfMeasurement" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
                                                             <c:forEach items="${storeProductForm.unitOfMeasurements}" var="unitOfMeasurement">
                                                                 <c:choose>
                                                                     <c:when test="${unitOfMeasurement eq storeProductForm.unitOfMeasurement.text}">
@@ -192,15 +205,40 @@
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="packageSize" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="productType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.productTypes}" var="productType">
+                                                                <c:choose>
+                                                                    <c:when test="${productType eq storeProductForm.productType.text}">
+                                                                        <option value="${productType.name}" selected="selected">${productType.description}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${productType.name}">${productType.description}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </form:select>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
                                             </ul>
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
-                                                    <%--<div class="left-btn">--%>
-                                                    <%--<input name="edit" class="next-btn" value="EDIT" type="submit">--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="right-btn">--%>
-                                                    <%--<input name="cancel_Edit" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                                    <%--</div>--%>
                                                 <div class="button-btn">
                                                     <button name="edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
                                                     <button name="cancel_Edit" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
@@ -228,12 +266,32 @@
                                     <div class="error-box">
                                         <div class="error-txt">
                                             <ul>
+                                                <c:if test="${errors.hasFieldErrors('storeCategoryId')}">
+                                                <li><form:errors path="storeCategoryId"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('productName')}">
                                                 <li><form:errors path="productName"/></li>
                                                 </c:if>
 
+                                                <c:if test="${errors.hasFieldErrors('unitValue')}">
+                                                <li><form:errors path="unitValue"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('unitOfMeasurement')}">
+                                                <li><form:errors path="unitOfMeasurement"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productType')}">
+                                                <li><form:errors path="productType"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('productPrice')}">
                                                 <li><form:errors path="productPrice"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('packageSize')}">
+                                                <li><form:errors path="packageSize"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
@@ -245,7 +303,20 @@
                                             <ul class="list-form">
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productName" cssErrorClass="lb_error">New Product</form:label>
+                                                        <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="storeCategoryId" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <form:options items="${storeProductForm.categories}" />
+                                                        </form:select>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
                                                     <div class="col-fields">
                                                         <form:input path="productName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -285,13 +356,36 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="storeCategoryId" cssErrorClass="lb_error">Store Category</form:label>
+                                                        <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:select path="storeCategoryId" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <%--&lt;%&ndash;<form:option value="NONE" label="--- Select ---"/>&ndash;%&gt; Bug in 5.0.2--%>
-                                                        <form:options items="${storeProductForm.categories}" />
+                                                        <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="unitOfMeasurement" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.unitOfMeasurements}" var="unitOfMeasurement">
+                                                                <option value="${unitOfMeasurement.name}">${unitOfMeasurement.description}</option>
+                                                            </c:forEach>
                                                         </form:select>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="packageSize" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -300,22 +394,18 @@
                                                         <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:select path="productType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <c:forEach items="${storeProductForm.productTypes}" var="productType">
-                                                        <option value="${productType.name}">${productType.description}</option>
-                                                        </c:forEach>
-                                                        </form:select>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Units</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:select path="unitOfMeasurement" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                            <c:forEach items="${storeProductForm.unitOfMeasurements}" var="unitOfMeasurement">
-                                                                <option value="${unitOfMeasurement.name}">${unitOfMeasurement.description}</option>
+                                                        <form:select path="productType" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.productTypes}" var="productType">
+                                                                <c:choose>
+                                                                    <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType and ProductTypeEnum.PH eq productType}">
+                                                                        <option value="${productType.name}" selected>${productType.description}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${productType.name}">${productType.description}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
@@ -324,12 +414,6 @@
                                             </ul>
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
-                                                    <%--<div class="left-btn">--%>
-                                                    <%--<input name="edit" class="next-btn" value="EDIT" type="submit">--%>
-                                                    <%--</div>--%>
-                                                    <%--<div class="right-btn">--%>
-                                                    <%--<input name="cancel_Edit" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                                    <%--</div>--%>
                                                 <div class="button-btn">
                                                     <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
                                                     <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
@@ -346,9 +430,9 @@
                             </div>
                             <div class="store-table">
                                 <c:if test="${BusinessTypeEnum.PH eq storeProductForm.businessType
-                                            || BusinessTypeEnum.RA eq store.businessType
-                                            || BusinessTypeEnum.PY eq store.businessType
-                                            || BusinessTypeEnum.PT eq store.businessType}">
+                                            || BusinessTypeEnum.RA eq storeProductForm.businessType
+                                            || BusinessTypeEnum.PY eq storeProductForm.businessType
+                                            || BusinessTypeEnum.PT eq storeProductForm.businessType}">
                                     <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh.htm" modelAttribute="storeProductForm">
                                         <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                         <button name="refresh" class="add-btn">Refresh</button>
@@ -365,21 +449,30 @@
                                 <div class="alert-info">
                                     <c:choose>
                                         <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType
-                                            || BusinessTypeEnum.RA eq store.businessType
-                                            || BusinessTypeEnum.PY eq store.businessType
-                                            || BusinessTypeEnum.PT eq store.businessType}">
-                                            Preferred business partner can prescribe these.
+                                            || BusinessTypeEnum.RA eq storeProductForm.businessType
+                                            || BusinessTypeEnum.PY eq storeProductForm.businessType
+                                            || BusinessTypeEnum.PT eq storeProductForm.businessType}">
+                                            <span style="display:block; font-size:13px;">
+                                                Preferred business partner such as doctors can prescribe these medicines.
+                                            </span>
                                         </c:when>
                                         <c:otherwise>
-                                            Users can directly purchase product from '${storeProductForm.displayName}' when listed here.
+                                            <span style="display:block; font-size:13px;">
+                                                Users can directly purchase product from '${storeProductForm.displayName}' when listed here.
+                                            </span>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                <h2>Total Products: <span>${storeProductForm.storeProducts.size()}</span></h2>
+                                    <h2>
+                                        <span style="display:block; font-size:13px;">
+                                            Total Products: <span>${storeProductForm.storeProducts.size()}</span>
+                                        </span>
+                                    </h2>
 
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
+                                        <th style="text-align: left;">Category</th>
                                         <th style="text-align: left;" nowrap>
                                             Name
                                             &nbsp;
@@ -387,8 +480,6 @@
                                                  alt="Sort" height="16px;"/>
                                         </th>
                                         <th style="text-align: left;">Price</th>
-                                        <th style="text-align: left;">Special Discount</th>
-                                        <th style="text-align: left;">Store Category</th>
                                         <th style="text-align: left;">Categorization</th>
                                         <th style="text-align: left;">Units</th>
                                         <th nowrap></th>
@@ -396,16 +487,27 @@
                                     </tr>
                                     <c:forEach items="${storeProductForm.storeProducts}" var="storeProduct" varStatus="status">
                                     <tr>
-                                        <td>${status.count}&nbsp;</td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${status.count}&nbsp;</span>
+                                        </td>
                                         <td nowrap>
-                                            ${storeProduct.productName}
+                                            <span style="display:block; font-size:13px;">${storeProductForm.categories.get(storeProduct.storeCategoryId)}</span>
+                                        </td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
                                             <span style="display:block; font-size:13px;">${storeProduct.productInfo}</span>
                                         </td>
-                                        <td nowrap>${storeProduct.displayPrice}</td>
-                                        <td nowrap>${storeProduct.displayDiscount}%</td>
-                                        <td nowrap>${storeProductForm.categories.get(storeProduct.storeCategoryId)}</td>
-                                        <td nowrap>${storeProduct.productType.description}</td>
-                                        <td nowrap>${storeProduct.unitOfMeasurement.description}</td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
+                                            <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}%</span>
+                                        </td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
+                                        </td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">${storeProduct.unitValue}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
+                                            <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
+                                        </td>
                                         <td nowrap>
                                             <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>
                                         </td>

@@ -42,11 +42,20 @@ public class StoreProductValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productName", "field.required", new Object[]{"Product Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "storeCategoryId", "field.required", new Object[]{"Category"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productName", "field.required", new Object[]{"Name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productType", "field.required", new Object[]{"Product Categorization"});
 
         if (!errors.hasErrors()) {
             StoreProductForm form = (StoreProductForm) target;
 
+            switch (form.getBusinessType()) {
+                case PH:
+                    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "unitValue", "field.required", new Object[]{"Unit"});
+                    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "unitOfMeasurement", "field.required", new Object[]{"Measurement"});
+                    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "packageSize", "field.required", new Object[]{"Package Size"});
+                    break;
+            }
 
             if (!errors.hasErrors()) {
                 if (storeProductService.existProductName(form.getBizStoreId().getText(), form.getProductName().getText())) {
@@ -55,18 +64,6 @@ public class StoreProductValidator implements Validator {
                             new Object[]{form.getProductName()},
                             form.getProductName() + " already exists");
                 }
-
-//                switch (form.getBusinessType()) {
-//                    case PH:
-//                        LOG.warn("Cannot add Product when store business type is of pharmacy");
-//                        errors.rejectValue("productName",
-//                                "unsupported.for.businessType",
-//                                new Object[]{"Product", form.getBusinessType().getDescription()},
-//                                "Product" + " addition is not supported for " + form.getBusinessType().getDescription());
-//                        break;
-//                    default:
-//                        //Ignore for rest
-//                }
 
                 if (!StringUtils.isNumeric(form.getProductPrice().getText())) {
                     errors.rejectValue("productPrice",

@@ -8,6 +8,7 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
@@ -116,8 +117,15 @@ public class StoreProductController {
             redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
         }
 
-        Map<String, String> categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+        Map<String, String> categories;
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+        switch (bizStore.getBusinessType()) {
+            case PH:
+                categories = PharmacyCategoryEnum.asMap();
+                break;
+            default:
+                categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+        }
         storeProductForm
                 .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
                 .setBizStoreId(storeId)
@@ -167,7 +175,9 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
-                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()));
+                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
+                .setPackageSize(storeProductForm.getPackageSize().getText())
+                .setUnitValue(storeProductForm.getUnitValue().getText());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
     }
@@ -218,7 +228,10 @@ public class StoreProductController {
                 .setProductType(new ScrubbedInput(storeProduct.getProductType().name()))
                 .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
                 /*  When not store category is set. Which results in exception in JSP due to NULL. */
-                .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()));
+                .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()))
+                .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
+                .setPackageSize(new ScrubbedInput(storeProduct.getPackageSize()))
+                .setUnitValue(new ScrubbedInput(storeProduct.getUnitValue()));
 
         redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
         return "redirect:" + "/business/store/product/" + storeId.getText() + ".htm";
@@ -265,7 +278,9 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
-                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()));
+                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
+                .setPackageSize(storeProductForm.getPackageSize().getText())
+                .setUnitValue(storeProductForm.getUnitValue().getText());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
     }
