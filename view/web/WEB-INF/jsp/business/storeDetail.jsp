@@ -113,8 +113,6 @@
                                     </c:forEach>
                                     </table>
                                 </div>
-
-
                             </div>
                             <div class="clearFix"></div>
                         </div>
