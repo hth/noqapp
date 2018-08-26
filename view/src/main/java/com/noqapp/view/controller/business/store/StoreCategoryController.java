@@ -7,6 +7,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -107,14 +108,27 @@ public class StoreCategoryController {
             redirectAttrs.addFlashAttribute("storeCategoryForm", storeCategoryForm);
         }
 
-        Map<String, String> categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+        Map<String, String> categories;
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
-        storeCategoryForm
-                .setBizStoreId(storeId)
-                .setCategories(categories)
-                .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
-                .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
-                .setBusinessType(bizStore.getBusinessType());
+        switch (bizStore.getBusinessType()) {
+            case PH:
+                categories = PharmacyCategoryEnum.asMap();
+                storeCategoryForm
+                    .setBizStoreId(storeId)
+                    .setCategories(categories)
+                    .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                    .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                    .setBusinessType(bizStore.getBusinessType());
+                break;
+            default:
+                categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+                storeCategoryForm
+                    .setBizStoreId(storeId)
+                    .setCategories(categories)
+                    .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                    .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                    .setBusinessType(bizStore.getBusinessType());
+        }
         return nextPage;
     }
 

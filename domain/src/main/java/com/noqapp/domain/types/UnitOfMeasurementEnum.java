@@ -5,12 +5,13 @@ package com.noqapp.domain.types;
  * 3/31/18 9:58 PM
  */
 public enum UnitOfMeasurementEnum {
-    CNT("CNT", "Count"),
-    HDO("HDO", "1/2 Dozen"),
-    DOZ("DOZ", "Dozen"),
-    GM2("GM2", "250 gm/mlt"),
-    GM5("GM5", "500 gm/mlt"),
-    KG1("KG1", "1 Kg/Lt");
+    CN("CN", "count (nos)"),
+    //DZ("DZ", "dozen"),
+    MG("MG", "mg (milligram)"),
+    GM("GM", "gm (gram)"),
+    KG("KG", "kg (kilogram)"),
+    ML("ML", "ml (milliliter)"),
+    LT("LT", "lt (liter)");
 
     private final String name;
     private final String description;

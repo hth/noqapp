@@ -23,8 +23,10 @@ public class StoreProductForm {
     private ScrubbedInput productDiscount;
     private ScrubbedInput productInfo;
     private ScrubbedInput storeCategoryId;
-    private ScrubbedInput productType;
     private ScrubbedInput unitOfMeasurement;
+    private ScrubbedInput unitValue;
+    private ScrubbedInput packageSize;
+    private ScrubbedInput productType;
 
     private Map<String, String> categories;
     private List<StoreProductEntity> storeProducts;
@@ -104,21 +106,39 @@ public class StoreProductForm {
         return this;
     }
 
-    public ScrubbedInput getProductType() {
-        return productType;
-    }
-
-    public StoreProductForm setProductType(ScrubbedInput productType) {
-        this.productType = productType;
-        return this;
-    }
-
     public ScrubbedInput getUnitOfMeasurement() {
         return unitOfMeasurement;
     }
 
     public StoreProductForm setUnitOfMeasurement(ScrubbedInput unitOfMeasurement) {
         this.unitOfMeasurement = unitOfMeasurement;
+        return this;
+    }
+
+    public ScrubbedInput getUnitValue() {
+        return unitValue;
+    }
+
+    public StoreProductForm setUnitValue(ScrubbedInput unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public ScrubbedInput getPackageSize() {
+        return packageSize;
+    }
+
+    public StoreProductForm setPackageSize(ScrubbedInput packageSize) {
+        this.packageSize = packageSize;
+        return this;
+    }
+
+    public ScrubbedInput getProductType() {
+        return productType;
+    }
+
+    public StoreProductForm setProductType(ScrubbedInput productType) {
+        this.productType = productType;
         return this;
     }
 

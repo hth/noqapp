@@ -1,5 +1,11 @@
 package com.noqapp.domain.types.medical;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * hitender
  * 8/18/18 2:34 PM
@@ -28,6 +34,33 @@ public enum PharmacyCategoryEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<PharmacyCategoryEnum> asList() {
+        PharmacyCategoryEnum[] all = PharmacyCategoryEnum.values();
+        return Arrays.asList(all);
+    }
+
+    public static List<String> asListOfDescription() {
+        List<String> a = new LinkedList<>();
+        for (PharmacyCategoryEnum pharmacyCategory : PharmacyCategoryEnum.values()) {
+            a.add(pharmacyCategory.description);
+        }
+
+        return a;
+    }
+
+    public static Map<String, String> asMap() {
+        return new LinkedHashMap<String, String>() {{
+            put(CA.name, CA.description);
+            put(CR.name, CR.description);
+            put(IH.name, IH.description);
+            put(IJ.name, IJ.description);
+            put(LO.name, LO.description);
+            put(PW.name, PW.description);
+            put(SY.name, SY.description);
+            put(TA.name, TA.description);
+        }};
     }
 
     @Override

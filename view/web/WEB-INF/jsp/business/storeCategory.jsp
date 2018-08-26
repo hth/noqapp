@@ -84,7 +84,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="categoryName" cssErrorClass="lb_error">New Store Category</form:label>
+                                            <form:label path="categoryName" cssErrorClass="lb_error">Category Name</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="categoryName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -96,12 +96,6 @@
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
-                                        <%--<div class="left-btn">--%>
-                                        <%--<input name="edit" class="next-btn" value="EDIT" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="right-btn">--%>
-                                        <%--<input name="cancel_Edit" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                        <%--</div>--%>
                                     <div class="button-btn">
                                         <button name="edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
                                         <button name="cancel_Edit" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
@@ -135,7 +129,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="categoryName" cssErrorClass="lb_error">New Store Category</form:label>
+                                            <form:label path="categoryName" cssErrorClass="lb_error">Category Name</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="categoryName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -147,12 +141,6 @@
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
-                                        <%--<div class="left-btn">--%>
-                                        <%--<input name="add" class="next-btn" value="ADD" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="right-btn">--%>
-                                        <%--<input name="cancel_Add" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                        <%--</div>--%>
                                     <div class="button-btn">
                                         <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
                                         <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
@@ -183,11 +171,9 @@
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                  alt="Sort" height="16px;"/>
                                         </th>
-                                        <th>
-                                            Referred Count
-                                        </th>
-                                        <th nowrap></th>
-                                        <th nowrap></th>
+                                        <th>Referred Count</th>
+                                        <th nowrap>Edit</th>
+                                        <th nowrap>Delete</th>
                                     </tr>
                                     <c:forEach items="${storeCategoryForm.categories}" var="category" varStatus="status">
                                         <tr>
@@ -195,14 +181,28 @@
                                             <td nowrap>${category.value}</td>
                                             <td nowrap>${storeCategoryForm.categoryCounts.get(category.key)}</td>
                                             <td nowrap>
-                                                <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit.htm" class="add-btn">Edit</a>
+                                                <c:choose>
+                                                    <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
+                                                        N/A
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit.htm" class="add-btn">Edit</a>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                             <td nowrap>
-                                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete.htm" modelAttribute="storeCategoryForm">
-                                                    <form:hidden path="bizStoreId" value="${storeCategoryForm.bizStoreId}" />
-                                                    <form:hidden path="storeCategoryId" value="${category.key}" />
-                                                    <button name="delete" class="add-btn">Delete</button>
-                                                </form:form>
+                                                <c:choose>
+                                                    <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
+                                                        N/A
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete.htm" modelAttribute="storeCategoryForm">
+                                                            <form:hidden path="bizStoreId" value="${storeCategoryForm.bizStoreId}" />
+                                                            <form:hidden path="storeCategoryId" value="${category.key}" />
+                                                            <button name="delete" class="add-btn">Delete</button>
+                                                        </form:form>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                         </tr>
                                     </c:forEach>

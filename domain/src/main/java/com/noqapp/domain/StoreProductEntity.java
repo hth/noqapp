@@ -51,6 +51,12 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PT")
     private ProductTypeEnum productType;
 
+    @Field("UV")
+    private String unitValue;
+
+    @Field("PS")
+    private String packageSize;
+
     @Field ("UM")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
@@ -118,6 +124,24 @@ public class StoreProductEntity extends BaseEntity {
 
     public StoreProductEntity setProductType(ProductTypeEnum productType) {
         this.productType = productType;
+        return this;
+    }
+
+    public String getUnitValue() {
+        return unitValue;
+    }
+
+    public StoreProductEntity setUnitValue(String unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public String getPackageSize() {
+        return packageSize;
+    }
+
+    public StoreProductEntity setPackageSize(String packageSize) {
+        this.packageSize = packageSize;
         return this;
     }
 
