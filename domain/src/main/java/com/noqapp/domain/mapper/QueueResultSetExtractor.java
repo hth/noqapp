@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * User: hitender
  * Date: 3/11/17 4:45 PM
@@ -40,7 +42,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int D = 22;
 
     @Override
-    public QueueEntity extractData(ResultSet rs) throws SQLException {
+    public QueueEntity extractData(@NotNull ResultSet rs) throws SQLException {
         QueueEntity queue = new QueueEntity(
                 rs.getString(QR),
                 rs.getString(DID),
