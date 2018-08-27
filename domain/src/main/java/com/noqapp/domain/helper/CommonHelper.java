@@ -6,7 +6,6 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
-import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,8 +46,6 @@ public class CommonHelper {
                     map.put(bankDepartment.name(), bankDepartment.getDescription());
                 }
                 return map;
-            case PH:
-                return PharmacyCategoryEnum.asMap();
             case RS:
             case BA:
             case ST:
@@ -57,6 +54,7 @@ public class CommonHelper {
             case SC:
             case GS:
             case CF:
+            case PH:
             case PW:
             case MU:
             case TA:
