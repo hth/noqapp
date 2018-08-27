@@ -29,6 +29,7 @@ as a value, then it gets endless connections.
         SN VARCHAR(20),
         SB DATETIME,
         SE DATETIME,
+        BN VARCHAR(30),
         V INT(11),
         U DATETIME,
         C DATETIME,

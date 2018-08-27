@@ -38,9 +38,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-            "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, V, U, C, A, D)" +
+            "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D)" +
                     " VALUES " +
-                    "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:v,:u,:c,:a,:d)";
+                    "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
@@ -87,6 +87,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String checkIfClientVisitedStore =
             "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
 
+    private static final String checkIfClientVisitedBusiness =
+        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -124,6 +127,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("sn", queue.getServerName());
                 namedParameters.addValue("sb", queue.getServiceBeginTime());
                 namedParameters.addValue("se", queue.getServiceEndTime());
+                namedParameters.addValue("bn", queue.getBizNameId());
 
                 namedParameters.addValue("v", queue.getVersion());
                 namedParameters.addValue("u", queue.getUpdated());
@@ -224,6 +228,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean hasClientVisitedThisStore(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
         return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid}, Boolean.class);
+    }
+
+    @Override
+    public boolean hasClientVisitedThisBusiness(String bizNameId, String qid) {
+        LOG.info("Fetch history by bizNameId={} qid={}", bizNameId, qid);
+        return jdbcTemplate.queryForObject(checkIfClientVisitedBusiness, new Object[]{bizNameId, qid}, Boolean.class);
     }
 
     public boolean isDBAlive() {

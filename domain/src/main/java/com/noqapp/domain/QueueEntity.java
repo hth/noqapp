@@ -101,6 +101,12 @@ public class QueueEntity extends BaseEntity {
     @Field ("VS")
     private boolean clientVisitedThisStore;
 
+    @Field ("BN")
+    private String bizNameId;
+
+    @Field ("VB")
+    private boolean clientVisitedThisBusiness;
+
     @Field ("GQ")
     private String guardianQid;
 
@@ -292,6 +298,24 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public QueueEntity setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
+        return this;
+    }
+
+    public boolean isClientVisitedThisBusiness() {
+        return clientVisitedThisBusiness;
+    }
+
+    public QueueEntity setClientVisitedThisBusiness(boolean clientVisitedThisBusiness) {
+        this.clientVisitedThisBusiness = clientVisitedThisBusiness;
         return this;
     }
 
