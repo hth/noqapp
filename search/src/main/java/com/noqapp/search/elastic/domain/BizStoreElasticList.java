@@ -122,14 +122,4 @@ public class BizStoreElasticList extends AbstractDomain {
         LOG.info("After count={}", bizStoreElastics.size());
         return this;
     }
-
-    @Override
-    public String toString() {
-        return "BizStoreElasticList{" +
-            "scrollId='" + scrollId + '\'' +
-            ", cityName='" + cityName + '\'' +
-            ", jsonCategories=" + jsonCategories +
-            ", bizStoreElastics=" + bizStoreElastics +
-            '}';
-    }
 }
