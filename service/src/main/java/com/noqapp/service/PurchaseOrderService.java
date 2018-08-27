@@ -840,6 +840,9 @@ public class PurchaseOrderService {
                         .addOrderState(PurchaseOrderStateEnum.OD)
                         .setServiceEndTime(new Date());
                     break;
+                default:
+                    //Skipped as not supported.
+                    break;
             }
             purchaseOrderManager.save(purchaseOrder);
             return markOrderProcessed(codeQR, purchaseOrder, goTo);

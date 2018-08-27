@@ -321,7 +321,7 @@ public class TokenQueueService {
                 queue.setGuardianQid(qid);
             } else if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-                if (guardianProfile == null) {
+                if (null == guardianProfile) {
                     /* Failure could be because of phone migration or other reason. Investigate. */
                     LOG.error("Failed to find guardianPhone={} qid={}", userProfile.getGuardianPhone(), userProfile.getQueueUserId());
                 } else {
@@ -329,14 +329,16 @@ public class TokenQueueService {
                 }
             }
 
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             /* Add business customer id if any associated with qid and codeQR. */
-            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(
-                    qid,
-                    bizStoreManager.findByCodeQR(codeQR).getBizName().getId());
-
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId());
             }
+
+            /* Added for business offer to display for new user for that business. */
+            queue.setBizNameId(bizStore.getBizName().getId());
+            queue.setClientVisitedThisBusiness(queueManagerJDBC.hasClientVisitedThisStore(bizStore.getBizName().getId(), qid));
 
             LOG.debug("Updated Queue={}", queue);
             queueManager.save(queue);

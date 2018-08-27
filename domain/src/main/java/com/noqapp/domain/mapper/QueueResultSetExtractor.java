@@ -32,11 +32,12 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int SN = 14;
     private static final int SB = 15;
     private static final int SE = 16;
-    private static final int V = 17;
-    private static final int U = 18;
-    private static final int C = 19;
-    private static final int A = 20;
-    private static final int D = 21;
+    private static final int BN = 17;
+    private static final int V = 18;
+    private static final int U = 19;
+    private static final int C = 20;
+    private static final int A = 21;
+    private static final int D = 22;
 
     @Override
     public QueueEntity extractData(ResultSet rs) throws SQLException {
@@ -58,6 +59,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setServerName(rs.getString(SN));
         queue.setServiceBeginTime(rs.getTimestamp(SB));
         queue.setServiceEndTime(rs.getTimestamp(SE));
+        queue.setBizNameId(rs.getString(BN));
         queue.setVersion(rs.getInt(V));
         queue.setCreateAndUpdate(rs.getTimestamp(U));
         queue.setCreated(rs.getTimestamp(C));

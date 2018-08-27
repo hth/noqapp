@@ -61,5 +61,8 @@ public interface QueueManagerJDBC {
     boolean hasClientVisitedThisStore(String codeQR, String qid);
 
     @Mobile
+    boolean hasClientVisitedThisBusiness(String bizNameId, String qid);
+
+    @Mobile
     boolean isDBAlive();
 }
