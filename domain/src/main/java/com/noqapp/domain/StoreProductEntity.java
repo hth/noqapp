@@ -181,6 +181,7 @@ public class StoreProductEntity extends BaseEntity {
             + (StringUtils.isBlank(productInfo) ? "" : productInfo) + ","
             + (StringUtils.isBlank(storeCategoryId) ? "" : storeCategoryId) + ","
             + productType.name() + ","
+            + unitValue + ","
             + unitOfMeasurement.getName() + ",";
     }
 }
