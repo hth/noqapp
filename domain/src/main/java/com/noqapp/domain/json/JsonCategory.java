@@ -62,4 +62,13 @@ public class JsonCategory extends AbstractDomain {
         this.displayImage = displayImage;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonCategory{" +
+            "bizCategoryId='" + bizCategoryId + '\'' +
+            ", categoryName='" + categoryName + '\'' +
+            ", displayImage='" + displayImage + '\'' +
+            '}';
+    }
 }
