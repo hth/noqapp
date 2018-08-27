@@ -574,35 +574,42 @@ public class BizStoreElastic extends AbstractDomain {
     @Override
     public String toString() {
         return "BizStoreElastic{" +
-                "id='" + id + '\'' +
-                ", businessName='" + businessName + '\'' +
-                ", businessType='" + businessType + '\'' +
-                ", bizCategoryName='" + bizCategoryName + '\'' +
-                ", bizCategoryId='" + bizCategoryId + '\'' +
-                ", address='" + address + '\'' +
-                ", area='" + area + '\'' +
-                ", town='" + town + '\'' +
-                ", district='" + district + '\'' +
-                ", state='" + state + '\'' +
-                ", stateShortName='" + stateShortName + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", country='" + country + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", phoneRaw='" + phoneRaw + '\'' +
-                ", geoPointOfQ=" + geoPointOfQ +
-                ", placeId='" + placeId + '\'' +
-                ", placeType=" + Arrays.toString(placeType) +
-                ", rating=" + rating +
-                ", ratingCount=" + ratingCount +
-                ", bizNameId='" + bizNameId + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", codeQR='" + codeQR + '\'' +
-                ", timeZone='" + timeZone + '\'' +
-                ", geoHash='" + geoHash + '\'' +
-                ", webLocation='" + webLocation + '\'' +
-                ", displayImage='" + displayImage + '\'' +
-                ", storeHourElasticList=" + storeHourElasticList +
-                '}';
+            "id='" + id + '\'' +
+            ", businessName='" + businessName + '\'' +
+            ", businessType=" + businessType +
+            ", bizCategoryName='" + bizCategoryName + '\'' +
+            ", bizCategoryDisplayImage='" + bizCategoryDisplayImage + '\'' +
+            ", bizCategoryId='" + bizCategoryId + '\'' +
+            ", address='" + address + '\'' +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", district='" + district + '\'' +
+            ", state='" + state + '\'' +
+            ", stateShortName='" + stateShortName + '\'' +
+            ", postalCode='" + postalCode + '\'' +
+            ", country='" + country + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", phone='" + phone + '\'' +
+            ", phoneRaw='" + phoneRaw + '\'' +
+            ", geoPointOfQ=" + geoPointOfQ +
+            ", placeId='" + placeId + '\'' +
+            ", placeType=" + Arrays.toString(placeType) +
+            ", rating=" + rating +
+            ", ratingCount=" + ratingCount +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", displayName='" + displayName + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", timeZone='" + timeZone + '\'' +
+            ", geoHash='" + geoHash + '\'' +
+            ", webLocation='" + webLocation + '\'' +
+            ", famousFor='" + famousFor + '\'' +
+            ", displayImage='" + displayImage + '\'' +
+            ", storeHourElasticList=" + storeHourElasticList +
+            ", bizServiceImages=" + bizServiceImages +
+            ", amenities=" + amenities +
+            ", facilities=" + facilities +
+            ", webProfileId='" + webProfileId + '\'' +
+            ", education=" + education +
+            '}';
     }
 }
