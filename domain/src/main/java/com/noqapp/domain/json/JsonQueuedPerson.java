@@ -68,6 +68,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    @JsonProperty ("vb")
+    private boolean clientVisitedThisBusiness;
+
     /** This record reference has to be used when submitting a form. */
     @JsonProperty ("rr")
     private String recordReferenceId;
@@ -150,6 +153,15 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public boolean isClientVisitedThisBusiness() {
+        return clientVisitedThisBusiness;
+    }
+
+    public JsonQueuedPerson setClientVisitedThisBusiness(boolean clientVisitedThisBusiness) {
+        this.clientVisitedThisBusiness = clientVisitedThisBusiness;
         return this;
     }
 

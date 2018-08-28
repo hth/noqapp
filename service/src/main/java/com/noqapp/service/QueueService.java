@@ -158,6 +158,7 @@ public class QueueService {
                     .setServerDeviceId(queue.getServerDeviceId())
                     .setBusinessCustomerId(queue.getBusinessCustomerId())
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+                    .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
                     .setRecordReferenceId(queue.getRecordReferenceId());
 
             /* Get dependents when queue status is queued. */
