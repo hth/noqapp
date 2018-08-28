@@ -105,8 +105,8 @@ public class CodeQRGeneratorService {
     private BufferedImage getQRCodeWithOverlay(BufferedImage imageOfCodeQR) {
         float overlayTransparency = 1f;
 
-        Integer deltaHeight = imageOfCodeQR.getHeight() - overlay.getHeight();
-        Integer deltaWidth = imageOfCodeQR.getWidth() - overlay.getWidth();
+        int deltaHeight = imageOfCodeQR.getHeight() - overlay.getHeight();
+        int deltaWidth = imageOfCodeQR.getWidth() - overlay.getWidth();
 
         BufferedImage combined = new BufferedImage(imageOfCodeQR.getWidth(), imageOfCodeQR.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) combined.getGraphics();
