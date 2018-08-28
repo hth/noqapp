@@ -310,7 +310,7 @@ public class QueueEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isClientVisitedThisBusiness() {
+    public boolean hasClientVisitedThisBusiness() {
         return clientVisitedThisBusiness;
     }
 
