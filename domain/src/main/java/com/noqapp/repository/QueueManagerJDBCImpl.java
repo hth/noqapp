@@ -45,7 +45,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE QID = ? " +
                     "AND " +
@@ -55,7 +55,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE QID = ? AND U >= ? " +
                     "AND " +
@@ -65,7 +65,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDid =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? " +
                     "AND " +
@@ -75,7 +75,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, V, U, C, A, D" +
+            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
                     " FROM " +
                     "QUEUE WHERE DID = ? AND U >= ? " +
                     "AND " +
