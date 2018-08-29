@@ -56,6 +56,10 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Field ("VS")
     private int clientsPreviouslyVisitedThisStore;
 
+    @NotNull
+    @Field ("VB")
+    private int clientsPreviouslyVisitedThisBusiness;
+
     /* Time saved as Milli Seconds. */
     @NotNull
     @Field ("ST")
@@ -146,6 +150,15 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
 
     public StatsBizStoreDailyEntity setClientsPreviouslyVisitedThisStore(int clientsPreviouslyVisitedThisStore) {
         this.clientsPreviouslyVisitedThisStore = clientsPreviouslyVisitedThisStore;
+        return this;
+    }
+
+    public int getClientsPreviouslyVisitedThisBusiness() {
+        return clientsPreviouslyVisitedThisBusiness;
+    }
+
+    public StatsBizStoreDailyEntity setClientsPreviouslyVisitedThisBusiness(int clientsPreviouslyVisitedThisBusiness) {
+        this.clientsPreviouslyVisitedThisBusiness = clientsPreviouslyVisitedThisBusiness;
         return this;
     }
 

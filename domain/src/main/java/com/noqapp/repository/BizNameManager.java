@@ -66,5 +66,8 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     boolean doesWebLocationExists(String webLocation, String id);
 
     Stream<BizNameEntity> findByBusinessType(BusinessTypeEnum businessType);
+
+    /** Find all businesses in a particular timezone. */
+    Stream<BizNameEntity> findAll(String timeZone);
 }
 

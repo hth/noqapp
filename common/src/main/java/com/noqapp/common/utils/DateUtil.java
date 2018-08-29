@@ -42,6 +42,7 @@ public final class DateUtil {
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
+    public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
