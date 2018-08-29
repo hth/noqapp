@@ -263,6 +263,7 @@ public class QueueHistory {
                         }
 
                         totalHoursSaved += hours * 60 * 1000;
+                        LOG.info("Hours saved {} total={} in milliseconds={}", hours, totalHoursSaved, hours * 60 * 1000);
                         break;
                     case A:
                         totalAbort += 1;

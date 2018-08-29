@@ -63,7 +63,7 @@
 			<strong>Customer Reviews</strong><br/>
 			Total Rating: ${totalRating}<br/>
 			Customer Rated: ${totalCustomerRated}<br/>
-			Customer Hour Saved: N/A<br/>
+			Customer Hour Saved: ${totalHoursSaved}hrs (since beginning of time)<br/>
             (This is work in progress)
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
