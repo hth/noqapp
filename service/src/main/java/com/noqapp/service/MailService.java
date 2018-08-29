@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import freemarker.template.TemplateException;
@@ -332,5 +333,31 @@ public class MailService {
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
             executorService.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
         }
+    }
+
+    @Async
+    public MailTypeEnum sendAnyMail(
+        String userId,
+        String profileName,
+        String subject,
+        Map<String, Object> rootMap,
+        String locationOfFTL
+    ) {
+        try {
+            rootMap.put("profileName", profileName);
+            rootMap.put("parentHost", parentHost);
+
+            MailEntity mail = new MailEntity()
+                .setToMail(userId)
+                .setToName(profileName)
+                .setSubject(subject)
+                .setMessage(freemarkerService.freemarkerToString(locationOfFTL, rootMap))
+                .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Failed validation email for={}", userId, exception);
+            return MailTypeEnum.FAILURE;
+        }
+        return MailTypeEnum.SUCCESS;
     }
 }

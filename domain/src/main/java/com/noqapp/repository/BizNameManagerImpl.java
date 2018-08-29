@@ -173,4 +173,13 @@ public final class BizNameManagerImpl implements BizNameManager {
             TABLE
         ).stream();
     }
+
+    @Override
+    public Stream<BizNameEntity> findAll(String timeZone) {
+        return mongoTemplate.find(
+            query(where("TZ").is(timeZone)),
+            BizNameEntity.class,
+            TABLE
+        ).stream();
+    }
 }

@@ -87,7 +87,7 @@ public class QueueHistory {
     public void queuePastData() {
         statsCron = new StatsCronEntity(
                 QueueHistory.class.getName(),
-                "QueuePastData",
+                "queuePastData",
                 moveToRDBS);
 
         int found, failure = 0, success = 0;
@@ -214,12 +214,17 @@ public class QueueHistory {
                 totalAbort = 0,
                 totalRating = 0,
                 totalCustomerRated = 0,
-                clientsVisitedThisStore = 0;
+                clientsVisitedThisStore = 0,
+                clientsVisitedThisBusiness = 0;
 
         for (QueueEntity queue : queues) {
             try {
                 if (queue.hasClientVisitedThisStore()) {
                     clientsVisitedThisStore++;
+                }
+
+                if (queue.hasClientVisitedThisBusiness()) {
+                    clientsVisitedThisBusiness++;
                 }
 
                 switch (queue.getQueueUserState()) {
@@ -289,7 +294,8 @@ public class QueueHistory {
                 .setTotalNoShow(totalNoShow)
                 .setTotalClient(totalServiced + totalAbort + totalNoShow)
                 .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced)
-                .setClientsPreviouslyVisitedThisStore(clientsVisitedThisStore);
+                .setClientsPreviouslyVisitedThisStore(clientsVisitedThisStore)
+                .setClientsPreviouslyVisitedThisBusiness(clientsVisitedThisBusiness);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         statsBizStoreDaily
