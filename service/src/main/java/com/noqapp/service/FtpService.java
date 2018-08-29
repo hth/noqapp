@@ -176,7 +176,7 @@ public class FtpService {
             if (StringUtils.isNotBlank(codeQR)) {
                 if (remoteFile.getParent().isFolder() && 0 == remoteFile.getParent().getChildren().length) {
                     remoteFile.getParent().delete();
-                    LOG.info("Deleted folder={} or codeQR={}", remoteFile.getParent(), codeQR);
+                    LOG.info("Deleted folder={} or codeQR={}", remoteFile.getParent().getPublicURIString(), codeQR);
                 }
             }
 

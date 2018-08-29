@@ -53,13 +53,15 @@
 			Name: <strong>${businessName}</strong><br/>
 			Clients: ${totalClient}<br/>
 			Serviced: ${totalServiced}<br/>
-			No Show: ${totalNoShow}<br/>
-			Abort: ${totalAbort}<br/>
+			No Show (Skipped): ${totalNoShow}<br/>
+			Abort Visit (Self Cancelled): ${totalAbort}<br/>
 			New Customers: ${newCustomer}<br/>
+			<br/>
+            Previous Visited: ${clientsPreviouslyVisitedThisBusiness}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			<strong>Customer Reviews</strong><br/>
-			Rating: ${totalRating}<br/>
+			Total Rating: ${totalRating}<br/>
 			Customer Rated: ${totalCustomerRated}<br/>
 			Customer Hour Saved: ${totalHoursSaved}<br/>
 		</p>
@@ -74,7 +76,6 @@
 		All Rights Reserved &nbsp; | &nbsp; <a href="${parentHost}/privacy.html"
 			style="color:#222; text-decoration:none">Privacy Policy</a> &nbsp; |
 		&nbsp; <a href="${parentHost}/terms.html" style="color:#222; text-decoration:none">Terms</a><br/>
-		S:${ftlDateTime?iso("PST")}
 	</div>
 </div>
 
