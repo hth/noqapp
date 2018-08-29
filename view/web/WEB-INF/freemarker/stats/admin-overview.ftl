@@ -63,7 +63,8 @@
 			<strong>Customer Reviews</strong><br/>
 			Total Rating: ${totalRating}<br/>
 			Customer Rated: ${totalCustomerRated}<br/>
-			Customer Hour Saved: ${totalHoursSaved}<br/>
+			Customer Hour Saved: N/A<br/>
+            (This is work in progress)
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			<strong>NoQueue Technologies</strong>
