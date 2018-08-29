@@ -72,7 +72,7 @@ public class DailyRegistrationStatusMail {
     public void registrationStatusMail() {
         StatsCronEntity statsCron = new StatsCronEntity(
                 DailyRegistrationStatusMail.class.getName(),
-                "RegistrationStatusMail",
+                "registrationStatusMail",
                 registrationStatusSwitch);
 
         if ("OFF".equalsIgnoreCase(registrationStatusSwitch)) {
