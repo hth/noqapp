@@ -215,18 +215,20 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Override
     public String toString() {
         return "StatsBizStoreDailyEntity{" +
-                "bizStoreId='" + bizStoreId + '\'' +
-                ", bizNameId='" + bizNameId + '\'' +
-                ", codeQR='" + codeQR + '\'' +
-                ", totalServiced=" + totalServiced +
-                ", totalNoShow=" + totalNoShow +
-                ", totalAbort=" + totalAbort +
-                ", totalClient=" + totalClient +
-                ", totalServiceTime=" + totalServiceTime +
-                ", averageServiceTime=" + averageServiceTime +
-                ", totalRating=" + totalRating +
-                ", totalCustomerRated=" + totalCustomerRated +
-                ", totalHoursSaved=" + totalHoursSaved +
-                '}';
+            "bizStoreId='" + bizStoreId + '\'' +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", totalServiced=" + totalServiced +
+            ", totalNoShow=" + totalNoShow +
+            ", totalAbort=" + totalAbort +
+            ", totalClient=" + totalClient +
+            ", clientsPreviouslyVisitedThisStore=" + clientsPreviouslyVisitedThisStore +
+            ", clientsPreviouslyVisitedThisBusiness=" + clientsPreviouslyVisitedThisBusiness +
+            ", totalServiceTime=" + totalServiceTime +
+            ", averageServiceTime=" + averageServiceTime +
+            ", totalRating=" + totalRating +
+            ", totalCustomerRated=" + totalCustomerRated +
+            ", totalHoursSaved=" + totalHoursSaved +
+            '}';
     }
 }
