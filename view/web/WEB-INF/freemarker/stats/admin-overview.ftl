@@ -50,7 +50,7 @@
 
 		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Your Daily Summary for ${day}</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			Name: ${businessName}<br/>
+            Name: <strong>${businessName}</strong><br/>
 			Clients: ${totalClient}<br/>
 			Serviced: ${totalServiced}<br/>
 			No Show: ${totalNoShow}<br/>
@@ -58,7 +58,7 @@
 			New Customers: ${newCustomer}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            Customer Reviews<br/>
+            <strong>Customer Reviews</strong><br/>
 			Rating: ${totalRating}<br/>
 			Customer Rated: ${totalCustomerRated}<br/>
 			Customer Hour Saved: ${totalHoursSaved}<br/>
