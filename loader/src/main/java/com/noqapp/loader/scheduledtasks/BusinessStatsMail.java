@@ -168,7 +168,7 @@ public class BusinessStatsMail {
                             rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
-                            rootMap.put("totalHoursSaved", totalHoursSaved);
+                            rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
 
                             List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
                             for (BusinessUserEntity businessUser : businessUsers) {
