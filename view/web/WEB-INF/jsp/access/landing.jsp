@@ -91,7 +91,7 @@
                                             <td>${profile.name}</td>
                                             <td>
                                             <c:choose>
-                                                <c:when test="${fn:endsWith(profile.email, 'mail.noqapp.com')}">
+                                                <c:when test="${fn:endsWith(profile.email, '@mail.noqapp.com')}">
                                                     Email: N/A
                                                 </c:when>
                                                 <c:otherwise>

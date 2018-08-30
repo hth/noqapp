@@ -215,7 +215,7 @@
                                     </div>
                                     <div class="col-fields">
                                         <c:choose>
-                                            <c:when test="${fn:endsWith(userProfileForm.email, 'mail.noqapp.com')}">
+                                            <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
                                                 --
                                             </c:when>
                                             <c:otherwise>
@@ -236,17 +236,30 @@
                                 </li>
 
                                 <c:if test="${!userProfileForm.emailValidated}">
-                                <li>
-                                    <div class="alert-info">
-                                        <p>
-                                            Your email address
-                                            <span class="txt-red">${registerUser.email}</span>
-                                            has not been validated. Please validated email address to continue merchant account registration.
-                                        </p>
-                                        <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
-                                        </p>
-                                    </div>
-                                </li>
+                                    <c:choose>
+                                    <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                There is no email address added to your profile. Please add email address.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                Your email address
+                                                <span class="txt-red">${registerUser.email}</span>
+                                                has not been validated. Please validated email address to continue merchant account registration.
+                                            </p>
+                                            <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    </c:otherwise>
+                                    </c:choose>
                                 </c:if>
 
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
