@@ -167,4 +167,17 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
                 BusinessUserEntity.class,
                 TABLE);
     }
+
+    @Override
+    public List<BusinessUserEntity> getAllForBusiness(String bizNameId, UserLevelEnum userLevel) {
+        return mongoTemplate.find(
+            query(where("B_N.$id").is(new ObjectId(bizNameId)).and("UL").is(userLevel)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserEntity.class,
+            TABLE);
+    }
 }

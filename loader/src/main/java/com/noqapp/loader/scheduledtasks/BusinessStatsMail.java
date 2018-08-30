@@ -7,6 +7,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
@@ -91,7 +92,7 @@ public class BusinessStatsMail {
         }
 
         Calendar date = Calendar.getInstance();
-        date.set(Calendar.HOUR_OF_DAY, 7);
+        date.set(Calendar.HOUR_OF_DAY, 11);
         List<String> zones = getAllTimeZones(date);
         Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
         for (String zone : zones) {
@@ -160,7 +161,7 @@ public class BusinessStatsMail {
                         rootMap.put("totalCustomerRated", totalCustomerRated);
                         rootMap.put("totalHoursSaved", totalHoursSaved);
 
-                        List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId());
+                        List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
                         for (BusinessUserEntity businessUser : businessUsers) {
                             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
                             mailService.sendAnyMail(userProfile.getEmail(), userProfile.getName(), businessName + " Daily Summary", rootMap, "stats/admin-overview.ftl");
