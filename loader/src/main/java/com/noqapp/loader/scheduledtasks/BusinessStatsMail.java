@@ -100,7 +100,7 @@ public class BusinessStatsMail {
         AtomicInteger businessCount = new AtomicInteger();
         try {
             Calendar date = Calendar.getInstance();
-            date.set(Calendar.HOUR_OF_DAY, 11);
+            date.set(Calendar.HOUR_OF_DAY, 7);
             List<String> zones = getAllTimeZones(date);
             Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
             for (String zone : zones) {
