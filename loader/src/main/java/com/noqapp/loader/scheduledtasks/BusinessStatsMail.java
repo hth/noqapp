@@ -14,6 +14,7 @@ import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StatsCronService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -54,6 +56,7 @@ public class BusinessStatsMail {
     private MailService mailService;
     private BusinessUserManager businessUserManager;
     private UserProfileManager userProfileManager;
+    private StatsCronService statsCronService;
 
     @Autowired
     public BusinessStatsMail(
@@ -65,7 +68,8 @@ public class BusinessStatsMail {
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         MailService mailService,
         BusinessUserManager businessUserManager,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        StatsCronService statsCronService
     ) {
         this.emailSwitch = emailSwitch;
 
@@ -75,6 +79,7 @@ public class BusinessStatsMail {
         this.mailService = mailService;
         this.businessUserManager = businessUserManager;
         this.userProfileManager = userProfileManager;
+        this.statsCronService = statsCronService;
     }
 
     /**
@@ -91,86 +96,108 @@ public class BusinessStatsMail {
             return;
         }
 
-        Calendar date = Calendar.getInstance();
-        date.set(Calendar.HOUR_OF_DAY, 11);
-        List<String> zones = getAllTimeZones(date);
-        Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
-        for (String zone : zones) {
-            try (Stream<BizNameEntity> stream = bizNameManager.findAll(zone)) {
-                stream.iterator().forEachRemaining(bizName -> {
-                    String businessName = bizName.getBusinessName();
-                    int totalClient = 0;
-                    int totalServiced = 0;
-                    int totalNoShow = 0;
-                    int totalAbort = 0;
-                    int clientsPreviouslyVisitedThisBusiness = 0;
-                    int totalRating = 0;
-                    int totalCustomerRated = 0;
-                    long totalHoursSaved = 0;
+        AtomicInteger mailSentCount = new AtomicInteger();
+        AtomicInteger businessCount = new AtomicInteger();
+        try {
+            Calendar date = Calendar.getInstance();
+            date.set(Calendar.HOUR_OF_DAY, 11);
+            List<String> zones = getAllTimeZones(date);
+            Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
+            for (String zone : zones) {
+                try (Stream<BizNameEntity> stream = bizNameManager.findAll(zone)) {
+                    stream.iterator().forEachRemaining(bizName -> {
+                        String businessName = bizName.getBusinessName();
+                        int totalClient = 0;
+                        int totalServiced = 0;
+                        int totalNoShow = 0;
+                        int totalAbort = 0;
+                        int clientsPreviouslyVisitedThisBusiness = 0;
+                        int totalRating = 0;
+                        int totalCustomerRated = 0;
+                        long totalHoursSaved = 0;
 
-                    try {
-                        List<StatsBizStoreDailyEntity> statsBizStores = statsBizStoreDailyManager.findStores(bizName.getId(), since);
-                        String storeName;
-                        int storeTotalClient;
-                        int storeTotalServiced;
-                        int storeTotalNoShow;
-                        int storeTotalAbort;
-                        int storeClientsPreviouslyVisitedThisBusiness;
-                        int storeTotalRating;
-                        int storeTotalCustomerRated;
-                        long storeTotalHoursSaved;
+                        businessCount.getAndIncrement();
+                        try {
+                            List<StatsBizStoreDailyEntity> statsBizStores = statsBizStoreDailyManager.findStores(bizName.getId(), since);
+                            String storeName;
+                            int storeTotalClient;
+                            int storeTotalServiced;
+                            int storeTotalNoShow;
+                            int storeTotalAbort;
+                            int storeClientsPreviouslyVisitedThisBusiness;
+                            int storeTotalRating;
+                            int storeTotalCustomerRated;
+                            long storeTotalHoursSaved;
 
-                        for (StatsBizStoreDailyEntity statsBizStoreDaily : statsBizStores) {
-                            BizStoreEntity bizStore = bizStoreManager.getById(statsBizStoreDaily.getBizStoreId());
-                            LOG.info("{} {} {} since={}",
-                                bizStore.getDisplayName(),
-                                bizStore.getBizName().getBusinessName(),
-                                statsBizStoreDaily.getTotalCustomerRated(),
-                                since);
+                            for (StatsBizStoreDailyEntity statsBizStoreDaily : statsBizStores) {
+                                BizStoreEntity bizStore = bizStoreManager.getById(statsBizStoreDaily.getBizStoreId());
+                                LOG.info("{} {} {} since={}",
+                                    bizStore.getDisplayName(),
+                                    bizStore.getBizName().getBusinessName(),
+                                    statsBizStoreDaily.getTotalCustomerRated(),
+                                    since);
 
-                            storeName = bizStore.getDisplayName();
-                            storeTotalClient = statsBizStoreDaily.getTotalClient();
-                            storeTotalServiced = statsBizStoreDaily.getTotalServiced();
-                            storeTotalNoShow = statsBizStoreDaily.getTotalNoShow();
-                            storeTotalAbort = statsBizStoreDaily.getTotalAbort();
-                            storeClientsPreviouslyVisitedThisBusiness = statsBizStoreDaily.getClientsPreviouslyVisitedThisStore();
-                            storeTotalRating = statsBizStoreDaily.getTotalRating();
-                            storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
-                            storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
+                                storeName = bizStore.getDisplayName();
+                                storeTotalClient = statsBizStoreDaily.getTotalClient();
+                                storeTotalServiced = statsBizStoreDaily.getTotalServiced();
+                                storeTotalNoShow = statsBizStoreDaily.getTotalNoShow();
+                                storeTotalAbort = statsBizStoreDaily.getTotalAbort();
+                                storeClientsPreviouslyVisitedThisBusiness = statsBizStoreDaily.getClientsPreviouslyVisitedThisStore();
+                                storeTotalRating = statsBizStoreDaily.getTotalRating();
+                                storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
+                                storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
 
-                            totalClient = totalClient + storeTotalClient;
-                            totalServiced = totalServiced + storeTotalServiced;
-                            totalNoShow = totalNoShow + storeTotalNoShow;
-                            totalAbort = totalAbort + storeTotalAbort;
-                            clientsPreviouslyVisitedThisBusiness = clientsPreviouslyVisitedThisBusiness + storeClientsPreviouslyVisitedThisBusiness;
-                            totalRating = totalRating + storeTotalRating;
-                            totalCustomerRated = totalCustomerRated + storeTotalCustomerRated;
-                            totalHoursSaved = totalHoursSaved + storeTotalHoursSaved;
+                                totalClient = totalClient + storeTotalClient;
+                                totalServiced = totalServiced + storeTotalServiced;
+                                totalNoShow = totalNoShow + storeTotalNoShow;
+                                totalAbort = totalAbort + storeTotalAbort;
+                                clientsPreviouslyVisitedThisBusiness = clientsPreviouslyVisitedThisBusiness + storeClientsPreviouslyVisitedThisBusiness;
+                                totalRating = totalRating + storeTotalRating;
+                                totalCustomerRated = totalCustomerRated + storeTotalCustomerRated;
+                                totalHoursSaved = totalHoursSaved + storeTotalHoursSaved;
+                            }
+
+                            Map<String, Object> rootMap = new HashMap<>();
+                            rootMap.put("day", DateUtil.dateToString(since, DateUtil.DTF_DD_MMM_YYYY));
+                            rootMap.put("businessName", businessName);
+                            rootMap.put("totalClient", totalClient);
+                            rootMap.put("totalServiced", totalServiced);
+                            rootMap.put("totalNoShow", totalNoShow);
+                            rootMap.put("totalAbort", totalAbort);
+                            rootMap.put("clientsPreviouslyVisitedThisBusiness", clientsPreviouslyVisitedThisBusiness);
+                            rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
+                            rootMap.put("totalRating", totalRating);
+                            rootMap.put("totalCustomerRated", totalCustomerRated);
+                            rootMap.put("totalHoursSaved", totalHoursSaved);
+
+                            List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
+                            for (BusinessUserEntity businessUser : businessUsers) {
+                                mailSentCount.getAndIncrement();
+
+                                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
+                                mailService.sendAnyMail(
+                                    userProfile.getEmail(),
+                                    userProfile.getName(),
+                                    businessName + " Daily Summary",
+                                    rootMap,
+                                    "stats/admin-overview.ftl");
+                            }
+                        } catch (Exception e) {
+                            LOG.error("Failed sending stat bizName id={} name={} reason={}", bizName.getId(), bizName.getBusinessName(), e.getLocalizedMessage(), e);
                         }
-
-                        Map<String, Object> rootMap = new HashMap<>();
-                        rootMap.put("day", DateUtil.dateToString(since, DateUtil.DTF_DD_MMM_YYYY));
-                        rootMap.put("businessName", businessName);
-                        rootMap.put("totalClient", totalClient);
-                        rootMap.put("totalServiced", totalServiced);
-                        rootMap.put("totalNoShow", totalNoShow);
-                        rootMap.put("totalAbort", totalAbort);
-                        rootMap.put("clientsPreviouslyVisitedThisBusiness", clientsPreviouslyVisitedThisBusiness);
-                        rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
-                        rootMap.put("totalRating", totalRating);
-                        rootMap.put("totalCustomerRated", totalCustomerRated);
-                        rootMap.put("totalHoursSaved", totalHoursSaved);
-
-                        List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
-                        for (BusinessUserEntity businessUser : businessUsers) {
-                            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
-                            mailService.sendAnyMail(userProfile.getEmail(), userProfile.getName(), businessName + " Daily Summary", rootMap, "stats/admin-overview.ftl");
-                        }
-                    } catch (Exception e) {
-                        LOG.error("Failed sending stat bizName id={} name={} reason={}", bizName.getId(), bizName.getBusinessName(), e.getLocalizedMessage(), e);
-                    }
-                });
+                    });
+                }
             }
+        } catch (Exception e) {
+            LOG.error("Failed sending business status mail to admins reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            statsCron.addStats("sentMail", mailSentCount.get());
+            statsCron.addStats("businessCount", businessCount.get());
+            statsCronService.save(statsCron);
+
+            /* Without if condition its too noisy. */
+            LOG.info("Business Status Mail sentMail={} businessCount={}", mailSentCount.get(), businessCount.get());
+
         }
     }
 
