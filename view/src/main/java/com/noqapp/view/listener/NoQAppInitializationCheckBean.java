@@ -1,7 +1,6 @@
 package com.noqapp.view.listener;
 
 import com.noqapp.common.config.FirebaseConfig;
-import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
@@ -21,6 +20,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import org.elasticsearch.action.main.MainResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
@@ -119,12 +119,12 @@ public class NoQAppInitializationCheckBean {
     @PostConstruct
     public void checkElasticConnection() {
         try {
-            if (!restHighLevelClient.ping(CommonUtil.getMeSomeHeader())) {
+            if (!restHighLevelClient.ping(RequestOptions.DEFAULT)) {
                 LOG.error("Elastic could not be connected");
                 throw new RuntimeException("Elastic could not be connected");
             }
 
-            MainResponse mainResponse = restHighLevelClient.info(CommonUtil.getMeSomeHeader());
+            MainResponse mainResponse = restHighLevelClient.info(RequestOptions.DEFAULT);
             LOG.info("Elastic {} connected clusterName={} nodeName={}\n  build={}\n  clusterUuid={}\n",
                     mainResponse.getVersion(),
                     mainResponse.getClusterName(),
@@ -139,7 +139,6 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkElasticIndex() {
-        elasticAdministrationService.deleteAllIndices();
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
             boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
