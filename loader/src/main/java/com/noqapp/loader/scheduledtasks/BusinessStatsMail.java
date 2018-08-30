@@ -100,7 +100,7 @@ public class BusinessStatsMail {
         AtomicInteger businessCount = new AtomicInteger();
         try {
             Calendar date = Calendar.getInstance();
-            date.set(Calendar.HOUR_OF_DAY, 11);
+            date.set(Calendar.HOUR_OF_DAY, 7);
             List<String> zones = getAllTimeZones(date);
             Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
             for (String zone : zones) {
@@ -168,7 +168,7 @@ public class BusinessStatsMail {
                             rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
-                            rootMap.put("totalHoursSaved", totalHoursSaved);
+                            rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
 
                             List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
                             for (BusinessUserEntity businessUser : businessUsers) {
