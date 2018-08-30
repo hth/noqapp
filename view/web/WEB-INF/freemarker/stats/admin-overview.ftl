@@ -51,7 +51,7 @@
 		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Your Daily Summary for ${day}</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			Name: <strong>${businessName}</strong><br/>
-			Clients: ${totalClient}<br/>
+			Clients/Patients: ${totalClient}<br/>
 			Serviced: ${totalServiced}<br/>
 			No Show (Skipped): ${totalNoShow}<br/>
 			Abort Visit (Self Cancelled): ${totalAbort}<br/>

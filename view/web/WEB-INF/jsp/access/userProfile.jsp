@@ -214,7 +214,14 @@
                                         <form:label path="email" cssErrorClass="lb_error">Email Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        <c:choose>
+                                            <c:when test="${fn:endsWith(userProfileForm.email, 'mail.noqapp.com')}">
+                                                --
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
