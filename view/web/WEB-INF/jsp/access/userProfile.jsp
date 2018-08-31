@@ -172,7 +172,7 @@
                                     </div>
                                     <div class="col-fields">
                                         <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via App)</span>
+                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client&hl=en" target="_blank">NoQApp</a>)</span>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -239,7 +239,7 @@
                                     <c:choose>
                                     <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
                                     <li>
-                                        <div class="alert-info">
+                                        <div class="alert-info error-box">
                                             <p>
                                                 There is no email address on record. Please add email address. Email address will help in your account recovery.
                                             </p>
