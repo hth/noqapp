@@ -55,70 +55,72 @@
             <!-- Complete profile -->
             <div class="admin-main">
                 <!-- File Upload From -->
-                <form:form action="${pageContext.request.contextPath}/business/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
-                <div class="admin-title">
-                    <h2>Add Business Photo</h2>
-                </div>
-
-                <spring:hasBindErrors name="fileUploadForm">
-                <div class="error-box">
-                    <div class="error-txt">
-                        <ul>
-                            <c:if test="${errors.hasFieldErrors('file')}">
-                                <li><form:errors path="file"/></li>
-                            </c:if>
-                        </ul>
+                <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="codeQR" value="${codeQR}"/>
+                    <div class="admin-title">
+                        <h2>Add Store Photo</h2>
                     </div>
-                </div>
-                </spring:hasBindErrors>
 
-                <div class="admin-content">
-                    <div class="add-new">
-                        <ul class="list-form">
-                            <li>
-                                <div class="col-lable3" style="padding-top: 30px;">
-                                    <form:label path="file" cssErrorClass="lb_error">Select Business Image</form:label>
+                    <spring:hasBindErrors name="fileUploadForm">
+                    <div class="error-box">
+                        <div class="error-txt">
+                            <ul>
+                                <c:if test="${errors.hasFieldErrors('file')}">
+                                    <li><form:errors path="file"/></li>
+                                </c:if>
+                            </ul>
+                        </div>
+                    </div>
+                    </spring:hasBindErrors>
+
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <ul class="list-form">
+                                <li>
+                                    <div class="col-lable3" style="padding-top: 30px;">
+                                        <form:label path="file" cssErrorClass="lb_error">Select Store Image</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input class="next-btn" type="file" path="file" id="file"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+
+                            <div class="col-lable3"></div>
+                            <div class="col-fields">
+                                <div class="left-btn">
+                                    <input name="upload" class="next-btn" value="UPLOAD STORE IMAGE" type="submit">
                                 </div>
-                                <div class="col-fields">
-                                    <form:input class="next-btn" type="file" path="file" id="file"/>
-                                </div>
+                                    <%--<div class="right-btn">--%>
+                                    <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                    <%--</div>--%>
                                 <div class="clearFix"></div>
-                            </li>
-                        </ul>
-
-                        <div class="col-lable3"></div>
-                        <div class="col-fields">
-                            <div class="left-btn">
-                                <input name="upload" class="next-btn" value="UPLOAD BUSINESS IMAGE" type="submit">
                             </div>
-                            <%--<div class="right-btn">--%>
-                                <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
-                            <%--</div>--%>
                             <div class="clearFix"></div>
                         </div>
-                        <div class="clearFix"></div>
                     </div>
-                </div>
                 </form:form>
 
                 <div class="admin-title">
-                    <h2>Business Photos</h2>
+                    <h2>Store Photos</h2>
                 </div>
                 <div class="admin-content">
                     <div class="add-new">
                         <c:choose>
-                        <c:when test="${!empty businessServiceImages}">
+                        <c:when test="${!empty storeServiceImages}">
                             <ul class="list-form">
-                            <c:forEach items="${businessServiceImages}" var="serviceImage" varStatus="status">
+                            <c:forEach items="${storeServiceImages}" var="serviceImage" varStatus="status">
                                 <li>
                                     <div class="col-fields">
                                         <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${serviceImage}"
-                                             onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
-                                             class="img-profile-circle" />
+                                                onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                                                class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
-                                        <form action="${pageContext.request.contextPath}/business/deleteServicePhoto.htm" method="post">
-                                            <input type="hidden" name="businessServiceImage" value="${serviceImage}"/>
+                                        <form action="${pageContext.request.contextPath}/business/store/photo/deleteServicePhoto.htm" method="post">
+                                            <input type="hidden" name="storeServiceImage" value="${serviceImage}"/>
+                                            <input type="hidden" name="codeQR" value="${codeQR}"/>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <div class="left-btn">
                                                 <input name="upload" class="next-btn" value="DELETE" type="submit">
@@ -132,7 +134,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="alert-info">
-                                <div class="no-approve">Please upload business related photographs.</div>
+                                <div class="no-approve">Please upload store related photographs.</div>
                             </div>
                         </c:otherwise>
                         </c:choose>

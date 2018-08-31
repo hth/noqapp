@@ -205,7 +205,58 @@ public class FileService {
 
             LOG.debug("Uploaded bizName service file={}", toFileAbsolutePath);
         } catch (IOException e) {
-            LOG.error("Failed adding profile image={} reason={}", filename, e.getLocalizedMessage(), e);
+            LOG.error("Failed adding bizName image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
+    @Async
+    public void addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage) {
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+
+        try {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+            Set<String> businessServiceImages = bizStore.getStoreServiceImages();
+
+            while (businessServiceImages.size() >= 10) {
+                String lastImage = businessServiceImages.stream().findFirst().get();
+                deleteImage(qid, lastImage, bizStore.getCodeQR());
+                /* Delete local reference. */
+                businessServiceImages.remove(lastImage);
+            }
+
+            toFile = writeToFile(
+                createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
+                bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            String toFileAbsolutePath = getTmpDir()                     // /java/temp/directory
+                + getFileSeparator()                                    // FileSeparator /
+                + filename;                                             // filename.extension
+
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, bizStore.getCodeQR(), FtpService.SERVICE);
+
+            businessServiceImages.add(filename);
+            bizStoreManager.save(bizStore);
+
+            LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
+        } catch (IOException e) {
+            LOG.error("Failed adding store image={} reason={}", filename, e.getLocalizedMessage(), e);
         } finally {
             if (null != toFile) {
                 toFile.delete();

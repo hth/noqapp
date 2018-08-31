@@ -101,7 +101,10 @@
                                                 || BusinessTypeEnum.RA eq store.businessType
                                                 || BusinessTypeEnum.PY eq store.businessType
                                                 || BusinessTypeEnum.PT eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a> | <a href="/business/store/category/${store.id}.htm">Store Category</a></span>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a>
+                                                        | <a href="/business/store/category/${store.id}.htm">Store Category</a>
+                                                        | <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm">Add Store Photo</a>
+                                                    </span>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <span style="display:block; font-size:13px;">Blank Here</span>
