@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.NotNull;
 
 /**
- * Provides a place holder for business to link their customer id with NoQ qid.
+ * Provides a place holder for businesses to link their customer id's with NoQ qid.
  * hitender
  * 6/17/18 2:02 PM
  */

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Keeps track of business user approvals.
  * User: hitender
  * Date: 11/23/16 4:37 PM
  */
