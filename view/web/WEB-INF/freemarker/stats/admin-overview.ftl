@@ -57,7 +57,7 @@
 			Abort Visit (Self Cancelled): ${totalAbort}<br/>
 			New Clients/Patients: ${newCustomer}<br/>
 			<br/>
-            Previously Visited Clients/Patients: ${clientsPreviouslyVisitedThisBusiness}<br/>
+			Previously Visited Clients/Patients: ${clientsPreviouslyVisitedThisBusiness}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			<strong>Customer Reviews</strong><br/>
@@ -65,7 +65,7 @@
 			Clients/Patients Rated: ${totalCustomerRated}<br/>
 			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs (since beginning of time)<br/>
 			<br/>
-            (Note: This stats email is work in progress)
+			(Note: This stats email is work in progress)
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			<strong>NoQueue Technologies</strong>
