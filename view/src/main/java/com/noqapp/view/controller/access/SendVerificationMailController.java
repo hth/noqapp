@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.access;
 
+import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
+
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.service.ApiHealthService;
@@ -73,6 +75,12 @@ public class SendVerificationMailController {
         LOG.info("Landed on sendMailVerification page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
+        if (userAccount.getUserId().endsWith(MAIL_NOQAPP_COM)) {
+            /* Re-direct to enter email address. */
+            LOG.warn("No email found. Attempted bad behaviour by {} {}", queueUser.getQueueUserId(), userAccount.getUserId());
+            //TODO(hth) create email update page.
+        }
+
         if (userAccount.isAccountValidated()) {
             profile.setAccountValidated(true);
         }

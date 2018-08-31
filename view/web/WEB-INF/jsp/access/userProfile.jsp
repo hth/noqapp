@@ -241,7 +241,7 @@
                                     <li>
                                         <div class="alert-info">
                                             <p>
-                                                There is no email address added to your profile. Please add email address.
+                                                There is no email address on record. Please add email address. Email address will help in your account recovery.
                                             </p>
                                         </div>
                                     </li>
