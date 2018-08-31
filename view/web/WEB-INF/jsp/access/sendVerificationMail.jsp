@@ -110,11 +110,13 @@
                     </c:otherwise>
                 </c:choose>
 
+                <c:if test="${!profile.submitState && !profile.accountValidated}">
                 <div class="alert-info">
                     <p>
                         You should receive an email in 5 minutes. Click on the link in email to validate your email address.
                     </p>
                 </div>
+                </c:if>
             </div>
             <!-- Add New Supervisor -->
 
