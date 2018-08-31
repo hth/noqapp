@@ -48,22 +48,22 @@
             <#include "../NoQApp.svg">
 		</div>
 
-		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Your Daily Summary for ${day}</strong></p>
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>${businessName} Daily Summary for ${day}</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			Name: <strong>${businessName}</strong><br/>
+			<strong>Clients/Patients Visits</strong><br/>
 			Clients/Patients: ${totalClient}<br/>
 			Serviced: ${totalServiced}<br/>
 			No Show (Skipped): ${totalNoShow}<br/>
 			Abort Visit (Self Cancelled): ${totalAbort}<br/>
-			New Customers: ${newCustomer}<br/>
+			New Clients/Patients: ${newCustomer}<br/>
 			<br/>
-            Previous Visited: ${clientsPreviouslyVisitedThisBusiness}<br/>
+            Previously Visited Clients/Patients: ${clientsPreviouslyVisitedThisBusiness}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			<strong>Customer Reviews</strong><br/>
 			Total Rating: ${totalRating}<br/>
-			Customer Rated: ${totalCustomerRated}<br/>
-			Customer Hour Saved: ${totalHoursSaved}hrs (since beginning of time)<br/>
+			Clients/Patients Rated: ${totalCustomerRated}<br/>
+			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs (since beginning of time)<br/>
             (This is work in progress)
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
