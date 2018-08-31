@@ -64,7 +64,8 @@
 			Total Rating: ${totalRating}<br/>
 			Clients/Patients Rated: ${totalCustomerRated}<br/>
 			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs (since beginning of time)<br/>
-            (This is work in progress)
+			<br/>
+            (Note: This stats email is work in progress)
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			<strong>NoQueue Technologies</strong>
