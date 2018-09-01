@@ -53,6 +53,7 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Complete profile -->
+            <sec:authorize access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
             <div class="admin-main">
                 <!-- File Upload From -->
                 <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
@@ -141,6 +142,7 @@
                     </div>
                 </div>
             </div>
+            </sec:authorize>
             <!-- Complete profile -->
         </div>
     </div>
