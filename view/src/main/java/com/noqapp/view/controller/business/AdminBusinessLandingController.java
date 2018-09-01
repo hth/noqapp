@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -593,6 +594,42 @@ public class AdminBusinessLandingController {
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
         return authorizedUsersPage;
+    }
+
+    @PostMapping(
+        value = "/changeLevel",
+        headers = "Accept=application/json",
+        produces = "application/json")
+    public void changeLevel(
+        @RequestParam("id")
+        ScrubbedInput id,
+
+        @RequestParam ("userLevel")
+        ScrubbedInput userLevel,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return;
+        }
+        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        try {
+            BusinessUserEntity businessUserOfId = businessUserService.findById(id.getText());
+            long change = businessUserStoreService.changeUserLevel(businessUserOfId.getQueueUserId(), UserLevelEnum.valueOf(userLevel.getText()));
+            if (2 == change) {
+                LOG.info("Changed userLevel successfully for qid={} level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+            } else {
+                LOG.warn("Failed changing userLevel successfully for qid={} level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+            }
+        } catch (Exception e) {
+            LOG.error("Failed changing userLevel reason={}", e.getLocalizedMessage(), e);
+        }
     }
 
     /**

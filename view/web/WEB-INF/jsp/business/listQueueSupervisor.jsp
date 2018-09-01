@@ -100,7 +100,16 @@
                                                         <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
                                                         <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
                                                     </td>
-                                                    <td><span style="display:block; font-size:13px;">${queueSupervisor.email}</span></td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
+                                                                --
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span style="display:block; font-size:13px;">${queueSupervisor.email}</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td nowrap>
                                                         <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
                                                     </td>
@@ -183,7 +192,16 @@
                                             <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
                                             <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
                                         </td>
-                                        <td><span style="display:block; font-size:13px;">${queueSupervisor.email}</span></td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
+                                                    --
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;">${queueSupervisor.email}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                         <td><span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span></td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>

@@ -1,6 +1,6 @@
 package com.noqapp.view.controller.business.store;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
@@ -101,9 +101,9 @@ public class StoreProductController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Landed on product page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -149,9 +149,9 @@ public class StoreProductController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Adding business product qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -188,7 +188,7 @@ public class StoreProductController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel adding new product qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/store/landing.htm";
     }
 
     /** Edit landing category name. */
@@ -207,9 +207,9 @@ public class StoreProductController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Landed on editing product page storeProductId={} bizStoreId={} qid={} level={}",
@@ -248,9 +248,9 @@ public class StoreProductController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Edit product storeProductId={} bizStoreId={} qid={} level={}",
@@ -294,7 +294,7 @@ public class StoreProductController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel product edit qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/store/landing.htm";
     }
 
     /** Delete product. */
@@ -306,9 +306,9 @@ public class StoreProductController {
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Delete product id={} qid={} level={}",
@@ -331,9 +331,9 @@ public class StoreProductController {
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeProductForm.getBizStoreId().getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
         LOG.info("Forced refresh preferred product bizStoreId={} qid={} level={}",
@@ -343,6 +343,6 @@ public class StoreProductController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         fileService.createPreferredBusinessFiles(storeProductForm.getBizStoreId().getText());
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/store/landing.htm";
     }
 }

@@ -104,7 +104,7 @@ public class StorePhotoController {
     ) throws IOException {
         LOG.info("Landing page to load store images");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR.getText())) {
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
@@ -131,7 +131,7 @@ public class StorePhotoController {
         LOG.info("Delete store service image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String codeQR = request.getParameter("codeQR");
-        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR)) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
@@ -163,7 +163,7 @@ public class StorePhotoController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("uploading image qid={}", queueUser.getQueueUserId());
         String codeQR = httpServletRequest.getParameter("codeQR");
-        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR)) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;

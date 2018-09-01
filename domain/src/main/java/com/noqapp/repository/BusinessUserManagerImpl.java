@@ -1,10 +1,12 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -12,7 +14,12 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
+import com.mongodb.client.result.UpdateResult;
+
 import org.bson.types.ObjectId;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -36,6 +43,7 @@ import java.util.List;
 })
 @Repository
 public class BusinessUserManagerImpl implements BusinessUserManager {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessUserManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BusinessUserEntity.class,
             Document.class,
@@ -179,5 +187,18 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
             ),
             BusinessUserEntity.class,
             TABLE);
+    }
+
+    @Override
+    public long updateUserLevel(String qid, UserLevelEnum userLevel) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+            query(where("QID").is(qid)),
+            entityUpdate(update("UL", userLevel)),
+            BusinessUserEntity.class,
+            TABLE
+        );
+
+        LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
+        return updateResult.getModifiedCount();
     }
 }
