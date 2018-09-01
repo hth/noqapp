@@ -90,26 +90,6 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>
                                             <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px;">${store.addressWrappedFunky}</a>
-                                            <br/>
-                                            <c:choose>
-                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
-                                                || BusinessTypeEnum.BA eq store.businessType
-                                                || BusinessTypeEnum.ST eq store.businessType
-                                                || BusinessTypeEnum.GS eq store.businessType
-                                                || BusinessTypeEnum.CF eq store.businessType
-                                                || BusinessTypeEnum.PH eq store.businessType
-                                                || BusinessTypeEnum.RA eq store.businessType
-                                                || BusinessTypeEnum.PY eq store.businessType
-                                                || BusinessTypeEnum.PT eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a>
-                                                        | <a href="/business/store/category/${store.id}.htm">Store Category</a>
-                                                        | <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm">Add Store Photo</a>
-                                                    </span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span style="display:block; font-size:13px;">Blank Here</span>
-                                                </c:otherwise>
-                                            </c:choose>
                                         </td>
                                         <td nowrap>
                                             <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
