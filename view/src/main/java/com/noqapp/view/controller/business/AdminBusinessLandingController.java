@@ -596,6 +596,7 @@ public class AdminBusinessLandingController {
         return authorizedUsersPage;
     }
 
+    /** Note: As of now, there is no support for same QID being used between different businesses. Level change is across the board. */
     @PostMapping(
         value = "/changeLevel",
         headers = "Accept=application/json",
