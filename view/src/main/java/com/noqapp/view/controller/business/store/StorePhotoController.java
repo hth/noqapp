@@ -1,21 +1,18 @@
 package com.noqapp.view.controller.business.store;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
 import com.noqapp.view.controller.access.UserProfileController;
-import com.noqapp.view.controller.business.AdminBusinessLandingController;
-import com.noqapp.view.controller.business.BusinessServicePhotoController;
+import com.noqapp.view.controller.business.BusinessPhotoController;
 import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.validator.ImageValidator;
 
@@ -63,13 +60,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "/business/store/photo")
 public class StorePhotoController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessServicePhotoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessPhotoController.class);
 
     private String bucketName;
 
     private BizService bizService;
-    private BusinessUserService businessUserService;
-    private BusinessUserStoreManager businessUserStoreManager;
+    private BusinessUserStoreService businessUserStoreService;
     private FileService fileService;
     private ApiHealthService apiHealthService;
     private ImageValidator imageValidator;
@@ -80,8 +76,7 @@ public class StorePhotoController {
         String bucketName,
 
         BizService bizService,
-        BusinessUserService businessUserService,
-        BusinessUserStoreManager businessUserStoreManager,
+        BusinessUserStoreService businessUserStoreService,
         FileService fileService,
         ApiHealthService apiHealthService,
         ImageValidator imageValidator
@@ -89,8 +84,7 @@ public class StorePhotoController {
         this.bucketName = bucketName;
 
         this.bizService = bizService;
-        this.businessUserService = businessUserService;
-        this.businessUserStoreManager = businessUserStoreManager;
+        this.businessUserStoreService = businessUserStoreService;
         this.fileService = fileService;
         this.apiHealthService = apiHealthService;
         this.imageValidator = imageValidator;
@@ -108,20 +102,14 @@ public class StorePhotoController {
         Model model,
         HttpServletResponse response
     ) throws IOException {
-        LOG.info("Loading store service image");
+        LOG.info("Landing page to load store images");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        if (null == businessUser) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        if (!businessUserStoreManager.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR.getText())) {
-            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
-            return null;
-        }
-        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store image codeQR={} qid={} level={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         /* Different binding for different form. */
@@ -142,22 +130,15 @@ public class StorePhotoController {
     public String deleteServicePhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOG.info("Delete store service image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        if (null == businessUser) {
-            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
-            return null;
-        }
         String codeQR = request.getParameter("codeQR");
-        if (!businessUserStoreManager.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Delete store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        LOG.info("Delete businessServiceImage={}", request.getParameter("storeServiceImage"));
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("storeServiceImage"), codeQR);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
@@ -181,19 +162,13 @@ public class StorePhotoController {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("uploading image qid={}", queueUser.getQueueUserId());
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        if (null == businessUser) {
-            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
-            return null;
-        }
         String codeQR = httpServletRequest.getParameter("codeQR");
-        if (!businessUserStoreManager.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
+        if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), codeQR)) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Upload store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
