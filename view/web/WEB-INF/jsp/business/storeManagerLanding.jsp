@@ -53,6 +53,7 @@
     <!-- content -->
     <div class="content">
         <div class="warp-inner">
+            <sec:authorize access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-content">
@@ -83,9 +84,7 @@
                                         <th>Queue Name</th>
                                         <th>Serving</th>
                                         <th>In Queue</th>
-                                        <th>Rating</th>
-                                        <th>Rating Count</th>
-                                        <th>Average Service Time</th>
+                                        <th>Rating & AHT</th>
                                         <th nowrap>Create Date</th>
                                     </tr>
                                     <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
@@ -95,9 +94,21 @@
                                             <a href="/business/detail/store/${store.id}.htm">
                                                 <span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span>
                                             </a>
+                                            <br/>
                                             <c:choose>
-                                                <c:when test="${BusinessTypeEnum.ST eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" target="_blank">Product List</a> | <a href="/business/store/category/${store.id}.htm" target="_blank">Store Category</a></span>
+                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                || BusinessTypeEnum.BA eq store.businessType
+                                                || BusinessTypeEnum.ST eq store.businessType
+                                                || BusinessTypeEnum.GS eq store.businessType
+                                                || BusinessTypeEnum.CF eq store.businessType
+                                                || BusinessTypeEnum.PH eq store.businessType
+                                                || BusinessTypeEnum.RA eq store.businessType
+                                                || BusinessTypeEnum.PY eq store.businessType
+                                                || BusinessTypeEnum.PT eq store.businessType}">
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a>
+                                                        | <a href="/business/store/category/${store.id}.htm">Store Category</a>
+                                                        | <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm">Add Store Photo</a>
+                                                    </span>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <span style="display:block; font-size:13px;">Blank Here</span>
@@ -116,13 +127,9 @@
                                             <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;">${store.ratingFormatted}</span>
-                                        </td>
-                                        <td>
-                                            <span style="display:block; font-size:13px;">${store.ratingCount}</span>
-                                        </td>
-                                        <td nowrap>
-                                            <span style="display:block; font-size:13px;">${store.averageServiceTimeFormatted}</span>
+                                            <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.ratingCount})</span>
+                                            <br/>
+                                            <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/></span>
@@ -141,7 +148,7 @@
                 </div>
             </div>
             <!-- Add New Supervisor -->
-
+            </sec:authorize>
         </div>
     </div>
     <!-- content end -->

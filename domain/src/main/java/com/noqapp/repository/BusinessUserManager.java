@@ -58,4 +58,6 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
     List<BusinessUserEntity> getAllForBusiness(String bizNameId);
 
     List<BusinessUserEntity> getAllForBusiness(String bizNameId, UserLevelEnum userLevel);
+
+    long updateUserLevel(String qid, UserLevelEnum userLevel);
 }

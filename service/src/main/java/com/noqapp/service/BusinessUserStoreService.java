@@ -7,6 +7,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.QueueSupervisor;
@@ -210,6 +211,23 @@ public class BusinessUserStoreService {
         /* Sort by name. */
         queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
+    }
+
+    /**
+     * When Store Level is changed, updated the same across the board.
+     * As of now, there is no support for same QID being used between different businesses.
+     * Means, no two business will have same user as Supervisor or Manager.
+     */
+    public long changeUserLevel(String qid, UserLevelEnum userLevel) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        userProfile.setLevel(userLevel);
+        accountService.save(userProfile);
+
+        long change = businessUserStoreManager.updateUserLevel(qid, userLevel);
+        change = change + businessUserService.updateUserLevel(qid, userLevel);
+        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(qid, userLevel);
+        accountService.save(userAccount);
+        return change;
     }
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {

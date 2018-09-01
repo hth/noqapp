@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.UserLevelEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessUserRegistrationStatusEnum, com.noqapp.domain.types.UserLevelEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -67,101 +67,111 @@
                         <div class="add-store">
                             <div class="store-table">
                                 <spring:hasBindErrors name="errorMessage">
-                                    <div class="error-box">
-                                        <div class="error-txt">
-                                            <ul>
-                                                <li><form:errors path="errorMessage"/></li>
-                                            </ul>
-                                        </div>
+                                <div class="error-box">
+                                    <div class="error-txt">
+                                        <ul>
+                                            <li><form:errors path="errorMessage"/></li>
+                                        </ul>
                                     </div>
-                                    <div class="space10"></div>
+                                </div>
+                                <div class="space10"></div>
                                 </spring:hasBindErrors>
 
                                 <c:choose>
-                                    <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>
+                                                Name
+                                                &nbsp;
+                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                     alt="Sort" height="16px;"/>
+                                            </th>
+                                            <th>Address</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Since</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                        <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                             <tr>
-                                                <th>&nbsp;</th>
-                                                <th>
-                                                    Name
-                                                    &nbsp;
-                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                         alt="Sort" height="16px;"/>
-                                                </th>
-                                                <th>Address</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Since</th>
-                                                <th>&nbsp;</th>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td nowrap>
+                                                    <c:choose>
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
+                                                            <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                    <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
+                                                            <span style="display:block; font-size:13px;">
+                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">--</a>
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">
+                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">${queueSupervisor.email}</a>
+                                                            </span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td nowrap width="130px;">
+                                                <c:choose>
+                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
+                                                        <select id="userLevel${status.count}" class="form-field-select single-dropdown"
+                                                                style="display:block; font-size:13px;"
+                                                                onchange="changeUserLevel('${queueSupervisor.businessUserId}', '${status.count}');">
+                                                            <c:forEach var="item" items="${userLevelEnumValues}">
+                                                            <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                </td>
+                                                <td nowrap>
+                                                    <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
+                                                </td>
+                                                <td class="Tleft" width="90px" nowrap>
+                                                <c:choose>
+                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
+                                                        <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                            <form:hidden path="action" value="DELETE" />
+                                                            <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                            <input class="cancel-btn" value="Delete" type="submit">
+                                                        </form:form>
+                                                    </c:when>
+                                                    <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.C}">
+                                                        Approve / Reject <br/>
+                                                        (Pending)
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        --
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                </td>
                                             </tr>
-                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
-                                            <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td nowrap>
-                                                        <c:choose>
-                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                                <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td>
-                                                        <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
-                                                        <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
-                                                    </td>
-                                                    <td>
-                                                        <span style="display:block; font-size:13px;">
-                                                            <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">${queueSupervisor.email}</a>
-                                                        </span>
-                                                    </td>
-                                                    <td nowrap width="130px;">
-                                                    <c:choose>
-                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                            <select path="userLevel" class="form-field-select single-dropdown" style="display:block; font-size:13px;">
-                                                                <c:forEach var="item" items="${userLevelEnumValues}">
-                                                                    <%--//TODO Add ajax call to change user role--%>
-                                                                    <option value="${item}" ${item == queueSupervisor.userLevel ? 'selected="selected"' : ''}>${item.description}</option>
-                                                                </c:forEach>
-                                                            </select>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    </td>
-                                                    <td nowrap>
-                                                        <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
-                                                    </td>
-                                                    <td class="Tleft" width="90px" nowrap>
-                                                    <c:choose>
-                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V' && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                                <form:hidden path="action" value="DELETE" />
-                                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                                <input class="cancel-btn" value="Delete" type="submit">
-                                                            </form:form>
-                                                        </c:when>
-                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                            Approve / Reject <br/>
-                                                            (Pending)
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            --
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>There is no supervisor added to manage queue. Highly recommended to add queue supervisor. Select a queue to add supervisor.</p>
-                                        </div>
-                                    </c:otherwise>
+                                        </c:forEach>
+                                    </table>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="alert-info">
+                                        <p>There is no supervisor added to manage queue. Highly recommended to add queue supervisor. Select a queue to add supervisor.</p>
+                                    </div>
+                                </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>
@@ -199,5 +209,20 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
-
+<script>
+    function changeUserLevel(id, position) {
+        var userLevel = $( "#userLevel" + position).val();
+        $.ajax({
+            url: '${pageContext. request. contextPath}/business/changeLevel.htm',
+            data: {
+                id: id,
+                userLevel: userLevel
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            },
+            type: "POST"
+        });
+    }
+</script>
 </html>

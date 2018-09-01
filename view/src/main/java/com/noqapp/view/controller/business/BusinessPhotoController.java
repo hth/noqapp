@@ -57,8 +57,8 @@ import javax.servlet.http.HttpServletResponse;
 })
 @Controller
 @RequestMapping
-public class BusinessServicePhotoController {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessServicePhotoController.class);
+public class BusinessPhotoController {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessPhotoController.class);
 
     private String bucketName;
 
@@ -69,7 +69,7 @@ public class BusinessServicePhotoController {
     private ImageValidator imageValidator;
 
     @Autowired
-    public BusinessServicePhotoController(
+    public BusinessPhotoController(
         @Value("${aws.s3.bucketName}")
         String bucketName,
 
@@ -134,7 +134,6 @@ public class BusinessServicePhotoController {
         LOG.info("Edit business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        LOG.info("Delete businessServiceImage={}", request.getParameter("businessServiceImage"));
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("businessServiceImage"), businessUser.getBizName().getCodeQR());
 
         BizNameEntity bizName = businessUser.getBizName();
@@ -191,7 +190,7 @@ public class BusinessServicePhotoController {
                     apiHealthService.insert(
                         "/uploadServicePhoto",
                         "uploadServicePhoto",
-                        BusinessServicePhotoController.class.getName(),
+                        BusinessPhotoController.class.getName(),
                         Duration.between(start, Instant.now()),
                         HealthStatusEnum.F);
                 }

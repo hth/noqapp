@@ -42,19 +42,19 @@ public class ProfessionalProfileService {
         }
     }
 
-    /**
-     * Delete valid only when license field empty or education field is empty.
-     */
+    /** Delete valid only when license field empty or education field is empty. */
     public void softDeleteProfessionalProfileProfile(String qid) {
-        ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
-        if (null == professionalProfile.getLicenses()
-            || null == professionalProfile.getEducation()
-            || professionalProfile.getLicenses().isEmpty()
-            || professionalProfile.getEducation().isEmpty()) {
-            professionalProfile.markAsDeleted();
-            professionalProfileManager.save(professionalProfile);
-        } else {
-            LOG.warn("Skip deleting professional profile qid={}", qid);
+        if (professionalProfileManager.existsQid(qid)) {
+            ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
+            if (null == professionalProfile.getLicenses()
+                || null == professionalProfile.getEducation()
+                || professionalProfile.getLicenses().isEmpty()
+                || professionalProfile.getEducation().isEmpty()) {
+                professionalProfile.markAsDeleted();
+                professionalProfileManager.save(professionalProfile);
+            } else {
+                LOG.warn("Skip deleting professional profile qid={}", qid);
+            }
         }
     }
 

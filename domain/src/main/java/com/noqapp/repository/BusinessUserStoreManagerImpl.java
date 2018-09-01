@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -66,11 +67,13 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
     @Override
     public boolean hasAccess(String qid, String codeQR) {
+        Assert.hasText(codeQR, "codeQR is empty");
         return mongoTemplate.exists(query(where("QID").is(qid).and("QR").is(codeQR)), BusinessUserStoreEntity.class, TABLE);
     }
 
     @Override
     public boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel) {
+        Assert.hasText(codeQR, "codeQR is empty");
         return mongoTemplate.exists(
                 query(where("QID").is(qid).and("QR").is(codeQR).and("UL").is(userLevel)),
                 BusinessUserStoreEntity.class,
@@ -79,6 +82,7 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
     @Override
     public boolean hasAccessUsingStoreId(String qid, String bizStoreId) {
+        Assert.hasText(bizStoreId, "bizStoreId is empty");
         return mongoTemplate.exists(query(where("QID").is(qid).and("BS").is(bizStoreId)), BusinessUserStoreEntity.class, TABLE);
     }
 

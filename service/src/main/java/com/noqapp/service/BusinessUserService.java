@@ -132,4 +132,8 @@ public class BusinessUserService {
 
         return businessUser.getBusinessUserRegistrationStatus();
     }
+
+    long updateUserLevel(String qid, UserLevelEnum userLevel) {
+        return businessUserManager.updateUserLevel(qid, userLevel);
+    }
 }

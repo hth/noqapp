@@ -37,6 +37,5 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR);
 
-    @Deprecated
     long updateUserLevel(String qid, UserLevelEnum userLevel);
 }
