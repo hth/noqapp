@@ -209,7 +209,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             }
         }
 
-        if (categories != null) {
+        if (null != categories) {
             String categoryDescription = categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null);
             if (null != categoryDescription) {
                 bizStoreElastic.setBizCategoryName(categoryDescription);
