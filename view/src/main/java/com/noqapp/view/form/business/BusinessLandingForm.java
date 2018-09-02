@@ -3,6 +3,7 @@ package com.noqapp.view.form.business;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class BusinessLandingForm {
 
     private String bizName;
+    private BusinessTypeEnum businessType;
     private String bizCodeQR;
     private List<BizStoreEntity> bizStores;
     private Map<String, QueueDetail> queueDetails = new HashMap<>();
@@ -29,6 +31,15 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm setBizName(String bizName) {
         this.bizName = bizName;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public BusinessLandingForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 

@@ -65,7 +65,14 @@
                         <div class="add-store">
                             <div class="addbtn-store">
                                 <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
-                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                <c:choose>
+                                    <c:when test="${BusinessTypeEnum.PH eq businessLandingForm.businessType}">
+
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                    </c:otherwise>
+                                </c:choose>
                                 <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
                             </div>
                             <div class="store-table">

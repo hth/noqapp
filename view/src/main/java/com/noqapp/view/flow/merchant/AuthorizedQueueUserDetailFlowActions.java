@@ -7,6 +7,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.AuthorizedQueueUser;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -66,7 +67,7 @@ public class AuthorizedQueueUserDetailFlowActions {
 
     @SuppressWarnings("all")
     public AuthorizedQueueUser loadQueueUserDetail(ExternalContext externalContext) {
-        LOG.info("loadQueueUserDetail Start");
+        LOG.info("LoadQueueUserDetail Start");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -107,7 +108,7 @@ public class AuthorizedQueueUserDetailFlowActions {
                 .setName(userProfile.getName())
                 .setEnrolledInStores(enrolledInStores)
                 .setBizStores(bizStores)
-                .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType()));
+                .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
 
         return authorizedQueueUser;
     }

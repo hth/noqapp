@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toMap;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
@@ -27,7 +28,8 @@ import java.util.stream.Stream;
 public class CommonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(CommonHelper.class);
 
-    public static Map<String, String> getCategories(BusinessTypeEnum businessType) {
+    /** Specify who is calling it, as different categories are sent for different business types. */
+    public static Map<String, String> getCategories(BusinessTypeEnum businessType, InvocationByEnum invocationBy) {
         switch (businessType) {
             case DO:
                 List<MedicalDepartmentEnum> medicalDepartmentEnums = Stream.of(MedicalDepartmentEnum.values())
@@ -48,7 +50,10 @@ public class CommonHelper {
                 }
                 return map;
             case PH:
-                return PharmacyCategoryEnum.asMap();
+                /* Pharmacy does not have category at business level, but at store level. */
+                return InvocationByEnum.BUSINESS == invocationBy
+                    ? null
+                    : PharmacyCategoryEnum.asMap(); /* For Store show default categories. */
             case RS:
             case BA:
             case ST:
