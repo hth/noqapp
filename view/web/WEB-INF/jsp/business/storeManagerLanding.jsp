@@ -103,9 +103,13 @@
                                                 || BusinessTypeEnum.RA eq store.businessType
                                                 || BusinessTypeEnum.PY eq store.businessType
                                                 || BusinessTypeEnum.PT eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm">Product List</a>
-                                                        | <a href="/business/store/category/${store.id}.htm">Store Category</a>
-                                                        | <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm">Add Store Photo</a>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #1c1c1c;">Product List</a>
+                                                        &nbsp; <span style="font-size:18px;">|</span> &nbsp;
+                                                        <a href="/business/store/category/${store.id}.htm" style="color: #1c1c1c;">Store Category</a>
+                                                    </span>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Menu Image</a>
+                                                        &nbsp; <span style="font-size:18px;">|</span> &nbsp;
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>
@@ -119,7 +123,6 @@
                                             </a>
                                             <br/>
                                             <span style="display:block; font-size:13px;">Serving: ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
-                                            <br/>
                                             <span style="display:block; font-size:13px;">In Queue: ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>

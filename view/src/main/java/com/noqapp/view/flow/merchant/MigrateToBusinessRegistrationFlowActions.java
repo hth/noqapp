@@ -222,7 +222,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             accountService.updateUserProfile(register.getRegisterUser(), username);
             try {
                 BizNameEntity bizName = registerBusinessDetails(register);
-                /**
+                /*
                  * Even though it is a new business, using
                  * {@link com.noqapp.service.BusinessUserService#findBusinessUser(String, String)} way its safe to
                  * create a new Merchant Admin or update same account when it was rejected/flagged previously. This
@@ -280,8 +280,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         try {
             return registerBusinessDetails(registerBusiness);
         } catch (Exception e) {
-            LOG.error("Error adding business qid={} reason={}",
-                    registerBusiness.getBusinessUser().getQueueUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Error adding business qid={} reason={}", registerBusiness.getBusinessUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error adding business", e);
         }
     }

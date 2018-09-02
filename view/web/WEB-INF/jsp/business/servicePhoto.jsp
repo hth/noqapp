@@ -107,18 +107,18 @@
                 <div class="admin-content">
                     <div class="add-new">
                         <c:choose>
-                        <c:when test="${!empty businessServiceImages}">
+                        <c:when test="${!empty images}">
                             <ul class="list-form">
-                            <c:forEach items="${businessServiceImages}" var="serviceImage" varStatus="status">
+                            <c:forEach items="${images}" var="image" varStatus="status">
                                 <li>
                                     <div class="col-fields">
-                                        <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${serviceImage}"
+                                        <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${image}"
                                              onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
                                              class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
                                         <form action="${pageContext.request.contextPath}/business/deleteServicePhoto.htm" method="post">
-                                            <input type="hidden" name="businessServiceImage" value="${serviceImage}"/>
+                                            <input type="hidden" name="businessServiceImage" value="${image}"/>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <div class="left-btn">
                                                 <input name="upload" class="next-btn" value="DELETE" type="submit">

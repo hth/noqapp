@@ -120,10 +120,46 @@ public class StorePhotoController {
         }
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
-        model.addAttribute("storeServiceImages", bizStore.getStoreServiceImages());
+        model.addAttribute("images", bizStore.getStoreServiceImages());
         model.addAttribute("codeQR", codeQR.getText());
         model.addAttribute("bucketName", bucketName);
         return "/business/storeServicePhoto";
+    }
+
+    /** For uploading interior image. */
+    @GetMapping(value = "/uploadInteriorPhoto/{codeQR}")
+    public String uploadInteriorPhoto(
+        @PathVariable("codeQR")
+        ScrubbedInput codeQR,
+
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        Model model,
+        HttpServletResponse response
+    ) throws IOException {
+        LOG.info("Landing page to load store interior images");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR.getText())) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
+        LOG.info("Landed on store image codeQR={} qid={} level={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("resultImage")) {
+            model.addAttribute(
+                "org.springframework.validation.BindingResult.fileUploadForm",
+                model.asMap().get("resultImage"));
+        }
+
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
+        model.addAttribute("images", bizStore.getStoreInteriorImages());
+        model.addAttribute("codeQR", codeQR.getText());
+        model.addAttribute("bucketName", bucketName);
+        return "/business/storeInteriorPhoto";
     }
 
     @PostMapping(value = "/deleteServicePhoto")
@@ -142,10 +178,32 @@ public class StorePhotoController {
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("storeServiceImage"), codeQR);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-        Set<String> businessServiceImages = bizStore.getStoreServiceImages();
-        businessServiceImages.remove(request.getParameter("storeServiceImage"));
+        Set<String> images = bizStore.getStoreServiceImages();
+        images.remove(request.getParameter("storeServiceImage"));
         bizService.saveStore(bizStore);
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+    }
+
+    @PostMapping(value = "/deleteInteriorPhoto")
+    public String deleteInteriorPhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOG.info("Delete store interior image");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String codeQR = request.getParameter("codeQR");
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR)) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
+        LOG.info("Delete store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("storeInteriorImage"), codeQR);
+
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        Set<String> images = bizStore.getStoreInteriorImages();
+        images.remove(request.getParameter("storeInteriorImage"));
+        bizService.saveStore(bizStore);
+        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
     }
 
     /** For uploading service image. */
@@ -188,7 +246,7 @@ public class StorePhotoController {
                 }
 
                 try {
-                    processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile);
+                    processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, true);
                     return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
@@ -206,7 +264,65 @@ public class StorePhotoController {
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
     }
 
-    private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile) throws IOException {
+    /** For uploading service image. */
+    @PostMapping (value = "/uploadInteriorPhoto")
+    public String uploadInteriorPhoto(
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletRequest httpServletRequest,
+        HttpServletResponse response
+    ) throws IOException {
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("uploading image qid={}", queueUser.getQueueUserId());
+        String codeQR = httpServletRequest.getParameter("codeQR");
+        if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR)) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
+        LOG.info("Upload store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if (isMultipart) {
+            MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
+            final List<MultipartFile> files = UserProfileController.getMultipartFiles(multipartHttpRequest);
+
+            if (!files.isEmpty()) {
+                MultipartFile multipartFile = files.iterator().next();
+
+                imageValidator.validate(multipartFile, result);
+                if (result.hasErrors()) {
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    LOG.warn("Failed validation");
+                    //Re-direct to prevent resubmit
+                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+                }
+
+                try {
+                    processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, false);
+                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+                } catch (Exception e) {
+                    LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
+                    apiHealthService.insert(
+                        "/uploadInteriorPhoto",
+                        "uploadInteriorPhoto",
+                        StorePhotoController.class.getName(),
+                        Duration.between(start, Instant.now()),
+                        HealthStatusEnum.F);
+                }
+
+                return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+            }
+        }
+        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+    }
+
+    private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile, boolean service) throws IOException {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
@@ -214,7 +330,8 @@ public class StorePhotoController {
                 qid,
                 codeQR,
                 FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
-                bufferedImage);
+                bufferedImage,
+                service);
         }
     }
 }

@@ -222,20 +222,25 @@ public class FileService {
     }
 
     @Async
-    public void addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage) {
+    public void addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage, boolean service) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
 
         try {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-            Set<String> businessServiceImages = bizStore.getStoreServiceImages();
+            Set<String> images;
+            if (service) {
+                images = bizStore.getStoreServiceImages();
+            } else {
+                images = bizStore.getStoreInteriorImages();
+            }
 
-            while (businessServiceImages.size() >= 10) {
-                String lastImage = businessServiceImages.stream().findFirst().get();
+            while (images.size() >= 10) {
+                String lastImage = images.stream().findFirst().get();
                 deleteImage(qid, lastImage, bizStore.getCodeQR());
                 /* Delete local reference. */
-                businessServiceImages.remove(lastImage);
+                images.remove(lastImage);
             }
 
             toFile = writeToFile(
@@ -251,7 +256,7 @@ public class FileService {
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, bizStore.getCodeQR(), FtpService.SERVICE);
 
-            businessServiceImages.add(filename);
+            images.add(filename);
             bizStoreManager.save(bizStore);
 
             LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
