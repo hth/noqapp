@@ -52,7 +52,7 @@ class ExternalServiceTest {
         assertEquals(1, geocodingResults.length);
     }
 
-    @Test
+    @Disabled
     void getGeocodingResults_InvalidAddress_With_Commas() {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234 Test Circuit, Sunnyvale, CA 94089");
         assertEquals(1, geocodingResults.length);
