@@ -8,6 +8,7 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -168,7 +169,7 @@ public final class Formatter {
         try {
             assertThat(phone, containsString("+"));
             /* Remove `+` sign with country code before sending the number back. */
-            return StringUtils.removeFirst(phone, "\\+" + String.valueOf(findCountryCode(phone)));
+            return RegExUtils.removeFirst(phone, "\\+" + String.valueOf(findCountryCode(phone)));
         } catch (AssertionError a) {
             LOG.warn("Phone number should begin with + phone={}", phone);
             try {
