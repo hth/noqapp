@@ -16,6 +16,7 @@ import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -211,8 +212,9 @@ public class AdminBusinessLandingController {
         }
 
         businessLandingForm
+                .setBusinessType(bizName.getBusinessType())
                 .setBizCodeQR(bizName.getCodeQR())
-                .setCategories(CommonHelper.getCategories(bizName.getBusinessType()));
+                .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
@@ -338,6 +340,7 @@ public class AdminBusinessLandingController {
         return addQueueSupervisorFlow;
     }
 
+    /** Authorized Users to New Store or Queue. */
     @GetMapping (value = "/queueUserDetail/{businessUserId}", produces = "text/html;charset=UTF-8")
     public String queueUserDetail(
             @PathVariable ("businessUserId")

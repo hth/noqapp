@@ -9,6 +9,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -22,12 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -86,8 +85,6 @@ public class CategoryController {
             @ModelAttribute("categoryLanding")
             CategoryLandingForm categoryLanding,
 
-            Model model,
-            RedirectAttributes redirectAttrs,
             HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -101,7 +98,7 @@ public class CategoryController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String bizNameId = businessUser.getBizName().getId();
-        Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType());
+        Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS);
         categoryLanding
                 .setBizNameId(new ScrubbedInput(bizNameId))
                 .setCategories(null == categories ? new HashMap<>() : categories)
@@ -135,7 +132,8 @@ public class CategoryController {
         BizNameEntity bizName = businessUser.getBizName();
         businessLandingForm
                 .setBizName(bizName.getBusinessName())
-                .setCategories(CommonHelper.getCategories(bizName.getBusinessType()));
+                .setBusinessType(bizName.getBusinessType())
+                .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
         List<BizStoreEntity> bizStores = bizService.getBizStoresByCategory(bizCategoryId.getText(), businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {

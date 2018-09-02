@@ -10,6 +10,7 @@ import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
@@ -80,7 +81,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
-        registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType()));
+        registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
         return registerBusiness;
     }
 

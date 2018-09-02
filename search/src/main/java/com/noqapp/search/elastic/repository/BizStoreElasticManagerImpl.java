@@ -5,6 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -202,7 +203,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     private void replaceCategoryIdWithCategoryName(BizStoreElastic bizStoreElastic) {
         Map<String, String> categories = categoryCache.getIfPresent(bizStoreElastic.getBusinessType());
         if (null == categories) {
-            Map<String, String> bizCategories = CommonHelper.getCategories(bizStoreElastic.getBusinessType());
+            Map<String, String> bizCategories = CommonHelper.getCategories(bizStoreElastic.getBusinessType(), InvocationByEnum.STORE);
             if (null != bizCategories) {
                 categoryCache.put(bizStoreElastic.getBusinessType(), bizCategories);
                 categories = bizCategories;

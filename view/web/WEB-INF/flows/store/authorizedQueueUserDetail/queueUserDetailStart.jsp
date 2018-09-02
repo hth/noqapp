@@ -131,7 +131,14 @@
                                             </td>
                                             <td nowrap>
                                                 <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                <c:choose>
+                                                <c:when test="${!empty store.bizCategoryId}">
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <span style="display:block; font-size:13px;">N/A</span>
+                                                </c:otherwise>
+                                                </c:choose>
                                             </td>
                                         </tr>
                                         </c:forEach>
