@@ -118,9 +118,9 @@
                                                 <span style="display:block; font-size:13px;">${store.displayName}</span>
                                             </a>
                                             <br/>
-                                            Serving: <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
+                                            <span style="display:block; font-size:13px;">Serving: ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                             <br/>
-                                            In Queue: <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
+                                            <span style="display:block; font-size:13px;">In Queue: ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.ratingCount})</span>
