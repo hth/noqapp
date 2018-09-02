@@ -82,8 +82,6 @@
                                         <th>&nbsp;</th>
                                         <th>Store Location</th>
                                         <th>Queue Name</th>
-                                        <th>Serving</th>
-                                        <th>In Queue</th>
                                         <th>Rating & AHT</th>
                                         <th nowrap>Create Date</th>
                                     </tr>
@@ -119,12 +117,10 @@
                                             <a href="/${store.codeQR}/q.htm" target="_blank">
                                                 <span style="display:block; font-size:13px;">${store.displayName}</span>
                                             </a>
-                                        </td>
-                                        <td>
-                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
-                                        </td>
-                                        <td>
-                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
+                                            <br/>
+                                            Serving: <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
+                                            <br/>
+                                            In Queue: <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.ratingCount})</span>
