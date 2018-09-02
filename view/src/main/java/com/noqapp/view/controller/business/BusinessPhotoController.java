@@ -115,7 +115,7 @@ public class BusinessPhotoController {
                 model.asMap().get("resultImage"));
         }
 
-        model.addAttribute("businessServiceImages", businessUser.getBizName().getBusinessServiceImages());
+        model.addAttribute("images", businessUser.getBizName().getBusinessServiceImages());
         model.addAttribute("codeQR", businessUser.getBizName().getCodeQR());
         model.addAttribute("bucketName", bucketName);
         return "/business/servicePhoto";

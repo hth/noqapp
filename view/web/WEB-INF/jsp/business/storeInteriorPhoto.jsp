@@ -56,7 +56,7 @@
             <sec:authorize access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
             <div class="admin-main">
                 <!-- File Upload From -->
-                <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadInteriorPhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="codeQR" value="${codeQR}"/>
                     <div class="admin-title">
                         <h2>Add Store Photo</h2>
@@ -111,7 +111,7 @@
                         <c:choose>
                         <c:when test="${!empty images}">
                             <ul class="list-form">
-                            <c:forEach items="${images}" var="image" varStatus="status">
+                                <c:forEach items="${images}" var="image" varStatus="status">
                                 <li>
                                     <div class="col-fields">
                                         <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${image}"
@@ -119,8 +119,8 @@
                                                 class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
-                                        <form action="${pageContext.request.contextPath}/business/store/photo/deleteServicePhoto.htm" method="post">
-                                            <input type="hidden" name="storeServiceImage" value="${image}"/>
+                                        <form action="${pageContext.request.contextPath}/business/store/photo/deleteInteriorPhoto.htm" method="post">
+                                            <input type="hidden" name="storeInteriorImage" value="${image}"/>
                                             <input type="hidden" name="codeQR" value="${codeQR}"/>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <div class="left-btn">
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-                            </c:forEach>
+                                </c:forEach>
                             </ul>
                         </c:when>
                         <c:otherwise>
