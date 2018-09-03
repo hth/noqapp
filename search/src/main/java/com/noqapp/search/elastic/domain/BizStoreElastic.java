@@ -505,6 +505,7 @@ public class BizStoreElastic extends AbstractDomain {
 
     @Transient
     public static BizStoreElastic getThisFromBizStore(BizStoreEntity bizStore) {
+        /* Image populated here. */
         BusinessImageHolder businessImageHolder = DomainConversion.populateBizAndStoreImages(bizStore);
 
         return new BizStoreElastic()
