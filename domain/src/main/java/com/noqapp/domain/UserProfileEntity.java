@@ -107,6 +107,9 @@ public class UserProfileEntity extends BaseEntity {
     @Field("BT")
     private BusinessTypeEnum businessType;
 
+    @Field("MO")
+    private String mailOTP;
+
     /** To make bean happy. */
     public UserProfileEntity() {
         super();
@@ -305,6 +308,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public UserProfileEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getMailOTP() {
+        return mailOTP;
+    }
+
+    public UserProfileEntity setMailOTP(String mailOTP) {
+        this.mailOTP = mailOTP;
         return this;
     }
 
