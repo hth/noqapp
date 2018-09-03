@@ -96,7 +96,6 @@
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.RS eq store.businessType
                                                 || BusinessTypeEnum.BA eq store.businessType
-                                                || BusinessTypeEnum.BK eq store.businessType
                                                 || BusinessTypeEnum.ST eq store.businessType
                                                 || BusinessTypeEnum.GS eq store.businessType
                                                 || BusinessTypeEnum.CF eq store.businessType
@@ -110,6 +109,11 @@
                                                     </span>
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Menu Image</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
+                                                    </span>
+                                                </c:when>
+                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
+                                                    <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
                                                     </span>
                                                 </c:when>
