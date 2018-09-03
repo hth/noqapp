@@ -92,7 +92,7 @@ public class MobileMailController {
 
         HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("starting to send accountValidationMail");
+        LOG.info("starting to send verification mail with otp");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
