@@ -70,8 +70,48 @@ public class MobileMailController {
             if (!map.isEmpty()) {
                 mailService.sendValidationMailOnAccountCreation(
                         map.get("userId").getText(),
-                        map.get("rid").getText(),
+                        map.get("qid").getText(),
                         map.get("name").getText());
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+        }
+    }
+
+    @PostMapping(value = "/mailChange")
+    public void mailChange(
+        @RequestBody
+        String mailJson,
+
+        @RequestHeader ("X-R-API-MOBILE")
+        String apiAccessToken,
+
+        HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.info("starting to send accountValidationMail");
+
+        if (webApiAccessToken.equals(apiAccessToken)) {
+            Map<String, ScrubbedInput> map = new HashMap<>();
+            try {
+                map = ParseJsonStringToMap.jsonStringToMap(mailJson);
+            } catch (IOException e) {
+                LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
+            }
+
+            if (!map.isEmpty()) {
+                Map<String, Object> rootMap = new HashMap<>();
+                rootMap.put("mailOTP", map.get("mailOTP").getText());
+
+                mailService.sendAnyMail(
+                    map.get("userId").getText(),
+                    map.get("name").getText(),
+                    "Confirmation mail for NoQApp",
+                    rootMap,
+                    "mail/mail-otp.ftl");
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
