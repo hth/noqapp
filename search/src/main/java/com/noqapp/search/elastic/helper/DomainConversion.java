@@ -46,7 +46,7 @@ public class DomainConversion {
                 serviceImages = bizStore.getBizName().getBusinessServiceImages().stream().map(x -> codeQR + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
                 break;
             default:
-                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + FileUtil.getFileSeparator() + bizStore.getStoreServiceImages().iterator().next();
+                bannerImage = bizStore.getStoreInteriorImages().isEmpty() ? null : bizStore.getCodeQR() + FileUtil.getFileSeparator() + bizStore.getStoreInteriorImages().iterator().next();
                 if (StringUtils.isBlank(bannerImage)) {
                     /* Put business name first image as banner image. */
                     codeQR = bizStore.getBizName().getCodeQR();
@@ -55,7 +55,7 @@ public class DomainConversion {
                     }
                     serviceImages = bizStore.getBizName().getBusinessServiceImages().stream().map(x -> codeQR + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
                 } else {
-                    serviceImages = bizStore.getStoreServiceImages().stream().map(x -> bizStore.getCodeQR() + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
+                    serviceImages = bizStore.getStoreInteriorImages().stream().map(x -> bizStore.getCodeQR() + FileUtil.getFileSeparator() + x).collect(Collectors.toSet());
                 }
         }
 
