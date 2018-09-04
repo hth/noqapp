@@ -638,4 +638,9 @@ public class AccountService {
     void addUserProfileImage(String qid, String profileImage) {
         userProfileManager.addUserProfileImage(qid, profileImage);
     }
+
+    @Mobile
+    public void unsetMailOTP(String id) {
+        userProfileManager.unsetMailOTP(id);
+    }
 }

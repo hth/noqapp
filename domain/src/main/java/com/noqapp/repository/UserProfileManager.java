@@ -50,6 +50,8 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone);
 
+    void unsetMailOTP(String id);
+
     @Deprecated
     List<UserProfileEntity> findAll();
 }
