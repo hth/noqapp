@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -225,6 +226,16 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE);
 
         return updateResult.getModifiedCount() == 1;
+    }
+
+    @Override
+    public void unsetMailOTP(String id) {
+        Assert.hasText(id, "Id is empty");
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            new Update().unset("MO"),
+            UserProfileEntity.class,
+            TABLE);
     }
 
     @Override

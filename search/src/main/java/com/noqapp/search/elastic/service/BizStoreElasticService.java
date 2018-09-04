@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -275,7 +276,7 @@ public class BizStoreElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -299,7 +300,7 @@ public class BizStoreElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
                 LOG.info("Search N={} GH={}", query, geoHash);
             }
 
@@ -320,7 +321,7 @@ public class BizStoreElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().searchScroll(scrollRequest);
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -332,7 +333,7 @@ public class BizStoreElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest);
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
@@ -385,7 +386,9 @@ public class BizStoreElasticService {
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
         while (bizStoreElasticSet.size() < PaginationEnum.TEN.getLimit() && hits < 3) {
-            LOG.debug("NearMe found size={} scrollId={}", bizStoreElasticSet.size(), bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10, bizStoreElastics.getScrollId().length()));
+            LOG.debug("NearMe found size={} scrollId={}",
+                bizStoreElasticSet.size(),
+                bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10));
             BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
             bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
