@@ -2,7 +2,6 @@ package com.noqapp.search.elastic.repository;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
-import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
@@ -36,6 +35,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -89,7 +89,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                     bizStoreElastic.getId())
                     .source(bizStoreElastic.asJson(), XContentType.JSON);
 
-            IndexResponse indexResponse = restHighLevelClient.index(request, CommonUtil.getMeSomeHeader());
+            IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             if (indexResponse.getResult() == DocWriteResponse.Result.CREATED) {
                 LOG.info("Created elastic document successfully id={}", bizStoreElastic.getId());
             } else if (indexResponse.getResult() == DocWriteResponse.Result.UPDATED) {
@@ -124,7 +124,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 id);
 
         try {
-            DeleteResponse deleteResponse = restHighLevelClient.delete(request, CommonUtil.getMeSomeHeader());
+            DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
             if (deleteResponse.getResult() == DocWriteResponse.Result.CREATED) {
                 LOG.warn("Created successfully id={}", id);
             } else if (deleteResponse.getResult() == DocWriteResponse.Result.UPDATED) {
@@ -172,7 +172,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         }
 
         try {
-            BulkResponse bulkResponse = restHighLevelClient.bulk(request, CommonUtil.getMeSomeHeader());
+            BulkResponse bulkResponse = restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
             if (bulkResponse.hasFailures()) {
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
                     if (bulkItemResponse.isFailed()) {
@@ -235,7 +235,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 .source(searchSourceBuilder)
                 .scroll(TimeValue.timeValueSeconds(10L));
         try {
-            SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             String scrollId = searchResponse.getScrollId();
             SearchHits hits = searchResponse.getHits();
 
@@ -268,7 +268,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             if (0 == hits.getHits().length) {
                 ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
                 clearScrollRequest.addScrollId(scrollId);
-                ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest);
+                ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
                 boolean succeeded = clearScrollResponse.isSucceeded();
                 int released = clearScrollResponse.getNumFreed();
                 LOG.info("Removed scrollId status={} released={}", succeeded, released);
