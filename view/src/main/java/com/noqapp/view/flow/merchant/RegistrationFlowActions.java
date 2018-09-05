@@ -297,6 +297,7 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
+            /* Update Elastic. */
             executorService.submit(() -> updateBizStoreElastic(bizStore, storeHours));
             return bizStore;
         } catch (Exception e) {

@@ -64,10 +64,7 @@ public class DomainConversion {
             .setServiceImages(serviceImages);
     }
 
-    public static BizStoreElastic getAsBizStoreElastic(
-            BizStoreEntity bizStore,
-            List<StoreHourEntity> storeHours
-    ) {
+    public static BizStoreElastic getAsBizStoreElastic(BizStoreEntity bizStore, List<StoreHourEntity> storeHours) {
         BusinessImageHolder businessImageHolder = populateBizAndStoreImages(bizStore);
         if (StringUtils.isBlank(businessImageHolder.getBannerImage())) {
             LOG.warn("No Banner Image for bizName={} bizId={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
