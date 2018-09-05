@@ -493,12 +493,12 @@ public class TokenQueueService {
      * Sends any message to all users subscribed to topic. This includes Client and Merchant.
      */
     @Mobile
-    public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
+    public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus, FCMTypeEnum fcmTypeEnum) {
         LOG.debug("Sending message to all title={} body={}", title, body);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
+            JsonData jsonData = new JsonTopicData(fcmTypeEnum, FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
                     //Added additional info to message for Android to not crash as it looks for CodeQR.
                     //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
                     .setLastNumber(tokenQueue.getLastNumber())

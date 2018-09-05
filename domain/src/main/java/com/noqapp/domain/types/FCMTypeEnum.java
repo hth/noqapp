@@ -9,5 +9,6 @@ public enum FCMTypeEnum {
     QR, //Queue Review
     O,  //Order
     OR, //Order Review
-    D   //Display
+    D,  //Display
+    A   //Alert
 }
