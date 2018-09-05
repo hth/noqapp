@@ -8,6 +8,8 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
@@ -69,6 +71,7 @@ public class StorePhotoController {
     private FileService fileService;
     private ApiHealthService apiHealthService;
     private ImageValidator imageValidator;
+    private BizStoreElasticManager bizStoreElasticManager;
 
     @Autowired
     public StorePhotoController(
@@ -79,7 +82,8 @@ public class StorePhotoController {
         BusinessUserStoreService businessUserStoreService,
         FileService fileService,
         ApiHealthService apiHealthService,
-        ImageValidator imageValidator
+        ImageValidator imageValidator,
+        BizStoreElasticManager bizStoreElasticManager
     ) {
         this.bucketName = bucketName;
 
@@ -88,6 +92,7 @@ public class StorePhotoController {
         this.fileService = fileService;
         this.apiHealthService = apiHealthService;
         this.imageValidator = imageValidator;
+        this.bizStoreElasticManager = bizStoreElasticManager;
     }
 
     /** For uploading service image. */
@@ -181,6 +186,7 @@ public class StorePhotoController {
         Set<String> images = bizStore.getStoreServiceImages();
         images.remove(request.getParameter("storeServiceImage"));
         bizService.saveStore(bizStore);
+        bizStoreElasticManager.update(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
     }
 
@@ -203,6 +209,7 @@ public class StorePhotoController {
         Set<String> images = bizStore.getStoreInteriorImages();
         images.remove(request.getParameter("storeInteriorImage"));
         bizService.saveStore(bizStore);
+        bizStoreElasticManager.update(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
     }
 
@@ -325,13 +332,18 @@ public class StorePhotoController {
     private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile, boolean service) throws IOException {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        BizStoreEntity bizStore = null;
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
-            fileService.addStoreImage(
+            bizStore = fileService.addStoreImage(
                 qid,
                 codeQR,
                 FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
                 bufferedImage,
                 service);
+        }
+
+        if (null != bizStore) {
+            bizStoreElasticManager.update(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
         }
     }
 }

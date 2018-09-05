@@ -73,9 +73,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             .build();
 
     @Autowired
-    public BizStoreElasticManagerImpl(
-            RestHighLevelClient restHighLevelClient
-    ) {
+    public BizStoreElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
         this.restHighLevelClient = restHighLevelClient;
     }
 
@@ -149,6 +147,12 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 LOG.error("Failed saving id={} reason={}", id, e.getDetailedMessage(), e);
             }
         }
+    }
+
+    @Override
+    public void update(BizStoreElastic bizStoreElastic) {
+        delete(bizStoreElastic.getId());
+        save(bizStoreElastic);
     }
 
     @Override

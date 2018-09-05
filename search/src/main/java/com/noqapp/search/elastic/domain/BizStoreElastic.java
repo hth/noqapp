@@ -503,12 +503,19 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    /**
+     * Note: This is missing Elastic Id. Should not be used for persistence in Elastic.
+     *
+     * @param bizStore
+     * @return
+     */
     @Transient
     public static BizStoreElastic getThisFromBizStore(BizStoreEntity bizStore) {
         /* Image populated here. */
         BusinessImageHolder businessImageHolder = DomainConversion.populateBizAndStoreImages(bizStore);
 
         return new BizStoreElastic()
+                //.setId missing intentionally
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBusinessType())
                 .setBizCategoryId(bizStore.getBizCategoryId())

@@ -221,8 +221,7 @@ public class FileService {
         }
     }
 
-    @Async
-    public void addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage, boolean service) {
+    public BizStoreEntity addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage, boolean service) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
@@ -260,8 +259,10 @@ public class FileService {
             bizStoreManager.save(bizStore);
 
             LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
+            return bizStore;
         } catch (IOException e) {
             LOG.error("Failed adding store image={} reason={}", filename, e.getLocalizedMessage(), e);
+            return null;
         } finally {
             if (null != toFile) {
                 toFile.delete();
