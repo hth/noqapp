@@ -22,7 +22,7 @@ import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
@@ -429,14 +429,14 @@ public class TokenQueueService {
      * Send FCM message to Topic asynchronously.
      */
     private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
-        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+        switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case Q:
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
                 break;
             case O:
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
@@ -445,26 +445,26 @@ public class TokenQueueService {
      * Send FCM message to person with specific token number asynchronously.
      */
     private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
-        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+        switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case Q:
                 executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
                 break;
             case O:
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
 
     /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String qid, FCMTypeEnum fcmType) {
-        LOG.debug("Sending message to specific user title={} body={} qid={} fcmType={}", title, body, qid, fcmType);
+    public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin) {
+        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
-            JsonData jsonData = new JsonTopicData(fcmType, FirebaseMessageTypeEnum.P).getJsonDisplayData();
+            JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
 
             if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                 jsonMessage.getNotification()
@@ -493,19 +493,15 @@ public class TokenQueueService {
      * Sends any message to all users subscribed to topic. This includes Client and Merchant.
      */
     @Mobile
-    public void sendMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus, FCMTypeEnum fcmTypeEnum) {
+    public void sendAlertMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
         LOG.debug("Sending message to all title={} body={}", title, body);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(fcmTypeEnum, FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
+            JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData()
                     //Added additional info to message for Android to not crash as it looks for CodeQR.
                     //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(tokenQueue.getId())
-                    .setQueueStatus(queueStatus)
-                    .setGoTo("")
                     .setBusinessType(tokenQueue.getBusinessType());
 
             if (DeviceTypeEnum.I == deviceType) {
@@ -543,7 +539,7 @@ public class TokenQueueService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), tokenQueue.getFirebaseMessageType()).getJsonTopicQueueData()
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType()).getJsonTopicQueueData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                     .setCodeQR(codeQR)
@@ -630,7 +626,7 @@ public class TokenQueueService {
                     tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getQueueOrderType(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
+            JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getMessageOrigin(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenNumber)
                     .setCodeQR(codeQR)

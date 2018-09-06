@@ -15,7 +15,7 @@ import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -337,7 +337,7 @@ public class AddQueueSupervisorFlowActions {
             String title = "Added to supervise Queue: " + bizStore.getDisplayName();
             String body = bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue.";
             /* Send FCM notification. */
-            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, FCMTypeEnum.D));
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D));
 
             /*
              * Send mail to the supervisor after adding them to queue
@@ -353,7 +353,7 @@ public class AddQueueSupervisorFlowActions {
             /* Send FCM notification. */
             String title = "Invitation to supervise: " + bizStore.getDisplayName();
             String body = bizStore.getBizName().getBusinessName() + " has sent an invite. Please login at https://noqapp.com to complete your profile.";
-            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, FCMTypeEnum.D));
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D));
 
             /* Also send mail to the invitee. */
             mailService.sendQueueSupervisorInvite(

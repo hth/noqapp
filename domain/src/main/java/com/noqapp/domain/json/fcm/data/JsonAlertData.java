@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -30,21 +31,45 @@ import java.util.UUID;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonDisplayData extends JsonData {
+public class JsonAlertData extends JsonData {
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("mi")
     private String messageId;
 
-    JsonDisplayData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
+    JsonAlertData(FirebaseMessageTypeEnum firebaseMessageType, MessageOriginEnum messageOrigin) {
         super(firebaseMessageType);
-        this.fcmType = fcmType;
+        this.messageOrigin = messageOrigin;
         this.messageId = UUID.randomUUID().toString();
     }
 
-    public FCMTypeEnum getFcmType() {
-        return fcmType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonAlertData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonAlertData setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
     }
 }
