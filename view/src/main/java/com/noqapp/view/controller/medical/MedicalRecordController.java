@@ -190,7 +190,7 @@ public class MedicalRecordController {
         Instant start = Instant.now();
         try {
             QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findAnyDeviceId(queueUser.getQueueUserId());
+            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(queueUser.getQueueUserId());
 
             /* Note: Since being served by web, we will assume its being served by one of the QID user's device. */
             String deviceId;
