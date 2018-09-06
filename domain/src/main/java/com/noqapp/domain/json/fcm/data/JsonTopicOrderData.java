@@ -1,7 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -35,8 +35,8 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTopicOrderData extends JsonData {
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("message")
     private String message;
@@ -65,9 +65,9 @@ public class JsonTopicOrderData extends JsonData {
     @JsonProperty("mi")
     private String messageId;
 
-    public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
+    public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, MessageOriginEnum messageOrigin) {
         super(firebaseMessageType);
-        this.fcmType = fcmType;
+        this.messageOrigin = messageOrigin;
         this.messageId = UUID.randomUUID().toString();
     }
 

@@ -1,7 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,21 +35,24 @@ public class JsonTopicData {
 
     private JsonTopicQueueData jsonTopicQueueData;
     private JsonTopicOrderData jsonTopicOrderData;
-    private JsonDisplayData jsonDisplayData;
+    private JsonAlertData jsonAlertData;
 
-    public JsonTopicData(FCMTypeEnum fcmType, FirebaseMessageTypeEnum firebaseMessageType) {
-        switch (fcmType) {
+    public JsonTopicData(MessageOriginEnum messageOrigin, FirebaseMessageTypeEnum firebaseMessageType) {
+        switch (messageOrigin) {
             case Q:
-                jsonTopicQueueData = new JsonTopicQueueData(firebaseMessageType, fcmType);
+                jsonTopicQueueData = new JsonTopicQueueData(firebaseMessageType, messageOrigin);
                 break;
             case O:
-                jsonTopicOrderData = new JsonTopicOrderData(firebaseMessageType, fcmType);
+                jsonTopicOrderData = new JsonTopicOrderData(firebaseMessageType, messageOrigin);
                 break;
             case D:
-                jsonDisplayData = new JsonDisplayData(firebaseMessageType, fcmType);
+                jsonAlertData = new JsonAlertData(firebaseMessageType, messageOrigin);
+                break;
+            case A:
+                jsonAlertData = new JsonAlertData(firebaseMessageType, messageOrigin);
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", fcmType);
+                LOG.error("Reached unreachable condition {}", messageOrigin);
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
@@ -72,12 +75,12 @@ public class JsonTopicData {
         return this;
     }
 
-    public JsonDisplayData getJsonDisplayData() {
-        return jsonDisplayData;
+    public JsonAlertData getJsonAlertData() {
+        return jsonAlertData;
     }
 
-    public JsonTopicData setJsonDisplayData(JsonDisplayData jsonDisplayData) {
-        this.jsonDisplayData = jsonDisplayData;
+    public JsonTopicData setJsonAlertData(JsonAlertData jsonAlertData) {
+        this.jsonAlertData = jsonAlertData;
         return this;
     }
 }

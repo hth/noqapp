@@ -1,6 +1,6 @@
 package com.noqapp.domain.types;
 
-import static com.noqapp.domain.types.FCMTypeEnum.*;
+import static com.noqapp.domain.types.MessageOriginEnum.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,12 +32,12 @@ public enum BusinessTypeEnum {
 
     private final String description;
     private final String name;
-    private final FCMTypeEnum queueOrderType;
+    private final MessageOriginEnum messageOrigin;
 
-    BusinessTypeEnum(String name, String description, FCMTypeEnum queueOrderType) {
+    BusinessTypeEnum(String name, String description, MessageOriginEnum messageOrigin) {
         this.name = name;
         this.description = description;
-        this.queueOrderType = queueOrderType;
+        this.messageOrigin = messageOrigin;
     }
 
     public String getName() {
@@ -48,8 +48,8 @@ public enum BusinessTypeEnum {
         return description;
     }
 
-    public FCMTypeEnum getQueueOrderType() {
-        return queueOrderType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
     }
 
     public static List<BusinessTypeEnum> asList() {

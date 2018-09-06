@@ -55,7 +55,7 @@ public class BusinessUserStoreService {
     @Autowired
     public BusinessUserStoreService(
         @Value("${BusinessUserStoreService.queue.limit}")
-            int queueLimit,
+        int queueLimit,
 
         BusinessUserStoreManager businessUserStoreManager,
         PreferredBusinessService preferredBusinessService,

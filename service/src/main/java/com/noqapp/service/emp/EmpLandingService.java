@@ -9,7 +9,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -130,7 +130,7 @@ public class EmpLandingService {
                     + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
                     + "You will soon receive an email with more details. "
                     + "This detail would also be available in your web account under Rewards.";
-                tokenQueueService.sendMessageToSpecificUser(title, body, userProfile.getQueueUserId(), FCMTypeEnum.D);
+                tokenQueueService.sendMessageToSpecificUser(title, body, userProfile.getQueueUserId(), MessageOriginEnum.D);
             } else {
                 LOG.warn("This facility is avail to just users with level={} or level={} and not level={}",
                         UserLevelEnum.CLIENT, UserLevelEnum.Q_SUPERVISOR, userProfile.getLevel());

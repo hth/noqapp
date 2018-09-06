@@ -25,7 +25,7 @@ import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
 import com.noqapp.domain.types.DeviceTypeEnum;
-import com.noqapp.domain.types.FCMTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -273,24 +273,24 @@ public class PurchaseOrderService {
 
     /** Send FCM message to Topic asynchronously. */
     private void sendMessageToTopic(String codeQR, PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue, String goTo) {
-        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+        switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo));
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
 
     /** Send FCM message to person with specific token number asynchronously. */
     private void sendMessageToSelectedTokenUser(String codeQR, PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
-        switch (tokenQueue.getBusinessType().getQueueOrderType()) {
+        switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, tokenNumber));
                 break;
             default:
-                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getQueueOrderType());
+                LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
     }
@@ -404,7 +404,7 @@ public class PurchaseOrderService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(purchaseOrder.getPresentOrderState()) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(purchaseOrder.getPresentOrderState()) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getQueueOrderType(), tokenQueue.getFirebaseMessageType())
+            JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType())
                 .getJsonTopicOrderData()
                     .setLastNumber(tokenQueue.getLastNumber())
                     .setCurrentlyServing(tokenQueue.getCurrentlyServing())
@@ -493,7 +493,7 @@ public class PurchaseOrderService {
 //                tokenNumber);
 //
 //            JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-//            JsonData jsonData = new JsonTopicQueueData(FirebaseMessageTypeEnum.P, FCMTypeEnum.O)
+//            JsonData jsonData = new JsonTopicQueueData(FirebaseMessageTypeEnum.P, MessageOriginEnum.O)
 //                .setLastNumber(tokenQueue.getLastNumber())
 //                .setCurrentlyServing(tokenNumber)
 //                .setCodeQR(codeQR)
@@ -565,7 +565,7 @@ public class PurchaseOrderService {
                 tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-            JsonData jsonData = new JsonTopicOrderData(FirebaseMessageTypeEnum.P, FCMTypeEnum.O)
+            JsonData jsonData = new JsonTopicOrderData(FirebaseMessageTypeEnum.P, MessageOriginEnum.O)
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenNumber)
                 .setCodeQR(codeQR)
@@ -856,7 +856,7 @@ public class PurchaseOrderService {
         doActionBasedOnQueueStatus(codeQR, purchaseOrder, tokenQueue, goTo);
 
 //For broadcast message
-//        new JsonTopicOrderData(FirebaseMessageTypeEnum.M, FCMTypeEnum.O)
+//        new JsonTopicOrderData(FirebaseMessageTypeEnum.M, MessageOriginEnum.O)
 //            .setMessage("Order ready for pickup/delivery")
 //            .setLastNumber(tokenQueue.getLastNumber())
 //            .setCurrentlyServing(purchaseOrder.getTokenNumber())
