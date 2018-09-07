@@ -177,7 +177,8 @@ public class QueueService {
                     .setBusinessCustomerId(queue.getBusinessCustomerId())
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
                     .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
-                    .setRecordReferenceId(queue.getRecordReferenceId());
+                    .setRecordReferenceId(queue.getRecordReferenceId())
+                    .setCreated(queue.getCreated());
 
             /* Get dependents when queue status is queued. */
             if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
