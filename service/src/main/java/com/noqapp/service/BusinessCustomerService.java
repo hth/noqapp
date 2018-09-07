@@ -4,7 +4,6 @@ import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
@@ -20,19 +19,16 @@ import org.springframework.stereotype.Service;
 public class BusinessCustomerService {
 
     private BusinessCustomerManager businessCustomerManager;
-    private BizStoreManager bizStoreManager;
     private UserProfileManager userProfileManager;
     private QueueManager queueManager;
 
     @Autowired
     public BusinessCustomerService(
             BusinessCustomerManager businessCustomerManager,
-            BizStoreManager bizStoreManager,
             UserProfileManager userProfileManager,
             QueueManager queueManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
-        this.bizStoreManager = bizStoreManager;
         this.userProfileManager = userProfileManager;
         this.queueManager = queueManager;
     }
