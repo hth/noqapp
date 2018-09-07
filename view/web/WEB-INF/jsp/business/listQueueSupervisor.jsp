@@ -75,91 +75,91 @@
                                 </spring:hasBindErrors>
 
                                 <c:choose>
-                                    <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <c:when test="${!empty queueSupervisorForm.queueSupervisors}">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th nowrap>
+                                                Name
+                                                &nbsp;
+                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                     alt="Sort" height="16px;"/>
+                                            </th>
+                                            <th>Address</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Since</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                        <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                             <tr>
-                                                <th>&nbsp;</th>
-                                                <th nowrap>
-                                                    Name
-                                                    &nbsp;
-                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                         alt="Sort" height="16px;"/>
-                                                </th>
-                                                <th>Address</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Since</th>
-                                                <th>&nbsp;</th>
+                                                <td style="font-size:13px;">${status.count}&nbsp;</td>
+                                                <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                    <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
+                                                            --
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">${queueSupervisor.email}</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td nowrap>
+                                                    <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
+                                                </td>
+                                                <td nowrap>
+                                                    <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
+                                                </td>
+                                                <td class="Tleft" nowrap>
+                                                    <c:choose>
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
+                                                        <div>
+                                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                <form:hidden path="action" value="APPROVE" />
+                                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                <input class="cancel-btn" value="Approve" type="submit">
+                                                            </form:form>
+                                                            <br />
+                                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                <form:hidden path="action" value="REJECT" />
+                                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                <input class="cancel-btn" value="Reject" type="submit">
+                                                            </form:form>
+                                                        </div>
+                                                        </c:when>
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
+                                                            In progress
+                                                        </c:when>
+                                                        <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
+                                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                                <form:hidden path="action" value="REMOVE" />
+                                                                <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
+                                                                <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
+                                                                <input class="cancel-btn" value="Remove" type="submit">
+                                                            </form:form>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Pending
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                             </tr>
-                                            <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
-                                            <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
-                                                <tr>
-                                                    <td style="font-size:13px;">${status.count}&nbsp;</td>
-                                                    <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
-                                                    <td>
-                                                        <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
-                                                        <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
-                                                    </td>
-                                                    <td>
-                                                        <c:choose>
-                                                            <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
-                                                                --
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span style="display:block; font-size:13px;">${queueSupervisor.email}</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td nowrap>
-                                                        <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
-                                                    </td>
-                                                    <td nowrap>
-                                                        <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
-                                                    </td>
-                                                    <td class="Tleft" nowrap>
-                                                        <c:choose>
-                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
-                                                            <div>
-                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                                    <form:hidden path="action" value="APPROVE" />
-                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
-                                                                    <input class="cancel-btn" value="Approve" type="submit">
-                                                                </form:form>
-                                                                <br />
-                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                                    <form:hidden path="action" value="REJECT" />
-                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
-                                                                    <input class="cancel-btn" value="Reject" type="submit">
-                                                                </form:form>
-                                                            </div>
-                                                            </c:when>
-                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
-                                                                In progress
-                                                            </c:when>
-                                                            <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                                <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
-                                                                    <form:hidden path="action" value="REMOVE" />
-                                                                    <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
-                                                                    <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
-                                                                    <input class="cancel-btn" value="Remove" type="submit">
-                                                                </form:form>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                Pending
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>There is no supervisor assigned to manage this queue.</p>
-                                        </div>
-                                    </c:otherwise>
+                                        </c:forEach>
+                                    </table>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="alert-info">
+                                        <p>There is no supervisor assigned to manage this queue.</p>
+                                    </div>
+                                </c:otherwise>
                                 </c:choose>
                             </div>
 
