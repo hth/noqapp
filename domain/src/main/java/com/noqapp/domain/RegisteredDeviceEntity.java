@@ -58,6 +58,12 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("TK")
     private String token;
 
+    @Field ("MO")
+    private String model;
+
+    @Field ("OS")
+    private String osVersion;
+
     @Field ("SB")
     private boolean sinceBeginning = true;
 
@@ -132,6 +138,24 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public RegisteredDeviceEntity setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public RegisteredDeviceEntity setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+        return this;
     }
 
     public boolean isSinceBeginning() {
