@@ -60,10 +60,10 @@
 			Previously Visited Clients/Patients: ${clientsPreviouslyVisitedThisBusiness}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			<strong>Customer Reviews</strong><br/>
+			<strong>Customer Reviews for yesterday</strong><br/>
 			Total Rating: ${totalRating}<br/>
 			Clients/Patients Rated: ${totalCustomerRated}<br/>
-			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs (since beginning of time)<br/>
+			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs<br/>
 			<br/>
 			(Note: This stats email is work in progress)
 		</p>
