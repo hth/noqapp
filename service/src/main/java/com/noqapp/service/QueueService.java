@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ import java.util.Random;
 public class QueueService {
     private static final Logger LOG = LoggerFactory.getLogger(QueueService.class);
 
+    private int limitedToDays;
+
     private AccountService accountService;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
@@ -48,12 +51,17 @@ public class QueueService {
 
     @Autowired
     public QueueService(
+            @Value("${limitedToDays:30}")
+            int limitedToDays,
+
             AccountService accountService,
             QueueManager queueManager,
             QueueManagerJDBC queueManagerJDBC,
             TokenQueueService tokenQueueService,
             BusinessUserStoreManager businessUserStoreManager
     ) {
+        this.limitedToDays = limitedToDays;
+
         this.accountService = accountService;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
@@ -142,6 +150,16 @@ public class QueueService {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
         List<QueueEntity> queues = queueManager.findByCodeQR(codeQR);
+        populateInJsonQueuePersonList(queuedPeople, queues);
+
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
+    @Mobile
+    public JsonQueuePersonList findAllClientHistorical(String codeQR) {
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+        List<QueueEntity> queues = queueManagerJDBC.getByCodeQR(codeQR, limitedToDays);
         populateInJsonQueuePersonList(queuedPeople, queues);
 
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);

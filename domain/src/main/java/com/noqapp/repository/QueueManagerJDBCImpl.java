@@ -64,6 +64,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     "WHERE QID = ? " +
                     "GROUP BY QR) ORDER BY C DESC";
 
+    private static final String findByCodeQR =
+            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+                    " FROM " +
+                    "QUEUE WHERE QR = ? " +
+                    "AND " +
+                    "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+                    "ORDER BY C DESC";
+
     private static final String findByDid =
             "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
                     " FROM " +
@@ -202,6 +210,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public List<QueueEntity> getByQid(String qid, Date lastAccessed) {
         LOG.info("Fetch history by qid={} lastAccessed={}", qid, lastAccessed);
         return jdbcTemplate.query(findByQidAndByLastUpdated, new Object[]{qid, lastAccessed, qid}, new QueueRowMapper());
+    }
+
+    @Override
+    public List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays) {
+        LOG.info("Fetch history by codeQR={} limitedToDays={}", codeQR, limitedToDays);
+        return jdbcTemplate.query(findByCodeQR, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
     }
 
     @Override
