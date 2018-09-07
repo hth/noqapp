@@ -1,18 +1,23 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,6 +59,8 @@ public class BizService {
     private TokenQueueService tokenQueueService;
     private QueueService queueService;
     private BusinessUserStoreManager businessUserStoreManager;
+    private MailService mailService;
+    private UserProfileManager userProfileManager;
 
     @Autowired
     public BizService(
@@ -68,7 +75,9 @@ public class BizService {
             StoreHourManager storeHourManager,
             TokenQueueService tokenQueueService,
             QueueService queueService,
-            BusinessUserStoreManager businessUserStoreManager
+            BusinessUserStoreManager businessUserStoreManager,
+            MailService mailService,
+            UserProfileManager userProfileManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
@@ -78,6 +87,8 @@ public class BizService {
         this.tokenQueueService = tokenQueueService;
         this.queueService = queueService;
         this.businessUserStoreManager = businessUserStoreManager;
+        this.mailService = mailService;
+        this.userProfileManager = userProfileManager;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -108,6 +119,63 @@ public class BizService {
 
     public void saveStore(BizStoreEntity bizStore) {
         bizStoreManager.save(bizStore);
+        sendMailWhenStoreSettingHasChanged(bizStore.getId());
+    }
+
+    @Mobile
+    public void sendMailWhenStoreSettingHasChanged(String bizStoreId) {
+        BizStoreEntity bizStore = getByStoreId(bizStoreId);
+        bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
+
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("displayName", bizStore.getDisplayName());
+        rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
+        rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
+        rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
+        //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
+
+        for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
+            Map<String, Object> storeHoursAsMap = new HashMap<>();
+            if (storeHour.isDayClosed()) {
+                storeHoursAsMap.put("Is closed for the day?", storeHour.isDayClosed() ? "Yes" : "No");
+            } else {
+                storeHoursAsMap.put("Issue token from", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                storeHoursAsMap.put("Queue start time", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                storeHoursAsMap.put("Stop issuing token after", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                storeHoursAsMap.put("Queue close time", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+            }
+            rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
+        }
+
+        List<BusinessUserStoreEntity> businessUserStoreManagers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
+            bizStore.getId(),
+            UserLevelEnum.S_MANAGER);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStoreManagers) {
+            String qid = businessUserStore.getQueueUserId();
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+
+            mailService.sendAnyMail(
+                userProfile.getEmail(),
+                userProfile.getName(),
+                bizStore.getDisplayName() + ": Queue changes confirmation",
+                rootMap,
+                "mail/changedStoreSetting.ftl");
+        }
+
+        businessUserStoreManagers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
+            bizStore.getId(),
+            UserLevelEnum.M_ADMIN);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStoreManagers) {
+            String qid = businessUserStore.getQueueUserId();
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+
+            mailService.sendAnyMail(
+                userProfile.getEmail(),
+                userProfile.getName(),
+                "Changes to " + bizStore.getDisplayName() + " queue",
+                rootMap,
+                "mail/changedStoreSetting.ftl");
+        }
     }
 
     public Set<BizStoreEntity> bizSearch(String businessName, String bizAddress, String bizPhone) {
