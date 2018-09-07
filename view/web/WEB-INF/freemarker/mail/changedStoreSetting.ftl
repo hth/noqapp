@@ -58,7 +58,7 @@
 			Available Token: ${availableTokenCount}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            <strong>Monday</strong><br/>
+			<strong>Monday</strong><br/>
             <#list MONDAY as key, value>
                 <strong>${key}</strong> ${value}<br/>
             </#list>
@@ -92,7 +92,7 @@
             <#list SUNDAY as key, value>
                 <strong>${key}</strong> ${value}<br/>
             </#list>
-        </p>
+		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			Thanks, <br/>
 			<strong>NoQueue Customer Support</strong>
