@@ -18,6 +18,7 @@ import com.noqapp.domain.stats.YearlyData;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -47,7 +48,7 @@ public class QueueService {
 
     private AccountService accountService;
     private BusinessCustomerService businessCustomerService;
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private TokenQueueService tokenQueueService;
@@ -60,7 +61,7 @@ public class QueueService {
 
             AccountService accountService,
             BusinessCustomerService businessCustomerService,
-            BizService bizService,
+            BizStoreManager bizStoreManager,
             QueueManager queueManager,
             QueueManagerJDBC queueManagerJDBC,
             TokenQueueService tokenQueueService,
@@ -70,7 +71,7 @@ public class QueueService {
 
         this.accountService = accountService;
         this.businessCustomerService = businessCustomerService;
-        this.bizService = bizService;
+        this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.tokenQueueService = tokenQueueService;
@@ -173,7 +174,7 @@ public class QueueService {
         for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
             String qid = jsonQueuedPerson.getQueueUserId();
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             jsonQueuedPerson.setCustomerName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
