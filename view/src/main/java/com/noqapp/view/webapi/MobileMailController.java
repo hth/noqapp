@@ -40,7 +40,7 @@ public class MobileMailController {
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;
 
-    private final MailService mailService;
+    private MailService mailService;
 
     @Autowired
     public MobileMailController(MailService mailService) {

@@ -74,7 +74,7 @@
                             <#--<h3>${value.displayName}</h3>-->
                             <p>${value.rating} &nbsp; <span id="store_rating_${key}"></span>&nbsp;&nbsp;${value.ratingCount} Reviews &nbsp;</p>
                             <#if value.storeClosed == "Yes">
-                            <p><strong>Closed Today</p>
+                                <p><strong>Closed Today</strong></p>
                             <#else>
                             <p><strong>${value.dayOfWeek} Hours: </strong> ${value.startHour} - ${value.endHour}</p>
                             </#if>

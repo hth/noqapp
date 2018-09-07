@@ -48,27 +48,54 @@
             <#include "../NoQApp.svg">
 		</div>
 
-		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>${businessName} Daily Summary for ${day}</strong></p>
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Dear ${profileName},</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			<strong>Clients/Patients Visits</strong><br/>
-			Clients/Patients: ${totalClient}<br/>
-			Serviced: ${totalServiced}<br/>
-			No Show (Skipped): ${totalNoShow}<br/>
-			Abort Visit (Self Cancelled): ${totalAbort}<br/>
-			New Clients/Patients: ${newCustomer}<br/>
-			<br/>
-			Previously Visited Clients/Patients: ${clientsPreviouslyVisitedThisBusiness}<br/>
+			This email is to confirm changes made to ${displayName} queue.
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			<strong>Customer Reviews for yesterday</strong><br/>
-			Total Rating: ${totalRating}<br/>
-			Clients/Patients Rated: ${totalCustomerRated}<br/>
-			Total Hour Saved for Clients/Patients: ${totalHoursSaved}hrs<br/>
+			Remote Join: ${remoteJoin}<br/>
+			Allowed Logged In User: ${allowLoggedInUser}<br/>
+			Available Token: ${availableTokenCount}<br/>
+		</p>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+			<strong>Monday</strong><br/>
+            <#list MONDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
 			<br/>
-			(Note: This stats email is work in progress)
+			<strong>Tuesday</strong><br/>
+            <#list TUESDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
+			<br/>
+			<strong>Wednesday</strong><br/>
+            <#list WEDNESDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
+			<br/>
+			<strong>Thursday</strong><br/>
+            <#list THURSDAY as key, value>
+               <strong>${key}</strong> ${value}<br/>
+            </#list>
+			<br/>
+			<strong>Friday</strong><br/>
+            <#list FRIDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
+			<br/>
+			<strong>Saturday</strong><br/>
+            <#list SATURDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
+			<br/>
+			<strong>Sunday</strong><br/>
+            <#list SUNDAY as key, value>
+                <strong>${key}</strong> ${value}<br/>
+            </#list>
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
-			<strong>NoQueue Technologies</strong>
+			Thanks, <br/>
+			<strong>NoQueue Customer Support</strong>
 		</p>
 		<br/><br/><br/>
 	</div>
@@ -78,6 +105,7 @@
 		All Rights Reserved &nbsp; | &nbsp; <a href="${parentHost}/privacy.html"
 			style="color:#222; text-decoration:none">Privacy Policy</a> &nbsp; |
 		&nbsp; <a href="${parentHost}/terms.html" style="color:#222; text-decoration:none">Terms</a><br/>
+		S:${ftlDateTime?iso("PST")}
 	</div>
 </div>
 
