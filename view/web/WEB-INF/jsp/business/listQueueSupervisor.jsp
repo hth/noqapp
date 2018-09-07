@@ -79,7 +79,7 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>
+                                                <th nowrap>
                                                     Name
                                                     &nbsp;
                                                     <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
