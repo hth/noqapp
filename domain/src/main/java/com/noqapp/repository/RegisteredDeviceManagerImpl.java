@@ -96,13 +96,15 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, boolean sinceBeginning) {
+    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion, boolean sinceBeginning) {
         return mongoTemplate.updateFirst(
                 query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
                 entityUpdate(update("QID", qid)
                         .set("DT", deviceType)
                         .set("AF", appFlavor)
                         .set("TK", token)
+                        .set("MO", model)
+                        .set("OS", osVersion)
                         .set("SB", sinceBeginning)),
                 RegisteredDeviceEntity.class,
                 TABLE
@@ -177,11 +179,14 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      * @return
      */
     @Override
-    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token) {
+    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion) {
         return lastAccessed(
                 qid,
                 did,
-                update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()).set("TK", token));
+                update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
+                    .set("TK", token)
+                    .set("MO", model)
+                    .set("OS", osVersion));
     }
 
     private RegisteredDeviceEntity lastAccessed(String qid, String did, Update update) {
@@ -207,19 +212,23 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
+    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion) {
         Update update;
         if (StringUtils.isBlank(qid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
                     .unset("QID")
                     .set("DT", deviceType)
                     .set("TK", token)
+                    .set("MO", model)
+                    .set("OS", osVersion)
                     .set("AF", appFlavor);
         } else {
             update = update("U", DateTime.now().minusYears(100).toDate())
                     .set("QID", qid)
                     .set("DT", deviceType)
                     .set("TK", token)
+                    .set("MO", model)
+                    .set("OS", osVersion)
                     .set("AF", appFlavor);
         }
 
