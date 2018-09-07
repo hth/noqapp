@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -44,6 +46,8 @@ public class QueueService {
     private int limitedToDays;
 
     private AccountService accountService;
+    private BusinessCustomerService businessCustomerService;
+    private BizService bizService;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private TokenQueueService tokenQueueService;
@@ -55,6 +59,8 @@ public class QueueService {
             int limitedToDays,
 
             AccountService accountService,
+            BusinessCustomerService businessCustomerService,
+            BizService bizService,
             QueueManager queueManager,
             QueueManagerJDBC queueManagerJDBC,
             TokenQueueService tokenQueueService,
@@ -63,6 +69,8 @@ public class QueueService {
         this.limitedToDays = limitedToDays;
 
         this.accountService = accountService;
+        this.businessCustomerService = businessCustomerService;
+        this.bizService = bizService;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.tokenQueueService = tokenQueueService;
@@ -162,6 +170,16 @@ public class QueueService {
         List<QueueEntity> queues = queueManagerJDBC.getByCodeQR(codeQR, limitedToDays);
         populateInJsonQueuePersonList(queuedPeople, queues);
 
+        for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
+            String qid = jsonQueuedPerson.getQueueUserId();
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
+            jsonQueuedPerson.setCustomerName(userProfile.getName())
+                .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
+                .setCustomerPhone(userProfile.getPhone());
+        }
+
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
@@ -177,7 +195,8 @@ public class QueueService {
                     .setBusinessCustomerId(queue.getBusinessCustomerId())
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
                     .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
-                    .setRecordReferenceId(queue.getRecordReferenceId());
+                    .setRecordReferenceId(queue.getRecordReferenceId())
+                    .setCreated(queue.getCreated());
 
             /* Get dependents when queue status is queued. */
             if (QueueUserStateEnum.Q == queue.getQueueUserState()) {

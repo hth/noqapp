@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -74,6 +77,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     /** This record reference has to be used when submitting a form. */
     @JsonProperty ("rr")
     private String recordReferenceId;
+
+    @JsonProperty("c")
+    private String created;
 
     public int getToken() {
         return token;
@@ -182,5 +188,14 @@ public class JsonQueuedPerson extends AbstractDomain {
     @Transient
     public String getRecordReferenceId() {
         return Base64.getEncoder().encodeToString((token + "#" + queueUserId + "#" + queueUserId).getBytes());
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonQueuedPerson setCreated(Date created) {
+        this.created = DateFormatUtils.format(created, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        return this;
     }
 }
