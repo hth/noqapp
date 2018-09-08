@@ -185,7 +185,7 @@ public class StorePhotoController {
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
         Set<String> images = bizStore.getStoreServiceImages();
         images.remove(request.getParameter("storeServiceImage"));
-        bizService.saveStore(bizStore);
+        bizService.saveStore(bizStore, "Deleted Store Menu/Service Image");
         bizStoreElasticManager.update(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
     }
@@ -208,7 +208,7 @@ public class StorePhotoController {
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
         Set<String> images = bizStore.getStoreInteriorImages();
         images.remove(request.getParameter("storeInteriorImage"));
-        bizService.saveStore(bizStore);
+        bizService.saveStore(bizStore, "Delete Store Interior Image");
         bizStoreElasticManager.update(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
     }

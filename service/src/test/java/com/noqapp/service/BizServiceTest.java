@@ -4,6 +4,7 @@ import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.UserProfileManager;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,8 @@ class BizServiceTest {
     @Mock private TokenQueueService tokenQueueService;
     @Mock private QueueService queueService;
     @Mock private BusinessUserStoreManager businessUserStoreManager;
+    @Mock private MailService mailService;
+    @Mock private UserProfileManager userProfileManager;
 
     private BizService bizService;
 
@@ -40,7 +43,9 @@ class BizServiceTest {
                 storeHourManager,
                 tokenQueueService,
                 queueService,
-                businessUserStoreManager);
+                businessUserStoreManager,
+                mailService,
+                userProfileManager);
     }
 
     @Test
