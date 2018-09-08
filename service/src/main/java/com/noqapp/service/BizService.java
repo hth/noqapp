@@ -12,6 +12,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -117,17 +119,24 @@ public class BizService {
                 queuedRemoved);
     }
 
-    public void saveStore(BizStoreEntity bizStore) {
+    public void saveStore(BizStoreEntity bizStore, String changeInitiateReason) {
         bizStoreManager.save(bizStore);
-        sendMailWhenStoreSettingHasChanged(bizStore.getId());
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (null != queueUser) {
+            changeInitiateReason = changeInitiateReason + ", modified by " + queueUser.getName();
+        } else {
+            LOG.warn("QueueUser is null check the call {}", changeInitiateReason);
+        }
+        sendMailWhenStoreSettingHasChanged(bizStore.getId(), changeInitiateReason);
     }
 
     @Mobile
-    public void sendMailWhenStoreSettingHasChanged(String bizStoreId) {
+    public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
         bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
 
         Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("changeInitiateReason", changeInitiateReason);
         rootMap.put("displayName", bizStore.getDisplayName());
         rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
         rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");

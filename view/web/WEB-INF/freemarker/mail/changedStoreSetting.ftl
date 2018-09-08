@@ -52,6 +52,9 @@
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			This email is to confirm changes made to ${displayName} queue.
 		</p>
+        <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+            Main Reason for Change was associated to: ${changeInitiateReason}
+        </p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			Remote Join: ${remoteJoin}<br/>
 			Allowed Logged In User: ${allowLoggedInUser}<br/>

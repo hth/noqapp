@@ -85,6 +85,7 @@ public class FileService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private StoreProductManager storeProductManager;
+    private BizService bizService;
 
     @Autowired
     public FileService(
@@ -105,7 +106,8 @@ public class FileService {
             S3FileManager s3FileManager,
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
-            StoreProductManager storeProductManager
+            StoreProductManager storeProductManager,
+            BizService bizService
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
@@ -118,6 +120,7 @@ public class FileService {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.storeProductManager = storeProductManager;
+        this.bizService = bizService;
     }
 
     @Async
@@ -256,7 +259,7 @@ public class FileService {
             ftpService.upload(filename, bizStore.getCodeQR(), FtpService.SERVICE);
 
             images.add(filename);
-            bizStoreManager.save(bizStore);
+            bizService.saveStore(bizStore, "Added Store Image");
 
             LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
             return bizStore;
