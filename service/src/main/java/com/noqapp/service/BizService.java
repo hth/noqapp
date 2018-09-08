@@ -37,6 +37,7 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -155,13 +156,13 @@ public class BizService {
         //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
 
         for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
-            Map<String, Object> storeHoursAsMap = new HashMap<>();
+            Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
             if (storeHour.isDayClosed()) {
                 storeHoursAsMap.put("Is closed for the day?", storeHour.isDayClosed() ? "Yes" : "No");
             } else {
                 storeHoursAsMap.put("Issue token from", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
-                storeHoursAsMap.put("Queue start time", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
                 storeHoursAsMap.put("Stop issuing token after", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                storeHoursAsMap.put("Queue start time", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
                 storeHoursAsMap.put("Queue close time", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
             }
             rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
