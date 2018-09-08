@@ -273,7 +273,7 @@ class RegistrationFlowActions {
             bizStore
                 .setWebLocation(webLocation)
                 .setArea(area);
-            bizService.saveStore(bizStore, "Added New Store");
+            bizService.saveStore(bizStore, "Added/Updated New/Existing Store");
 
             String bizStoreId = bizStore.getId();
             List<StoreHourEntity> storeHours = new LinkedList<>();
