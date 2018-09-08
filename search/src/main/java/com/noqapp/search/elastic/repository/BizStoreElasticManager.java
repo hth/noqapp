@@ -22,8 +22,6 @@ public interface BizStoreElasticManager<BizStoreElastic> {
      */
     void delete(String id);
 
-    void update(BizStoreElastic bizStoreElastic);
-
     /**
      * Search by business name.
      * //TODO both method does not work

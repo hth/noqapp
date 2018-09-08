@@ -69,8 +69,6 @@ public class BizService {
     private MailService mailService;
     private UserProfileManager userProfileManager;
 
-    private ExecutorService executorService;
-
     @Autowired
     public BizService(
             @Value("${degreeInMiles:69.172}")
@@ -139,10 +137,10 @@ public class BizService {
         }
 
         String finalChangeInitiateReason = changeInitiateReason;
-        executorService.submit(() -> sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason));
+        sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason);
     }
 
-    @Async
+    @Mobile
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
         bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
