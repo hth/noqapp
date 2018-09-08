@@ -112,7 +112,7 @@
                     </#list>
 				</td>
 				<td>
-                    &nbsp;
+					&nbsp;
 				</td>
 			</tr>
 		</table>
