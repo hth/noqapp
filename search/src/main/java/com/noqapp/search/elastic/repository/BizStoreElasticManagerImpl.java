@@ -89,9 +89,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             if (indexResponse.getResult() == DocWriteResponse.Result.CREATED) {
-                LOG.info("Created elastic document successfully id={}", bizStoreElastic.getId());
+                LOG.info("Created elastic document successfully id={} bizStoreElastic={}", bizStoreElastic.getId(), bizStoreElastic);
             } else if (indexResponse.getResult() == DocWriteResponse.Result.UPDATED) {
-                LOG.info("Updated elastic document id={}", bizStoreElastic.getId());
+                LOG.info("Updated elastic document id={} bizStoreElastic={}", bizStoreElastic.getId(), bizStoreElastic);
             }
 
             ReplicationResponse.ShardInfo shardInfo = indexResponse.getShardInfo();
@@ -147,12 +147,6 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 LOG.error("Failed saving id={} reason={}", id, e.getDetailedMessage(), e);
             }
         }
-    }
-
-    @Override
-    public void update(BizStoreElastic bizStoreElastic) {
-        delete(bizStoreElastic.getId());
-        save(bizStoreElastic);
     }
 
     @Override

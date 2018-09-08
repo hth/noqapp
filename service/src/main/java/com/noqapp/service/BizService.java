@@ -1,7 +1,5 @@
 package com.noqapp.service;
 
-import static java.util.concurrent.Executors.newCachedThreadPool;
-
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.RandomString;
@@ -29,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -68,8 +64,6 @@ public class BizService {
     private BusinessUserStoreManager businessUserStoreManager;
     private MailService mailService;
     private UserProfileManager userProfileManager;
-
-    private ExecutorService executorService;
 
     @Autowired
     public BizService(
@@ -98,8 +92,6 @@ public class BizService {
         this.businessUserStoreManager = businessUserStoreManager;
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
-
-        this.executorService = newCachedThreadPool();
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -139,10 +131,10 @@ public class BizService {
         }
 
         String finalChangeInitiateReason = changeInitiateReason;
-        executorService.submit(() -> sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason));
+        sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason);
     }
 
-    @Async
+    @Mobile
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
         bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
