@@ -61,8 +61,8 @@
 			Available Token: ${availableTokenCount}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-		<table style=" padding: 10px">
-			<tr>
+		<table>
+			<tr style=" padding: 10px">
 				<td>
 					<strong>Monday</strong><br/>
                     <#list MONDAY as key, value>
