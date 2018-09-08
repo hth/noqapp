@@ -121,16 +121,16 @@ public class BizService {
 
     public void saveStore(BizStoreEntity bizStore, String changeInitiateReason) {
         bizStoreManager.save(bizStore);
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (null != queueUser) {
+        try {
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             changeInitiateReason = changeInitiateReason + ", modified by " + queueUser.getName();
             LOG.info("Changed bizStoreId={} name={} reason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason);
-        } else {
-            LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason);
+        } catch (Exception e) {
+            LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={} errorReason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason, e.getLocalizedMessage(), e);
         }
         sendMailWhenStoreSettingHasChanged(bizStore.getId(), changeInitiateReason);
     }
-
+` `
     @Mobile
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
