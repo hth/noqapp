@@ -50,73 +50,71 @@
 
 		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Dear ${profileName},</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			This email is to confirm changes made to ${displayName} queue.
+			This email is to confirm changes made to <strong>${displayName}</strong> queue.
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			Reason for Change was associated to: ${changeInitiateReason}
+			Reason for Change was associated to: <strong>${changeInitiateReason}</strong>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			Remote Join: ${remoteJoin}<br/>
 			Allowed Logged In User: ${allowLoggedInUser}<br/>
 			Available Token: ${availableTokenCount}<br/>
 		</p>
-		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-		<table>
-			<tr style=" padding: 15px">
-				<td>
+		<table style="background-color: lightgrey">
+			<tr>
+				<td style=" padding: 25px">
 					<strong>Monday</strong><br/>
                     <#list MONDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
-				<td>
+				<td style=" padding: 25px">
 					<strong>Tuesday</strong><br/>
                     <#list TUESDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
 			</tr>
-			<tr style=" padding: 15px">
-				<td>
+			<tr>
+				<td style=" padding: 25px">
 					<strong>Wednesday</strong><br/>
                     <#list WEDNESDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
-				<td>
+				<td style=" padding: 25px">
 					<strong>Thursday</strong><br/>
                     <#list THURSDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
 			</tr>
-			<tr style=" padding: 15px">
-				<td>
+			<tr>
+				<td style=" padding: 25px">
 					<strong>Friday</strong><br/>
                     <#list FRIDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
-				<td>
+				<td style=" padding: 25px">
 					<strong>Saturday</strong><br/>
                     <#list SATURDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
 			</tr>
-			<tr style=" padding: 15px">
-				<td>
+			<tr>
+				<td style=" padding: 25px">
 					<strong>Sunday</strong><br/>
                     <#list SUNDAY as key, value>
                         <strong>${key}</strong> ${value}<br/>
                     </#list>
 				</td>
-				<td>
+				<td style=" padding: 25px">
 					&nbsp;
 				</td>
 			</tr>
 		</table>
-		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			Thanks, <br/>
 			<strong>NoQueue Customer Support</strong>
