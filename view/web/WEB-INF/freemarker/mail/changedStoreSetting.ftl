@@ -62,7 +62,7 @@
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 		<table>
-			<tr style=" padding: 10px">
+			<tr style=" padding: 15px">
 				<td>
 					<strong>Monday</strong><br/>
                     <#list MONDAY as key, value>
@@ -76,7 +76,7 @@
                     </#list>
 				</td>
 			</tr>
-			<tr>
+			<tr style=" padding: 15px">
 				<td>
 					<strong>Wednesday</strong><br/>
                     <#list WEDNESDAY as key, value>
@@ -90,7 +90,7 @@
                     </#list>
 				</td>
 			</tr>
-			<tr>
+			<tr style=" padding: 15px">
 				<td>
 					<strong>Friday</strong><br/>
                     <#list FRIDAY as key, value>
@@ -104,7 +104,7 @@
                     </#list>
 				</td>
 			</tr>
-			<tr>
+			<tr style=" padding: 15px">
 				<td>
 					<strong>Sunday</strong><br/>
                     <#list SUNDAY as key, value>
