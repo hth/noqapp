@@ -124,8 +124,9 @@ public class BizService {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (null != queueUser) {
             changeInitiateReason = changeInitiateReason + ", modified by " + queueUser.getName();
+            LOG.info("Changed bizStoreId={} name={} reason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason);
         } else {
-            LOG.warn("QueueUser is null check the call {}", changeInitiateReason);
+            LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason);
         }
         sendMailWhenStoreSettingHasChanged(bizStore.getId(), changeInitiateReason);
     }
