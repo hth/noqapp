@@ -52,49 +52,70 @@
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			This email is to confirm changes made to ${displayName} queue.
 		</p>
-        <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            Main Reason for Change was associated to: ${changeInitiateReason}
-        </p>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+			Reason for Change was associated to: ${changeInitiateReason}
+		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			Remote Join: ${remoteJoin}<br/>
 			Allowed Logged In User: ${allowLoggedInUser}<br/>
 			Available Token: ${availableTokenCount}<br/>
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			<strong>Monday</strong><br/>
-            <#list MONDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Tuesday</strong><br/>
-            <#list TUESDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Wednesday</strong><br/>
-            <#list WEDNESDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Thursday</strong><br/>
-            <#list THURSDAY as key, value>
-               <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Friday</strong><br/>
-            <#list FRIDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Saturday</strong><br/>
-            <#list SATURDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
-			<br/>
-			<strong>Sunday</strong><br/>
-            <#list SUNDAY as key, value>
-                <strong>${key}</strong> ${value}<br/>
-            </#list>
+		<table style=" padding: 10px">
+			<tr>
+				<td>
+					<strong>Monday</strong><br/>
+                    <#list MONDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+				<td>
+					<strong>Tuesday</strong><br/>
+                    <#list TUESDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Wednesday</strong><br/>
+                    <#list WEDNESDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+				<td>
+					<strong>Thursday</strong><br/>
+                    <#list THURSDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Friday</strong><br/>
+                    <#list FRIDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+				<td>
+					<strong>Saturday</strong><br/>
+                    <#list SATURDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Sunday</strong><br/>
+                    <#list SUNDAY as key, value>
+                        <strong>${key}</strong> ${value}<br/>
+                    </#list>
+				</td>
+				<td>
+					&nbsp;
+				</td>
+			</tr>
+		</table>
 		</p>
 		<p style="font-family: 'Roboto', sans-serif;">
 			Thanks, <br/>
