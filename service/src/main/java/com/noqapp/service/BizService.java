@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.RandomString;
@@ -27,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -63,6 +67,8 @@ public class BizService {
     private BusinessUserStoreManager businessUserStoreManager;
     private MailService mailService;
     private UserProfileManager userProfileManager;
+
+    private ExecutorService executorService;
 
     @Autowired
     public BizService(
@@ -91,6 +97,8 @@ public class BizService {
         this.businessUserStoreManager = businessUserStoreManager;
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
+
+        this.executorService = newCachedThreadPool();
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -128,10 +136,12 @@ public class BizService {
         } catch (Exception e) {
             LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={} errorReason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason, e.getLocalizedMessage(), e);
         }
-        sendMailWhenStoreSettingHasChanged(bizStore.getId(), changeInitiateReason);
+
+        String finalChangeInitiateReason = changeInitiateReason;
+        executorService.submit(() -> sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason));
     }
 
-    @Mobile
+    @Async
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
         bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
@@ -157,12 +167,9 @@ public class BizService {
             rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
         }
 
-        List<BusinessUserStoreEntity> businessUserStoreManagers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
-            bizStore.getId(),
-            UserLevelEnum.S_MANAGER);
-        for (BusinessUserStoreEntity businessUserStore : businessUserStoreManagers) {
-            String qid = businessUserStore.getQueueUserId();
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, UserLevelEnum.S_MANAGER);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
 
             mailService.sendAnyMail(
                 userProfile.getEmail(),
@@ -172,12 +179,9 @@ public class BizService {
                 "mail/changedStoreSetting.ftl");
         }
 
-        businessUserStoreManagers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
-            bizStore.getId(),
-            UserLevelEnum.M_ADMIN);
-        for (BusinessUserStoreEntity businessUserStore : businessUserStoreManagers) {
-            String qid = businessUserStore.getQueueUserId();
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, UserLevelEnum.M_ADMIN);
+        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
 
             mailService.sendAnyMail(
                 userProfile.getEmail(),
