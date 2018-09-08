@@ -130,7 +130,7 @@ public class BizService {
         }
         sendMailWhenStoreSettingHasChanged(bizStore.getId(), changeInitiateReason);
     }
-` `
+
     @Mobile
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
         BizStoreEntity bizStore = getByStoreId(bizStoreId);
