@@ -200,7 +200,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public List<UserProfileEntity> findDependentProfiles(String phone) {
+    public List<UserProfileEntity> findDependentProfilesByPhone(String phone) {
         return mongoTemplate.find(
                 query(where("GP").is(phone)),
                 UserProfileEntity.class,

@@ -475,13 +475,14 @@ public class MedicalRecordService {
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
-        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfiles(qid);
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
         List<String> queueUserIds = new LinkedList<String>() {{
             add(qid);
         }};
 
-        for (UserProfileEntity userProfile : dependentUserProfiles) {
-            queueUserIds.add(userProfile.getQueueUserId());
+        for (UserProfileEntity userProfileOfDependent : dependentUserProfiles) {
+            queueUserIds.add(userProfileOfDependent.getQueueUserId());
         }
 
         for (String queueUserId : queueUserIds) {
