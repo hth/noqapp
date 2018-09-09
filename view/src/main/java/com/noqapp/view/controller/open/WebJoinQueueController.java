@@ -2,6 +2,8 @@ package com.noqapp.view.controller.open;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 
+import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
@@ -10,6 +12,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.QueueService;
@@ -37,10 +40,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,6 +83,7 @@ public class WebJoinQueueController {
     private TokenQueueService tokenQueueService;
     private QueueService queueService;
     private AccountService accountService;
+    private GeoIPLocationService geoIPLocationService;
 
     @Autowired
     public WebJoinQueueController(
@@ -84,13 +91,15 @@ public class WebJoinQueueController {
             ShowHTMLService showHTMLService,
             TokenQueueService tokenQueueService,
             QueueService queueService,
-            AccountService accountService
+            AccountService accountService,
+            GeoIPLocationService geoIPLocationService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
         this.tokenQueueService = tokenQueueService;
         this.queueService = queueService;
         this.accountService = accountService;
+        this.geoIPLocationService = geoIPLocationService;
     }
 
     /**
@@ -104,6 +113,7 @@ public class WebJoinQueueController {
             @ModelAttribute("webJoinQueue")
             WebJoinQueueForm webJoinQueue,
 
+            HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
         LOG.info("CodeQR={}", codeQR.getText());
@@ -114,9 +124,35 @@ public class WebJoinQueueController {
             return null;
         }
 
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (null == ipAddress) {
+            ipAddress = request.getRemoteAddr();
+        }
+        String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
+        LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
+        int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
+        LOG.info("Time of requester is {}", requesterTime);
+
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
         Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("requesterTime", DateFormatter.convertMilitaryTo12HourFormat(requesterTime));
         showHTMLService.populateStore(rootMap, bizStore);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+        int tokenFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
+        int tokenEnd = bizStore.getTokenNotAvailableFrom(zonedDateTime.getDayOfWeek());
+        if (requesterTime > tokenFrom && requesterTime < tokenEnd) {
+            rootMap.put("tokenAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenFrom));
+            rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+            rootMap.put("tokenNotAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenEnd));
+            rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+        } else {
+            if (requesterTime < tokenFrom) {
+                rootMap.put("notOpen", "Yes");
+            } else {
+                rootMap.put("closedForTheDay", "Yes");
+            }
+        }
 
         webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
         return joinQueuePage;
