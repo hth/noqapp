@@ -221,6 +221,7 @@ class RegistrationFlowActions {
 
         if (null == bizStore) {
             bizStore = BizStoreEntity.newInstance();
+            bizStore.setId(CommonUtil.generateHexFromObjectId());
         }
         return saveStoreAndHours(registerBusiness, bizName, bizStore);
     }
@@ -260,9 +261,20 @@ class RegistrationFlowActions {
         /* If preferred Google Address then, do an update. Otherwise skip. */
         if (registerBusiness.isSelectFoundAddressStore()) {
             validateAddress(bizStore);
+        } else {
+            bizStore.setDistrict(bizName.getDistrict())
+                .setState(bizName.getState())
+                .setStateShortName(bizName.getStateShortName())
+                .setPostalCode(bizName.getPostalCode())
+                .setCountry(bizName.getCountry())
+                .setCountryShortName(bizName.getCountryShortName())
+                .setCoordinate(bizName.getCoordinate())
+                .setPlaceId(bizName.getPlaceId())
+                .setPlaceType(bizName.getPlaceType());
         }
 
         try {
+            List<StoreHourEntity> storeHours = saveStoreHours(registerBusiness, bizStore);
             String area = StringUtils.isBlank(registerBusiness.getAreaStore()) ? bizStore.getArea() : new ScrubbedInput(registerBusiness.getAreaStore()).getText();
             String webLocation = bizService.buildWebLocationForStore(
                     area,
@@ -277,26 +289,6 @@ class RegistrationFlowActions {
                 .setWebLocation(webLocation)
                 .setArea(area);
             bizService.saveStore(bizStore, "Added/Updated New/Existing Store");
-
-            String bizStoreId = bizStore.getId();
-            List<StoreHourEntity> storeHours = new LinkedList<>();
-            for (BusinessHour businessHour : registerBusiness.getBusinessHours()) {
-                StoreHourEntity storeHour = new StoreHourEntity(bizStoreId, businessHour.getDayOfWeek().getValue());
-                if (businessHour.isDayClosed()) {
-                    storeHour.setDayClosed(businessHour.isDayClosed());
-                } else {
-                    storeHour.setStartHour(businessHour.getStartHourStore());
-                    storeHour.setEndHour(businessHour.getEndHourStore());
-                    storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
-                    storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
-                }
-
-                storeHours.add(storeHour);
-            }
-
-            /* Add store hours. */
-            bizService.insertAll(storeHours);
-            bizStore.setStoreHours(storeHours);
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
@@ -317,6 +309,29 @@ class RegistrationFlowActions {
             }
             throw new RuntimeException("Error saving store");
         }
+    }
+
+    private List<StoreHourEntity> saveStoreHours(RegisterBusiness registerBusiness, BizStoreEntity bizStore) {
+        String bizStoreId = bizStore.getId();
+        List<StoreHourEntity> storeHours = new LinkedList<>();
+        for (BusinessHour businessHour : registerBusiness.getBusinessHours()) {
+            StoreHourEntity storeHour = new StoreHourEntity(bizStoreId, businessHour.getDayOfWeek().getValue());
+            if (businessHour.isDayClosed()) {
+                storeHour.setDayClosed(businessHour.isDayClosed());
+            } else {
+                storeHour.setStartHour(businessHour.getStartHourStore());
+                storeHour.setEndHour(businessHour.getEndHourStore());
+                storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
+                storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
+            }
+
+            storeHours.add(storeHour);
+        }
+
+        /* Add store hours. */
+        bizService.insertAll(storeHours);
+        bizStore.setStoreHours(storeHours);
+        return storeHours;
     }
 
     String isBusinessUserRegistrationComplete(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
