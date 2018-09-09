@@ -124,10 +124,7 @@ public class WebJoinQueueController {
             return null;
         }
 
-        String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        if (null == ipAddress) {
-            ipAddress = request.getRemoteAddr();
-        }
+        String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
         int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
