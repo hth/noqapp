@@ -73,9 +73,9 @@
                     <div class="download-app-icon">
                         <p>Get NoQApp</p>
                         <div>
-                            <a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">
-                                <img src="${parentHost}/static2/internal/img/apple-store.png"/>
-                            </a>
+                            <#--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">-->
+                                <#--<img src="${parentHost}/static2/internal/img/apple-store.png"/>-->
+                            <#--</a>-->
                             <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
                                 <img src="${parentHost}/static2/internal/img/google-play.png"/>
                             </a>
