@@ -80,6 +80,9 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /** Find queued in a specific queue. */
     List<QueueEntity> findInAQueueByQid(String qid, String codeQR);
 
+    /** Find with any queued state in a specific queue. */
+    List<QueueEntity> findInAQueueByQidWithAnyQueueState(String qid, String codeQR);
+
     /** Finds one, no matter whats the state. We are finding the one where QID is of the Client and not guardian. */
     QueueEntity findOneQueueByQid(String qid, String codeQR);
 
