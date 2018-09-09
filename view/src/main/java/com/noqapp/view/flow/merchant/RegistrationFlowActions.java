@@ -257,8 +257,11 @@ class RegistrationFlowActions {
                 .setFacilities(registerBusiness.getFacilitiesStore())
                 .setAmenities(registerBusiness.getAmenitiesStore());
 
-        //TODO(hth) check if the store and business address are selected as same. Then don't call the code below.
-        validateAddress(bizStore);
+        /* If preferred Google Address then, do an update. Otherwise skip. */
+        if (registerBusiness.isSelectFoundAddressStore()) {
+            validateAddress(bizStore);
+        }
+
         try {
             String area = StringUtils.isBlank(registerBusiness.getAreaStore()) ? bizStore.getArea() : new ScrubbedInput(registerBusiness.getAreaStore()).getText();
             String webLocation = bizService.buildWebLocationForStore(
