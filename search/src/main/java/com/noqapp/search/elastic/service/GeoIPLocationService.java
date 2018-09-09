@@ -51,4 +51,20 @@ public class GeoIPLocationService {
         double longitude = response.getLocation().getLongitude();
         return new GeoIP(ip, cityName, latitude, longitude);
     }
+
+    public String getTimeZone(String ip) {
+        LOG.debug("From ip={}", ip);
+
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            CityResponse response = dbReader.city(ipAddress);
+            response.getLocation().getTimeZone();
+        } catch (IOException e) {
+            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
+        } catch (GeoIp2Exception e) {
+            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
+        }
+
+        return null;
+    }
 }

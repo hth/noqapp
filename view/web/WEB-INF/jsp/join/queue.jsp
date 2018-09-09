@@ -116,13 +116,32 @@
                             <c:when test="${webJoinQueue.rootMap.get('storeClosed') eq 'Yes'}">
                             <button class="form-btn" style="width:100%; background: grey;" disabled>Closed</button>
                             </c:when>
+                            <c:when test="${webJoinQueue.rootMap.get('notOpen') eq 'Yes'}">
+                            <button class="form-btn" style="width:100%; background: grey;" disabled>Not Open. Check Queue Open Time.</button>
+                            </c:when>
+                            <c:when test="${webJoinQueue.rootMap.get('closedForTheDay') eq 'Yes'}">
+                            <button class="form-btn" style="width:100%; background: grey;" disabled>Closed For The Day</button>
+                            </c:when>
                             <c:otherwise>
                             <button id="sign-in-button" type="button" class="ladda-button form-btn" style="width:100%" onClick="onSignInSubmit();">NEXT</button>
                             </c:otherwise>
                             </c:choose>
                         </div>
-                        <!--<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="sign-in-button">Sign-in</button>-->
+                        <p style="margin: 5px 0"><strong>Time now: </strong>${webJoinQueue.rootMap.get("requesterTime")}</p>
+                        We are on mobile too. Please download NoQApp from Google Play.
                     </form>
+
+                    <div class="download-app-icon">
+                        <p>Get NoQApp</p>
+                        <div>
+                            <%--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">--%>
+                            <%--<img src="${parentHost}/static2/internal/img/apple-store.png"/>--%>
+                            <%--</a>--%>
+                            <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
+                                <img src="${parentHost}/static2/internal/img/google-play.png"/>
+                            </a>
+                        </div>
+                    </div>
 
                     <div class="otp">
                         <form id="verification-code-form" action="" style="display: none;">
