@@ -304,6 +304,11 @@ public class PurchaseOrderService {
         Validate.isValidQid(qid);
 
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
+        List<UserProfileEntity> dependentUserProfiles = accountService.findDependentProfiles(qid);
+        for (UserProfileEntity userProfile : dependentUserProfiles) {
+            purchaseOrders.addAll(findAllOpenOrder(userProfile.getQueueUserId()));
+        }
+
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
