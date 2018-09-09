@@ -58,7 +58,7 @@ public class GeoIPLocationService {
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
             CityResponse response = dbReader.city(ipAddress);
-            response.getLocation().getTimeZone();
+            return response.getLocation().getTimeZone();
         } catch (IOException e) {
             LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
