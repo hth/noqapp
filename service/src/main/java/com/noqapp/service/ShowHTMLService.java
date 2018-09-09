@@ -210,7 +210,7 @@ public class ShowHTMLService {
             rootMap.put("storeClosed", "No");
             switch (tokenQueue.getQueueStatus()) {
                 case S:
-                    rootMap.put("queueStatus", "Not yet started");
+                    rootMap.put("queueStatus", "Queue not yet started");
                     rootMap.put("currentlyServing", "0");
                     break;
                 case R:
@@ -218,11 +218,11 @@ public class ShowHTMLService {
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case N:
-                    rootMap.put("currentlyServing", "Serving " + tokenQueue.getCurrentlyServing());
+                    rootMap.put("currentlyServing", "Serving Now " + tokenQueue.getCurrentlyServing());
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case D:
-                    rootMap.put("currentlyServing", "Last served " + tokenQueue.getCurrentlyServing());
+                    rootMap.put("currentlyServing", "Last served token " + tokenQueue.getCurrentlyServing());
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case C:
