@@ -88,10 +88,24 @@ public class QueueService {
         return queueManager.findInAQueueByQid(qid, codeQR);
     }
 
-    /** Get person with QID in a specific queue. Including when queued as guardian*/
+    @Mobile
+    public List<QueueEntity> findInAQueueByQidWithAnyQueueState(String qid, String codeQR) {
+        return queueManager.findInAQueueByQidWithAnyQueueState(qid, codeQR);
+    }
+
+    /** Get person with QID in a specific queue. Including when queued as guardian. */
     @Mobile
     public String getQueuedPerson(String qid, String codeQR) {
         List<QueueEntity> queues = findInAQueueByQid(qid, codeQR);
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+        populateInJsonQueuePersonList(queuedPeople, queues);
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
+    }
+
+    /** Get person in queue with any state. Including when queued as guardian. */
+    @Mobile
+    public String findThisPersonInQueue(String qid, String codeQR) {
+        List<QueueEntity> queues = findInAQueueByQidWithAnyQueueState(qid, codeQR);
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
         populateInJsonQueuePersonList(queuedPeople, queues);
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();

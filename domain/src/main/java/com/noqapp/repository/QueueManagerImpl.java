@@ -322,6 +322,18 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    public List<QueueEntity> findInAQueueByQidWithAnyQueueState(String qid, String codeQR) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR)
+                .orOperator(
+                    where("QID").is(qid),
+                    where("GQ").is(qid)
+                )
+            ).with(new Sort(ASC, "C")),
+            QueueEntity.class,
+            TABLE);
+    }
+
     public QueueEntity findOneQueueByQid(String qid, String codeQR) {
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QID").is(qid)),
