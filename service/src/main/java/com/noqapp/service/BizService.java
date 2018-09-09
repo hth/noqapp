@@ -6,6 +6,7 @@ import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -16,6 +17,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
@@ -61,6 +63,7 @@ public class BizService {
     private StoreHourManager storeHourManager;
     private TokenQueueService tokenQueueService;
     private QueueService queueService;
+    private BusinessUserManager businessUserManager;
     private BusinessUserStoreManager businessUserStoreManager;
     private MailService mailService;
     private UserProfileManager userProfileManager;
@@ -78,6 +81,7 @@ public class BizService {
             StoreHourManager storeHourManager,
             TokenQueueService tokenQueueService,
             QueueService queueService,
+            BusinessUserManager businessUserManager,
             BusinessUserStoreManager businessUserStoreManager,
             MailService mailService,
             UserProfileManager userProfileManager
@@ -89,6 +93,7 @@ public class BizService {
         this.storeHourManager = storeHourManager;
         this.tokenQueueService = tokenQueueService;
         this.queueService = queueService;
+        this.businessUserManager = businessUserManager;
         this.businessUserStoreManager = businessUserStoreManager;
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
@@ -172,9 +177,9 @@ public class BizService {
                 "mail/changedStoreSetting.ftl");
         }
 
-        businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, UserLevelEnum.M_ADMIN);
-        for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
+        List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizStore.getBizName().getId(), UserLevelEnum.M_ADMIN);
+        for (BusinessUserEntity businessUser : businessUsers) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
 
             mailService.sendAnyMail(
                 userProfile.getEmail(),
