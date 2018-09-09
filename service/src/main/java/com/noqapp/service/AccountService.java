@@ -341,7 +341,7 @@ public class AccountService {
 
     public List<UserProfileEntity> findDependentProfiles(String qid) {
         UserProfileEntity userProfile = findProfileByQueueUserId(qid);
-        return userProfileManager.findDependentProfiles(userProfile.getPhone());
+        return userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
     }
 
     /**
@@ -623,7 +623,7 @@ public class AccountService {
     }
 
     private void updateDependentsPhoneNumber(String newPhone, String countryShortName, String timeZone, String phone) {
-        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfiles(phone);
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(phone);
         for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
             boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
                     dependentUserProfile.getQueueUserId(),

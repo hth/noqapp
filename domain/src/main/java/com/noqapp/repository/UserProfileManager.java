@@ -44,7 +44,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity inviteCodeExists(String inviteCode);
 
-    List<UserProfileEntity> findDependentProfiles(String phone);
+    List<UserProfileEntity> findDependentProfilesByPhone(String phone);
 
     void addUserProfileImage(String qid, String profileImage);
 
