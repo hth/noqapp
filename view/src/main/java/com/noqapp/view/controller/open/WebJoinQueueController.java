@@ -128,7 +128,7 @@ public class WebJoinQueueController {
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
         int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
-        LOG.info("Time of requester is {}", requesterTime);
+        LOG.info("Requester originator time is {} ipAddress={}", requesterTime, ipAddress);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
         Map<String, Object> rootMap = new HashMap<>();
