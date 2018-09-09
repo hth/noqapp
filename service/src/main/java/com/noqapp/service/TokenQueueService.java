@@ -460,33 +460,29 @@ public class TokenQueueService {
     /** Sends any message to a specific user. */
     public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin) {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
-        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(qid);
-        for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
-            String token = registeredDevice.getToken();
-            JsonMessage jsonMessage = new JsonMessage(token);
-            JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+        String token = registeredDevice.getToken();
+        JsonMessage jsonMessage = new JsonMessage(token);
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
 
-            if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
-                jsonMessage.getNotification()
-                        .setTitle(title)
-                        .setBody(body);
-            } else {
-                jsonMessage.setNotification(null);
-                jsonData.setTitle(title)
-                        .setBody(body);
-            }
-
-            jsonMessage.setData(jsonData);
-            LOG.info("Specific Message={}", jsonMessage.asJson());
-            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-            if (!fcmMessageBroadcast) {
-                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-            } else {
-                LOG.info("Sent supervisor invite message={}", jsonMessage.asJson());
-            }
+        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+            jsonMessage.getNotification()
+                    .setTitle(title)
+                    .setBody(body);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(title)
+                    .setBody(body);
         }
 
-        LOG.info("Sent FCM supervisor invite deviceCount={} qid={}", registeredDevices.size(), qid);
+        jsonMessage.setData(jsonData);
+        LOG.info("Specific Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent supervisor invite message={}", jsonMessage.asJson());
+        }
     }
 
     /**
