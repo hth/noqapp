@@ -113,7 +113,7 @@ public final class DateUtil {
     }
 
     public static LocalTime getTimeAtTimeZone(String forTimeZone) {
-        TimeZone timeZone = StringUtils.isBlank(forTimeZone) ? TimeZone.getTimeZone(ZoneOffset.UTC.getId()) : TimeZone.getTimeZone(forTimeZone);
+        TimeZone timeZone = StringUtils.isBlank(forTimeZone) ? TimeZone.getTimeZone(ZoneId.systemDefault()) : TimeZone.getTimeZone(forTimeZone);
         return LocalTime.now(timeZone.toZoneId());
     }
 
