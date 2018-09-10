@@ -317,7 +317,7 @@ public class WebJoinQueueController {
 
     /**
      * Subscribe device when registered through web.
-     * 
+     *
      * @param codeQRDecoded
      * @param qid
      * @param registeredDevice
