@@ -6,6 +6,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class FirebaseConfig {
     private static FirebaseOptions options;
     private static FirebaseApp firebaseApp;
     private static FirebaseAuth firebaseAuth;
+    private static FirebaseMessaging firebaseMessaging;
 
     private FirebaseConfig() {
         if (null == options) {
@@ -79,9 +81,21 @@ public class FirebaseConfig {
         } catch (Exception e) {
             LOG.error("Failed initialize firebaseAuth reason={}", e.getLocalizedMessage(), e);
         }
+
+        try {
+            if(null == firebaseMessaging) {
+                firebaseMessaging = FirebaseMessaging.getInstance(firebaseApp);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed initialize firebaseMessaging reason={}", e.getLocalizedMessage(), e);
+        }
     }
 
     public FirebaseAuth getFirebaseAuth() {
         return firebaseAuth;
+    }
+
+    public FirebaseMessaging getFirebaseMessaging() {
+        return firebaseMessaging;
     }
 }

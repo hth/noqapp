@@ -3,7 +3,7 @@ package com.noqapp.view.controller.open;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
-import com.noqapp.service.FirebaseAuthenticateService;
+import com.noqapp.service.FirebaseService;
 import com.noqapp.view.form.UserLoginPhoneForm;
 
 import org.slf4j.Logger;
@@ -35,18 +35,18 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginPhoneController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginPhoneController.class);
 
-    private FirebaseAuthenticateService firebaseAuthenticateService;
+    private FirebaseService firebaseService;
     private AccountService accountService;
     private LoginController loginController;
 
     @Autowired
     public LoginPhoneController(
-            FirebaseAuthenticateService firebaseAuthenticateService,
-            AccountService accountService,
-            LoginController loginController
+        FirebaseService firebaseService,
+        AccountService accountService,
+        LoginController loginController
     ) {
         this.accountService = accountService;
-        this.firebaseAuthenticateService = firebaseAuthenticateService;
+        this.firebaseService = firebaseService;
         this.loginController = loginController;
     }
 
@@ -63,7 +63,7 @@ public class LoginPhoneController {
             RedirectAttributes redirectAttrs,
             HttpServletResponse httpServletResponse
     ) {
-        UserProfileEntity userProfile = firebaseAuthenticateService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
+        UserProfileEntity userProfile = firebaseService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
         if (null == userProfile) {
             LOG.warn("Failed to find user uid={} phone={}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone());
             return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
