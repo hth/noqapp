@@ -1,6 +1,7 @@
 package com.noqapp.view.controller.open;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
@@ -8,13 +9,18 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
+import com.noqapp.service.FirebaseService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
@@ -42,9 +48,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -84,6 +92,8 @@ public class WebJoinQueueController {
     private QueueService queueService;
     private AccountService accountService;
     private GeoIPLocationService geoIPLocationService;
+    private RegisteredDeviceManager registeredDeviceManager;
+    private FirebaseService firebaseService;
 
     @Autowired
     public WebJoinQueueController(
@@ -92,7 +102,9 @@ public class WebJoinQueueController {
             TokenQueueService tokenQueueService,
             QueueService queueService,
             AccountService accountService,
-            GeoIPLocationService geoIPLocationService
+            GeoIPLocationService geoIPLocationService,
+            RegisteredDeviceManager registeredDeviceManager,
+            FirebaseService firebaseService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
@@ -100,6 +112,8 @@ public class WebJoinQueueController {
         this.queueService = queueService;
         this.accountService = accountService;
         this.geoIPLocationService = geoIPLocationService;
+        this.registeredDeviceManager = registeredDeviceManager;
+        this.firebaseService = firebaseService;
     }
 
     /**
@@ -236,42 +250,11 @@ public class WebJoinQueueController {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
                 return null;
             }
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
+            QueueEntity queue = tokenQueueService.findQueuedByPhone(codeQRDecoded, webJoinQueue.getPhone().getText());
 
             JsonToken jsonToken;
-            QueueEntity queue = tokenQueueService.findQueuedByPhone(
-                    codeQRDecoded,
-                    webJoinQueue.getPhone().getText());
-
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
-            if (null == queue) {
-                String did = UUID.randomUUID().toString();
-                UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
-
-                String guardianQid = null;
-                if (null != userProfile && StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
-                    guardianQid = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone()).getQueueUserId();
-                }
-
-                jsonToken = tokenQueueService.getNextToken(
-                        codeQRDecoded,
-                        did,
-                        null != userProfile ? userProfile.getQueueUserId() : null,
-                        guardianQid,
-                        bizStore.getAverageServiceTime(),
-                        TokenServiceEnum.W
-                );
-
-                if (null != userProfile) {
-                    queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
-                    tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
-                } else {
-                    queueService.addPhoneNumberToExistingQueue(
-                            jsonToken.getToken(),
-                            codeQRDecoded,
-                            did,
-                            webJoinQueue.getPhone().getText());
-                }
-            } else {
+            if (null != queue) {
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQRDecoded);
                 jsonToken = new JsonToken(codeQRDecoded, bizStore.getBusinessType())
                         .setToken(queue.getTokenNumber())
@@ -279,6 +262,40 @@ public class WebJoinQueueController {
                         .setDisplayName(tokenQueue.getDisplayName())
                         .setQueueStatus(tokenQueue.getQueueStatus())
                         .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            } else {
+                UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
+                String did = UUID.randomUUID().toString();
+
+                RegisteredDeviceEntity registeredDevice = null;
+                if (userProfile != null) {
+                    registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+                    if (null != registeredDevice) {
+                        did = registeredDevice.getDeviceId();
+                    }
+                }
+                jsonToken = tokenQueueService.getNextToken(
+                        codeQRDecoded,
+                        did,
+                        null != userProfile ? userProfile.getQueueUserId() : null,
+                        null,
+                        bizStore.getAverageServiceTime(),
+                        TokenServiceEnum.W
+                );
+
+                if (null != userProfile) {
+                    queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
+                    tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
+
+                    if (null != registeredDevice) {
+                        subscribeDeviceToTopic(codeQRDecoded, userProfile.getQueueUserId(), registeredDevice);
+                    }
+                } else {
+                    queueService.addPhoneNumberToExistingQueue(
+                            jsonToken.getToken(),
+                            codeQRDecoded,
+                            did,
+                            webJoinQueue.getPhone().getText());
+                }
             }
 
             if (StringUtils.isNotBlank(jsonToken.getExpectedServiceBegin())) {
@@ -296,5 +313,26 @@ public class WebJoinQueueController {
             LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    /**
+     * Subscribe device when registered through web.
+     * 
+     * @param codeQRDecoded
+     * @param qid
+     * @param registeredDevice
+     */
+    private void subscribeDeviceToTopic(String codeQRDecoded, String qid, RegisteredDeviceEntity registeredDevice) {
+        List<String> tokens = new ArrayList<>();
+        tokens.add(registeredDevice.getToken());
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQRDecoded);
+        String topic = tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + registeredDevice.getDeviceType().name();
+        firebaseService.subscribeToTopic(tokens, topic);
+
+        tokenQueueService.sendMessageToSpecificUser(
+            "Joined Queue",
+            "You have joined queue successfully",
+            qid,
+            MessageOriginEnum.D);
     }
 }

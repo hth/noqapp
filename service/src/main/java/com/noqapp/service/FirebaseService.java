@@ -6,6 +6,8 @@ import com.noqapp.domain.UserProfileEntity;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.UserRecord;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.TopicManagementResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -24,16 +27,16 @@ import java.util.concurrent.TimeoutException;
  * Date: 12/28/16 10:56 PM
  */
 @Service
-public class FirebaseAuthenticateService {
-    private static final Logger LOG = LoggerFactory.getLogger(FirebaseAuthenticateService.class);
+public class FirebaseService {
+    private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
 
     private FirebaseConfig firebaseConfig;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
-    public FirebaseAuthenticateService(
-            FirebaseConfig firebaseConfig,
-            UserProfilePreferenceService userProfilePreferenceService
+    public FirebaseService(
+        FirebaseConfig firebaseConfig,
+        UserProfilePreferenceService userProfilePreferenceService
     ) {
         this.firebaseConfig = firebaseConfig;
         this.userProfilePreferenceService = userProfilePreferenceService;
@@ -67,5 +70,14 @@ public class FirebaseAuthenticateService {
         }
 
         return null;
+    }
+
+    public void subscribeToTopic(List<String> registrationTokens, String topic) {
+        try {
+            TopicManagementResponse response = firebaseConfig.getFirebaseMessaging().subscribeToTopic(registrationTokens, topic);
+            LOG.info("Subscribed successCount={} topic={}", response.getSuccessCount(), topic);
+        } catch (FirebaseMessagingException e) {
+            LOG.error("Failed subscribing reason={}", e.getLocalizedMessage(), e);
+        }
     }
 }
