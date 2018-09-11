@@ -154,8 +154,8 @@ public class BizService {
 
         for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
             Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
-            if (storeHour.isDayClosed()) {
-                storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() ? "Yes" : "No");
+            if (storeHour.isDayClosed() || storeHour.isTempDayClosed()) {
+                storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() || storeHour.isTempDayClosed() ? "Yes" : "No");
             } else {
                 storeHoursAsMap.put("Issue token from: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
                 storeHoursAsMap.put("Stop issuing token after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));

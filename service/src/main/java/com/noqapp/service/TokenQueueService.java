@@ -184,7 +184,7 @@ public class TokenQueueService {
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
-                if (storeHour.isDayClosed() || storeHour.isPreventJoining()) {
+                if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token");
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                             .setToken(0)

@@ -202,7 +202,7 @@ public class ShowHTMLService {
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
-        if (storeHour.isDayClosed()) {
+        if (storeHour.isDayClosed() || storeHour.isTempDayClosed()) {
             rootMap.put("storeClosed", "Yes");
             rootMap.put("queueStatus", "Closed");
             rootMap.put("currentlyServing", "NA");
