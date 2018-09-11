@@ -119,7 +119,7 @@ public class DomainConversion {
                     .setEndHour(storeHour.getEndHour())
                     .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
                     .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
-                    .setDayClosed(storeHour.isDayClosed())
+                    .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
             );
         }
         return storeHourElastics;
