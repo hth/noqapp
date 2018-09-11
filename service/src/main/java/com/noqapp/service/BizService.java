@@ -151,6 +151,7 @@ public class BizService {
         rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
         rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
         //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
+        rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
 
         for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
             Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
