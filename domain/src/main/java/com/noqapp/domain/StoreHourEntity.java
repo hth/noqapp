@@ -46,16 +46,24 @@ public class StoreHourEntity extends BaseEntity {
     @Field ("EH")
     private int endHour;
 
-    @Field ("PJ")
-    private boolean preventJoining;
-
     @Field ("DC")
     private boolean dayClosed = false;
 
-    /* TODO(hth) This includes temp day close and temp preventJoining. All this resets on next day. */
+    //***************************************/
+    //* All these resets on next day starts. */
+    //***************************************/
+    @Field("TC")
+    private boolean tempDayClosed;
+
+    @Field ("PJ")
+    private boolean preventJoining;
+
     /* When business queue delays the start time. Delayed by minutes. */
     @Field ("DE")
     private int delayedInMinutes = 0;
+    //*************************************/
+    //* All this resets on next day ends. */
+    //*************************************/
 
     public StoreHourEntity() {
         //Default
@@ -110,6 +118,15 @@ public class StoreHourEntity extends BaseEntity {
         return this;
     }
 
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public StoreHourEntity setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
+    }
+
     public boolean isPreventJoining() {
         return preventJoining;
     }
@@ -119,12 +136,12 @@ public class StoreHourEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isDayClosed() {
-        return dayClosed;
+    public boolean isTempDayClosed() {
+        return tempDayClosed;
     }
 
-    public StoreHourEntity setDayClosed(boolean dayClosed) {
-        this.dayClosed = dayClosed;
+    public StoreHourEntity setTempDayClosed(boolean tempDayClosed) {
+        this.tempDayClosed = tempDayClosed;
         return this;
     }
 

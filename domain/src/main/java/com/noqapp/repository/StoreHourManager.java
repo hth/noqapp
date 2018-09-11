@@ -30,8 +30,9 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
             int startHour,
             int tokenNotAvailableFrom,
             int endHour,
-            boolean preventJoining,
             boolean dayClosed,
+            boolean tempDayClosed,
+            boolean preventJoining,
             int delayedInMinutes
     );
 

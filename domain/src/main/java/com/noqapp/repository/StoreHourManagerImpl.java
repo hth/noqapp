@@ -108,8 +108,9 @@ public class StoreHourManagerImpl implements StoreHourManager {
             int startHour,
             int tokenNotAvailableFrom,
             int endHour,
-            boolean preventJoining,
             boolean dayClosed,
+            boolean tempDayClosed,
+            boolean preventJoining,
             int delayedInMinutes
     ) {
         LOG.info("Hour Change for bizStoreId={} " +
@@ -118,8 +119,9 @@ public class StoreHourManagerImpl implements StoreHourManager {
                         "startHour={} " +
                         "tokenNotAvailableFrom={} " +
                         "endHour={} " +
-                        "preventJoining={} " +
                         "dayClosed={} " +
+                        "tempDayClosed={} " +
+                        "preventJoining={} " +
                         "delayedInMinutes={}",
                 bizStoreId,
                 dayOfWeek.getValue(),
@@ -127,8 +129,9 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 startHour,
                 tokenNotAvailableFrom,
                 endHour,
-                preventJoining,
                 dayClosed,
+                tempDayClosed,
+                preventJoining,
                 delayedInMinutes);
         return mongoTemplate.findAndModify(
                 query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
@@ -136,8 +139,9 @@ public class StoreHourManagerImpl implements StoreHourManager {
                         .set("SH", startHour)
                         .set("TE", tokenNotAvailableFrom)
                         .set("EH", endHour)
-                        .set("PJ", preventJoining)
                         .set("DC", dayClosed)
+                        .set("TC", tempDayClosed)
+                        .set("PJ", preventJoining)
                         .set("DE", delayedInMinutes)),
                 FindAndModifyOptions.options().returnNew(true),
                 StoreHourEntity.class,
@@ -149,8 +153,11 @@ public class StoreHourManagerImpl implements StoreHourManager {
     public boolean resetStoreHour(String id) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("id").is(new ObjectId(id))),
-                entityUpdate(update("PJ", false)
-                        .set("DE", 0)),
+                entityUpdate(
+                    update("PJ", false)
+                        .set("DE", 0)
+                        .set("TC", false)
+                ),
                 StoreHourEntity.class,
                 TABLE
         );
