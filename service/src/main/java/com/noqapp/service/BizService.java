@@ -190,7 +190,7 @@ public class BizService {
             mailService.sendAnyMail(
                 userProfile.getEmail(),
                 userProfile.getName(),
-                "Changes to " + bizStore.getDisplayName() + " queue",
+                bizStore.getDisplayName() + ": Queue changes confirmation",
                 rootMap,
                 "mail/changedStoreSetting.ftl");
         }
