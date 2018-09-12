@@ -341,7 +341,7 @@ public class UserProfileEntity extends BaseEntity {
 
     @Transient
     public long getAge() {
-        if (StringUtils.isBlank(birthday)) {
+        if (StringUtils.isNotBlank(birthday)) {
             return ChronoUnit.YEARS.between(LocalDate.parse(birthday), LocalDate.now());
         }
 
