@@ -59,7 +59,7 @@
 			Remote Join: ${remoteJoin}<br/>
 			Allowed Logged In User: ${allowLoggedInUser}<br/>
 			Available Token: ${availableTokenCount}<br/>
-			Note or Famous For: ${famousFor}<br/>
+			Additional Note or Famous For: ${famousFor}<br/>
 		</p>
 		<table style="background-color: lightgrey">
 			<tr>
