@@ -56,7 +56,7 @@ public class QueueService {
 
     @Autowired
     public QueueService(
-            @Value("${limitedToDays:30}")
+            @Value("${limitedToDays:7}")
             int limitedToDays,
 
             AccountService accountService,
