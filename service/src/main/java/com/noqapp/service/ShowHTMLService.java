@@ -205,7 +205,7 @@ public class ShowHTMLService {
         if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || bizStore.getBizName().isDayClosed()) {
             rootMap.put("storeClosed", "Yes");
             rootMap.put("queueStatus", "Closed");
-            rootMap.put("currentlyServing", "NA");
+            rootMap.put("currentlyServing", "N/A");
         } else {
             rootMap.put("storeClosed", "No");
             switch (tokenQueue.getQueueStatus()) {
@@ -227,7 +227,7 @@ public class ShowHTMLService {
                     break;
                 case C:
                     rootMap.put("queueStatus", "Closed Permanently");
-                    rootMap.put("currentlyServing", "NA");
+                    rootMap.put("currentlyServing", "N/A");
                     break;
                 default:
                     LOG.error("Reached unreachable condition {}", tokenQueue.getQueueStatus());

@@ -228,7 +228,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.lastNumber = tokenQueue.getLastNumber();
         //Skipped ratingCount
         //Skipped hoursSaved
-        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "NA" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "N/A" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
@@ -274,7 +274,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueUserId = purchaseOrder.getQueueUserId();
         //Skipped serving number
         //Skipped last number
-        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "NA" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "N/A" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.ratingCount = purchaseOrder.getRatingCount();
         this.hoursSaved = purchaseOrder.getHoursSaved();
         this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));

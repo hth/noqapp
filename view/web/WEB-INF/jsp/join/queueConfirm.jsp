@@ -118,7 +118,7 @@
             $("#showTime").text(c);
         </c:when>
         <c:otherwise>
-            $("#showTime").text("NA");
+            $("#showTime").text("N/A");
         </c:otherwise>
     </c:choose>
 </script>
