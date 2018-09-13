@@ -235,34 +235,34 @@ public class QueueHistory {
                             totalCustomerRated++;
                         }
                         totalServiced++;
-                        int hours;
+                        int minutes;
                         switch (queue.getHoursSaved()) {
                             case 1:
                                 /* Half hour. */
-                                hours = 30;
+                                minutes = 30;
                                 break;
                             case 2:
                                 /* One hour. */
-                                hours = 30 * 2;
+                                minutes = 30 * 2;
                                 break;
                             case 3:
                                 /* Two hours. */
-                                hours = 30 * 4;
+                                minutes = 30 * 4;
                                 break;
                             case 4:
                                 /* Three hours. */
-                                hours = 30 * 6;
+                                minutes = 30 * 6;
                                 break;
                             case 5:
                                 /* Four hours. */
-                                hours = 30 * 8;
+                                minutes = 30 * 8;
                                 break;
                             default:
                                 /* Eight hours. */
-                                hours = 30 * 16;
+                                minutes = 30 * 16;
                         }
-                        hours = hours / 60;
-                        totalHoursSaved += hours * 60 * 1000;
+                        int hours = minutes / 60;
+                        totalHoursSaved += hours;
                         LOG.info("Hours saved {} total={} in milliseconds={}", hours, totalHoursSaved, hours * 60 * 1000);
                         break;
                     case A:
