@@ -215,6 +215,10 @@ public class BizStoreEntity extends BaseEntity {
     //*  Queue Settings Ends.   */
     //***************************/
 
+    /* Contains Id if a task is assigned. */
+    @Field("TA")
+    private String scheduledTaskId;
+
     @Transient
     private List<StoreHourEntity> storeHours;
 
@@ -528,6 +532,15 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
+    public AddressOriginEnum getAddressOrigin() {
+        return addressOrigin;
+    }
+
+    public BizStoreEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
+        this.addressOrigin = addressOrigin;
+        return this;
+    }
+
     public String getWebLocation() {
         return webLocation;
     }
@@ -668,12 +681,12 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public AddressOriginEnum getAddressOrigin() {
-        return addressOrigin;
+    public String getScheduledTaskId() {
+        return scheduledTaskId;
     }
 
-    public BizStoreEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
-        this.addressOrigin = addressOrigin;
+    public BizStoreEntity setScheduledTaskId(String scheduledTaskId) {
+        this.scheduledTaskId = scheduledTaskId;
         return this;
     }
 

@@ -200,4 +200,12 @@ public final class DateUtil {
     public static Date plusDays(int days) {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
+
+    public static boolean isThisDayBetween(Date fromDay, Date untilDay) {
+        return isThisDayBetween(new Date(), fromDay, untilDay);
+    }
+
+    static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
+        return !thisDay.before(fromDay) && !thisDay.after(untilDay);
+    }
 }

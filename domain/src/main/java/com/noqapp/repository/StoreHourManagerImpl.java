@@ -150,7 +150,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     }
 
     @Override
-    public boolean resetStoreHour(String id) {
+    public boolean resetTemporarySettingsOnStoreHour(String id) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("id").is(new ObjectId(id))),
                 entityUpdate(

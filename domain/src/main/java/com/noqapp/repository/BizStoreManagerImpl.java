@@ -372,6 +372,26 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public void unsetScheduledTask(String id) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            entityUpdate(new Update().unset("TA")),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void setScheduleTaskId(String codeQR, String scheduleTaskId) {
+        mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR)),
+            entityUpdate(update("TA", scheduleTaskId)),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

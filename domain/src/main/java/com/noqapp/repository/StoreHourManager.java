@@ -36,7 +36,8 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
             int delayedInMinutes
     );
 
-    boolean resetStoreHour(String id);
+    /* Resets temp settings for the day made on store hours. */
+    boolean resetTemporarySettingsOnStoreHour(String id);
 
     void resetQueueSettingWhenQueueStarts(String bizStoreId, DayOfWeek dayOfWeek);
 }

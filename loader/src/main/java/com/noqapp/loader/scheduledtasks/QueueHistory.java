@@ -1,18 +1,23 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.StatsCronService;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +60,7 @@ public class QueueHistory {
     private StatsCronService statsCronService;
     private ExternalService externalService;
     private BizService bizService;
+    private ScheduledTaskManager scheduledTaskManager;
 
     private StatsCronEntity statsCron;
 
@@ -70,7 +76,8 @@ public class QueueHistory {
             QueueManagerJDBC queueManagerJDBC,
             StatsCronService statsCronService,
             ExternalService externalService,
-            BizService bizService
+            BizService bizService,
+            ScheduledTaskManager scheduledTaskManager
     ) {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
@@ -81,6 +88,7 @@ public class QueueHistory {
         this.statsCronService = statsCronService;
         this.externalService = externalService;
         this.bizService = bizService;
+        this.scheduledTaskManager = scheduledTaskManager;
     }
 
     @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
@@ -138,15 +146,22 @@ public class QueueHistory {
                     }
 
                     StoreHourEntity storeHour = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
+                    if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+                        populateForScheduledTask(bizStore, storeHour);
+                    }
+
                     ZonedDateTime queueHistoryNextRun = externalService.computeNextRunTimeAtUTC(
                             TimeZone.getTimeZone(bizStore.getTimeZone()),
                             /* When closed set hour to 23 and minute to 59. */
-                            storeHour.isDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
-                            storeHour.isDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
+                            storeHour.isDayClosed() || storeHour.isTempDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
+                            storeHour.isDayClosed() || storeHour.isTempDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
 
-                    /* Always reset storeHour after the end of day. */
-                    LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}", DayOfWeek.of(storeHour.getDayOfWeek()), bizStore.getDisplayName(), bizStore.getId());
-                    bizService.resetStoreHour(storeHour.getId());
+                    /* Always reset storeHour and other settings after the end of day. */
+                    LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}",
+                        DayOfWeek.of(storeHour.getDayOfWeek()),
+                        bizStore.getDisplayName(),
+                        bizStore.getId());
+                    bizService.resetTemporarySettingsOnStoreHour(storeHour.getId());
 
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (null != bizStoreRating) {
@@ -190,6 +205,22 @@ public class QueueHistory {
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
+        }
+    }
+
+    private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
+        ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+        if (DateUtil.isThisDayBetween(DateUtil.convertToDate(scheduledTask.getFrom()), DateUtil.convertToDate(scheduledTask.getUntil()))) {
+            switch (scheduledTask.getScheduleTask()) {
+                case CLOSE:
+                    storeHour.setTempDayClosed(true);
+                    break;
+            }
+
+            bizService.modifyOne(storeHour);
+        } else {
+            bizStoreManager.unsetScheduledTask(bizStore.getId());
+            scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
         }
     }
 
