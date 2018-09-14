@@ -143,5 +143,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId);
 
     boolean doesWebLocationExists(String webLocation, String id);
+
+    void unsetScheduledTask(String id);
+
+    void setScheduleTaskId(String codeQR, String scheduleTaskId);
 }
 

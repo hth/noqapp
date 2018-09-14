@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -464,8 +465,29 @@ public class BizService {
         return bizNames.get(0);
     }
 
-    public boolean resetStoreHour(String id) {
+    public boolean resetTemporarySettingsOnStoreHour(String id) {
         LOG.debug("StoreHour id={}", id);
-        return storeHourManager.resetStoreHour(id);
+        return storeHourManager.resetTemporarySettingsOnStoreHour(id);
+    }
+
+    public StoreHourEntity modifyOne(StoreHourEntity storeHour) {
+        return storeHourManager.modifyOne(
+            storeHour.getBizStoreId(),
+            DayOfWeek.of(storeHour.getDayOfWeek()),
+            storeHour.getTokenAvailableFrom(),
+            storeHour.getStartHour(),
+            storeHour.getTokenNotAvailableFrom(),
+            storeHour.getEndHour(),
+            storeHour.isDayClosed(),
+            storeHour.isTempDayClosed(),
+            storeHour.isPreventJoining(),
+            storeHour.getDelayedInMinutes()
+        );
+    }
+
+    @Mobile
+    public void setScheduleTaskId(String codeQR, String id) {
+        Assert.hasText(id, "Should not be blank");
+        bizStoreManager.setScheduleTaskId(codeQR, id);
     }
 }
