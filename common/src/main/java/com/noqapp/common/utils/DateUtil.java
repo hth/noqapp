@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -45,6 +46,8 @@ public final class DateUtil {
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
+    private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
+
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
@@ -207,5 +210,25 @@ public final class DateUtil {
 
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
+    }
+
+    /**
+     * Compute UTC based DateTime.
+     */
+    public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
+        try {
+            Assert.notNull(timeZone, "TimeZone should not be null");
+            String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
+            /* Compute next run. New Date technically gives us today's run date. */
+            LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
+            LocalDateTime tomorrow = localDateTime.plusDays(1);
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
+
+            /* Note: Nothing is UTC when converted to date. Hence the System time should always be on UTC. */
+            return zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+        } catch (Exception e) {
+            LOG.error("Failed to compute next run time reason={}", e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 }

@@ -492,6 +492,7 @@ public class BizService {
         bizStoreManager.setScheduleTaskId(codeQR, id);
     }
 
+    @Mobile
     public boolean updateNextRun(BizStoreEntity bizStore, Date queueHistoryNextRun) {
         return bizStoreManager.updateNextRun(
             bizStore.getId(),
