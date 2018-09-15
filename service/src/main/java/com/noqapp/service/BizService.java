@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -489,5 +490,12 @@ public class BizService {
     public void setScheduleTaskId(String codeQR, String id) {
         Assert.hasText(id, "Should not be blank");
         bizStoreManager.setScheduleTaskId(codeQR, id);
+    }
+
+    public boolean updateNextRun(BizStoreEntity bizStore, Date queueHistoryNextRun) {
+        return bizStoreManager.updateNextRun(
+            bizStore.getId(),
+            bizStore.getTimeZone(),
+            queueHistoryNextRun);
     }
 }
