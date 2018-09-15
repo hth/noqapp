@@ -145,23 +145,8 @@ public class QueueHistory {
                         LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
-                    StoreHourEntity storeHour = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
-                    if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-                        populateForScheduledTask(bizStore, storeHour);
-                    }
-
-                    ZonedDateTime queueHistoryNextRun = externalService.computeNextRunTimeAtUTC(
-                            TimeZone.getTimeZone(bizStore.getTimeZone()),
-                            /* When closed set hour to 23 and minute to 59. */
-                            storeHour.isDayClosed() || storeHour.isTempDayClosed() ? 23 : storeHour.storeClosingHourOfDay(),
-                            storeHour.isDayClosed() || storeHour.isTempDayClosed() ? 59 : storeHour.storeClosingMinuteOfDay());
-
-                    /* Always reset storeHour and other settings after the end of day. */
-                    LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}",
-                        DayOfWeek.of(storeHour.getDayOfWeek()),
-                        bizStore.getDisplayName(),
-                        bizStore.getId());
-                    bizService.resetTemporarySettingsOnStoreHour(storeHour.getId());
+                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, zonedDateTime);
+                    resetStoreOfToday(bizStore, zonedDateTime);
 
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (null != bizStoreRating) {
@@ -206,6 +191,34 @@ public class QueueHistory {
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
         }
+    }
+
+    private void resetStoreOfToday(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
+        /* Always reset storeHour and other settings after the end of day. */
+        StoreHourEntity today = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
+        LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}",
+            DayOfWeek.of(today.getDayOfWeek()),
+            bizStore.getDisplayName(),
+            bizStore.getId());
+        bizService.resetTemporarySettingsOnStoreHour(today.getId());
+    }
+
+    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
+        StoreHourEntity tomorrow = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue());
+        LOG.debug("Tomorrow Store Hour dayOfWeek={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), tomorrow.getId());
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            populateForScheduledTask(bizStore, bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue()));
+        }
+
+        LOG.debug("Tomorrow Closing dayOfWeek={} Hour={} Minutes={}",
+            DayOfWeek.of(tomorrow.getDayOfWeek()),
+            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay(),
+            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay());
+        return externalService.computeNextRunTimeAtUTC(
+            TimeZone.getTimeZone(bizStore.getTimeZone()),
+            /* When closed set hour to 23 and minute to 59. */
+            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay(),
+            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay());
     }
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
