@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
-
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
@@ -29,10 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -49,7 +45,6 @@ import java.util.TimeZone;
 @Service
 public class ExternalService {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalService.class);
-    private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
 
     private GeoApiContext context;
     private BizStoreManager bizStoreManager;
@@ -253,7 +248,7 @@ public class ExternalService {
                         @Override
                         public void onResult(TimeZone timeZone) {
                             String zoneId = timeZone.toZoneId().getId();
-                            ZonedDateTime queueHistoryNextRun = computeNextRunTimeAtUTC(
+                            ZonedDateTime queueHistoryNextRun = DateUtil.computeNextRunTimeAtUTC(
                                     timeZone,
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
@@ -295,26 +290,6 @@ public class ExternalService {
             return tz.getID();
         } catch (Exception e) {
             LOG.error("Failed fetching from google timezone reason={}", e.getLocalizedMessage(), e);
-            return null;
-        }
-    }
-
-    /**
-     * Compute UTC based DateTime.
-     */
-    public ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
-        try {
-            Assert.notNull(timeZone, "TimeZone should not be null");
-            String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
-            /* Compute next run. New Date technically gives us today's run date. */
-            LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
-            LocalDateTime tomorrow = localDateTime.plusDays(1);
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
-
-            /* Note: Nothing is UTC when converted to date. Hence the System time should always be on UTC. */
-            return zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
-        } catch (Exception e) {
-            LOG.error("Failed to compute next run time reason={}", e.getLocalizedMessage(), e);
             return null;
         }
     }
