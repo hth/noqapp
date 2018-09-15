@@ -8,6 +8,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -19,6 +20,7 @@ import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
+import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -69,6 +71,7 @@ public class BizService {
     private BusinessUserStoreManager businessUserStoreManager;
     private MailService mailService;
     private UserProfileManager userProfileManager;
+    private ScheduledTaskManager scheduledTaskManager;
 
     @Autowired
     public BizService(
@@ -86,7 +89,8 @@ public class BizService {
             BusinessUserManager businessUserManager,
             BusinessUserStoreManager businessUserStoreManager,
             MailService mailService,
-            UserProfileManager userProfileManager
+            UserProfileManager userProfileManager,
+            ScheduledTaskManager scheduledTaskManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
@@ -99,6 +103,7 @@ public class BizService {
         this.businessUserStoreManager = businessUserStoreManager;
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
+        this.scheduledTaskManager = scheduledTaskManager;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -155,6 +160,15 @@ public class BizService {
         //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
         rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
 
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+            switch (scheduledTask.getScheduleTask()) {
+                case CLOSE:
+                    rootMap.put("scheduledClose", scheduledTask.getScheduleTask() + ", from date " + scheduledTask.getFrom() + " until date " + scheduledTask.getUntil());
+                    break;
+            }
+        }
+
         for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
             Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
             if (storeHour.isDayClosed()) {
@@ -172,7 +186,10 @@ public class BizService {
             }
             rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
         }
+        createMailOnStoreChange(bizStoreId, bizStore, rootMap);
+    }
 
+    private void createMailOnStoreChange(String bizStoreId, BizStoreEntity bizStore, Map<String, Object> rootMap) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, UserLevelEnum.S_MANAGER);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
