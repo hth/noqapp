@@ -52,6 +52,8 @@ public final class DateUtil {
     public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
+    public enum Day {TODAY, TOMORROW}
+
     private DateUtil() {
     }
 
@@ -215,13 +217,23 @@ public final class DateUtil {
     /**
      * Compute UTC based DateTime.
      */
-    public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay) {
+    public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay, Day day) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
             String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
             /* Compute next run. New Date technically gives us today's run date. */
             LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
-            LocalDateTime tomorrow = localDateTime.plusDays(1);
+            LocalDateTime tomorrow;
+            switch (day) {
+                case TOMORROW:
+                    tomorrow = localDateTime.plusDays(1);
+                    break;
+                case TODAY:
+                    tomorrow = localDateTime;
+                    break;
+                default:
+                    tomorrow = localDateTime;
+            }
             ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
 
             /* Note: Nothing is UTC when converted to date. Hence the System time should always be on UTC. */

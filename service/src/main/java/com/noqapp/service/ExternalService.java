@@ -251,7 +251,8 @@ public class ExternalService {
                             ZonedDateTime queueHistoryNextRun = DateUtil.computeNextRunTimeAtUTC(
                                     timeZone,
                                     bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
-                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay());
+                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay(),
+                                    DateUtil.Day.TODAY);
 
                             ZonedDateTime firstRun = queueHistoryNextRun.minusDays(1);
                             /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */

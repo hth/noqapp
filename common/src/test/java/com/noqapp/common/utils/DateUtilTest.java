@@ -32,8 +32,8 @@ class DateUtilTest {
 
     @Test
     void computeNextRunTimeAtUTC_Match_Time() {
-        ZonedDateTime nyc = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0);
-        ZonedDateTime pst = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0);
+        ZonedDateTime nyc = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0, DateUtil.Day.TODAY);
+        ZonedDateTime pst = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0, DateUtil.Day.TODAY);
         assertEquals(nyc, pst, "Both dates should be same");
     }
 }

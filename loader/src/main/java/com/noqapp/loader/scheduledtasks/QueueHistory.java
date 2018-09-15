@@ -219,7 +219,8 @@ public class QueueHistory {
             TimeZone.getTimeZone(bizStore.getTimeZone()),
             /* When closed set hour to 23 and minute to 59. */
             tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay(),
-            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay());
+            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay(),
+            DateUtil.Day.TOMORROW);
     }
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
