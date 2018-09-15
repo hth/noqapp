@@ -145,6 +145,7 @@ public class QueueHistory {
                         LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
+                    /* In queue history, we set things for tomorrow. */
                     ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, zonedDateTime);
                     resetStoreOfToday(bizStore, zonedDateTime);
 

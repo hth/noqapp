@@ -4,6 +4,7 @@ import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
+import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -31,6 +32,7 @@ class BizServiceTest {
     @Mock private BusinessUserStoreManager businessUserStoreManager;
     @Mock private MailService mailService;
     @Mock private UserProfileManager userProfileManager;
+    @Mock private ScheduledTaskManager scheduledTaskManager;
 
     private BizService bizService;
 
@@ -48,7 +50,8 @@ class BizServiceTest {
             businessUserManager,
             businessUserStoreManager,
             mailService,
-            userProfileManager);
+            userProfileManager,
+            scheduledTaskManager);
     }
 
     @Test
