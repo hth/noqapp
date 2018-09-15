@@ -228,6 +228,8 @@ public class QueueHistory {
                 case CLOSE:
                     storeHour.setTempDayClosed(true);
                     break;
+                default:
+                    throw new UnsupportedOperationException("Reached Unsupported Condition");
             }
 
             bizService.modifyOne(storeHour);
@@ -250,9 +252,7 @@ public class QueueHistory {
             String codeQR,
             List<QueueEntity> queues
     ) {
-        long totalServiceTimeInMilliSeconds = 0,
-                totalHoursSaved = 0;
-
+        long totalServiceTimeInMilliSeconds = 0, totalHoursSaved = 0;
         int totalServiced = 0,
                 totalNoShow = 0,
                 totalAbort = 0,
