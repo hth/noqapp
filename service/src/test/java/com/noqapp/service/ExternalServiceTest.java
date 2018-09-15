@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.repository.BizStoreManager;
 
 import com.google.maps.model.GeocodingResult;
@@ -31,13 +32,6 @@ class ExternalServiceTest {
         MockitoAnnotations.initMocks(this);
         /* Its IP protected. */
         externalService = new ExternalService("AIzaSyDUM3yIIrwrx3ciwZ57O9YamC4uISWAlAk", 0, bizStoreManager);
-    }
-
-    @Test
-    void computeNextRunTimeAtUTC_Match_Time() {
-        ZonedDateTime nyc = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0);
-        ZonedDateTime pst = externalService.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0);
-        assertEquals(nyc, pst, "Both dates should be same");
     }
 
     @Test
