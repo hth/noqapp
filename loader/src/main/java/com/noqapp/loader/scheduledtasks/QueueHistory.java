@@ -15,7 +15,6 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
-import com.noqapp.service.ExternalService;
 import com.noqapp.service.StatsCronService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +58,6 @@ public class QueueHistory {
     private TokenQueueManager tokenQueueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private StatsCronService statsCronService;
-    private ExternalService externalService;
     private BizService bizService;
     private ScheduledTaskManager scheduledTaskManager;
 
@@ -76,7 +74,6 @@ public class QueueHistory {
             TokenQueueManager tokenQueueManager,
             QueueManagerJDBC queueManagerJDBC,
             StatsCronService statsCronService,
-            ExternalService externalService,
             BizService bizService,
             ScheduledTaskManager scheduledTaskManager
     ) {
@@ -87,7 +84,6 @@ public class QueueHistory {
         this.tokenQueueManager = tokenQueueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.statsCronService = statsCronService;
-        this.externalService = externalService;
         this.bizService = bizService;
         this.scheduledTaskManager = scheduledTaskManager;
     }
@@ -131,7 +127,7 @@ public class QueueHistory {
                         statsBizStoreDaily = saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
                         queueManagerJDBC.batchQueues(queues);
                     } catch (DataIntegrityViolationException e) {
-                        LOG.error("Failed bulk update. Doing complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+                        LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
                         queueManagerJDBC.rollbackQueues(queues);
                         LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
                         throw e;
@@ -198,10 +194,7 @@ public class QueueHistory {
     private void resetStoreOfToday(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
         /* Always reset storeHour and other settings after the end of day. */
         StoreHourEntity today = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
-        LOG.info("Reset store dayOfWeek={} displayName={} bizStoreId={}",
-            DayOfWeek.of(today.getDayOfWeek()),
-            bizStore.getDisplayName(),
-            bizStore.getId());
+        LOG.info("Reset Store dayOfWeek={} name={} id={}", DayOfWeek.of(today.getDayOfWeek()), bizStore.getDisplayName(), bizStore.getId());
         bizService.resetTemporarySettingsOnStoreHour(today.getId());
     }
 
@@ -212,16 +205,12 @@ public class QueueHistory {
             populateForScheduledTask(bizStore, bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue()));
         }
 
-        LOG.debug("Tomorrow Closing dayOfWeek={} Hour={} Minutes={}",
-            DayOfWeek.of(tomorrow.getDayOfWeek()),
-            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay(),
-            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay());
-        return DateUtil.computeNextRunTimeAtUTC(
-            TimeZone.getTimeZone(bizStore.getTimeZone()),
-            /* When closed set hour to 23 and minute to 59. */
-            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay(),
-            tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay(),
-            DateUtil.Day.TOMORROW);
+        TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
+        /* When closed set hour to 23 and minute to 59. */
+        int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay();
+        int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay();
+        LOG.debug("Tomorrow Closing dayOfWeek={} Hour={} Minutes={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay);
+        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, DateUtil.Day.TOMORROW);
     }
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
