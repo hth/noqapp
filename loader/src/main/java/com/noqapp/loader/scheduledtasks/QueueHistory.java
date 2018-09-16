@@ -217,7 +217,7 @@ public class QueueHistory {
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
         ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-        if (DateUtil.isThisDayBetween(DateUtil.convertToDate(scheduledTask.getFrom()), DateUtil.convertToDate(scheduledTask.getUntil()))) {
+        if (DateUtil.isThisDayBetween(DateUtil.convertToDate(scheduledTask.getFrom()), DateUtil.convertToDate(scheduledTask.getUntil()), TOMORROW)) {
             switch (scheduledTask.getScheduleTask()) {
                 case CLOSE:
                     storeHour.setTempDayClosed(true);
