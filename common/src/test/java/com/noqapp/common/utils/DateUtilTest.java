@@ -1,5 +1,6 @@
 package com.noqapp.common.utils;
 
+import static com.noqapp.common.utils.DateUtil.Day.TODAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.joda.time.DateTime;
@@ -32,8 +33,8 @@ class DateUtilTest {
 
     @Test
     void computeNextRunTimeAtUTC_Match_Time() {
-        ZonedDateTime nyc = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0, DateUtil.Day.TODAY);
-        ZonedDateTime pst = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0, DateUtil.Day.TODAY);
+        ZonedDateTime nyc = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0, TODAY);
+        ZonedDateTime pst = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0, TODAY);
         assertEquals(nyc, pst, "Both dates should be same");
     }
 }

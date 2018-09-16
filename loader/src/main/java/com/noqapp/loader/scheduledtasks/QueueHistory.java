@@ -1,5 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.common.utils.DateUtil.Day.TOMORROW;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
@@ -210,7 +212,7 @@ public class QueueHistory {
         int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay();
         int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay();
         LOG.debug("Tomorrow Closing dayOfWeek={} Hour={} Minutes={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay);
-        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, DateUtil.Day.TOMORROW);
+        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
     }
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {

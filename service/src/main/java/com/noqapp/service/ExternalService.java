@@ -1,9 +1,12 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.DateUtil.Day.TODAY;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
@@ -243,38 +246,35 @@ public class ExternalService {
         try {
             ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
             TimeZoneApi.getTimeZone(context, bizStore.getLatLng()).setCallback(
-                    new PendingResult.Callback<TimeZone>() {
+                new PendingResult.Callback<TimeZone>() {
 
-                        @Override
-                        public void onResult(TimeZone timeZone) {
-                            String zoneId = timeZone.toZoneId().getId();
-                            ZonedDateTime queueHistoryNextRun = DateUtil.computeNextRunTimeAtUTC(
-                                    timeZone,
-                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingHourOfDay(),
-                                    bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1).storeClosingMinuteOfDay(),
-                                    DateUtil.Day.TODAY);
-
-                            ZonedDateTime firstRun = queueHistoryNextRun.minusDays(1);
-                            /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                            boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(firstRun.toInstant()));
-                            if (status) {
-                                LOG.info("Successful first run set UTC time={} for store={} address={}",
-                                        firstRun,
-                                        bizStore.getId(),
-                                        bizStore.getAddress());
-                            } else {
-                                LOG.error("Failed setting first run UTC time={} for store={} address={}",
-                                        firstRun,
-                                        bizStore.getId(),
-                                        bizStore.getAddress());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Throwable e) {
-                            LOG.error("Failed getting timezone reason={}", e.getLocalizedMessage(), e);
+                    @Override
+                    public void onResult(TimeZone timeZone) {
+                        String zoneId = timeZone.toZoneId().getId();
+                        StoreHourEntity today = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
+                        int hourOfDay = today.storeClosingHourOfDay();
+                        int minuteOfDay = today.storeClosingMinuteOfDay();
+                        ZonedDateTime queueHistoryNextRun = DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TODAY);
+                        /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
+                        boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(queueHistoryNextRun.toInstant()));
+                        if (status) {
+                            LOG.info("Successful first run set UTC time={} for store={} address={}",
+                                queueHistoryNextRun,
+                                bizStore.getId(),
+                                bizStore.getAddress());
+                        } else {
+                            LOG.error("Failed setting first run UTC time={} for store={} address={}",
+                                queueHistoryNextRun,
+                                bizStore.getId(),
+                                bizStore.getAddress());
                         }
                     }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        LOG.error("Failed getting timezone reason={}", e.getLocalizedMessage(), e);
+                    }
+                }
             );
         } catch (Exception e) {
             LOG.error("Failed fetching from google timezone reason={}", e.getLocalizedMessage(), e);
