@@ -206,8 +206,14 @@ public final class DateUtil {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    public static boolean isThisDayBetween(Date fromDay, Date untilDay) {
-        return isThisDayBetween(new Date(), fromDay, untilDay);
+    public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day) {
+        switch (day) {
+            case TOMORROW:
+                return isThisDayBetween(midnight(now().plusDays(1)).toDate(), fromDay, untilDay);
+            case TODAY:
+            default:
+                return isThisDayBetween(midnight(new Date()), fromDay, untilDay);
+        }
     }
 
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
