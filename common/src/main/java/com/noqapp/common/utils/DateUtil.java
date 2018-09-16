@@ -223,18 +223,15 @@ public final class DateUtil {
             String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
             /* Compute next run. New Date technically gives us today's run date. */
             LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
-            LocalDateTime tomorrow;
             switch (day) {
                 case TOMORROW:
-                    tomorrow = localDateTime.plusDays(1);
+                    localDateTime = localDateTime.plusDays(1);
                     break;
                 case TODAY:
-                    tomorrow = localDateTime;
-                    break;
                 default:
-                    tomorrow = localDateTime;
+                    //Do nothing
             }
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(tomorrow, timeZone.toZoneId());
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
 
             /* Note: Nothing is UTC when converted to date. Hence the System time should always be on UTC. */
             return zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
