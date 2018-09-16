@@ -90,6 +90,7 @@ public final class CommonUtil {
      * @return
      */
     public static DayOfWeek getNextDayOfWeek(DayOfWeek dayOfWeek) {
+        LOG.debug("Supplied with DayOfWeek={}", dayOfWeek);
         switch (dayOfWeek) {
             case MONDAY:
                 return DayOfWeek.TUESDAY;
@@ -105,9 +106,9 @@ public final class CommonUtil {
                 return DayOfWeek.SUNDAY;
             case SUNDAY:
                 return DayOfWeek.MONDAY;
+            default:
+                throw new UnsupportedOperationException("Reached Unsupported Condition");
         }
-
-        return null;
     }
 
     public static String getCountryNameFromIsoCode(String isoCode) {

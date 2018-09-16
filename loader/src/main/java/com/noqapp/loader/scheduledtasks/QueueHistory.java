@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
@@ -123,7 +124,7 @@ public class QueueHistory {
                             bizStore.getBizName().getBusinessName(),
                             bizStore.getId());
 
-                    ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+                    ZonedDateTime nowZonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     StatsBizStoreDailyEntity statsBizStoreDaily;
                     try {
@@ -146,8 +147,8 @@ public class QueueHistory {
                     }
 
                     /* In queue history, we set things for tomorrow. */
-                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, zonedDateTime);
-                    resetStoreOfToday(bizStore, zonedDateTime);
+                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowZonedDateTime);
+                    resetStoreOfToday(bizStore, nowZonedDateTime);
 
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (null != bizStoreRating) {
@@ -205,7 +206,7 @@ public class QueueHistory {
     }
 
     private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
-        StoreHourEntity tomorrow = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue());
+        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(zonedDateTime.getDayOfWeek()).getValue() - 1);
         LOG.debug("Tomorrow Store Hour dayOfWeek={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), tomorrow.getId());
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue()));
