@@ -202,7 +202,7 @@ public class QueueHistory {
         StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(zonedDateTime.getDayOfWeek()).getValue() - 1);
         LOG.debug("Tomorrow Store Hour dayOfWeek={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), tomorrow.getId());
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            populateForScheduledTask(bizStore, bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue()));
+            populateForScheduledTask(bizStore, tomorrow);
         }
 
         TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
