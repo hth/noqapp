@@ -228,7 +228,7 @@ public class QueueHistory {
 
             bizService.modifyOne(storeHour);
         } else {
-            bizStoreManager.unsetScheduledTask(bizStore.getId());
+            bizService.unsetScheduledTask(bizStore.getId());
             scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
         }
     }

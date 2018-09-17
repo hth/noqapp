@@ -516,4 +516,8 @@ public class BizService {
             bizStore.getTimeZone(),
             queueHistoryNextRun);
     }
+
+    public void unsetScheduledTask(String bizStoreId) {
+        bizStoreManager.unsetScheduledTask(bizStoreId);
+    }
 }
