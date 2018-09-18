@@ -271,7 +271,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={}", id, zoneId, queueHistoryNextRun);
         return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, 0, 0, 0);
     }
 

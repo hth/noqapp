@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -217,7 +218,9 @@ public class QueueHistory {
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
         ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-        if (DateUtil.isThisDayBetween(DateUtil.convertToDate(scheduledTask.getFrom()), DateUtil.convertToDate(scheduledTask.getUntil()), TOMORROW)) {
+        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), ZoneId.of(bizStore.getTimeZone()));
+        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), ZoneId.of(bizStore.getTimeZone()));
+        if (DateUtil.isThisDayBetween(from, until, TOMORROW, ZoneId.of(bizStore.getTimeZone()))) {
             switch (scheduledTask.getScheduleTask()) {
                 case CLOSE:
                     storeHour.setTempDayClosed(true);
