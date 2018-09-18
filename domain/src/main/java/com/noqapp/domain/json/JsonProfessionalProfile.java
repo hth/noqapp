@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.Transient;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -172,7 +173,7 @@ public class JsonProfessionalProfile extends AbstractDomain {
     @JsonIgnore
     public int experienceDuration() {
         if (StringUtils.isNotBlank(practiceStart)) {
-            return DateUtil.getYearsBetween(DateUtil.convertToDate(practiceStart), new Date());
+            return DateUtil.getYearsBetween(DateUtil.convertToDate(practiceStart, ZoneOffset.UTC), new Date());
         }
 
         return 0;

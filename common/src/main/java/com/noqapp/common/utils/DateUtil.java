@@ -132,19 +132,20 @@ public final class DateUtil {
     public static int getDaysBetween(String start, String end) {
         Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
         Assert.isTrue(StringUtils.isNotBlank(end), "End date string is null");
-        return getDaysBetween(convertToDate(start), convertToDate(end));
+        return getDaysBetween(convertToDate(start, ZoneOffset.UTC), convertToDate(end, ZoneOffset.UTC));
     }
 
-    public static Date convertToDate(String date) {
-        return convertToDate(date, DTF_YYYY_MM_DD);
+    public static Date convertToDate(String date, ZoneId zoneId) {
+        Assert.notNull(zoneId, "ZoneId cannot be null");
+        return convertToDate(date, DTF_YYYY_MM_DD, zoneId);
     }
 
-    private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter) {
-        return convertToDate(LocalDate.parse(date, dateTimeFormatter));
+    private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter, ZoneId zoneId) {
+        return convertToDate(LocalDate.parse(date, dateTimeFormatter), zoneId);
     }
 
-    private static Date convertToDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay(ZoneOffset.UTC).toInstant());
+    private static Date convertToDate(LocalDate localDate, ZoneId zoneId) {
+        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
     }
 
     private static Date convertToDateTime(String date, DateTimeFormatter dateTimeFormatter) {
@@ -206,13 +207,14 @@ public final class DateUtil {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day) {
+    public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day, ZoneId zoneId) {
         switch (day) {
             case TOMORROW:
                 return isThisDayBetween(midnight(now().plusDays(1)).toDate(), fromDay, untilDay);
             case TODAY:
             default:
-                return isThisDayBetween(midnight(new Date()), fromDay, untilDay);
+                ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
+                return isThisDayBetween(Date.from(zonedDateTime.now().toInstant()), fromDay, untilDay);
         }
     }
 
