@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 
 /**
  * Generate store HTML page at runtime.
- *
  * User: hitender
  * Date: 1/16/17 9:24 AM
  */
@@ -60,25 +59,25 @@ public class ShowHTMLService {
 
     @Autowired
     public ShowHTMLService(
-            @Value("${parentHost}")
-            String parentHost,
+        @Value("${parentHost}")
+        String parentHost,
 
-            @Value ("${domain}")
-            String domain,
+        @Value("${domain}")
+        String domain,
 
-            @Value ("${https}")
-            String https,
+        @Value("${https}")
+        String https,
 
-            @Value("${aws.s3.endpoint}")
-            String awsEndPoint,
+        @Value("${aws.s3.endpoint}")
+        String awsEndPoint,
 
-            @Value("${aws.s3.bucketName}")
-            String awsBucket,
+        @Value("${aws.s3.bucketName}")
+        String awsBucket,
 
-            BizService bizService,
-            FreemarkerService freemarkerService,
-            TokenQueueService tokenQueueService,
-            CodeQRGeneratorService codeQRGeneratorService
+        BizService bizService,
+        FreemarkerService freemarkerService,
+        TokenQueueService tokenQueueService,
+        CodeQRGeneratorService codeQRGeneratorService
     ) {
         this.parentHost = parentHost;
         this.domain = domain;
@@ -103,14 +102,6 @@ public class ShowHTMLService {
         }
     }
 
-    @Deprecated
-    public String showStoreByCodeQR(String codeQR) {
-        if (Validate.isValidObjectId(codeQR)) {
-            return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
-        }
-        return showStoreByWebLocation(null);
-    }
-
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, Object> rootMap = new HashMap<>();
         try {
@@ -124,9 +115,9 @@ public class ShowHTMLService {
             } else {
                 /* This can happen when the business is awaiting approval. */
                 LOG.warn("Skipped creating store html bizStore={} bizName={} active={}",
-                        bizStore.getId(),
-                        bizStore.getBizName().getId(),
-                        bizStore.isActive());
+                    bizStore.getId(),
+                    bizStore.getBizName().getId(),
+                    bizStore.isActive());
             }
 
             return showStoreBlank;
@@ -166,11 +157,7 @@ public class ShowHTMLService {
         }
     }
 
-    public boolean populateStore(
-            Map<String, Object> rootMap,
-            BizStoreEntity bizStore
-    ) {
-        
+    public boolean populateStore(Map<String, Object> rootMap, BizStoreEntity bizStore) {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
         if (null == tokenQueue) {
@@ -238,10 +225,10 @@ public class ShowHTMLService {
     }
 
     boolean populateMedicalProfile(
-            Map<String, Map<String, Object>> rootMap,
-            UserProfileEntity userProfile,
-            JsonProfessionalProfile jsonProfessionalProfile,
-            List<BizStoreEntity> bizStores
+        Map<String, Map<String, Object>> rootMap,
+        UserProfileEntity userProfile,
+        JsonProfessionalProfile jsonProfessionalProfile,
+        List<BizStoreEntity> bizStores
     ) {
 
         Map<String, Object> page = new HashMap<>();
@@ -255,13 +242,13 @@ public class ShowHTMLService {
         profile.put("gender", userProfile.getGender().name());
         profile.put("experienceDuration", jsonProfessionalProfile.experienceDuration());
         profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage())
-                ? "/static2/internal/img/profile-image-192x192.png"
-                : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
+            ? "/static2/internal/img/profile-image-192x192.png"
+            : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonProfessionalProfile.getAwards());
         profile.put("education", jsonProfessionalProfile.getEducation().stream()
-                .map(JsonNameDatePair::getName)
-                .collect(Collectors.joining(", ")));
+            .map(JsonNameDatePair::getName)
+            .collect(Collectors.joining(", ")));
 
         Map<String, Object> stores = new HashMap<>();
         for (BizStoreEntity bizStore : bizStores) {
@@ -275,11 +262,7 @@ public class ShowHTMLService {
         return true;
     }
 
-    private void computeQueueStatus(
-            Map<String, Object> rootMap,
-            ZonedDateTime zonedDateTime,
-            StoreHourEntity storeHour
-    ) {
+    private void computeQueueStatus(Map<String, Object> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
         /*
          * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
          * Hence matches ZonedDateTime Hour and Minutes
@@ -288,31 +271,31 @@ public class ShowHTMLService {
         int timeIn24HourFormat = CommonUtil.getTimeIn24HourFormat(zonedDateTime);
         if (storeHour.getTokenNotAvailableFrom() > timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} > timeIn24HourFormat={}",
-                    storeHour.getTokenNotAvailableFrom(),
-                    timeIn24HourFormat);
+                storeHour.getTokenNotAvailableFrom(),
+                timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Open");
 
         } else if (storeHour.getEndHour() <= timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getEndHour={} <= timeIn24HourFormat={}",
-                    storeHour.getEndHour(),
-                    timeIn24HourFormat);
+                storeHour.getEndHour(),
+                timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closed");
 
         } else if (storeHour.getTokenNotAvailableFrom() < timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} < timeIn24HourFormat={} & getEndHour={} > timeIn24HourFormat={}",
-                    storeHour.getTokenNotAvailableFrom(),
-                    timeIn24HourFormat,
-                    storeHour.getEndHour(),
-                    timeIn24HourFormat);
+                storeHour.getTokenNotAvailableFrom(),
+                timeIn24HourFormat,
+                storeHour.getEndHour(),
+                timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closing soon. No more token accepted.");
         } else {
             LOG.error("QueueStatus computed currentZoneTime={} bizStoreId={} storeHour={}",
-                    timeIn24HourFormat,
-                    storeHour.getBizStoreId(),
-                    storeHour);
+                timeIn24HourFormat,
+                storeHour.getBizStoreId(),
+                storeHour);
 
             throw new UnsupportedOperationException("Reached unreachable condition");
         }

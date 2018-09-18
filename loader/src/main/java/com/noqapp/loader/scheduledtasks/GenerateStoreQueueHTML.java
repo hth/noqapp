@@ -5,12 +5,14 @@ import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.loader.domain.SiteMap;
 import com.noqapp.loader.domain.SiteMapIndex;
 import com.noqapp.loader.domain.SiteUrl;
 import com.noqapp.loader.domain.SiteUrlMap;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.service.ShowHTMLService;
+import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.service.StatsCronService;
 
 import org.apache.commons.io.FileUtils;
@@ -48,6 +50,7 @@ public class GenerateStoreQueueHTML {
 
     private BizStoreManager bizStoreManager;
     private ShowHTMLService showHTMLService;
+    private ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService;
     private StatsCronService statsCronService;
     private String staticHTMLSwitch;
     private String storeBaseDirectory;
@@ -67,6 +70,7 @@ public class GenerateStoreQueueHTML {
 
             BizStoreManager bizStoreManager,
             ShowHTMLService showHTMLService,
+            ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService,
             StatsCronService statsCronService
     ) {
         this.parentHost = parentHost;
@@ -75,6 +79,7 @@ public class GenerateStoreQueueHTML {
 
         this.bizStoreManager = bizStoreManager;
         this.showHTMLService = showHTMLService;
+        this.showProfessionalProfileHTMLService = showProfessionalProfileHTMLService;
         this.statsCronService = statsCronService;
     }
 
@@ -107,7 +112,7 @@ public class GenerateStoreQueueHTML {
                 SiteUrlMap siteUrlMap = new SiteUrlMap();
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
-                        String htmlData = showHTMLService.showStoreByWebLocation(bizStore);
+                        String htmlData = bizStore.getBusinessType() == BusinessTypeEnum.DO ? showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore) : showHTMLService.showStoreByWebLocation(bizStore);
                         String filePath = storeBaseDirectory + bizStore.getWebLocation() + ".html";
                         Path pathToFile = Paths.get(filePath);
                         try {

@@ -106,6 +106,13 @@ public class ShowProfessionalProfileHTMLService {
                 }
                 UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUserStore.getQueueUserId());
 
+                /* Not store assigned. No profile created. */
+                if (bizStores.isEmpty()) {
+                    LOG.warn("No store assigned to Dr qid={} level={} profile={}",
+                        userProfile.getQueueUserId(), userProfile.getLevel(), userProfile.getName());
+                    return showStoreBlank;
+                }
+
                 Map<String, Map<String, Object>> rootMap = new HashMap<>();
                 showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonProfessionalProfile, bizStores);
                 return freemarkerService.freemarkerToStringComplex("html/show-store-healthCare.ftl", rootMap);
