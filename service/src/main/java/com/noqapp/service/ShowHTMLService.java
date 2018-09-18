@@ -103,14 +103,6 @@ public class ShowHTMLService {
         }
     }
 
-    @Deprecated
-    public String showStoreByCodeQR(String codeQR) {
-        if (Validate.isValidObjectId(codeQR)) {
-            return showStoreByWebLocation(bizService.findByCodeQR(codeQR));
-        }
-        return showStoreByWebLocation(null);
-    }
-
     public String showStoreByWebLocation(BizStoreEntity bizStore) {
         Map<String, Object> rootMap = new HashMap<>();
         try {
@@ -166,11 +158,7 @@ public class ShowHTMLService {
         }
     }
 
-    public boolean populateStore(
-            Map<String, Object> rootMap,
-            BizStoreEntity bizStore
-    ) {
-        
+    public boolean populateStore(Map<String, Object> rootMap, BizStoreEntity bizStore) {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
 
         if (null == tokenQueue) {
@@ -275,11 +263,7 @@ public class ShowHTMLService {
         return true;
     }
 
-    private void computeQueueStatus(
-            Map<String, Object> rootMap,
-            ZonedDateTime zonedDateTime,
-            StoreHourEntity storeHour
-    ) {
+    private void computeQueueStatus(Map<String, Object> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
         /*
          * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
          * Hence matches ZonedDateTime Hour and Minutes
