@@ -224,6 +224,14 @@ public final class DateUtil {
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
 
+    public static Date dateAtTimeZone(ZoneId zoneId) {
+        return Date.from(ZonedDateTime.of(LocalDateTime.now(), zoneId).toInstant());
+    }
+
+    public static Date dateAtTimeZone(String timeZone) {
+        return dateAtTimeZone(ZoneId.of(timeZone));
+    }
+
     /**
      * Compute UTC based DateTime.
      */

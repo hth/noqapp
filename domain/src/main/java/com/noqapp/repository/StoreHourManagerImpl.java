@@ -162,20 +162,18 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 TABLE
         );
 
-        LOG.info("ResetStoreHour ack={} modifiedCount={}",
-                updateResult.wasAcknowledged(), updateResult.getModifiedCount());
+        LOG.info("ResetStoreHour ack={} modifiedCount={}", updateResult.wasAcknowledged(), updateResult.getModifiedCount());
         return updateResult.wasAcknowledged();
     }
 
     public void resetQueueSettingWhenQueueStarts(String bizStoreId, DayOfWeek dayOfWeek) {
-        UpdateResult updateResult = mongoTemplate.updateFirst(
+        UpdateResult result = mongoTemplate.updateFirst(
                 query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
                 entityUpdate(update("DE", 0)),
                 StoreHourEntity.class,
                 TABLE
         );
 
-        LOG.info("ResetQueueSettingWhenQueueStarts ack={} modifiedCount={}",
-                updateResult.wasAcknowledged(), updateResult.getModifiedCount());
+        LOG.info("ResetQueueSettingWhenQueueStarts ack={} modifiedCount={}", result.wasAcknowledged(), result.getModifiedCount());
     }
 }
