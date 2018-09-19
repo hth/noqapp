@@ -344,6 +344,17 @@ public class AccountService {
         return userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
     }
 
+    @Mobile
+    public boolean reachedMaxDependents(String qid) {
+        UserProfileEntity userProfile = findProfileByQueueUserId(qid);
+        long count = userProfileManager.countDependentProfilesByPhone(userProfile.getPhone());
+        if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
+            return 10 <= count;
+        }
+
+        return 5 <= count;
+    }
+
     /**
      * Should be called when from catch condition of DataIntegrityViolationException.
      */
