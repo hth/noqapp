@@ -123,11 +123,11 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error">Business Closed</form:label>
+                                            <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:checkbox path="registerBusiness.dayClosed" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true" />
-                                            <span style="display:block; font-size:14px;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                            <span style="display:block; font-size:14px;" style="color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
