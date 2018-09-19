@@ -21,6 +21,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
+import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
@@ -50,7 +51,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
-    private BizService bizService;
 
     @SuppressWarnings ("all")
     @Autowired
@@ -63,14 +63,14 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             BizService bizService,
             ExternalService externalService,
             TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService
+            BizStoreElasticService bizStoreElasticService,
+            MailService mailService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
         this.fetcherService = fetcherService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
-        this.bizService = bizService;
     }
 
     public Set<String> findAllDistinctBizName(String bizName) {

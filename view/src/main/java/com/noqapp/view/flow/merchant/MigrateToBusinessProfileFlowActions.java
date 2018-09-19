@@ -61,7 +61,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
             EmailValidateService emailValidateService,
             BizStoreElasticService bizStoreElasticService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;

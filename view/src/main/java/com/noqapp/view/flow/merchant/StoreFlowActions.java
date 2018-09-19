@@ -13,10 +13,12 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
+import com.noqapp.service.MailService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
@@ -57,9 +59,11 @@ public class StoreFlowActions extends RegistrationFlowActions {
             TokenQueueService tokenQueueService,
             BizStoreElasticService bizStoreElasticService,
             BusinessUserStoreService businessUserStoreService,
-            ProfessionalProfileService professionalProfileService
+            ProfessionalProfileService professionalProfileService,
+            AccountService accountService,
+            MailService mailService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
         this.businessUserService = businessUserService;
         this.bizService = bizService;
         this.bizStoreElasticService = bizStoreElasticService;
