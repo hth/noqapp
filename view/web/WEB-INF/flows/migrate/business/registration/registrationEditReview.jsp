@@ -127,7 +127,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:checkbox path="registerBusiness.dayClosed" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true" />
-                                            <span style="display:block; font-size:14px;" style="color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

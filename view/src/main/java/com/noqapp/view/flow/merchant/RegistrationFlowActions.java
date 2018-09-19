@@ -8,15 +8,19 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
+import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +29,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -42,6 +49,8 @@ class RegistrationFlowActions {
     private BizService bizService;
     private TokenQueueService tokenQueueService;
     private BizStoreElasticService bizStoreElasticService;
+    private MailService mailService;
+    private AccountService accountService;
 
     /** When in same thread use Executor and not @Async. */
     private ExecutorService executorService;
@@ -51,13 +60,17 @@ class RegistrationFlowActions {
             ExternalService externalService,
             BizService bizService,
             TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService
+            BizStoreElasticService bizStoreElasticService,
+            AccountService accountService,
+            MailService mailService
     ) {
         this.environment = environment;
         this.externalService = externalService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.accountService = accountService;
+        this.mailService = mailService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -184,12 +197,29 @@ class RegistrationFlowActions {
 
             bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
+            mailWhenBusinessProfileHasChanged(bizName);
             updateAllStoresWhenBizNameUpdated(bizName);
             return bizName;
         } catch(Exception e) {
             LOG.error("Error saving business reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving business");
         }
+    }
+
+    private void mailWhenBusinessProfileHasChanged(BizNameEntity bizName) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("changeInitiateReason", "Business profile changed by " + userProfile.getName());
+        rootMap.put("displayName", bizName.getBusinessName());
+        rootMap.put("isClosed", bizName.isDayClosed() ? "Yes" : "No");
+
+        mailService.sendAnyMail(
+            userProfile.getEmail(),
+            userProfile.getName(),
+            bizName.getBusinessName() + " business profile changed",
+            rootMap,
+            "mail/changedBusinessProfile.ftl");
     }
 
     private void updateAllStoresWhenBizNameUpdated(BizNameEntity bizName) {
