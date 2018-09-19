@@ -210,7 +210,7 @@ class RegistrationFlowActions {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
         Map<String, Object> rootMap = new HashMap<>();
-        rootMap.put("changeInitiateReason", "Business profile changed by " + userProfile.getName());
+        rootMap.put("changeInitiateReason", "Business profile, modified by " + userProfile.getEmail());
         rootMap.put("displayName", bizName.getBusinessName());
         rootMap.put("isClosed", bizName.isDayClosed() ? "Yes" : "No");
 
