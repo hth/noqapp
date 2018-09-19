@@ -214,12 +214,12 @@ public final class DateUtil {
             case TODAY:
             default:
                 ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
-                return isThisDayBetween(Date.from(zonedDateTime.now().toInstant()), fromDay, untilDay);
+                return isThisDayBetween(Date.from(zonedDateTime.toInstant()), fromDay, untilDay);
         }
     }
 
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
-        LOG.debug("Today={} From={} Until={}", thisDay, fromDay, untilDay);
+        LOG.info("Today={} From={} Until={}", thisDay, fromDay, untilDay);
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
 
