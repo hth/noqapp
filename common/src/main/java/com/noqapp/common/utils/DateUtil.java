@@ -219,6 +219,7 @@ public final class DateUtil {
     }
 
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
+        LOG.debug("Today={} From={} Until={}", thisDay, fromDay, untilDay);
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
 
