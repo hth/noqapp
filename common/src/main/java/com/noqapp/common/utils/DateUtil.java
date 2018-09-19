@@ -22,6 +22,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -208,12 +209,12 @@ public final class DateUtil {
     }
 
     public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day, ZoneId zoneId) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
         switch (day) {
             case TOMORROW:
-                return isThisDayBetween(midnight(now().plusDays(1)).toDate(), fromDay, untilDay);
+                return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilDay);
             case TODAY:
             default:
-                ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
                 return isThisDayBetween(Date.from(zonedDateTime.toInstant()), fromDay, untilDay);
         }
     }
