@@ -209,6 +209,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
+    public long countDependentProfilesByPhone(String phone) {
+        return mongoTemplate.count(
+            query(where("GP").is(phone)),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void addUserProfileImage(String qid, String profileImage) {
         mongoTemplate.updateFirst(
                 query(where("QID").is(qid)),
