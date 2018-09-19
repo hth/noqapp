@@ -218,8 +218,8 @@ public class QueueHistory {
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
         ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), ZoneId.of(bizStore.getTimeZone()));
-        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), ZoneId.of(bizStore.getTimeZone()));
+        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
+        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
         if (DateUtil.isThisDayBetween(from, until, TOMORROW, ZoneId.of(bizStore.getTimeZone()))) {
             switch (scheduledTask.getScheduleTask()) {
                 case CLOSE:

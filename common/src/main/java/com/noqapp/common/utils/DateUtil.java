@@ -130,10 +130,16 @@ public final class DateUtil {
      * @param end
      * @return
      */
-    public static int getDaysBetween(String start, String end) {
+    @SuppressWarnings("unused")
+    public static int getDaysBetween_UTC(String start, String end) {
         Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
         Assert.isTrue(StringUtils.isNotBlank(end), "End date string is null");
         return getDaysBetween(convertToDate(start, ZoneOffset.UTC), convertToDate(end, ZoneOffset.UTC));
+    }
+
+    public static Date convertToDate(String date, String timeZone) {
+        Assert.notNull(timeZone, "timeZone cannot be null");
+        return convertToDate(date, DTF_YYYY_MM_DD, ZoneId.of(timeZone));
     }
 
     public static Date convertToDate(String date, ZoneId zoneId) {
@@ -149,19 +155,35 @@ public final class DateUtil {
         return Date.from(localDate.atStartOfDay(zoneId).toInstant());
     }
 
-    private static Date convertToDateTime(String date, DateTimeFormatter dateTimeFormatter) {
-        return convertToDateTime(LocalDateTime.parse(date, dateTimeFormatter));
+    /* Used in computed if now is after the time. */
+    @SuppressWarnings("unused")
+    public static Date convertToDateTime(String date, String timeZone) {
+        Assert.notNull(timeZone, "timeZone cannot be null");
+        return convertToDateTime(date, DTF_YYYY_MM_DD, ZoneId.of(timeZone));
     }
 
-    public static Date convertToDateTime(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
+    private static Date convertToDateTime(String date, ZoneId zoneId) {
+        Assert.notNull(zoneId, "ZoneId cannot be null");
+        return convertToDateTime(date, DTF_YYYY_MM_DD, zoneId);
+    }
+
+    private static Date convertToDateTime(String date, DateTimeFormatter dateTimeFormatter, ZoneId zoneId) {
+        return convertToDateTime(LocalDateTime.parse(date, dateTimeFormatter), zoneId.getRules().getOffset(Instant.now()));
+    }
+
+    public static Date convertToDateTime_UTC(LocalDateTime localDateTime) {
+        return convertToDateTime(localDateTime, ZoneOffset.UTC);
+    }
+
+    public static Date convertToDateTime(LocalDateTime localDateTime, ZoneOffset zoneOffset) {
+        return Date.from(localDateTime.toInstant(zoneOffset));
     }
 
     public static String dateToString(Date date) {
-        return dateToString(date, DTF_YYYY_MM_DD);
+        return dateToString_UTC(date, DTF_YYYY_MM_DD);
     }
 
-    public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
+    public static String dateToString_UTC(Date date, DateTimeFormatter dateTimeFormatter) {
         return dateTimeFormatter.format(date.toInstant().atZone(ZoneOffset.UTC));
     }
 
@@ -222,6 +244,14 @@ public final class DateUtil {
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
         LOG.info("thisDay={} fromDay={} untilDay={}", thisDay, fromDay, untilDay);
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
+    }
+
+    public static Date dateAtTimeZone(ZoneId zoneId) {
+        return Date.from(ZonedDateTime.of(LocalDateTime.now(), zoneId).toInstant());
+    }
+
+    public static Date dateAtTimeZone(String timeZone) {
+        return dateAtTimeZone(ZoneId.of(timeZone));
     }
 
     /**
