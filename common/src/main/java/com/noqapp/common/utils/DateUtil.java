@@ -131,7 +131,7 @@ public final class DateUtil {
      * @return
      */
     @SuppressWarnings("unused")
-    public static int getDaysBetween(String start, String end) {
+    public static int getDaysBetween_UTC(String start, String end) {
         Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
         Assert.isTrue(StringUtils.isNotBlank(end), "End date string is null");
         return getDaysBetween(convertToDate(start, ZoneOffset.UTC), convertToDate(end, ZoneOffset.UTC));
@@ -171,7 +171,7 @@ public final class DateUtil {
         return convertToDateTime(LocalDateTime.parse(date, dateTimeFormatter), zoneId.getRules().getOffset(Instant.now()));
     }
 
-    public static Date convertToDateTime(LocalDateTime localDateTime) {
+    public static Date convertToDateTime_UTC(LocalDateTime localDateTime) {
         return convertToDateTime(localDateTime, ZoneOffset.UTC);
     }
 
@@ -180,10 +180,10 @@ public final class DateUtil {
     }
 
     public static String dateToString(Date date) {
-        return dateToString(date, DTF_YYYY_MM_DD);
+        return dateToString_UTC(date, DTF_YYYY_MM_DD);
     }
 
-    public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
+    public static String dateToString_UTC(Date date, DateTimeFormatter dateTimeFormatter) {
         return dateTimeFormatter.format(date.toInstant().atZone(ZoneOffset.UTC));
     }
 

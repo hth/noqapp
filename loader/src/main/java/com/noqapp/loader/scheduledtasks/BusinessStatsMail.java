@@ -158,7 +158,7 @@ public class BusinessStatsMail {
                             }
 
                             Map<String, Object> rootMap = new HashMap<>();
-                            rootMap.put("day", DateUtil.dateToString(since, DateUtil.DTF_DD_MMM_YYYY));
+                            rootMap.put("day", DateUtil.dateToString_UTC(since, DateUtil.DTF_DD_MMM_YYYY));
                             rootMap.put("businessName", businessName);
                             rootMap.put("totalClient", totalClient);
                             rootMap.put("totalServiced", totalServiced);
