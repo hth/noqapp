@@ -203,7 +203,6 @@ public class QueueHistory {
 
     private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
         StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(zonedDateTime.getDayOfWeek()).getValue() - 1);
-        LOG.debug("Tomorrow Store Hour dayOfWeek={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), tomorrow.getId());
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, tomorrow);
         }
@@ -212,7 +211,8 @@ public class QueueHistory {
         /* When closed set hour to 23 and minute to 59. */
         int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay();
         int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay();
-        LOG.debug("Tomorrow Closing dayOfWeek={} Hour={} Minutes={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay);
+        LOG.info("Tomorrow Closing dayOfWeek={} Hour={} Minutes={} id={}",
+            DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
         return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
     }
 
