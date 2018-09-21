@@ -135,7 +135,6 @@ public class QueueHistory {
                         throw e;
                     }
 
-                    // TODO(hth) Make sure BizStoreHours are not empty.
                     bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
                     long deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
                     if (queues.size() == deleted) {
@@ -199,8 +198,7 @@ public class QueueHistory {
      * history.
      */
     private DayOfWeek computeDayOfWeekHistoryIsSupposeToRun(BizStoreEntity bizStore) {
-        ZonedDateTime nowZonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-        DayOfWeek nowDayOfWeek = nowZonedDateTime.getDayOfWeek();
+        DayOfWeek nowDayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         DayOfWeek historyRunDayOfWeek = DateUtil.convertToLocalDateTime(bizStore.getQueueHistory()).getDayOfWeek();
         if (nowDayOfWeek != historyRunDayOfWeek) {
             LOG.info("nowDayOfWeek={} history run dayOfWeek={}", nowDayOfWeek, historyRunDayOfWeek);
