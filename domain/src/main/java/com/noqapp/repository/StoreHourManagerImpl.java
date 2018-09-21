@@ -37,7 +37,7 @@ import java.util.List;
 })
 @Repository
 public class StoreHourManagerImpl implements StoreHourManager {
-    private static final Logger LOG = LoggerFactory.getLogger(TokenQueueManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StoreHourManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             StoreHourEntity.class,
             Document.class,
@@ -162,7 +162,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 TABLE
         );
 
-        LOG.info("ResetStoreHour id={} ack={} modifiedCount={}", updateResult.wasAcknowledged(), updateResult.getModifiedCount(), id);
+        LOG.info("ResetStoreHour id={} ack={} modifiedCount={}", id, updateResult.wasAcknowledged(), updateResult.getModifiedCount());
         return updateResult.wasAcknowledged();
     }
 
