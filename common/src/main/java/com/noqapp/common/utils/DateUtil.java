@@ -232,12 +232,16 @@ public final class DateUtil {
 
     public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day, ZoneId zoneId) {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
+        /* To get until date as YYYY-MM-DD 11:59 PM. */
+        Instant untilInstant = untilDay.toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.MINUTES);
+        Date untilEndOfDay = Date.from(untilInstant);
+        LOG.info("from={} until={}", fromDay, untilDay);
         switch (day) {
             case TOMORROW:
-                return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilDay);
+                return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilEndOfDay);
             case TODAY:
             default:
-                return isThisDayBetween(Date.from(zonedDateTime.toInstant()), fromDay, untilDay);
+                return isThisDayBetween(Date.from(zonedDateTime.toInstant()), fromDay, untilEndOfDay);
         }
     }
 
