@@ -162,7 +162,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 TABLE
         );
 
-        LOG.info("ResetStoreHour ack={} modifiedCount={}", updateResult.wasAcknowledged(), updateResult.getModifiedCount());
+        LOG.info("ResetStoreHour id={} ack={} modifiedCount={}", updateResult.wasAcknowledged(), updateResult.getModifiedCount(), id);
         return updateResult.wasAcknowledged();
     }
 
