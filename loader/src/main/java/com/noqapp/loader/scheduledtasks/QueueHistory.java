@@ -123,7 +123,6 @@ public class QueueHistory {
                             bizStore.getBizName().getBusinessName(),
                             bizStore.getId());
 
-                    ZonedDateTime nowZonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                     List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
                     StatsBizStoreDailyEntity statsBizStoreDaily;
                     try {
@@ -145,9 +144,10 @@ public class QueueHistory {
                         LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
                     }
 
+                    DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
                     /* In queue history, we set things for tomorrow. */
-                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowZonedDateTime);
-                    resetStoreOfToday(bizStore, nowZonedDateTime);
+                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
+                    resetStoreOfToday(bizStore, nowDayOfWeek);
 
                     StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
                     if (null != bizStoreRating) {
@@ -194,15 +194,30 @@ public class QueueHistory {
         }
     }
 
-    private void resetStoreOfToday(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
+    /**
+     * Note: When time is 11:59 PM and during run the clock switches to 12:00 AM, queue reset is missed. This ensures reset for correct
+     * history.
+     */
+    private DayOfWeek computeDayOfWeekHistoryIsSupposeToRun(BizStoreEntity bizStore) {
+        ZonedDateTime nowZonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+        DayOfWeek nowDayOfWeek = nowZonedDateTime.getDayOfWeek();
+        DayOfWeek historyRunDayOfWeek = DateUtil.convertToLocalDateTime(bizStore.getQueueHistory()).getDayOfWeek();
+        if (nowDayOfWeek != historyRunDayOfWeek) {
+            LOG.info("nowDayOfWeek={} history run dayOfWeek={}", nowDayOfWeek, historyRunDayOfWeek);
+            nowDayOfWeek = historyRunDayOfWeek;
+        }
+        return nowDayOfWeek;
+    }
+
+    private void resetStoreOfToday(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
         /* Always reset storeHour and other settings after the end of day. */
-        StoreHourEntity today = bizStore.getStoreHours().get(zonedDateTime.getDayOfWeek().getValue() - 1);
+        StoreHourEntity today = bizStore.getStoreHours().get(dayOfWeek.getValue() - 1);
         LOG.info("Reset Store dayOfWeek={} name={} id={}", DayOfWeek.of(today.getDayOfWeek()), bizStore.getDisplayName(), bizStore.getId());
         bizService.resetTemporarySettingsOnStoreHour(today.getId());
     }
 
-    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, ZonedDateTime zonedDateTime) {
-        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(zonedDateTime.getDayOfWeek()).getValue() - 1);
+    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
+        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, tomorrow);
         }

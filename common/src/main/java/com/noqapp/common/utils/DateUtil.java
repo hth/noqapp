@@ -280,4 +280,10 @@ public final class DateUtil {
             return null;
         }
     }
+
+    public static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
+        return dateToConvert.toInstant()
+            .atZone(ZoneOffset.UTC)
+            .toLocalDateTime();
+    }
 }
