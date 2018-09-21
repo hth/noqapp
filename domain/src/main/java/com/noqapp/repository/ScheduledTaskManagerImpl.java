@@ -7,6 +7,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduledTaskEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +64,7 @@ public class ScheduledTaskManagerImpl implements ScheduledTaskManager {
     @Override
     public void inActive(String id) {
         mongoTemplate.updateFirst(
-            Query.query(where("id").is(id)),
+            Query.query(where("id").is(new ObjectId(id))),
             entityUpdate(update("A", false)),
             ScheduledTaskEntity.class,
             TABLE
