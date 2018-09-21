@@ -316,6 +316,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
+        LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
                 query(where("QH").lte(now).and("A").is(true)),
                 BizStoreEntity.class,
