@@ -235,7 +235,7 @@ public final class DateUtil {
         /* To get until date as YYYY-MM-DD 11:59 PM. */
         Instant untilInstant = untilDay.toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.MINUTES);
         Date untilEndOfDay = Date.from(untilInstant);
-        LOG.info("from={} until={}", fromDay, untilDay);
+        LOG.info("isThisDayBetween from={} until={} day={}", fromDay, untilEndOfDay, day);
         switch (day) {
             case TOMORROW:
                 return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilEndOfDay);
@@ -246,7 +246,7 @@ public final class DateUtil {
     }
 
     static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
-        LOG.info("thisDay={} fromDay={} untilDay={}", thisDay, fromDay, untilDay);
+        LOG.info("isThisDayBetween thisDay={} fromDay={} untilDay={}", thisDay, fromDay, untilDay);
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
 
