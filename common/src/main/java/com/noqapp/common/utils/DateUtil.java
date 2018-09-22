@@ -233,7 +233,9 @@ public final class DateUtil {
     public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day, ZoneId zoneId) {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
         /* To get until date as YYYY-MM-DD 11:59 PM. */
-        Instant untilInstant = untilDay.toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.MINUTES);
+        Instant untilInstant = untilDay.toInstant()
+            .plus(1, ChronoUnit.DAYS)
+            .minus(1, ChronoUnit.MINUTES);
         Date untilEndOfDay = Date.from(untilInstant);
         LOG.info("isThisDayBetween from={} until={} day={}", fromDay, untilEndOfDay, day);
         switch (day) {
