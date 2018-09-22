@@ -130,7 +130,7 @@ public class WebJoinQueueController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        LOG.info("CodeQR={}", codeQR.getText());
+        LOG.info("Coded CodeQR={}", codeQR.getText());
         String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
 
         if (!bizService.isValidCodeQR(codeQRDecoded)) {
@@ -142,7 +142,7 @@ public class WebJoinQueueController {
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
         int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
-        LOG.info("Requester originator time is {} ipAddress={}", requesterTime, ipAddress);
+        LOG.info("Requester originator time is {} ipAddress={} codeQRDecoded={}", requesterTime, ipAddress, codeQRDecoded);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
         Map<String, Object> rootMap = new HashMap<>();
