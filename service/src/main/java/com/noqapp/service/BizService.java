@@ -136,7 +136,7 @@ public class BizService {
         bizStoreManager.save(bizStore);
         try {
             QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            changeInitiateReason = changeInitiateReason + ", modified by " + queueUser.getName();
+            changeInitiateReason = changeInitiateReason + ", modified by " + queueUser.getUsername();
             LOG.info("Changed bizStoreId={} name={} reason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason);
         } catch (Exception e) {
             LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={} errorReason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason, e.getLocalizedMessage(), e);
