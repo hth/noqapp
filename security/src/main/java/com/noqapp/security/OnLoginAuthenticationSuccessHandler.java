@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.Collection;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -68,7 +67,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             final HttpServletRequest request,
             final HttpServletResponse response,
             final Authentication authentication
-    ) throws ServletException, IOException {
+    ) throws IOException {
         if (request.getHeader("cookie") != null) {
             handle(request, response, authentication);
             clearAuthenticationAttributes(request);
