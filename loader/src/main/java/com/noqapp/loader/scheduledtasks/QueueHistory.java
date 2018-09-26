@@ -107,9 +107,10 @@ public class QueueHistory {
          * Date is based on UTC time of the System.
          * Hence its important to run on UTC time.
          *
-         * Added lag of 5 minutes.
+         * Added lag of 60 minutes. This should be 5 minutes. The day we get stores open 24hrs, this should be
+         * reverted back to 5 minutes.
          */
-        Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+        Date date = Date.from(Instant.now().minus(60, ChronoUnit.MINUTES));
         List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
         LOG.info("found={} date={}", found, date);
