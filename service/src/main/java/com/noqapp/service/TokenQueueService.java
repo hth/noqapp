@@ -335,6 +335,9 @@ public class TokenQueueService {
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
                     .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
+            } else {
+                queue.setBusinessCustomerId(null)
+                    .setBusinessCustomerIdChangeCount(0);
             }
 
             /* Added for business offer to display for new user for that business. */
