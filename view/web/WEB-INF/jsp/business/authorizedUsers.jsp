@@ -116,12 +116,12 @@
                                                     <c:choose>
                                                         <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
                                                             <span style="display:block; font-size:13px;">
-                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">--</a>
+                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">--</a>
                                                             </span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span style="display:block; font-size:13px;">
-                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm">${queueSupervisor.email}</a>
+                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">${queueSupervisor.email}</a>
                                                             </span>
                                                         </c:otherwise>
                                                     </c:choose>

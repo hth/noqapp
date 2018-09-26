@@ -47,7 +47,8 @@ public class BusinessCustomerService {
 
         /* Update queue with business customer id. */
         QueueEntity queue = queueManager.findOneQueueByQid(qid, codeQR);
-        queue.setBusinessCustomerId(businessCustomerId);
+        queue.setBusinessCustomerId(businessCustomerId)
+            .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
         queueManager.save(queue);
     }
 
@@ -59,7 +60,8 @@ public class BusinessCustomerService {
 
         /* Update queue with business customer id. */
         QueueEntity queue = queueManager.findOneQueueByQid(qid, codeQR);
-        queue.setBusinessCustomerId(businessCustomerId);
+        queue.setBusinessCustomerId(businessCustomerId)
+            .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
         queueManager.save(queue);
     }
 

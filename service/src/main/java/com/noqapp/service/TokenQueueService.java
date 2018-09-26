@@ -333,7 +333,8 @@ public class TokenQueueService {
             /* Add business customer id if any associated with qid and codeQR. */
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             if (null != businessCustomer) {
-                queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId());
+                queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
+                    .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
             }
 
             /* Added for business offer to display for new user for that business. */
