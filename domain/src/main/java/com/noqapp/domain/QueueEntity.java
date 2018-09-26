@@ -113,6 +113,10 @@ public class QueueEntity extends BaseEntity {
     @Field ("BC")
     private String businessCustomerId;
 
+    /* This checks how many times the Business Customer Id has been changed. */
+    @Field ("CC")
+    private int businessCustomerIdChangeCount;
+
     /* This data is associated to record that needs to be created against this queue entry. */
     @Field ("RR")
     private String recordReferenceId;
@@ -334,6 +338,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setBusinessCustomerId(String businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
+        return this;
+    }
+
+    public int getBusinessCustomerIdChangeCount() {
+        return businessCustomerIdChangeCount;
+    }
+
+    public QueueEntity setBusinessCustomerIdChangeCount(int businessCustomerIdChangeCount) {
+        this.businessCustomerIdChangeCount = businessCustomerIdChangeCount;
         return this;
     }
 

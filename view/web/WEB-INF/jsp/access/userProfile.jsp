@@ -104,180 +104,180 @@
                 </c:if>
 
                 <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" method="post" modelAttribute="userProfileForm">
-                    <div class="admin-title">
-                        <h2>Profile</h2>
+                <div class="admin-title">
+                    <h2>Profile</h2>
+                </div>
+                <div class="error-box">
+                    <div class="error-txt">
+                        <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
+                            <%--<ul>--%>
+                                <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
+                                    <%--<li>${message.text}</li>--%>
+                                <%--</c:forEach>--%>
+                            <%--</ul>--%>
+                        <%--</c:if>--%>
                     </div>
-                    <div class="error-box">
-                        <div class="error-txt">
-                            <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
-                                <%--<ul>--%>
-                                    <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
-                                        <%--<li>${message.text}</li>--%>
-                                    <%--</c:forEach>--%>
-                                <%--</ul>--%>
-                            <%--</c:if>--%>
-                        </div>
-                    </div>
-                    <div class="admin-content">
-                        <div class="add-new">
-                            <img src="${userProfileForm.profileImage}"
-                                 onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
-                                 class="img-profile-circle" />
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <img src="${userProfileForm.profileImage}"
+                             onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                             class="img-profile-circle" />
 
-                            <ul class="list-form">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="birthday" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field"
-                                                    placeholder="Date of Birth YYYY-MM-DD"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
-                                    </div>
-                                    <div class="col-fields pT10 pB10">
-                                        <form:radiobutton path="gender" value="M" label="Male"/> &nbsp; &nbsp;
-                                        <form:radiobutton path="gender" value="F" label="Female"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                        <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client&hl=en" target="_blank">NoQApp</a>)</span>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                <%--<c:if test="${!empty registerUser.foundAddresses}">--%>
-                                <%--<li>--%>
-                                    <%--<div class="col-lable3">--%>
-                                        <%--<form:label path="foundAddressPlaceId" cssErrorClass="lb_error">Best Matching Addresses</form:label>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="col-fields pT10 pB10">--%>
-                                        <%--<c:forEach items="${registerUser.foundAddresses}" var="mapElement">--%>
-                                            <%--<form:radiobutton path="foundAddressPlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"--%>
-                                                              <%--onclick="handleFoundAddressClick();"/> <br />--%>
-                                        <%--</c:forEach>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="clearFix"></div>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                    <%--<div class="col-lable3">--%>
-                                        <%--<form:label path="selectFoundAddress" cssErrorClass="lb_error">I choose Best Matching Address</form:label>--%>
-                                    <%--</div>--%>
-                                    <%--<div id="addressCheckBox" class="col-fields">--%>
-                                        <%--<form:checkbox path="selectFoundAddress" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"--%>
-                                                       <%--onclick="handleFoundAddressCheckboxUncheck()" />--%>
-                                    <%--</div>--%>
-                                    <%--<div class="clearFix"></div>--%>
-                                <%--</li>--%>
-                                <%--</c:if>--%>
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="email" cssErrorClass="lb_error">Email Address</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <c:choose>
-                                            <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
-                                                --
-                                            </c:when>
-                                            <c:otherwise>
-                                                <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="timeZone" cssErrorClass="lb_error">Time Zone</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:input path="timeZone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-
-                                <c:if test="${!userProfileForm.emailValidated}">
-                                    <c:choose>
-                                    <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
-                                    <li>
-                                        <div class="alert-info error-box">
-                                            <p>
-                                                There is no email address on record. Please add email address. Email address will help in your account recovery.
-                                            </p>
-                                        </div>
-                                    </li>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <li>
-                                        <div class="alert-info">
-                                            <p>
-                                                Your email address
-                                                <span class="txt-red">${registerUser.email}</span>
-                                                has not been validated. Please validated email address to continue merchant account registration.
-                                            </p>
-                                            <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    </c:otherwise>
-                                    </c:choose>
-                                </c:if>
-
-                                <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                                <div class="col-lable3"></div>
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
+                                </div>
                                 <div class="col-fields">
-                                    <div class="left-btn">
-                                        <input name="update" class="next-btn" value="UPDATE" type="submit">
-                                    </div>
-                                    <%--<div class="right-btn">--%>
-                                        <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
-                                    <div class="clearFix"></div>
+                                    <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                 </div>
                                 <div class="clearFix"></div>
-                                </c:if>
-                            </ul>
-                        </div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="birthday" cssErrorClass="lb_error">Date of Birth</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="birthday" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field"
+                                                placeholder="Date of Birth YYYY-MM-DD"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
+                                </div>
+                                <div class="col-fields pT10 pB10">
+                                    <form:radiobutton path="gender" value="M" label="Male"/> &nbsp; &nbsp;
+                                    <form:radiobutton path="gender" value="F" label="Female"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="address" cssErrorClass="lb_error">Your Address</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                    <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client&hl=en" target="_blank">NoQApp</a>)</span>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <%--<c:if test="${!empty registerUser.foundAddresses}">--%>
+                            <%--<li>--%>
+                                <%--<div class="col-lable3">--%>
+                                    <%--<form:label path="foundAddressPlaceId" cssErrorClass="lb_error">Best Matching Addresses</form:label>--%>
+                                <%--</div>--%>
+                                <%--<div class="col-fields pT10 pB10">--%>
+                                    <%--<c:forEach items="${registerUser.foundAddresses}" var="mapElement">--%>
+                                        <%--<form:radiobutton path="foundAddressPlaceId" value="${mapElement.key}" label="${mapElement.value.formattedAddress}"--%>
+                                                          <%--onclick="handleFoundAddressClick();"/> <br />--%>
+                                    <%--</c:forEach>--%>
+                                <%--</div>--%>
+                                <%--<div class="clearFix"></div>--%>
+                            <%--</li>--%>
+                            <%--<li>--%>
+                                <%--<div class="col-lable3">--%>
+                                    <%--<form:label path="selectFoundAddress" cssErrorClass="lb_error">I choose Best Matching Address</form:label>--%>
+                                <%--</div>--%>
+                                <%--<div id="addressCheckBox" class="col-fields">--%>
+                                    <%--<form:checkbox path="selectFoundAddress" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"--%>
+                                                   <%--onclick="handleFoundAddressCheckboxUncheck()" />--%>
+                                <%--</div>--%>
+                                <%--<div class="clearFix"></div>--%>
+                            <%--</li>--%>
+                            <%--</c:if>--%>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="email" cssErrorClass="lb_error">Email Address</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <c:choose>
+                                        <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
+                                            --
+                                        </c:when>
+                                        <c:otherwise>
+                                            <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="timeZone" cssErrorClass="lb_error">Time Zone</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="timeZone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+
+                            <c:if test="${!userProfileForm.emailValidated}">
+                                <c:choose>
+                                <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
+                                <li>
+                                    <div class="alert-info error-box">
+                                        <p>
+                                            There is no email address on record. Please add email address. Email address will help in your account recovery.
+                                        </p>
+                                    </div>
+                                </li>
+                                </c:when>
+                                <c:otherwise>
+                                <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Your email address
+                                            <span class="txt-red">${registerUser.email}</span>
+                                            has not been validated. Please validated email address to continue merchant account registration.
+                                        </p>
+                                        <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
+                                        </p>
+                                    </div>
+                                </li>
+                                </c:otherwise>
+                                </c:choose>
+                            </c:if>
+
+                            <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
+                            <div class="col-lable3"></div>
+                            <div class="col-fields">
+                                <div class="left-btn">
+                                    <input name="update" class="next-btn" value="UPDATE" type="submit">
+                                </div>
+                                <%--<div class="right-btn">--%>
+                                    <%--<input name="cancel_Update" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                <%--</div>--%>
+                                <div class="clearFix"></div>
+                            </div>
+                            <div class="clearFix"></div>
+                            </c:if>
+                        </ul>
                     </div>
+                </div>
                 </form:form>
 
                 <c:if test="${professionalProfileForm.professionalProfile}">

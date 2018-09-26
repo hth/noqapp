@@ -192,6 +192,7 @@ public class QueueService {
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             jsonQueuedPerson.setCustomerName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
+                .setBusinessCustomerIdChangeCount(businessCustomer.getVersion())
                 .setCustomerPhone(userProfile.getPhone());
         }
 
@@ -208,6 +209,7 @@ public class QueueService {
                     .setToken(queue.getTokenNumber())
                     .setServerDeviceId(queue.getServerDeviceId())
                     .setBusinessCustomerId(queue.getBusinessCustomerId())
+                    .setBusinessCustomerIdChangeCount(queue.getVersion())
                     .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
                     .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
                     .setRecordReferenceId(queue.getRecordReferenceId())

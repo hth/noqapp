@@ -148,45 +148,51 @@ public class BizService {
 
     @Mobile
     public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
-        BizStoreEntity bizStore = getByStoreId(bizStoreId);
-        bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
+        try {
+            BizStoreEntity bizStore = getByStoreId(bizStoreId);
+            bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
 
-        Map<String, Object> rootMap = new HashMap<>();
-        rootMap.put("changeInitiateReason", changeInitiateReason);
-        rootMap.put("displayName", bizStore.getDisplayName());
-        rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
-        rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
-        rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
-        //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
-        rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
+            Map<String, Object> rootMap = new HashMap<>();
+            rootMap.put("changeInitiateReason", changeInitiateReason);
+            rootMap.put("displayName", bizStore.getDisplayName());
+            rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
+            rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
+            rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
+            //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
+            rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
 
-        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-            switch (scheduledTask.getScheduleTask()) {
-                case CLOSE:
-                    rootMap.put("scheduledClose", scheduledTask.getScheduleTask() + ", from date " + scheduledTask.getFrom() + " until date " + scheduledTask.getUntil());
-                    break;
-            }
-        }
-
-        for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
-            Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
-            if (storeHour.isDayClosed()) {
-                storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() || storeHour.isTempDayClosed() ? "Yes" : "No");
-            } else {
-                storeHoursAsMap.put("Issue token from: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
-                storeHoursAsMap.put("Stop issuing token after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
-                storeHoursAsMap.put("Queue start time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
-                storeHoursAsMap.put("Queue close time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
-
-                if (storeHour.isTempDayClosed()) {
-                    storeHoursAsMap.put("Temporary closed today: ", "Yes");
-                    rootMap.put("closedForToday",  "Yes (For " + DayOfWeek.of(storeHour.getDayOfWeek()).name() + ")");
+            if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+                ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+                switch (scheduledTask.getScheduleTask()) {
+                    case CLOSE:
+                        rootMap.put("scheduledClose", scheduledTask.getScheduleTask() + ", from date " + scheduledTask.getFrom() + " until date " + scheduledTask.getUntil());
+                        break;
                 }
             }
-            rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
+
+            for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
+                Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
+                if (storeHour.isDayClosed()) {
+                    storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() || storeHour.isTempDayClosed() ? "Yes" : "No");
+                } else {
+                    storeHoursAsMap.put("Issue token from: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                    storeHoursAsMap.put("Stop issuing token after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                    storeHoursAsMap.put("Queue start time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                    storeHoursAsMap.put("Queue close time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+
+                    if (storeHour.isTempDayClosed()) {
+                        storeHoursAsMap.put("Temporary closed today: ", "Yes");
+                        rootMap.put("closedForToday", "Yes (For " + DayOfWeek.of(storeHour.getDayOfWeek()).name() + ")");
+                    }
+                }
+                rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
+            }
+            createMailOnStoreChange(bizStoreId, bizStore, rootMap);
+        } catch (NullPointerException e) {
+            /* This can happen when new store is created. */
+            LOG.error("Failed sending mail bizStoreId={} changeInitiateReason={}",
+                bizStoreId, changeInitiateReason, e.getLocalizedMessage(), e);
         }
-        createMailOnStoreChange(bizStoreId, bizStore, rootMap);
     }
 
     private void createMailOnStoreChange(String bizStoreId, BizStoreEntity bizStore, Map<String, Object> rootMap) {
