@@ -24,6 +24,8 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR);
 
+    List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR);
+
     PurchaseOrderEntity findOne(String codeQR, int tokenNumber);
 
     long countAllPlacedOrder(String codeQR);
