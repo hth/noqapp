@@ -16,6 +16,9 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     List<PurchaseOrderEntity> findAllOpenOrder(String qid);
 
+    /** Find all clients serviced to send messages. */
+    List<PurchaseOrderEntity> findAllClientOrderDelivered(int numberOfAttemptsToSendFCM);
+
     /** Orders that have been delivered. */
     List<PurchaseOrderEntity> findAllHistoricalOrder(String qid);
 
@@ -46,4 +49,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PurchaseOrderStateEnum purchaseOrderState,
         String sid,
         TokenServiceEnum tokenService);
+
+    void increaseAttemptToSendNotificationCount(String id);
 }

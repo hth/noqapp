@@ -73,6 +73,12 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("PS")
     private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
 
+    @Field ("NS")
+    private boolean notifiedOnService = false;
+
+    @Field ("NC")
+    private int attemptToSendNotificationCounts = 0;
+
     @Field("OS")
     private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{add(PurchaseOrderStateEnum.IN);}};
 
@@ -223,6 +229,24 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setPresentOrderState() {
         this.presentOrderState = this.orderStates.get(orderStates.size() - 1);
+        return this;
+    }
+
+    public boolean isNotifiedOnService() {
+        return notifiedOnService;
+    }
+
+    public PurchaseOrderEntity setNotifiedOnService(boolean notifiedOnService) {
+        this.notifiedOnService = notifiedOnService;
+        return this;
+    }
+
+    public int getAttemptToSendNotificationCounts() {
+        return attemptToSendNotificationCounts;
+    }
+
+    public PurchaseOrderEntity setAttemptToSendNotificationCounts(int attemptToSendNotificationCounts) {
+        this.attemptToSendNotificationCounts = attemptToSendNotificationCounts;
         return this;
     }
 

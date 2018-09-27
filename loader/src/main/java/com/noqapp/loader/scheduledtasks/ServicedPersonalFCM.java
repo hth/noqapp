@@ -1,15 +1,18 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonClientData;
+import com.noqapp.domain.json.fcm.data.JsonClientOrderData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.types.DeviceTypeEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -48,6 +51,7 @@ public class ServicedPersonalFCM {
     private int numberOfAttemptsToSendFCM;
 
     private QueueManager queueManager;
+    private PurchaseOrderManager purchaseOrderManager;
     private TokenQueueManager tokenQueueManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseMessageService firebaseMessageService;
@@ -64,6 +68,7 @@ public class ServicedPersonalFCM {
             int numberOfAttemptsToSendFCM,
 
             QueueManager queueManager,
+            PurchaseOrderManager purchaseOrderManager,
             TokenQueueManager tokenQueueManager,
             RegisteredDeviceManager registeredDeviceManager,
             FirebaseMessageService firebaseMessageService,
@@ -73,6 +78,7 @@ public class ServicedPersonalFCM {
         this.numberOfAttemptsToSendFCM = numberOfAttemptsToSendFCM;
 
         this.queueManager = queueManager;
+        this.purchaseOrderManager = purchaseOrderManager;
         this.tokenQueueManager = tokenQueueManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseMessageService = firebaseMessageService;
@@ -138,6 +144,62 @@ public class ServicedPersonalFCM {
         }
     }
 
+    @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
+    public void sendPersonalNotificationOnDelivery() {
+        statsCron = new StatsCronEntity(
+            ServicedPersonalFCM.class.getName(),
+            "Order_Client_FCM",
+            sendPersonalNotificationSwitch);
+
+        int found = 0, failure = 0, sent = 0, skipped = 0;
+        if ("OFF".equalsIgnoreCase(sendPersonalNotificationSwitch)) {
+            LOG.debug("feature is {}", sendPersonalNotificationSwitch);
+        }
+
+        try {
+            List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllClientOrderDelivered(numberOfAttemptsToSendFCM);
+            found = purchaseOrders.size();
+
+            for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(
+                    purchaseOrder.getQueueUserId(),
+                    purchaseOrder.getDid());
+
+                //TODO add cache Redis.
+                if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
+                    LOG.info("Skipped sending message qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
+                    skipped++;
+                    purchaseOrderManager.increaseAttemptToSendNotificationCount(purchaseOrder.getId());
+                } else {
+                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+                    JsonMessage jsonMessage = composeMessage(registeredDevice, tokenQueue, purchaseOrder);
+                    if (firebaseMessageService.messageToTopic(jsonMessage)) {
+                        purchaseOrder.setNotifiedOnService(true);
+                        purchaseOrderManager.save(purchaseOrder);
+                        sent++;
+                    } else {
+                        failure++;
+                        purchaseOrderManager.increaseAttemptToSendNotificationCount(purchaseOrder.getId());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Failed sending on delivery FCM, reason={}", e.getLocalizedMessage(), e);
+            failure++;
+        } finally {
+            if (0 != found || 0 != failure || 0 != sent || 0 != skipped) {
+                statsCron.addStats("found", found);
+                statsCron.addStats("failure", failure);
+                statsCron.addStats("skipped", skipped);
+                statsCron.addStats("sentServicedClientFCM", sent);
+                statsCronService.save(statsCron);
+
+                /* Without if condition its too noisy. */
+                LOG.info("Complete found={} failure={} sendPersonalNotificationOnDelivery={}", found, failure, sent);
+            }
+        }
+    }
+
     /**
      * Send personal message upon service. Include topic to help un-subscribe. Un-subscription is not a sure shot
      * thing. This works when app is running in background(TODO confirm) or when app is in foreground(Active). If app is closed then
@@ -182,6 +244,36 @@ public class ServicedPersonalFCM {
                 break;
             default:
                 LOG.warn("Un-supported status reached. Skipping qid={} did={}", queue.getQueueUserId(), queue.getDid());
+                break;
+        }
+
+        jsonMessage.setData(jsonData);
+        return jsonMessage;
+    }
+
+    private JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, TokenQueueEntity tokenQueue, PurchaseOrderEntity purchaseOrder) {
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+        JsonData jsonData = new JsonClientOrderData(FirebaseMessageTypeEnum.P, MessageOriginEnum.OR)
+            .setCodeQR(purchaseOrder.getCodeQR())
+            .setQueueUserId(purchaseOrder.getQueueUserId())
+            .setOrderNumber(purchaseOrder.getTokenNumber())
+            .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
+            .setTopic(tokenQueue.getTopic());
+
+        switch (purchaseOrder.getPresentOrderState()) {
+            case OD:
+                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+                    jsonMessage.getNotification()
+                        .setBody("How was your order?")
+                        .setTitle(tokenQueue.getDisplayName());
+                } else {
+                    jsonMessage.setNotification(null);
+                    jsonData.setBody("How was your order?")
+                        .setTitle(tokenQueue.getDisplayName());
+                }
+                break;
+            default:
+                LOG.warn("Un-supported status reached. Skipping qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
                 break;
         }
 
