@@ -5,6 +5,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
@@ -348,10 +349,25 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
     }
 
+    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
+        return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
+    }
+
     @Mobile
     public String findAllOpenOrderByCodeAsJson(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrderByCodeQR(codeQR);
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+        }
+
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
+    }
+
+    @Mobile
+    public String findAllOrderByCodeAsJson(String codeQR) {
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        List<PurchaseOrderEntity> purchaseOrders = findAllOrderByCodeQR(codeQR);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
