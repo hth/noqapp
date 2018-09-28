@@ -43,4 +43,11 @@ public class JsonPurchaseOrderList extends AbstractDomain {
         this.purchaseOrders = purchaseOrders;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrderList{" +
+            "purchaseOrders=" + purchaseOrders +
+            '}';
+    }
 }
