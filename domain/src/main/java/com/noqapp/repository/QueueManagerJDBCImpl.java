@@ -148,7 +148,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             }
 
             int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(insert, maps);
-            LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated);
+            LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated.length);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed batch update reason={}", e.getLocalizedMessage(), e);
             throw e;
@@ -172,7 +172,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             }
 
             int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(delete, maps);
-            LOG.info("Deleted count={} rowUpdated={}", maps.length, rowUpdated);
+            LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated.length);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed batch delete reason={}", e.getLocalizedMessage(), e);
             throw e;
@@ -250,7 +250,20 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.queryForObject(checkIfClientVisitedBusiness, new Object[]{bizNameId, qid}, Boolean.class);
     }
 
+    @Override
     public boolean isDBAlive() {
         return jdbcTemplate.queryForMap("SELECT 1").size() == 0;
+    }
+
+    @Override
+    public List<QueueEntity> findAllWhereBizNameIdIsNull() {
+        return jdbcTemplate.query("SELECT * FROM QUEUE WHERE BN is NULL", new QueueRowMapper());
+    }
+
+    @Override
+    public boolean update(QueueEntity queue) {
+        return this.jdbcTemplate.update(
+            "UPDATE QUEUE SET BN = ? WHERE ID = ?",
+            queue.getBizNameId(), queue.getId()) > 0;
     }
 }

@@ -68,4 +68,7 @@ public interface QueueManagerJDBC {
 
     @Mobile
     boolean isDBAlive();
+
+    List<QueueEntity> findAllWhereBizNameIdIsNull();
+    boolean update(QueueEntity queue);
 }
