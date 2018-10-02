@@ -254,16 +254,4 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean isDBAlive() {
         return jdbcTemplate.queryForMap("SELECT 1").size() == 0;
     }
-
-    @Override
-    public List<QueueEntity> findAllWhereBizNameIdIsNull() {
-        return jdbcTemplate.query("SELECT * FROM QUEUE WHERE BN is NULL", new QueueRowMapper());
-    }
-
-    @Override
-    public boolean update(QueueEntity queue) {
-        return this.jdbcTemplate.update(
-            "UPDATE QUEUE SET BN = ? WHERE ID = ?",
-            queue.getBizNameId(), queue.getId()) > 0;
-    }
 }
