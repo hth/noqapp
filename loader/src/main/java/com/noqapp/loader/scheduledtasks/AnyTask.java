@@ -78,17 +78,25 @@ public class AnyTask {
         for (QueueEntity queue : queues) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
 
-            if (StringUtils.isNotBlank(bizStore.getBizName().getId())) {
-                queue.setBizNameId(bizStore.getBizName().getId());
-                boolean updatedStatus = queueManagerJDBC.update(queue);
-                if (updatedStatus) {
-                    count++;
-                    LOG.info("Update BizNameId for id={}", queue.getId());
+            if (bizStore != null) {
+                if (bizStore.getBizName() != null) {
+                    if (StringUtils.isNotBlank(bizStore.getBizName().getId())) {
+                        queue.setBizNameId(bizStore.getBizName().getId());
+                        boolean updatedStatus = queueManagerJDBC.update(queue);
+                        if (updatedStatus) {
+                            count++;
+                            LOG.info("Update BizNameId for id={}", queue.getId());
+                        } else {
+                            LOG.info("Failed update BizNameId for id={}", queue.getId());
+                        }
+                    } else {
+                        LOG.warn("No BizNameId found for id={}", queue.getId());
+                    }
                 } else {
-                    LOG.info("Failed update BizNameId for id={}", queue.getId());
+                    LOG.error("BizName is null codeQR={}", queue.getCodeQR());
                 }
             } else {
-                LOG.warn("No BizNameId found for id={}", queue.getId());
+                LOG.error("BizStore is null codeQR={}", queue.getCodeQR());
             }
         }
 
