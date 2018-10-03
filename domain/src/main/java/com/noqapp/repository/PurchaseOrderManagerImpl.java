@@ -94,9 +94,23 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         );
     }
 
-    public List<PurchaseOrderEntity> findAllHistoricalOrder(String qid) {
+    public List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid) {
         return mongoTemplate.find(
             query(where("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.OD)),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid) {
+        return mongoTemplate.find(
+            query(where("QID").is(qid)
+                .orOperator(
+                    where("PS").is(PurchaseOrderStateEnum.OD),
+                    where("PS").is(PurchaseOrderStateEnum.CO)
+                )
+            ),
             PurchaseOrderEntity.class,
             TABLE
         );
@@ -276,5 +290,13 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             PurchaseOrderEntity.class,
             TABLE
         );
+    }
+
+    public long deleteByCodeQR(String codeQR) {
+        return mongoTemplate.remove(
+            query(where("QR").is(codeQR)),
+            PurchaseOrderEntity.class,
+            TABLE
+        ).getDeletedCount();
     }
 }

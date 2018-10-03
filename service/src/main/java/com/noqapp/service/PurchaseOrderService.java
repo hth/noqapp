@@ -5,7 +5,6 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
@@ -26,14 +25,14 @@ import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
 import com.noqapp.domain.types.DeviceTypeEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
-import com.noqapp.repository.PurchaseProductOrderManager;
+import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -77,7 +76,7 @@ public class PurchaseOrderService {
     private StoreHourManager storeHourManager;
     private StoreProductService storeProductService;
     private PurchaseOrderManager purchaseOrderManager;
-    private PurchaseProductOrderManager purchaseProductOrderManager;
+    private PurchaseOrderProductManager purchaseOrderProductManager;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
     private RegisteredDeviceManager registeredDeviceManager;
@@ -93,7 +92,7 @@ public class PurchaseOrderService {
         StoreHourManager storeHourManager,
         StoreProductService storeProductService,
         PurchaseOrderManager purchaseOrderManager,
-        PurchaseProductOrderManager purchaseProductOrderManager,
+        PurchaseOrderProductManager purchaseOrderProductManager,
         UserAddressService userAddressService,
         FirebaseMessageService firebaseMessageService,
         RegisteredDeviceManager registeredDeviceManager,
@@ -105,7 +104,7 @@ public class PurchaseOrderService {
         this.storeHourManager = storeHourManager;
         this.storeProductService = storeProductService;
         this.purchaseOrderManager = purchaseOrderManager;
-        this.purchaseProductOrderManager = purchaseProductOrderManager;
+        this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -191,7 +190,7 @@ public class PurchaseOrderService {
                 .setCodeQR(bizStore.getCodeQR())
                 .setBusinessType(bizStore.getBusinessType())
                 .setPurchaseOrderId(purchaseOrder.getId());
-            purchaseProductOrderManager.save(purchaseOrderProduct);
+            purchaseOrderProductManager.save(purchaseOrderProduct);
         }
 
         purchaseOrder
@@ -323,15 +322,15 @@ public class PurchaseOrderService {
         return jsonTokenAndQueues;
     }
 
-    private List<PurchaseOrderEntity> findAllHistoricalOrder(String qid) {
-        return purchaseOrderManager.findAllHistoricalOrder(qid);
+    private List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid) {
+        return purchaseOrderManager.findAllDeliveredHistoricalOrder(qid);
     }
 
     @Mobile
-    public List<JsonTokenAndQueue> findAllHistoricalOrderAsJson(String qid) {
+    public List<JsonTokenAndQueue> findAllDeliveredHistoricalOrderAsJson(String qid) {
         Validate.isValidQid(qid);
 
-        List<PurchaseOrderEntity> purchaseOrders = findAllHistoricalOrder(qid);
+        List<PurchaseOrderEntity> purchaseOrders = findAllDeliveredHistoricalOrder(qid);
         LOG.info("Total purchase orders completed count={}", purchaseOrders.size());
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
@@ -345,12 +344,16 @@ public class PurchaseOrderService {
         return jsonTokenAndQueues;
     }
 
-    public List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
+    private List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
         return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
     }
 
-    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
+    private List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
         return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
+    }
+
+    private List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid) {
+        return purchaseOrderManager.findAllPastDeliveredOrCancelledOrders(qid);
     }
 
     @Mobile
@@ -375,9 +378,21 @@ public class PurchaseOrderService {
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 
+    /* This is for historical orders placed today, other past orders have moved in archive. */
+    @Mobile
+    public JsonPurchaseOrderList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid);
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+        }
+
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
+    }
+
     private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
         List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
-        List<PurchaseOrderProductEntity> products = purchaseProductOrderManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+        List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
         for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
                 .setProductId(purchaseOrderProduct.getId())
@@ -410,10 +425,8 @@ public class PurchaseOrderService {
         jsonPurchaseOrders.add(jsonPurchaseOrder);
     }
 
-    /**
-     * Formulates and send messages to FCM.
-     */
-    public void invokeThreadSendMessageToTopic(
+    /** Formulates and send messages to FCM. */
+    private void invokeThreadSendMessageToTopic(
         String codeQR,
         PurchaseOrderEntity purchaseOrder,
         TokenQueueEntity tokenQueue,

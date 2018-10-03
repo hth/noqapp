@@ -276,7 +276,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Skipped last number
         this.serviceEndTime = null == purchaseOrder.getServiceEndTime() ? "N/A" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.ratingCount = purchaseOrder.getRatingCount();
-        this.hoursSaved = purchaseOrder.getHoursSaved();
+        //Skipped hoursSaved
         this.createDate = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
@@ -384,29 +384,31 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @Override
     public String toString() {
         return "JsonTokenAndQueue{" +
-                "codeQR='" + codeQR + '\'' +
-                ", geoHash='" + geoHash + '\'' +
-                ", businessName='" + businessName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", area='" + area + '\'' +
-                ", town='" + town + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", businessType=" + businessType +
-                ", tokenAvailableFrom=" + tokenAvailableFrom +
-                ", startHour=" + startHour +
-                ", endHour=" + endHour +
-                ", topic='" + topic + '\'' +
-                ", servingNumber=" + servingNumber +
-                ", lastNumber=" + lastNumber +
-                ", token=" + token +
-                ", queueStatus=" + queueStatus +
-                ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", ratingCount=" + ratingCount +
-                ", hoursSaved=" + hoursSaved +
-                ", createDate='" + createDate + '\'' +
-                '}';
+            "codeQR='" + codeQR + '\'' +
+            ", geoHash='" + geoHash + '\'' +
+            ", businessName='" + businessName + '\'' +
+            ", displayImage='" + displayImage + '\'' +
+            ", displayName='" + displayName + '\'' +
+            ", storeAddress='" + storeAddress + '\'' +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", storePhone='" + storePhone + '\'' +
+            ", businessType=" + businessType +
+            ", tokenAvailableFrom=" + tokenAvailableFrom +
+            ", startHour=" + startHour +
+            ", endHour=" + endHour +
+            ", topic='" + topic + '\'' +
+            ", servingNumber=" + servingNumber +
+            ", lastNumber=" + lastNumber +
+            ", token=" + token +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", queueStatus=" + queueStatus +
+            ", purchaseOrderState=" + purchaseOrderState +
+            ", serviceEndTime='" + serviceEndTime + '\'' +
+            ", ratingCount=" + ratingCount +
+            ", hoursSaved=" + hoursSaved +
+            ", createDate='" + createDate + '\'' +
+            '}';
     }
-
 }

@@ -11,10 +11,16 @@ as a value, then it gets endless connections.
     
 #### Create Table     
 
+    ALTER TABLE noqapp_test.QUEUE MODIFY COLUMN ID VARCHAR (24) NOT NULL;
+    ALTER TABLE noqapp_test.QUEUE MODIFY COLUMN QR VARCHAR (24) NOT NULL;
+    
+    //Prod add NOT NULL
+    ALTER TABLE noqapp_test.QUEUE MODIFY COLUMN BN VARCHAR (24) NOT NULL;
+
     CREATE TABLE noqapp_test.QUEUE
     (
-        ID VARCHAR(30)      NOT NULL,
-        QR VARCHAR(30)      NOT NULL,
+        ID VARCHAR(24)      NOT NULL,
+        QR VARCHAR(24)      NOT NULL,
         DID VARCHAR(50)     NOT NULL,
         TS VARCHAR(1)       NOT NULL,
         QID VARCHAR(13),
@@ -29,7 +35,7 @@ as a value, then it gets endless connections.
         SN VARCHAR(20),
         SB DATETIME,
         SE DATETIME,
-        BN VARCHAR(30),
+        BN VARCHAR(24)      NOT NULL,
         V INT(11),
         U DATETIME,
         C DATETIME,
@@ -37,6 +43,49 @@ as a value, then it gets endless connections.
         D TINYINT(1),
         PRIMARY KEY (ID)
     );
+    
+    CREATE TABLE noqapp_test.PURCHASE_ORDER
+    (
+        ID VARCHAR(24)      NOT NULL,
+        QID VARCHAR(13)    NOT NULL,
+        BS VARCHAR(24)      NOT NULL,
+        BN VARCHAR(24)      NOT NULL,
+        QR VARCHAR(30)      NOT NULL,
+        DM VARCHAR(2)       NOT NULL,
+        PT VARCHAR(2)       NOT NULL,
+        PS VARCHAR(2)       NOT NULL,
+        RA TINYINT(1),
+        RV VARCHAR(256),
+        TN INT(10),
+        V INT(11),
+        U DATETIME,
+        C DATETIME,
+        A TINYINT(1),
+        D TINYINT(1),
+        PRIMARY KEY (ID)
+    );
+        
+    CREATE TABLE noqapp_test.PURCHASE_ORDER_PRODUCT
+    (
+        ID VARCHAR(24)      NOT NULL,
+        PN VARCHAR(64)      NOT NULL,
+        PP INT(10),
+        PD INT(5),
+        PQ INT(3),
+        PO VARCHAR(24)      NOT NULL,
+        QID VARCHAR(13)    NOT NULL,
+        BS VARCHAR(24)      NOT NULL,
+        BN VARCHAR(24)      NOT NULL,
+        QR VARCHAR(30)      NOT NULL,
+        BT VARCHAR(2)       NOT NULL,
+        V INT(11),
+        U DATETIME,
+        C DATETIME,
+        A TINYINT(1),
+        D TINYINT(1),
+        PRIMARY KEY (ID)
+    );    
+    
     
 #### Change DB temp 
     
