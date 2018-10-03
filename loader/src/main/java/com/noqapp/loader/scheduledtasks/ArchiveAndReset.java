@@ -5,12 +5,18 @@ import static com.noqapp.common.utils.DateUtil.Day.TOMORROW;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
+import com.noqapp.repository.PurchaseOrderProductManager;
+import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.ScheduledTaskManager;
@@ -50,8 +56,8 @@ import java.util.TimeZone;
         "PMD.LongVariable"
 })
 @Component
-public class QueueHistory {
-    private static final Logger LOG = LoggerFactory.getLogger(QueueHistory.class);
+public class ArchiveAndReset {
+    private static final Logger LOG = LoggerFactory.getLogger(ArchiveAndReset.class);
 
     private String moveToRDBS;
 
@@ -63,11 +69,15 @@ public class QueueHistory {
     private StatsCronService statsCronService;
     private BizService bizService;
     private ScheduledTaskManager scheduledTaskManager;
+    private PurchaseOrderManager purchaseOrderManager;
+    private PurchaseOrderProductManager purchaseOrderProductManager;
+    private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
     private StatsCronEntity statsCron;
 
     @Autowired
-    public QueueHistory(
+    public ArchiveAndReset(
             @Value("${QueueHistory.moveToRDBS}")
             String moveToRDBS,
 
@@ -78,7 +88,11 @@ public class QueueHistory {
             QueueManagerJDBC queueManagerJDBC,
             StatsCronService statsCronService,
             BizService bizService,
-            ScheduledTaskManager scheduledTaskManager
+            ScheduledTaskManager scheduledTaskManager,
+            PurchaseOrderManager purchaseOrderManager,
+            PurchaseOrderProductManager purchaseOrderProductManager,
+            PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+            PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
     ) {
         this.moveToRDBS = moveToRDBS;
         this.bizStoreManager = bizStoreManager;
@@ -89,12 +103,16 @@ public class QueueHistory {
         this.statsCronService = statsCronService;
         this.bizService = bizService;
         this.scheduledTaskManager = scheduledTaskManager;
+        this.purchaseOrderManager = purchaseOrderManager;
+        this.purchaseOrderProductManager = purchaseOrderProductManager;
+        this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
+        this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
     }
 
     @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
-    public void queuePastData() {
+    public void doArchiveAndReset() {
         statsCron = new StatsCronEntity(
-                QueueHistory.class.getName(),
+                ArchiveAndReset.class.getName(),
                 "queuePastData",
                 moveToRDBS);
 
@@ -118,58 +136,18 @@ public class QueueHistory {
         try {
             for (BizStoreEntity bizStore : bizStores) {
                 try {
-                    LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
-                            bizStore.getDisplayName(),
-                            bizStore.getQueueHistory(),
-                            bizStore.getBizName().getBusinessName(),
-                            bizStore.getId());
-
-                    List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
-                    StatsBizStoreDailyEntity statsBizStoreDaily;
-                    try {
-                        statsBizStoreDaily = saveDailyStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
-                        queueManagerJDBC.batchQueues(queues);
-                    } catch (DataIntegrityViolationException e) {
-                        LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
-                        queueManagerJDBC.rollbackQueues(queues);
-                        LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
-                        throw e;
+                    switch (bizStore.getBusinessType().getMessageOrigin()) {
+                        case Q:
+                            queueArchiveAndReset(bizStore);
+                            break;
+                        case O:
+                            orderArchiveAndReset(bizStore);
+                            break;
+                        default:
+                            LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
+                            throw new UnsupportedOperationException("Reached Unsupported Condition");
                     }
-
-                    bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
-                    long deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
-                    if (queues.size() == deleted) {
-                        LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
-                    } else {
-                        LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
-                    }
-
-                    DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
-                    /* In queue history, we set things for tomorrow. */
-                    ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
-                    resetStoreOfToday(bizStore, nowDayOfWeek);
-
-                    StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
-                    if (null != bizStoreRating) {
-                        bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
-                                bizStore.getId(),
-                                bizStore.getTimeZone(),
-                                /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                                Date.from(queueHistoryNextRun.toInstant()),
-                                (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
-                                bizStoreRating.getTotalCustomerRated(),
-                                //TODO(hth) should we compute with yesterday average time or overall average time?
-                                statsBizStoreDaily.getAverageServiceTime());
-                    } else {
-                        bizStoreManager.updateNextRun(
-                                bizStore.getId(),
-                                bizStore.getTimeZone(),
-                                Date.from(queueHistoryNextRun.toInstant()));
-                    }
-
-                    tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
-
-                    success++;
+                    success ++;
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
@@ -180,7 +158,7 @@ public class QueueHistory {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed to execute QueueHistory move to RDB");
+            LOG.error("Failed to execute archive move to RDB");
         } finally {
             if (0 != found || 0 != failure || 0 != success) {
                 statsCron.addStats("found", found);
@@ -192,6 +170,120 @@ public class QueueHistory {
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
         }
+    }
+
+    private void queueArchiveAndReset(BizStoreEntity bizStore) {
+        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
+                bizStore.getDisplayName(),
+                bizStore.getQueueHistory(),
+                bizStore.getBizName().getBusinessName(),
+                bizStore.getId());
+
+        List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
+        StatsBizStoreDailyEntity statsBizStoreDaily;
+        try {
+            statsBizStoreDaily = saveDailyQueueStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
+            queueManagerJDBC.batchQueues(queues);
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            queueManagerJDBC.rollbackQueues(queues);
+            LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            throw e;
+        }
+
+        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+        long deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
+        if (queues.size() == deleted) {
+            LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+        } else {
+            LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
+        }
+
+        DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
+        /* In queue history, we set things for tomorrow. */
+        ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
+        resetStoreOfToday(bizStore, nowDayOfWeek);
+
+        StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
+        if (null != bizStoreRating) {
+            bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
+                    bizStore.getId(),
+                    bizStore.getTimeZone(),
+                    /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
+                    Date.from(queueHistoryNextRun.toInstant()),
+                    (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
+                    bizStoreRating.getTotalCustomerRated(),
+                    //TODO(hth) should we compute with yesterday average time or overall average time?
+                    statsBizStoreDaily.getAverageServiceTime());
+        } else {
+            bizStoreManager.updateNextRun(
+                    bizStore.getId(),
+                    bizStore.getTimeZone(),
+                    Date.from(queueHistoryNextRun.toInstant()));
+        }
+
+        tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
+    }
+
+    private void orderArchiveAndReset(BizStoreEntity bizStore) {
+        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
+            bizStore.getDisplayName(),
+            bizStore.getQueueHistory(),
+            bizStore.getBizName().getBusinessName(),
+            bizStore.getId());
+
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQR(bizStore.getCodeQR());
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+            purchaseOrderProductManagerJDBC.batchPurchaseOrderProducts(purchaseOrderProducts);
+        }
+
+        StatsBizStoreDailyEntity statsBizStoreDaily;
+        try {
+            statsBizStoreDaily = saveDailyOrderStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), purchaseOrders);
+            purchaseOrderManagerJDBC.batchPurchaseOrder(purchaseOrders);
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            purchaseOrderManagerJDBC.rollbackPurchaseOrder(purchaseOrders);
+            purchaseOrderProductManagerJDBC.rollbackPurchaseOrders(purchaseOrders);
+            LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            throw e;
+        }
+
+        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+        long deleted = purchaseOrderManager.deleteByCodeQR(bizStore.getCodeQR());
+        //TODO(hth) has to come under transaction
+        purchaseOrderProductManager.deleteByCodeQR(bizStore.getCodeQR());
+        if (purchaseOrders.size() == deleted) {
+            LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+        } else {
+            LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), purchaseOrders.size(), deleted);
+        }
+
+        DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
+        /* In queue history, we set things for tomorrow. */
+        ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
+        resetStoreOfToday(bizStore, nowDayOfWeek);
+
+        StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
+        if (null != bizStoreRating) {
+            bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
+                bizStore.getId(),
+                bizStore.getTimeZone(),
+                /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
+                Date.from(queueHistoryNextRun.toInstant()),
+                (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
+                bizStoreRating.getTotalCustomerRated(),
+                //TODO(hth) should we compute with yesterday average time or overall average time?
+                statsBizStoreDaily.getAverageServiceTime());
+        } else {
+            bizStoreManager.updateNextRun(
+                bizStore.getId(),
+                bizStore.getTimeZone(),
+                Date.from(queueHistoryNextRun.toInstant()));
+        }
+
+        tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
     }
 
     /**
@@ -257,7 +349,7 @@ public class QueueHistory {
      * @param bizNameId
      * @param queues
      */
-    private StatsBizStoreDailyEntity saveDailyStat(
+    private StatsBizStoreDailyEntity saveDailyQueueStat(
             String bizStoreId,
             String bizNameId,
             String codeQR,
@@ -358,6 +450,74 @@ public class QueueHistory {
                 .setTotalRating(totalRating)
                 .setTotalCustomerRated(totalCustomerRated)
                 .setTotalHoursSaved(totalHoursSaved);
+
+        statsBizStoreDailyManager.save(statsBizStoreDaily);
+        LOG.info("Saved daily store stat={}", statsBizStoreDaily);
+        return statsBizStoreDaily;
+    }
+
+    /**
+     * Saves daily stats for BizStore Order.
+     *
+     * @param bizStoreId
+     * @param bizNameId
+     * @param purchaseOrders
+     */
+    private StatsBizStoreDailyEntity saveDailyOrderStat(
+        String bizStoreId,
+        String bizNameId,
+        String codeQR,
+        List<PurchaseOrderEntity> purchaseOrders
+    ) {
+        long totalServiceTimeInMilliSeconds = 0, totalHoursSaved = 0;
+        int totalServiced = 0,
+            totalAbort = 0,
+            totalRating = 0,
+            totalCustomerRated = 0;
+
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            try {
+                switch (purchaseOrder.getPresentOrderState()) {
+                    case OD:
+                        if (purchaseOrder.getRatingCount() > 0) {
+                            totalRating += purchaseOrder.getRatingCount();
+                            totalCustomerRated++;
+                        }
+                        totalServiced++;
+                        break;
+                    case CO:
+                        totalAbort += 1;
+                        break;
+                    default:
+                        LOG.warn("Cannot be queued at this stage. Anyhow should be computed NoShow");
+                        break;
+                }
+            } catch (Exception e) {
+                LOG.error("Failed computing daily stat PurchaseOrder id={} reason={}", purchaseOrder.getId(), e.getLocalizedMessage(), e);
+            }
+        }
+        StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
+
+        /* Store meta data. */
+        statsBizStoreDaily
+            .setBizStoreId(bizStoreId)
+            .setBizNameId(bizNameId)
+            .setCodeQR(codeQR);
+
+        /* Service time and number of clients. */
+        statsBizStoreDaily
+            .setTotalServiceTime(totalServiceTimeInMilliSeconds)
+            .setTotalServiced(totalServiced)
+            .setTotalAbort(totalAbort)
+            .setTotalNoShow(0)
+            .setTotalClient(totalServiced + totalAbort)
+            .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced);
+
+        /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
+        statsBizStoreDaily
+            .setTotalRating(totalRating)
+            .setTotalCustomerRated(totalCustomerRated)
+            .setTotalHoursSaved(totalHoursSaved);
 
         statsBizStoreDailyManager.save(statsBizStoreDaily);
         LOG.info("Saved daily store stat={}", statsBizStoreDaily);

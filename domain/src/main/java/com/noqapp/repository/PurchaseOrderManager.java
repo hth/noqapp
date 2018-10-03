@@ -20,7 +20,10 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     List<PurchaseOrderEntity> findAllClientOrderDelivered(int numberOfAttemptsToSendFCM);
 
     /** Orders that have been delivered. */
-    List<PurchaseOrderEntity> findAllHistoricalOrder(String qid);
+    List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid);
+
+    /** Orders that have been delivered or cancelled. */
+    List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid);
 
     List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR);
 
@@ -53,4 +56,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         TokenServiceEnum tokenService);
 
     void increaseAttemptToSendNotificationCount(String id);
+
+    long deleteByCodeQR(String codeQR);
 }

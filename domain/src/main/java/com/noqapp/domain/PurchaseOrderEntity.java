@@ -88,9 +88,6 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("RA")
     private int ratingCount;
 
-    @Field ("HR")
-    private int hoursSaved;
-
     @Field ("RV")
     private String review;
 
@@ -275,15 +272,6 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
-        return this;
-    }
-
-    public int getHoursSaved() {
-        return hoursSaved;
-    }
-
-    public PurchaseOrderEntity setHoursSaved(int hoursSaved) {
-        this.hoursSaved = hoursSaved;
         return this;
     }
 
