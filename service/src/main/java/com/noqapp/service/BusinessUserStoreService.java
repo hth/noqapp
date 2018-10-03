@@ -116,7 +116,7 @@ public class BusinessUserStoreService {
     public List<JsonTopic> getQueues(String qid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, queueLimit);
         int size = businessUserStores.size();
-        LOG.info("Found user associated to business count={}", size);
+        LOG.info("Found user associated to business count={} qid={}", size, qid);
 
         String[] codes = new String[queueLimit <= size ? queueLimit : size];
         int i = 0;
@@ -133,7 +133,7 @@ public class BusinessUserStoreService {
             jsonTopics.add(new JsonTopic(tokenQueue).setHour(jsonHour));
         }
 
-        LOG.info("Sending jsonTopic count={}", jsonTopics.size());
+        LOG.info("Sending jsonTopic count={} for qid={}", jsonTopics.size(), qid);
         return jsonTopics;
     }
 
