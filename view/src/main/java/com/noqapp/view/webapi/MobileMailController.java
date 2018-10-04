@@ -50,7 +50,7 @@ public class MobileMailController {
     @PostMapping(value = "/accountSignup")
     public void accountValidationMail(
             @RequestBody
-            String mailJson,
+            String accountSignup,
 
             @RequestHeader ("X-R-API-MOBILE")
             String apiAccessToken,
@@ -62,9 +62,9 @@ public class MobileMailController {
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(mailJson);
+                map = ParseJsonStringToMap.jsonStringToMap(accountSignup);
             } catch (IOException e) {
-                LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
+                LOG.error("Could not parse mailJson={} reason={}", accountSignup, e.getLocalizedMessage(), e);
             }
 
             if (!map.isEmpty()) {
@@ -85,7 +85,7 @@ public class MobileMailController {
     @PostMapping(value = "/mailChange")
     public void mailChange(
         @RequestBody
-        String mailJson,
+        String mailChange,
 
         @RequestHeader ("X-R-API-MOBILE")
         String apiAccessToken,
@@ -97,9 +97,9 @@ public class MobileMailController {
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(mailJson);
+                map = ParseJsonStringToMap.jsonStringToMap(mailChange);
             } catch (IOException e) {
-                LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
+                LOG.error("Could not parse mailJson={} reason={}", mailChange, e.getLocalizedMessage(), e);
             }
 
             if (!map.isEmpty()) {
@@ -112,6 +112,47 @@ public class MobileMailController {
                     "Confirmation mail for NoQApp",
                     rootMap,
                     "mail/mail-otp.ftl");
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+        }
+    }
+
+    @PostMapping(value = "/feedback")
+    public void mailFeedback(
+        @RequestBody
+        String feedback,
+
+        @RequestHeader ("X-R-API-MOBILE")
+        String apiAccessToken,
+
+        HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.info("Verification mail being sent with OTP");
+
+        if (webApiAccessToken.equals(apiAccessToken)) {
+            Map<String, ScrubbedInput> map = new HashMap<>();
+            try {
+                map = ParseJsonStringToMap.jsonStringToMap(feedback);
+            } catch (IOException e) {
+                LOG.error("Could not parse feedbackJson={} reason={}", feedback, e.getLocalizedMessage(), e);
+            }
+
+            if (!map.isEmpty()) {
+                Map<String, Object> rootMap = new HashMap<>();
+                rootMap.put("s", map.get("s").getText());
+                rootMap.put("b", map.get("b").getText());
+
+                mailService.sendAnyMail(
+                    map.get("userId").getText(),
+                    map.get("name").getText(),
+                    "Feedback: " + map.get("name").getText(),
+                    rootMap,
+                    "mail/feedback.ftl");
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
