@@ -89,9 +89,14 @@ public class ShowProfessionalProfileHTMLService {
                     UserLevelEnum.S_MANAGER);
 
             if (businessUserStores.isEmpty()) {
-                Map<String, Object> rootMap = new HashMap<>();
-                showHTMLService.populateStore(rootMap, selectedBizStore);
-                return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
+                try {
+                    Map<String, Object> rootMap = new HashMap<>();
+                    showHTMLService.populateStore(rootMap, selectedBizStore);
+                    return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
+                } catch (IOException | TemplateException e) {
+                    LOG.error("Failed generating html page for store blank reason={}", e.getLocalizedMessage(), e);
+                    return showStoreBlank;
+                }
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
                 JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfileByQid(businessUserStore.getQueueUserId());
@@ -113,11 +118,16 @@ public class ShowProfessionalProfileHTMLService {
                     return showStoreBlank;
                 }
 
-                Map<String, Map<String, Object>> rootMap = new HashMap<>();
-                showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonProfessionalProfile, bizStores);
-                return freemarkerService.freemarkerToStringComplex("html/show-store-healthCare.ftl", rootMap);
+                try {
+                    Map<String, Map<String, Object>> rootMap = new HashMap<>();
+                    showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonProfessionalProfile, bizStores);
+                    return freemarkerService.freemarkerToStringComplex("html/show-store-healthCare.ftl", rootMap);
+                } catch (IOException | TemplateException e) {
+                    LOG.error("Failed generating html page for store userProfile={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
+                    return showStoreBlank;
+                }
             }
-        } catch (IOException | TemplateException | NullPointerException e) {
+        } catch (NullPointerException e) {
             LOG.error("Failed generating html page for store reason={}", e.getLocalizedMessage(), e);
             return showStoreBlank;
         }
