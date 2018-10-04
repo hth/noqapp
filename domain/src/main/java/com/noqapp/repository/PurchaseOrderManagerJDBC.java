@@ -13,4 +13,6 @@ public interface PurchaseOrderManagerJDBC {
     void batchPurchaseOrder(List<PurchaseOrderEntity> purchaseOrders);
 
     void rollbackPurchaseOrder(List<PurchaseOrderEntity> purchaseOrders);
+
+    List<PurchaseOrderEntity> getByQid(String qid);
 }

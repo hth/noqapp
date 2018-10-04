@@ -32,7 +32,9 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
+import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -76,7 +78,9 @@ public class PurchaseOrderService {
     private StoreHourManager storeHourManager;
     private StoreProductService storeProductService;
     private PurchaseOrderManager purchaseOrderManager;
+    private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductManager purchaseOrderProductManager;
+    private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
     private RegisteredDeviceManager registeredDeviceManager;
@@ -92,7 +96,9 @@ public class PurchaseOrderService {
         StoreHourManager storeHourManager,
         StoreProductService storeProductService,
         PurchaseOrderManager purchaseOrderManager,
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
         PurchaseOrderProductManager purchaseOrderProductManager,
+        PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
         UserAddressService userAddressService,
         FirebaseMessageService firebaseMessageService,
         RegisteredDeviceManager registeredDeviceManager,
@@ -104,7 +110,9 @@ public class PurchaseOrderService {
         this.storeHourManager = storeHourManager;
         this.storeProductService = storeProductService;
         this.purchaseOrderManager = purchaseOrderManager;
+        this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
+        this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -387,6 +395,7 @@ public class PurchaseOrderService {
             populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
 
+        purchaseOrders.addAll(purchaseOrderManagerJDBC.getByQid(qid));
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
     }
 

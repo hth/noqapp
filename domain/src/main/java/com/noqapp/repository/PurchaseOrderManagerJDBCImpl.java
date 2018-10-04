@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,13 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "(:id,:qid,:bs,:bn,:qr,:dm,:pt,:ps,:ra,:rv,:tn,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
+
+
+    private static final String queryByQID =
+        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, RA, RV, TN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QID = ? " +
+            "ORDER BY C DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -109,5 +117,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             LOG.error("Failed batch delete reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> getByQid(String qid) {
+        LOG.info("Fetch historical order by qid={}", qid);
+        return jdbcTemplate.query(queryByQID, new Object[]{qid}, new PurchaseOrderRowMapper());
     }
 }
