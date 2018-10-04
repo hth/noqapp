@@ -97,17 +97,30 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     @Override
     public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion, boolean sinceBeginning) {
-        return mongoTemplate.updateFirst(
+        if (StringUtils.isBlank(qid)) {
+            return mongoTemplate.updateFirst(
                 query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
-                entityUpdate(update("QID", qid)
-                        .set("DT", deviceType)
-                        .set("AF", appFlavor)
-                        .set("TK", token)
-                        .set("MO", model)
-                        .set("OS", osVersion)
-                        .set("SB", sinceBeginning)),
+                entityUpdate(update("DT", deviceType)
+                    .set("AF", appFlavor)
+                    .set("TK", token)
+                    .set("MO", model)
+                    .set("OS", osVersion)
+                    .set("SB", sinceBeginning)),
                 RegisteredDeviceEntity.class,
                 TABLE
+            ).getModifiedCount() > 0;
+        }
+        return mongoTemplate.updateFirst(
+            query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+            entityUpdate(update("QID", qid)
+                .set("DT", deviceType)
+                .set("AF", appFlavor)
+                .set("TK", token)
+                .set("MO", model)
+                .set("OS", osVersion)
+                .set("SB", sinceBeginning)),
+            RegisteredDeviceEntity.class,
+            TABLE
         ).getModifiedCount() > 0;
     }
 
