@@ -48,10 +48,11 @@
             <#include "../NoQApp.svg">
 		</div>
 
-		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Feedback,</strong></p>
+		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Feedback by, ${name}</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			<span style="padding: 15px; display: block; font-size: x-large; color: black; font-weight: bold; font-family: 'Roboto', sans-serif">${s}</span></br>
-			${b}
+			${userId} ${qid} <br/>
+			<span style="padding: 15px; display: block; font-size: x-large; color: black; font-weight: bold; font-family: 'Roboto', sans-serif">${subject}</span><br/>
+			${body}
 		</p>
 		<br/><br/><br/>
 	</div>
