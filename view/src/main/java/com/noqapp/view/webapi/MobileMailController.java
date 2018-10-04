@@ -132,7 +132,7 @@ public class MobileMailController {
 
         HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.info("Verification mail being sent with OTP");
+        LOG.info("Feedback mail being generated");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
@@ -153,7 +153,7 @@ public class MobileMailController {
                 mailService.sendAnyMail(
                    "contact@noqapp.com",
                     "NoQueue Inc",
-                    "Feedback: " + map.get("name").getText(),
+                    "Feedback from: " + map.get("name").getText(),
                     rootMap,
                     "mail/feedback.ftl");
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);

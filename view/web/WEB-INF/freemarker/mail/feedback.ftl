@@ -47,11 +47,14 @@
 		<div class="logo" style="width:220px; padding:15px 0 10px 0">
             <#include "../NoQApp.svg">
 		</div>
-
 		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Feedback by, ${name}</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			${userId} ${qid} <br/>
-			<span style="padding: 15px; display: block; font-size: x-large; color: black; font-weight: bold; font-family: 'Roboto', sans-serif">${subject}</span><br/>
+			${userId} (${qid})
+        </p>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
+			Subject: ${subject}
+        </p>
+		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			${body}
 		</p>
 		<br/><br/><br/>
