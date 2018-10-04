@@ -144,12 +144,15 @@ public class MobileMailController {
 
             if (!map.isEmpty()) {
                 Map<String, Object> rootMap = new HashMap<>();
-                rootMap.put("s", map.get("s").getText());
-                rootMap.put("b", map.get("b").getText());
+                rootMap.put("userId", map.get("userId").getText());
+                rootMap.put("qid", map.get("qid").getText());
+                rootMap.put("name", map.get("name").getText());
+                rootMap.put("subject", map.get("subject").getText());
+                rootMap.put("body", map.get("body").getText());
 
                 mailService.sendAnyMail(
-                    map.get("userId").getText(),
-                    map.get("name").getText(),
+                   "contact@noqapp.com",
+                    "NoQueue Inc",
                     "Feedback: " + map.get("name").getText(),
                     rootMap,
                     "mail/feedback.ftl");
