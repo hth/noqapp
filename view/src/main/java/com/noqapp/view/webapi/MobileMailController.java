@@ -153,7 +153,7 @@ public class MobileMailController {
                 mailService.sendAnyMail(
                    "contact@noqapp.com",
                     "NoQueue Inc",
-                    "Feedback: " + map.get("name").getText(),
+                    "Feedback from: " + map.get("name").getText(),
                     rootMap,
                     "mail/feedback.ftl");
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
