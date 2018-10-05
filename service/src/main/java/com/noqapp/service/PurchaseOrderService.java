@@ -16,6 +16,8 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
+import com.noqapp.domain.json.JsonPurchaseOrderHistorical;
+import com.noqapp.domain.json.JsonPurchaseOrderHistoricalList;
 import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonToken;
@@ -171,7 +173,8 @@ public class PurchaseOrderService {
             .setTokenNumber(jsonToken.getToken())
             .setExpectedServiceBegin(expectedServiceBegin)
             .setTokenService(tokenService)
-            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
+            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()))
+            .setDisplayName(bizStore.getDisplayName());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
         purchaseOrderManager.save(purchaseOrder);
 
@@ -388,15 +391,15 @@ public class PurchaseOrderService {
 
     /* This is for historical orders placed today, other past orders have moved in archive. */
     @Mobile
-    public JsonPurchaseOrderList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
-        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+    public JsonPurchaseOrderHistoricalList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
         List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid);
-        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
-        }
-
         purchaseOrders.addAll(purchaseOrderManagerJDBC.getByQid(qid));
-        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
+
+        JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList = new JsonPurchaseOrderHistoricalList();
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder));
+        }
+        return jsonPurchaseOrderHistoricalList;
     }
 
     private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
