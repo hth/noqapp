@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.Date;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.TimeZone;
 
 /**
  * hitender
@@ -78,16 +80,19 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     private String serverName;
 
     @JsonProperty ("sb")
-    private Date serviceBeginTime;
+    private String serviceBeginTime;
 
     @JsonProperty ("se")
-    private Date serviceEndTime;
+    private String serviceEndTime;
 
     @JsonProperty ("ti")
     private String transactionId;
 
     @JsonProperty ("dn")
     private String displayName;
+
+    @JsonProperty("u")
+    private String created;
 
     public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder) {
         this.queueUserId = purchaseOrder.getQueueUserId();
@@ -103,9 +108,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.review = purchaseOrder.getReview();
         this.tokenNumber = purchaseOrder.getTokenNumber();
         this.serverName = purchaseOrder.getServerName();
-        this.serviceBeginTime = purchaseOrder.getServiceBeginTime();
-        this.serviceEndTime = purchaseOrder.getServiceEndTime();
+        this.serviceBeginTime = purchaseOrder.getServiceBeginTime() == null ? "" : DateFormatUtils.format(purchaseOrder.getServiceBeginTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = purchaseOrder.getServiceEndTime() == null ? "" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC")) ;
         this.transactionId = purchaseOrder.getTransactionId();
         this.displayName = purchaseOrder.getDisplayName();
+        this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }

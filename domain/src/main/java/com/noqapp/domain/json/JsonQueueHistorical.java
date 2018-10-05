@@ -4,7 +4,6 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
-import com.noqapp.domain.types.TokenServiceEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.Date;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.TimeZone;
 
 /**
  * hitender
@@ -66,16 +67,16 @@ public class JsonQueueHistorical extends AbstractDomain {
     private String serverName;
 
     @JsonProperty ("sb")
-    private Date serviceBeginTime;
+    private String serviceBeginTime;
 
     @JsonProperty ("se")
-    private Date serviceEndTime;
-
-    @JsonProperty ("ts")
-    private TokenServiceEnum tokenService;
+    private String serviceEndTime;
 
     @JsonProperty ("gq")
     private String guardianQid;
+
+    @JsonProperty("u")
+    private String created;
 
     public JsonQueueHistorical(QueueEntity queue) {
         this.codeQR = queue.getCodeQR();
@@ -88,9 +89,9 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.hoursSaved = queue.getHoursSaved();
         this.review = queue.getReview();
         this.serverName = queue.getServerName();
-        this.serviceBeginTime = queue.getServiceBeginTime();
-        this.serviceEndTime = queue.getServiceEndTime();
-        this.tokenService = queue.getTokenService();
+        this.serviceBeginTime = queue.getServiceBeginTime() == null ? "" : DateFormatUtils.format(queue.getServiceBeginTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
+        this.serviceEndTime = queue.getServiceEndTime() == null ? "" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
         this.guardianQid = queue.getGuardianQid();
+        this.created = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 }
