@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * hitender
  * 3/31/18 4:15 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
