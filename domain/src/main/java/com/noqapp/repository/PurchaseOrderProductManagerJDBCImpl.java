@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.mapper.PurchaseOrderProductRowMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,12 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE ID = :id";
     private static final String delete_by_purchaseOrder = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE PO = :po";
+
+    private static final String query_by_purchaseOrder =
+            "SELECT ID, PN, PP, PD, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D" +
+                    " FROM " +
+                    "PURCHASE_ORDER_PRODUCT WHERE PO = ? " +
+                    "ORDER BY C DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -135,5 +142,11 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
             LOG.error("Failed batch delete reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public List<PurchaseOrderProductEntity> getByPurchaseOrderId(String purchaseOrderId) {
+        LOG.info("Fetch historical order by qid={}", purchaseOrderId);
+        return jdbcTemplate.query(query_by_purchaseOrder, new Object[]{purchaseOrderId}, new PurchaseOrderProductRowMapper());
     }
 }

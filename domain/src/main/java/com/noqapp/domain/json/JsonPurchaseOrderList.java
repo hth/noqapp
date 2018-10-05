@@ -15,17 +15,17 @@ import java.util.List;
  * hitender
  * 7/27/18 3:33 PM
  */
-@SuppressWarnings ({
-    "PMD.BeanMembersShouldSerialize",
-    "PMD.LocalVariableCouldBeFinal",
-    "PMD.MethodArgumentCouldBeFinal",
-    "PMD.LongVariable",
-    "unused"
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
 })
 @JsonAutoDetect(
-    fieldVisibility = JsonAutoDetect.Visibility.ANY,
-    getterVisibility = JsonAutoDetect.Visibility.NONE,
-    setterVisibility = JsonAutoDetect.Visibility.NONE
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -47,7 +47,7 @@ public class JsonPurchaseOrderList extends AbstractDomain {
     @Override
     public String toString() {
         return "JsonPurchaseOrderList{" +
-            "purchaseOrders=" + purchaseOrders +
-            '}';
+                "purchaseOrders=" + purchaseOrders +
+                '}';
     }
 }

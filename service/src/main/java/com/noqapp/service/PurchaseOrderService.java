@@ -392,12 +392,17 @@ public class PurchaseOrderService {
     /* This is for historical orders placed today, other past orders have moved in archive. */
     @Mobile
     public JsonPurchaseOrderHistoricalList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
-        List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid);
-        purchaseOrders.addAll(purchaseOrderManagerJDBC.getByQid(qid));
-
         JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList = new JsonPurchaseOrderHistoricalList();
+
+        List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder));
+            List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts));
+        }
+        purchaseOrders = purchaseOrderManagerJDBC.getByQid(qid);
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
+            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts));
         }
         return jsonPurchaseOrderHistoricalList;
     }

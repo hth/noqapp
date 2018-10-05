@@ -48,42 +48,42 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
-        PurchaseOrderEntity queue = new PurchaseOrderEntity(
-            rs.getString(QID),
-            rs.getString(BS),
-            rs.getString(BN),
-            rs.getString(QR)
+        PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(
+                rs.getString(QID),
+                rs.getString(BS),
+                rs.getString(BN),
+                rs.getString(QR)
         );
-        queue.setId(rs.getString(ID));
-        queue.setDeliveryType(DeliveryTypeEnum.valueOf(rs.getString(DM)));
-        queue.setPaymentType(PaymentTypeEnum.valueOf(rs.getString(PT)));
-        queue.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
-        queue.setDeliveryAddress(rs.getString(DA));
-        queue.setRatingCount(rs.getInt(RA));
-        queue.setReview(rs.getString(RV));
-        queue.setTokenNumber(rs.getInt(TN));
-        queue.setStoreDiscount(rs.getInt(SD));
-        queue.setOrderPrice(rs.getString(OP));
-        queue.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
-        queue.setServerName(rs.getString(SN));
-        queue.setServiceBeginTime(rs.getTimestamp(SB));
-        queue.setServiceEndTime(rs.getTimestamp(SE));
-        queue.setTransactionId(rs.getString(TI));
-        queue.setDisplayName(rs.getString(DN));
+        purchaseOrder.setId(rs.getString(ID));
+        purchaseOrder.setDeliveryType(DeliveryTypeEnum.valueOf(rs.getString(DM)));
+        purchaseOrder.setPaymentType(PaymentTypeEnum.valueOf(rs.getString(PT)));
+        purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
+        purchaseOrder.setDeliveryAddress(rs.getString(DA));
+        purchaseOrder.setRatingCount(rs.getInt(RA));
+        purchaseOrder.setReview(rs.getString(RV));
+        purchaseOrder.setTokenNumber(rs.getInt(TN));
+        purchaseOrder.setStoreDiscount(rs.getInt(SD));
+        purchaseOrder.setOrderPrice(rs.getString(OP));
+        purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
+        purchaseOrder.setServerName(rs.getString(SN));
+        purchaseOrder.setServiceBeginTime(rs.getTimestamp(SB));
+        purchaseOrder.setServiceEndTime(rs.getTimestamp(SE));
+        purchaseOrder.setTransactionId(rs.getString(TI));
+        purchaseOrder.setDisplayName(rs.getString(DN));
 
-        queue.setVersion(rs.getInt(V));
-        queue.setCreateAndUpdate(rs.getTimestamp(U));
-        queue.setCreated(rs.getTimestamp(C));
+        purchaseOrder.setVersion(rs.getInt(V));
+        purchaseOrder.setCreateAndUpdate(rs.getTimestamp(U));
+        purchaseOrder.setCreated(rs.getTimestamp(C));
         if (rs.getInt(A) > 0) {
-            queue.active();
+            purchaseOrder.active();
         } else {
-            queue.inActive();
+            purchaseOrder.inActive();
         }
 
         if (rs.getInt(D) > 0) {
-            queue.markAsDeleted();
+            purchaseOrder.markAsDeleted();
         }
 
-        return queue;
+        return purchaseOrder;
     }
 }

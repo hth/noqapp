@@ -16,4 +16,6 @@ public interface PurchaseOrderProductManagerJDBC {
     void rollbackPurchaseOrderProducts(List<PurchaseOrderProductEntity> purchaseOrderProducts);
 
     void rollbackPurchaseOrders(List<PurchaseOrderEntity> purchaseOrders);
+
+    List<PurchaseOrderProductEntity> getByPurchaseOrderId(String purchaseOrderId);
 }

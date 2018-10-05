@@ -40,7 +40,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
 
 
-    private static final String queryByQID =
+    private static final String query_by_qid =
         "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
@@ -131,6 +131,6 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public List<PurchaseOrderEntity> getByQid(String qid) {
         LOG.info("Fetch historical order by qid={}", qid);
-        return jdbcTemplate.query(queryByQID, new Object[]{qid}, new PurchaseOrderRowMapper());
+        return jdbcTemplate.query(query_by_qid, new Object[]{qid}, new PurchaseOrderRowMapper());
     }
 }
