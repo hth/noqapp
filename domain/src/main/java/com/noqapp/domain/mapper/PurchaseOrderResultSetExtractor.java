@@ -1,6 +1,7 @@
 package com.noqapp.domain.mapper;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -25,14 +26,25 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int DM = 6;
     private static final int PT = 7;
     private static final int PS = 8;
-    private static final int RA = 9;
-    private static final int RV = 10;
-    private static final int TN = 11;
-    private static final int V = 12;
-    private static final int U = 13;
-    private static final int C = 14;
-    private static final int A = 15;
-    private static final int D = 16;
+    private static final int DA = 9;
+    private static final int RA = 10;
+    private static final int RV = 11;
+    private static final int TN = 12;
+
+    private static final int SD = 13;
+    private static final int OP = 14;
+    private static final int BT = 15;
+    private static final int SN = 16;
+    private static final int SB = 17;
+    private static final int SE = 18;
+    private static final int TI = 19;
+    private static final int DN = 20;
+
+    private static final int V = 21;
+    private static final int U = 22;
+    private static final int C = 23;
+    private static final int A = 24;
+    private static final int D = 25;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -46,9 +58,19 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         queue.setDeliveryType(DeliveryTypeEnum.valueOf(rs.getString(DM)));
         queue.setPaymentType(PaymentTypeEnum.valueOf(rs.getString(PT)));
         queue.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
+        queue.setDeliveryAddress(rs.getString(DA));
         queue.setRatingCount(rs.getInt(RA));
         queue.setReview(rs.getString(RV));
         queue.setTokenNumber(rs.getInt(TN));
+        queue.setStoreDiscount(rs.getInt(SD));
+        queue.setOrderPrice(rs.getString(OP));
+        queue.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
+        queue.setServerName(rs.getString(SN));
+        queue.setServiceBeginTime(rs.getTimestamp(SB));
+        queue.setServiceEndTime(rs.getTimestamp(SE));
+        queue.setTransactionId(rs.getString(TI));
+        queue.setDisplayName(rs.getString(DN));
+
         queue.setVersion(rs.getInt(V));
         queue.setCreateAndUpdate(rs.getTimestamp(U));
         queue.setCreated(rs.getTimestamp(C));

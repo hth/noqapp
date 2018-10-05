@@ -120,6 +120,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("TI")
     private String transactionId;
 
+    @Field("DN")
+    private String displayName;
+
     @SuppressWarnings("unused")
     private PurchaseOrderEntity() {
         //Default constructor, required to keep bean happy
@@ -362,6 +365,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public PurchaseOrderEntity setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 }

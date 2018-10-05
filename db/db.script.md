@@ -54,9 +54,18 @@ as a value, then it gets endless connections.
         DM VARCHAR(2)       NOT NULL,
         PT VARCHAR(2)       NOT NULL,
         PS VARCHAR(2)       NOT NULL,
+        DA VARCHAR(128),
         RA TINYINT(1),
         RV VARCHAR(256),
         TN INT(10),
+        SD INT(4),
+        OP VARCHAR(10),
+        BT VARCHAR(2)       NOT NULL, 
+        SN VARCHAR(12),
+        SB DATETIME
+        SE DATETIME
+        TI VARCHAR(100)     NOT NULL,
+        DN VARCHAR(100)     NOT NULL,
         V INT(11),
         U DATETIME,
         C DATETIME,

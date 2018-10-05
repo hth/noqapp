@@ -7,6 +7,8 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonQueueHistorical;
+import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedDependent;
 import com.noqapp.domain.json.JsonQueuedPerson;
@@ -135,6 +137,18 @@ public class QueueService {
         List<QueueEntity> queues = findAllNotQueuedByQid(qid);
         queues.addAll(getByQid(qid));
         return queues;
+    }
+
+    /* This is for historical queue placed today, other past queues have moved in archive. */
+    @Mobile
+    public JsonQueueHistoricalList findAllHistoricalQueueAsJson(String qid) {
+        List<QueueEntity> queues = findAllHistoricalQueue(qid);
+
+        JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
+        for (QueueEntity queue : queues) {
+            jsonQueueHistoricalList.addQueueHistorical(new JsonQueueHistorical(queue));
+        }
+        return jsonQueueHistoricalList;
     }
 
     public long deleteByCodeQR(String codeQR) {
