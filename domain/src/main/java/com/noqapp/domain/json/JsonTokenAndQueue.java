@@ -5,6 +5,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -161,17 +162,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     /* For Historical Queues. */
     public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
-        String bannerImage;
-        switch (bizStore.getBusinessType()) {
-            case DO:
-                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                break;
-            default:
-                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
-                if (StringUtils.isBlank(bannerImage)) {
-                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                }
-        }
+        String bannerImage = CommonHelper.getBannerImage(bizStore);
         LOG.info("Banner for queue image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());

@@ -78,6 +78,12 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty("u")
     private String created;
 
+    @JsonProperty ("n")
+    private String businessName;
+
+    @JsonProperty("di")
+    private String displayImage;
+
     public JsonQueueHistorical(QueueEntity queue) {
         this.codeQR = queue.getCodeQR();
         this.queueUserId = queue.getQueueUserId();
@@ -93,5 +99,23 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.serviceEndTime = queue.getServiceEndTime() == null ? "" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
         this.guardianQid = queue.getGuardianQid();
         this.created = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public JsonQueueHistorical setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonQueueHistorical setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
+        return this;
     }
 }
