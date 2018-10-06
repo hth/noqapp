@@ -7,6 +7,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonQueueHistorical;
 import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
@@ -20,6 +21,7 @@ import com.noqapp.domain.stats.YearlyData;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
@@ -146,7 +148,26 @@ public class QueueService {
 
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
-            jsonQueueHistoricalList.addQueueHistorical(new JsonQueueHistorical(queue));
+            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue);
+            switch (queue.getBusinessType()) {
+                case DO:
+                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+                    jsonQueueHistorical.setBusinessName(bizStore.getBizName().getBusinessName());
+
+                    List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
+                            bizStore.getId(),
+                            UserLevelEnum.S_MANAGER);
+                    if (!businessUsers.isEmpty()) {
+                        BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
+                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUserStore.getQueueUserId());
+                        jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
+                    }
+                default:
+                    bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+                    jsonQueueHistorical.setBusinessName(bizStore.getBizName().getBusinessName());
+                    jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
+            }
+            jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
         }
         return jsonQueueHistoricalList;
     }
