@@ -100,6 +100,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
+    public JsonPurchaseOrderHistorical() {
+        //Required default constructor
+    }
+
     public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.codeQR = purchaseOrder.getCodeQR();

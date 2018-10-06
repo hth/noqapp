@@ -84,6 +84,10 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty("di")
     private String displayImage;
 
+    public JsonQueueHistorical() {
+        //Required default constructor
+    }
+
     public JsonQueueHistorical(QueueEntity queue) {
         this.codeQR = queue.getCodeQR();
         this.queueUserId = queue.getQueueUserId();
