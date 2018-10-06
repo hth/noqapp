@@ -64,6 +64,10 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    public JsonPurchaseOrderProductHistorical() {
+        //Required default constructor
+    }
+
     public JsonPurchaseOrderProductHistorical(PurchaseOrderProductEntity purchaseOrderProduct) {
         this.productId = purchaseOrderProduct.getProductId();
         this.productName = purchaseOrderProduct.getProductName();

@@ -141,11 +141,12 @@ public class QueueService {
         return queues;
     }
 
-    /* This is for historical queue placed today, other past queues have moved in archive. */
+    /** This is for historical queue placed today, other past queues that have moved to archive. */
     @Mobile
     public JsonQueueHistoricalList findAllHistoricalQueueAsJson(String qid) {
         List<QueueEntity> queues = findAllHistoricalQueue(qid);
 
+        /* Populated with data. */
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
             JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue);

@@ -389,7 +389,7 @@ public class PurchaseOrderService {
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 
-    /* This is for historical orders placed today, other past orders have moved in archive. */
+    /** This is for historical orders placed today, other past orders have moved in archive. */
     @Mobile
     public JsonPurchaseOrderHistoricalList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
         JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList = new JsonPurchaseOrderHistoricalList();
