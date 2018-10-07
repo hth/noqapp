@@ -216,7 +216,8 @@ public class PurchaseOrderService {
             .setToken(purchaseOrder.getTokenNumber())
             .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
             .setTransactionId(purchaseOrder.getTransactionId())
-            .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1));
+            .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
+            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
     }
 
     private void updatePurchaseOrderWithUserDetail(PurchaseOrderEntity purchaseOrder) {
