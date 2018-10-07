@@ -145,6 +145,18 @@ public class PurchaseOrderService {
         }
     }
 
+    @Mobile
+    public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId)  {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
+        return new JsonPurchaseOrder(purchaseOrder);
+    }
+
+    @Mobile
+    public JsonPurchaseOrder cancelOrderByMerchant(String codeQR, String transactionId)  {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, transactionId);
+        return new JsonPurchaseOrder(purchaseOrder);
+    }
+
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
@@ -216,7 +228,7 @@ public class PurchaseOrderService {
             .setToken(purchaseOrder.getTokenNumber())
             .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
             .setTransactionId(purchaseOrder.getTransactionId())
-            .setPurchaseOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
+            .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
             .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
     }
 
@@ -437,7 +449,7 @@ public class PurchaseOrderService {
             .setCustomerName(purchaseOrder.getCustomerName())
             //ExpectedServiceBegin not set for Merchant
             .setTransactionId(purchaseOrder.getTransactionId())
-            .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
+            .setPresentOrderState(purchaseOrder.getPresentOrderState())
             .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
         jsonPurchaseOrders.add(jsonPurchaseOrder);

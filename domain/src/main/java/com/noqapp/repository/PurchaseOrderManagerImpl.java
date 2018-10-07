@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -292,11 +293,34 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         );
     }
 
+    @Override
     public long deleteByCodeQR(String codeQR) {
         return mongoTemplate.remove(
             query(where("QR").is(codeQR)),
             PurchaseOrderEntity.class,
             TABLE
         ).getDeletedCount();
+    }
+
+    @Override
+    public PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId) {
+        return mongoTemplate.findAndModify(
+                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+                FindAndModifyOptions.options().returnNew(true),
+                PurchaseOrderEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId) {
+        return mongoTemplate.findAndModify(
+                query(where("TI").is(transactionId).and("QR").is(codeQR)),
+                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+                FindAndModifyOptions.options().returnNew(true),
+                PurchaseOrderEntity.class,
+                TABLE
+        );
     }
 }

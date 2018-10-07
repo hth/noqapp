@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
@@ -11,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * hitender
@@ -81,8 +85,8 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("ti")
     private String transactionId;
 
-    @JsonProperty ("os")
-    private PurchaseOrderStateEnum purchaseOrderState;
+    @JsonProperty ("ps")
+    private PurchaseOrderStateEnum presentOrderState;
 
     @JsonProperty ("c")
     private String created;
@@ -221,12 +225,12 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public PurchaseOrderStateEnum getPurchaseOrderState() {
-        return purchaseOrderState;
+    public PurchaseOrderStateEnum getPresentOrderState() {
+        return presentOrderState;
     }
 
-    public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
-        this.purchaseOrderState = purchaseOrderState;
+    public JsonPurchaseOrder setPresentOrderState(PurchaseOrderStateEnum presentOrderState) {
+        this.presentOrderState = presentOrderState;
         return this;
     }
 
@@ -237,6 +241,25 @@ public class JsonPurchaseOrder extends AbstractDomain {
     public JsonPurchaseOrder setCreated(String created) {
         this.created = created;
         return this;
+    }
+
+    public JsonPurchaseOrder(PurchaseOrderEntity po) {
+        this.bizStoreId = po.getBizStoreId();
+        this.customerPhone = po.getCustomerPhone();
+        this.deliveryAddress = po.getDeliveryAddress();
+        this.storeDiscount = po.getStoreDiscount();
+        this.orderPrice = po.getOrderPrice();
+        this.deliveryType = po.getDeliveryType();
+        this.paymentType = po.getPaymentType();
+        this.businessType = po.getBusinessType();
+        //Empty List
+        //No Setting Serving Number
+        this.token = po.getTokenNumber();
+        this.customerName = po.getCustomerName();
+        //No setting expectedServiceBegin
+        this.transactionId = po.getTransactionId();
+        this.presentOrderState = po.getPresentOrderState();
+        this.created = DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 
     @Override
@@ -256,7 +279,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", customerName='" + customerName + '\'' +
             ", expectedServiceBegin='" + expectedServiceBegin + '\'' +
             ", transactionId='" + transactionId + '\'' +
-            ", purchaseOrderState=" + purchaseOrderState +
+            ", presentOrderState=" + presentOrderState +
             ", created='" + created + '\'' +
             '}';
     }
