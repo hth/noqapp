@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -91,6 +92,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("ti")
     private String transactionId;
 
+    /* This is business name. */
     @JsonProperty("dn")
     private String displayName;
 
@@ -100,11 +102,23 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
+    @JsonProperty("sa")
+    private String storeAddress;
+
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
+    @JsonProperty("cs")
+    private String countryShortName;
+
     public JsonPurchaseOrderHistorical() {
         //Required default constructor
     }
 
-    public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
+    public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts, BizStoreEntity bizStore) {
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.codeQR = purchaseOrder.getCodeQR();
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
@@ -127,5 +141,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             jsonPurchaseOrderProductHistoricalList.add(new JsonPurchaseOrderProductHistorical(purchaseOrderProduct));
         }
+
+        this.storeAddress = bizStore.getAddress();
+        this.area = bizStore.getArea();
+        this.town = bizStore.getTown();
+        this.countryShortName = bizStore.getCountryShortName();
     }
 }

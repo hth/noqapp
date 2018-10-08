@@ -149,12 +149,12 @@ public class QueueService {
         /* Populated with data. */
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
-            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue);
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore);
+
+            /* Set display image based on business type. */
             switch (queue.getBusinessType()) {
                 case DO:
-                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
-                    jsonQueueHistorical.setBusinessName(bizStore.getBizName().getBusinessName());
-
                     List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
                             bizStore.getId(),
                             UserLevelEnum.S_MANAGER);
@@ -164,8 +164,6 @@ public class QueueService {
                         jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
                     }
                 default:
-                    bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
-                    jsonQueueHistorical.setBusinessName(bizStore.getBizName().getBusinessName());
                     jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
             }
             jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
