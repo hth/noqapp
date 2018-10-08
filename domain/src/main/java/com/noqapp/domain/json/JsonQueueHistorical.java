@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
@@ -81,6 +82,18 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty ("n")
     private String businessName;
 
+    @JsonProperty("sa")
+    private String storeAddress;
+
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
+    @JsonProperty("cs")
+    private String countryShortName;
+
     @JsonProperty("di")
     private String displayImage;
 
@@ -88,7 +101,7 @@ public class JsonQueueHistorical extends AbstractDomain {
         //Required default constructor
     }
 
-    public JsonQueueHistorical(QueueEntity queue) {
+    public JsonQueueHistorical(QueueEntity queue, BizStoreEntity bizStore) {
         this.codeQR = queue.getCodeQR();
         this.queueUserId = queue.getQueueUserId();
         this.tokenNumber = queue.getTokenNumber();
@@ -103,15 +116,12 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.serviceEndTime = queue.getServiceEndTime() == null ? "" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
         this.guardianQid = queue.getGuardianQid();
         this.created = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-    }
 
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public JsonQueueHistorical setBusinessName(String businessName) {
-        this.businessName = businessName;
-        return this;
+        this.businessName = bizStore.getBizName().getBusinessName();
+        this.storeAddress = bizStore.getAddress();
+        this.area = bizStore.getArea();
+        this.town = bizStore.getTown();
+        this.countryShortName = bizStore.getCountryShortName();
     }
 
     public String getDisplayImage() {
