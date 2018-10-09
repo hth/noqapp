@@ -175,7 +175,7 @@ public class QueueService {
                     jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
                     break;
                 default:
-                    //Do something new
+                    //Do something for category
             }
             jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
         }
