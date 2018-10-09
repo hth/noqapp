@@ -97,6 +97,12 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty("di")
     private String displayImage;
 
+    @JsonProperty("bci")
+    private String bizCategoryId;
+
+    @JsonProperty("bc")
+    private String bizCategoryName;
+
     public JsonQueueHistorical() {
         //Required default constructor
     }
@@ -122,6 +128,16 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.area = bizStore.getArea();
         this.town = bizStore.getTown();
         this.countryShortName = bizStore.getCountryShortName();
+        this.bizCategoryId = bizStore.getBizCategoryId();
+    }
+
+    public String getBizCategoryName() {
+        return bizCategoryName;
+    }
+
+    public JsonQueueHistorical setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
+        return this;
     }
 
     public String getDisplayImage() {

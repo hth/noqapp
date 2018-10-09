@@ -22,6 +22,8 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
@@ -163,6 +165,12 @@ public class QueueService {
                         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUserStore.getQueueUserId());
                         jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
                     }
+
+                    jsonQueueHistorical.setBizCategoryName(MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                    break;
+                case BK:
+                    jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                    break;
                 default:
                     jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
             }
