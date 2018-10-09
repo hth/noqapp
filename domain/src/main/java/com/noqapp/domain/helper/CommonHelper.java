@@ -114,6 +114,7 @@ public class CommonHelper {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
+        LOG.info("bizStore Id={} name={} bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
         return bannerImage;
     }
 }
