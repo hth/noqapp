@@ -155,6 +155,9 @@ public class QueueService {
             JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore);
 
             /* Set display image based on business type. */
+            jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
+
+            /* Set Category if any. */
             switch (queue.getBusinessType()) {
                 case DO:
                     List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
@@ -172,7 +175,7 @@ public class QueueService {
                     jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
                     break;
                 default:
-                    jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
+                    //Do something new
             }
             jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
         }
