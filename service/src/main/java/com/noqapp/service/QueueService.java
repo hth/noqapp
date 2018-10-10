@@ -503,4 +503,12 @@ public class QueueService {
     public QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId) {
         return queueManager.changeUserInQueue(codeQR, tokenNumber, existingQueueUserId, changeToQueueUserId);
     }
+
+    @Mobile
+    public String findYetToBeServed(String codeQR) {
+        List<QueueEntity> queues = queueManager.findYetToBeServed(codeQR);
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+        populateInJsonQueuePersonList(queuedPeople, queues);
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
+    }
 }
