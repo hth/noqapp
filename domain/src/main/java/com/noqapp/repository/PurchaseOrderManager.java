@@ -14,6 +14,8 @@ import java.util.List;
 public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEntity> {
     PurchaseOrderEntity findById(String id);
 
+    PurchaseOrderEntity findBy(String qid, String codeQR, int tokenNumber);
+
     List<PurchaseOrderEntity> findAllOpenOrder(String qid);
 
     /** Find all clients serviced to send messages. */
