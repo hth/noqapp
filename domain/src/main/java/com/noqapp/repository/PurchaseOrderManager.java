@@ -61,4 +61,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId);
     PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId);
+
+    @Mobile
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
 }

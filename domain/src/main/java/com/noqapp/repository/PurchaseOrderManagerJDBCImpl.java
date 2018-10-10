@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
 
 import org.slf4j.Logger;
@@ -132,5 +133,19 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     public List<PurchaseOrderEntity> getByQid(String qid) {
         LOG.info("Fetch historical order by qid={}", qid);
         return jdbcTemplate.query(query_by_qid, new Object[]{qid}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    @CustomTransactional
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+        try {
+            return this.jdbcTemplate.update(
+                "UPDATE PURCHASE_ORDER SET RA = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
+                ratingCount, review, codeQR, did, qid, token) > 0;
+        } catch (Exception e) {
+            LOG.error("Failed order review update codeQR={} token={} did={} qid={} ratingCount={} review={} reason={}",
+                codeQR, token, did, qid, ratingCount, review, e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 }
