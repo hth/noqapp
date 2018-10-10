@@ -148,13 +148,13 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId)  {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
-        return new JsonPurchaseOrder(purchaseOrder);
+        return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
 
     @Mobile
     public JsonPurchaseOrder cancelOrderByMerchant(String codeQR, String transactionId)  {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, transactionId);
-        return new JsonPurchaseOrder(purchaseOrder);
+        return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
 
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
@@ -935,5 +935,17 @@ public class PurchaseOrderService {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
+    }
+
+    @Mobile
+    public JsonPurchaseOrder findBy(String qid, String codeQR, int tokenNumber) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findBy(qid, codeQR, tokenNumber);
+        if (null == purchaseOrder) {
+            return null;
+        }
+
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+        return jsonPurchaseOrders.isEmpty() ? null : jsonPurchaseOrders.get(0);
     }
 }

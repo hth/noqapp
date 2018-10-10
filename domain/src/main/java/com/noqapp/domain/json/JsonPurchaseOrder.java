@@ -243,23 +243,25 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public JsonPurchaseOrder(PurchaseOrderEntity po) {
-        this.bizStoreId = po.getBizStoreId();
-        this.customerPhone = po.getCustomerPhone();
-        this.deliveryAddress = po.getDeliveryAddress();
-        this.storeDiscount = po.getStoreDiscount();
-        this.orderPrice = po.getOrderPrice();
-        this.deliveryType = po.getDeliveryType();
-        this.paymentType = po.getPaymentType();
-        this.businessType = po.getBusinessType();
-        //Empty List
-        //No Setting Serving Number
-        this.token = po.getTokenNumber();
-        this.customerName = po.getCustomerName();
-        //No setting expectedServiceBegin
-        this.transactionId = po.getTransactionId();
-        this.presentOrderState = po.getPresentOrderState();
-        this.created = DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+    /** Mostly used when cancelling the order. */
+    public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
+        return new JsonPurchaseOrder()
+            .setBizStoreId(po.getBizStoreId())
+            .setCustomerPhone(po.getCustomerPhone())
+            .setDeliveryAddress(po.getDeliveryAddress())
+            .setStoreDiscount(po.getStoreDiscount())
+            .setOrderPrice(po.getOrderPrice())
+            .setDeliveryType(po.getDeliveryType())
+            .setPaymentType(po.getPaymentType())
+            .setBusinessType(po.getBusinessType())
+            //Empty purchaseOrderProducts List
+            //No Setting Serving Number
+            .setToken(po.getTokenNumber())
+            .setCustomerName(po.getCustomerName())
+            //No setting expectedServiceBegin
+            .setTransactionId(po.getTransactionId())
+            .setPresentOrderState(po.getPresentOrderState())
+            .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
     }
 
     @Override
