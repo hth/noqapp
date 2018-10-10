@@ -19,4 +19,7 @@ public interface PurchaseOrderManagerJDBC {
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
+
+    @Mobile
+    List<PurchaseOrderEntity> findReviews(String codeQR, int reviewLimitedToDays);
 }

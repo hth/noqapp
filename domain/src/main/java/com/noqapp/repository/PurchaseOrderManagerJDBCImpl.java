@@ -47,6 +47,14 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "PURCHASE_ORDER WHERE QID = ? " +
             "ORDER BY C DESC";
 
+    private static final String findReviewsByCodeQR =
+        "SELECT RA, RV" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QR = ? " +
+            "AND " +
+            "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -147,5 +155,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 codeQR, token, did, qid, ratingCount, review, e.getLocalizedMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findReviews(String codeQR, int reviewLimitedToDays) {
+        LOG.info("Fetch order review by codeQR={} limitedToDays={}", codeQR, reviewLimitedToDays);
+        return jdbcTemplate.query(findReviewsByCodeQR, new Object[]{codeQR, reviewLimitedToDays}, new PurchaseOrderRowMapper());
     }
 }

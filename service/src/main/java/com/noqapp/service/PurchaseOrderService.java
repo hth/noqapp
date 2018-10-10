@@ -20,6 +20,8 @@ import com.noqapp.domain.json.JsonPurchaseOrderHistorical;
 import com.noqapp.domain.json.JsonPurchaseOrderHistoricalList;
 import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
+import com.noqapp.domain.json.JsonReview;
+import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.JsonTokenAndQueue;
 import com.noqapp.domain.json.fcm.JsonMessage;
@@ -48,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.junit.jupiter.api.Assertions;
@@ -75,6 +78,8 @@ public class PurchaseOrderService {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
+    private int reviewLimitedToDays;
+
     private BizStoreManager bizStoreManager;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
@@ -93,6 +98,9 @@ public class PurchaseOrderService {
 
     @Autowired
     public PurchaseOrderService(
+        @Value("${reviewLimitedToDays:180}")
+        int reviewLimitedToDays,
+
         BizStoreManager bizStoreManager,
         TokenQueueService tokenQueueService,
         StoreHourManager storeHourManager,
@@ -107,6 +115,8 @@ public class PurchaseOrderService {
         TokenQueueManager tokenQueueManager,
         AccountService accountService
     ) {
+        this.reviewLimitedToDays = reviewLimitedToDays;
+
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
@@ -947,5 +957,68 @@ public class PurchaseOrderService {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         return jsonPurchaseOrders.isEmpty() ? null : jsonPurchaseOrders.get(0);
+    }
+
+    /**
+     * Since review can be done in background. Moved logic to thread.
+     *
+     * @param codeQR
+     * @param token
+     * @param did
+     * @param qid
+     * @param ratingCount
+     */
+    @Mobile
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+        executorService.submit(() -> reviewingService(codeQR, token, did, qid, ratingCount, review));
+        return true;
+    }
+
+    /**
+     * Submitting review.
+     */
+    private void reviewingService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+        boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, did, qid, ratingCount, review);
+        if (!reviewSubmitStatus) {
+            //TODO(hth) make sure for Guardian this is taken care. Right now its ignore "GQ" add to MySQL Table
+            reviewSubmitStatus = reviewHistoricalService(codeQR, token, did, qid, ratingCount, review);
+        }
+
+        LOG.info("Review update status={} codeQR={} token={} ratingCount={} hoursSaved={} did={} qid={} review={}",
+            reviewSubmitStatus,
+            codeQR,
+            token,
+            ratingCount,
+            did,
+            qid,
+            review);
+    }
+
+    private boolean reviewHistoricalService(
+        String codeQR,
+        int token,
+        String did,
+        String qid,
+        int ratingCount,
+        String review
+    ) {
+        return purchaseOrderManagerJDBC.reviewService(codeQR, token, did, qid, ratingCount, review);
+    }
+
+    @Mobile
+    public JsonReviewList findReviews(String codeQR) {
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
+        purchaseOrders.addAll(purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+
+        JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(purchaseOrders.size());
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            jsonReviewList.addJsonReview(
+                new JsonReview()
+                    .setReview(purchaseOrder.getReview())
+                    .setRatingCount(purchaseOrder.getRatingCount())
+            );
+        }
+
+        return jsonReviewList;
     }
 }
