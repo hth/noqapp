@@ -66,4 +66,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
+
+    @Mobile
+    List<PurchaseOrderEntity> findReviews(String codeQR);
 }

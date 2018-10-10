@@ -13,6 +13,8 @@ import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedDependent;
 import com.noqapp.domain.json.JsonQueuedPerson;
+import com.noqapp.domain.json.JsonReview;
+import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.stats.HealthCareStat;
 import com.noqapp.domain.stats.HealthCareStatList;
@@ -51,6 +53,7 @@ public class QueueService {
     private static final Logger LOG = LoggerFactory.getLogger(QueueService.class);
 
     private int limitedToDays;
+    private int reviewLimitedToDays;
 
     private AccountService accountService;
     private BusinessCustomerService businessCustomerService;
@@ -65,6 +68,9 @@ public class QueueService {
             @Value("${limitedToDays:7}")
             int limitedToDays,
 
+            @Value("${reviewLimitedToDays:180}")
+            int reviewLimitedToDays,
+
             AccountService accountService,
             BusinessCustomerService businessCustomerService,
             BizStoreManager bizStoreManager,
@@ -74,6 +80,7 @@ public class QueueService {
             BusinessUserStoreManager businessUserStoreManager
     ) {
         this.limitedToDays = limitedToDays;
+        this.reviewLimitedToDays = reviewLimitedToDays;
 
         this.accountService = accountService;
         this.businessCustomerService = businessCustomerService;
@@ -510,5 +517,22 @@ public class QueueService {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
         populateInJsonQueuePersonList(queuedPeople, queues);
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
+    }
+
+    @Mobile
+    public JsonReviewList findReviews(String codeQR) {
+        List<QueueEntity> queues = queueManager.findReviews(codeQR);
+        queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+
+        JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(queues.size());
+        for (QueueEntity queue : queues) {
+            jsonReviewList.addJsonReview(
+                new JsonReview()
+                    .setReview(queue.getReview())
+                    .setRatingCount(queue.getRatingCount())
+            );
+        }
+
+        return jsonReviewList;
     }
 }

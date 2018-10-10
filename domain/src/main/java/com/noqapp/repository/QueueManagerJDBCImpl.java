@@ -28,72 +28,80 @@ import javax.sql.DataSource;
  * Date: 3/9/17 9:57 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-            "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D)" +
-                    " VALUES " +
-                    "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:v,:u,:c,:a,:d)";
+        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D)" +
+            " VALUES " +
+            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
-                    " FROM " +
-                    "QUEUE WHERE QID = ? " +
-                    "AND " +
-                    "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
-                    "WHERE QID = ? " +
-                    "GROUP BY QR) ORDER BY C DESC";
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QID = ? " +
+            "AND " +
+            "C IN (SELECT max(C) " +
+            "FROM QUEUE " +
+            "WHERE QID = ? " +
+            "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByQidAndByLastUpdated =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
-                    " FROM " +
-                    "QUEUE WHERE QID = ? AND U >= ? " +
-                    "AND " +
-                    "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
-                    "WHERE QID = ? " +
-                    "GROUP BY QR) ORDER BY C DESC";
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QID = ? AND U >= ? " +
+            "AND " +
+            "C IN (SELECT max(C) " +
+            "FROM QUEUE " +
+            "WHERE QID = ? " +
+            "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByCodeQR =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
-                    " FROM " +
-                    "QUEUE WHERE QR = ? " +
-                    "AND " +
-                    "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
-                    "ORDER BY C DESC";
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QR = ? " +
+            "AND " +
+            "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
+
+    private static final String findReviewsByCodeQR =
+        "SELECT RA, HR, RV" +
+            " FROM " +
+            "QUEUE WHERE QR = ? " +
+            "AND " +
+            "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
 
     private static final String findByDid =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
-                    " FROM " +
-                    "QUEUE WHERE DID = ? " +
-                    "AND " +
-                    "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
-                    "WHERE DID = ? " +
-                    "GROUP BY QR) ORDER BY C DESC";
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE DID = ? " +
+            "AND " +
+            "C IN (SELECT max(C) " +
+            "FROM QUEUE " +
+            "WHERE DID = ? " +
+            "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
-            "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
-                    " FROM " +
-                    "QUEUE WHERE DID = ? AND U >= ? " +
-                    "AND " +
-                    "C IN (SELECT max(C) " +
-                    "FROM QUEUE " +
-                    "WHERE DID = ? " +
-                    "GROUP BY QR) ORDER BY C DESC";
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE DID = ? AND U >= ? " +
+            "AND " +
+            "C IN (SELECT max(C) " +
+            "FROM QUEUE " +
+            "WHERE DID = ? " +
+            "GROUP BY QR) ORDER BY C DESC";
 
     private static final String checkIfClientVisitedStore =
-            "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
+        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
 
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
@@ -224,16 +232,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         try {
             if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
-                        "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
-                        ratingCount, hoursSaved, review, codeQR, did, qid, token) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
+                    ratingCount, hoursSaved, review, codeQR, did, qid, token) > 0;
             } else {
                 return this.jdbcTemplate.update(
-                        "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
-                        ratingCount, hoursSaved, review, codeQR, did, token) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
+                    ratingCount, hoursSaved, review, codeQR, did, token) > 0;
             }
         } catch (Exception e) {
             LOG.error("Failed review update codeQR={} token={} did={} qid={} ratingCount={} hoursSaved={} review={} reason={}",
-                    codeQR, token, did, qid, ratingCount, hoursSaved, review, e.getLocalizedMessage(), e);
+                codeQR, token, did, qid, ratingCount, hoursSaved, review, e.getLocalizedMessage(), e);
             throw e;
         }
     }
@@ -248,6 +256,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean hasClientVisitedThisBusiness(String bizNameId, String qid) {
         LOG.info("Fetch history by bizNameId={} qid={}", bizNameId, qid);
         return jdbcTemplate.queryForObject(checkIfClientVisitedBusiness, new Object[]{bizNameId, qid}, Boolean.class);
+    }
+
+    @Override
+    public List<QueueEntity> findReviews(String codeQR, int reviewLimitedToDays) {
+        LOG.info("Fetch queue review by codeQR={} limitedToDays={}", codeQR, reviewLimitedToDays);
+        return jdbcTemplate.query(findReviewsByCodeQR, new Object[]{codeQR, reviewLimitedToDays}, new QueueRowMapper());
     }
 
     @Override

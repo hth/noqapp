@@ -555,4 +555,13 @@ public class QueueManagerImpl implements QueueManager {
             TABLE
         );
     }
+
+    @Override
+    public List<QueueEntity> findReviews(String codeQR) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("RA").gt(0)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
 }

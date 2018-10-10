@@ -131,4 +131,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId);
 
     List<QueueEntity> findYetToBeServed(String codeQR);
+
+    List<QueueEntity> findReviews(String codeQR);
 }
