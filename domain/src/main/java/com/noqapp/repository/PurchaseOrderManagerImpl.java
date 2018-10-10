@@ -17,6 +17,8 @@ import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
@@ -322,5 +324,26 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 PurchaseOrderEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+        Query query = query(
+            where("QR").is(codeQR)
+                .and("TN").is(token)
+                .and("DID").is(did)
+                .and("PS").ne(PurchaseOrderStateEnum.PO)
+                .and("RA").is(0)
+                .and("QID").is(qid));
+
+        /* Review has to be null. If not null and the text is null then that is an issue. */
+        Update update;
+        if (StringUtils.isBlank(review)) {
+            update = entityUpdate(update("RA", ratingCount));
+        } else {
+            update = entityUpdate(update("RA", ratingCount).set("RV", review));
+        }
+
+        return mongoTemplate.updateFirst(query, update, PurchaseOrderEntity.class, TABLE).getModifiedCount() > 0;
     }
 }
