@@ -129,4 +129,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void updateServiceBeginTime(String id);
 
     QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId);
+
+    List<QueueEntity> findYetToBeServed(String codeQR);
 }
