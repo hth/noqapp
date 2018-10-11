@@ -1012,11 +1012,13 @@ public class PurchaseOrderService {
 
         JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(purchaseOrders.size());
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
             jsonReviewList.addJsonReview(
-                new JsonReview()
-                    .setReview(purchaseOrder.getReview())
-                    .setRatingCount(purchaseOrder.getRatingCount())
-            );
+                new JsonReview(
+                    purchaseOrder.getRatingCount(),
+                    purchaseOrder.getReview(),
+                    userProfile.getProfileImage(),
+                    userProfile.getName()));
         }
 
         return jsonReviewList;

@@ -526,11 +526,13 @@ public class QueueService {
 
         JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(queues.size());
         for (QueueEntity queue : queues) {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queue.getQueueUserId());
             jsonReviewList.addJsonReview(
-                new JsonReview()
-                    .setReview(queue.getReview())
-                    .setRatingCount(queue.getRatingCount())
-            );
+                new JsonReview(
+                    queue.getRatingCount(),
+                    queue.getReview(),
+                    userProfile == null ? "" : userProfile.getProfileImage(),
+                    userProfile == null ? "" : userProfile.getName()));
         }
 
         return jsonReviewList;

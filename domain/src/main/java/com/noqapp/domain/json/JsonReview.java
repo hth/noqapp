@@ -1,8 +1,6 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.PurchaseOrderEntity;
-import com.noqapp.domain.QueueEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,33 +33,20 @@ public class JsonReview extends AbstractDomain {
     @JsonProperty("rv")
     private String review;
 
-    public int getRatingCount() {
-        return ratingCount;
+    @JsonProperty ("pi")
+    private String profileImage;
+
+    @JsonProperty ("nm")
+    private String name;
+
+    public JsonReview() {
+        //Required default constructor
     }
 
-    public JsonReview setRatingCount(int ratingCount) {
+    public JsonReview(int ratingCount, String review, String profileImage, String name) {
         this.ratingCount = ratingCount;
-        return this;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public JsonReview setReview(String review) {
         this.review = review;
-        return this;
-    }
-
-    public static JsonReview queueReview(QueueEntity o) {
-        return new JsonReview()
-            .setRatingCount(o.getRatingCount())
-            .setReview(o.getReview());
-    }
-
-    public static JsonReview queueReview(PurchaseOrderEntity o) {
-        return new JsonReview()
-            .setRatingCount(o.getRatingCount())
-            .setReview(o.getReview());
+        this.profileImage = profileImage;
+        this.name = name;
     }
 }
