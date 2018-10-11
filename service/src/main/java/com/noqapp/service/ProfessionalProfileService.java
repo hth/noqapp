@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -81,10 +83,9 @@ public class ProfessionalProfileService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
         Set<String> codeQRs = professionalProfile.getManagerAtStoreCodeQRs();
 
-        JsonReviewList jsonReviewList = new JsonReviewList();
+        Map<String, JsonReviewList> reviews = new HashMap<>();
         for (String codeQR : codeQRs) {
-            JsonReviewList o = queueService.findReviews(codeQR);
-            jsonReviewList.getJsonReviews().addAll(o.getJsonReviews());
+            reviews.put(codeQR, queueService.findReviews(codeQR));
         }
         return new JsonProfessionalProfile()
             .setName(userProfile.getName())
@@ -95,7 +96,7 @@ public class ProfessionalProfileService {
             .setLicenses(professionalProfile.getLicensesAsJson())
             .setAwards(professionalProfile.getAwardsAsJson())
             .setDataDictionary(professionalProfile.getDataDictionary())
-            .setJsonReviewList(jsonReviewList)
+            .setReviews(reviews)
             .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
     }
 
