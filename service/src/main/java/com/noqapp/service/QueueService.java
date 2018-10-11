@@ -522,7 +522,7 @@ public class QueueService {
     @Mobile
     public JsonReviewList findReviews(String codeQR) {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
-        queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+        //queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
 
         JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(queues.size());
         for (QueueEntity queue : queues) {

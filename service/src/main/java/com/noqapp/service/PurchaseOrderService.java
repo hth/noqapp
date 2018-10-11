@@ -1008,7 +1008,7 @@ public class PurchaseOrderService {
     @Mobile
     public JsonReviewList findReviews(String codeQR) {
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
-        purchaseOrders.addAll(purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+        //purchaseOrders.addAll(purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
 
         JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(purchaseOrders.size());
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
