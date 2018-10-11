@@ -5,6 +5,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
+import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -13,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * hitender
@@ -24,11 +27,17 @@ public class ProfessionalProfileService {
 
     private ProfessionalProfileManager professionalProfileManager;
     private UserProfileManager userProfileManager;
+    private QueueService queueService;
 
     @Autowired
-    public ProfessionalProfileService(ProfessionalProfileManager professionalProfileManager, UserProfileManager userProfileManager) {
+    public ProfessionalProfileService(
+        ProfessionalProfileManager professionalProfileManager,
+        UserProfileManager userProfileManager,
+        QueueService queueService
+    ) {
         this.professionalProfileManager = professionalProfileManager;
         this.userProfileManager = userProfileManager;
+        this.queueService = queueService;
     }
 
     public void createProfessionalProfile(String qid) {
@@ -70,6 +79,13 @@ public class ProfessionalProfileService {
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
+        Set<String> codeQRs = professionalProfile.getManagerAtStoreCodeQRs();
+
+        JsonReviewList jsonReviewList = new JsonReviewList();
+        for (String codeQR : codeQRs) {
+            JsonReviewList o = queueService.findReviews(codeQR);
+            jsonReviewList.getJsonReviews().addAll(o.getJsonReviews());
+        }
         return new JsonProfessionalProfile()
             .setName(userProfile.getName())
             .setWebProfileId(professionalProfile.getWebProfileId())
@@ -79,6 +95,7 @@ public class ProfessionalProfileService {
             .setLicenses(professionalProfile.getLicensesAsJson())
             .setAwards(professionalProfile.getAwardsAsJson())
             .setDataDictionary(professionalProfile.getDataDictionary())
+            .setJsonReviewList(jsonReviewList)
             .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
     }
 
