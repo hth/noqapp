@@ -325,9 +325,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId) {
+    public PurchaseOrderEntity cancelOrderByMerchant(String bizStoreId, String transactionId) {
         return mongoTemplate.findAndModify(
-                query(where("TI").is(transactionId).and("QR").is(codeQR)),
+                query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
                 entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
                 FindAndModifyOptions.options().returnNew(true),
                 PurchaseOrderEntity.class,

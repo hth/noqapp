@@ -162,8 +162,8 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder cancelOrderByMerchant(String codeQR, String transactionId)  {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, transactionId);
+    public JsonPurchaseOrder cancelOrderByMerchant(String bizStoreId, String transactionId)  {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(bizStoreId, transactionId);
         return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
 
