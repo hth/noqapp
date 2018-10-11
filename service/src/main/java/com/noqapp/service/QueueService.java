@@ -524,7 +524,7 @@ public class QueueService {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
         //queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
 
-        JsonReviewList jsonReviewList = new JsonReviewList().setTotalReviews(queues.size());
+        JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queue.getQueueUserId());
             jsonReviewList.addJsonReview(
