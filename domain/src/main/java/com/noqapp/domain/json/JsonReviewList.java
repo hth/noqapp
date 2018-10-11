@@ -31,10 +31,7 @@ import java.util.List;
 public class JsonReviewList extends AbstractDomain {
 
     @JsonProperty("rs")
-    public List<JsonReview> jsonReviews = new ArrayList<>();
-
-    @JsonProperty("tr")
-    private int totalReviews;
+    private List<JsonReview> jsonReviews = new ArrayList<>();
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
@@ -47,15 +44,6 @@ public class JsonReviewList extends AbstractDomain {
 
     public JsonReviewList addJsonReview(JsonReview jsonReview) {
         this.jsonReviews.add(jsonReview);
-        return this;
-    }
-
-    public int getTotalReviews() {
-        return totalReviews;
-    }
-
-    public JsonReviewList setTotalReviews(int totalReviews) {
-        this.totalReviews = totalReviews;
         return this;
     }
 }
