@@ -13,8 +13,6 @@ import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedDependent;
 import com.noqapp.domain.json.JsonQueuedPerson;
-import com.noqapp.domain.json.JsonReview;
-import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.stats.HealthCareStat;
 import com.noqapp.domain.stats.HealthCareStatList;
@@ -30,6 +28,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,9 +52,8 @@ public class QueueService {
     private static final Logger LOG = LoggerFactory.getLogger(QueueService.class);
 
     private int limitedToDays;
-    private int reviewLimitedToDays;
 
-    private AccountService accountService;
+    private UserProfileManager userProfileManager;
     private BusinessCustomerService businessCustomerService;
     private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
@@ -68,10 +66,7 @@ public class QueueService {
             @Value("${limitedToDays:7}")
             int limitedToDays,
 
-            @Value("${reviewLimitedToDays:180}")
-            int reviewLimitedToDays,
-
-            AccountService accountService,
+            UserProfileManager userProfileManager,
             BusinessCustomerService businessCustomerService,
             BizStoreManager bizStoreManager,
             QueueManager queueManager,
@@ -80,9 +75,8 @@ public class QueueService {
             BusinessUserStoreManager businessUserStoreManager
     ) {
         this.limitedToDays = limitedToDays;
-        this.reviewLimitedToDays = reviewLimitedToDays;
 
-        this.accountService = accountService;
+        this.userProfileManager = userProfileManager;
         this.businessCustomerService = businessCustomerService;
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
@@ -172,7 +166,7 @@ public class QueueService {
                             UserLevelEnum.S_MANAGER);
                     if (!businessUsers.isEmpty()) {
                         BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
-                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUserStore.getQueueUserId());
+                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
                         jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
                     }
 
@@ -243,7 +237,7 @@ public class QueueService {
 
         for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
             String qid = jsonQueuedPerson.getQueueUserId();
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             jsonQueuedPerson.setCustomerName(userProfile.getName())
@@ -274,10 +268,10 @@ public class QueueService {
             /* Get dependents when queue status is queued. */
             if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
                 if (StringUtils.isNotBlank(queue.getGuardianQid())) {
-                    UserProfileEntity guardianProfile = accountService.findProfileByQueueUserId(queue.getGuardianQid());
+                    UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
 
                     for (String qid : guardianProfile.getQidOfDependents()) {
-                        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
                         jsonQueuedPerson.addDependent(
                             new JsonQueuedDependent()
                                 .setToken(queue.getTokenNumber())
@@ -517,24 +511,5 @@ public class QueueService {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
         populateInJsonQueuePersonList(queuedPeople, queues);
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
-    }
-
-    @Mobile
-    public JsonReviewList findReviews(String codeQR) {
-        List<QueueEntity> queues = queueManager.findReviews(codeQR);
-        //queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
-
-        JsonReviewList jsonReviewList = new JsonReviewList();
-        for (QueueEntity queue : queues) {
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queue.getQueueUserId());
-            jsonReviewList.addJsonReview(
-                new JsonReview(
-                    queue.getRatingCount(),
-                    queue.getReview(),
-                    userProfile == null ? "" : userProfile.getProfileImage(),
-                    userProfile == null ? "" : userProfile.getName()));
-        }
-
-        return jsonReviewList;
     }
 }

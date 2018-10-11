@@ -20,8 +20,6 @@ import com.noqapp.domain.json.JsonPurchaseOrderHistorical;
 import com.noqapp.domain.json.JsonPurchaseOrderHistoricalList;
 import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
-import com.noqapp.domain.json.JsonReview;
-import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.JsonTokenAndQueue;
 import com.noqapp.domain.json.fcm.JsonMessage;
@@ -50,7 +48,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.junit.jupiter.api.Assertions;
@@ -78,8 +75,6 @@ public class PurchaseOrderService {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
-    private int reviewLimitedToDays;
-
     private BizStoreManager bizStoreManager;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
@@ -98,9 +93,6 @@ public class PurchaseOrderService {
 
     @Autowired
     public PurchaseOrderService(
-        @Value("${reviewLimitedToDays:180}")
-        int reviewLimitedToDays,
-
         BizStoreManager bizStoreManager,
         TokenQueueService tokenQueueService,
         StoreHourManager storeHourManager,
@@ -115,8 +107,6 @@ public class PurchaseOrderService {
         TokenQueueManager tokenQueueManager,
         AccountService accountService
     ) {
-        this.reviewLimitedToDays = reviewLimitedToDays;
-
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
@@ -1003,24 +993,5 @@ public class PurchaseOrderService {
         String review
     ) {
         return purchaseOrderManagerJDBC.reviewService(codeQR, token, did, qid, ratingCount, review);
-    }
-
-    @Mobile
-    public JsonReviewList findReviews(String codeQR) {
-        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
-        //purchaseOrders.addAll(purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
-
-        JsonReviewList jsonReviewList = new JsonReviewList();
-        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
-            jsonReviewList.addJsonReview(
-                new JsonReview(
-                    purchaseOrder.getRatingCount(),
-                    purchaseOrder.getReview(),
-                    userProfile.getProfileImage(),
-                    userProfile.getName()));
-        }
-
-        return jsonReviewList;
     }
 }

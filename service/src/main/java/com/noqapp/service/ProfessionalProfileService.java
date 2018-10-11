@@ -29,17 +29,17 @@ public class ProfessionalProfileService {
 
     private ProfessionalProfileManager professionalProfileManager;
     private UserProfileManager userProfileManager;
-    private QueueService queueService;
+    private ReviewService reviewService;
 
     @Autowired
     public ProfessionalProfileService(
         ProfessionalProfileManager professionalProfileManager,
         UserProfileManager userProfileManager,
-        QueueService queueService
+        ReviewService reviewService
     ) {
         this.professionalProfileManager = professionalProfileManager;
         this.userProfileManager = userProfileManager;
-        this.queueService = queueService;
+        this.reviewService = reviewService;
     }
 
     public void createProfessionalProfile(String qid) {
@@ -85,7 +85,7 @@ public class ProfessionalProfileService {
 
         Map<String, JsonReviewList> reviews = new HashMap<>();
         for (String codeQR : codeQRs) {
-            reviews.put(codeQR, queueService.findReviews(codeQR));
+            reviews.put(codeQR, reviewService.findQueueReviews(codeQR));
         }
         return new JsonProfessionalProfile()
             .setName(userProfile.getName())

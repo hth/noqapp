@@ -44,7 +44,9 @@ public class LogContextFilter implements Filter {
 
     private static final Pattern EXTRACT_ENDPOINT_PATTERN =
             Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
-    private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
+
+    /* Changed due to logstash error from dash to underscore. */
+    private static final String REQUEST_ID_MDC_KEY = "X_REQUEST_ID";
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         String uuid = UUID.randomUUID().toString();
