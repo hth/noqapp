@@ -55,11 +55,8 @@ public class JsonReview extends AbstractDomain {
             String[] splits = name.split(" ");
             if (splits.length >= 1) {
                 return splits[0] + splits[1].substring(0, 1);
-            } else {
-                return name;
             }
-        } else {
-            return name;
         }
+        return name;
     }
 }
