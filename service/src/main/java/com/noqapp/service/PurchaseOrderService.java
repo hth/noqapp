@@ -152,9 +152,19 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public boolean isOrderCancelled(String qid, String transactionId) {
+        return purchaseOrderManager.isOrderCancelled(qid, transactionId);
+    }
+
+    @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber)  {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
+    }
+
+    @Mobile
+    public boolean isOrderCancelled(String codeQR, int tokenNumber) {
+        return purchaseOrderManager.isOrderCancelled(codeQR, tokenNumber);
     }
 
     //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.

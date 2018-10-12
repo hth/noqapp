@@ -325,6 +325,22 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public boolean isOrderCancelled(String qid, String transactionId) {
+        return mongoTemplate.exists(
+            query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.CO)),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
+    public boolean isOrderCancelled(String codeQR, int tokenNumber) {
+        return mongoTemplate.exists(
+            query(where("TN").is(tokenNumber).and("QR").is(codeQR).and("PS").is(PurchaseOrderStateEnum.CO)),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public PurchaseOrderEntity cancelOrderByMerchant(String codeQR, int tokenNumber) {
         return mongoTemplate.findAndModify(
                 query(where("TN").is(tokenNumber).and("QR").is(codeQR)),
