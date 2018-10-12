@@ -60,7 +60,7 @@ public class JsonReviewList extends AbstractDomain {
     }
 
     public JsonReviewList addRatingCount(int aggregateRatingCount) {
-        this.aggregateRatingCount = this.aggregateRatingCount + aggregateRatingCount;
+        this.aggregateRatingCount += aggregateRatingCount;
         return this;
     }
 }
