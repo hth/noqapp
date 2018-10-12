@@ -50,6 +50,7 @@ public class JsonReview extends AbstractDomain {
         this.name = abbreviateName(name);
     }
 
+    /** For privacy reason, abbreviate user name on public forum. */
     private String abbreviateName(String name) {
         if (name.contains(" ")) {
             String[] splits = name.split(" ");
