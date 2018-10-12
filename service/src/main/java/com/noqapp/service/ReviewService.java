@@ -66,12 +66,12 @@ public class ReviewService {
                     queue.getRatingCount(),
                     queue.getReview(),
                     userProfile == null ? "" : userProfile.getProfileImage(),
-                    userProfile == null ? "" : userProfile.getName()));
+                    userProfile == null ? "" : userProfile.getName()))
+                .addRatingCount(queue.getRatingCount());
         }
 
         return jsonReviewList;
     }
-
 
 
     @Mobile
@@ -87,7 +87,8 @@ public class ReviewService {
                     purchaseOrder.getRatingCount(),
                     purchaseOrder.getReview(),
                     userProfile.getProfileImage(),
-                    userProfile.getName()));
+                    userProfile.getName()))
+                .addRatingCount(purchaseOrder.getRatingCount());
         }
 
         return jsonReviewList;
