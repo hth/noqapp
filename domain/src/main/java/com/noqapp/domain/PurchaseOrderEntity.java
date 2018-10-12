@@ -376,4 +376,39 @@ public class PurchaseOrderEntity extends BaseEntity {
         this.displayName = displayName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "PurchaseOrderEntity{" +
+            "queueUserId='" + queueUserId + '\'' +
+            ", bizStoreId='" + bizStoreId + '\'' +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", did='" + did + '\'' +
+            ", customerName='" + customerName + '\'' +
+            ", deliveryAddress='" + deliveryAddress + '\'' +
+            ", customerPhone='" + customerPhone + '\'' +
+            ", storeDiscount=" + storeDiscount +
+            ", orderPrice='" + orderPrice + '\'' +
+            ", deliveryType=" + deliveryType +
+            ", paymentType=" + paymentType +
+            ", presentOrderState=" + presentOrderState +
+            ", notifiedOnService=" + notifiedOnService +
+            ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
+            ", orderStates=" + orderStates +
+            ", businessType=" + businessType +
+            ", ratingCount=" + ratingCount +
+            ", review='" + review + '\'' +
+            ", tokenNumber=" + tokenNumber +
+            ", serverName='" + serverName + '\'' +
+            ", serverDeviceId='" + serverDeviceId + '\'' +
+            ", serviceBeginTime=" + serviceBeginTime +
+            ", serviceEndTime=" + serviceEndTime +
+            ", expectedServiceBegin=" + expectedServiceBegin +
+            ", tokenService=" + tokenService +
+            ", clientVisitedThisStore=" + clientVisitedThisStore +
+            ", transactionId='" + transactionId + '\'' +
+            ", displayName='" + displayName + '\'' +
+            '}';
+    }
 }

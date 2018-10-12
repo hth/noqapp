@@ -146,7 +146,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId)  {
+    public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
         return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
@@ -157,7 +157,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber)  {
+    public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
     }
@@ -330,7 +330,12 @@ public class PurchaseOrderService {
     }
 
     private List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
-        return purchaseOrderManager.findAllOpenOrder(qid);
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOpenOrder(qid);
+        LOG.info("Found open order size={}", purchaseOrders.size());
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            LOG.info("{}", purchaseOrder);
+        }
+        return purchaseOrders;
     }
 
     @Mobile
@@ -482,13 +487,13 @@ public class PurchaseOrderService {
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(purchaseOrder.getPresentOrderState()) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType())
                 .getJsonTopicOrderData()
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                    .setCodeQR(codeQR)
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setGoTo(goTo)
-                    .setBusinessType(tokenQueue.getBusinessType())
-                    .setPurchaseOrderState(purchaseOrder.getPresentOrderState());
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                .setCodeQR(codeQR)
+                .setQueueStatus(tokenQueue.getQueueStatus())
+                .setGoTo(goTo)
+                .setBusinessType(tokenQueue.getBusinessType())
+                .setPurchaseOrderState(purchaseOrder.getPresentOrderState());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
@@ -622,7 +627,6 @@ public class PurchaseOrderService {
 //            }
 //        }
 //    }
-
     private void invokeThreadSendMessageToSelectedTokenUser(
         String codeQR,
         PurchaseOrderEntity purchaseOrder,
@@ -733,9 +737,9 @@ public class PurchaseOrderService {
      * @param codeQR
      * @param servedNumber
      * @param purchaseOrderState
-     * @param goTo           - counter name
-     * @param sid            - server device id
-     * @param tokenService   - Invoked via Web or Device
+     * @param goTo               - counter name
+     * @param sid                - server device id
+     * @param tokenService       - Invoked via Web or Device
      * @return
      */
     public JsonToken updateAndGetNextInQueue(
@@ -893,7 +897,7 @@ public class PurchaseOrderService {
         if (null != purchaseOrder) {
             LOG.info("Found queue codeQR={} token={}", codeQR, purchaseOrder.getTokenNumber());
             switch (purchaseOrder.getPresentOrderState()) {
-                case OP :
+                case OP:
                     switch (purchaseOrder.getDeliveryType()) {
                         case HD:
                             purchaseOrder
