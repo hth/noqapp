@@ -210,16 +210,18 @@ public class QueueEntity extends BaseEntity {
         return ratingCount;
     }
 
-    public void setRatingCount(int ratingCount) {
+    public QueueEntity setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
     }
 
     public int getHoursSaved() {
         return hoursSaved;
     }
 
-    public void setHoursSaved(int hoursSaved) {
+    public QueueEntity setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+        return this;
     }
 
     public String getReview() {
