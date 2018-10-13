@@ -178,4 +178,18 @@ public final class CommonUtil {
     public static String generateTransactionId(String storeId, int token) {
         return storeId.substring(18, 24) + "-" + token + "-" + (random.ints(0,100).findFirst().getAsInt() + 100) + "-" + generateHexFromObjectId().substring(0, 8);
     }
+
+    /**
+     * For privacy reason, abbreviate user name on public forum.
+     * First Name will become First N
+     */
+    public static String abbreviateName(String name) {
+        if (name.contains(" ")) {
+            String[] splits = name.split(" ");
+            if (splits.length >= 1) {
+                return splits[0] + " " + splits[1].substring(0, 1);
+            }
+        }
+        return name;
+    }
 }
