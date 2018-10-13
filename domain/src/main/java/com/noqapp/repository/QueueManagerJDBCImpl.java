@@ -76,6 +76,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         "SELECT RA, HR, RV" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
+            "AND RA <> 0 " +
             "AND " +
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";

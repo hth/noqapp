@@ -51,6 +51,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "SELECT RA, RV" +
             " FROM " +
             "PURCHASE_ORDER WHERE QR = ? " +
+            "AND RA <> 0 " +
             "AND " +
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
