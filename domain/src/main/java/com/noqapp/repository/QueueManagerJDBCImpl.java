@@ -73,7 +73,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
-        "SELECT RA, HR, RV" +
+        "SELECT RA, HR, RV, QID" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND RA <> 0 " +
@@ -265,7 +265,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
-            (rs, rowNum) -> new QueueEntity()
+            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setHoursSaved(rs.getInt(2))
                 .setReview(rs.getString(3)));

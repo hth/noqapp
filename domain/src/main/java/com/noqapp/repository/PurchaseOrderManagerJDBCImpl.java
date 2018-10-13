@@ -48,7 +48,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
-        "SELECT RA, RV" +
+        "SELECT RA, RV, QID" +
             " FROM " +
             "PURCHASE_ORDER WHERE QR = ? " +
             "AND RA <> 0 " +
@@ -164,7 +164,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         return jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
-            (rs, rowNum) -> new PurchaseOrderEntity()
+            (rs, rowNum) -> new PurchaseOrderEntity(rs.getString(3), null, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setReview(rs.getString(2)));
     }
