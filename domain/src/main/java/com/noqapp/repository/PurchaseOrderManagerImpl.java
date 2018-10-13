@@ -92,7 +92,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     public List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
         return mongoTemplate.find(
                 query(where("QID").is(qid)
-                    .orOperator(
+                    .andOperator(
                         where("PS").ne(PurchaseOrderStateEnum.OD),
                         where("PS").ne(PurchaseOrderStateEnum.CO)
                     )
