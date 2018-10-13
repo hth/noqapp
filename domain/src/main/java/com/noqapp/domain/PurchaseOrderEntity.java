@@ -124,7 +124,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String displayName;
 
     @SuppressWarnings("unused")
-    private PurchaseOrderEntity() {
+    public PurchaseOrderEntity() {
         //Default constructor, required to keep bean happy
     }
 

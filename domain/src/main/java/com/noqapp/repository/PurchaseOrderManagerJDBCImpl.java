@@ -160,6 +160,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public List<PurchaseOrderEntity> findReviews(String codeQR, int reviewLimitedToDays) {
         LOG.info("Fetch order review by codeQR={} limitedToDays={}", codeQR, reviewLimitedToDays);
-        return jdbcTemplate.query(findReviewsByCodeQR, new Object[]{codeQR, reviewLimitedToDays}, new PurchaseOrderRowMapper());
+        return jdbcTemplate.query(
+            findReviewsByCodeQR,
+            new Object[]{codeQR, reviewLimitedToDays},
+            (rs, rowNum) -> new PurchaseOrderEntity()
+                .setRatingCount(rs.getInt(1))
+                .setReview(rs.getString(2)));
     }
 }

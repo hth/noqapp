@@ -261,7 +261,13 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     @Override
     public List<QueueEntity> findReviews(String codeQR, int reviewLimitedToDays) {
         LOG.info("Fetch queue review by codeQR={} limitedToDays={}", codeQR, reviewLimitedToDays);
-        return jdbcTemplate.query(findReviewsByCodeQR, new Object[]{codeQR, reviewLimitedToDays}, new QueueRowMapper());
+        return jdbcTemplate.query(
+            findReviewsByCodeQR,
+            new Object[]{codeQR, reviewLimitedToDays},
+            (rs, rowNum) -> new QueueEntity()
+                .setRatingCount(rs.getInt(1))
+                .setHoursSaved(rs.getInt(2))
+                .setReview(rs.getString(3)));
     }
 
     @Override
