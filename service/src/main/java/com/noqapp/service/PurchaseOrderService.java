@@ -330,12 +330,7 @@ public class PurchaseOrderService {
     }
 
     private List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
-        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOpenOrder(qid);
-        LOG.info("Found open order size={}", purchaseOrders.size());
-        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            LOG.info("{}", purchaseOrder);
-        }
-        return purchaseOrders;
+        return purchaseOrderManager.findAllOpenOrder(qid);
     }
 
     @Mobile
