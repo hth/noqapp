@@ -12,6 +12,9 @@ import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ import java.util.List;
  */
 @Service
 public class ReviewService {
+    private static final Logger LOG = LoggerFactory.getLogger(ReviewService.class);
 
     private int reviewLimitedToDays;
 
@@ -56,7 +60,15 @@ public class ReviewService {
     @Mobile
     public JsonReviewList findQueueReviews(String codeQR) {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
-        //queues.addAll(queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+        try {
+            List<QueueEntity> jdbcQueues = queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
+
+            if (null != jdbcQueues) {
+                queues.addAll(jdbcQueues);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
+        }
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
@@ -77,7 +89,14 @@ public class ReviewService {
     @Mobile
     public JsonReviewList findOrderReviews(String codeQR) {
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
-        //purchaseOrders.addAll(purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays));
+        try {
+            List<PurchaseOrderEntity> jdbcPurchaseOrders = purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
+            if (null != jdbcPurchaseOrders) {
+                purchaseOrders.addAll(jdbcPurchaseOrders);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
+        }
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
