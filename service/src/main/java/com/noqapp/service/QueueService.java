@@ -147,7 +147,12 @@ public class QueueService {
     /** This is for historical queue placed today, other past queues that have moved to archive. */
     @Mobile
     public JsonQueueHistoricalList findAllHistoricalQueueAsJson(String qid) {
+        UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);
+        List<UserProfileEntity> userProfileOfDependents = userProfileManager.findDependentProfilesByPhone(userProfileOfGuardian.getPhone());
         List<QueueEntity> queues = findAllHistoricalQueue(qid);
+        for (UserProfileEntity userProfile : userProfileOfDependents) {
+            queues.addAll(findAllHistoricalQueue(userProfile.getQueueUserId()));
+        }
 
         /* Populated with data. */
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
