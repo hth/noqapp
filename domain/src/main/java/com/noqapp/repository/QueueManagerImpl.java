@@ -564,4 +564,13 @@ public class QueueManagerImpl implements QueueManager {
             TABLE
         );
     }
+
+    @Override
+    public List<QueueEntity> findLevelUpReviews(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId).and("RA").gt(0)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
 }
