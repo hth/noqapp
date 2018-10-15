@@ -85,6 +85,34 @@ public class ReviewService {
         return jsonReviewList;
     }
 
+    @Mobile
+    public JsonReviewList findQueueLevelUpReviews(String bizNameId) {
+        List<QueueEntity> queues = queueManager.findLevelUpReviews(bizNameId);
+        try {
+            List<QueueEntity> jdbcQueues = queueManagerJDBC.findLevelUpReviews(bizNameId, reviewLimitedToDays);
+
+            if (null != jdbcQueues) {
+                queues.addAll(jdbcQueues);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
+        }
+
+        JsonReviewList jsonReviewList = new JsonReviewList();
+        for (QueueEntity queue : queues) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
+            jsonReviewList.addJsonReview(
+                new JsonReview(
+                    queue.getRatingCount(),
+                    queue.getReview(),
+                    userProfile == null ? "" : userProfile.getProfileImage(),
+                    userProfile == null ? "" : userProfile.getName()))
+                .addRatingCount(queue.getRatingCount());
+        }
+
+        return jsonReviewList;
+    }
+
 
     @Mobile
     public JsonReviewList findOrderReviews(String codeQR) {

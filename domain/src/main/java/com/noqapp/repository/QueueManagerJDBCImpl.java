@@ -81,6 +81,15 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
 
+    private static final String findReviewsByBizNameId =
+        "SELECT RA, HR, RV, QID" +
+            " FROM " +
+            "QUEUE WHERE BN = ? " +
+            "AND RA <> 0 " +
+            "AND " +
+            "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
+
     private static final String findByDid =
         "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
             " FROM " +
@@ -265,6 +274,18 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
+            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                .setRatingCount(rs.getInt(1))
+                .setHoursSaved(rs.getInt(2))
+                .setReview(rs.getString(3)));
+    }
+
+    @Override
+    public List<QueueEntity> findLevelUpReviews(String bizNameId, int reviewLimitedToDays) {
+        LOG.info("Fetch queue review by bizNameId={} limitedToDays={}", bizNameId, reviewLimitedToDays);
+        return jdbcTemplate.query(
+            findReviewsByBizNameId,
+            new Object[]{bizNameId, reviewLimitedToDays},
             (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setHoursSaved(rs.getInt(2))

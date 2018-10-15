@@ -70,5 +70,8 @@ public interface QueueManagerJDBC {
     List<QueueEntity> findReviews(String codeQR, int reviewLimitedToDays);
 
     @Mobile
+    List<QueueEntity> findLevelUpReviews(String bizNameId, int reviewLimitedToDays);
+
+    @Mobile
     boolean isDBAlive();
 }
