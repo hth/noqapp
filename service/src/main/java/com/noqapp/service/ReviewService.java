@@ -100,7 +100,11 @@ public class ReviewService {
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
+            UserProfileEntity userProfile = null;
+            if (null == queue.getQueueUserId()) {
+                userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
+            }
+
             jsonReviewList.addJsonReview(
                 new JsonReview(
                     queue.getRatingCount(),
