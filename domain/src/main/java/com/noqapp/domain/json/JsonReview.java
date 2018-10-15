@@ -40,6 +40,12 @@ public class JsonReview extends AbstractDomain {
     @JsonProperty ("nm")
     private String name;
 
+    @JsonProperty("qid")
+    private String queueUserId;
+
+    @JsonProperty("rs")
+    private boolean reviewShow;
+
     public JsonReview() {
         //Required default constructor
     }
