@@ -231,7 +231,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> getByQidSimple(String qid) {
-        return jdbcTemplate.query(findByQid_Simple, new Object[]{qid, qid}, new QueueRowMapper());
+        return jdbcTemplate.query(findByQid_Simple, new Object[]{qid}, new QueueRowMapper());
     }
 
     @Override
