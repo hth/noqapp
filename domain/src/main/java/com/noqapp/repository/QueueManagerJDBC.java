@@ -16,42 +16,25 @@ public interface QueueManagerJDBC {
 
     void rollbackQueues(List<QueueEntity> queues);
 
-    /**
-     * Get all for did.
-     *
-     * @param did
-     * @return
-     */
+    /** Get all for did. */
     @Mobile
     List<QueueEntity> getByDid(String did);
 
-    /**
-     * Get all until lastAccessed date.
-     *
-     * @param did
-     * @param lastAccessed
-     * @return
-     */
+    /** Get all until lastAccessed date. */
     @Mobile
     List<QueueEntity> getByDid(String did, Date lastAccessed);
 
-    /**
-     * Get all for qid.
-     *
-     * @param qid
-     * @return
-     */
+    /** Simple search query. */
+    List<QueueEntity> getByQidSimple(String qid);
+
+    /** Get all for qid. */
     @Mobile
+    @Deprecated
     List<QueueEntity> getByQid(String qid);
 
-    /**
-     * Get all until lastAccessed date.
-     *
-     * @param qid
-     * @param lastAccessed
-     * @return
-     */
+    /** Get all until lastAccessed date. */
     @Mobile
+    @Deprecated
     List<QueueEntity> getByQid(String qid, Date lastAccessed);
 
     @Mobile

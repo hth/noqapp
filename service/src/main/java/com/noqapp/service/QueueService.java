@@ -128,9 +128,13 @@ public class QueueService {
         return queueManager.findAllNotQueuedByDid(did);
     }
 
-    @Mobile
+    @Deprecated
     public List<QueueEntity> getByQid(String qid) {
         return queueManagerJDBC.getByQid(qid);
+    }
+
+    private List<QueueEntity> getByQidSimple(String qid) {
+        return queueManagerJDBC.getByQidSimple(qid);
     }
 
     @Mobile
@@ -140,7 +144,7 @@ public class QueueService {
 
     public List<QueueEntity> findAllHistoricalQueue(String qid) {
         List<QueueEntity> queues = findAllNotQueuedByQid(qid);
-        queues.addAll(getByQid(qid));
+        queues.addAll(getByQidSimple(qid));
         return queues;
     }
 

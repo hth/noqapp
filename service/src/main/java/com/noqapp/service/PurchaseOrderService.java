@@ -198,6 +198,10 @@ public class PurchaseOrderService {
             .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()))
             .setDisplayName(bizStore.getDisplayName());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
+        if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
+            //TODO(hth) add condition to check for purchase price.
+            LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
+        }
         purchaseOrderManager.save(purchaseOrder);
 
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
