@@ -72,14 +72,7 @@ public class ReviewService {
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
-            jsonReviewList.addJsonReview(
-                new JsonReview(
-                    queue.getRatingCount(),
-                    queue.getReview(),
-                    userProfile == null ? "" : userProfile.getProfileImage(),
-                    userProfile == null ? "" : userProfile.getName()))
-                .addRatingCount(queue.getRatingCount());
+            populatedReviews(jsonReviewList, queue.getRatingCount(), queue.getReview(), queue.getQueueUserId());
         }
 
         return jsonReviewList;
@@ -100,18 +93,7 @@ public class ReviewService {
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
-            UserProfileEntity userProfile = null;
-            if (null == queue.getQueueUserId()) {
-                userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
-            }
-
-            jsonReviewList.addJsonReview(
-                new JsonReview(
-                    queue.getRatingCount(),
-                    queue.getReview(),
-                    userProfile == null ? "" : userProfile.getProfileImage(),
-                    userProfile == null ? "" : userProfile.getName()))
-                .addRatingCount(queue.getRatingCount());
+            populatedReviews(jsonReviewList, queue.getRatingCount(), queue.getReview(), queue.getQueueUserId());
         }
 
         return jsonReviewList;
@@ -132,16 +114,24 @@ public class ReviewService {
 
         JsonReviewList jsonReviewList = new JsonReviewList();
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
-            jsonReviewList.addJsonReview(
-                new JsonReview(
-                    purchaseOrder.getRatingCount(),
-                    purchaseOrder.getReview(),
-                    userProfile.getProfileImage(),
-                    userProfile.getName()))
-                .addRatingCount(purchaseOrder.getRatingCount());
+            populatedReviews(jsonReviewList, purchaseOrder.getRatingCount(), purchaseOrder.getReview(), purchaseOrder.getQueueUserId());
         }
 
         return jsonReviewList;
+    }
+
+    private void populatedReviews(JsonReviewList jsonReviewList, int ratingCount, String review, String qid) {
+        UserProfileEntity userProfile = null;
+        if (null != qid) {
+            userProfile = userProfileManager.findByQueueUserId(qid);
+        }
+
+        jsonReviewList.addJsonReview(
+            new JsonReview(
+                ratingCount,
+                review,
+                userProfile == null ? "" : userProfile.getProfileImage(),
+                userProfile == null ? "" : userProfile.getName()))
+            .addRatingCount(ratingCount);
     }
 }
