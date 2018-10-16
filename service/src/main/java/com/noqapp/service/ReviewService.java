@@ -62,9 +62,10 @@ public class ReviewService {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
         try {
             List<QueueEntity> jdbcQueues = queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
-
             if (null != jdbcQueues) {
                 queues.addAll(jdbcQueues);
+            } else {
+                LOG.info("JDBC is null and queues={}", queues.size());
             }
         } catch (Exception e) {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
@@ -83,9 +84,10 @@ public class ReviewService {
         List<QueueEntity> queues = queueManager.findLevelUpReviews(bizNameId);
         try {
             List<QueueEntity> jdbcQueues = queueManagerJDBC.findLevelUpReviews(bizNameId, reviewLimitedToDays);
-
             if (null != jdbcQueues) {
                 queues.addAll(jdbcQueues);
+            } else {
+                LOG.info("JDBC is null and levelUp queues={}", queues.size());
             }
         } catch (Exception e) {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
@@ -107,6 +109,8 @@ public class ReviewService {
             List<PurchaseOrderEntity> jdbcPurchaseOrders = purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
             if (null != jdbcPurchaseOrders) {
                 purchaseOrders.addAll(jdbcPurchaseOrders);
+            } else {
+                LOG.info("JDBC is null and purchaseOrders={}", purchaseOrders.size());
             }
         } catch (Exception e) {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
