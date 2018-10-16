@@ -44,6 +44,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
+    private static final String findByQid_Simple =
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QID = ? " +
+            "ORDER BY C DESC";
+
+    /* Inner condition removed. */
+    @Deprecated
     private static final String findByQid =
         "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
             " FROM " +
@@ -54,6 +62,8 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "WHERE QID = ? " +
             "GROUP BY QR) ORDER BY C DESC";
 
+    /* Inner condition removed. */
+    @Deprecated
     private static final String findByQidAndByLastUpdated =
         "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
             " FROM " +
@@ -217,6 +227,11 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             LOG.error("Error did={} lastAccessed={} reason={}", did, lastAccessed, e.getLocalizedMessage(), e);
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public List<QueueEntity> getByQidSimple(String qid) {
+        return jdbcTemplate.query(findByQid_Simple, new Object[]{qid, qid}, new QueueRowMapper());
     }
 
     @Override
