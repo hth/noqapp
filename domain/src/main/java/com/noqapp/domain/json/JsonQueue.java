@@ -124,7 +124,7 @@ public class JsonQueue extends AbstractDomain {
     private float rating;
 
     @JsonProperty("rc")
-    private int ratingCount;
+    private int reviewCount;
 
     @JsonProperty("as")
     private long averageServiceTime;
@@ -409,12 +409,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public int getRatingCount() {
-        return ratingCount;
+    public int getReviewCount() {
+        return reviewCount;
     }
 
-    public JsonQueue setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public JsonQueue setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
         return this;
     }
 
