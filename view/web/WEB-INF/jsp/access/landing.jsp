@@ -172,7 +172,7 @@
                                                         ${store.hoursSaved}
                                                     </td>
                                                     <td>
-                                                        ${store.ratingCount}
+                                                        ${store.reviewCount}
                                                     </td>
                                                 </tr>
                                             </c:forEach>

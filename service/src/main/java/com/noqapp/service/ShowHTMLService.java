@@ -183,7 +183,7 @@ public class ShowHTMLService {
         rootMap.put("tokenNotAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(zonedDateTime.getDayOfWeek())));
         rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
         rootMap.put("rating", String.valueOf(bizStore.getRatingFormatted()));
-        rootMap.put("ratingCount", String.valueOf(bizStore.getRatingCount()));
+        rootMap.put("reviewCount", String.valueOf(bizStore.getReviewCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
         rootMap.put("codeQR", bizStore.getCodeQRInBase64());
 

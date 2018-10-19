@@ -131,7 +131,7 @@
                                             <span style="display:block; font-size:13px;">In Queue: ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.ratingCount})</span>
+                                            <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.reviewCount})</span>
                                             <br/>
                                             <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                         </td>

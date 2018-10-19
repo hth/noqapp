@@ -534,7 +534,7 @@ public class BizStoreElastic extends AbstractDomain {
                 .setPlaceId(bizStore.getPlaceId())
                 .setPlaceType(bizStore.getPlaceType())
                 .setRating(bizStore.getRating())
-                .setRatingCount(bizStore.getRatingCount())
+                .setRatingCount(bizStore.getReviewCount())
                 .setBizNameId(bizStore.getBizName().getId())
                 .setDisplayName(bizStore.getDisplayName())
                 .setCodeQR(bizStore.getCodeQR())

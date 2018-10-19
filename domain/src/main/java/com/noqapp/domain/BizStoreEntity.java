@@ -128,7 +128,7 @@ public class BizStoreEntity extends BaseEntity {
     private float rating;
 
     @Field("RC")
-    private int ratingCount;
+    private int reviewCount;
 
     @Field("AS")
     private long averageServiceTime;
@@ -464,12 +464,12 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public int getRatingCount() {
-        return ratingCount;
+    public int getReviewCount() {
+        return reviewCount;
     }
 
-    public BizStoreEntity setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public BizStoreEntity setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
         return this;
     }
 
