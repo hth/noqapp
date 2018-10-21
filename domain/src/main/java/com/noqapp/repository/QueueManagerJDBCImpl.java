@@ -12,14 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -291,15 +288,10 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         List<QueueEntity> a = jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
-            new RowMapper<QueueEntity>() {
-                @Override
-                public QueueEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    return new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
-                        .setRatingCount(rs.getInt(1))
-                        .setHoursSaved(rs.getInt(2))
-                        .setReview(rs.getString(3));
-                }
-            });
+            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                .setRatingCount(rs.getInt(1))
+                .setHoursSaved(rs.getInt(2))
+                .setReview(rs.getString(3)));
 
         LOG.info("Fetch queue review by a={} codeQR={} limitedToDays={}", a.size(), codeQR, reviewLimitedToDays);
         return a;
@@ -310,15 +302,10 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         List<QueueEntity> a = jdbcTemplate.query(
             findReviewsByBizNameId,
             new Object[]{bizNameId, reviewLimitedToDays},
-            new RowMapper<QueueEntity>() {
-                @Override
-                public QueueEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    return new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
-                        .setRatingCount(rs.getInt(1))
-                        .setHoursSaved(rs.getInt(2))
-                        .setReview(rs.getString(3));
-                }
-            });
+            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                .setRatingCount(rs.getInt(1))
+                .setHoursSaved(rs.getInt(2))
+                .setReview(rs.getString(3)));
 
         LOG.info("Fetch queue review by a={} bizNameId={} limitedToDays={}", a.size(), bizNameId, reviewLimitedToDays);
         return a;
