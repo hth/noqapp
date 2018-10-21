@@ -285,30 +285,26 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> findReviews(String codeQR, int reviewLimitedToDays) {
-        List<QueueEntity> a = jdbcTemplate.query(
+        LOG.info("Fetch queue review by codeQR={} limitedToDays={}", codeQR, reviewLimitedToDays);
+        return jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
             (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setHoursSaved(rs.getInt(2))
                 .setReview(rs.getString(3)));
-
-        LOG.info("Fetch queue review by a={} codeQR={} limitedToDays={}", a.size(), codeQR, reviewLimitedToDays);
-        return a;
     }
 
     @Override
     public List<QueueEntity> findLevelUpReviews(String bizNameId, int reviewLimitedToDays) {
-        List<QueueEntity> a = jdbcTemplate.query(
+        LOG.info("Fetch queue review by bizNameId={} limitedToDays={}", bizNameId, reviewLimitedToDays);
+        return jdbcTemplate.query(
             findReviewsByBizNameId,
             new Object[]{bizNameId, reviewLimitedToDays},
             (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setHoursSaved(rs.getInt(2))
                 .setReview(rs.getString(3)));
-
-        LOG.info("Fetch queue review by a={} bizNameId={} limitedToDays={}", a.size(), bizNameId, reviewLimitedToDays);
-        return a;
     }
 
     @Override
