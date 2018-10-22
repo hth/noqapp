@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
@@ -61,18 +60,21 @@ public class StoreProductManagerImpl implements StoreProductManager {
 
     @Override
     public List<StoreProductEntity> findAll(String storeId) {
-        return mongoTemplate.find(Query.query(where("BS").is(storeId)).with(new Sort(ASC, "PN")), StoreProductEntity.class, TABLE);
+        return mongoTemplate.find(
+            query(where("BS").is(storeId)).with(new Sort(ASC, "PN")),
+            StoreProductEntity.class,
+            TABLE);
     }
 
     @Override
     public long countOfProduct(String storeId) {
-        return mongoTemplate.count(Query.query(where("BS").is(storeId)), StoreProductEntity.class, TABLE);
+        return mongoTemplate.count(query(where("BS").is(storeId)), StoreProductEntity.class, TABLE);
     }
 
     @Override
     public boolean existProductName(String storeId, String productName) {
         return mongoTemplate.exists(
-                Query.query(where("BS").is(storeId).and("PN").regex("^" + productName + "$", "i")),
+                query(where("BS").is(storeId).and("PN").regex("^" + productName + "$", "i")),
                 StoreProductEntity.class,
                 TABLE
         );
