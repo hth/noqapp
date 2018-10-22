@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
@@ -183,5 +184,31 @@ public class StoreProductEntity extends BaseEntity {
             + productType.name() + ","
             + unitValue + ","
             + unitOfMeasurement.getName() + ",";
+    }
+
+    @Transient
+    public static StoreProductEntity parseJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
+        StoreProductEntity storeProduct = new StoreProductEntity()
+            //BizStoreId
+            .setProductName(jsonStoreProduct.getProductName())
+            .setProductPrice(jsonStoreProduct.getProductPrice())
+            .setProductDiscount(jsonStoreProduct.getProductDiscount())
+            .setProductInfo(jsonStoreProduct.getProductInfo())
+            .setStoreCategoryId(jsonStoreProduct.getStoreCategoryId())
+            .setProductType(jsonStoreProduct.getProductType())
+            //Unit Value
+            //Package Size
+            .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement());
+
+        storeProduct.setId(jsonStoreProduct.getProductId());
+        return storeProduct;
+    }
+
+    @Transient
+    public void populateWithExistingStoreProduct(StoreProductEntity found) {
+        this
+            .setBizStoreId(found.getBizStoreId())
+            .setUnitValue(found.getUnitValue())
+            .setPackageSize(found.getPackageSize());
     }
 }
