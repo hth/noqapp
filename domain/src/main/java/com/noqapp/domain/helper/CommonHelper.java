@@ -103,24 +103,33 @@ public class CommonHelper {
     }
 
     public static String getBannerImage(BizStoreEntity bizStore) {
-        String bannerImage;
-        switch (bizStore.getBusinessType()) {
-            case DO:
-                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                break;
-            case RS:
-                bannerImage = bizStore.getStoreInteriorImages().isEmpty()
-                    ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
-                    : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
-                break;
-            default:
-                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
-                if (StringUtils.isBlank(bannerImage)) {
-                    /* If none is found, then get image from bizName. */
+        try {
+            String bannerImage;
+            switch (bizStore.getBusinessType()) {
+                case DO:
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                }
+                    break;
+                case RS:
+                    bannerImage = bizStore.getStoreInteriorImages().isEmpty()
+                        ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
+                        : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
+                    break;
+                default:
+                    bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
+                    if (StringUtils.isBlank(bannerImage)) {
+                        /* If none is found, then get image from bizName. */
+                        bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                    }
+            }
+            LOG.info("bizStore Id={} name={} bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
+            return bannerImage;
+        } catch (Exception e) {
+            LOG.error("Failed getting banner image for bizStore={} displayName={} reason={}",
+                bizStore.getId(),
+                bizStore.getDisplayName(),
+                e.getLocalizedMessage(),
+                e);
+            return "";
         }
-        LOG.info("bizStore Id={} name={} bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
-        return bannerImage;
     }
 }
