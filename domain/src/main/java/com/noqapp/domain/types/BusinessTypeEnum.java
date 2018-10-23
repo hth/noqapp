@@ -1,6 +1,7 @@
 package com.noqapp.domain.types;
 
-import static com.noqapp.domain.types.MessageOriginEnum.*;
+import static com.noqapp.domain.types.MessageOriginEnum.O;
+import static com.noqapp.domain.types.MessageOriginEnum.Q;
 
 import java.util.Arrays;
 import java.util.List;
