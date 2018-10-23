@@ -229,9 +229,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     /* For Historical Orders. */
     public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, BizStoreEntity bizStore) {
-        LOG.info("For purchase order={} store={}", purchaseOrder.getId(), bizStore.getId());
         String bannerImage = CommonHelper.getBannerImage(bizStore);
-        
+        LOG.info("For purchase order={} store={} bannerImage={}", purchaseOrder.getId(), bizStore.getId(), bannerImage);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         this.codeQR = purchaseOrder.getCodeQR();

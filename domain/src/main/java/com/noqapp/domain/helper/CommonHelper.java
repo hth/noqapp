@@ -110,8 +110,8 @@ public class CommonHelper {
                 break;
             case RS:
                 bannerImage = bizStore.getStoreInteriorImages().isEmpty()
-                    ? bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next()
-                    : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                    ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
+                    : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
                 break;
             default:
                 bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
