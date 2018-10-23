@@ -5,7 +5,7 @@ package com.noqapp.domain.types;
  * Date: 12/16/16 3:57 PM
  */
 public enum QueueUserStateEnum {
-    Q("Q", "Queued"),
+    Q("Q", "In Queue"),
     N("N", "No Show"),
     A("A", "Abort"),
     S("S", "Serviced");
