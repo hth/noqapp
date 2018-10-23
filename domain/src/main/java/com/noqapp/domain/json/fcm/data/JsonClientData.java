@@ -1,7 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

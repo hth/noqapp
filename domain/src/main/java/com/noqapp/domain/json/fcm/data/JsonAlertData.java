@@ -1,8 +1,8 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
