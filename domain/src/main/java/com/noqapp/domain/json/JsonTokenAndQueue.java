@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
@@ -231,25 +230,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
     /* For Historical Orders. */
     public JsonTokenAndQueue(PurchaseOrderEntity purchaseOrder, BizStoreEntity bizStore) {
         LOG.info("For purchase order={} store={}", purchaseOrder.getId(), bizStore.getId());
-        String bannerImage;
-        switch (bizStore.getBusinessType()) {
-            case DO:
-                bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                break;
-            case RS:
-                bannerImage = bizStore.getStoreInteriorImages().isEmpty()
-                    ? bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next()
-                    : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                break;
-            default:
-                bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
-                if (StringUtils.isBlank(bannerImage)) {
-                    /* If none is found, then get image from bizName. */
-                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
-                }
-        }
-        LOG.info("Banner for order image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
-
+        String bannerImage = CommonHelper.getBannerImage(bizStore);
+        
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         this.codeQR = purchaseOrder.getCodeQR();

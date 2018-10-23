@@ -116,6 +116,7 @@ public class CommonHelper {
             default:
                 bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
                 if (StringUtils.isBlank(bannerImage)) {
+                    /* If none is found, then get image from bizName. */
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 }
         }
