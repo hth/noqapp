@@ -108,6 +108,11 @@ public class CommonHelper {
             case DO:
                 bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                 break;
+            case RS:
+                bannerImage = bizStore.getStoreInteriorImages().isEmpty()
+                    ? bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next()
+                    : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                break;
             default:
                 bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
                 if (StringUtils.isBlank(bannerImage)) {
