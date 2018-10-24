@@ -2,11 +2,13 @@ package com.noqapp.view.controller.business.store;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -22,7 +24,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.List;
@@ -104,5 +109,34 @@ public class StoreManagerLandingController {
         }
 
         return nextPage;
+    }
+
+    /** Store Active(Online) and InActive(Offline). */
+    @PostMapping(
+        value = "/onlineOrOffline",
+        headers = "Accept=application/json",
+        produces = "application/json")
+    @ResponseBody
+    public String onlineOrOffline(
+        @RequestParam("storeId")
+        ScrubbedInput storeId,
+
+        @RequestParam ("action")
+        ScrubbedInput action
+    ) {
+        ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText());
+        switch (actionType) {
+            case ACTIVE:
+                return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }",
+                    storeId.getText(),
+                    ActionTypeEnum.INACTIVE.name());
+            case INACTIVE:
+                return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }",
+                    storeId.getText(),
+                    ActionTypeEnum.ACTIVE.name());
+            default:
+                LOG.error("Reached unreachable condition {}", actionType);
+                throw new UnsupportedOperationException("Reached unreachable condition");
+        }
     }
 }

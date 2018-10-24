@@ -8,5 +8,6 @@ public enum ActionTypeEnum {
     ADD,
     EDIT,
     REMOVE,
-    INACTIVE
+    INACTIVE,
+    ACTIVE
 }
