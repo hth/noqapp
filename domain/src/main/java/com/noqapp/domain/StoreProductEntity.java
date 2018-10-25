@@ -212,7 +212,8 @@ public class StoreProductEntity extends BaseEntity {
         this
             .setBizStoreId(found.getBizStoreId())
             .setUnitValue(found.getUnitValue())
-            .setPackageSize(found.getPackageSize());
+            .setPackageSize(found.getPackageSize())
+            .setVersion(found.getVersion());
     }
 
     @Override
