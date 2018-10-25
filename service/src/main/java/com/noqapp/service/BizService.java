@@ -134,14 +134,14 @@ public class BizService {
     }
 
     @Mobile
-    public void activeInActiveStore(String storeId, ActionTypeEnum actionType) {
+    public boolean activeInActiveStore(String storeId, ActionTypeEnum actionType) {
         switch (actionType) {
             case ACTIVE:
                 bizStoreManager.activeInActive(storeId, true);
-                break;
+                return true;
             case INACTIVE:
                 bizStoreManager.activeInActive(storeId, false);
-                break;
+                return false;
             default:
                 LOG.error("Reached unsupported condition actionType={}", actionType);
                 throw new UnsupportedOperationException("Reached unsupported condition for actionType " + actionType);
