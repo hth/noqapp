@@ -61,8 +61,8 @@ public class JsonStoreProduct extends AbstractDomain {
     @JsonProperty("pr")
     private String productReference;
 
-    @JsonProperty("A")
-    private boolean active = true;
+    @JsonProperty("a")
+    private boolean active;
 
     public String getProductId() {
         return productId;
