@@ -15,6 +15,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -132,6 +133,23 @@ public class BizService {
                 queuedRemoved);
     }
 
+    @Mobile
+    public void activeInActiveStore(String storeId, ActionTypeEnum actionType) {
+        BizStoreEntity bizStore = bizStoreManager.getById(storeId);
+        switch (actionType) {
+            case ACTIVE:
+                bizStore.active();
+                break;
+            case INACTIVE:
+                bizStore.inActive();
+                break;
+            default:
+                LOG.error("Reached unsupported condition actionType={}", actionType);
+                throw new UnsupportedOperationException("Reached unsupported condition for actionType " + actionType);
+        }
+        bizStoreManager.save(bizStore);
+    }
+
     public void saveStore(BizStoreEntity bizStore, String changeInitiateReason) {
         bizStoreManager.save(bizStore);
         try {
@@ -158,7 +176,7 @@ public class BizService {
             rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
             rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
             rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
-            //rootMap.put("temporaryClosed", bizStore.isTemporaryClosed());
+            rootMap.put("onlineOrOffline", bizStore.isActive());
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
 
             if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
