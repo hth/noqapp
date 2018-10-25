@@ -392,6 +392,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public void activeInActive(String id, boolean active) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("A", active),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM
