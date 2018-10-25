@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
@@ -187,6 +188,7 @@ public class StoreProductEntity extends BaseEntity {
     }
 
     @Transient
+    @Mobile
     public static StoreProductEntity parseJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
         StoreProductEntity storeProduct = new StoreProductEntity()
             //BizStoreId
@@ -205,6 +207,7 @@ public class StoreProductEntity extends BaseEntity {
     }
 
     @Transient
+    @Mobile
     public void populateWithExistingStoreProduct(StoreProductEntity found) {
         this
             .setBizStoreId(found.getBizStoreId())
