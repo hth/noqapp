@@ -211,4 +211,22 @@ public class StoreProductEntity extends BaseEntity {
             .setUnitValue(found.getUnitValue())
             .setPackageSize(found.getPackageSize());
     }
+
+    @Override
+    public String toString() {
+        return "StoreProductEntity{" +
+            "bizStoreId='" + bizStoreId + '\'' +
+            ", productName='" + productName + '\'' +
+            ", productPrice=" + productPrice +
+            ", productDiscount=" + productDiscount +
+            ", productInfo='" + productInfo + '\'' +
+            ", storeCategoryId='" + storeCategoryId + '\'' +
+            ", productType=" + productType +
+            ", unitValue='" + unitValue + '\'' +
+            ", packageSize='" + packageSize + '\'' +
+            ", unitOfMeasurement=" + unitOfMeasurement +
+            ", productReference='" + productReference + '\'' +
+            ", id='" + id + '\'' +
+            '}';
+    }
 }
