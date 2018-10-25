@@ -6,7 +6,7 @@ package com.noqapp.domain.types;
  */
 public enum UnitOfMeasurementEnum {
     CN("CN", "count (nos)"),
-    //DZ("DZ", "dozen"),
+    DZ("DZ", "dozen"),
     MG("MG", "mg (milligram)"),
     GM("GM", "gm (gram)"),
     KG("KG", "kg (kilogram)"),
