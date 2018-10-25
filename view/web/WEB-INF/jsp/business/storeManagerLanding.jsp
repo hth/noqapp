@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -84,6 +84,7 @@
                                         <th>Queue Name</th>
                                         <th>Rating & AHT</th>
                                         <th nowrap>Create Date</th>
+                                        <th></th>
                                     </tr>
                                     <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
                                     <tr>
@@ -138,6 +139,16 @@
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/></span>
                                         </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${store.active}">
+                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -182,5 +193,6 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 
 </html>

@@ -27,10 +27,9 @@ public class DomainConversion {
     private static final Logger LOG = LoggerFactory.getLogger(DomainConversion.class);
 
     /**
-     * Sets business images based on business types. Keep updating these based on business type.
+     * Sets business images based on business types.
      *
-     * @param bizStore
-     * @return
+     * Note: Keep updating these based on business type.
      */
     public static BusinessImageHolder populateBizAndStoreImages(BizStoreEntity bizStore) {
         String bannerImage = "";
@@ -64,6 +63,7 @@ public class DomainConversion {
             .setServiceImages(serviceImages);
     }
 
+    /** Persist for Elastic. */
     public static BizStoreElastic getAsBizStoreElastic(BizStoreEntity bizStore, List<StoreHourEntity> storeHours) {
         BusinessImageHolder businessImageHolder = populateBizAndStoreImages(bizStore);
         if (StringUtils.isBlank(businessImageHolder.getBannerImage())) {
