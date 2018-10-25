@@ -179,6 +179,11 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("ED")
     private List<JsonNameDatePair> education;
 
+    /** This field is normally used in level condition, other times its anyway deleted from elastic. */
+    @Transient
+    @JsonProperty("A")
+    private boolean active;
+
     public String getId() {
         return id;
     }
@@ -503,6 +508,15 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public BizStoreElastic setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
     /**
      * Note: This is missing Elastic Id. Should not be used for persistence in Elastic.
      *
@@ -545,7 +559,8 @@ public class BizStoreElastic extends AbstractDomain {
                 .setDisplayImage(businessImageHolder.getBannerImage())
                 .setBizServiceImages(businessImageHolder.getServiceImages())
                 .setAmenities(bizStore.getAmenities())
-                .setFacilities(bizStore.getFacilities());
+                .setFacilities(bizStore.getFacilities())
+                .setActive(bizStore.isActive());
     }
 
     @Override

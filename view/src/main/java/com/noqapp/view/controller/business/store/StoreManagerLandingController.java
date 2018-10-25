@@ -137,13 +137,13 @@ public class StoreManagerLandingController {
             switch (actionType) {
                 case ACTIVE:
                     bizStore.active();
-                    bizService.saveStore(bizStore, "Store is now " + (actionType == ActionTypeEnum.ACTIVE ? "Online" : "Offline"));
+                    bizService.saveStore(bizStore, "Store is now online");
                     BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId()));
                     bizStoreElasticService.save(bizStoreElastic);
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.INACTIVE.name());
                 case INACTIVE:
                     bizStore.inActive();
-                    bizService.saveStore(bizStore, "Store is now " + (actionType == ActionTypeEnum.ACTIVE ? "Online" : "Offline"));
+                    bizService.saveStore(bizStore, "Store is now offline");
                     bizStoreElasticService.delete(bizStore.getId());
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.ACTIVE.name());
                 default:

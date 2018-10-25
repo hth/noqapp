@@ -148,7 +148,7 @@
                                                     <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
+                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
