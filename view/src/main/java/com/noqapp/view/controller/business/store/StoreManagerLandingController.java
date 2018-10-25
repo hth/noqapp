@@ -9,6 +9,9 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -56,6 +59,7 @@ public class StoreManagerLandingController {
     private BusinessUserStoreService businessUserStoreService;
     private TokenQueueService tokenQueueService;
     private BusinessUserService businessUserService;
+    private BizStoreElasticService bizStoreElasticService;
 
     @Autowired
     public StoreManagerLandingController(
@@ -65,13 +69,15 @@ public class StoreManagerLandingController {
             BizService bizService,
             BusinessUserStoreService businessUserStoreService,
             TokenQueueService tokenQueueService,
-            BusinessUserService businessUserService
+            BusinessUserService businessUserService,
+            BizStoreElasticService bizStoreElasticService
     ) {
         this.nextPage = nextPage;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.tokenQueueService = tokenQueueService;
         this.businessUserService = businessUserService;
+        this.bizStoreElasticService = bizStoreElasticService;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -124,19 +130,27 @@ public class StoreManagerLandingController {
         @RequestParam ("action")
         ScrubbedInput action
     ) {
-        ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText());
-        switch (actionType) {
-            case ACTIVE:
-                return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }",
-                    storeId.getText(),
-                    ActionTypeEnum.INACTIVE.name());
-            case INACTIVE:
-                return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }",
-                    storeId.getText(),
-                    ActionTypeEnum.ACTIVE.name());
-            default:
-                LOG.error("Reached unreachable condition {}", actionType);
-                throw new UnsupportedOperationException("Reached unreachable condition");
+        try {
+            ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText());
+            BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+            bizStore.inActive();
+            bizService.saveStore(bizStore, "Store is now " + (actionType == ActionTypeEnum.ACTIVE ? "Online" : "Offline"));
+
+            switch (actionType) {
+                case ACTIVE:
+                    BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId()));
+                    bizStoreElasticService.save(bizStoreElastic);
+                    return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.INACTIVE.name());
+                case INACTIVE:
+                    bizStoreElasticService.delete(bizStore.getId());
+                    return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.ACTIVE.name());
+                default:
+                    LOG.error("Reached unreachable condition {}", actionType);
+                    throw new UnsupportedOperationException("Reached unreachable condition");
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to change store={} action={}", storeId.getText(), action.getText());
+            return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), "FAILED");
         }
     }
 }
