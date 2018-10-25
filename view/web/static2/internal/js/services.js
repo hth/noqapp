@@ -32,8 +32,10 @@ function storeOnlineOrOffline(storeId, action) {
             var text;
             if (data.action === 'ACTIVE') {
                 text = "Go Online";
+                $("#storeOnlineOrOffline_" + data.storeId).attr("style", "background: black")
             } else {
                 text = "Go Offline";
+                $("#storeOnlineOrOffline_" + data.storeId).removeAttr("style")
             }
             $("#storeOnlineOrOffline_" + data.storeId).attr("onclick", "storeOnlineOrOffline('" + data.storeId + "', '" + data.action + "')").html(text);
         }
