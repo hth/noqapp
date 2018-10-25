@@ -151,6 +151,8 @@
                                                     <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
                                                 </c:otherwise>
                                             </c:choose>
+                                            <br/><br/>
+                                            <span style="display:block; font-size:13px;">Offline store is not visible</span>
                                         </td>
                                     </tr>
                                     </c:forEach>
