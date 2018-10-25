@@ -147,5 +147,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void unsetScheduledTask(String id);
 
     void setScheduleTaskId(String codeQR, String scheduleTaskId);
+
+    void activeInActive(String id, boolean active);
 }
 
