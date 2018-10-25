@@ -396,7 +396,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public void activeInActive(String id, boolean active) {
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
-            update("A", active),
+            entityUpdate(update("A", active)),
             BizStoreEntity.class,
             TABLE
         );
