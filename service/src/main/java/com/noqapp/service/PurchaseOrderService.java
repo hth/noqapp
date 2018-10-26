@@ -132,7 +132,7 @@ public class PurchaseOrderService {
             StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
             if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
-                LOG.warn("When queue closed or prevent joining, attempting to create new token");
+                LOG.warn("When queue closed or prevent joining, attempting to create new order");
                 return new JsonToken(codeQR, bizStore.getBusinessType())
                     .setToken(0)
                     .setServingNumber(0)
