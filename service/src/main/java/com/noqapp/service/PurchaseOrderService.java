@@ -40,6 +40,7 @@ import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.StoreCloseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -184,6 +185,10 @@ public class PurchaseOrderService {
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
         JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+
+        if (jsonToken.getQueueStatus() == QueueStatusEnum.C) {
+            throw new StoreCloseException("Store is closed bizStoreId " + jsonPurchaseOrder.getBizStoreId());
+        }
 
         Date expectedServiceBegin = null;
         try {
