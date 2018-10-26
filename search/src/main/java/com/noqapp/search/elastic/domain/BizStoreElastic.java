@@ -182,7 +182,7 @@ public class BizStoreElastic extends AbstractDomain {
     /** This field is normally used in level condition, other times its anyway deleted from elastic. */
     @Transient
     @JsonProperty("A")
-    private boolean active;
+    private boolean active = true;
 
     public String getId() {
         return id;
