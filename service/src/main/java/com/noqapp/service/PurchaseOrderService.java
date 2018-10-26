@@ -40,7 +40,9 @@ import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.service.exceptions.StoreCloseException;
+import com.noqapp.service.exceptions.StoreDayClosedException;
+import com.noqapp.service.exceptions.StorePreventJoiningException;
+import com.noqapp.service.exceptions.StoreTempDayClosedException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -133,13 +135,17 @@ public class PurchaseOrderService {
             StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
             if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
-                LOG.warn("When queue closed or prevent joining, attempting to create new order");
-                return new JsonToken(codeQR, bizStore.getBusinessType())
-                    .setToken(0)
-                    .setServingNumber(0)
-                    .setDisplayName(bizStore.getDisplayName())
-                    .setQueueStatus(QueueStatusEnum.C)
-                    .setExpectedServiceBegin(new Date());
+                LOG.warn("When store closed or prevent joining, attempting to create new order");
+
+                if (storeHour.isDayClosed()) {
+                    throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
+                }
+                if (storeHour.isTempDayClosed()) {
+                    throw new StoreTempDayClosedException("Store is temporary closed bizStoreId " + bizStore.getId());
+                }
+                if (storeHour.isPreventJoining()) {
+                    throw new StorePreventJoiningException("Store not accepting new orders bizStoreId " + bizStore.getId());
+                }
             }
 
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
@@ -185,10 +191,6 @@ public class PurchaseOrderService {
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
         JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-
-        if (jsonToken.getQueueStatus() == QueueStatusEnum.C) {
-            throw new StoreCloseException("Store is closed bizStoreId " + jsonPurchaseOrder.getBizStoreId());
-        }
 
         Date expectedServiceBegin = null;
         try {
