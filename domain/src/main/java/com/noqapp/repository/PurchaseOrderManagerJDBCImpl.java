@@ -34,15 +34,15 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, V, U, C, A, D)" +
+        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qid,:bs,:bn,:qr,:dm,:pt,:ps,:da,:ra,:rv,:tn,:sd,:op,:bt,:sn,:sb,:se,:ti,:dn,:v,:u,:c,:a,:d)";
+            "(:id,:qid,:bs,:bn,:qr,:dm,:pt,:ps,:da,:ra,:rv,:tn,:sd,:op,:bt,:sn,:sb,:se,:ti,:dn,:an,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
 
 
     private static final String query_by_qid =
-        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
             "ORDER BY C DESC";
@@ -95,6 +95,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("se", purchaseOrder.getServiceEndTime());
                 namedParameters.addValue("ti", purchaseOrder.getTransactionId());
                 namedParameters.addValue("dn", purchaseOrder.getDisplayName());
+                namedParameters.addValue("an", purchaseOrder.getAdditionalNote());
 
                 namedParameters.addValue("v", purchaseOrder.getVersion());
                 namedParameters.addValue("u", purchaseOrder.getUpdated());

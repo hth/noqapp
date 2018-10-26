@@ -91,6 +91,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("c")
     private String created;
 
+    @JsonProperty("an")
+    private String additionalNote;
+
     public JsonPurchaseOrder() {
     }
 
@@ -243,6 +246,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public JsonPurchaseOrder setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
+        return this;
+    }
+
     /** Mostly used when cancelling the order. */
     public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
         return new JsonPurchaseOrder()
@@ -261,7 +273,8 @@ public class JsonPurchaseOrder extends AbstractDomain {
             //No setting expectedServiceBegin
             .setTransactionId(po.getTransactionId())
             .setPresentOrderState(po.getPresentOrderState())
-            .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+            .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setAdditionalNote(po.getAdditionalNote());
     }
 
     @Override

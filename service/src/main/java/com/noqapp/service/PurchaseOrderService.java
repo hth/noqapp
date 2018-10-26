@@ -196,7 +196,9 @@ public class PurchaseOrderService {
             .setExpectedServiceBegin(expectedServiceBegin)
             .setTokenService(tokenService)
             .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()))
-            .setDisplayName(bizStore.getDisplayName());
+            .setDisplayName(bizStore.getDisplayName())
+            .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
+
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
         if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
             //TODO(hth) add condition to check for purchase price.
@@ -466,7 +468,8 @@ public class PurchaseOrderService {
             //ExpectedServiceBegin not set for Merchant
             .setTransactionId(purchaseOrder.getTransactionId())
             .setPresentOrderState(purchaseOrder.getPresentOrderState())
-            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setAdditionalNote(purchaseOrder.getAdditionalNote());
 
         jsonPurchaseOrders.add(jsonPurchaseOrder);
     }

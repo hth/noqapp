@@ -39,12 +39,13 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int SE = 18;
     private static final int TI = 19;
     private static final int DN = 20;
+    private static final int AN = 21;
 
-    private static final int V = 21;
-    private static final int U = 22;
-    private static final int C = 23;
-    private static final int A = 24;
-    private static final int D = 25;
+    private static final int V = 22;
+    private static final int U = 23;
+    private static final int C = 24;
+    private static final int A = 25;
+    private static final int D = 26;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -70,6 +71,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setServiceEndTime(rs.getTimestamp(SE));
         purchaseOrder.setTransactionId(rs.getString(TI));
         purchaseOrder.setDisplayName(rs.getString(DN));
+        purchaseOrder.setAdditionalNote(rs.getString(AN));
 
         purchaseOrder.setVersion(rs.getInt(V));
         purchaseOrder.setCreateAndUpdate(rs.getTimestamp(U));
