@@ -126,11 +126,23 @@ public class PurchaseOrderService {
 
     private JsonToken getNextOrder(String codeQR, long averageServiceTime) {
         try {
-            TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
             DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
             StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+
+            if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
+                LOG.warn("When queue closed or prevent joining, attempting to create new token");
+                return new JsonToken(codeQR, bizStore.getBusinessType())
+                    .setToken(0)
+                    .setServingNumber(0)
+                    .setDisplayName(bizStore.getDisplayName())
+                    .setQueueStatus(QueueStatusEnum.C)
+                    .setExpectedServiceBegin(new Date());
+            }
+
+            TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
+            LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
