@@ -458,7 +458,6 @@ public class PurchaseOrderService {
             .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
             .setStoreDiscount(purchaseOrder.getStoreDiscount())
             .setOrderPrice(purchaseOrder.getOrderPrice())
-            .setAdditionalNote(purchaseOrder.getAdditionalNote())
             .setDeliveryType(purchaseOrder.getDeliveryType())
             .setPaymentType(purchaseOrder.getPaymentType())
             .setBusinessType(purchaseOrder.getBusinessType())
@@ -469,7 +468,8 @@ public class PurchaseOrderService {
             //ExpectedServiceBegin not set for Merchant
             .setTransactionId(purchaseOrder.getTransactionId())
             .setPresentOrderState(purchaseOrder.getPresentOrderState())
-            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setAdditionalNote(purchaseOrder.getAdditionalNote());
 
         jsonPurchaseOrders.add(jsonPurchaseOrder);
     }
