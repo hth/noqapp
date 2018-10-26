@@ -123,6 +123,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("DN")
     private String displayName;
 
+    @Field("AN")
+    private String additionalNote;
+
     @SuppressWarnings("unused")
     public PurchaseOrderEntity() {
         //Default constructor, required to keep bean happy
@@ -374,6 +377,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public PurchaseOrderEntity setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
         return this;
     }
 
