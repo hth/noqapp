@@ -99,6 +99,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("u")
     private String created;
 
+    @JsonProperty("an")
+    private String additionalNote;
+
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
@@ -137,6 +140,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.transactionId = purchaseOrder.getTransactionId();
         this.displayName = purchaseOrder.getDisplayName();
         this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.additionalNote = purchaseOrder.getAdditionalNote();
 
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             jsonPurchaseOrderProductHistoricalList.add(new JsonPurchaseOrderProductHistorical(purchaseOrderProduct));
