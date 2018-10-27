@@ -128,26 +128,26 @@ public class PurchaseOrderService {
     }
 
     private JsonToken getNextOrder(String codeQR, long averageServiceTime) {
-        try {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-            ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
-            DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
-            StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+        DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
-            if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
-                LOG.warn("When store closed or prevent joining, attempting to create new order");
+        if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
+            LOG.warn("When store closed or prevent joining, attempting to create new order");
 
-                if (storeHour.isDayClosed()) {
-                    throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
-                }
-                if (storeHour.isTempDayClosed()) {
-                    throw new StoreTempDayClosedException("Store is temporary closed bizStoreId " + bizStore.getId());
-                }
-                if (storeHour.isPreventJoining()) {
-                    throw new StorePreventJoiningException("Store not accepting new orders bizStoreId " + bizStore.getId());
-                }
+            if (storeHour.isDayClosed()) {
+                throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
             }
+            if (storeHour.isTempDayClosed()) {
+                throw new StoreTempDayClosedException("Store is temporary closed bizStoreId " + bizStore.getId());
+            }
+            if (storeHour.isPreventJoining()) {
+                throw new StorePreventJoiningException("Store not accepting new orders bizStoreId " + bizStore.getId());
+            }
+        }
 
+        try {
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
