@@ -41,6 +41,7 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.StoreDayClosedException;
+import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
 import com.noqapp.service.exceptions.StoreTempDayClosedException;
 
@@ -133,9 +134,12 @@ public class PurchaseOrderService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
-        if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
+        if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
             LOG.warn("When store closed or prevent joining, attempting to create new order");
 
+            if (!bizStore.isActive()) {
+                throw new StoreInActiveException("Store is offline bizStoreId " + bizStore.getId());
+            }
             if (storeHour.isDayClosed()) {
                 throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
             }
