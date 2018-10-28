@@ -171,6 +171,8 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
 
@@ -182,6 +184,8 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
     }
 
