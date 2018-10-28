@@ -330,6 +330,7 @@ public class PurchaseOrderService {
             case OD:
             case DA:
             case CO:
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
                 sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             default:
