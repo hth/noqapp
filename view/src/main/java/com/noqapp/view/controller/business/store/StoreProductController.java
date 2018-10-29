@@ -176,8 +176,8 @@ public class StoreProductController {
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
-                .setPackageSize(storeProductForm.getPackageSize().getText())
-                .setUnitValue(storeProductForm.getUnitValue().getText());
+                .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
+                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
     }
@@ -279,8 +279,8 @@ public class StoreProductController {
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
-                .setPackageSize(storeProductForm.getPackageSize().getText())
-                .setUnitValue(storeProductForm.getUnitValue().getText());
+                .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
+                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
     }

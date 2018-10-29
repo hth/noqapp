@@ -54,6 +54,12 @@ public class JsonStoreProduct extends AbstractDomain {
     @JsonProperty("t")
     private ProductTypeEnum productType;
 
+    @JsonProperty("uv")
+    private int unitValue;
+
+    @JsonProperty("ps")
+    private int packageSize;
+
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
@@ -124,6 +130,24 @@ public class JsonStoreProduct extends AbstractDomain {
 
     public JsonStoreProduct setProductType(ProductTypeEnum productType) {
         this.productType = productType;
+        return this;
+    }
+
+    public int getUnitValue() {
+        return unitValue;
+    }
+
+    public JsonStoreProduct setUnitValue(int unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public int getPackageSize() {
+        return packageSize;
+    }
+
+    public JsonStoreProduct setPackageSize(int packageSize) {
+        this.packageSize = packageSize;
         return this;
     }
 
