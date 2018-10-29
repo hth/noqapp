@@ -53,11 +53,13 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PT")
     private ProductTypeEnum productType;
 
+    /* Like 1 kg, 200 ml, 2 kg and so on. */
     @Field("UV")
-    private String unitValue;
+    private int unitValue;
 
+    /* UnitValue times quantity is package size. Like 3 soap in a package for 50 Rs. Package size is for 3 unit and price is 50. */
     @Field("PS")
-    private String packageSize;
+    private int packageSize;
 
     @Field ("UM")
     private UnitOfMeasurementEnum unitOfMeasurement;
@@ -129,20 +131,20 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public String getUnitValue() {
+    public int getUnitValue() {
         return unitValue;
     }
 
-    public StoreProductEntity setUnitValue(String unitValue) {
+    public StoreProductEntity setUnitValue(int unitValue) {
         this.unitValue = unitValue;
         return this;
     }
 
-    public String getPackageSize() {
+    public int getPackageSize() {
         return packageSize;
     }
 
-    public StoreProductEntity setPackageSize(String packageSize) {
+    public StoreProductEntity setPackageSize(int packageSize) {
         this.packageSize = packageSize;
         return this;
     }
@@ -198,8 +200,8 @@ public class StoreProductEntity extends BaseEntity {
             .setProductInfo(jsonStoreProduct.getProductInfo())
             .setStoreCategoryId(jsonStoreProduct.getStoreCategoryId())
             .setProductType(jsonStoreProduct.getProductType())
-            //Unit Value
-            //Package Size
+            .setUnitValue(jsonStoreProduct.getUnitValue())
+            .setPackageSize(jsonStoreProduct.getPackageSize())
             .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
@@ -211,8 +213,6 @@ public class StoreProductEntity extends BaseEntity {
     public void populateWithExistingStoreProduct(StoreProductEntity found) {
         this
             .setBizStoreId(found.getBizStoreId())
-            .setUnitValue(found.getUnitValue())
-            .setPackageSize(found.getPackageSize())
             .setVersion(found.getVersion());
     }
 
