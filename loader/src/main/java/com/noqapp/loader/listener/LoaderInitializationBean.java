@@ -18,10 +18,10 @@ import javax.annotation.PostConstruct;
  * 5/27/18 4:25 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class LoaderInitializationBean {
@@ -33,10 +33,10 @@ public class LoaderInitializationBean {
 
     @Autowired
     public LoaderInitializationBean(
-            @Value("${ftp.location}")
-            String ftpLocation,
+        @Value("${ftp.location}")
+        String ftpLocation,
 
-            FtpService ftpService
+        FtpService ftpService
     ) {
         this.ftpLocation = ftpLocation;
         this.ftpService = ftpService;
