@@ -27,20 +27,17 @@ public class ElasticsearchClientConfiguration {
     public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];
 
     @Value("${elastic.host}")
-    private String[] elasticHosts;
+    private String elasticHost;
 
     @Value("${elastic.port}")
     private int elasticPort;
 
     @Bean
     public RestHighLevelClient createRestHighLevelClient() {
-        LOG.info("Host={} Port={}", elasticHosts, elasticPort);
-        
-        HttpHost[] httpHosts = new HttpHost[elasticHosts.length];
-        for (int i = 0; i < elasticHosts.length; i++) {
-            httpHosts[i] = new HttpHost(elasticHosts[i], elasticPort, "http");
-        }
-        return new RestHighLevelClient(RestClient.builder(httpHosts));
+        LOG.info("Host={} Port={}", elasticHost, elasticPort);
+        return new RestHighLevelClient(
+                RestClient.builder(
+                        new HttpHost(elasticHost, elasticPort, "http")));
     }
 
     public String[] previousIndices() {
