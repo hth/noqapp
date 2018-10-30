@@ -20,18 +20,18 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 3/1/17 12:20 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Mobile
-@Document (collection = "REGISTERED_DEVICE")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "registered_device_did_idx", def = "{'DID': -1}", unique = true),
-        @CompoundIndex (name = "registered_device_token_idx", def = "{'TK': -1}", unique = false),
-        @CompoundIndex (name = "registered_device_qid_idx", def = "{'QID': -1}", unique = false, sparse = true)
+@Document(collection = "REGISTERED_DEVICE")
+@CompoundIndexes(value = {
+    @CompoundIndex(name = "registered_device_did_idx", def = "{'DID': -1}", unique = true),
+    @CompoundIndex(name = "registered_device_token_idx", def = "{'TK': -1}", unique = false),
+    @CompoundIndex(name = "registered_device_qid_idx", def = "{'QID': -1}", unique = false, sparse = true)
 })
 public class RegisteredDeviceEntity extends BaseEntity {
 
@@ -39,32 +39,35 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private static final String SEPARATOR = File.separator;
 
     @NotNull
-    @Field ("QID")
+    @Field("QID")
     private String queueUserId;
 
     @NotNull
-    @Field ("DID")
+    @Field("DID")
     private String deviceId;
 
     @NotNull
-    @Field ("DT")
+    @Field("DT")
     private DeviceTypeEnum deviceType;
 
     @NotNull
-    @Field ("AF")
+    @Field("AF")
     private AppFlavorEnum appFlavor;
 
     /** FCM token for sending push notification. */
-    @Field ("TK")
+    @Field("TK")
     private String token;
 
-    @Field ("MO")
+    @Field("MO")
     private String model;
 
-    @Field ("OS")
+    @Field("OS")
     private String osVersion;
 
-    @Field ("SB")
+    @Field("AV")
+    private String appVersion;
+
+    @Field("SB")
     private boolean sinceBeginning = true;
 
     /** To keep bean happy. */
@@ -72,34 +75,37 @@ public class RegisteredDeviceEntity extends BaseEntity {
         super();
     }
 
-    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
+    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String appVersion) {
         super();
         this.queueUserId = queueUserId;
         this.deviceId = deviceId;
         this.deviceType = deviceType;
         this.appFlavor = appFlavor;
         this.token = token;
+        this.appVersion = appVersion;
     }
 
-    private RegisteredDeviceEntity(String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token) {
+    private RegisteredDeviceEntity(String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String appVersion) {
         super();
         this.deviceId = deviceId;
         this.deviceType = deviceType;
         this.appFlavor = appFlavor;
         this.token = token;
+        this.appVersion = appVersion;
     }
 
     public static RegisteredDeviceEntity newInstance(
-            String queueUserId,
-            String deviceId,
-            DeviceTypeEnum deviceType,
-            AppFlavorEnum appFlavor,
-            String token
+        String queueUserId,
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion
     ) {
         if (StringUtils.isBlank(queueUserId)) {
-            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token);
+            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion);
         } else {
-            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token);
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion);
         }
     }
 
@@ -155,6 +161,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public RegisteredDeviceEntity setOsVersion(String osVersion) {
         this.osVersion = osVersion;
+        return this;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public RegisteredDeviceEntity setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
         return this;
     }
 

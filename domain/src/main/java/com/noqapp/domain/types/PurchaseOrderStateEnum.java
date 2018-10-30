@@ -20,8 +20,8 @@ public enum PurchaseOrderStateEnum {
     OW("OW", "On the Way"),
     LO("LO", "Lost"),
     FD("FD", "Failed Delivery"),
-    OD("OD", "Order Delivered"),
     DA("DA", "Delivery Re-attempt"),
+    OD("OD", "Order Delivered"),
     CO("CO", "Cancelled Order");
 
     private final String name;
