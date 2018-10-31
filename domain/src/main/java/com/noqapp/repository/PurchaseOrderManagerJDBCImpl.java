@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
+            "ORDER BY C DESC";
+
+    private static final String query_by_qid_where_ps =
+        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QID = ? AND PS = ?" +
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
@@ -168,5 +175,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             (rs, rowNum) -> new PurchaseOrderEntity(rs.getString(3), null, null, null)
                 .setRatingCount(rs.getInt(1))
                 .setReview(rs.getString(2)));
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findAllOrderWithState(String qid, PurchaseOrderStateEnum purchaseOrderState) {
+        LOG.info("Fetch historical order by qid={} with purchaseOrderState={}", qid, purchaseOrderState);
+        return jdbcTemplate.query(query_by_qid_where_ps, new Object[]{qid, purchaseOrderState}, new PurchaseOrderRowMapper());
     }
 }

@@ -378,6 +378,12 @@ public class PurchaseOrderService {
         }
 
         List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
+        populateJsonTokenAndQueueWithOrderDetail(purchaseOrders, jsonTokenAndQueues);
+
+        return jsonTokenAndQueues;
+    }
+
+    private void populateJsonTokenAndQueueWithOrderDetail(List<PurchaseOrderEntity> purchaseOrders, List<JsonTokenAndQueue> jsonTokenAndQueues) {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
             bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
@@ -386,6 +392,20 @@ public class PurchaseOrderService {
             JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, tokenQueue, bizStore);
             jsonTokenAndQueues.add(jsonTokenAndQueue);
         }
+    }
+
+    @Mobile
+    public List<JsonTokenAndQueue> findPendingPurchaseOrderAsJson(String qid) {
+        Validate.isValidQid(qid);
+
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findAllOrderWithState(qid, PurchaseOrderStateEnum.PO);
+        List<UserProfileEntity> dependentUserProfiles = accountService.findDependentProfiles(qid);
+        for (UserProfileEntity userProfile : dependentUserProfiles) {
+            purchaseOrders.addAll(purchaseOrderManagerJDBC.findAllOrderWithState(userProfile.getQueueUserId(), PurchaseOrderStateEnum.PO));
+        }
+
+        List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
+        populateJsonTokenAndQueueWithOrderDetail(purchaseOrders, jsonTokenAndQueues);
 
         return jsonTokenAndQueues;
     }
