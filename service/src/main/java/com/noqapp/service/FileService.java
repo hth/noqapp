@@ -174,6 +174,20 @@ public class FileService {
     }
 
     @Async
+    public void removeProfileImage(String qid) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+
+        /* Delete only if it existed previously. */
+        if (StringUtils.isNotBlank(userProfile.getProfileImage())) {
+            String existingProfileImage = userProfile.getProfileImage();
+
+            /* Delete existing file if user changed profile image before the upload process began. */
+            ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
+            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+        }
+    }
+
+    @Async
     public void addBizImage(String qid, String bizNameId, String filename, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
