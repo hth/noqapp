@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface PurchaseOrderManagerJDBC {
 
     @Mobile
     List<PurchaseOrderEntity> findReviews(String codeQR, int reviewLimitedToDays);
+
+    @Mobile
+    List<PurchaseOrderEntity> findAllOrderWithState(String qid, PurchaseOrderStateEnum purchaseOrderState);
 }
