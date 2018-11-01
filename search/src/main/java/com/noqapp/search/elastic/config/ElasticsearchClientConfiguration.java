@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -42,9 +43,18 @@ public class ElasticsearchClientConfiguration {
         HttpHost[] httpHosts = new HttpHost[elasticHosts.length];
         for (int i = 0; i < elasticHosts.length; i++) {
             try {
-                httpHosts[i] = new HttpHost(InetAddress.getByName(elasticHosts[i]), elasticPort, "http");
+                InetAddress inetAddress = InetAddress.getByName(elasticHosts[i]);
+                LOG.info("address {} {} {} {} reachable={}",
+                    inetAddress.getAddress(),
+                    inetAddress.getHostName(),
+                    inetAddress.getHostAddress(),
+                    inetAddress.getCanonicalHostName(),
+                    inetAddress.isReachable(1000));
+                httpHosts[i] = new HttpHost(inetAddress, elasticPort, "http");
             } catch (UnknownHostException e) {
                 LOG.error("Reading ip address reason={}", e.getLocalizedMessage(), e);
+            } catch (IOException e) {
+                LOG.error("Reachable ip address reason={}", e.getLocalizedMessage(), e);
             }
         }
         return new RestHighLevelClient(RestClient.builder(httpHosts));
