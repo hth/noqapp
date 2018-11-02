@@ -49,4 +49,12 @@ public class GeoPointOfQ extends AbstractDomain {
     public double getLon() {
         return lon;
     }
+
+    @Override
+    public String toString() {
+        return "GeoPointOfQ{" +
+            "lat=" + lat +
+            ", lon=" + lon +
+            '}';
+    }
 }
