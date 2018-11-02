@@ -12,10 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 /**
  * User: hitender
  * Date: 3/9/17 8:36 AM
@@ -31,26 +27,17 @@ public class ElasticsearchClientConfiguration {
     public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];
 
     @Value("${elastic.host}")
-    private String[] elasticHosts;
+    private String elasticHost;
 
     @Value("${elastic.port}")
     private int elasticPort;
 
     @Bean
     public RestHighLevelClient createRestHighLevelClient() {
-        HttpHost[] httpHosts = new HttpHost[elasticHosts.length];
-        for (int i = 0; i < elasticHosts.length; i++) {
-            try {
-                InetAddress a = InetAddress.getByName(elasticHosts[i]);
-                LOG.info("address {} {} {} {}", a.getHostName(), a.getHostAddress(), a.getCanonicalHostName(), a.isReachable(1000));
-                httpHosts[i] = new HttpHost(a, elasticPort, "http");
-            } catch (UnknownHostException e) {
-                LOG.error("Reading ip address reason={}", e.getLocalizedMessage(), e);
-            } catch (IOException e) {
-                LOG.error("Reachable failed for ip address reason={}", e.getLocalizedMessage(), e);
-            }
-        }
-        return new RestHighLevelClient(RestClient.builder(httpHosts));
+        LOG.info("Host={} Port={}", elasticHost, elasticPort);
+        return new RestHighLevelClient(
+                RestClient.builder(
+                        new HttpHost(elasticHost, elasticPort, "http")));
     }
 
     public String[] previousIndices() {
