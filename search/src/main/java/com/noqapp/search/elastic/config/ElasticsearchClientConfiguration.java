@@ -38,23 +38,16 @@ public class ElasticsearchClientConfiguration {
 
     @Bean
     public RestHighLevelClient createRestHighLevelClient() {
-        LOG.info("Host={} Port={}", elasticHosts, elasticPort);
-
         HttpHost[] httpHosts = new HttpHost[elasticHosts.length];
         for (int i = 0; i < elasticHosts.length; i++) {
             try {
-                InetAddress inetAddress = InetAddress.getByName(elasticHosts[i]);
-                LOG.info("address {} {} {} {} reachable={}",
-                    inetAddress.getAddress(),
-                    inetAddress.getHostName(),
-                    inetAddress.getHostAddress(),
-                    inetAddress.getCanonicalHostName(),
-                    inetAddress.isReachable(1000));
-                httpHosts[i] = new HttpHost(inetAddress, elasticPort, "http");
+                InetAddress a = InetAddress.getByName(elasticHosts[i]);
+                LOG.info("address {} {} {} {}", a.getHostName(), a.getHostAddress(), a.getCanonicalHostName(), a.isReachable(1000));
+                httpHosts[i] = new HttpHost(a, elasticPort, "http");
             } catch (UnknownHostException e) {
                 LOG.error("Reading ip address reason={}", e.getLocalizedMessage(), e);
             } catch (IOException e) {
-                LOG.error("Reachable ip address reason={}", e.getLocalizedMessage(), e);
+                LOG.error("Reachable failed for ip address reason={}", e.getLocalizedMessage(), e);
             }
         }
         return new RestHighLevelClient(RestClient.builder(httpHosts));
