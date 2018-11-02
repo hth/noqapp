@@ -100,4 +100,16 @@ public class StoreHourElastic extends AbstractDomain {
         this.dayClosed = dayClosed;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "StoreHourElastic{" +
+            "dayOfWeek=" + dayOfWeek +
+            ", tokenAvailableFrom=" + tokenAvailableFrom +
+            ", startHour=" + startHour +
+            ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+            ", endHour=" + endHour +
+            ", dayClosed=" + dayClosed +
+            '}';
+    }
 }
