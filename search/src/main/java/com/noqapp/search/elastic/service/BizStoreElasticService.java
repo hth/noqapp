@@ -301,7 +301,7 @@ public class BizStoreElasticService {
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
-                LOG.info("Search N={} GH={}", query, geoHash);
+                LOG.info("Search N={} GH={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
@@ -327,8 +327,8 @@ public class BizStoreElasticService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
                 searchSourceBuilder.query(geoDistanceQuery("GH")
-                        .geohash(geoHash)
-                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
