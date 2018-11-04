@@ -44,8 +44,10 @@ public class LoginService {
     public void saveUpdateBrowserInfo(
             String cookieId,
             String ip,
+            String country,
+            String city,
             String userAgent,
-            String browser,
+            String browserName,
             String browserVersion,
             String device,
             String deviceBrand,
@@ -53,12 +55,23 @@ public class LoginService {
             String operatingSystemVersion
     ) {
         try {
-            BrowserEntity browserEntity = browserManager.getByCookie(cookieId);
-            if (null == browserEntity) {
-                browserEntity = BrowserEntity.newInstance(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
-                browserManager.save(browserEntity);
+            BrowserEntity browser = browserManager.getByCookie(cookieId);
+            if (null == browser) {
+                browser = BrowserEntity.newInstance(
+                    cookieId,
+                    ip,
+                    country,
+                    city,
+                    userAgent,
+                    browserName,
+                    browserVersion,
+                    device,
+                    deviceBrand,
+                    operatingSystem,
+                    operatingSystemVersion);
+                browserManager.save(browser);
             } else {
-                browserManager.update(browserEntity.getId());
+                browserManager.update(browser.getId());
             }
         } catch (Exception e) {
             LOG.error("Moving on. Omitting this error={}", e.getLocalizedMessage(), e);
