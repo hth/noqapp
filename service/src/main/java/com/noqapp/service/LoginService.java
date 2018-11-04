@@ -32,7 +32,8 @@ public class LoginService {
     @Autowired
     public LoginService(
             UserAuthenticationManager userAuthenticationManager,
-            BrowserManager browserManager) {
+            BrowserManager browserManager
+    ) {
         this.userAuthenticationManager = userAuthenticationManager;
         this.browserManager = browserManager;
     }
@@ -44,7 +45,7 @@ public class LoginService {
     public void saveUpdateBrowserInfo(
             String cookieId,
             String ip,
-            String country,
+            String countryCode,
             String city,
             String userAgent,
             String browserName,
@@ -60,7 +61,7 @@ public class LoginService {
                 browser = BrowserEntity.newInstance(
                     cookieId,
                     ip,
-                    country,
+                    countryCode,
                     city,
                     userAgent,
                     browserName,

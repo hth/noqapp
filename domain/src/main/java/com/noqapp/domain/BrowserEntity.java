@@ -28,7 +28,7 @@ public class BrowserEntity extends BaseEntity {
     private String ipAddress;
 
     @Field("CC")
-    private String country;
+    private String countryCode;
 
     @Field("CT")
     private String city;
@@ -61,7 +61,7 @@ public class BrowserEntity extends BaseEntity {
     private BrowserEntity(
         String cookieId,
         String ipAddress,
-        String country,
+        String countryCode,
         String city,
         String userAgent,
         String browserName,
@@ -74,7 +74,7 @@ public class BrowserEntity extends BaseEntity {
         super();
         this.cookieId = cookieId;
         this.ipAddress = ipAddress;
-        this.country = country;
+        this.countryCode = countryCode;
         this.city = city;
         this.userAgent = userAgent;
         this.browserName = browserName;
@@ -88,7 +88,7 @@ public class BrowserEntity extends BaseEntity {
     public static BrowserEntity newInstance(
         String cookieId,
         String ip,
-        String country,
+        String countryCode,
         String city,
         String userAgent,
         String browserName,
@@ -101,7 +101,7 @@ public class BrowserEntity extends BaseEntity {
         return new BrowserEntity(
             cookieId,
             ip,
-            country,
+            countryCode,
             city,
             userAgent,
             browserName,
