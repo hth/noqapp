@@ -2,6 +2,7 @@ package com.noqapp.view.filter;
 
 import com.noqapp.search.elastic.config.IPGeoConfiguration;
 
+import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 
@@ -71,6 +72,8 @@ public class LogContextFilter implements Filter {
             CityResponse response = ipGeoConfiguration.getDatabaseReader().city(ipAddress);
             countryName = response.getCountry().getName();
             cityName = response.getCity().getName();
+        } catch (AddressNotFoundException e) {
+            LOG.error("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
