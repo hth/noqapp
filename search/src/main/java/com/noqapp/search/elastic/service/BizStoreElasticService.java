@@ -180,6 +180,7 @@ public class BizStoreElasticService {
         return createBizStoreSearchDSLQuery(searchParameter, null);
     }
 
+    /** Search executed through website. */
     public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
         LOG.info("User search parameter={}", searchParameter);
 
