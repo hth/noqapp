@@ -147,6 +147,47 @@ public class BusinessStatsMail {
                                 storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
                                 storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
 
+                                if (storeTotalClient > 0) {
+                                    Map<String, Object> rootMap = new HashMap<>();
+                                    rootMap.put("day", DateUtil.dateToString_UTC(since, DateUtil.DTF_DD_MMM_YYYY));
+                                    rootMap.put("businessName", storeName);
+                                    rootMap.put("totalClient", storeTotalClient);
+                                    rootMap.put("totalServiced", storeTotalServiced);
+                                    rootMap.put("totalNoShow", storeTotalNoShow);
+                                    rootMap.put("totalAbort", storeTotalAbort);
+                                    rootMap.put("clientsPreviouslyVisitedThisBusiness", storeClientsPreviouslyVisitedThisBusiness);
+                                    /* Previously visited could be more than total client as few of them has already aborted. Hence less than zero possible. */
+                                    if (storeTotalClient - storeClientsPreviouslyVisitedThisBusiness <= 0) {
+                                        LOG.warn("Check storeName={} tc={} ts={} tn={} ta={} cpv={} id={}",
+                                            storeName,
+                                            storeTotalClient,
+                                            storeTotalServiced,
+                                            storeTotalNoShow,
+                                            storeTotalAbort,
+                                            storeClientsPreviouslyVisitedThisBusiness,
+                                            bizStore.getId());
+                                        rootMap.put("newCustomer", 0);
+                                    } else {
+                                        rootMap.put("newCustomer", storeTotalClient - storeClientsPreviouslyVisitedThisBusiness);
+                                    }
+                                    rootMap.put("totalRating", storeTotalRating);
+                                    rootMap.put("totalCustomerRated", storeTotalCustomerRated);
+                                    rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
+
+                                    List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.S_MANAGER);
+                                    for (BusinessUserEntity businessUser : businessUsers) {
+                                        mailSentCount.getAndIncrement();
+
+                                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
+                                        mailService.sendAnyMail(
+                                            userProfile.getEmail(),
+                                            userProfile.getName(),
+                                            storeName + " Daily Summary",
+                                            rootMap,
+                                            "stats/admin-overview.ftl");
+                                    }
+                                }
+
                                 totalClient = totalClient + storeTotalClient;
                                 totalServiced = totalServiced + storeTotalServiced;
                                 totalNoShow = totalNoShow + storeTotalNoShow;
@@ -165,7 +206,20 @@ public class BusinessStatsMail {
                             rootMap.put("totalNoShow", totalNoShow);
                             rootMap.put("totalAbort", totalAbort);
                             rootMap.put("clientsPreviouslyVisitedThisBusiness", clientsPreviouslyVisitedThisBusiness);
-                            rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
+                            /* Previously visited could be more than total client as few of them has already aborted. Hence less than zero possible. */
+                            if (totalClient - clientsPreviouslyVisitedThisBusiness <= 0) {
+                                LOG.warn("Check storeName={} tc={} ts={} tn={} ta={} cpv={} id={}",
+                                    businessName,
+                                    totalClient,
+                                    totalServiced,
+                                    totalNoShow,
+                                    totalAbort,
+                                    clientsPreviouslyVisitedThisBusiness,
+                                    bizName.getId());
+                                rootMap.put("newCustomer", 0);
+                            } else {
+                                rootMap.put("newCustomer", totalClient - clientsPreviouslyVisitedThisBusiness);
+                            }
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
                             rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));

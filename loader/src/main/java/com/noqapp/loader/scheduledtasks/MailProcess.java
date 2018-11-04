@@ -149,9 +149,17 @@ public class MailProcess {
                 try {
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = populateMessageBody(mail, message);
-                    sendMail(mail, message, helper);
-                    mailManager.updateMail(mail.getId(), MailStatusEnum.S);
-                    success++;
+                    MailStatusEnum mailStatus = sendMail(mail, message, helper);
+                    mailManager.updateMail(mail.getId(), mailStatus);
+
+                    switch (mailStatus) {
+                        case S:
+                            success++;
+                            break;
+                        case F:
+                            failure++;
+                            break;
+                    }
                 } catch (MessagingException | UnsupportedEncodingException | NoSuchMethodError e) {
                     /* NoSuchMethodError normally happens when DKIM issue. */
                     LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
@@ -174,7 +182,7 @@ public class MailProcess {
         }
     }
 
-    private void sendMail(
+    private MailStatusEnum sendMail(
             MailEntity mail,
             MimeMessage message,
             MimeMessageHelper helper
@@ -215,7 +223,7 @@ public class MailProcess {
                     mailSender.send(dkimSignedMessage);
                     noAuthenticationException = true;
                     LOG.info("Mail success... subject={}", mail.getSubject());
-                    return;
+                    return MailStatusEnum.S;
                 } catch (MailAuthenticationException | MailSendException e) {
                     LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
                 } catch (Exception e) {
@@ -227,6 +235,8 @@ public class MailProcess {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
             throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
         }
+
+        return MailStatusEnum.F;
     }
 
     private FileSystemResource getFileSystemResource(String location) {
