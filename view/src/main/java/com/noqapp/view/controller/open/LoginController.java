@@ -12,6 +12,11 @@ import com.noqapp.view.form.UserLoginForm;
 import com.noqapp.view.form.UserLoginPhoneForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.AddressNotFoundException;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+
 import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
 import org.slf4j.Logger;
@@ -32,6 +37,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -62,19 +70,23 @@ public class LoginController {
     private OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler;
     private AccountService accountService;
     private CustomUserDetailsService customUserDetailsService;
+    private DatabaseReader databaseReader;
 
     @Autowired
     public LoginController(
             LoginService loginService,
             OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
             AccountService accountService,
-            CustomUserDetailsService customUserDetailsService) {
+            CustomUserDetailsService customUserDetailsService,
+            DatabaseReader databaseReader
+    ) {
         this.parser = CachedUserAgentStringParser.getInstance();
 
         this.loginService = loginService;
         this.onLoginAuthenticationSuccessHandler = onLoginAuthenticationSuccessHandler;
         this.accountService = accountService;
         this.customUserDetailsService = customUserDetailsService;
+        this.databaseReader = databaseReader;
     }
 
     // TODO(hth) add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
@@ -119,7 +131,7 @@ public class LoginController {
             String cookieId = cookie.getValue();
             String ip = HttpRequestResponseParser.getClientIpAddress(request);
 
-            String browser = res.getBrowser().getDescription();
+            String browserName = res.getBrowser().getDescription();
             String browserVersion = res.getBrowser().getVersion();
 
             String device = res.getDevice().getDeviceType().getLabel();
@@ -128,8 +140,25 @@ public class LoginController {
             String operatingSystem = res.getOperatingSystem().getFamily().getLabel();
             String operatingSystemVersion = res.getOperatingSystem().getVersion();
 
-            LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, userAgent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
+            String country = null;
+            String city = null;
+            try {
+                InetAddress ipAddress = InetAddress.getByName(ip);
+                CityResponse response = databaseReader.city(ipAddress);
+                country = response.getCountry().getName();
+                city = response.getCity().getName();
+            } catch (AddressNotFoundException e) {
+                LOG.error("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
+            } catch (GeoIp2Exception e) {
+                LOG.error("Failed geoIp reason={}", e.getLocalizedMessage(), e);
+            } catch (UnknownHostException e) {
+                LOG.error("Failed host reason={}", e.getLocalizedMessage(), e);
+            } catch (IOException e) {
+                LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+            }
+
+            LOG.info("cookie={}, ip={}, country={}, city={}, user-agent={}", cookieId, ip, country, city, userAgent);
+            loginService.saveUpdateBrowserInfo(cookieId, ip, country, city, userAgent, browserName, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
