@@ -140,15 +140,15 @@ public class LoginController {
             String operatingSystem = res.getOperatingSystem().getFamily().getLabel();
             String operatingSystemVersion = res.getOperatingSystem().getVersion();
 
-            String country = null;
+            String countryCode = null;
             String city = null;
             try {
                 InetAddress ipAddress = InetAddress.getByName(ip);
                 CityResponse response = databaseReader.city(ipAddress);
-                country = response.getCountry().getName();
+                countryCode = response.getCountry().getIsoCode();
                 city = response.getCity().getName();
             } catch (AddressNotFoundException e) {
-                LOG.error("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
+                LOG.warn("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
             } catch (GeoIp2Exception e) {
                 LOG.error("Failed geoIp reason={}", e.getLocalizedMessage(), e);
             } catch (UnknownHostException e) {
@@ -157,8 +157,8 @@ public class LoginController {
                 LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
             }
 
-            LOG.info("cookie={}, ip={}, country={}, city={}, user-agent={}", cookieId, ip, country, city, userAgent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, country, city, userAgent, browserName, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
+            LOG.info("cookie={}, ip={}, countryCode={}, city={}, user-agent={}", cookieId, ip, countryCode, city, userAgent);
+            loginService.saveUpdateBrowserInfo(cookieId, ip, countryCode, city, userAgent, browserName, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
