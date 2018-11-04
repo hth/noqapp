@@ -1,15 +1,23 @@
 package com.noqapp.view.filter;
 
+import com.noqapp.search.elastic.config.IPGeoConfiguration;
+
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +53,7 @@ public class LogContextFilter implements Filter {
     private static final Pattern EXTRACT_ENDPOINT_PATTERN =
             Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
+    private IPGeoConfiguration ipGeoConfiguration;
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         String uuid = UUID.randomUUID().toString();
@@ -54,16 +63,30 @@ public class LogContextFilter implements Filter {
         Map<String, String> headerMap = getHeadersInfo(httpServletRequest);
         String url = httpServletRequest.getRequestURL().toString();
         String query = httpServletRequest.getQueryString();
+        String ip = getHeader(headerMap, "x-forwarded-for");
+        String countryName = null;
+        String cityName = null;
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            CityResponse response = ipGeoConfiguration.getDatabaseReader().city(ipAddress);
+            countryName = response.getCountry().getName();
+            cityName = response.getCity().getName();
+        } catch (GeoIp2Exception e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+        }
 
         LOG.info("Request received:"
-                + " Host=\"" + getHeader(headerMap, "host") + "\""
-                + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
-                + " Accept=\"" + getHeader(headerMap, "accept") + "\""
-                + " ForwardedFor=\"" + getHeader(headerMap, "x-forwarded-for") + "\""
-                + " Endpoint=\"" + extractDataFromURL(url, "$5") + "\""
-                + " Query=\"" + (query == null ? "none" : query) + "\""
-                + " URL=\"" + url + "\""
+            + " Host=\"" + getHeader(headerMap, "host") + "\""
+            + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
+            + " Accept=\"" + getHeader(headerMap, "accept") + "\""
+            + " ForwardedFor=\"" + ip + "\""
+            + " Country=\"" + countryName + "\""
+            + " City=\"" + cityName + "\""
+            + " Endpoint=\"" + extractDataFromURL(url, "$5") + "\""
+            + " Query=\"" + (query == null ? "none" : query) + "\""
+            + " URL=\"" + url + "\""
         );
+
         if (isHttpHead(httpServletRequest)) {
             HttpServletResponse httpServletResponse = (HttpServletResponse) res;
             NoBodyResponseWrapper noBodyResponseWrapper = new NoBodyResponseWrapper(httpServletResponse);
@@ -99,6 +122,9 @@ public class LogContextFilter implements Filter {
 
     public void init(FilterConfig filterConfig) {
         LOG.info("Initialized logContextFilter");
+
+        ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
+        this.ipGeoConfiguration = ctx.getBean(IPGeoConfiguration.class);
     }
 
     public void destroy() {
