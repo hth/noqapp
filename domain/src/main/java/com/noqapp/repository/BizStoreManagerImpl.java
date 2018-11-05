@@ -253,7 +253,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress)),
+                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress).and("D").is(false)),
                 BizStoreEntity.class,
                 TABLE
         );
@@ -397,6 +397,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
             entityUpdate(update("A", active)),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void deleteSoft(String id) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            entityUpdate(update("D", true)),
             BizStoreEntity.class,
             TABLE
         );

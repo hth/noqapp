@@ -19,27 +19,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     BizStoreEntity noStore();
 
-    /**
-     * Search for specific Biz, Address or Phone. Limited to 10.
-     *
-     * @param bizAddress
-     * @param bizPhone
-     * @param bizName
-     * @return
-     */
+    /** Search for specific Biz, Address or Phone. Limited to 10. */
     List<BizStoreEntity> findAllWithStartingAddressStartingPhone(String bizAddress, String bizPhone, BizNameEntity bizName);
 
     List<BizStoreEntity> findAllWithAnyAddressAnyPhone(String bizAddress, String bizPhone, BizNameEntity bizName);
 
-    /**
-     * Used for Ajax. Populates BizStoreEntity with just fieldName.
-     *
-     * @param bizPhone
-     * @param bizAddress
-     * @param bizId
-     * @param fieldName
-     * @return
-     */
+    /** Used for Ajax. Populates BizStoreEntity with just fieldName. */
     List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, String bizId, String fieldName);
 
     /**
@@ -53,63 +38,31 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     @Deprecated
     List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit);
 
-
-    /**
-     * Find just one store with matching BizName Id.
-     *
-     * @param bizNameId
-     * @return
-     */
+    /** Find just one store with matching BizName Id. */
     BizStoreEntity findOne(String bizNameId);
 
-
-    /**
-     * This is mostly being used when data is corrupted, like missing addresses or lat or lng.
-     *
-     * @return
-     */
+    /** This is mostly being used when data is corrupted, like missing addresses or lat or lng. */
     List<BizStoreEntity> getAll(int skip, int limit);
 
-    /**
-     * Gets all the data where the addresses have not been validated using external api.
-     *
-     * @return
-     */
+    /** Gets all the data where the addresses have not been validated using external api. */
     List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit);
 
-
-    /**
-     * Get count of all the stores for business.
-     *
-     * @param bizNameId
-     * @return
-     */
+    /** Get count of all the stores for business. */
     long getCountOfStore(String bizNameId);
 
-    /**
-     * Get all the stores for business.
-     *
-     * @param bizNameId
-     * @return
-     */
+    /** Get all the stores for business. */
     List<BizStoreEntity> getAllBizStores(String bizNameId);
 
     List<BizStoreEntity> getAllBizStores(String bizNameId, Point point, double maxDistance);
 
+    /** Get not deleted stores with matching address. */
     List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId);
 
     BizStoreEntity findByCodeQR(String codeQR);
 
     boolean isValidCodeQR(String codeQR);
 
-    /**
-     * Set next cron run date for moving history from previous day.
-     *
-     * @param id
-     * @param zoneId
-     * @param queueHistoryNextRun
-     * @return
-     */
+    /** Set next cron run date for moving history from previous day. */
     boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun);
 
     boolean updateNextRunAndRatingWithAverageServiceTime(
@@ -122,22 +75,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 
-    /**
-     * Stream all documents.
-     *
-     * @return
-     */
+    /** Stream all documents. */
     Stream<BizStoreEntity> findAllWithStream();
 
     void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
 
-    /**
-     * Counts number of times the category has been used.
-     *
-     * @param bizCategoryId
-     * @param bizNameId
-     * @return
-     */
+    /** Counts number of times the category has been used. */
     long countCategoryUse(String bizCategoryId, String bizNameId);
 
     List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId);
@@ -149,5 +92,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void setScheduleTaskId(String codeQR, String scheduleTaskId);
 
     void activeInActive(String id, boolean active);
+
+    /** Need to store references for deleted store. */
+    void deleteSoft(String id);
 }
 

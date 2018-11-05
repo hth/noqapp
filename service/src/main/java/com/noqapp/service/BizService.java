@@ -125,7 +125,7 @@ public class BizService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
         tokenQueueService.deleteHard(tokenQueue);
         long queuedRemoved = queueService.deleteByCodeQR(bizStore.getCodeQR());
-        bizStoreManager.deleteHard(bizStore);
+        deleteSoft(bizStore);
         storeHourManager.removeAll(storeId);
         long removedRecords = businessUserStoreManager.deleteAllManagingStore(storeId);
         LOG.info("Deleted Store id={} removed reference to number of people managing queue={} queuedRemoved={}",
@@ -260,8 +260,8 @@ public class BizService {
         return bizStoreEntities;
     }
 
-    public void deleteBizStore(BizStoreEntity bizStore) {
-        bizStoreManager.deleteHard(bizStore);
+    public void deleteSoft(BizStoreEntity bizStore) {
+        bizStoreManager.deleteSoft(bizStore.getId());
     }
 
     public void deleteBizName(BizNameEntity bizName) {
