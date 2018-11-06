@@ -92,6 +92,7 @@ public class PurchaseOrderService {
     private RegisteredDeviceManager registeredDeviceManager;
     private TokenQueueManager tokenQueueManager;
     private AccountService accountService;
+    private TransactionService transactionService;
 
     private ExecutorService executorService;
 
@@ -109,7 +110,8 @@ public class PurchaseOrderService {
         FirebaseMessageService firebaseMessageService,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
-        AccountService accountService
+        AccountService accountService,
+        TransactionService transactionService
     ) {
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
@@ -124,6 +126,7 @@ public class PurchaseOrderService {
         this.registeredDeviceManager = registeredDeviceManager;
         this.tokenQueueManager = tokenQueueManager;
         this.accountService = accountService;
+        this.transactionService = transactionService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -231,8 +234,8 @@ public class PurchaseOrderService {
             //TODO(hth) add condition to check for purchase price.
             LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
         }
-        purchaseOrderManager.save(purchaseOrder);
 
+        List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
             if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
@@ -256,9 +259,11 @@ public class PurchaseOrderService {
                 .setCodeQR(bizStore.getCodeQR())
                 .setBusinessType(bizStore.getBusinessType())
                 .setPurchaseOrderId(purchaseOrder.getId());
-            purchaseOrderProductManager.save(purchaseOrderProduct);
+            purchaseOrderProducts.add(purchaseOrderProduct);
         }
+        transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
 
+        /* Success in transaction. Change status to PO. */
         purchaseOrder
             .addOrderState(PurchaseOrderStateEnum.VB)
             .addOrderState(PurchaseOrderStateEnum.PO);

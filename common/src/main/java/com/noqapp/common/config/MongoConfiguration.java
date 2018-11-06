@@ -40,7 +40,7 @@ public class MongoConfiguration {
     private String mongoDatabaseName;
 
     /**
-     * Template ready to use to operate on the database
+     * Template ready to use to operate on the database. Implements MongoOperations.
      *
      * @return Mongo Template ready to use
      */
