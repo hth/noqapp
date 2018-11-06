@@ -2,9 +2,13 @@ package com.noqapp.service;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.service.exceptions.FailedTransactionException;
 
 import com.mongodb.ClientSessionOptions;
 import com.mongodb.client.ClientSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoTransactionManager;
@@ -12,6 +16,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * hitender
@@ -19,6 +24,7 @@ import java.util.List;
  */
 @Service
 public class TransactionService {
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionService.class);
 
     private MongoOperations mongoOperations;
     private MongoTransactionManager mongoTransactionManager;
@@ -34,9 +40,8 @@ public class TransactionService {
             .causallyConsistent(true)
             .build();
 
-        ClientSession session = mongoTransactionManager.getDbFactory().getSession(sessionOptions);
+        ClientSession session = Objects.requireNonNull(mongoTransactionManager.getDbFactory()).getSession(sessionOptions);
         session.startTransaction();
-
         try {
             mongoOperations.withSession(session).insert(purchaseOrder);
             for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
@@ -44,9 +49,11 @@ public class TransactionService {
             }
             session.commitTransaction();
         } catch (Exception e) {
+            LOG.error("Failed transaction bizStoreId={} qid={}", purchaseOrder.getBizStoreId(), purchaseOrder.getQueueUserId());
             session.abortTransaction();
+            throw new FailedTransactionException("Failed to complete transaction");
+        } finally {
+            session.close();
         }
-
-        session.close();
     }
 }
