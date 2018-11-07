@@ -40,6 +40,7 @@ import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -236,6 +237,7 @@ public class PurchaseOrderService {
         }
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
+        int orderPrice = 0;
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
             if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
@@ -260,7 +262,14 @@ public class PurchaseOrderService {
                 .setBusinessType(bizStore.getBusinessType())
                 .setPurchaseOrderId(purchaseOrder.getId());
             purchaseOrderProducts.add(purchaseOrderProduct);
+            orderPrice = orderPrice + purchaseOrderProduct.computeCost();
         }
+
+        /* Check if total price computed and submitted is same. */
+        if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice())) {
+            throw new PriceMismatchException("Price sent and computed does not match");
+        }
+
         transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
 
         /* Success in transaction. Change status to PO. */
