@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -156,5 +157,10 @@ public class PurchaseOrderProductEntity extends BaseEntity {
     public PurchaseOrderProductEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
+    }
+
+    @Transient
+    public int computeCost() {
+        return productQuantity * (productPrice - productDiscount);
     }
 }
