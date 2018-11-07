@@ -5,6 +5,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
@@ -40,6 +41,7 @@ import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
@@ -184,12 +186,29 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrder activateOrderByClient(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
-        List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
-        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
-        createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), purchaseOrder.getDid(), purchaseOrder.getTokenService());
-        purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
-        purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
-        return jsonPurchaseOrder;
+        if (DateUtil.getDaysBetween(purchaseOrder.getCreated(), DateUtil.nowDate()) > 30) {
+            LOG.error("Order expired transactionId={}", transactionId);
+            throw new OrderFailedReActivationException("Cannot activate this order");
+        }
+
+        switch (purchaseOrder.getPresentOrderState()) {
+            case IN:
+            case PC:
+            case VB:
+            case IB:
+            case FO:
+            case OD:
+            case CO:
+                LOG.error("Cannot activate order in state {} transactionId={}", purchaseOrder.getPresentOrderState(), transactionId);
+                throw new OrderFailedReActivationException("Cannot activate this order");
+            default:
+                List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
+                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
+                createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), purchaseOrder.getDid(), purchaseOrder.getTokenService());
+                purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
+                purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
+                return jsonPurchaseOrder;
+        }
     }
 
     @Mobile
@@ -210,21 +229,10 @@ public class PurchaseOrderService {
         return purchaseOrderManager.isOrderCancelled(codeQR, tokenNumber);
     }
 
-    //TODO add multiple logic to validate and more complicated response on failure of order submission for letting user know.
+    //TODO needs QID in JsonPurchaseOrder to map with patient id
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
-        JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-
-        Date expectedServiceBegin = null;
-        try {
-            if (jsonToken.getExpectedServiceBegin() != null) {
-                expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
-            }
-        } catch (ParseException e) {
-            LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
-        }
-
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
@@ -235,10 +243,7 @@ public class PurchaseOrderService {
             .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
             .setPaymentType(jsonPurchaseOrder.getPaymentType())
             .setBusinessType(bizStore.getBusinessType())
-            .setTokenNumber(jsonToken.getToken())
-            .setExpectedServiceBegin(expectedServiceBegin)
             .setTokenService(tokenService)
-            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()))
             .setDisplayName(bizStore.getDisplayName())
             .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
@@ -252,7 +257,7 @@ public class PurchaseOrderService {
             }
 
             PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
-            if (storeProduct != null) {
+            if (null != storeProduct) {
                 purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
                     .setProductName(storeProduct.getProductName())
                     .setProductPrice(storeProduct.getProductPrice())
@@ -282,11 +287,28 @@ public class PurchaseOrderService {
             throw new PriceMismatchException("Price sent and computed does not match");
         }
         transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
+        JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+        Date expectedServiceBegin = null;
+        try {
+            if (null != jsonToken.getExpectedServiceBegin()) {
+                expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+            }
+        } catch (ParseException e) {
+            LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
+        }
 
-        /* Success in transaction. Change status to PO. */
+        if (null != jsonPurchaseOrder.getPresentOrderState()) {
+            /* Set the old state before resetting. */
+            purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
+        }
+
+        /* Success in transaction. Change status to PO to initialize. */
         purchaseOrder
             .addOrderState(PurchaseOrderStateEnum.VB)
-            .addOrderState(PurchaseOrderStateEnum.PO);
+            .addOrderState(PurchaseOrderStateEnum.PO)
+            .setTokenNumber(jsonToken.getToken())
+            .setExpectedServiceBegin(expectedServiceBegin)
+            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
         purchaseOrderManager.save(purchaseOrder);
         executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
         userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);

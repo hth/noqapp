@@ -176,7 +176,10 @@ public final class CommonUtil {
     }
 
     public static String generateTransactionId(String storeId, int token) {
-        return storeId.substring(18, 24) + "-" + token + "-" + (random.ints(0,100).findFirst().getAsInt() + 100) + "-" + generateHexFromObjectId().substring(0, 8);
+        return storeId.substring(18, 24)
+            + "-" + token
+            + "-" + (random.ints(0,100).findFirst().getAsInt() + 100)
+            + "-" + generateHexFromObjectId().substring(0, 8);
     }
 
     /**
