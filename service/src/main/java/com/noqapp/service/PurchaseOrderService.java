@@ -229,13 +229,7 @@ public class PurchaseOrderService {
             .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()))
             .setDisplayName(bizStore.getDisplayName())
             .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
-
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
-        if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
-            //TODO(hth) add condition to check for purchase price.
-            LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
-            purchaseOrder.setOrderPrice("0");
-        }
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
         int orderPrice = 0;
@@ -266,11 +260,15 @@ public class PurchaseOrderService {
             orderPrice = orderPrice + purchaseOrderProduct.computeCost();
         }
 
+        if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
+            LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
+            purchaseOrder.setOrderPrice("0");
+        }
+
         /* Check if total price computed and submitted is same. */
         if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice())) {
             throw new PriceMismatchException("Price sent and computed does not match");
         }
-
         transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
 
         /* Success in transaction. Change status to PO. */
