@@ -336,7 +336,7 @@ public class MedicalRecordService {
                 .setProductId(null)
                 .setProductQuantity(jsonMedicalMedicine.getTimes());
 
-            jsonPurchaseOrder.addPurchaseOrderProduct(jsonPurchaseOrderProduct);
+            jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());

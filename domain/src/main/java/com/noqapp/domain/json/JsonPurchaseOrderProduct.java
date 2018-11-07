@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.PurchaseOrderProductEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -89,5 +90,14 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
     public JsonPurchaseOrderProduct setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
         return this;
+    }
+
+    public static JsonPurchaseOrderProduct populate(PurchaseOrderProductEntity purchaseOrderProduct) {
+        return new JsonPurchaseOrderProduct()
+            .setProductId(purchaseOrderProduct.getProductId())
+            .setProductName(purchaseOrderProduct.getProductName())
+            .setProductPrice(purchaseOrderProduct.getProductPrice())
+            .setProductDiscount(purchaseOrderProduct.getProductDiscount())
+            .setProductQuantity(purchaseOrderProduct.getProductQuantity());
     }
 }

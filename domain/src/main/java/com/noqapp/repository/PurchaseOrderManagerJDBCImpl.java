@@ -40,13 +40,18 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "(:id,:qid,:bs,:bn,:qr,:dm,:pt,:ps,:da,:ra,:rv,:tn,:sd,:op,:bt,:sn,:sb,:se,:ti,:dn,:an,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
-
+    private static final String delete_by_id = "DELETE FROM PURCHASE_ORDER WHERE ID = ?";
 
     private static final String query_by_qid =
         "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
             "ORDER BY C DESC";
+
+    private static final String query_by_qid_and_transactionId =
+        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QID = ? AND TI = ? ";
 
     private static final String query_by_qid_where_ps =
         "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
@@ -181,5 +186,15 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     public List<PurchaseOrderEntity> findAllOrderWithState(String qid, PurchaseOrderStateEnum purchaseOrderState) {
         LOG.info("Fetch historical order by qid={} with purchaseOrderState={}", qid, purchaseOrderState);
         return jdbcTemplate.query(query_by_qid_where_ps, new Object[]{qid, purchaseOrderState}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    public PurchaseOrderEntity findOrderByTransactionId(String qid, String transactionId) {
+        return jdbcTemplate.queryForObject(query_by_qid_and_transactionId, new Object[]{qid, transactionId}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    public void deleteById(String id) {
+        jdbcTemplate.update(delete_by_id, id);
     }
 }

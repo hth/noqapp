@@ -26,4 +26,10 @@ public interface PurchaseOrderManagerJDBC {
 
     @Mobile
     List<PurchaseOrderEntity> findAllOrderWithState(String qid, PurchaseOrderStateEnum purchaseOrderState);
+
+    @Mobile
+    PurchaseOrderEntity findOrderByTransactionId(String qid, String transactionId);
+
+    @Mobile
+    void deleteById(String id);
 }
