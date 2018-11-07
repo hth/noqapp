@@ -234,6 +234,7 @@ public class PurchaseOrderService {
         if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
             //TODO(hth) add condition to check for purchase price.
             LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
+            purchaseOrder.setOrderPrice("0");
         }
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
