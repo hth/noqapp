@@ -40,6 +40,7 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE ID = :id";
     private static final String delete_by_purchaseOrder = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE PO = :po";
+    private static final String delete_by_purchaseOrderId = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE PO = ?";
 
     private static final String query_by_purchaseOrder =
             "SELECT ID, PN, PP, PD, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D" +
@@ -148,5 +149,10 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
     public List<PurchaseOrderProductEntity> getByPurchaseOrderId(String purchaseOrderId) {
         LOG.info("Fetch historical order by qid={}", purchaseOrderId);
         return jdbcTemplate.query(query_by_purchaseOrder, new Object[]{purchaseOrderId}, new PurchaseOrderProductRowMapper());
+    }
+
+    @Override
+    public void deleteByPurchaseOrderId(String purchaseOrderId) {
+        jdbcTemplate.update(delete_by_purchaseOrderId, purchaseOrderId);
     }
 }

@@ -180,6 +180,18 @@ public class PurchaseOrderService {
         return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
     }
 
+    /* Activate old order by client. */
+    @Mobile
+    public JsonPurchaseOrder activateOrderByClient(String qid, String transactionId) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
+        List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
+        createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), purchaseOrder.getDid(), purchaseOrder.getTokenService());
+        purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
+        purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
+        return jsonPurchaseOrder;
+    }
+
     @Mobile
     public boolean isOrderCancelled(String qid, String transactionId) {
         return purchaseOrderManager.isOrderCancelled(qid, transactionId);
@@ -233,7 +245,7 @@ public class PurchaseOrderService {
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
         int orderPrice = 0;
-        for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getPurchaseOrderProducts()) {
+        for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
             if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
                 storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
@@ -503,14 +515,7 @@ public class PurchaseOrderService {
         List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
         List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
         for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
-            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
-                .setProductId(purchaseOrderProduct.getId())
-                .setProductName(purchaseOrderProduct.getProductName())
-                .setProductPrice(purchaseOrderProduct.getProductPrice())
-                .setProductDiscount(purchaseOrderProduct.getProductDiscount())
-                .setProductQuantity(purchaseOrderProduct.getProductQuantity());
-
-            jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
+            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
         }
 
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
@@ -522,7 +527,7 @@ public class PurchaseOrderService {
             .setDeliveryType(purchaseOrder.getDeliveryType())
             .setPaymentType(purchaseOrder.getPaymentType())
             .setBusinessType(purchaseOrder.getBusinessType())
-            .setPurchaseOrderProducts(jsonPurchaseOrderProducts)
+            .setJsonPurchaseOrderProducts(jsonPurchaseOrderProducts)
             //Serving Number not set for Merchant
             .setToken(purchaseOrder.getTokenNumber())
             .setCustomerName(purchaseOrder.getCustomerName())

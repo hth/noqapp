@@ -2,6 +2,7 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
@@ -67,7 +68,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
     private BusinessTypeEnum businessType;
 
     @JsonProperty ("pop")
-    private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
+    private List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
 
     /* Populated from TokenQueue. */
     @JsonProperty ("s")
@@ -178,17 +179,17 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public List<JsonPurchaseOrderProduct> getPurchaseOrderProducts() {
-        return purchaseOrderProducts;
+    public List<JsonPurchaseOrderProduct> getJsonPurchaseOrderProducts() {
+        return jsonPurchaseOrderProducts;
     }
 
-    public JsonPurchaseOrder setPurchaseOrderProducts(List<JsonPurchaseOrderProduct> purchaseOrderProducts) {
-        this.purchaseOrderProducts = purchaseOrderProducts;
+    public JsonPurchaseOrder setJsonPurchaseOrderProducts(List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts) {
+        this.jsonPurchaseOrderProducts = jsonPurchaseOrderProducts;
         return this;
     }
 
-    public JsonPurchaseOrder addPurchaseOrderProduct(JsonPurchaseOrderProduct purchaseOrderProduct) {
-        this.purchaseOrderProducts.add(purchaseOrderProduct);
+    public JsonPurchaseOrder addJsonPurchaseOrderProduct(JsonPurchaseOrderProduct jsonPurchaseOrderProduct) {
+        this.jsonPurchaseOrderProducts.add(jsonPurchaseOrderProduct);
         return this;
     }
 
@@ -277,6 +278,25 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setAdditionalNote(po.getAdditionalNote());
     }
 
+    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
+        this.bizStoreId = purchaseOrder.getBizStoreId();
+        this.customerPhone = purchaseOrder.getCustomerPhone();
+        this.deliveryAddress = purchaseOrder.getDeliveryAddress();
+        this.storeDiscount = purchaseOrder.getStoreDiscount();
+        this.orderPrice = purchaseOrder.getOrderPrice();
+        this.deliveryType = purchaseOrder.getDeliveryType();
+        this.paymentType = purchaseOrder.getPaymentType();
+        this.businessType = purchaseOrder.getBusinessType();
+
+        for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
+        }
+
+        this.presentOrderState = purchaseOrder.getPresentOrderState();
+        this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.additionalNote = purchaseOrder.getAdditionalNote();
+    }
+
     @Override
     public String toString() {
         return "JsonPurchaseOrder{" +
@@ -288,7 +308,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", deliveryType=" + deliveryType +
             ", paymentType=" + paymentType +
             ", businessType=" + businessType +
-            ", purchaseOrderProducts=" + purchaseOrderProducts +
+            ", jsonPurchaseOrderProducts=" + jsonPurchaseOrderProducts +
             ", servingNumber=" + servingNumber +
             ", token=" + token +
             ", customerName='" + customerName + '\'' +
