@@ -20,5 +20,7 @@ public interface StoreProductManager extends RepositoryManager<StoreProductEntit
 
     StoreProductEntity findOne(String id);
 
-    void removeStoreCategoryReference(String storeId);
+    void removeStoreCategoryReference(String storeCategoryId);
+
+    long removedStoreProduct(String storeId);
 }

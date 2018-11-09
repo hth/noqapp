@@ -460,13 +460,16 @@ public class UserProfileController {
         return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
     }
 
+    @PostMapping(value = "/upload", params = "cancel_Upload")
+    public String cancelUpload() {
+        return "redirect:/";
+    }
+
     /**
      * For uploading profile image.
-     *
-     * @param httpServletRequest
-     * @return
+     * Note: Cancel profile upload does not exists as this upload of profile can be from multiple places.
      */
-    @PostMapping (value = "/upload")
+    @PostMapping (value = "/upload", params = "upload")
     public String upload(
             @ModelAttribute("fileUploadForm")
             FileUploadForm fileUploadForm,
@@ -477,7 +480,7 @@ public class UserProfileController {
     ) {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("uploading image qid={}", queueUser.getQueueUserId());
+        LOG.info("Uploading profile image qid={}", queueUser.getQueueUserId());
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {

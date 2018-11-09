@@ -25,8 +25,8 @@ public class StoreCategoryService {
 
     @Autowired
     public StoreCategoryService(
-            StoreCategoryManager storeCategoryManager,
-            StoreProductManager storeProductManager
+        StoreCategoryManager storeCategoryManager,
+        StoreProductManager storeProductManager
     ) {
         this.storeCategoryManager = storeCategoryManager;
         this.storeProductManager = storeProductManager;

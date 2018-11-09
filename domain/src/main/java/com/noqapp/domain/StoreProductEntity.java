@@ -173,11 +173,6 @@ public class StoreProductEntity extends BaseEntity {
     }
 
     @Transient
-    public String getDisplayDiscount() {
-        return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
-    }
-
-    @Transient
     public String toCommaSeparatedString() {
         return id + "," + bizStoreId + ","
             + getDisplayPrice() + ","

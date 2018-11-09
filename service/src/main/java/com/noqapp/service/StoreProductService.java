@@ -1,11 +1,22 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreProductEntity;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreProductManager;
+import com.noqapp.service.exceptions.CSVParsingException;
+import com.noqapp.service.exceptions.CSVProcessingException;
+import com.noqapp.service.transaction.TransactionService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -14,12 +25,24 @@ import java.util.List;
  */
 @Service
 public class StoreProductService {
+    private static final Logger LOG = LoggerFactory.getLogger(StoreProductService.class);
 
     private StoreProductManager storeProductManager;
+    private BizStoreManager bizStoreManager;
+    private FileService fileService;
+    private TransactionService transactionService;
 
     @Autowired
-    public StoreProductService(StoreProductManager storeProductManager) {
+    public StoreProductService(
+        StoreProductManager storeProductManager,
+        BizStoreManager bizStoreManager,
+        FileService fileService,
+        TransactionService transactionService
+    ) {
         this.storeProductManager = storeProductManager;
+        this.bizStoreManager = bizStoreManager;
+        this.fileService = fileService;
+        this.transactionService = transactionService;
     }
 
     public List<StoreProductEntity> findAll(String storeId) {
@@ -44,5 +67,33 @@ public class StoreProductService {
 
     public void delete(StoreProductEntity storeProduct) {
         storeProductManager.deleteHard(storeProduct);
+    }
+
+    public int bulkUpdateStoreProduct(InputStream in, String codeQR, String qid) {
+        try {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+            List<StoreProductEntity> storeProducts = fileService.processStoreProductCSVFile(in, bizStore.getId());
+            if (!storeProducts.isEmpty()) {
+                transactionService.bulkProductUpdate(storeProducts, bizStore.getId(), qid);
+            }
+            in.close();
+            return storeProducts.size();
+        } catch (CSVParsingException e) {
+            LOG.error("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+            throw e;
+        } catch (CSVProcessingException e) {
+            LOG.error("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+            throw e;
+        } catch (IOException e) {
+            LOG.error("Error reason={}", e.getLocalizedMessage(), e);
+        }
+
+        return 0;
+    }
+
+    public File bulkStoreProductCSVFile(String codeQR) throws IOException {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStore.getId());
+        return fileService.populateStoreProductCSVFile(storeProducts, bizStore.getId(), bizStore.getDisplayName());
     }
 }

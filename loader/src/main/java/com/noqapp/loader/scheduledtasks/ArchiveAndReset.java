@@ -129,6 +129,7 @@ public class ArchiveAndReset {
          * reverted back to 5 minutes.
          */
         Date date = Date.from(Instant.now().minus(60, ChronoUnit.MINUTES));
+        /* Only find stores that are active and not deleted. */
         List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
         LOG.info("found={} date={}", found, date);

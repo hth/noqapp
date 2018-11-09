@@ -48,10 +48,10 @@
                                 <div class="error-txt">
                                     <ul>
                                         <c:if test="${errors.hasFieldErrors('mail')}">
-                                            <li><form:errors path="mail"/></li>
+                                        <li><form:errors path="mail"/></li>
                                         </c:if>
                                         <c:if test="${errors.hasFieldErrors('captcha')}">
-                                            <li><form:errors path="captcha"/></li>
+                                        <li><form:errors path="captcha"/></li>
                                         </c:if>
                                     </ul>
                                 </div>

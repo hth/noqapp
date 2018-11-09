@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.business.store;
 
+import static com.noqapp.view.controller.access.UserProfileController.getMultipartFiles;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import com.noqapp.common.utils.ScrubbedInput;
@@ -9,14 +10,22 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
+import com.noqapp.health.domain.types.HealthStatusEnum;
+import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreProductService;
+import com.noqapp.service.exceptions.CSVParsingException;
+import com.noqapp.service.exceptions.CSVProcessingException;
+import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.StoreProductForm;
+import com.noqapp.view.validator.CSVFileValidator;
 import com.noqapp.view.validator.StoreProductValidator;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -24,22 +33,34 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -59,33 +80,39 @@ public class StoreProductController {
 
     private String nextPage;
 
+    private ApiHealthService apiHealthService;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
     private StoreProductService storeProductService;
     private StoreProductValidator storeProductValidator;
     private BusinessUserStoreService businessUserStoreService;
     private FileService fileService;
+    private CSVFileValidator csvFileValidator;
 
     @Autowired
     public StoreProductController(
             @Value("${nextPage:/business/storeProductLanding}")
             String nextPage,
 
+            ApiHealthService apiHealthService,
             BizService bizService,
             StoreCategoryService storeCategoryService,
             StoreProductService storeProductService,
             StoreProductValidator storeProductValidator,
             BusinessUserStoreService businessUserStoreService,
-            FileService fileService
+            FileService fileService,
+            CSVFileValidator csvFileValidator
     ) {
         this.nextPage = nextPage;
 
+        this.apiHealthService = apiHealthService;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
         this.storeProductService = storeProductService;
         this.storeProductValidator = storeProductValidator;
         this.businessUserStoreService = businessUserStoreService;
         this.fileService = fileService;
+        this.csvFileValidator = csvFileValidator;
     }
 
     @GetMapping(value = "/{storeId}", produces = "text/html;charset=UTF-8")
@@ -344,5 +371,161 @@ public class StoreProductController {
 
         fileService.createPreferredBusinessFiles(storeProductForm.getBizStoreId().getText());
         return "redirect:/business/store/landing.htm";
+    }
+
+    /**
+     * Gymnastic for PRG.
+     */
+    @GetMapping(value = "/bulk/{codeQR}")
+    public String bulk(
+        @PathVariable("codeQR")
+        ScrubbedInput codeQR,
+
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        Model model,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
+    ) {
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed on bulk upload page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("resultImage")) {
+            model.addAttribute(
+                "org.springframework.validation.BindingResult.fileUploadForm",
+                model.asMap().get("resultImage"));
+        }
+        redirectAttrs.addAttribute("codeQR", codeQR);
+
+        apiHealthService.insert(
+            "/bulk/{codeQR}",
+            "bulk",
+            StoreProductController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return "/business/storeProductBulk";
+    }
+
+    @PostMapping(value = "/bulk/upload", params = "cancel_Upload")
+    public String cancel() {
+        return "redirect:/business/store/landing.htm";
+    }
+
+    @PostMapping(value = "/bulk/upload", params = "upload")
+    public String upload(
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        @RequestParam("codeQR")
+        ScrubbedInput codeQR,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletRequest httpServletRequest,
+        HttpServletResponse response
+    ) {
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Uploading store product CSV qid={} codeQR={}", queueUser.getQueueUserId(), codeQR);
+
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        if (isMultipart) {
+            MultipartHttpServletRequest multipartHttpRequest = WebUtils.getNativeRequest(httpServletRequest, MultipartHttpServletRequest.class);
+            final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
+
+            if (!files.isEmpty()) {
+                MultipartFile multipartFile = files.iterator().next();
+
+                csvFileValidator.validate(multipartFile, result);
+                if (result.hasErrors()) {
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    LOG.warn("Failed CSV validation");
+                    //Re-direct to prevent resubmit
+                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                }
+
+                try {
+                    int recordsUpdated = storeProductService.bulkUpdateStoreProduct(multipartFile.getInputStream(), codeQR.getText(), queueUser.getQueueUserId());
+                    redirectAttrs
+                        .addFlashAttribute("uploadSuccess", true)
+                        .addFlashAttribute("recordsUpdated", recordsUpdated);
+                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                } catch (CSVParsingException e) {
+                    LOG.error("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+                    ObjectError error = new ObjectError("fileUploadForm.file","Failed to parser file");
+                    result.addError(error);
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                } catch (CSVProcessingException e) {
+                    LOG.error("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+                    ObjectError error = new ObjectError("fileUploadForm.file","Failed processing " + e.getLocalizedMessage());
+                    result.addError(error);
+                    redirectAttrs.addFlashAttribute("resultImage", result);
+                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                } catch (Exception e) {
+                    LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
+                    apiHealthService.insert(
+                        "/bulk/upload",
+                        "upload",
+                        StoreProductController.class.getName(),
+                        Duration.between(start, Instant.now()),
+                        HealthStatusEnum.F);
+                }
+
+                return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+            }
+        }
+        return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+    }
+
+    /** Gets file of all products as zip in CSV format for preferred business store id. */
+    @PostMapping(
+        value = "/bulk/download",
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public void download(
+        @RequestParam("codeQR")
+        ScrubbedInput codeQR,
+
+        HttpServletResponse response
+    ) {
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Downloading store product CSV qid={} codeQR={}", queueUser.getQueueUserId(), codeQR);
+
+        try {
+            File file = storeProductService.bulkStoreProductCSVFile(codeQR.getText());
+            if (file != null) {
+                response.setHeader("Content-disposition", "attachment; filename=\"" +file.getName() + "\"");
+                response.setContentType("text/csv");
+                response.setContentLength((int)file.length());
+                try (OutputStream out = response.getOutputStream()) {
+                    FileUtils.copyFile(file, out);
+                } catch (IOException e) {
+                    LOG.error("Failed to get file for codeQR={} reason={}", codeQR, e.getLocalizedMessage(), e);
+                }
+
+                return;
+            }
+
+            LOG.warn("Failed getting preferred file for codeQR={}", codeQR);
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", ""));
+            response.setContentLength(0);
+        } catch (Exception e) {
+            LOG.error("Failed getting preferred store qid={} codeQR={} message={}", queueUser.getQueueUserId(), codeQR, e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+        } finally {
+            apiHealthService.insert(
+                "/bulk/download",
+                "download",
+                StoreProductController.class.getName(),
+                Duration.between(start, Instant.now()),
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
+        }
     }
 }

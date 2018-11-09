@@ -8,23 +8,33 @@ import static com.noqapp.common.utils.FileUtil.getFileSeparator;
 import static com.noqapp.common.utils.FileUtil.getTmpDir;
 import static com.noqapp.service.FtpService.PREFERRED_STORE;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.S3FileEntity;
+import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.StoreProductManager;
+import com.noqapp.service.exceptions.CSVParsingException;
+import com.noqapp.service.exceptions.CSVProcessingException;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,8 +57,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -56,7 +68,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -72,12 +86,24 @@ public class FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
     private static final String PNG_FORMAT = "png";
     private static final String SCALED_IMAGE_POST_FIX = "_s";
+    private static String[] STORE_PRODUCT_HEADERS = {
+        "Name",
+        "Price",
+        "Discount",
+        "Info",
+        "Category",
+        "Type",
+        "Unit",
+        "Package Size",
+        "Measurement",
+        "Id",
+        "Reference"
+    };
 
     private int imageProfileWidth;
     private int imageProfileHeight;
     private int imageServiceWidth;
     private int imageServiceHeight;
-
 
     private AccountService accountService;
     private FtpService ftpService;
@@ -86,6 +112,7 @@ public class FileService {
     private BizStoreManager bizStoreManager;
     private StoreProductManager storeProductManager;
     private BizService bizService;
+    private StoreCategoryService storeCategoryService;
 
     @Autowired
     public FileService(
@@ -107,7 +134,8 @@ public class FileService {
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
             StoreProductManager storeProductManager,
-            BizService bizService
+            BizService bizService,
+            StoreCategoryService storeCategoryService
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
@@ -121,6 +149,7 @@ public class FileService {
         this.bizStoreManager = bizStoreManager;
         this.storeProductManager = storeProductManager;
         this.bizService = bizService;
+        this.storeCategoryService = storeCategoryService;
     }
 
     @Async
@@ -491,5 +520,87 @@ public class FileService {
         tOut.putArchiveEntry(tarEntry);
         IOUtils.copy(new FileInputStream(csv), tOut);
         tOut.closeArchiveEntry();
+    }
+
+    List<StoreProductEntity> processStoreProductCSVFile(InputStream in, String bizStoreId) {
+        try {
+            List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStoreId);
+            Map<String, String> map = new HashMap<>();
+            storeCategories.forEach(t -> map.put(t.getCategoryName(), t.getId()));
+
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                .withHeader(STORE_PRODUCT_HEADERS)
+                .withFirstRecordAsHeader()
+                .parse(new InputStreamReader(in));
+
+            List<StoreProductEntity> storeProducts = new ArrayList<>();
+            for (CSVRecord record : records) {
+                try {
+                    String storeCategoryId = map.get(record.get("Category"));
+                    ProductTypeEnum productTypeEnum = ProductTypeEnum.valueOf(record.get("Type"));
+                    UnitOfMeasurementEnum unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+
+                    StoreProductEntity storeProduct = new StoreProductEntity()
+                        .setBizStoreId(bizStoreId)
+                        .setProductName(record.get("Name"))
+                        .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
+                        .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                        .setProductInfo(record.get("Info"))
+                        .setStoreCategoryId(storeCategoryId)
+                        .setProductType(productTypeEnum)
+                        .setUnitValue(Integer.parseInt(record.get("Unit")))
+                        .setPackageSize(Integer.parseInt(record.get("Package Size")))
+                        .setUnitOfMeasurement(unitOfMeasurementEnum)
+                        .setProductReference(record.get("Reference"));
+
+                    if (StringUtils.isNotBlank(record.get("Id")) && Validate.isValidObjectId(record.get("Id"))) {
+                        storeProduct.setId(record.get("Id"));
+                    } else {
+                        storeProduct.setId(CommonUtil.generateHexFromObjectId());
+                    }
+
+                    storeProducts.add(storeProduct);
+                } catch (Exception e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber());
+                }
+            }
+            return storeProducts;
+        } catch (IOException e) {
+            LOG.warn("Error reason={}", e.getLocalizedMessage());
+            throw new CSVParsingException("Invalid file");
+        }
+    }
+
+    File populateStoreProductCSVFile(List<StoreProductEntity> storeProducts, String bizStoreId, String displayName) throws IOException {
+        List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStoreId);
+        Map<String, String> map = new HashMap<>();
+        storeCategories.forEach(t -> map.put(t.getId(), t.getCategoryName()));
+
+        File file = FileUtil.createTempFile(displayName, ".csv");
+        FileWriter out = new FileWriter(file);
+        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(STORE_PRODUCT_HEADERS))) {
+            storeProducts.forEach((storeProduct) -> {
+                try {
+                    printer.printRecord(
+                        storeProduct.getProductName(),
+                        storeProduct.getProductPrice() / 100,
+                        storeProduct.getProductDiscount() / 100,
+                        storeProduct.getProductInfo(),
+                        map.get(storeProduct.getStoreCategoryId()),
+                        storeProduct.getProductType().name(),
+                        storeProduct.getUnitValue(),
+                        storeProduct.getPackageSize(),
+                        storeProduct.getUnitOfMeasurement().name(),
+                        storeProduct.getId(),
+                        storeProduct.getProductReference()
+                    );
+                } catch (IOException e) {
+                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), displayName);
+                }
+            });
+        }
+
+        return file;
     }
 }

@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StoreProductEntity;
 
+import com.mongodb.client.result.DeleteResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,12 +101,23 @@ public class StoreProductManagerImpl implements StoreProductManager {
     }
 
     @Override
-    public void removeStoreCategoryReference(String storeId) {
+    public void removeStoreCategoryReference(String storeCategoryId) {
         mongoTemplate.updateMulti(
-                query(where("SC").is(storeId)),
+                query(where("SC").is(storeCategoryId)),
                 entityUpdate(new Update().unset("SC")),
                 StoreProductEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public long removedStoreProduct(String storeId) {
+        DeleteResult deleteResult = mongoTemplate.remove(
+            query(where("BS").is(storeId)),
+            StoreProductEntity.class,
+            TABLE
+        );
+
+        return deleteResult.getDeletedCount();
     }
 }
