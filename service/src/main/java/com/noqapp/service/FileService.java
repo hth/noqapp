@@ -535,11 +535,25 @@ public class FileService {
 
             List<StoreProductEntity> storeProducts = new ArrayList<>();
             for (CSVRecord record : records) {
-                try {
-                    String storeCategoryId = map.get(record.get("Category"));
-                    ProductTypeEnum productTypeEnum = ProductTypeEnum.valueOf(record.get("Type"));
-                    UnitOfMeasurementEnum unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+                String storeCategoryId = map.get(record.get("Category"));
 
+                ProductTypeEnum productTypeEnum;
+                try {
+                    productTypeEnum = ProductTypeEnum.valueOf(record.get("Type"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Type " + record.get("Type"));
+                }
+
+                UnitOfMeasurementEnum unitOfMeasurementEnum;
+                try {
+                    unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Unit " + record.get("Measurement"));
+                }
+
+                try {
                     StoreProductEntity storeProduct = new StoreProductEntity()
                         .setBizStoreId(bizStoreId)
                         .setProductName(record.get("Name"))
