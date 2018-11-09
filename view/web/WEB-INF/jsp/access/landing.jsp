@@ -160,21 +160,21 @@
                                                 <th>Rating</th>
                                             </tr>
                                             <c:forEach items="${landingForm.historicalQueues}" var="store" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td>
-                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                    </td>
-                                                    <td>
-                                                        <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${store.serviceEndTime}"/>
-                                                    </td>
-                                                    <td>
-                                                        ${store.hoursSaved}
-                                                    </td>
-                                                    <td>
-                                                        ${store.reviewCount}
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td>
+                                                    <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${store.serviceEndTime}"/>
+                                                </td>
+                                                <td>
+                                                    ${store.hoursSaved}
+                                                </td>
+                                                <td>
+                                                    ${store.ratingCount}
+                                                </td>
+                                            </tr>
                                             </c:forEach>
                                         </table>
                                     </c:when>
