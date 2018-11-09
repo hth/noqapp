@@ -79,10 +79,10 @@ public class StoreProductService {
             in.close();
             return storeProducts.size();
         } catch (CSVParsingException e) {
-            LOG.error("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+            LOG.warn("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
             throw e;
         } catch (CSVProcessingException e) {
-            LOG.error("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+            LOG.warn("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
             throw e;
         } catch (IOException e) {
             LOG.error("Error reason={}", e.getLocalizedMessage(), e);
