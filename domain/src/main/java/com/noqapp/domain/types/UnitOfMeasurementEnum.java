@@ -1,5 +1,8 @@
 package com.noqapp.domain.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * hitender
  * 3/31/18 9:58 PM
@@ -27,6 +30,18 @@ public enum UnitOfMeasurementEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static Map<String, String> getAsMap() {
+        return new HashMap<String, String>() {{
+            put(CN.description, CN.name);
+            put(DZ.description, DZ.name);
+            put(MG.description, MG.name);
+            put(GM.description, GM.name);
+            put(KG.description, KG.name);
+            put(ML.description, ML.name);
+            put(LT.description, LT.name);
+        }};
     }
 
     @Override

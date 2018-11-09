@@ -69,7 +69,7 @@
                                         <div class="error-txt">
                                             <ul>
                                                 <c:if test="${errors.hasFieldErrors('name')}">
-                                                    <li><form:errors path="name"/></li>
+                                                <li><form:errors path="name"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
@@ -117,7 +117,7 @@
                                         <div class="error-txt">
                                             <ul>
                                                 <c:if test="${errors.hasFieldErrors('name')}">
-                                                    <li><form:errors path="name"/></li>
+                                                <li><form:errors path="name"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>

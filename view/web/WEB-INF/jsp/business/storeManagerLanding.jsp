@@ -112,6 +112,9 @@
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
                                                         <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
                                                     </span>
+                                                    <span style="display:block; font-size:13px;">
+                                                        <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
+                                                    </span>
                                                 </c:when>
                                                 <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
