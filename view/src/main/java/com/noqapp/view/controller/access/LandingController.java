@@ -79,39 +79,34 @@ public class LandingController {
             @ModelAttribute("landingForm")
             LandingForm landingForm
     ) {
-        try {
-            Instant start = Instant.now();
-            LOG.info("Landed on next page");
-            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-            if (null != businessUser) {
-                landingForm
-                    .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus())
-                    .setBusinessAccountSignedUp(businessUser.getUpdated());
-            }
-
-            if (UserLevelEnum.M_ADMIN != queueUser.getUserLevel()) {
-                landingForm
-                    .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
-                    .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
-                    .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()));
-
-                LOG.info("Current size={} and Historical size={}",
-                    landingForm.getCurrentQueues().size(),
-                    landingForm.getHistoricalQueues().size());
-            }
-
-            apiHealthService.insert(
-                "/landing",
-                "landing",
-                LandingController.class.getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
-            return nextPage;
-        } catch (Exception e) {
-            LOG.error("Failed loading page reason={}", e.getLocalizedMessage(), e);
-            throw e;
+        Instant start = Instant.now();
+        LOG.info("Landed on next page");
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null != businessUser) {
+            landingForm
+                .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus())
+                .setBusinessAccountSignedUp(businessUser.getUpdated());
         }
+
+        if (UserLevelEnum.M_ADMIN != queueUser.getUserLevel()) {
+            landingForm
+                .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
+                .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
+                .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()));
+
+            LOG.info("Current size={} and Historical size={}",
+                landingForm.getCurrentQueues().size(),
+                landingForm.getHistoricalQueues().size());
+        }
+
+        apiHealthService.insert(
+            "/landing",
+            "landing",
+            LandingController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
+        return nextPage;
     }
 
     @GetMapping(value = "/landing/business/migrate")
