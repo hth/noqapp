@@ -454,13 +454,13 @@ public class StoreProductController {
                         .addFlashAttribute("recordsUpdated", recordsUpdated);
                     return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
                 } catch (CSVParsingException e) {
-                    LOG.error("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+                    LOG.warn("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
                     ObjectError error = new ObjectError("fileUploadForm.file","Failed to parser file");
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
                 } catch (CSVProcessingException e) {
-                    LOG.error("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
+                    LOG.warn("Failed processing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
                     ObjectError error = new ObjectError("fileUploadForm.file","Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
