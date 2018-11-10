@@ -96,7 +96,7 @@ public class FileService {
         "Unit",
         "Package Size",
         "Measurement",
-        "Id",
+        "Key",
         "Reference"
     };
 
@@ -573,8 +573,8 @@ public class FileService {
                         .setUnitOfMeasurement(unitOfMeasurementEnum)
                         .setProductReference(record.get("Reference"));
 
-                    if (StringUtils.isNotBlank(record.get("Id")) && Validate.isValidObjectId(record.get("Id"))) {
-                        storeProduct.setId(record.get("Id"));
+                    if (StringUtils.isNotBlank(record.get("Key")) && Validate.isValidObjectId(record.get("Key"))) {
+                        storeProduct.setId(record.get("Key"));
                     } else {
                         storeProduct.setId(CommonUtil.generateHexFromObjectId());
                     }
