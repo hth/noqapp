@@ -107,6 +107,15 @@
                             <div class="clearFix"></div>
                         </div>
 
+                        <spring:hasBindErrors name="fileUploadForm">
+                        <div class="alert-info">
+                            <p>
+                                <span style="font-weight: bold; color: red">Recommended</span>: First Download Product List. Modify and then upload again.
+                                Or contact support if help needed.
+                            </p>
+                        </div>
+                        </spring:hasBindErrors>
+
                         <div class="alert-info">
                             <p>Bulk Upload:</p>
                             <p>

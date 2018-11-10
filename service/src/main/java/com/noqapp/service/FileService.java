@@ -535,7 +535,13 @@ public class FileService {
 
             List<StoreProductEntity> storeProducts = new ArrayList<>();
             for (CSVRecord record : records) {
-                String storeCategoryId = map.get(record.get("Category"));
+                String storeCategoryId;
+                try {
+                    storeCategoryId = map.get(record.get("Category"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ", Mapping for Store Category not found");
+                }
 
                 ProductTypeEnum productTypeEnum;
                 try {
