@@ -213,6 +213,7 @@ public class FileService {
             /* Delete existing file if user changed profile image before the upload process began. */
             ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
             s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+            accountService.unsetUserProfileImage(qid);
         }
     }
 
