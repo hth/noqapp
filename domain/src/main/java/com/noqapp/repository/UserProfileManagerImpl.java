@@ -227,6 +227,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
+    public void unsetUserProfileImage(String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(new Update().unset("PI")),
+            UserProfileEntity.class,
+            TABLE);
+    }
+
+    @Override
     public boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("QID").is(qid).and("PH").is(qid)),
@@ -242,7 +251,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         Assert.hasText(id, "Id is empty");
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
-            new Update().unset("MO"),
+            entityUpdate(new Update().unset("MO")),
             UserProfileEntity.class,
             TABLE);
     }

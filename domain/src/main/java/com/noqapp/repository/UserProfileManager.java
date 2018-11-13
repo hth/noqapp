@@ -50,6 +50,8 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     void addUserProfileImage(String qid, String profileImage);
 
+    void unsetUserProfileImage(String qid);
+
     boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone);
 
     void unsetMailOTP(String id);
