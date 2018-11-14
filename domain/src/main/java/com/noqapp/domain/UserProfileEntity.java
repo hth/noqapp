@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -339,6 +340,8 @@ public class UserProfileEntity extends BaseEntity {
         }
     }
 
+    /* Use getAgeAsString. */
+    @Deprecated
     @Transient
     public long getAge() {
         if (StringUtils.isNotBlank(birthday)) {
@@ -346,5 +349,10 @@ public class UserProfileEntity extends BaseEntity {
         }
 
         return 0;
+    }
+
+    @Transient
+    public String getAgeAsString() {
+        return CommonUtil.calculateAge(birthday);
     }
 }

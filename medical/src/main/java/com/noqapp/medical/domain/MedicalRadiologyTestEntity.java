@@ -30,7 +30,7 @@ public class MedicalRadiologyTestEntity extends BaseEntity {
     @Field("RRI")
     private String medicalRadiologyReferenceId;
 
-    /** Maps to RadiologyEntity Id. */
+    /** Maps to StoreProduct Id. */
     @NotNull
     @Field("RD")
     private String radiologyReferenceId;

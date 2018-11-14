@@ -22,6 +22,8 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
+import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.S3FileManager;
@@ -87,17 +89,39 @@ public class FileService {
     private static final String PNG_FORMAT = "png";
     private static final String SCALED_IMAGE_POST_FIX = "_s";
     private static String[] STORE_PRODUCT_HEADERS = {
+        "Category",
         "Name",
         "Price",
         "Discount",
         "Info",
-        "Category",
         "Type",
         "Unit",
-        "Package Size",
         "Measurement",
+        "Package Size",
         "Key",
         "Reference"
+    };
+
+    private static String[] PHARMACY_PRODUCT_HEADERS = {
+        "Category",
+        "Name",
+        "Price",
+        "Discount",
+        "Info",
+        "Unit",
+        "Measurement",
+        "Package Size",
+        "Key",
+        "Reference"
+    };
+
+    private static String[] RADIOLOGY_PRODUCT_HEADERS = {
+        "Category",
+        "Name",
+        "Price",
+        "Discount",
+        "Info",
+        "Key",
     };
 
     private int imageProfileWidth;
@@ -523,16 +547,38 @@ public class FileService {
         tOut.closeArchiveEntry();
     }
 
-    List<StoreProductEntity> processStoreProductCSVFile(InputStream in, String bizStoreId) {
+    List<StoreProductEntity> processStoreProductCSVFile(InputStream in, BizStoreEntity bizStore) {
         try {
-            List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStoreId);
+            Iterable<CSVRecord> records;
             Map<String, String> map = new HashMap<>();
-            storeCategories.forEach(t -> map.put(t.getCategoryName(), t.getId()));
+            switch (bizStore.getBusinessType()) {
+                case RA:
+                    records = CSVFormat.DEFAULT
+                        .withHeader(RADIOLOGY_PRODUCT_HEADERS)
+                        .withFirstRecordAsHeader()
+                        .parse(new InputStreamReader(in));
 
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                .withHeader(STORE_PRODUCT_HEADERS)
-                .withFirstRecordAsHeader()
-                .parse(new InputStreamReader(in));
+                    map = RadiologyCategoryEnum.asMapWithDescriptionAsKey();
+                    break;
+                case PH:
+                    records = CSVFormat.DEFAULT
+                        .withHeader(STORE_PRODUCT_HEADERS)
+                        .withFirstRecordAsHeader()
+                        .parse(new InputStreamReader(in));
+
+                    map = PharmacyCategoryEnum.asMapWithDescriptionAsKey();
+                    break;
+                default:
+                    records = CSVFormat.DEFAULT
+                        .withHeader(STORE_PRODUCT_HEADERS)
+                        .withFirstRecordAsHeader()
+                        .parse(new InputStreamReader(in));
+
+                    List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStore.getId());
+                    for (StoreCategoryEntity t : storeCategories) {
+                        map.put(t.getCategoryName(), t.getId());
+                    }
+            }
 
             List<StoreProductEntity> storeProducts = new ArrayList<>();
             for (CSVRecord record : records) {
@@ -544,42 +590,8 @@ public class FileService {
                     throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ", Mapping for Store Category not found");
                 }
 
-                ProductTypeEnum productTypeEnum;
                 try {
-                    productTypeEnum = ProductTypeEnum.valueOf(record.get("Type"));
-                } catch (IllegalArgumentException e) {
-                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
-                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Type " + record.get("Type"));
-                }
-
-                UnitOfMeasurementEnum unitOfMeasurementEnum;
-                try {
-                    unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
-                } catch (IllegalArgumentException e) {
-                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
-                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Unit " + record.get("Measurement"));
-                }
-
-                try {
-                    StoreProductEntity storeProduct = new StoreProductEntity()
-                        .setBizStoreId(bizStoreId)
-                        .setProductName(record.get("Name"))
-                        .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
-                        .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
-                        .setProductInfo(record.get("Info"))
-                        .setStoreCategoryId(storeCategoryId)
-                        .setProductType(productTypeEnum)
-                        .setUnitValue(Integer.parseInt(record.get("Unit")))
-                        .setPackageSize(Integer.parseInt(record.get("Package Size")))
-                        .setUnitOfMeasurement(unitOfMeasurementEnum)
-                        .setProductReference(record.get("Reference"));
-
-                    if (StringUtils.isNotBlank(record.get("Key")) && Validate.isValidObjectId(record.get("Key"))) {
-                        storeProduct.setId(record.get("Key"));
-                    } else {
-                        storeProduct.setId(CommonUtil.generateHexFromObjectId());
-                    }
-
+                    StoreProductEntity storeProduct = getStoreProductEntity(bizStore, record, storeCategoryId);
                     storeProducts.add(storeProduct);
                 } catch (Exception e) {
                     LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
@@ -593,33 +605,153 @@ public class FileService {
         }
     }
 
-    File populateStoreProductCSVFile(List<StoreProductEntity> storeProducts, String bizStoreId, String displayName) throws IOException {
-        List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStoreId);
+    private StoreProductEntity getStoreProductEntity(BizStoreEntity bizStore, CSVRecord record, String storeCategoryId) {
+        StoreProductEntity storeProduct = new StoreProductEntity();
+        switch (bizStore.getBusinessType()) {
+            case RA:
+                storeProduct
+                    .setBizStoreId(bizStore.getId())
+                    .setStoreCategoryId(storeCategoryId)
+                    .setProductName(record.get("Name"))
+                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductInfo(record.get("Info"))
+                    .setUnitValue(1)
+                    .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                    .setPackageSize(1)
+                    .setProductType(ProductTypeEnum.RA)
+                    .setProductReference(null);
+                break;
+            case PH:
+                UnitOfMeasurementEnum unitOfMeasurementEnum;
+                try {
+                    unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Unit " + record.get("Measurement"));
+                }
+
+                storeProduct
+                    .setBizStoreId(bizStore.getId())
+                    .setStoreCategoryId(storeCategoryId)
+                    .setProductName(record.get("Name"))
+                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductInfo(record.get("Info"))
+                    .setUnitValue(Integer.parseInt(record.get("Unit")))
+                    .setUnitOfMeasurement(unitOfMeasurementEnum)
+                    .setPackageSize(Integer.parseInt(record.get("Package Size")))
+                    .setProductType(ProductTypeEnum.PH)
+                    .setProductReference(record.get("Reference"));
+                break;
+            default:
+                ProductTypeEnum productTypeEnum;
+                try {
+                    productTypeEnum = ProductTypeEnum.valueOf(record.get("Type"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Type " + record.get("Type"));
+                }
+
+                try {
+                    unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+                } catch (IllegalArgumentException e) {
+                    LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
+                    throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Unit " + record.get("Measurement"));
+                }
+
+                storeProduct
+                    .setBizStoreId(bizStore.getId())
+                    .setStoreCategoryId(storeCategoryId)
+                    .setProductName(record.get("Name"))
+                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductInfo(record.get("Info"))
+                    .setUnitValue(Integer.parseInt(record.get("Unit")))
+                    .setUnitOfMeasurement(unitOfMeasurementEnum)
+                    .setPackageSize(Integer.parseInt(record.get("Package Size")))
+                    .setProductType(productTypeEnum)
+                    .setProductReference(record.get("Reference"));
+        }
+        if (StringUtils.isNotBlank(record.get("Key")) && Validate.isValidObjectId(record.get("Key"))) {
+            storeProduct.setId(record.get("Key"));
+        } else {
+            storeProduct.setId(CommonUtil.generateHexFromObjectId());
+        }
+        return storeProduct;
+    }
+
+    File populateStoreProductCSVFile(List<StoreProductEntity> storeProducts, BizStoreEntity bizStore) throws IOException {
+        List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStore.getId());
         Map<String, String> map = new HashMap<>();
         storeCategories.forEach(t -> map.put(t.getId(), t.getCategoryName()));
 
-        File file = FileUtil.createTempFile(displayName, ".csv");
+        File file = FileUtil.createTempFile(bizStore.getDisplayName(), ".csv");
         FileWriter out = new FileWriter(file);
-        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(STORE_PRODUCT_HEADERS))) {
-            storeProducts.forEach((storeProduct) -> {
-                try {
-                    printer.printRecord(
-                        storeProduct.getProductName(),
-                        storeProduct.getProductPrice() / 100,
-                        storeProduct.getProductDiscount() / 100,
-                        storeProduct.getProductInfo(),
-                        map.get(storeProduct.getStoreCategoryId()),
-                        storeProduct.getProductType().name(),
-                        storeProduct.getUnitValue(),
-                        storeProduct.getPackageSize(),
-                        storeProduct.getUnitOfMeasurement().name(),
-                        storeProduct.getId(),
-                        storeProduct.getProductReference()
-                    );
-                } catch (IOException e) {
-                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), displayName);
+        switch (bizStore.getBusinessType()) {
+            case RA:
+                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                    storeProducts.forEach((storeProduct) -> {
+                        try {
+                            printer.printRecord(
+                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId())) ? RadiologyCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription() : map.get(storeProduct.getStoreCategoryId()),
+                                storeProduct.getProductName(),
+                                storeProduct.getProductPrice() / 100,
+                                storeProduct.getProductDiscount() / 100,
+                                storeProduct.getProductInfo(),
+                                storeProduct.getId()
+                            );
+                        } catch (IOException e) {
+                            LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                        }
+                    });
                 }
-            });
+                break;
+            case PH:
+                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(PHARMACY_PRODUCT_HEADERS))) {
+                    storeProducts.forEach((storeProduct) -> {
+                        try {
+                            printer.printRecord(
+                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId())) ? PharmacyCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription() : map.get(storeProduct.getStoreCategoryId()),
+                                storeProduct.getProductName(),
+                                storeProduct.getProductPrice() / 100,
+                                storeProduct.getProductDiscount() / 100,
+                                storeProduct.getProductInfo(),
+                                storeProduct.getUnitValue(),
+                                storeProduct.getUnitOfMeasurement().name(),
+                                storeProduct.getPackageSize(),
+                                storeProduct.getId(),
+                                storeProduct.getProductReference()
+                            );
+                        } catch (IOException e) {
+                            LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                        }
+                    });
+                }
+                break;
+            default:
+                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(STORE_PRODUCT_HEADERS))) {
+                    storeProducts.forEach((storeProduct) -> {
+                        try {
+                            printer.printRecord(
+                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId())) ? storeProduct.getStoreCategoryId() : map.get(storeProduct.getStoreCategoryId()),
+                                storeProduct.getProductName(),
+                                storeProduct.getProductPrice() / 100,
+                                storeProduct.getProductDiscount() / 100,
+                                storeProduct.getProductInfo(),
+                                storeProduct.getProductType().name(),
+                                storeProduct.getUnitValue(),
+                                storeProduct.getUnitOfMeasurement().name(),
+                                storeProduct.getPackageSize(),
+                                storeProduct.getId(),
+                                storeProduct.getProductReference()
+                            );
+                        } catch (IOException e) {
+                            LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                        }
+                    });
+                }
+                break;
         }
 
         return file;

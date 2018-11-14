@@ -73,11 +73,9 @@
                     </spring:hasBindErrors>
 
                     <c:if test="${uploadSuccess}">
-                        <div class="alert-info">
-                            <p>
-                                Uploaded file successfully. ${recordsUpdated} store products updated
-                            </p>
-                        </div>
+                    <div class="alert-info">
+                        <p>Uploaded file successfully. ${recordsUpdated} store products updated</p>
+                    </div>
                     </c:if>
 
                     <div class="admin-content">

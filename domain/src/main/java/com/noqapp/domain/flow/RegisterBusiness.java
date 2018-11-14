@@ -69,7 +69,8 @@ public class RegisterBusiness implements Serializable {
     private String bizCategoryId;
     private String famousFor;
     private boolean remoteJoin;
-    private boolean allowLoggedInUser;
+    /* Now defaults to allow logged in user ONLY. */
+    private boolean allowLoggedInUser = true;
     private int availableTokenCount;
     private List<BusinessHour> businessHours = new LinkedList<>();
 

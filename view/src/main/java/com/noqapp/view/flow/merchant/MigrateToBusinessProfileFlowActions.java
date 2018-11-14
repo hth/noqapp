@@ -71,6 +71,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         this.executorService = newCachedThreadPool();
     }
 
+    @SuppressWarnings("all")
     public RegisterUser loadProfile() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();

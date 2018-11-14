@@ -4,7 +4,6 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.medical.service.MedicalMasterDataService;
 import com.noqapp.view.form.emp.medical.EmpMedicalLandingForm;
 
 import org.slf4j.Logger;
@@ -22,40 +21,36 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * To support medical technician. For now nothings is supported.
  * hitender
  * 4/7/18 7:48 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/emp/medical/landing")
 public class EmpMedicalLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(PathologyController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmpMedicalLandingController.class);
 
     private String empMedicalLanding;
 
-    private MedicalMasterDataService medicalMasterDataService;
-
     public EmpMedicalLandingController(
-            @Value("${empMedicalLanding:/emp/medical/landing}")
-            String empMedicalLanding,
-
-            MedicalMasterDataService medicalMasterDataService
+        @Value("${empMedicalLanding:/emp/medical/landing}")
+        String empMedicalLanding
     ) {
         this.empMedicalLanding = empMedicalLanding;
-        this.medicalMasterDataService = medicalMasterDataService;
     }
 
     @GetMapping
     public String empLanding(
-            @ModelAttribute("empMedicalLandingForm")
-            EmpMedicalLandingForm empMedicalLandingForm,
+        @ModelAttribute("empMedicalLandingForm")
+        EmpMedicalLandingForm empMedicalLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (queueUser.getUserLevel() != UserLevelEnum.MEDICAL_TECHNICIAN) {
@@ -65,10 +60,6 @@ public class EmpMedicalLandingController {
         }
         LOG.info("Landed on medical page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
-
-        empMedicalLandingForm.setCountPathology(medicalMasterDataService.countPathology());
-        empMedicalLandingForm.setCountPharmacy(medicalMasterDataService.countPharmacy());
-        empMedicalLandingForm.setCountRadiology(medicalMasterDataService.countRadiology());
 
         return empMedicalLanding;
     }

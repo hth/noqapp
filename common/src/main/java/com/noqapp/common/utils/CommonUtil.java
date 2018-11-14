@@ -7,6 +7,11 @@ import org.apache.http.message.BasicHeader;
 
 import org.bson.types.ObjectId;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -178,7 +183,7 @@ public final class CommonUtil {
     public static String generateTransactionId(String storeId, int token) {
         return storeId.substring(18, 24)
             + "-" + token
-            + "-" + (random.ints(0,100).findFirst().getAsInt() + 100)
+            + "-" + (random.ints(0, 100).findFirst().getAsInt() + 100)
             + "-" + generateHexFromObjectId().substring(0, 8);
     }
 
@@ -194,5 +199,41 @@ public final class CommonUtil {
             }
         }
         return name;
+    }
+
+    /**
+     * Common as in Mobile to show age.
+     *
+     * @param dob
+     * @return
+     */
+    public static String calculateAge(String dob) {
+        try {
+            DateTime dateTime = new DateTime(DateUtil.SDF_YYYY_MM_DD.parse(dob));
+            DateTime now = DateTime.now();
+            int years = Years.yearsBetween(dateTime, now).getYears();
+            String age;
+            if (years <= 1) {
+                int months = Months.monthsBetween(dateTime, now).getMonths();
+                if (months <= 1) {
+                    int days = Days.daysBetween(dateTime, now).getDays();
+                    if (days == 0) {
+                        age = "Today";
+                    } else {
+                        age = days + "+ days";
+                    }
+                } else {
+                    age = months + "+ months";
+                }
+            } else {
+                age = years + "+ years";
+            }
+
+            return age;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "N/A";
     }
 }

@@ -88,8 +88,8 @@
                                             <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
-                                            <span style="display:block; font-size:14px;">(Will limit joining this queue to registered users)</span>
+                                            <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"/>
+                                            <span style="display:block; font-size:14px;">(Default: Only registered users can join)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

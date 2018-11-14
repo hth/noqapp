@@ -175,10 +175,7 @@ public class AddQueueSupervisorFlowActions {
 
                 /* Force email address validation. */
                 if (!userAccount.isAccountValidated()) {
-                    LOG.warn("Force email validation={} quickDataEntryByPassSwitch={}",
-                            userAccount.getUserId(),
-                            quickDataEntryByPassSwitch);
-
+                    LOG.warn("Force email validation={} quickDataEntryByPassSwitch={}", userAccount.getUserId(), quickDataEntryByPassSwitch);
                     userAccount.setAccountValidated(true);
                     accountService.save(userAccount);
                 }
@@ -244,7 +241,7 @@ public class AddQueueSupervisorFlowActions {
                     break;
                 }
 
-                LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
+                LOG.warn("Failed invite for qid={} with role={} and is invited by business name={} id={}",
                         userProfile.getQueueUserId(),
                         userProfile.getLevel(),
                         bizStore.getBizName().getBusinessName(),
@@ -298,11 +295,18 @@ public class AddQueueSupervisorFlowActions {
         }
 
         if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
-            /* Create a health care professional profile when selected as a doctor.
-             * Mark profile as Store/Queue Manager.
-             */
+            if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
+                if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
+                    /* Set MANAGER when its a by-pass. Make sure it matches previous condition. */
+                    userProfile.setLevel(UserLevelEnum.S_MANAGER);
+                }
+            } else {
+                /* When set as Supervisor, they get a profile process to migrate. As Manager, there is no profile to migrate. */
+                userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+            }
+
+            /* Create a health care professional profile when selected as a doctor. Mark profile as Store/Queue Manager. */
             professionalProfileService.createProfessionalProfile(userProfile.getQueueUserId());
-            userProfile.setLevel(UserLevelEnum.S_MANAGER);
         } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
             userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
         }

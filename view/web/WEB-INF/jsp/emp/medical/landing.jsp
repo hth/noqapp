@@ -52,15 +52,11 @@
                 <div class="admin-content">
                     <div class="add-store">
                         <div class="addbtn-store">
-                            <a href="/emp/medical/pathology.htm" class="add-btn">Pathology</a>
-                            <a href="/emp/medical/pharmacy.htm" class="add-btn">Pharmacy</a>
-                            <a href="/emp/medical/radiology.htm" class="add-btn">Radiology</a>
+                            Do something related to medical.
                         </div>
 
                         <div class="store">
-                            <h4>Total Pathology Records: ${empMedicalLandingForm.countPathology}</h4>
-                            <h4>Total Pharmacy Records: ${empMedicalLandingForm.countPharmacy}</h4>
-                            <h4>Total Radiology Records: ${empMedicalLandingForm.countRadiology}</h4>
+                            Do something related to medical.
                         </div>
                     </div>
                 </div>

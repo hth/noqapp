@@ -27,6 +27,8 @@ public enum UnitOfMeasurementEnum {
 
     public static EnumSet<UnitOfMeasurementEnum> PHARMACY = EnumSet.of(MG, GM, ML, LT, CM, LA, XL, ME, SM, KT);
     public static UnitOfMeasurementEnum[] PHARMACY_VALUES = {MG, GM, ML, LT, CM, LA, XL, ME, SM, KT};
+    public static EnumSet<UnitOfMeasurementEnum> RADIOLOGY = EnumSet.of(CN);
+    public static UnitOfMeasurementEnum[] RADIOLOGY_VALUES = {CN};
     public static EnumSet<UnitOfMeasurementEnum> GROCERY = EnumSet.of(CN, HD, DZ, MG, GM, KG, ML, LT);
     public static UnitOfMeasurementEnum[] GROCERY_VALUES = {CN, HD, DZ, MG, GM, KG, ML, LT};
 
