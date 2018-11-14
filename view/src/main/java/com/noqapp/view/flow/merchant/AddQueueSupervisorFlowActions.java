@@ -295,11 +295,18 @@ public class AddQueueSupervisorFlowActions {
         }
 
         if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
-            /* Create a health care professional profile when selected as a doctor.
-             * Mark profile as Store/Queue Manager.
-             */
+            if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
+                if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
+                    /* Set MANAGER when its a by-pass. */
+                    userProfile.setLevel(UserLevelEnum.S_MANAGER);
+                }
+            } else {
+                /* When set as Supervisor, they get a profile process to migrate. As Manager, there is no profile to migrate. */
+                userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+            }
+
+            /* Create a health care professional profile when selected as a doctor. Mark profile as Store/Queue Manager. */
             professionalProfileService.createProfessionalProfile(userProfile.getQueueUserId());
-            userProfile.setLevel(UserLevelEnum.S_MANAGER);
         } else if (userProfile.getLevel().getValue() < UserLevelEnum.Q_SUPERVISOR.getValue()) {
             userProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
         }
