@@ -167,9 +167,19 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
+
+    /* On Web. */
+    @SuppressWarnings("unused")
     @Transient
     public String getDisplayPrice() {
         return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+
+    /* On Web. */
+    @SuppressWarnings("unused")
+    @Transient
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
 
     @Transient

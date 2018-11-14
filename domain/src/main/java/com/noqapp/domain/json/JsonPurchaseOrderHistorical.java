@@ -151,4 +151,13 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.town = bizStore.getTown();
         this.countryShortName = bizStore.getCountryShortName();
     }
+
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
 }
