@@ -9,6 +9,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
+import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -112,7 +113,16 @@ public class StoreCategoryController {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         switch (bizStore.getBusinessType()) {
             case PH:
-                categories = PharmacyCategoryEnum.asMap();
+                categories = PharmacyCategoryEnum.asMapWithNameAsKey();
+                storeCategoryForm
+                    .setBizStoreId(storeId)
+                    .setCategories(categories)
+                    .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                    .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                    .setBusinessType(bizStore.getBusinessType());
+                break;
+            case RA:
+                categories = RadiologyCategoryEnum.asMapWithNameAsKey();
                 storeCategoryForm
                     .setBizStoreId(storeId)
                     .setCategories(categories)

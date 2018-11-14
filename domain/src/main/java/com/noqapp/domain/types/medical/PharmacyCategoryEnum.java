@@ -50,7 +50,7 @@ public enum PharmacyCategoryEnum {
         return a;
     }
 
-    public static Map<String, String> asMap() {
+    public static Map<String, String> asMapWithNameAsKey() {
         return new LinkedHashMap<String, String>() {{
             put(CA.name, CA.description);
             put(CR.name, CR.description);
@@ -60,6 +60,19 @@ public enum PharmacyCategoryEnum {
             put(PW.name, PW.description);
             put(SY.name, SY.description);
             put(TA.name, TA.description);
+        }};
+    }
+
+    public static Map<String, String> asMapWithDescriptionAsKey() {
+        return new LinkedHashMap<String, String>() {{
+            put(CA.description, CA.name);
+            put(CR.description, CR.name);
+            put(IH.description, IH.name);
+            put(IJ.description, IJ.name);
+            put(LO.description, LO.name);
+            put(PW.description, PW.name);
+            put(SY.description, SY.name);
+            put(TA.description, TA.name);
         }};
     }
 

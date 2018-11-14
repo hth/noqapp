@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.ProductTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.ProductTypeEnum,com.noqapp.domain.types.UnitOfMeasurementEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -155,7 +155,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Special Discount %</form:label>
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
                                                     </div>
                                                     <div class="col-fields">
                                                         <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -336,7 +336,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Special Discount %</form:label>
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
                                                     </div>
                                                     <div class="col-fields">
                                                         <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
@@ -371,9 +371,18 @@
                                                     <div class="col-fields">
                                                         <form:select path="unitOfMeasurement" cssClass="form-field-select single-dropdown"
                                                                 cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:if test="${fn:length(storeProductForm.unitOfMeasurements) ne 1}">
+                                                                <form:option value="" label="--- Select ---"/>
+                                                            </c:if>
                                                             <c:forEach items="${storeProductForm.unitOfMeasurements}" var="unitOfMeasurement">
-                                                                <option value="${unitOfMeasurement.name}">${unitOfMeasurement.description}</option>
+                                                                <c:choose>
+                                                                    <c:when test="${unitOfMeasurement.name eq storeProductForm.unitOfMeasurement.text}">
+                                                                        <option value="${unitOfMeasurement.name}" selected>${unitOfMeasurement.description}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${unitOfMeasurement.name}">${unitOfMeasurement.description}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
@@ -396,10 +405,12 @@
                                                     <div class="col-fields">
                                                         <form:select path="productType" cssClass="form-field-select single-dropdown"
                                                                 cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:if test="${fn:length(storeProductForm.productTypes) ne 1}">
+                                                                <form:option value="" label="--- Select ---"/>
+                                                            </c:if>
                                                             <c:forEach items="${storeProductForm.productTypes}" var="productType">
                                                                 <c:choose>
-                                                                    <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType and ProductTypeEnum.PH eq productType}">
+                                                                    <c:when test="${productType.name eq storeProductForm.productType.text}">
                                                                         <option value="${productType.name}" selected>${productType.description}</option>
                                                                     </c:when>
                                                                     <c:otherwise>
@@ -495,11 +506,11 @@
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
-                                            <span style="display:block; font-size:13px;">${storeProduct.productInfo}</span>
+                                            <span style="display:block; font-size:13px;">Description: ${storeProduct.productInfo}</span>
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
-                                            <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}%</span>
+                                            <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>

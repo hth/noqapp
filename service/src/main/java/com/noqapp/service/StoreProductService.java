@@ -72,7 +72,7 @@ public class StoreProductService {
     public int bulkUpdateStoreProduct(InputStream in, String codeQR, String qid) {
         try {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-            List<StoreProductEntity> storeProducts = fileService.processStoreProductCSVFile(in, bizStore.getId());
+            List<StoreProductEntity> storeProducts = fileService.processStoreProductCSVFile(in, bizStore);
             if (!storeProducts.isEmpty()) {
                 transactionService.bulkProductUpdate(storeProducts, bizStore.getId(), qid);
             }
@@ -94,6 +94,6 @@ public class StoreProductService {
     public File bulkStoreProductCSVFile(String codeQR) throws IOException {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStore.getId());
-        return fileService.populateStoreProductCSVFile(storeProducts, bizStore.getId(), bizStore.getDisplayName());
+        return fileService.populateStoreProductCSVFile(storeProducts, bizStore);
     }
 }

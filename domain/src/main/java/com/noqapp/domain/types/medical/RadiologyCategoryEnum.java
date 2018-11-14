@@ -51,7 +51,7 @@ public enum RadiologyCategoryEnum {
         return a;
     }
 
-    public static Map<String, String> asMap() {
+    public static Map<String, String> asMapWithNameAsKey() {
         return new LinkedHashMap<String, String>() {{
             put(CDU.name, CDU.description);
             put(CAT.name, CAT.description);
@@ -62,6 +62,20 @@ public enum RadiologyCategoryEnum {
             put(SON.name, SON.description);
             put(STR.name, STR.description);
             put(XRY.name, XRY.description);
+        }};
+    }
+
+    public static Map<String, String> asMapWithDescriptionAsKey() {
+        return new LinkedHashMap<String, String>() {{
+            put(CDU.description, CDU.name);
+            put(CAT.description, CAT.name);
+            put(ECH.description, ECH.name);
+            put(ECG.description, ECG.name);
+            put(EEG.description, EEG.name);
+            put(MRI.description, MRI.name);
+            put(SON.description, SON.name);
+            put(STR.description, STR.name);
+            put(XRY.description, XRY.name);
         }};
     }
 

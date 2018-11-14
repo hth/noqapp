@@ -10,6 +10,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
+import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.BizService;
@@ -139,27 +140,58 @@ public class StoreProductController {
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.storeProductForm", model.asMap().get("result"));
-            storeProductForm.setStoreProductId((ScrubbedInput) model.asMap().get("storeProductId"));
+            storeProductForm
+                .setStoreProductId((ScrubbedInput) model.asMap().get("storeProductId"))
+                .setStoreCategoryId((ScrubbedInput) model.asMap().get("storeCategoryId"));
         } else {
             redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
         }
 
         Map<String, String> categories;
+        UnitOfMeasurementEnum[] unitOfMeasurements;
+        ProductTypeEnum[] productTypes;
+
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         switch (bizStore.getBusinessType()) {
             case PH:
-                categories = PharmacyCategoryEnum.asMap();
+                categories = PharmacyCategoryEnum.asMapWithNameAsKey();
+                unitOfMeasurements = UnitOfMeasurementEnum.PHARMACY_VALUES;
+                productTypes = ProductTypeEnum.PHARMACY_VALUES;
+
+                storeProductForm
+                    .setProductType(new ScrubbedInput(ProductTypeEnum.PH.name()))
+                    //Defaults to 1
+                    .setPackageSize(new ScrubbedInput(1));
+                break;
+            case RA:
+                categories = RadiologyCategoryEnum.asMapWithNameAsKey();
+                unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
+                productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                storeProductForm
+                    .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                    //Defaults to 1
+                    .setPackageSize(new ScrubbedInput(1))
+                    .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
+                    //Defaults to 1
+                    .setUnitValue(new ScrubbedInput(1));
+                break;
+            case GS:
+                categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+                unitOfMeasurements = UnitOfMeasurementEnum.GROCERY_VALUES;
+                productTypes = ProductTypeEnum.GROCERY_VALUES;
                 break;
             default:
                 categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+                unitOfMeasurements = UnitOfMeasurementEnum.values();
+                productTypes = ProductTypeEnum.values();
         }
         storeProductForm
                 .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
                 .setBizStoreId(storeId)
                 .setStoreProducts(storeProductService.findAll(storeId.getText()))
                 .setCategories(categories)
-                .setProductTypes(ProductTypeEnum.values())
-                .setUnitOfMeasurements(UnitOfMeasurementEnum.values())
+                .setProductTypes(productTypes)
+                .setUnitOfMeasurements(unitOfMeasurements)
                 .setBusinessType(bizStore.getBusinessType());
         return nextPage;
     }
@@ -290,6 +322,7 @@ public class StoreProductController {
         storeProductValidator.validate(storeProductForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("storeProductId", storeProductForm.getStoreProductId());
+            redirectAttrs.addFlashAttribute("storeCategoryId", storeProductForm.getStoreCategoryId());
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
