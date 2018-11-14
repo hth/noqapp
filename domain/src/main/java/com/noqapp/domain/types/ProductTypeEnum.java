@@ -1,5 +1,7 @@
 package com.noqapp.domain.types;
 
+import java.util.EnumSet;
+
 /**
  * Any product that can be available lawfully without prescription. Medicine and Drugs should never be listed. Feel free
  * to extend this list. Might consider adding non-prescription medicine to the list.
@@ -14,7 +16,17 @@ public enum ProductTypeEnum {
     VE("VE", "Vegetarian Food"),
     NV("NV", "Non-Vegetarian Food"),
     EL("EL", "Electronic"),
-    PH("PH", "Pharmacy");
+    PH("PH", "Pharmacy"),
+    RA("RA", "Radiology");
+
+    public static EnumSet<ProductTypeEnum> PHARMACY = EnumSet.of(PH);
+    public static ProductTypeEnum[] PHARMACY_VALUES = {PH};
+    public static EnumSet<ProductTypeEnum> RADIOLOGY = EnumSet.of(RA);
+    public static ProductTypeEnum[] RADIOLOGY_VALUES = {RA};
+    public static EnumSet<ProductTypeEnum> GROCERY = EnumSet.of(GE, OR, FR, GM);
+    public static ProductTypeEnum[] GROCERY_VALUES = {GE, OR, FR, GM};
+    public static EnumSet<ProductTypeEnum> RESTURANT = EnumSet.of(VE, NV);
+    public static ProductTypeEnum[] RESTURANT_VALUES = {VE, NV};
 
     private final String name;
     private final String description;
