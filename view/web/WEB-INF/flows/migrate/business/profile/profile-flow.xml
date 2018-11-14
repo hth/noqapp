@@ -15,7 +15,7 @@
     </on-start>
 
     <action-state id="profileComplete">
-        <evaluate expression="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(businessUserRegistrationStatus)" />
+        <evaluate expression="migrateToBusinessProfileFlowActions.isRegistrationComplete(businessUserRegistrationStatus)" />
         <transition on="complete" to="registrationComplete"/>
         <transition on="in-complete" to="profileCompletion"/>
     </action-state>
