@@ -297,7 +297,7 @@ public class AddQueueSupervisorFlowActions {
         if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
             if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
                 if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
-                    /* Set MANAGER when its a by-pass. */
+                    /* Set MANAGER when its a by-pass. Make sure it matches previous condition. */
                     userProfile.setLevel(UserLevelEnum.S_MANAGER);
                 }
             } else {
