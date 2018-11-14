@@ -256,7 +256,7 @@ public class BizStoreEntity extends BaseEntity {
         if (StringUtils.isNotBlank(area)) {
             String[] split = address.split(area);
             if (split.length > 1) {
-                String address = split[0] + "<br/>";
+                String address = split[0].length() > 0 ? split[0] + "<br/>" : "";
                 /* Compare name of area and town to ignore repeat of it. */
                 if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
                     address += area + ", ";
