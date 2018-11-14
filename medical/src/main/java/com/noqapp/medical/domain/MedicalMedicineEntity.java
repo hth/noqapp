@@ -30,7 +30,7 @@ public class MedicalMedicineEntity extends BaseEntity {
     @Field("MRI")
     private String medicalMedicationReferenceId;
 
-    /** Maps to PharmacyEntity Id. */
+    /** Maps to StoreProduct Id. */
     @NotNull
     @Field("PI")
     private String pharmacyReferenceId;

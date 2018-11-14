@@ -152,7 +152,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline store is not</span>
+                                            <span style="display:block; font-size:13px;">Offline store is not visible</span>
                                         </td>
                                     </tr>
                                     </c:forEach>

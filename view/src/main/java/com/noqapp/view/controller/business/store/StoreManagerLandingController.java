@@ -98,8 +98,7 @@ public class StoreManagerLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         storeManagerForm.populateBusinessTypeMaps(businessUser.getBizName().getBusinessType());
-        List<BusinessUserStoreEntity> businessUserStores =
-                businessUserStoreService.findAllStoreQueueAssociated(queueUser.getQueueUserId());
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreService.findAllStoreQueueAssociated(queueUser.getQueueUserId());
 
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             String codeQR = businessUserStore.getCodeQR();

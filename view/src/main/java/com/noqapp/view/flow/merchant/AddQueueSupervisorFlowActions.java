@@ -175,10 +175,7 @@ public class AddQueueSupervisorFlowActions {
 
                 /* Force email address validation. */
                 if (!userAccount.isAccountValidated()) {
-                    LOG.warn("Force email validation={} quickDataEntryByPassSwitch={}",
-                            userAccount.getUserId(),
-                            quickDataEntryByPassSwitch);
-
+                    LOG.warn("Force email validation={} quickDataEntryByPassSwitch={}", userAccount.getUserId(), quickDataEntryByPassSwitch);
                     userAccount.setAccountValidated(true);
                     accountService.save(userAccount);
                 }
@@ -244,7 +241,7 @@ public class AddQueueSupervisorFlowActions {
                     break;
                 }
 
-                LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
+                LOG.warn("Failed invite for qid={} with role={} and is invited by business name={} id={}",
                         userProfile.getQueueUserId(),
                         userProfile.getLevel(),
                         bizStore.getBizName().getBusinessName(),

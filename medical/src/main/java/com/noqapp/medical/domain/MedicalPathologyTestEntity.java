@@ -30,7 +30,7 @@ public class MedicalPathologyTestEntity extends BaseEntity {
     @Field("PRI")
     private String medicalPathologyReferenceId;
 
-    /** Maps to PathologyEntity Id. */
+    /** Maps to StoreProduct Id. */
     @NotNull
     @Field("PI")
     private String pathologyReferenceId;
