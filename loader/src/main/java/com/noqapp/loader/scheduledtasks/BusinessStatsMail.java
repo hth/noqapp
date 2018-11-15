@@ -131,10 +131,11 @@ public class BusinessStatsMail {
 
                             for (StatsBizStoreDailyEntity statsBizStoreDaily : statsBizStores) {
                                 BizStoreEntity bizStore = bizStoreManager.getById(statsBizStoreDaily.getBizStoreId());
-                                LOG.info("{} {} {} since={}",
+                                LOG.info("Loaded stats for bizStore={} businessName={} totalCustomerRated={} clients={} since={}",
                                     bizStore.getDisplayName(),
                                     bizStore.getBizName().getBusinessName(),
                                     statsBizStoreDaily.getTotalCustomerRated(),
+                                    statsBizStoreDaily.getTotalClient(),
                                     since);
 
                                 storeName = bizStore.getDisplayName();
@@ -175,12 +176,14 @@ public class BusinessStatsMail {
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
 
                                     List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.S_MANAGER);
+                                    LOG.info("Found business users size={} {} storeTotalClient={}", businessUsers.size(), businessUsers, storeTotalClient);
                                     for (BusinessUserEntity businessUser : businessUsers) {
                                         mailSentCount.getAndIncrement();
 
                                         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
                                         mailService.sendAnyMail(
-                                            userProfile.getEmail(),
+                                            //TODO replace below with this userProfile.getEmail(),
+                                            "no-reply@noqapp.com",
                                             userProfile.getName(),
                                             storeName + " Daily Summary",
                                             rootMap,
