@@ -57,12 +57,12 @@ public class StoreProductEntity extends BaseEntity {
     @Field("UV")
     private int unitValue;
 
-    /* UnitValue times quantity is package size. Like 3 soap in a package for 50 Rs. Package size is for 3 unit and price is 50. */
-    @Field("PS")
-    private int packageSize;
-
     @Field ("UM")
     private UnitOfMeasurementEnum unitOfMeasurement;
+
+    /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
+    @Field("PS")
+    private int packageSize;
 
     //TODO product description references to html location.
     @Field("PR")
@@ -140,21 +140,21 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public int getPackageSize() {
-        return packageSize;
-    }
-
-    public StoreProductEntity setPackageSize(int packageSize) {
-        this.packageSize = packageSize;
-        return this;
-    }
-
     public UnitOfMeasurementEnum getUnitOfMeasurement() {
         return unitOfMeasurement;
     }
 
     public StoreProductEntity setUnitOfMeasurement(UnitOfMeasurementEnum unitOfMeasurement) {
         this.unitOfMeasurement = unitOfMeasurement;
+        return this;
+    }
+
+    public int getPackageSize() {
+        return packageSize;
+    }
+
+    public StoreProductEntity setPackageSize(int packageSize) {
+        this.packageSize = packageSize;
         return this;
     }
 
@@ -206,8 +206,8 @@ public class StoreProductEntity extends BaseEntity {
             .setStoreCategoryId(jsonStoreProduct.getStoreCategoryId())
             .setProductType(jsonStoreProduct.getProductType())
             .setUnitValue(jsonStoreProduct.getUnitValue())
-            .setPackageSize(jsonStoreProduct.getPackageSize())
-            .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement());
+            .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement())
+            .setPackageSize(jsonStoreProduct.getPackageSize());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
         return storeProduct;
@@ -231,9 +231,9 @@ public class StoreProductEntity extends BaseEntity {
             ", productInfo='" + productInfo + '\'' +
             ", storeCategoryId='" + storeCategoryId + '\'' +
             ", productType=" + productType +
-            ", unitValue='" + unitValue + '\'' +
-            ", packageSize='" + packageSize + '\'' +
+            ", unitValue=" + unitValue +
             ", unitOfMeasurement=" + unitOfMeasurement +
+            ", packageSize=" + packageSize +
             ", productReference='" + productReference + '\'' +
             ", id='" + id + '\'' +
             '}';
