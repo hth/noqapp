@@ -160,10 +160,21 @@
                                 <div class="col-lable3">
                                     <form:label path="gender" cssErrorClass="lb_error">Gender</form:label>
                                 </div>
+
+                                <c:choose>
+                                <c:when test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <div class="col-fields pT10 pB10">
                                     <form:radiobutton path="gender" value="M" label="Male"/> &nbsp; &nbsp;
                                     <form:radiobutton path="gender" value="F" label="Female"/>
                                 </div>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="col-fields pT10 pB10">
+                                    <form:radiobutton path="gender" value="M" label="Male" disabled="true"/> &nbsp; &nbsp;
+                                    <form:radiobutton path="gender" value="F" label="Female" disabled="true"/>
+                                </div>
+                                </c:otherwise>
+                                </c:choose>
                                 <div class="clearFix"></div>
                             </li>
                             <li>
