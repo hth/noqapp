@@ -613,8 +613,8 @@ public class FileService {
                     .setBizStoreId(bizStore.getId())
                     .setStoreCategoryId(storeCategoryId)
                     .setProductName(record.get("Name"))
-                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
-                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                     .setProductInfo(record.get("Info"))
                     .setUnitValue(1)
                     .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
@@ -625,7 +625,7 @@ public class FileService {
             case PH:
                 UnitOfMeasurementEnum unitOfMeasurementEnum;
                 try {
-                    unitOfMeasurementEnum = UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
+                    unitOfMeasurementEnum = StringUtils.isBlank(record.get("Measurement")) ? null : UnitOfMeasurementEnum.valueOf(record.get("Measurement"));
                 } catch (IllegalArgumentException e) {
                     LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
                     throw new CSVProcessingException("Error at line " + record.getRecordNumber() + ". Could not understand Unit " + record.get("Measurement"));
@@ -635,12 +635,12 @@ public class FileService {
                     .setBizStoreId(bizStore.getId())
                     .setStoreCategoryId(storeCategoryId)
                     .setProductName(record.get("Name"))
-                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
-                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                     .setProductInfo(record.get("Info"))
-                    .setUnitValue(Integer.parseInt(record.get("Unit")))
+                    .setUnitValue(StringUtils.isBlank(record.get("Unit")) ? 0 : Integer.parseInt(record.get("Unit")))
                     .setUnitOfMeasurement(unitOfMeasurementEnum)
-                    .setPackageSize(Integer.parseInt(record.get("Package Size")))
+                    .setPackageSize(StringUtils.isBlank(record.get("Package Size")) ? 1 : Integer.parseInt(record.get("Package Size")))
                     .setProductType(ProductTypeEnum.PH)
                     .setProductReference(record.get("Reference"));
                 break;
@@ -664,8 +664,8 @@ public class FileService {
                     .setBizStoreId(bizStore.getId())
                     .setStoreCategoryId(storeCategoryId)
                     .setProductName(record.get("Name"))
-                    .setProductPrice(Integer.parseInt(record.get("Price")) * 100)
-                    .setProductDiscount(Integer.parseInt(record.get("Discount")) * 100)
+                    .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                    .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                     .setProductInfo(record.get("Info"))
                     .setUnitValue(Integer.parseInt(record.get("Unit")))
                     .setUnitOfMeasurement(unitOfMeasurementEnum)
@@ -718,7 +718,7 @@ public class FileService {
                                 storeProduct.getProductDiscount() / 100,
                                 storeProduct.getProductInfo(),
                                 storeProduct.getUnitValue(),
-                                storeProduct.getUnitOfMeasurement().name(),
+                                null == storeProduct.getUnitOfMeasurement() ? "" : storeProduct.getUnitOfMeasurement().name(),
                                 storeProduct.getPackageSize(),
                                 storeProduct.getId(),
                                 storeProduct.getProductReference()
@@ -741,7 +741,7 @@ public class FileService {
                                 storeProduct.getProductInfo(),
                                 storeProduct.getProductType().name(),
                                 storeProduct.getUnitValue(),
-                                storeProduct.getUnitOfMeasurement().name(),
+                                null == storeProduct.getUnitOfMeasurement() ? "" : storeProduct.getUnitOfMeasurement().name(),
                                 storeProduct.getPackageSize(),
                                 storeProduct.getId(),
                                 storeProduct.getProductReference()
