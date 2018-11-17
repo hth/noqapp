@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -11,6 +12,7 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
+import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MailService;
@@ -55,6 +57,7 @@ public class BusinessStatsMail {
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
     private MailService mailService;
     private BusinessUserManager businessUserManager;
+    private BusinessUserStoreManager businessUserStoreManager;
     private UserProfileManager userProfileManager;
     private StatsCronService statsCronService;
 
@@ -68,6 +71,7 @@ public class BusinessStatsMail {
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         MailService mailService,
         BusinessUserManager businessUserManager,
+        BusinessUserStoreManager businessUserStoreManager,
         UserProfileManager userProfileManager,
         StatsCronService statsCronService
     ) {
@@ -78,6 +82,7 @@ public class BusinessStatsMail {
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.mailService = mailService;
         this.businessUserManager = businessUserManager;
+        this.businessUserStoreManager = businessUserStoreManager;
         this.userProfileManager = userProfileManager;
         this.statsCronService = statsCronService;
     }
@@ -175,12 +180,12 @@ public class BusinessStatsMail {
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
 
-                                    List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.S_MANAGER);
-                                    LOG.info("Found business users size={} {} storeTotalClient={}", businessUsers.size(), businessUsers, storeTotalClient);
-                                    for (BusinessUserEntity businessUser : businessUsers) {
+                                    List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
+                                    LOG.info("Found business users size={} {} storeTotalClient={}", businessUserStores.size(), businessUserStores, storeTotalClient);
+                                    for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
                                         mailSentCount.getAndIncrement();
 
-                                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
+                                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
                                         mailService.sendAnyMail(
                                             //TODO replace below with this userProfile.getEmail(),
                                             "no-reply@noqapp.com",
