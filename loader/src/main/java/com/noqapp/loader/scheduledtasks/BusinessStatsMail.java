@@ -187,8 +187,7 @@ public class BusinessStatsMail {
 
                                         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
                                         mailService.sendAnyMail(
-                                            //TODO replace below with this userProfile.getEmail(),
-                                            "no-reply@noqapp.com",
+                                            userProfile.getEmail(),
                                             userProfile.getName(),
                                             storeName + " Daily Summary",
                                             rootMap,
