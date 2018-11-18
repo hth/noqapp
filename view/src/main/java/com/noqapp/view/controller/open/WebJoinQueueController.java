@@ -142,7 +142,7 @@ public class WebJoinQueueController {
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
         int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
-        LOG.info("Requester originator time is {} ipAddress={} codeQRDecoded={}", requesterTime, ipAddress, codeQRDecoded);
+        LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={}", requesterTime, ipAddress, codeQRDecoded);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
         Map<String, Object> rootMap = new HashMap<>();
@@ -224,11 +224,7 @@ public class WebJoinQueueController {
             }
         }
 
-        LOG.warn(
-                "404 request access={} header={}",
-                joinQueueConfirmPage,
-                HttpRequestResponseParser.printHeader(request)
-        );
+        LOG.warn("404 request access={} header={}", joinQueueConfirmPage, HttpRequestResponseParser.printHeader(request));
         response.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
     }
@@ -267,7 +263,7 @@ public class WebJoinQueueController {
                 String did = UUID.randomUUID().toString();
 
                 RegisteredDeviceEntity registeredDevice = null;
-                if (userProfile != null) {
+                if (null != userProfile) {
                     registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
                     if (null != registeredDevice) {
                         did = registeredDevice.getDeviceId();
