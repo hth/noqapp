@@ -189,9 +189,9 @@ public class StoreProductEntity extends BaseEntity {
             + productName + ","
             + (StringUtils.isBlank(productInfo) ? "" : productInfo) + ","
             + (StringUtils.isBlank(storeCategoryId) ? "" : storeCategoryId) + ","
-            + productType.name() + ","
+            + (productType == null ? "" : productType.name()) + ","
             + unitValue + ","
-            + unitOfMeasurement.getName() + ",";
+            + (unitOfMeasurement == null ? "" : unitOfMeasurement.getName()) + ",";
     }
 
     @Transient

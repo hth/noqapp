@@ -382,8 +382,7 @@ project(':loader') {
     jar.baseName = baseName + '-loader'
 
     dependencies {
-        compile project(':common'),
-                project(':service')
+        compile project(':medical')
 
         providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
     }
