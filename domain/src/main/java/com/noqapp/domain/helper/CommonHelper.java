@@ -60,6 +60,7 @@ public class CommonHelper {
                 return InvocationByEnum.BUSINESS == invocationBy
                     ? null
                     : RadiologyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
+            case PT:
             case RS:
             case BA:
             case ST:
