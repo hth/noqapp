@@ -522,7 +522,7 @@ public class FileService {
         return null;
     }
 
-    private void createTarGZ(File csv, File tar, String fileName) throws IOException {
+    public void createTarGZ(File csv, File tar, String fileName) throws IOException {
         TarArchiveOutputStream tarOut = null;
         try {
             tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(tar))));
@@ -547,6 +547,7 @@ public class FileService {
         tOut.closeArchiveEntry();
     }
 
+    /** Process bulk upload of CSV file for a store. */
     List<StoreProductEntity> processStoreProductCSVFile(InputStream in, BizStoreEntity bizStore) {
         try {
             Iterable<CSVRecord> records;
@@ -591,7 +592,7 @@ public class FileService {
                 }
 
                 try {
-                    StoreProductEntity storeProduct = getStoreProductEntity(bizStore, record, storeCategoryId);
+                    StoreProductEntity storeProduct = getStoreProductEntityFromCSV(bizStore, record, storeCategoryId);
                     storeProducts.add(storeProduct);
                 } catch (Exception e) {
                     LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
@@ -605,7 +606,7 @@ public class FileService {
         }
     }
 
-    private StoreProductEntity getStoreProductEntity(BizStoreEntity bizStore, CSVRecord record, String storeCategoryId) {
+    private StoreProductEntity getStoreProductEntityFromCSV(BizStoreEntity bizStore, CSVRecord record, String storeCategoryId) {
         StoreProductEntity storeProduct = new StoreProductEntity();
         switch (bizStore.getBusinessType()) {
             case RA:
@@ -681,6 +682,7 @@ public class FileService {
         return storeProduct;
     }
 
+    /** Write to CSV file. */
     File populateStoreProductCSVFile(List<StoreProductEntity> storeProducts, BizStoreEntity bizStore) throws IOException {
         List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStore.getId());
         Map<String, String> map = new HashMap<>();
