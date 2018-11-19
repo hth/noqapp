@@ -30,8 +30,7 @@ class MedicalMasterServiceITest extends ITest {
     void setUp() {
         medicalMasterService = new MedicalMasterService(
             masterPathologyManager,
-            masterRadiologyManager,
-            fileService);
+            masterRadiologyManager);
     }
 
     @Test
