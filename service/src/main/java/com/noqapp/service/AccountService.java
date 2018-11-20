@@ -568,8 +568,10 @@ public class AccountService {
         userProfile.setGender(registerUser.getGender());
         userProfile.setAddress(registerUser.getAddress());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
-        userProfile.setPhone(registerUser.getPhoneWithCountryCode());
-        userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
+        if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
+            userProfile.setPhone(registerUser.getPhoneWithCountryCode());
+            userProfile.setPhoneRaw(Formatter.phoneStripCountryCode(registerUser.getPhoneNotFormatted()));
+        }
         userProfile.setTimeZone(registerUser.getTimeZone());
         userProfile.setBirthday(registerUser.getBirthday());
         userProfile.setAddressOrigin(registerUser.getAddressOrigin());
