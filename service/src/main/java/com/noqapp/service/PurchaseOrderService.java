@@ -317,6 +317,7 @@ public class PurchaseOrderService {
         doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
         jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
             .setToken(purchaseOrder.getTokenNumber())
+            .setServingNumber(jsonToken.getServingNumber())
             .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
             .setTransactionId(purchaseOrder.getTransactionId())
             .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
