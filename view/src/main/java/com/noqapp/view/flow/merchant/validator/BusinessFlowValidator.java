@@ -11,7 +11,6 @@ import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
@@ -409,20 +408,25 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        /* This piece of code is not required as we have moved away from having business category. */
-        if (registerBusiness.getStoreBusinessType() != BusinessTypeEnum.DO && registerBusiness.getStoreBusinessType() != BusinessTypeEnum.BK) {
-            if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
-                if (!Validate.isValidObjectId(registerBusiness.getBizCategoryId())) {
-                    LOG.error("BizCategoryId should be ObjectId but its {}", registerBusiness.getBizCategoryId());
-                    messageContext.addMessage(
-                        new MessageBuilder()
-                            .error()
-                            .source(source + "bizCategoryId")
-                            .defaultText("Internal error on Category. Please contact support.")
-                            .build());
-                    status = "failure";
+        /* Checks if has self defined business category or system defined. DO, BK and HS has system defined. */
+        switch(registerBusiness.getStoreBusinessType()) {
+            case DO:
+            case BK:
+            case HS:
+                break;
+            default:
+                if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
+                    if (!Validate.isValidObjectId(registerBusiness.getBizCategoryId())) {
+                        LOG.error("BizCategoryId should be ObjectId but its {}", registerBusiness.getBizCategoryId());
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "bizCategoryId")
+                                .defaultText("Internal error on Category. Please contact support.")
+                                .build());
+                        status = "failure";
+                    }
                 }
-            }
         }
 
         return status;

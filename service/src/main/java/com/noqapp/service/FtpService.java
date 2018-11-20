@@ -42,8 +42,10 @@ public class FtpService {
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + "medical";
-    public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL};
+
+    public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
+    public static String MASTER_MEDICAL = FileUtil.getFileSeparator() + "masterMedical";
 
     @Value("${fileserver.ftp.host}")
     private String host;
@@ -65,8 +67,9 @@ public class FtpService {
     }
 
     public InputStream getFileAsInputStream(String filename, String directory, String parentDirectory) {
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
-            FileContent fileContent = getFileContent(filename, directory, parentDirectory);
+            FileContent fileContent = getFileContent(filename, directory, parentDirectory, manager);
             if (fileContent != null) {
                 return fileContent.getInputStream();
             }
@@ -75,12 +78,12 @@ public class FtpService {
         } catch (FileSystemException e) {
             LOG.error("Failed to get file={} reason={}", filename, e.getLocalizedMessage(), e);
             return null;
+        } finally {
+            manager.close();
         }
     }
 
-    public FileContent getFileContent(String filename, String codeQR, String parentDirectory) {
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
-
+    public FileContent getFileContent(String filename, String codeQR, String parentDirectory, DefaultFileSystemManager manager) {
         try {
             String filePath;
             if (StringUtils.isBlank(codeQR)) {
@@ -117,7 +120,28 @@ public class FtpService {
         }
     }
 
-    void upload(String filename, String directory, String parent) {
+    public boolean deleteAllFilesInDirectory(String directory) {
+        Assert.isTrue(directory.startsWith(FileUtil.getFileSeparator()), "should start with file path");
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
+
+        try {
+            manager.init();
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory), fileSystemOptions);
+            LOG.info("Found directory={} status={}", directory, remoteFile.exists());
+            FileObject[] fileObjects = remoteFile.getChildren();
+            for (FileObject fileObject : fileObjects) {
+                fileObject.delete();
+            }
+            return true;
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", directory, e.getLocalizedMessage(), e);
+            return false;
+        } finally {
+            manager.close();
+        }
+    }
+
+    public void upload(String filename, String directory, String parent) {
         File file = new File(FileUtils.getTempDirectoryPath() + File.separator + filename);
         if (!file.exists()) {
             throw new RuntimeException("Error. Local file not found");
@@ -133,9 +157,23 @@ public class FtpService {
             /* Create remote file object. */
             FileObject remoteFile;
             if (StringUtils.isBlank(directory)) {
-                remoteFile = manager.resolveFile(createConnectionString(ftpLocation + parent + FileUtil.getFileSeparator() + filename), fileSystemOptions);
+                remoteFile = manager.resolveFile(
+                    createConnectionString(
+                        ftpLocation
+                            + parent
+                            + FileUtil.getFileSeparator()
+                            + filename),
+                    fileSystemOptions);
             } else {
-                remoteFile = manager.resolveFile(createConnectionString(ftpLocation + parent + FileUtil.getFileSeparator() + directory + FileUtil.getFileSeparator() + filename), fileSystemOptions);
+                String directoryWithPathSeparator = directory.startsWith(FileUtil.getFileSeparator()) ? directory : FileUtil.getFileSeparator() + directory;
+                remoteFile = manager.resolveFile(
+                    createConnectionString(
+                        ftpLocation
+                            + parent
+                            + directoryWithPathSeparator
+                            + FileUtil.getFileSeparator()
+                            + filename),
+                    fileSystemOptions);
             }
 
             /* Copy local file to sftp server. */
@@ -205,7 +243,7 @@ public class FtpService {
         }
     }
 
-    boolean existFolder(String folderName) {
+    public boolean existFolder(String folderName) {
         DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {

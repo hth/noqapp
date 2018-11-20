@@ -22,6 +22,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
+import org.apache.commons.vfs2.impl.StandardFileSystemManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +112,7 @@ public class FileOperationOnS3 {
                 "profileUpload",
                 profileUploadSwitch);
 
-        /**
+        /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
@@ -129,11 +131,13 @@ public class FileOperationOnS3 {
         }
 
         int success = 0, failure = 0;
+        /* Moved manager initialization here to manage FileContent failure. */
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
+            manager.init();
             for (FileObject document : fileObjects) {
                 try {
-                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE);
-
+                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE, manager);
                     ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
                     success = uploadToS3(
                             success,
@@ -180,6 +184,7 @@ public class FileOperationOnS3 {
         } catch (Exception e) {
             LOG.error("Error S3 uploading profile reason={}", e.getLocalizedMessage(), e);
         } finally {
+            manager.close();
             if (0 != success || 0 != failure) {
                 statsCron.addStats("found", success + failure);
                 statsCron.addStats("success", success);
@@ -218,12 +223,14 @@ public class FileOperationOnS3 {
         }
 
         int success = 0, failure = 0;
+        /* Moved manager initialization here to manage FileContent failure. */
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
+            manager.init();
             for (FileObject document : fileObjects) {
                 for (FileObject fileObject : document.getChildren()) {
                     try {
-                        FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
-
+                        FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE, manager);
                         ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
                         success = uploadToS3(
                                 success,
@@ -271,6 +278,7 @@ public class FileOperationOnS3 {
         } catch (Exception e) {
             LOG.error("Error S3 uploading service reason={}", e.getLocalizedMessage(), e);
         } finally {
+            manager.close();
             if (0 != success || 0 != failure) {
                 statsCron.addStats("found", success + failure);
                 statsCron.addStats("success", success);
