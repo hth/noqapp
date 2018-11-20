@@ -12,13 +12,16 @@ import java.util.Map;
  */
 public enum RadiologyCategoryEnum {
     CDU("CDU", "Color Doppler"),
-    CAT("CAT", "CT Scan"),
+    SON("SON", "Sonography"),
+
     ECH("ECH", "ECHO"),
     ECG("ECG", "ECG"),
     EEG("EEG", "EEG"),
-    MRI("MRI", "MRI"),
-    SON("SON", "Sonography"),
     STR("STR", "Stress"),
+
+    CAT("CAT", "CT Scan"),
+    PET("PET", "PET Scan"),
+    MRI("MRI", "MRI"),
     XRY("XRY", "X-Ray");
 
     private final String description;

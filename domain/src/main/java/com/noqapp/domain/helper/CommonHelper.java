@@ -6,6 +6,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
@@ -50,6 +51,16 @@ public class CommonHelper {
                     map.put(bankDepartment.name(), bankDepartment.getDescription());
                 }
                 return map;
+            case HS:
+                List<HealthCareServiceEnum> healthCareServiceEnums = Stream.of(HealthCareServiceEnum.values())
+                    .sorted(Comparator.comparing(HealthCareServiceEnum::getDescription))
+                    .collect(Collectors.toList());
+
+                map = new LinkedHashMap<>();
+                for (HealthCareServiceEnum healthCareService : healthCareServiceEnums) {
+                    map.put(healthCareService.name(), healthCareService.getDescription());
+                }
+                return map;
             case PH:
                 /* Pharmacy does not have category at business level, but at store level. */
                 return InvocationByEnum.BUSINESS == invocationBy
@@ -61,6 +72,7 @@ public class CommonHelper {
                     ? null
                     : RadiologyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
             case PT:
+            case PY:
             case RS:
             case BA:
             case ST:

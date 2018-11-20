@@ -20,6 +20,7 @@ public enum BusinessTypeEnum {
     GS("GS", "Grocery Store", O),
     CF("CF", "Cafe", O),
     DO("DO", "Hospital/Doctor", Q),
+    HS("HS", "Health Care Services", O),
     PH("PH", "Pharmacy", O),                //Users cannot directly order these, as these have to be prescribed
     RA("RA", "Radiology", O),               //Users cannot directly order these, as these have to be prescribed
     PY("PY", "Physiotherapy", O),           //Users cannot directly order these, as these have to be prescribed
