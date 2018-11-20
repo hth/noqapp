@@ -569,6 +569,7 @@ public class AccountService {
         userProfile.setAddress(registerUser.getAddress());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
+            /* Fix to make sure county code is not appended to Phone Raw. */
             userProfile.setPhone(registerUser.getPhoneWithCountryCode());
             userProfile.setPhoneRaw(Formatter.phoneStripCountryCode(registerUser.getPhoneNotFormatted()));
         }
