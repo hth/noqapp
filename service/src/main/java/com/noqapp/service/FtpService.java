@@ -67,8 +67,9 @@ public class FtpService {
     }
 
     public InputStream getFileAsInputStream(String filename, String directory, String parentDirectory) {
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
-            FileContent fileContent = getFileContent(filename, directory, parentDirectory);
+            FileContent fileContent = getFileContent(filename, directory, parentDirectory, manager);
             if (fileContent != null) {
                 return fileContent.getInputStream();
             }
@@ -77,12 +78,12 @@ public class FtpService {
         } catch (FileSystemException e) {
             LOG.error("Failed to get file={} reason={}", filename, e.getLocalizedMessage(), e);
             return null;
+        } finally {
+            manager.close();
         }
     }
 
-    public FileContent getFileContent(String filename, String codeQR, String parentDirectory) {
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
-
+    public FileContent getFileContent(String filename, String codeQR, String parentDirectory, DefaultFileSystemManager manager) {
         try {
             String filePath;
             if (StringUtils.isBlank(codeQR)) {
@@ -116,6 +117,27 @@ public class FtpService {
         } catch (FileSystemException e) {
             LOG.error("Failed to get directory={} reason={}", directory, e.getLocalizedMessage(), e);
             return null;
+        }
+    }
+
+    public boolean deleteAllFilesInDirectory(String directory) {
+        Assert.isTrue(directory.startsWith(FileUtil.getFileSeparator()), "should start with file path");
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
+
+        try {
+            manager.init();
+            FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory), fileSystemOptions);
+            LOG.info("Found directory={} status={}", directory, remoteFile.exists());
+            FileObject[] fileObjects = remoteFile.getChildren();
+            for (FileObject fileObject : fileObjects) {
+                fileObject.delete();
+            }
+            return true;
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", directory, e.getLocalizedMessage(), e);
+            return false;
+        } finally {
+            manager.close();
         }
     }
 

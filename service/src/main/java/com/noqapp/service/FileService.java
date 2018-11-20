@@ -493,10 +493,7 @@ public class FileService {
         createTarGZ(pathOfCSV.toFile(), tar,  fileName);
 
         /* Clean up existing file before uploading. */
-        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
-        for (FileObject fileObject : fileObjects) {
-            fileObject.delete();
-        }
+        ftpService.deleteAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
         ftpService.upload(tar.getName(), bizStoreId, PREFERRED_STORE);
 
         tar.delete();

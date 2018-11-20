@@ -11,8 +11,6 @@ import com.noqapp.medical.domain.MasterRadiologyEntity;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
 
-import org.apache.commons.vfs2.FileObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,10 +92,7 @@ public class MedicalFileService {
         fileService.createTarGZ(pathOfCSV.toFile(), tar,  fileName);
 
         /* Clean up existing file before uploading. */
-        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(MASTER_MEDICAL + "/" + businessType.name() + "/" + medicalDepartment.name());
-        for (FileObject fileObject : fileObjects) {
-            fileObject.delete();
-        }
+        ftpService.deleteAllFilesInDirectory(MASTER_MEDICAL + "/" + businessType.name() + "/" + medicalDepartment.name());
         ftpService.upload(tar.getName(), "/" + businessType.name() + "/" + medicalDepartment.name(), MASTER_MEDICAL);
 
         tar.delete();
