@@ -134,6 +134,7 @@ public class FileOperationOnS3 {
         /* Moved manager initialization here to manage FileContent failure. */
         DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
+            manager.init();
             for (FileObject document : fileObjects) {
                 try {
                     FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE, manager);
@@ -225,6 +226,7 @@ public class FileOperationOnS3 {
         /* Moved manager initialization here to manage FileContent failure. */
         DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
+            manager.init();
             for (FileObject document : fileObjects) {
                 for (FileObject fileObject : document.getChildren()) {
                     try {
