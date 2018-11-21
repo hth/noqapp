@@ -103,7 +103,8 @@
                                                 || BusinessTypeEnum.PH eq store.businessType
                                                 || BusinessTypeEnum.RA eq store.businessType
                                                 || BusinessTypeEnum.PY eq store.businessType
-                                                || BusinessTypeEnum.PT eq store.businessType}">
+                                                || BusinessTypeEnum.PT eq store.businessType
+                                                || BusinessTypeEnum.HS eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #1c1c1c;">Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
                                                         <a href="/business/store/category/${store.id}.htm" style="color: #1c1c1c;">Store Category</a>
@@ -116,7 +117,7 @@
                                                         <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
                                                     </span>
                                                 </c:when>
-                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
+                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType || BusinessTypeEnum.HS eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
                                                     </span>
