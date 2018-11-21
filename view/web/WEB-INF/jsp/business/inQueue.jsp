@@ -118,7 +118,7 @@
                                             <c:if test="${!empty jsonQueuedPerson.minors}">
 
                                             <c:forEach items="${jsonQueuedPerson.minors}" var="minor">
-                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;${minor.customerName} ${minor.gender} ${minor.age} yrs</span>
+                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;${minor.customerName} ${minor.gender} ${minor.age}</span>
                                             </c:forEach>
 
                                             </c:if>

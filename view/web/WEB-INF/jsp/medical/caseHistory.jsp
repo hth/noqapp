@@ -60,7 +60,7 @@
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0; text-align: center; width: 100%; float: none;">
-                                <span style="display:block; font-size:13px;">${medicalRecordForm.gender} ${medicalRecordForm.age} yrs</span>
+                                <span style="display:block; font-size:13px;">${medicalRecordForm.gender} ${medicalRecordForm.age}</span>
 
                                 <c:if test="${!empty medicalRecordForm.guardianName}">
                                 <span style="display:block; font-size:13px;">Guardian Name: ${medicalRecordForm.guardianName}, Phone: ${medicalRecordForm.guardianPhoneFormatted}</span>
