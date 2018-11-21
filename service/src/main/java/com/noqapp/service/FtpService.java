@@ -69,6 +69,7 @@ public class FtpService {
     public InputStream getFileAsInputStream(String filename, String directory, String parentDirectory) {
         DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
+            manager.init();
             FileContent fileContent = getFileContent(filename, directory, parentDirectory, manager);
             if (fileContent != null) {
                 return fileContent.getInputStream();
@@ -83,6 +84,7 @@ public class FtpService {
         }
     }
 
+    /** Manager is already initialized. */
     public FileContent getFileContent(String filename, String codeQR, String parentDirectory, DefaultFileSystemManager manager) {
         try {
             String filePath;
@@ -92,7 +94,6 @@ public class FtpService {
                 filePath = ftpLocation + parentDirectory + FileUtil.getFileSeparator() + codeQR + FileUtil.getFileSeparator() + filename;
             }
 
-            manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(filePath), fileSystemOptions);
             if (remoteFile.exists() && remoteFile.isFile()) {
                 return remoteFile.getContent();
