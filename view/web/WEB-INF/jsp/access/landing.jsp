@@ -99,7 +99,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             </td>
-                                            <td>Age ${profile.age} yr</td>
+                                            <td>Age ${profile.ageAsString}</td>
                                         </tr>
                                         </c:forEach>
                                     </table>

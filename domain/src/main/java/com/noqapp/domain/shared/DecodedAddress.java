@@ -7,11 +7,11 @@ import com.google.maps.model.GeocodingResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 /**

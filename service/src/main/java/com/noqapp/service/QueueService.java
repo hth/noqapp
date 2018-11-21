@@ -289,7 +289,7 @@ public class QueueService {
                                 .setGuardianPhone(queue.getCustomerPhone())
                                 .setGuardianQueueUserId(queue.getQueueUserId())
                                 .setQueueUserState(queue.getQueueUserState())
-                                .setAge(userProfile.getAge())
+                                .setAge(userProfile.getAgeAsString())
                                 .setGender(userProfile.getGender()));
                     }
 
@@ -302,7 +302,7 @@ public class QueueService {
                             .setGuardianPhone(queue.getCustomerPhone())
                             .setGuardianQueueUserId(queue.getQueueUserId())
                             .setQueueUserState(queue.getQueueUserState())
-                            .setAge(guardianProfile.getAge())
+                            .setAge(guardianProfile.getAgeAsString())
                             .setGender(guardianProfile.getGender()));
                 }
             }

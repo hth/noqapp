@@ -16,8 +16,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -338,17 +336,6 @@ public class UserProfileEntity extends BaseEntity {
         } else {
             return WordUtils.initials(getEmail()) + "@";
         }
-    }
-
-    /* Use getAgeAsString. */
-    @Deprecated
-    @Transient
-    public long getAge() {
-        if (StringUtils.isNotBlank(birthday)) {
-            return ChronoUnit.YEARS.between(LocalDate.parse(birthday), LocalDate.now());
-        }
-
-        return 0;
     }
 
     @Transient

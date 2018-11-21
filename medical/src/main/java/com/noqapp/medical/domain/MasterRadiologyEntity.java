@@ -3,12 +3,12 @@ package com.noqapp.medical.domain;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 

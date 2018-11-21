@@ -3,12 +3,12 @@ package com.noqapp.domain;
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonNameDatePair;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
