@@ -127,7 +127,7 @@ public class MedicalRecordController {
                         .setCodeQR(new ScrubbedInput(queue.getCodeQR()))
                         .setPatientName(userProfile.getName())
                         .setGender(userProfile.getGender())
-                        .setAge(userProfile.getAge());
+                        .setAge(userProfile.getAgeAsString());
 
                 if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                     UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
