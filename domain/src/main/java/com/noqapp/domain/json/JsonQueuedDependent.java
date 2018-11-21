@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.Transient;
+import org.springframework.data.annotation.Transient;
+
 import java.util.Base64;
 
 /**
@@ -54,8 +55,9 @@ public class JsonQueuedDependent extends AbstractDomain {
     @JsonProperty ("qu")
     private QueueUserStateEnum queueUserState;
 
+    /* Format: 15+ days. */
     @JsonProperty ("age")
-    private long age;
+    private String age;
 
     @JsonProperty ("g")
     private GenderEnum gender;
@@ -114,11 +116,11 @@ public class JsonQueuedDependent extends AbstractDomain {
         return this;
     }
 
-    public long getAge() {
+    public String getAge() {
         return age;
     }
 
-    public JsonQueuedDependent setAge(long age) {
+    public JsonQueuedDependent setAge(String age) {
         this.age = age;
         return this;
     }

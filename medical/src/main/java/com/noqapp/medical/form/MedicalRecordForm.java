@@ -28,7 +28,7 @@ public class MedicalRecordForm {
 
     private String patientName;
     private GenderEnum gender;
-    private long age;
+    private String age;
     private String guardianName;
     private String guardianPhone;
 
@@ -92,11 +92,11 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public long getAge() {
+    public String getAge() {
         return age;
     }
 
-    public MedicalRecordForm setAge(long age) {
+    public MedicalRecordForm setAge(String age) {
         this.age = age;
         return this;
     }
