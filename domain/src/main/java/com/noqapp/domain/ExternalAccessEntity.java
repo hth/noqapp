@@ -2,12 +2,12 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.ExternalPermissionEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.util.Base64;
 
 import javax.validation.constraints.NotNull;

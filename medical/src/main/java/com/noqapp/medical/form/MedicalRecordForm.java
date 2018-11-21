@@ -12,7 +12,8 @@ import com.noqapp.medical.domain.MedicalRadiologyEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.beans.Transient;
+import org.springframework.data.annotation.Transient;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

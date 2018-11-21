@@ -15,7 +15,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.Transient;
+import org.springframework.data.annotation.Transient;
+
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;

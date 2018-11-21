@@ -4,9 +4,10 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.MailTypeEnum;
 
+import org.springframework.data.annotation.Transient;
+
 import org.junit.jupiter.api.Assertions;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 /**
