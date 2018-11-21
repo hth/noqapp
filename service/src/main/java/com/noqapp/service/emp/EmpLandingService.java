@@ -114,8 +114,9 @@ public class EmpLandingService {
     }
 
     private void startWithPromotionalPlan(BizNameEntity bizName) {
-        bizName.setBillingPlan(BillingPlanEnum.P)
-                .setBillingStatus(BillingStatusEnum.C);
+        bizName
+            .setBillingPlan(BillingPlanEnum.P)
+            .setBillingStatus(BillingStatusEnum.C);
         bizService.saveName(bizName);
     }
 
