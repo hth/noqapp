@@ -326,7 +326,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public Stream<BizStoreEntity> findAllWithStream() {
-        return mongoTemplate.findAll(BizStoreEntity.class, TABLE).stream();
+        return mongoTemplate.find(
+            query(where("A").is(true).and("D").is(false)),
+            BizStoreEntity.class,
+            TABLE
+        ).stream();
     }
 
     @Override
