@@ -569,7 +569,7 @@ public class AccountService {
         userProfile.setAddress(registerUser.getAddress());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
-            LOG.info("Raw={}, WithCountry={}",
+            LOG.debug("Raw={}, WithCountry={}",
                 Formatter.phoneStripCountryCode(registerUser.getPhoneNotFormatted()),
                 registerUser.getPhoneWithCountryCode());
 
