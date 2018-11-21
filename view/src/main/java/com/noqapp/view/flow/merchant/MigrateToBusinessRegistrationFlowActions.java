@@ -157,6 +157,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
     private void addAvailableFacilities(RegisterBusiness registerBusiness, BusinessTypeEnum businessType, String modelType) {
         switch (businessType) {
+            case HS:
             case DO:
                 switch (modelType) {
                     case "bizName":
@@ -175,14 +176,16 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 registerBusiness.setFacilitiesAvailable(FacilityEnum.RESTAURANT);
                 break;
             default:
-                registerBusiness.addFacilitiesAvailable(FacilityEnum.GROCERY)
-                        .addFacilitiesAvailable(FacilityEnum.RESTAURANT);
+                registerBusiness
+                    .addFacilitiesAvailable(FacilityEnum.GROCERY)
+                    .addFacilitiesAvailable(FacilityEnum.RESTAURANT);
                 break;
         }
     }
 
     private void addAvailableAmenities(RegisterBusiness registerBusiness, BusinessTypeEnum businessType, String modelType) {
         switch (businessType) {
+            case HS:
             case DO:
                 switch (modelType) {
                     case "bizName":
@@ -244,8 +247,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                     ).setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }
                 businessUser
-                        .setBizName(bizName)
-                        .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+                    .setBizName(bizName)
+                    .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
                 businessUserService.save(businessUser);
                 register.getRegisterBusiness().setBusinessUser(businessUser);
