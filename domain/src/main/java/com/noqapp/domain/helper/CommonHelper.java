@@ -9,7 +9,7 @@ import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
-import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -70,7 +70,7 @@ public class CommonHelper {
                 /* Radiology does not have category at business level, but at store level. */
                 return InvocationByEnum.BUSINESS == invocationBy
                     ? null
-                    : RadiologyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
+                    : LabCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
             case PT:
             case PY:
             case RS:

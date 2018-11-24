@@ -1,9 +1,7 @@
 package com.noqapp.medical;
 
-import com.noqapp.medical.repository.MasterPathologyManager;
-import com.noqapp.medical.repository.MasterPathologyManagerImpl;
-import com.noqapp.medical.repository.MasterRadiologyManager;
-import com.noqapp.medical.repository.MasterRadiologyManagerImpl;
+import com.noqapp.medical.repository.MasterLabManager;
+import com.noqapp.medical.repository.MasterLabManagerImpl;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.MockitoAnnotations;
@@ -16,14 +14,12 @@ import java.io.IOException;
  */
 public class ITest extends RealMongoForITest {
 
-    protected MasterPathologyManager masterPathologyManager;
-    protected MasterRadiologyManager masterRadiologyManager;
+    protected MasterLabManager masterLabManager;
 
     @BeforeAll
     public void globalISetup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        masterPathologyManager = new MasterPathologyManagerImpl(getMongoTemplate());
-        masterRadiologyManager = new MasterRadiologyManagerImpl(getMongoTemplate());
+        masterLabManager = new MasterLabManagerImpl(getMongoTemplate());
     }
 }

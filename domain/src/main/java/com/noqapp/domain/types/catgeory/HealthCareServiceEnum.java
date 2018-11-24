@@ -9,9 +9,10 @@ import java.util.List;
  * 11/19/18 4:33 PM
  */
 public enum HealthCareServiceEnum {
-    XRAY("XRAY", "X-Ray"),
+    MRI("MRI", "MRI"),
+    SCAN("SCAN", "CT Scan"),
     SONO("SONO", "Sonography"),
-    CARD("CARD", "Cardiac Services"),
+    XRAY("XRAY", "X-ray"),
     PHYS("PHYS", "Physiotherapy"),
     PATH("PATH", "Pathology");
 

@@ -8,8 +8,9 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
-import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -112,6 +113,51 @@ public class StoreCategoryController {
         Map<String, String> categories;
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         switch (bizStore.getBusinessType()) {
+            case HS:
+                switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
+                    case XRAY:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.XRAY);
+                        storeCategoryForm
+                            .setBizStoreId(storeId)
+                            .setCategories(categories)
+                            .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                            .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                            .setBusinessType(bizStore.getBusinessType());
+                        break;
+                    case SONO:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SONO);
+                        storeCategoryForm
+                            .setBizStoreId(storeId)
+                            .setCategories(categories)
+                            .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                            .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                            .setBusinessType(bizStore.getBusinessType());
+                        break;
+                    case SCAN:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SCAN);
+                        storeCategoryForm
+                            .setBizStoreId(storeId)
+                            .setCategories(categories)
+                            .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                            .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                            .setBusinessType(bizStore.getBusinessType());
+                        break;
+                    case PHYS:
+                        break;
+                    case PATH:
+                        categories = LabCategoryEnum.asMapWithNameAsKey();
+                        storeCategoryForm
+                            .setBizStoreId(storeId)
+                            .setCategories(categories)
+                            .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                            .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                            .setBusinessType(bizStore.getBusinessType());
+                        break;
+                    default:
+                        LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                        throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                }
+                break;
             case PH:
                 categories = PharmacyCategoryEnum.asMapWithNameAsKey();
                 storeCategoryForm
@@ -122,7 +168,7 @@ public class StoreCategoryController {
                     .setBusinessType(bizStore.getBusinessType());
                 break;
             case RA:
-                categories = RadiologyCategoryEnum.asMapWithNameAsKey();
+                categories = LabCategoryEnum.asMapWithNameAsKey();
                 storeCategoryForm
                     .setBizStoreId(storeId)
                     .setCategories(categories)
