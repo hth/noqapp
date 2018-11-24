@@ -22,8 +22,9 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
-import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.S3FileManager;
@@ -500,7 +501,7 @@ public class FileService {
         csv.delete();
     }
 
-    /** Get file of created a new one for bizStoreId. */
+    /** Create zip file of preferred business product list. */
     @Mobile
     public FileObject getPreferredBusinessTarGZ(String bizStoreId) {
         if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
@@ -545,18 +546,55 @@ public class FileService {
     }
 
     /** Process bulk upload of CSV file for a store. */
-    List<StoreProductEntity> processStoreProductCSVFile(InputStream in, BizStoreEntity bizStore) {
+    List<StoreProductEntity> processUploadedStoreProductCSVFile(InputStream in, BizStoreEntity bizStore) {
         try {
             Iterable<CSVRecord> records;
             Map<String, String> map = new HashMap<>();
             switch (bizStore.getBusinessType()) {
+                case HS:
+                    switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
+                        case XRAY:
+                            records = CSVFormat.DEFAULT
+                                .withHeader(RADIOLOGY_PRODUCT_HEADERS)
+                                .withFirstRecordAsHeader()
+                                .parse(new InputStreamReader(in));
+
+                            map = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.XRAY);
+                            break;
+                        case SONO:
+                            records = CSVFormat.DEFAULT
+                                .withHeader(RADIOLOGY_PRODUCT_HEADERS)
+                                .withFirstRecordAsHeader()
+                                .parse(new InputStreamReader(in));
+
+                            map = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SONO);
+                            break;
+                        case SCAN:
+                            records = CSVFormat.DEFAULT
+                                .withHeader(RADIOLOGY_PRODUCT_HEADERS)
+                                .withFirstRecordAsHeader()
+                                .parse(new InputStreamReader(in));
+
+                            map = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SCAN);
+                            break;
+                        case PHYS:
+                            LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                            throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                        case PATH:
+                            LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                            throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                        default:
+                            LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                            throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                    }
+                    break;
                 case RA:
                     records = CSVFormat.DEFAULT
                         .withHeader(RADIOLOGY_PRODUCT_HEADERS)
                         .withFirstRecordAsHeader()
                         .parse(new InputStreamReader(in));
 
-                    map = RadiologyCategoryEnum.asMapWithDescriptionAsKey();
+                    map = LabCategoryEnum.asMapWithDescriptionAsKey();
                     break;
                 case PH:
                     records = CSVFormat.DEFAULT
@@ -603,9 +641,77 @@ public class FileService {
         }
     }
 
+    /** Read from a CSV file. */
     private StoreProductEntity getStoreProductEntityFromCSV(BizStoreEntity bizStore, CSVRecord record, String storeCategoryId) {
         StoreProductEntity storeProduct = new StoreProductEntity();
         switch (bizStore.getBusinessType()) {
+            case HS:
+                switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
+                    case XRAY:
+                        storeProduct
+                            .setBizStoreId(bizStore.getId())
+                            .setStoreCategoryId(storeCategoryId)
+                            .setProductName(record.get("Name"))
+                            .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                            .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
+                            .setProductInfo(record.get("Info"))
+                            .setUnitValue(1)
+                            .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                            .setPackageSize(1)
+                            .setProductType(ProductTypeEnum.RA)
+                            .setProductReference(null);
+                        break;
+                    case SONO:
+                        storeProduct
+                            .setBizStoreId(bizStore.getId())
+                            .setStoreCategoryId(storeCategoryId)
+                            .setProductName(record.get("Name"))
+                            .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                            .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
+                            .setProductInfo(record.get("Info"))
+                            .setUnitValue(1)
+                            .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                            .setPackageSize(1)
+                            .setProductType(ProductTypeEnum.RA)
+                            .setProductReference(null);
+                        break;
+                    case SCAN:
+                        storeProduct
+                            .setBizStoreId(bizStore.getId())
+                            .setStoreCategoryId(storeCategoryId)
+                            .setProductName(record.get("Name"))
+                            .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                            .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
+                            .setProductInfo(record.get("Info"))
+                            .setUnitValue(1)
+                            .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                            .setPackageSize(1)
+                            .setProductType(ProductTypeEnum.RA)
+                            .setProductReference(null);
+                        break;
+                    case MRI:
+                        storeProduct
+                            .setBizStoreId(bizStore.getId())
+                            .setStoreCategoryId(storeCategoryId)
+                            .setProductName(record.get("Name"))
+                            .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                            .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
+                            .setProductInfo(record.get("Info"))
+                            .setUnitValue(1)
+                            .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                            .setPackageSize(1)
+                            .setProductType(ProductTypeEnum.RA)
+                            .setProductReference(null);
+                        break;
+                    case PHYS:
+                        break;
+                    case PATH:
+                        break;
+                    default:
+                        LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                        throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                }
+                break;
             case RA:
                 storeProduct
                     .setBizStoreId(bizStore.getId())
@@ -680,7 +786,7 @@ public class FileService {
     }
 
     /** Write to CSV file. */
-    File populateStoreProductCSVFile(List<StoreProductEntity> storeProducts, BizStoreEntity bizStore) throws IOException {
+    File writeStoreProductToCSVFile(List<StoreProductEntity> storeProducts, BizStoreEntity bizStore) throws IOException {
         List<StoreCategoryEntity> storeCategories = storeCategoryService.findAll(bizStore.getId());
         Map<String, String> map = new HashMap<>();
         storeCategories.forEach(t -> map.put(t.getId(), t.getCategoryName()));
@@ -688,12 +794,97 @@ public class FileService {
         File file = FileUtil.createTempFile(bizStore.getDisplayName(), ".csv");
         FileWriter out = new FileWriter(file);
         switch (bizStore.getBusinessType()) {
+            case HS:
+                switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
+                    case XRAY:
+                        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                            storeProducts.forEach((storeProduct) -> {
+                                try {
+                                    printer.printRecord(
+                                        LabCategoryEnum.XRAY.getDescription(),
+                                        storeProduct.getProductName(),
+                                        storeProduct.getProductPrice() / 100,
+                                        storeProduct.getProductDiscount() / 100,
+                                        storeProduct.getProductInfo(),
+                                        storeProduct.getId()
+                                    );
+                                } catch (IOException e) {
+                                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                                }
+                            });
+                        }
+                        break;
+                    case SONO:
+                        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                            storeProducts.forEach((storeProduct) -> {
+                                try {
+                                    printer.printRecord(
+                                        LabCategoryEnum.SONO.getDescription(),
+                                        storeProduct.getProductName(),
+                                        storeProduct.getProductPrice() / 100,
+                                        storeProduct.getProductDiscount() / 100,
+                                        storeProduct.getProductInfo(),
+                                        storeProduct.getId()
+                                    );
+                                } catch (IOException e) {
+                                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                                }
+                            });
+                        }
+                        break;
+                    case SCAN:
+                        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                            storeProducts.forEach((storeProduct) -> {
+                                try {
+                                    printer.printRecord(
+                                        LabCategoryEnum.SCAN.getDescription(),
+                                        storeProduct.getProductName(),
+                                        storeProduct.getProductPrice() / 100,
+                                        storeProduct.getProductDiscount() / 100,
+                                        storeProduct.getProductInfo(),
+                                        storeProduct.getId()
+                                    );
+                                } catch (IOException e) {
+                                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                                }
+                            });
+                        }
+                        break;
+                    case MRI:
+                        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                            storeProducts.forEach((storeProduct) -> {
+                                try {
+                                    printer.printRecord(
+                                        LabCategoryEnum.MRI.getDescription(),
+                                        storeProduct.getProductName(),
+                                        storeProduct.getProductPrice() / 100,
+                                        storeProduct.getProductDiscount() / 100,
+                                        storeProduct.getProductInfo(),
+                                        storeProduct.getId()
+                                    );
+                                } catch (IOException e) {
+                                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                                }
+                            });
+                        }
+                        break;
+                    case PHYS:
+                        break;
+                    case PATH:
+                        break;
+                    default:
+                        LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                        throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                }
+                break;
             case RA:
                 try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
                     storeProducts.forEach((storeProduct) -> {
                         try {
                             printer.printRecord(
-                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId())) ? RadiologyCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription() : map.get(storeProduct.getStoreCategoryId()),
+                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId()))
+                                    ? LabCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription()
+                                    : map.get(storeProduct.getStoreCategoryId()),
                                 storeProduct.getProductName(),
                                 storeProduct.getProductPrice() / 100,
                                 storeProduct.getProductDiscount() / 100,
@@ -711,7 +902,9 @@ public class FileService {
                     storeProducts.forEach((storeProduct) -> {
                         try {
                             printer.printRecord(
-                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId())) ? PharmacyCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription() : map.get(storeProduct.getStoreCategoryId()),
+                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId()))
+                                    ? PharmacyCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription()
+                                    : map.get(storeProduct.getStoreCategoryId()),
                                 storeProduct.getProductName(),
                                 storeProduct.getProductPrice() / 100,
                                 storeProduct.getProductDiscount() / 100,

@@ -1,10 +1,8 @@
 package com.noqapp.medical.service;
 
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
-import com.noqapp.medical.domain.MasterPathologyEntity;
-import com.noqapp.medical.domain.MasterRadiologyEntity;
-import com.noqapp.medical.repository.MasterPathologyManager;
-import com.noqapp.medical.repository.MasterRadiologyManager;
+import com.noqapp.medical.domain.MasterLabEntity;
+import com.noqapp.medical.repository.MasterLabManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,31 +20,20 @@ import java.util.List;
 public class MedicalMasterService {
     private static final Logger LOG = LoggerFactory.getLogger(MedicalMasterService.class);
 
-    private MasterPathologyManager masterPathologyManager;
-    private MasterRadiologyManager masterRadiologyManager;
+    private MasterLabManager masterLabManager;
 
     @Autowired
     public MedicalMasterService(
-        MasterPathologyManager masterPathologyManager,
-        MasterRadiologyManager masterRadiologyManager
+        MasterLabManager masterLabManager
     ) {
-        this.masterPathologyManager = masterPathologyManager;
-        this.masterRadiologyManager = masterRadiologyManager;
+        this.masterLabManager = masterLabManager;
     }
 
-    public void savePathology(MasterPathologyEntity masterPathology) {
-        masterPathologyManager.save(masterPathology);
+    public void saveRadiology(MasterLabEntity masterRadiology) {
+        masterLabManager.save(masterRadiology);
     }
 
-    public void saveRadiology(MasterRadiologyEntity masterRadiology) {
-        masterRadiologyManager.save(masterRadiology);
-    }
-
-    public List<MasterPathologyEntity> findAllPathologyMatching(MedicalDepartmentEnum medicalDepartment) {
-        return masterPathologyManager.findAllMatching(medicalDepartment);
-    }
-
-    public List<MasterRadiologyEntity> findAllRadiologyMatching(MedicalDepartmentEnum medicalDepartment) {
-        return masterRadiologyManager.findAllMatching(medicalDepartment);
+    public List<MasterLabEntity> findAllMatching(MedicalDepartmentEnum medicalDepartment) {
+        return masterLabManager.findAllMatching(medicalDepartment);
     }
 }

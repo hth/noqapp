@@ -54,6 +54,7 @@ public class StoreCategoryValidator implements Validator {
                 }
 
                 switch (form.getBusinessType()) {
+                    case HS:
                     case PH:
                         LOG.warn("Cannot add category name={} when store business type is of pharmacy bizStoreId={}",
                             form.getCategoryName(), form.getBizStoreId());

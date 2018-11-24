@@ -10,24 +10,17 @@ import java.util.Map;
  * hitender
  * 11/10/18 6:39 PM
  */
-public enum RadiologyCategoryEnum {
-    CDU("CDU", "Color Doppler"),
-    SON("SON", "Sonography"),
-
-    ECH("ECH", "ECHO"),
-    ECG("ECG", "ECG"),
-    EEG("EEG", "EEG"),
-    STR("STR", "Stress"),
-
-    CAT("CAT", "CT Scan"),
-    PET("PET", "PET Scan"),
+public enum LabCategoryEnum {
     MRI("MRI", "MRI"),
-    XRY("XRY", "X-Ray");
+    SCAN("SCAN", "CT Scan"),
+    SONO("SONO", "Sonography"),
+    XRAY("XRAY", "X-ray"),
+    PATH("PATH", "Pathology");
 
     private final String description;
     private final String name;
 
-    RadiologyCategoryEnum(String name, String description) {
+    LabCategoryEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -47,38 +40,42 @@ public enum RadiologyCategoryEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for (RadiologyCategoryEnum radiologyCategory : RadiologyCategoryEnum.values()) {
+        for (LabCategoryEnum radiologyCategory : LabCategoryEnum.values()) {
             a.add(radiologyCategory.description);
         }
 
         return a;
     }
 
+    @Deprecated
     public static Map<String, String> asMapWithNameAsKey() {
         return new LinkedHashMap<String, String>() {{
-            put(CDU.name, CDU.description);
-            put(CAT.name, CAT.description);
-            put(ECH.name, ECH.description);
-            put(ECG.name, ECG.description);
-            put(EEG.name, EEG.description);
+            put(SCAN.name, SCAN.description);
+            put(SONO.name, SONO.description);
+            put(XRAY.name, XRAY.description);
             put(MRI.name, MRI.description);
-            put(SON.name, SON.description);
-            put(STR.name, STR.description);
-            put(XRY.name, XRY.description);
         }};
     }
 
+    @Deprecated
     public static Map<String, String> asMapWithDescriptionAsKey() {
         return new LinkedHashMap<String, String>() {{
-            put(CDU.description, CDU.name);
-            put(CAT.description, CAT.name);
-            put(ECH.description, ECH.name);
-            put(ECG.description, ECG.name);
-            put(EEG.description, EEG.name);
+            put(SCAN.description, SCAN.name);
+            put(SONO.description, SONO.name);
+            put(XRAY.description, XRAY.name);
             put(MRI.description, MRI.name);
-            put(SON.description, SON.name);
-            put(STR.description, STR.name);
-            put(XRY.description, XRY.name);
+        }};
+    }
+
+    public static Map<String, String> asMapWithNameAsKey_Self(LabCategoryEnum radiologyCategory) {
+        return new LinkedHashMap<String, String>() {{
+            put(radiologyCategory.name, radiologyCategory.description);
+        }};
+    }
+
+    public static Map<String, String> asMapWithDescriptionAsKey_Self(LabCategoryEnum radiologyCategory) {
+        return new LinkedHashMap<String, String>() {{
+            put(radiologyCategory.description, radiologyCategory.name);
         }};
     }
 

@@ -6,8 +6,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
-import com.noqapp.medical.domain.MasterPathologyEntity;
-import com.noqapp.medical.domain.MasterRadiologyEntity;
+import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
 
@@ -69,19 +68,14 @@ public class MedicalFileService {
         switch (businessType) {
             case PH:
                 break;
+            case PT:
             case RA:
-                List<MasterRadiologyEntity> masterRadiologies = medicalMasterService.findAllRadiologyMatching(medicalDepartment);
-                for (MasterRadiologyEntity masterRadiology : masterRadiologies) {
+                List<MasterLabEntity> masterRadiologies = medicalMasterService.findAllMatching(medicalDepartment);
+                for (MasterLabEntity masterRadiology : masterRadiologies) {
                     strings.add(masterRadiology.toCommaSeparatedString());
                 }
                 break;
             case PY:
-                break;
-            case PT:
-                List<MasterPathologyEntity> masterPathologies = medicalMasterService.findAllPathologyMatching(medicalDepartment);
-                for (MasterPathologyEntity masterPathology : masterPathologies) {
-                    strings.add(masterPathology.toCommaSeparatedString());
-                }
                 break;
         }
         Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);

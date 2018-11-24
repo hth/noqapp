@@ -9,8 +9,9 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
-import com.noqapp.domain.types.medical.RadiologyCategoryEnum;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.BizService;
@@ -153,6 +154,64 @@ public class StoreProductController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         switch (bizStore.getBusinessType()) {
+            case HS:
+                switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
+                    case XRAY:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.XRAY);
+                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
+                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        storeProductForm
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            //Defaults to 1
+                            .setPackageSize(new ScrubbedInput(1))
+                            .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
+                            //Defaults to 1
+                            .setUnitValue(new ScrubbedInput(1));
+                        break;
+                    case SONO:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SONO);
+                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
+                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        storeProductForm
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            //Defaults to 1
+                            .setPackageSize(new ScrubbedInput(1))
+                            .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
+                            //Defaults to 1
+                            .setUnitValue(new ScrubbedInput(1));
+                        break;
+                    case SCAN:
+                        categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SCAN);
+                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
+                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        storeProductForm
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            //Defaults to 1
+                            .setPackageSize(new ScrubbedInput(1))
+                            .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
+                            //Defaults to 1
+                            .setUnitValue(new ScrubbedInput(1));
+                        break;
+                    case PHYS:
+                        LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                        throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                    case PATH:
+                        categories = LabCategoryEnum.asMapWithNameAsKey();
+                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
+                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        storeProductForm
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            //Defaults to 1
+                            .setPackageSize(new ScrubbedInput(1))
+                            .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
+                            //Defaults to 1
+                            .setUnitValue(new ScrubbedInput(1));
+                        break;
+                    default:
+                        LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
+                        throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
+                }
+                break;
             case PH:
                 categories = PharmacyCategoryEnum.asMapWithNameAsKey();
                 unitOfMeasurements = UnitOfMeasurementEnum.PHARMACY_VALUES;
@@ -164,7 +223,7 @@ public class StoreProductController {
                     .setPackageSize(new ScrubbedInput(1));
                 break;
             case RA:
-                categories = RadiologyCategoryEnum.asMapWithNameAsKey();
+                categories = LabCategoryEnum.asMapWithNameAsKey();
                 unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
                 productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
                 storeProductForm

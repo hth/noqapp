@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.ITest;
-import com.noqapp.medical.domain.MasterPathologyEntity;
-import com.noqapp.medical.domain.MasterRadiologyEntity;
+import com.noqapp.medical.domain.MasterLabEntity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,48 +27,30 @@ class MedicalMasterServiceITest extends ITest {
 
     @BeforeEach
     void setUp() {
-        medicalMasterService = new MedicalMasterService(
-            masterPathologyManager,
-            masterRadiologyManager);
-    }
-
-    @Test
-    void masterPathology() {
-        MasterPathologyEntity masterPathologyEntity = new MasterPathologyEntity()
-            .setProductName("Blood Test")
-            .addMedicalDepartment(MedicalDepartmentEnum.CRD)
-            .addMedicalDepartment(MedicalDepartmentEnum.ORT);
-        medicalMasterService.savePathology(masterPathologyEntity);
-
-        findAllPathologyMatching();
+        medicalMasterService = new MedicalMasterService(masterLabManager);
     }
 
     @Test
     void masterRadiology() {
-        MasterRadiologyEntity masterRadiologyEntity = new MasterRadiologyEntity()
+        MasterLabEntity masterLabEntity = new MasterLabEntity()
             .setProductName("Pelvis XRAY")
             .addMedicalDepartment(MedicalDepartmentEnum.CRD)
             .addMedicalDepartment(MedicalDepartmentEnum.ORT);
-        medicalMasterService.saveRadiology(masterRadiologyEntity);
+        medicalMasterService.saveRadiology(masterLabEntity);
 
-        masterRadiologyEntity = new MasterRadiologyEntity()
+        masterLabEntity = new MasterLabEntity()
             .setProductName("Hand XRAY")
             .addMedicalDepartment(MedicalDepartmentEnum.ORT);
-        medicalMasterService.saveRadiology(masterRadiologyEntity);
+        medicalMasterService.saveRadiology(masterLabEntity);
 
         findAllRadiologyMatching();
     }
 
-    void findAllPathologyMatching() {
-        List<MasterPathologyEntity> pathologies = medicalMasterService.findAllPathologyMatching(MedicalDepartmentEnum.CRD);
-        assertEquals(1, pathologies.size());
-    }
-
     void findAllRadiologyMatching() {
-        List<MasterRadiologyEntity> radiologies = medicalMasterService.findAllRadiologyMatching(MedicalDepartmentEnum.CRD);
+        List<MasterLabEntity> radiologies = medicalMasterService.findAllMatching(MedicalDepartmentEnum.CRD);
         assertEquals(1, radiologies.size());
 
-        radiologies = medicalMasterService.findAllRadiologyMatching(MedicalDepartmentEnum.ORT);
+        radiologies = medicalMasterService.findAllMatching(MedicalDepartmentEnum.ORT);
         assertEquals(2, radiologies.size());
     }
 }

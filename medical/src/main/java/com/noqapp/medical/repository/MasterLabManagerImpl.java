@@ -5,7 +5,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
-import com.noqapp.medical.domain.MasterRadiologyEntity;
+import com.noqapp.medical.domain.MasterLabEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,22 +29,22 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Repository
-public class MasterRadiologyManagerImpl implements MasterRadiologyManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MasterRadiologyManagerImpl.class);
+public class MasterLabManagerImpl implements MasterLabManager {
+    private static final Logger LOG = LoggerFactory.getLogger(MasterLabManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-        MasterRadiologyEntity.class,
+        MasterLabEntity.class,
         Document.class,
         "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public MasterRadiologyManagerImpl(MongoTemplate mongoTemplate) {
+    public MasterLabManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(MasterRadiologyEntity object) {
+    public void save(MasterLabEntity object) {
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -51,16 +52,26 @@ public class MasterRadiologyManagerImpl implements MasterRadiologyManager {
     }
 
     @Override
-    public void deleteHard(MasterRadiologyEntity object) {
+    public void deleteHard(MasterLabEntity object) {
         mongoTemplate.remove(object);
     }
 
     @Override
-    public List<MasterRadiologyEntity> findAllMatching(MedicalDepartmentEnum medicalDepartment) {
+    public List<MasterLabEntity> findAllMatching(MedicalDepartmentEnum medicalDepartment) {
         return mongoTemplate.find(
             query(where("MD").in(medicalDepartment)),
-            MasterRadiologyEntity.class,
+            MasterLabEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public List<MasterLabEntity> findAll() {
+        return mongoTemplate.findAll(MasterLabEntity.class, TABLE);
+    }
+
+    @Override
+    public void deleteAll() {
+        mongoTemplate.remove(new Query(), MasterLabEntity.class);
     }
 }
