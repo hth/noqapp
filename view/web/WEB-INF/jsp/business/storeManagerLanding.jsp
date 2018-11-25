@@ -101,9 +101,6 @@
                                                 || BusinessTypeEnum.GS eq store.businessType
                                                 || BusinessTypeEnum.CF eq store.businessType
                                                 || BusinessTypeEnum.PH eq store.businessType
-                                                || BusinessTypeEnum.RA eq store.businessType
-                                                || BusinessTypeEnum.PY eq store.businessType
-                                                || BusinessTypeEnum.PT eq store.businessType
                                                 || BusinessTypeEnum.HS eq store.businessType}">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #1c1c1c;">Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
