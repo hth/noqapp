@@ -9,7 +9,6 @@ import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
-import com.noqapp.domain.types.medical.LabCategoryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,13 +65,6 @@ public class CommonHelper {
                 return InvocationByEnum.BUSINESS == invocationBy
                     ? null
                     : PharmacyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
-            case RA:
-                /* Radiology does not have category at business level, but at store level. */
-                return InvocationByEnum.BUSINESS == invocationBy
-                    ? null
-                    : LabCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
-            case PT:
-            case PY:
             case RS:
             case BA:
             case ST:

@@ -5,6 +5,7 @@ import static com.noqapp.service.FtpService.MASTER_MEDICAL;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.service.FileService;
@@ -60,7 +61,7 @@ public class MasterLabService {
     }
 
     /** Create tar file of products for preferred business with store id. */
-    private void createMasterFiles() throws IOException {
+    public void createMasterFiles() throws IOException {
         List<MasterLabEntity> storeProducts = findAll();
 
         if (!ftpService.existFolder(MASTER_MEDICAL)) {
@@ -107,5 +108,9 @@ public class MasterLabService {
         }
 
         return null;
+    }
+
+    public List<MasterLabEntity> findAllMatching(MedicalDepartmentEnum medicalDepartment) {
+        return masterLabManager.findAllMatching(medicalDepartment);
     }
 }
