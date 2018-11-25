@@ -25,8 +25,8 @@ import org.springframework.stereotype.Component;
     "PMD.LongVariable"
 })
 @Component
-public class PreferredBusinessProduct {
-    private static final Logger LOG = LoggerFactory.getLogger(PreferredBusinessProduct.class);
+public class ProductsCopiedOverToTarFile {
+    private static final Logger LOG = LoggerFactory.getLogger(ProductsCopiedOverToTarFile.class);
 
     private FileService fileService;
     private MasterLabService masterLabService;
@@ -35,7 +35,7 @@ public class PreferredBusinessProduct {
     private String makePreferredBusinessFiles;
 
     @Autowired
-    public PreferredBusinessProduct(
+    public ProductsCopiedOverToTarFile(
         @Value("${makePreferredBusinessFiles:ON}")
         String makePreferredBusinessFiles,
 
@@ -51,10 +51,10 @@ public class PreferredBusinessProduct {
     }
 
     /** Create zip file of all the products for business store of Pharmacy Type. */
-    @Scheduled(cron = "${loader.PreferredBusinessProduct.makeTarFile}")
+    @Scheduled(cron = "${loader.ProductsCopiedOverToTarFile.makeTarFile}")
     public void makeTarFile() {
         StatsCronEntity statsCron = new StatsCronEntity(
-            PreferredBusinessProduct.class.getName(),
+            ProductsCopiedOverToTarFile.class.getName(),
             "makeTarFile",
             makePreferredBusinessFiles);
 
@@ -82,10 +82,10 @@ public class PreferredBusinessProduct {
     }
 
     /** Create master zip file. */
-    @Scheduled(cron = "${loader.PreferredBusinessProduct.makeTarFile}")
+    @Scheduled(cron = "${loader.ProductsCopiedOverToTarFile.makeTarFile}")
     public void makeMasterTarFile() {
         StatsCronEntity statsCron = new StatsCronEntity(
-            PreferredBusinessProduct.class.getName(),
+            ProductsCopiedOverToTarFile.class.getName(),
             "makeMasterTarFile",
             makePreferredBusinessFiles);
 
