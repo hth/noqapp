@@ -167,15 +167,6 @@ public class StoreCategoryController {
                     .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
                     .setBusinessType(bizStore.getBusinessType());
                 break;
-            case RA:
-                categories = LabCategoryEnum.asMapWithNameAsKey();
-                storeCategoryForm
-                    .setBizStoreId(storeId)
-                    .setCategories(categories)
-                    .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
-                    .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
-                    .setBusinessType(bizStore.getBusinessType());
-                break;
             default:
                 categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
                 storeCategoryForm

@@ -2,8 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
-import com.noqapp.medical.service.MedicalFileService;
+import com.noqapp.medical.service.MasterLabService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
 
@@ -26,36 +25,36 @@ import org.springframework.stereotype.Component;
     "PMD.LongVariable"
 })
 @Component
-public class PreferredBusinessProduct {
-    private static final Logger LOG = LoggerFactory.getLogger(PreferredBusinessProduct.class);
+public class ProductsCopiedOverToTarFile {
+    private static final Logger LOG = LoggerFactory.getLogger(ProductsCopiedOverToTarFile.class);
 
     private FileService fileService;
-    private MedicalFileService medicalFileService;
+    private MasterLabService masterLabService;
     private StatsCronService statsCronService;
 
     private String makePreferredBusinessFiles;
 
     @Autowired
-    public PreferredBusinessProduct(
+    public ProductsCopiedOverToTarFile(
         @Value("${makePreferredBusinessFiles:ON}")
         String makePreferredBusinessFiles,
 
         FileService fileService,
-        MedicalFileService medicalFileService,
+        MasterLabService masterLabService,
         StatsCronService statsCronService
     ) {
         this.makePreferredBusinessFiles = makePreferredBusinessFiles;
 
         this.fileService = fileService;
-        this.medicalFileService = medicalFileService;
+        this.masterLabService = masterLabService;
         this.statsCronService = statsCronService;
     }
 
-    /** Create zip file of all the products for a business store. */
-    @Scheduled(cron = "${loader.PreferredBusinessProduct.makeTarFile}")
+    /** Create zip file of all the products for business store of Pharmacy Type. */
+    @Scheduled(cron = "${loader.ProductsCopiedOverToTarFile.makeTarFile}")
     public void makeTarFile() {
         StatsCronEntity statsCron = new StatsCronEntity(
-            PreferredBusinessProduct.class.getName(),
+            ProductsCopiedOverToTarFile.class.getName(),
             "makeTarFile",
             makePreferredBusinessFiles);
 
@@ -65,19 +64,8 @@ public class PreferredBusinessProduct {
 
         int success = 0, failure = 0;
         try {
-            for (BusinessTypeEnum businessType : BusinessTypeEnum.asList()) {
-                switch (businessType) {
-                    case PH:
-                    case PT:
-                    case PY:
-                    case RA:
-                        fileService.findAllBizStoreWithBusinessType(businessType);
-                        success ++;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            fileService.findAllBizStoreWithBusinessType(BusinessTypeEnum.PH);
+            success ++;
         } catch (Exception e) {
             LOG.error("Error makeTarFile for preferred business reason={}", e.getLocalizedMessage(), e);
             failure ++;
@@ -93,11 +81,11 @@ public class PreferredBusinessProduct {
         }
     }
 
-    /** Create zip file of all the products for a business type. */
-    @Scheduled(cron = "${loader.PreferredBusinessProduct.makeTarFile}")
+    /** Create master zip file. */
+    @Scheduled(cron = "${loader.ProductsCopiedOverToTarFile.makeTarFile}")
     public void makeMasterTarFile() {
         StatsCronEntity statsCron = new StatsCronEntity(
-            PreferredBusinessProduct.class.getName(),
+            ProductsCopiedOverToTarFile.class.getName(),
             "makeMasterTarFile",
             makePreferredBusinessFiles);
 
@@ -107,28 +95,8 @@ public class PreferredBusinessProduct {
 
         int success = 0, failure = 0;
         try {
-            for (BusinessTypeEnum businessType : BusinessTypeEnum.asList()) {
-                switch (businessType) {
-                    case PH:
-                        break;
-                    case PT:
-                        for (MedicalDepartmentEnum medicalDepartment : MedicalDepartmentEnum.values()) {
-                            medicalFileService.createMasterFileAssociatedWithBusinessType(businessType, medicalDepartment);
-                        }
-                        success ++;
-                        break;
-                    case PY:
-                        break;
-                    case RA:
-                        for (MedicalDepartmentEnum medicalDepartment : MedicalDepartmentEnum.values()) {
-                            medicalFileService.createMasterFileAssociatedWithBusinessType(businessType, medicalDepartment);
-                        }
-                        success ++;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            masterLabService.createMasterFiles();
+            success ++;
         } catch (Exception e) {
             LOG.error("Error makeTarFile for preferred business reason={}", e.getLocalizedMessage(), e);
             failure ++;

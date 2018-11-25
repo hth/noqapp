@@ -588,14 +588,6 @@ public class FileService {
                             throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
                     }
                     break;
-                case RA:
-                    records = CSVFormat.DEFAULT
-                        .withHeader(RADIOLOGY_PRODUCT_HEADERS)
-                        .withFirstRecordAsHeader()
-                        .parse(new InputStreamReader(in));
-
-                    map = LabCategoryEnum.asMapWithDescriptionAsKey();
-                    break;
                 case PH:
                     records = CSVFormat.DEFAULT
                         .withHeader(STORE_PRODUCT_HEADERS)
@@ -658,7 +650,7 @@ public class FileService {
                             .setUnitValue(1)
                             .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
                             .setPackageSize(1)
-                            .setProductType(ProductTypeEnum.RA)
+                            .setProductType(ProductTypeEnum.HS)
                             .setProductReference(null);
                         break;
                     case SONO:
@@ -672,7 +664,7 @@ public class FileService {
                             .setUnitValue(1)
                             .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
                             .setPackageSize(1)
-                            .setProductType(ProductTypeEnum.RA)
+                            .setProductType(ProductTypeEnum.HS)
                             .setProductReference(null);
                         break;
                     case SCAN:
@@ -686,7 +678,7 @@ public class FileService {
                             .setUnitValue(1)
                             .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
                             .setPackageSize(1)
-                            .setProductType(ProductTypeEnum.RA)
+                            .setProductType(ProductTypeEnum.HS)
                             .setProductReference(null);
                         break;
                     case MRI:
@@ -700,7 +692,7 @@ public class FileService {
                             .setUnitValue(1)
                             .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
                             .setPackageSize(1)
-                            .setProductType(ProductTypeEnum.RA)
+                            .setProductType(ProductTypeEnum.HS)
                             .setProductReference(null);
                         break;
                     case PHYS:
@@ -711,20 +703,6 @@ public class FileService {
                         LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
                         throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
                 }
-                break;
-            case RA:
-                storeProduct
-                    .setBizStoreId(bizStore.getId())
-                    .setStoreCategoryId(storeCategoryId)
-                    .setProductName(record.get("Name"))
-                    .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
-                    .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
-                    .setProductInfo(record.get("Info"))
-                    .setUnitValue(1)
-                    .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
-                    .setPackageSize(1)
-                    .setProductType(ProductTypeEnum.RA)
-                    .setProductReference(null);
                 break;
             case PH:
                 UnitOfMeasurementEnum unitOfMeasurementEnum;
@@ -875,26 +853,6 @@ public class FileService {
                     default:
                         LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
                         throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
-                }
-                break;
-            case RA:
-                try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
-                    storeProducts.forEach((storeProduct) -> {
-                        try {
-                            printer.printRecord(
-                                StringUtils.isBlank(map.get(storeProduct.getStoreCategoryId()))
-                                    ? LabCategoryEnum.valueOf(storeProduct.getStoreCategoryId()).getDescription()
-                                    : map.get(storeProduct.getStoreCategoryId()),
-                                storeProduct.getProductName(),
-                                storeProduct.getProductPrice() / 100,
-                                storeProduct.getProductDiscount() / 100,
-                                storeProduct.getProductInfo(),
-                                storeProduct.getId()
-                            );
-                        } catch (IOException e) {
-                            LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
-                        }
-                    });
                 }
                 break;
             case PH:

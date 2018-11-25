@@ -440,10 +440,7 @@
                                 </c:choose>
                             </div>
                             <div class="store-table">
-                                <c:if test="${BusinessTypeEnum.PH eq storeProductForm.businessType
-                                            || BusinessTypeEnum.RA eq storeProductForm.businessType
-                                            || BusinessTypeEnum.PY eq storeProductForm.businessType
-                                            || BusinessTypeEnum.PT eq storeProductForm.businessType}">
+                                <c:if test="${BusinessTypeEnum.PH eq storeProductForm.businessType}">
                                     <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh.htm" modelAttribute="storeProductForm">
                                         <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                         <button name="refresh" class="add-btn">Refresh</button>
@@ -459,10 +456,7 @@
                                 <c:when test="${!empty storeProductForm.storeProducts}">
                                 <div class="alert-info">
                                     <c:choose>
-                                        <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType
-                                            || BusinessTypeEnum.RA eq storeProductForm.businessType
-                                            || BusinessTypeEnum.PY eq storeProductForm.businessType
-                                            || BusinessTypeEnum.PT eq storeProductForm.businessType}">
+                                        <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType}">
                                             <span style="display:block; font-size:13px;">
                                                 Preferred business partner such as doctors can prescribe these medicines.
                                             </span>

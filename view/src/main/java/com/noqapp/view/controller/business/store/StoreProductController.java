@@ -158,10 +158,10 @@ public class StoreProductController {
                 switch (HealthCareServiceEnum.valueOf(bizStore.getBizCategoryId())) {
                     case XRAY:
                         categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.XRAY);
-                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
-                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        unitOfMeasurements = UnitOfMeasurementEnum.HEALTH_CARE_VALUES;
+                        productTypes = ProductTypeEnum.HEALTH_CARE_VALUES;
                         storeProductForm
-                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.HS.name()))
                             //Defaults to 1
                             .setPackageSize(new ScrubbedInput(1))
                             .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
@@ -170,10 +170,10 @@ public class StoreProductController {
                         break;
                     case SONO:
                         categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SONO);
-                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
-                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        unitOfMeasurements = UnitOfMeasurementEnum.HEALTH_CARE_VALUES;
+                        productTypes = ProductTypeEnum.HEALTH_CARE_VALUES;
                         storeProductForm
-                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.HS.name()))
                             //Defaults to 1
                             .setPackageSize(new ScrubbedInput(1))
                             .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
@@ -182,10 +182,10 @@ public class StoreProductController {
                         break;
                     case SCAN:
                         categories = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SCAN);
-                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
-                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        unitOfMeasurements = UnitOfMeasurementEnum.HEALTH_CARE_VALUES;
+                        productTypes = ProductTypeEnum.HEALTH_CARE_VALUES;
                         storeProductForm
-                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.HS.name()))
                             //Defaults to 1
                             .setPackageSize(new ScrubbedInput(1))
                             .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
@@ -197,10 +197,10 @@ public class StoreProductController {
                         throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
                     case PATH:
                         categories = LabCategoryEnum.asMapWithNameAsKey();
-                        unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
-                        productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
+                        unitOfMeasurements = UnitOfMeasurementEnum.HEALTH_CARE_VALUES;
+                        productTypes = ProductTypeEnum.HEALTH_CARE_VALUES;
                         storeProductForm
-                            .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
+                            .setProductType(new ScrubbedInput(ProductTypeEnum.HS.name()))
                             //Defaults to 1
                             .setPackageSize(new ScrubbedInput(1))
                             .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
@@ -221,18 +221,6 @@ public class StoreProductController {
                     .setProductType(new ScrubbedInput(ProductTypeEnum.PH.name()))
                     //Defaults to 1
                     .setPackageSize(new ScrubbedInput(1));
-                break;
-            case RA:
-                categories = LabCategoryEnum.asMapWithNameAsKey();
-                unitOfMeasurements = UnitOfMeasurementEnum.RADIOLOGY_VALUES;
-                productTypes = ProductTypeEnum.RADIOLOGY_VALUES;
-                storeProductForm
-                    .setProductType(new ScrubbedInput(ProductTypeEnum.RA.name()))
-                    //Defaults to 1
-                    .setPackageSize(new ScrubbedInput(1))
-                    .setUnitOfMeasurement(new ScrubbedInput(UnitOfMeasurementEnum.CN.name()))
-                    //Defaults to 1
-                    .setUnitValue(new ScrubbedInput(1));
                 break;
             case GS:
                 categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
