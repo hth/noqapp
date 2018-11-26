@@ -64,6 +64,7 @@ public class ProductsCopiedOverToTarFile {
 
         int success = 0, failure = 0;
         try {
+            LOG.info("Creating preferred business product tar file");
             fileService.findAllBizStoreWithBusinessType(BusinessTypeEnum.PH);
             success ++;
         } catch (Exception e) {
@@ -95,6 +96,7 @@ public class ProductsCopiedOverToTarFile {
 
         int success = 0, failure = 0;
         try {
+            LOG.info("Creating master product tar file");
             masterLabService.createMasterFiles();
             success ++;
         } catch (Exception e) {
