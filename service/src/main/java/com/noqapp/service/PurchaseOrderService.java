@@ -577,8 +577,7 @@ public class PurchaseOrderService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(purchaseOrder.getPresentOrderState()) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(purchaseOrder.getPresentOrderState()) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType())
-                .getJsonTopicOrderData()
+            JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType()).getJsonTopicOrderData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
                 .setCodeQR(codeQR)

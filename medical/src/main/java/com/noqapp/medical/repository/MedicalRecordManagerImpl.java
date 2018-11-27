@@ -4,6 +4,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 
@@ -70,5 +71,15 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public void deleteHard(MedicalRecordEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int pastHour) {
+        LOG.info("Fetch past now={}", DateUtil.now().minusHours(pastHour));
+        return mongoTemplate.find(
+            query(where("FP").exists(true).and("NF").is(false).and("C").lte(DateUtil.now().minusHours(pastHour))),
+            MedicalRecordEntity.class,
+            TABLE
+        );
     }
 }

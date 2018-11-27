@@ -36,6 +36,7 @@ public class JsonTopicData {
     private JsonTopicQueueData jsonTopicQueueData;
     private JsonTopicOrderData jsonTopicOrderData;
     private JsonAlertData jsonAlertData;
+    private JsonMedicalFollowUp jsonMedicalFollowUp;
 
     public JsonTopicData(MessageOriginEnum messageOrigin, FirebaseMessageTypeEnum firebaseMessageType) {
         switch (messageOrigin) {
@@ -50,6 +51,9 @@ public class JsonTopicData {
                 break;
             case A:
                 jsonAlertData = new JsonAlertData(firebaseMessageType, messageOrigin);
+                break;
+            case MF:
+                jsonMedicalFollowUp = new JsonMedicalFollowUp(firebaseMessageType, messageOrigin);
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", messageOrigin);
@@ -81,6 +85,15 @@ public class JsonTopicData {
 
     public JsonTopicData setJsonAlertData(JsonAlertData jsonAlertData) {
         this.jsonAlertData = jsonAlertData;
+        return this;
+    }
+
+    public JsonMedicalFollowUp getJsonMedicalFollowUp() {
+        return jsonMedicalFollowUp;
+    }
+
+    public JsonTopicData setJsonMedicalFollowUp(JsonMedicalFollowUp jsonMedicalFollowUp) {
+        this.jsonMedicalFollowUp = jsonMedicalFollowUp;
         return this;
     }
 }

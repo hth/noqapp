@@ -85,6 +85,9 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("FP")
     private String followUpInDays;
 
+    @Field("NF")
+    private boolean notifiedFollowUp = false;
+
     /* Always doctors id who looked or was booked for. */
     @NotNull
     @Field("DBI")
@@ -98,6 +101,9 @@ public class MedicalRecordEntity extends BaseEntity {
 
     @Field ("BCI")
     private String bizCategoryId;
+
+    @Field("BS")
+    private String bizStoreId;
 
     @Field ("FV")
     private FormVersionEnum formVersion;
@@ -252,6 +258,15 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
+    public boolean isNotifiedFollowUp() {
+        return notifiedFollowUp;
+    }
+
+    public MedicalRecordEntity setNotifiedFollowUp(boolean notifiedFollowUp) {
+        this.notifiedFollowUp = notifiedFollowUp;
+        return this;
+    }
+
     public String getDiagnosedById() {
         return diagnosedById;
     }
@@ -290,6 +305,15 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public MedicalRecordEntity setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
         return this;
     }
 
