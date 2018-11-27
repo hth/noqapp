@@ -123,12 +123,14 @@ public class MedicalRecordService {
         medicalRecord.setId(CommonUtil.generateHexFromObjectId());
         medicalRecord
             .setBusinessType(bizStore.getBusinessType())
-            .setChiefComplain(StringUtils.capitalize(medicalRecordForm.getChiefComplain().trim()))
             .setPastHistory(StringUtils.capitalize(medicalRecordForm.getPastHistory().trim()))
             .setFamilyHistory(StringUtils.capitalize(medicalRecordForm.getFamilyHistory().trim()))
             .setKnownAllergies(StringUtils.capitalize(medicalRecordForm.getKnownAllergies().trim()))
+            .setChiefComplain(StringUtils.capitalize(medicalRecordForm.getChiefComplain().trim()))
+            .setExamination(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setClinicalFinding(StringUtils.capitalize(medicalRecordForm.getClinicalFinding().trim()))
             .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
+            .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
             .setFollowUpInDays(medicalRecord.getFollowUpInDays())
             .setDiagnosedById(diagnosedById)
@@ -182,10 +184,6 @@ public class MedicalRecordService {
 
             medicalRecord
                 .setBusinessType(bizStore.getBusinessType())
-                .setChiefComplain(
-                    StringUtils.isBlank(jsonRecord.getChiefComplain())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getChiefComplain().trim()))
                 .setPastHistory(
                     StringUtils.isBlank(jsonRecord.getPastHistory())
                         ? null
@@ -198,6 +196,14 @@ public class MedicalRecordService {
                     StringUtils.isBlank(jsonRecord.getKnownAllergies())
                         ? null :
                         StringUtils.capitalize(jsonRecord.getKnownAllergies().trim()))
+                .setChiefComplain(
+                    StringUtils.isBlank(jsonRecord.getChiefComplain())
+                        ? null
+                        : StringUtils.capitalize(jsonRecord.getChiefComplain().trim()))
+                .setExamination(
+                    StringUtils.isBlank(jsonRecord.getExamination())
+                        ? null
+                        : StringUtils.capitalize(jsonRecord.getExamination().trim()))
                 .setClinicalFinding(
                     StringUtils.isBlank(jsonRecord.getClinicalFinding())
                         ? null
@@ -206,6 +212,10 @@ public class MedicalRecordService {
                     StringUtils.isBlank(jsonRecord.getProvisionalDifferentialDiagnosis())
                         ? null
                         : StringUtils.capitalize(jsonRecord.getProvisionalDifferentialDiagnosis().trim()))
+                .setDiagnosis(
+                    StringUtils.isBlank(jsonRecord.getDiagnosis())
+                        ? null
+                        : StringUtils.capitalize(jsonRecord.getDiagnosis().trim()))
                 .setPlanToPatient(
                     StringUtils.isBlank(jsonRecord.getPlanToPatient())
                         ? null
@@ -492,20 +502,22 @@ public class MedicalRecordService {
                 jsonMedicalRecord
                     .setBusinessType(medicalRecord.getBusinessType())
                     .setQueueUserId(medicalRecord.getQueueUserId())
-                    .setChiefComplain(medicalRecord.getChiefComplain())
                     .setPastHistory(medicalRecord.getPastHistory())
                     .setFamilyHistory(medicalRecord.getFamilyHistory())
                     .setKnownAllergies(medicalRecord.getKnownAllergies())
+                    .setChiefComplain(medicalRecord.getChiefComplain())
+                    .setExamination(medicalRecord.getExamination())
                     .setClinicalFinding(medicalRecord.getClinicalFinding())
                     .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
+                    .setDiagnosis(medicalRecord.getDiagnosis())
+                    .setPlanToPatient(medicalRecord.getPlanToPatient())
+                    .setFollowUpInDays(medicalRecord.getFollowUpInDays())
                     .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
                     .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
                     .setBusinessName(medicalRecord.getBusinessName())
                     .setBizCategoryName(medicalRecord.getBizCategoryId() == null
                         ? "NA"
-                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription())
-                    .setPlanToPatient(medicalRecord.getPlanToPatient())
-                    .setFollowUpInDays(medicalRecord.getFollowUpInDays());
+                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
 
                 if (null != medicalRecord.getMedicalPhysical()) {
                     jsonMedicalRecord.setMedicalPhysical(
