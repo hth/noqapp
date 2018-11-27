@@ -135,7 +135,8 @@ public class MedicalRecordService {
             .setFollowUpInDays(medicalRecord.getFollowUpInDays())
             .setDiagnosedById(diagnosedById)
             .setBusinessName(bizStore.getBizName().getBusinessName())
-            .setBizCategoryId(bizStore.getBizCategoryId());
+            .setBizCategoryId(bizStore.getBizCategoryId())
+            .setBizStoreId(bizStore.getId());
 
         if (null != medicalRecordForm.getMedicalPhysicalHistoricals()) {
             populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
@@ -223,7 +224,8 @@ public class MedicalRecordService {
                 .setFollowUpInDays(jsonRecord.getFollowUpInDays())
                 .setDiagnosedById(jsonRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setBizCategoryId(bizStore.getBizCategoryId());
+                .setBizCategoryId(bizStore.getBizCategoryId())
+                .setBizStoreId(bizStore.getId());
 
             if (null == medicalRecord.getMedicalPhysical()) {
                 if (null != jsonRecord.getMedicalPhysical()) {

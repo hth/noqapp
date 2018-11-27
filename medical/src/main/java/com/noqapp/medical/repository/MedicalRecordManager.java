@@ -14,4 +14,6 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
     List<MedicalRecordEntity> historicalRecords(String qid, int limit);
 
     MedicalRecordEntity findById(String id);
+
+    List<MedicalRecordEntity>  findByFollowUpWithoutNotificationSent(int pastHour);
 }
