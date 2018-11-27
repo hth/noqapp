@@ -37,11 +37,12 @@ public class MedicalRecordForm {
     private String queueUserId;
     private ScrubbedInput codeQR;
 
-    private String chiefComplain;
     private String pastHistory;
     private String familyHistory;
     private String knownAllergies;
     private MedicalPhysicalForm medicalPhysical = new MedicalPhysicalForm();
+    private String chiefComplain;
+    private String examination;
     private List<MedicalPhysicalForm> medicalPhysicalHistoricals;
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
@@ -49,6 +50,7 @@ public class MedicalRecordForm {
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
     private MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
     private List<MedicalMedicineEntity> medicalMedicines = new ArrayList<>();
+    private String diagnosis;
     private String planToPatient;
     private String followUpInDays;
     private Map<Date, String> recordAccessed = new HashMap<>();
@@ -156,15 +158,6 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public String getChiefComplain() {
-        return chiefComplain;
-    }
-
-    public MedicalRecordForm setChiefComplain(String chiefComplain) {
-        this.chiefComplain = chiefComplain;
-        return this;
-    }
-
     public String getPastHistory() {
         return pastHistory;
     }
@@ -207,6 +200,24 @@ public class MedicalRecordForm {
 
     public MedicalRecordForm setMedicalPhysicalHistoricals(List<MedicalPhysicalForm> medicalPhysicalHistoricals) {
         this.medicalPhysicalHistoricals = medicalPhysicalHistoricals;
+        return this;
+    }
+
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public MedicalRecordForm setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
+        return this;
+    }
+
+    public String getExamination() {
+        return examination;
+    }
+
+    public MedicalRecordForm setExamination(String examination) {
+        this.examination = examination;
         return this;
     }
 
@@ -261,6 +272,15 @@ public class MedicalRecordForm {
 
     public MedicalRecordForm setMedicalMedicines(List<MedicalMedicineEntity> medicalMedicines) {
         this.medicalMedicines = medicalMedicines;
+        return this;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public MedicalRecordForm setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
         return this;
     }
 

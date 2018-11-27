@@ -39,9 +39,6 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field ("CC")
-    private String chiefComplain;
-
     @Field("PH")
     private String pastHistory;
 
@@ -54,6 +51,12 @@ public class MedicalRecordEntity extends BaseEntity {
     @DBRef
     @Field("PY")
     private MedicalPhysicalEntity medicalPhysical;
+
+    @Field("CC")
+    private String chiefComplain;
+
+    @Field("XM")
+    private String examination;
 
     @Field("CF")
     private String clinicalFinding;
@@ -72,6 +75,9 @@ public class MedicalRecordEntity extends BaseEntity {
     @DBRef
     @Field("ME")
     private MedicalMedicationEntity medicalMedication;
+
+    @Field("DI")
+    private String diagnosis;
 
     @Field("PP")
     private String planToPatient;
@@ -120,15 +126,6 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public String getChiefComplain() {
-        return chiefComplain;
-    }
-
-    public MedicalRecordEntity setChiefComplain(String chiefComplain) {
-        this.chiefComplain = chiefComplain;
-        return this;
-    }
-
     public String getPastHistory() {
         return pastHistory;
     }
@@ -162,6 +159,24 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setMedicalPhysical(MedicalPhysicalEntity medicalPhysical) {
         this.medicalPhysical = medicalPhysical;
+        return this;
+    }
+
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public MedicalRecordEntity setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
+        return this;
+    }
+
+    public String getExamination() {
+        return examination;
+    }
+
+    public MedicalRecordEntity setExamination(String examination) {
+        this.examination = examination;
         return this;
     }
 
@@ -207,6 +222,15 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
         this.medicalMedication = medicalMedication;
+        return this;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public MedicalRecordEntity setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
         return this;
     }
 

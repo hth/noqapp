@@ -42,9 +42,6 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty("cc")
-    private String chiefComplain;
-
     @JsonProperty("ph")
     private String pastHistory;
 
@@ -56,6 +53,12 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty("pe")
     private JsonMedicalPhysical medicalPhysical;
+
+    @JsonProperty("cc")
+    private String chiefComplain;
+
+    @JsonProperty("xm")
+    private String examination;
 
     @JsonProperty("cf")
     private String clinicalFinding;
@@ -74,6 +77,9 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty("me")
     private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
+
+    @JsonProperty("di")
+    private String diagnosis;
 
     @JsonProperty("sf")
     private String storeIdPharmacy;
@@ -133,15 +139,6 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public String getChiefComplain() {
-        return chiefComplain;
-    }
-
-    public JsonMedicalRecord setChiefComplain(String chiefComplain) {
-        this.chiefComplain = chiefComplain;
-        return this;
-    }
-
     public String getPastHistory() {
         return pastHistory;
     }
@@ -175,6 +172,24 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setMedicalPhysical(JsonMedicalPhysical medicalPhysical) {
         this.medicalPhysical = medicalPhysical;
+        return this;
+    }
+
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public JsonMedicalRecord setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
+        return this;
+    }
+
+    public String getExamination() {
+        return examination;
+    }
+
+    public JsonMedicalRecord setExamination(String examination) {
+        this.examination = examination;
         return this;
     }
 
@@ -244,6 +259,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord addMedicine(JsonMedicalMedicine medicine) {
         this.medicalMedicines.add(medicine);
+        return this;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public JsonMedicalRecord setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
         return this;
     }
 
