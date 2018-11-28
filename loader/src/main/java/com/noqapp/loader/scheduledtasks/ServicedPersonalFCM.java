@@ -384,11 +384,11 @@ public class ServicedPersonalFCM {
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
                 .setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
-                .setTitle("Follow up for: " + displayName);
+                .setTitle(displayName + " has schedule follow up");
         } else {
             jsonMessage.setNotification(null);
             jsonData.setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
-                .setTitle("Follow up for: " + displayName);
+                .setTitle(displayName + " has schedule follow up");
         }
 
         jsonMessage.setData(jsonData);
