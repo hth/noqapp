@@ -14,3 +14,7 @@ Total
  
     db.getCollection('USER_PROFILE').find().count()
     
+Update All
+
+    db.M_RECORD.update({},  { $set : {"BS" : "5b392567783cea3482064bdd"}}, false, true);    
+    
