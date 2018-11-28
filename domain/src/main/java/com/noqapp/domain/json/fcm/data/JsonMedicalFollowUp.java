@@ -50,6 +50,9 @@ public class JsonMedicalFollowUp extends JsonData {
     @JsonProperty ("qid")
     private String queueUserId;
 
+    @JsonProperty ("pa")
+    private String popFollowUpAlert;
+
     @JsonProperty ("fd")
     private String followUpDay;
 
@@ -83,6 +86,15 @@ public class JsonMedicalFollowUp extends JsonData {
 
     public JsonMedicalFollowUp setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getPopFollowUpAlert() {
+        return popFollowUpAlert;
+    }
+
+    public JsonMedicalFollowUp setPopFollowUpAlert(Date popFollowUpAlert) {
+        this.popFollowUpAlert = DateFormatUtils.format(popFollowUpAlert, ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
         return this;
     }
 
