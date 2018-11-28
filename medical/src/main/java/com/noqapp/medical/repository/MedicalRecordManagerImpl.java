@@ -77,7 +77,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     public List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int pastHour) {
         LOG.info("Fetch past now={}", DateUtil.now().minusHours(pastHour));
         return mongoTemplate.find(
-            query(where("FP").exists(true).and("NF").is(false).and("C").lte(DateUtil.now().minusHours(pastHour))),
+            query(where("FP").exists(true).and("NF").is(false).and("C").gte(DateUtil.now().minusHours(pastHour))),
             MedicalRecordEntity.class,
             TABLE
         );

@@ -268,7 +268,7 @@ public class ServicedPersonalFCM {
                 medicalRecordManager.save(medicalRecord);
             }
         } catch (Exception e) {
-            LOG.error("Failed sending on delivery FCM, reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed sending on medical follow up FCM, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
             if (0 != found || 0 != failure || 0 != sent || 0 != skipped) {

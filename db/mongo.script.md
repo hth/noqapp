@@ -25,7 +25,7 @@ Next Release Update Mongo
     1. Make sure BusinessType in Token_QUEUE is not HO
     2. Change BusinessType in Business NAME from HO to DO
     
-    db.﻿BIZ_STORE.update({"BT" : "HO"},  { $set : {"BT" : "DO"}}, false, true);
+    db.BIZ_STORE.update({"BT" : "HO"},  { $set : {"BT" : "DO"}}, false, true);
     
 ### Drop index
     queue_idx from QueueEntity  
