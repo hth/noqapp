@@ -244,7 +244,7 @@ public class ServicedPersonalFCM {
                     userProfile = userProfileManager.findOneByPhone(userProfile.getGuardianPhone());
                 }
                 List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(userProfile.getQueueUserId());
-                for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
+                for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
                     if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
                         LOG.info("Skipped sending follow up message qid={}", userProfile.getQueueUserId());
                         skipped++;
