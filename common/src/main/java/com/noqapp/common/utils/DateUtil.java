@@ -51,6 +51,7 @@ public final class DateUtil {
 
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
+    public static final SimpleDateFormat SDF_DD_MMM_YYYY = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
     public enum Day {TODAY, TOMORROW}

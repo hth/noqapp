@@ -1,5 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.common.utils.DateUtil.SDF_DD_MMM_YYYY;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
@@ -249,7 +251,7 @@ public class ServicedPersonalFCM {
                         BizStoreEntity bizStore = bizService.getByStoreId(medicalRecord.getBizStoreId());
                         JsonMessage jsonMessage = composeMessageForMedicalFollowUp(
                             registeredDevice,
-                            userProfile.getQueueUserId();
+                            userProfile.getQueueUserId(),
                             bizStore.getCodeQR(),
                             medicalRecord.getBusinessName(),
                             DateUtil.now().plusDays(Integer.parseInt(medicalRecord.getFollowUpInDays()) - 2).toDate());
@@ -378,11 +380,11 @@ public class ServicedPersonalFCM {
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
-                .setBody("Follow up has been scheduled on " + followUpDay)
+                .setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpDay))
                 .setTitle("Follow up for: " + displayName);
         } else {
             jsonMessage.setNotification(null);
-            jsonData.setBody("Follow up has been scheduled on " + followUpDay)
+            jsonData.setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpDay))
                 .setTitle("Follow up for: " + displayName);
         }
 
