@@ -31,6 +31,8 @@ import com.noqapp.service.StatsCronService;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.joda.time.DateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -254,7 +255,7 @@ public class ServicedPersonalFCM {
                             userProfile.getQueueUserId(),
                             bizStore.getCodeQR(),
                             bizStore.getDisplayName(),
-                            DateUtil.now().plusDays(Integer.parseInt(medicalRecord.getFollowUpInDays()) - 2).toDate());
+                            medicalRecord.getFollowUpInDays());
 
                         if (firebaseMessageService.messageToTopic(jsonMessage)) {
                             sent++;
@@ -370,21 +371,23 @@ public class ServicedPersonalFCM {
         String queueUserId,
         String codeQR,
         String displayName,
-        Date followUpDay
+        String followUpInDays
     ) {
+        DateTime followUpScheduledFor = DateUtil.now().plusDays(Integer.parseInt(followUpInDays));
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonTopicData(MessageOriginEnum.MF, FirebaseMessageTypeEnum.P).getJsonMedicalFollowUp()
             .setQueueUserId(queueUserId)
             .setCodeQR(codeQR)
-            .setFollowUpDay(followUpDay);
+            .setPopFollowUpAlert(followUpScheduledFor.minusDays(2).toDate())
+            .setFollowUpDay(followUpScheduledFor.toDate());
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
-                .setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpDay))
+                .setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
                 .setTitle("Follow up for: " + displayName);
         } else {
             jsonMessage.setNotification(null);
-            jsonData.setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpDay))
+            jsonData.setBody("Follow up has been scheduled on " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
                 .setTitle("Follow up for: " + displayName);
         }
 
