@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 @Document(collection = "M_RECORD")
 @CompoundIndexes(value = {
         @CompoundIndex(name = "m_record_idx", def = "{'QID' : 1}", unique = false),
+        @CompoundIndex(name = "m_record_qr_idx", def = "{'QR' : 1}", unique = false),
 })
 public class MedicalRecordEntity extends BaseEntity {
 
@@ -102,8 +103,8 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field ("BCI")
     private String bizCategoryId;
 
-    @Field("BS")
-    private String bizStoreId;
+    @Field("QR")
+    private String codeQR;
 
     @Field ("FV")
     private FormVersionEnum formVersion;
@@ -308,12 +309,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public String getBizStoreId() {
-        return bizStoreId;
+    public String getCodeQR() {
+        return codeQR;
     }
 
-    public MedicalRecordEntity setBizStoreId(String bizStoreId) {
-        this.bizStoreId = bizStoreId;
+    public MedicalRecordEntity setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 

@@ -20,12 +20,12 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.repository.MedicalRecordManager;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.service.BizService;
 import com.noqapp.service.FirebaseMessageService;
 import com.noqapp.service.StatsCronService;
 
@@ -68,7 +68,7 @@ public class ServicedPersonalFCM {
     private RegisteredDeviceManager registeredDeviceManager;
     private MedicalRecordManager medicalRecordManager;
     private UserProfileManager userProfileManager;
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
     private FirebaseMessageService firebaseMessageService;
     private StatsCronService statsCronService;
 
@@ -88,7 +88,7 @@ public class ServicedPersonalFCM {
             RegisteredDeviceManager registeredDeviceManager,
             MedicalRecordManager medicalRecordManager,
             UserProfileManager userProfileManager,
-            BizService bizService,
+            BizStoreManager bizStoreManager,
             FirebaseMessageService firebaseMessageService,
             StatsCronService statsCronService
     ) {
@@ -101,7 +101,7 @@ public class ServicedPersonalFCM {
         this.registeredDeviceManager = registeredDeviceManager;
         this.medicalRecordManager = medicalRecordManager;
         this.userProfileManager = userProfileManager;
-        this.bizService = bizService;
+        this.bizStoreManager = bizStoreManager;
         this.firebaseMessageService = firebaseMessageService;
         this.statsCronService = statsCronService;
     }
@@ -132,7 +132,7 @@ public class ServicedPersonalFCM {
 
                 //TODO add cache Redis.
                 if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
-                    LOG.info("Skipped sending message qid={} did={}", queue.getQueueUserId(), queue.getDid());
+                    LOG.info("Skipped sending serviced/skipped message qid={} did={}", queue.getQueueUserId(), queue.getDid());
                     skipped++;
                     queueManager.increaseAttemptToSendNotificationCount(queue.getId());
                 } else {
@@ -188,7 +188,7 @@ public class ServicedPersonalFCM {
 
                 //TODO add cache Redis.
                 if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
-                    LOG.info("Skipped sending message qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
+                    LOG.info("Skipped sending order message qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
                     skipped++;
                     purchaseOrderManager.increaseAttemptToSendNotificationCount(purchaseOrder.getId());
                 } else {
@@ -234,7 +234,7 @@ public class ServicedPersonalFCM {
         }
 
         try {
-            List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByFollowUpWithoutNotificationSent(2);
+            List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByFollowUpWithoutNotificationSent(2, 0);
             found = medicalRecords.size();
 
             for (MedicalRecordEntity medicalRecord : medicalRecords) {
@@ -246,10 +246,10 @@ public class ServicedPersonalFCM {
                 List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(userProfile.getQueueUserId());
                 for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
                     if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
-                        LOG.info("Skipped sending message qid={}", userProfile.getQueueUserId());
+                        LOG.info("Skipped sending follow up message qid={}", userProfile.getQueueUserId());
                         skipped++;
                     } else {
-                        BizStoreEntity bizStore = bizService.getByStoreId(medicalRecord.getBizStoreId());
+                        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(medicalRecord.getCodeQR());
                         JsonMessage jsonMessage = composeMessageForMedicalFollowUp(
                             registeredDevice,
                             userProfile.getQueueUserId(),

@@ -10,6 +10,8 @@ import com.noqapp.medical.domain.MedicalRecordEntity;
 
 import org.bson.types.ObjectId;
 
+import org.joda.time.DateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,10 +76,19 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     }
 
     @Override
-    public List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int pastHour) {
-        LOG.info("Fetch past now={}", DateUtil.now().minusHours(pastHour));
+    public List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int afterHour, int beforeHour) {
+        DateTime now = DateUtil.now();
         return mongoTemplate.find(
-            query(where("FP").exists(true).and("NF").is(false).and("C").gte(DateUtil.now().minusHours(pastHour))),
+            query(where("FP").exists(true).and("NF").is(false).and("C").gte(now.minusHours(afterHour)).lt(now.minusHours(beforeHour))),
+            MedicalRecordEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<MedicalRecordEntity> findAllFollowUp(String codeQR) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("C").gte(DateUtil.now().minusDays(3))),
             MedicalRecordEntity.class,
             TABLE
         );
