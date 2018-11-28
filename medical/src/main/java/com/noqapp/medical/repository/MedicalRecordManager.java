@@ -15,5 +15,7 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
 
     MedicalRecordEntity findById(String id);
 
-    List<MedicalRecordEntity>  findByFollowUpWithoutNotificationSent(int pastHour);
+    List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int afterHour, int beforeHour);
+
+    List<MedicalRecordEntity> findAllFollowUp(String codeQR);
 }

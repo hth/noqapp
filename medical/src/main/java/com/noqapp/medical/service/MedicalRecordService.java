@@ -136,7 +136,7 @@ public class MedicalRecordService {
             .setDiagnosedById(diagnosedById)
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBizCategoryId(bizStore.getBizCategoryId())
-            .setBizStoreId(bizStore.getId());
+            .setCodeQR(bizStore.getCodeQR());
 
         if (null != medicalRecordForm.getMedicalPhysicalHistoricals()) {
             populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
@@ -225,7 +225,7 @@ public class MedicalRecordService {
                 .setDiagnosedById(jsonRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
-                .setBizStoreId(bizStore.getId());
+                .setCodeQR(bizStore.getCodeQR());
 
             if (null == medicalRecord.getMedicalPhysical()) {
                 if (null != jsonRecord.getMedicalPhysical()) {
