@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -255,7 +256,7 @@ public class ServicedPersonalFCM {
                             userProfile.getQueueUserId(),
                             bizStore.getCodeQR(),
                             bizStore.getDisplayName(),
-                            medicalRecord.getFollowUpInDays());
+                            medicalRecord.getFollowUpDay());
 
                         if (firebaseMessageService.messageToTopic(jsonMessage)) {
                             sent++;
@@ -371,9 +372,9 @@ public class ServicedPersonalFCM {
         String queueUserId,
         String codeQR,
         String displayName,
-        String followUpInDays
+        Date followUpDay
     ) {
-        DateTime followUpScheduledFor = DateUtil.now().plusDays(Integer.parseInt(followUpInDays));
+        DateTime followUpScheduledFor = DateUtil.toDateTime(followUpDay);
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonTopicData(MessageOriginEnum.MF, FirebaseMessageTypeEnum.P).getJsonMedicalFollowUp()
             .setQueueUserId(queueUserId)

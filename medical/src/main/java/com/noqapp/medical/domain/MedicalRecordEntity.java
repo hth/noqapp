@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,7 +85,7 @@ public class MedicalRecordEntity extends BaseEntity {
     private String planToPatient;
 
     @Field("FP")
-    private String followUpInDays;
+    private Date followUpDay;
 
     @Field("NF")
     private boolean notifiedFollowUp = false;
@@ -250,12 +251,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public String getFollowUpInDays() {
-        return followUpInDays;
+    public Date getFollowUpDay() {
+        return followUpDay;
     }
 
-    public MedicalRecordEntity setFollowUpInDays(String followUpInDays) {
-        this.followUpInDays = followUpInDays;
+    public MedicalRecordEntity setFollowUpDay(Date followUpDay) {
+        this.followUpDay = followUpDay;
         return this;
     }
 

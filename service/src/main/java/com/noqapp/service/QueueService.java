@@ -252,7 +252,7 @@ public class QueueService {
             jsonQueuedPerson.setCustomerName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
                 .setBusinessCustomerIdChangeCount(businessCustomer == null ? 0 : businessCustomer.getVersion())
-                .setCustomerPhone(userProfile.getPhone());
+                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
         }
 
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
@@ -304,14 +304,6 @@ public class QueueService {
                             .setQueueUserState(queue.getQueueUserState())
                             .setAge(guardianProfile.getAgeAsString())
                             .setGender(guardianProfile.getGender()));
-                }
-            } else {
-                /* When not queued, do this. Used in historical data too. */
-                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
-                    UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
-
-                    /* Add Phone number of guardian. */
-                    jsonQueuedPerson.setCustomerPhone(guardianProfile.getPhone());
                 }
             }
 

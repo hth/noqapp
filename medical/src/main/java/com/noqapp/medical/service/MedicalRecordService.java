@@ -9,6 +9,8 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
+import com.noqapp.domain.json.JsonQueuePersonList;
+import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
@@ -39,8 +41,8 @@ import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRadiologyManager;
 import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PurchaseOrderService;
 
@@ -75,7 +77,7 @@ public class MedicalRecordService {
     private MedicalPathologyTestManager medicalPathologyTestManager;
     private MedicalRadiologyManager medicalRadiologyManager;
     private MedicalRadiologyTestManager medicalRadiologyTestManager;
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
     private BusinessUserStoreService businessUserStoreService;
     private UserProfileManager userProfileManager;
     private PurchaseOrderService purchaseOrderService;
@@ -92,7 +94,7 @@ public class MedicalRecordService {
         MedicalPathologyTestManager medicalPathologyTestManager,
         MedicalRadiologyManager medicalRadiologyManager,
         MedicalRadiologyTestManager medicalRadiologyTestManager,
-        BizService bizService,
+        BizStoreManager bizStoreManager,
         BusinessUserStoreService businessUserStoreService,
         UserProfileManager userProfileManager,
         PurchaseOrderService purchaseOrderService
@@ -105,7 +107,7 @@ public class MedicalRecordService {
         this.medicalPathologyTestManager = medicalPathologyTestManager;
         this.medicalRadiologyManager = medicalRadiologyManager;
         this.medicalRadiologyTestManager = medicalRadiologyTestManager;
-        this.bizService = bizService;
+        this.bizStoreManager = bizStoreManager;
         this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
         this.purchaseOrderService = purchaseOrderService;
@@ -116,7 +118,7 @@ public class MedicalRecordService {
     //TODO add check for qid
     public void addMedicalRecord(MedicalRecordForm medicalRecordForm, String diagnosedById, String codeQR) {
         LOG.info("Add medical record");
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
 
         MedicalRecordEntity medicalRecord = new MedicalRecordEntity(medicalRecordForm.getQueueUserId());
         /* Setting its own ObjectId. */
@@ -132,7 +134,7 @@ public class MedicalRecordService {
             .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
-            .setFollowUpInDays(medicalRecord.getFollowUpInDays())
+            .setFollowUpDay(medicalRecord.getFollowUpDay())
             .setDiagnosedById(diagnosedById)
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBizCategoryId(bizStore.getBizCategoryId())
@@ -166,7 +168,7 @@ public class MedicalRecordService {
             }
 
             /* Check if business type is of Hospital or Doctor to allow adding record. */
-            BizStoreEntity bizStore = bizService.findByCodeQR(jsonRecord.getCodeQR());
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonRecord.getCodeQR());
             if (bizStore.getBusinessType() != BusinessTypeEnum.DO && bizStore.getBizName().getBusinessType() != BusinessTypeEnum.DO) {
                 LOG.error("Failed as its not a Doctor or Hospital business type, found store={} biz={}",
                     bizStore.getBusinessType(),
@@ -221,7 +223,7 @@ public class MedicalRecordService {
                     StringUtils.isBlank(jsonRecord.getPlanToPatient())
                         ? null
                         : jsonRecord.getPlanToPatient())
-                .setFollowUpInDays(jsonRecord.getFollowUpInDays())
+                .setFollowUpDay(DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate())
                 .setDiagnosedById(jsonRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
@@ -513,7 +515,7 @@ public class MedicalRecordService {
                     .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
                     .setDiagnosis(medicalRecord.getDiagnosis())
                     .setPlanToPatient(medicalRecord.getPlanToPatient())
-                    .setFollowUpInDays(medicalRecord.getFollowUpInDays())
+                    .setFollowUpInDays(String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
                     .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
                     .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
                     .setBusinessName(medicalRecord.getBusinessName())
@@ -567,5 +569,23 @@ public class MedicalRecordService {
         }
 
         return jsonMedicalRecordList;
+    }
+
+    @Mobile
+    public String findAllFollowUp(String codeQR) {
+        List<JsonQueuedPerson> jsonQueuedPeople = new ArrayList<>();
+        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findAllFollowUp(codeQR);
+        for (MedicalRecordEntity medicalRecord : medicalRecords) {
+            String qid = medicalRecord.getQueueUserId();
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+            JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
+                .setCustomerName(userProfile.getName())
+                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone())
+                .setCreated(medicalRecord.getFollowUpDay());
+
+            jsonQueuedPeople.add(jsonQueuedPerson);
+        }
+
+        return new JsonQueuePersonList().setQueuedPeople(jsonQueuedPeople).asJson();
     }
 }
