@@ -252,7 +252,7 @@ public class QueueService {
             jsonQueuedPerson.setCustomerName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
                 .setBusinessCustomerIdChangeCount(businessCustomer == null ? 0 : businessCustomer.getVersion())
-                .setCustomerPhone(userProfile.getPhone());
+                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
         }
 
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
