@@ -63,7 +63,7 @@ public class QueueService {
 
     @Autowired
     public QueueService(
-            @Value("${limitedToDays:7}")
+            @Value("${limitedToDays:5}")
             int limitedToDays,
 
             UserProfileManager userProfileManager,
@@ -304,6 +304,14 @@ public class QueueService {
                             .setQueueUserState(queue.getQueueUserState())
                             .setAge(guardianProfile.getAgeAsString())
                             .setGender(guardianProfile.getGender()));
+                }
+            } else {
+                /* When not queued, do this. Used in historical data too. */
+                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                    UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
+
+                    /* Add Phone number of guardian. */
+                    jsonQueuedPerson.setCustomerPhone(guardianProfile.getPhone());
                 }
             }
 
