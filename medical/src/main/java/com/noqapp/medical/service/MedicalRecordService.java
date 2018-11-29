@@ -515,7 +515,7 @@ public class MedicalRecordService {
                     .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
                     .setDiagnosis(medicalRecord.getDiagnosis())
                     .setPlanToPatient(medicalRecord.getPlanToPatient())
-                    .setFollowUpInDays(String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
+                    .setFollowUpInDays(null == medicalRecord.getFollowUpDay() ? null : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
                     .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
                     .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
                     .setBusinessName(medicalRecord.getBusinessName())
