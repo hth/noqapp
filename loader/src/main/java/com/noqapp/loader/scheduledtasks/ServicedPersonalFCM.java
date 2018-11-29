@@ -62,6 +62,8 @@ public class ServicedPersonalFCM {
 
     private String sendPersonalNotificationSwitch;
     private int numberOfAttemptsToSendFCM;
+    private int afterHour;
+    private int beforeHour;
 
     private QueueManager queueManager;
     private PurchaseOrderManager purchaseOrderManager;
@@ -83,6 +85,12 @@ public class ServicedPersonalFCM {
             @Value ("${ServicedPersonalFCM.numberOfAttemptsToSendFCM}")
             int numberOfAttemptsToSendFCM,
 
+            @Value ("${ServicedPersonalFCM.afterHour}")
+            int afterHour,
+
+            @Value ("${ServicedPersonalFCM.beforeHour}")
+            int beforeHour,
+
             QueueManager queueManager,
             PurchaseOrderManager purchaseOrderManager,
             TokenQueueManager tokenQueueManager,
@@ -95,6 +103,8 @@ public class ServicedPersonalFCM {
     ) {
         this.sendPersonalNotificationSwitch = sendPersonalNotificationSwitch;
         this.numberOfAttemptsToSendFCM = numberOfAttemptsToSendFCM;
+        this.afterHour = afterHour;
+        this.beforeHour = beforeHour;
 
         this.queueManager = queueManager;
         this.purchaseOrderManager = purchaseOrderManager;
@@ -235,7 +245,7 @@ public class ServicedPersonalFCM {
         }
 
         try {
-            List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByFollowUpWithoutNotificationSent(2, 0);
+            List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByFollowUpWithoutNotificationSent(afterHour, beforeHour);
             found = medicalRecords.size();
 
             for (MedicalRecordEntity medicalRecord : medicalRecords) {
