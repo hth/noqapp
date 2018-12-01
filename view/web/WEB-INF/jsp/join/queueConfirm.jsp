@@ -69,13 +69,34 @@
                             </div>
 
                             <div class="qr-queue">
-                                <h3>You are confirmed</h3>
-                                <p style="margin: 5px 0"><strong>Your position in Queue: </strong>${webJoinQueue.rootMap.get("token")}</p>
-                                <p style="margin: 5px 0"><strong>Expected Time of Service: </strong><span id="showTime"></span></p>
-                                <p style="margin: 5px 0"><strong>Location: </strong>${webJoinQueue.rootMap.get("storeAddress")}</p>
+                                <c:choose>
+                                    <c:when test="${!empty webJoinQueue.rootMap.get('registration')}">
+                                        <h4>Failed to generate token. You are not a registered user. </h4>
+                                        <h4>${webJoinQueue.rootMap.get("displayName")} only accepts registered users. <a href="/open/register.htm" style="font-size: large;">Click here to register</a></h4>
+                                        <br/>
+                                        We are on mobile too. Please download NoQApp from Google Play.
+                                        <div class="download-app-icon">
+                                            <p>Get NoQApp</p>
+                                            <div>
+                                                    <%--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">--%>
+                                                    <%--<img src="${parentHost}/static2/internal/img/apple-store.png"/>--%>
+                                                    <%--</a>--%>
+                                                <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
+                                                    <img src="${parentHost}/static2/internal/img/google-play.png"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h3>You are confirmed</h3>
+                                        <p style="margin: 5px 0"><strong>Your position in Queue: </strong>${webJoinQueue.rootMap.get("token")}</p>
+                                        <p style="margin: 5px 0"><strong>Expected Time of Service: </strong><span id="showTime"></span></p>
+                                        <p style="margin: 5px 0"><strong>Location: </strong>${webJoinQueue.rootMap.get("storeAddress")}</p>
 
-                                <br/>
-                                <p>Please plan your arrival on time.</p>
+                                        <br/>
+                                        <p>Please plan your arrival on time.</p>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </form>
@@ -113,7 +134,7 @@
 </div>
 <script>
     <c:choose>
-        <c:when test="${!empty webJoinQueue.rootMap.get('expectedServiceTime')}}">
+        <c:when test="${!empty webJoinQueue.rootMap.get('expectedServiceTime')}">
             var c = moment.parseZone('${webJoinQueue.rootMap.get("expectedServiceTime")}').format("hh:mm A");
             $("#showTime").text(c);
         </c:when>
