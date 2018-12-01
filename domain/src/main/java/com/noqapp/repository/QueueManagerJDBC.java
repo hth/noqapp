@@ -38,7 +38,7 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByQid(String qid, Date lastAccessed);
 
     @Mobile
-    List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays);
+    List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays);
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review);

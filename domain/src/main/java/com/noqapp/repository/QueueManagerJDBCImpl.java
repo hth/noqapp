@@ -74,10 +74,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "WHERE QID = ? " +
             "GROUP BY QR) ORDER BY C DESC";
 
-    private static final String findByCodeQR =
+    private static final String findByCodeQR_AndNotNullQID =
         "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
+            "AND " +
+            "QID IS NOT NULL " +
             "AND " +
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
@@ -246,9 +248,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays) {
+    public List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays) {
         LOG.info("Fetch history by codeQR={} limitedToDays={}", codeQR, limitedToDays);
-        return jdbcTemplate.query(findByCodeQR, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
+        return jdbcTemplate.query(findByCodeQR_AndNotNullQID, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
     }
 
     @Override
