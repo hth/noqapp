@@ -132,7 +132,7 @@
                     </form>
 
                     <div class="otp">
-                        <form id="verification-code-form" action="" style="display: none;">
+                        <form id="verification-code-form" action="" style="display: none; padding-bottom: 50px;">
                             <span><br></span>
                             <span><br></span>
                             <h2>OTP</h2>

@@ -198,9 +198,13 @@ public class WebJoinQueueController {
                     Map<String, Object> rootMap = new HashMap<>();
                     showHTMLService.populateStore(rootMap, bizStore);
 
-                    rootMap.put("token", data[1]);
-
                     String expectedServiceTime;
+                    if (data.length == 1) {
+                        rootMap.put("registration", "required");
+                    } else {
+                        rootMap.put("token", data[1]);
+                    }
+
                     if (data.length >= 3) {
                         expectedServiceTime = data[2].length() == 0 ? "" : data[2];
                     } else {
@@ -260,8 +264,14 @@ public class WebJoinQueueController {
                         .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             } else {
                 UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
-                String did = UUID.randomUUID().toString();
+                if (bizStore.isAllowLoggedInUser() && userProfile == null) {
+                    LOG.info("Sent user to register, bizStore required registered user {} {}", bizStore.getDisplayName(), bizStore.getCodeQR());
+                    /* Encoding of data. */
+                    String combined = codeQRDecoded + "#" + "#";
+                    return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
+                }
 
+                String did = UUID.randomUUID().toString();
                 RegisteredDeviceEntity registeredDevice = null;
                 if (null != userProfile) {
                     registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
@@ -302,7 +312,7 @@ public class WebJoinQueueController {
             String expectedServiceBegin = StringUtils.isBlank(jsonToken.getExpectedServiceBegin()) ? "" : jsonToken.getExpectedServiceBegin();
             /* Encoding of data. */
             String combined = jsonToken.getCodeQR()
-                    + "#" + String.valueOf(jsonToken.getToken())
+                    + "#" + jsonToken.getToken()
                     + "#" + expectedServiceBegin;
             return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
         } catch (IOException | ParseException e) {

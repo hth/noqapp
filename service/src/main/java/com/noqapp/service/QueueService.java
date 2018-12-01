@@ -238,10 +238,10 @@ public class QueueService {
     }
 
     @Mobile
-    public JsonQueuePersonList findAllClientHistorical(String codeQR) {
+    public JsonQueuePersonList findAllRegisteredClientHistorical(String codeQR) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
-        List<QueueEntity> queues = queueManagerJDBC.getByCodeQR(codeQR, limitedToDays);
+        List<QueueEntity> queues = queueManagerJDBC.getByCodeQRAndNotNullQID(codeQR, limitedToDays);
         populateInJsonQueuePersonList(queuedPeople, queues);
 
         for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
