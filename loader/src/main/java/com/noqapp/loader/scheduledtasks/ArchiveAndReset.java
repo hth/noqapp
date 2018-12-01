@@ -185,6 +185,10 @@ public class ArchiveAndReset {
         try {
             statsBizStoreDaily = saveDailyQueueStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
             queueManagerJDBC.batchQueues(queues);
+
+            /* Complete transaction once data moved. */
+            statsBizStoreDailyManager.save(statsBizStoreDaily);
+            LOG.info("Saved daily queue store stat={}", statsBizStoreDaily);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             queueManagerJDBC.rollbackQueues(queues);
@@ -220,6 +224,10 @@ public class ArchiveAndReset {
         try {
             statsBizStoreDaily = saveDailyOrderStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), purchaseOrders);
             purchaseOrderManagerJDBC.batchPurchaseOrder(purchaseOrders);
+
+            /* Complete Transaction once data has moved. */
+            statsBizStoreDailyManager.save(statsBizStoreDaily);
+            LOG.info("Saved daily order store stat={}", statsBizStoreDaily);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             purchaseOrderManagerJDBC.rollbackPurchaseOrder(purchaseOrders);
@@ -324,13 +332,7 @@ public class ArchiveAndReset {
         }
     }
 
-    /**
-     * Saves daily stats for BizStore Queues.
-     *
-     * @param bizStoreId
-     * @param bizNameId
-     * @param queues
-     */
+    /** Saves daily stats for BizStore Queues. */
     private StatsBizStoreDailyEntity saveDailyQueueStat(
             String bizStoreId,
             String bizNameId,
@@ -432,19 +434,10 @@ public class ArchiveAndReset {
                 .setTotalRating(totalRating)
                 .setTotalCustomerRated(totalCustomerRated)
                 .setTotalHoursSaved(totalHoursSaved);
-
-        statsBizStoreDailyManager.save(statsBizStoreDaily);
-        LOG.info("Saved daily store stat={}", statsBizStoreDaily);
         return statsBizStoreDaily;
     }
 
-    /**
-     * Saves daily stats for BizStore Order.
-     *
-     * @param bizStoreId
-     * @param bizNameId
-     * @param purchaseOrders
-     */
+    /** Saves daily stats for BizStore Order. */
     private StatsBizStoreDailyEntity saveDailyOrderStat(
         String bizStoreId,
         String bizNameId,
@@ -500,9 +493,6 @@ public class ArchiveAndReset {
             .setTotalRating(totalRating)
             .setTotalCustomerRated(totalCustomerRated)
             .setTotalHoursSaved(totalHoursSaved);
-
-        statsBizStoreDailyManager.save(statsBizStoreDaily);
-        LOG.info("Saved daily store stat={}", statsBizStoreDaily);
         return statsBizStoreDaily;
     }
 }
