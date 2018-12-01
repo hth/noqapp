@@ -195,35 +195,12 @@ public class ArchiveAndReset {
         bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
         long deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
         if (queues.size() == deleted) {
-            LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            LOG.info("Deleted and insert queue exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
         } else {
-            LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
+            LOG.error("Mis-match in deleted and insert queue bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
         }
 
-        DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
-        /* In queue history, we set things for tomorrow. */
-        ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
-        resetStoreOfToday(bizStore, nowDayOfWeek);
-
-        StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
-        if (null != bizStoreRating) {
-            bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
-                    bizStore.getId(),
-                    bizStore.getTimeZone(),
-                    /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                    Date.from(queueHistoryNextRun.toInstant()),
-                    (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
-                    bizStoreRating.getTotalCustomerRated(),
-                    //TODO(hth) should we compute with yesterday average time or overall average time?
-                    statsBizStoreDaily.getAverageServiceTime());
-        } else {
-            bizStoreManager.updateNextRun(
-                    bizStore.getId(),
-                    bizStore.getTimeZone(),
-                    Date.from(queueHistoryNextRun.toInstant()));
-        }
-
-        tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
+        doReset(bizStore, statsBizStoreDaily);
     }
 
     private void orderArchiveAndReset(BizStoreEntity bizStore) {
@@ -256,11 +233,15 @@ public class ArchiveAndReset {
         //TODO(hth) has to come under transaction
         purchaseOrderProductManager.deleteByCodeQR(bizStore.getCodeQR());
         if (purchaseOrders.size() == deleted) {
-            LOG.info("Deleted and insert exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            LOG.info("Deleted and insert order exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
         } else {
-            LOG.error("Mis-match in deleted and insert bizStore={} size={} delete={}", bizStore.getId(), purchaseOrders.size(), deleted);
+            LOG.error("Mis-match in deleted and insert order bizStore={} size={} delete={}", bizStore.getId(), purchaseOrders.size(), deleted);
         }
 
+        doReset(bizStore, statsBizStoreDaily);
+    }
+
+    private void doReset(BizStoreEntity bizStore, StatsBizStoreDailyEntity statsBizStoreDaily) {
         DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
         /* In queue history, we set things for tomorrow. */
         ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
