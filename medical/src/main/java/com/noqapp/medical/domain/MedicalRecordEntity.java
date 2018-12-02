@@ -90,6 +90,12 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("NF")
     private boolean notifiedFollowUp = false;
 
+    @Field("NP")
+    private String noteForPatient;
+
+    @Field("ND")
+    private String noteToDiagnoser;
+
     /* Always doctors id who looked or was booked for. */
     @NotNull
     @Field("DBI")
@@ -266,6 +272,24 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setNotifiedFollowUp(boolean notifiedFollowUp) {
         this.notifiedFollowUp = notifiedFollowUp;
+        return this;
+    }
+
+    public String getNoteForPatient() {
+        return noteForPatient;
+    }
+
+    public MedicalRecordEntity setNoteForPatient(String noteForPatient) {
+        this.noteForPatient = noteForPatient;
+        return this;
+    }
+
+    public String getNoteToDiagnoser() {
+        return noteToDiagnoser;
+    }
+
+    public MedicalRecordEntity setNoteToDiagnoser(String noteToDiagnoser) {
+        this.noteToDiagnoser = noteToDiagnoser;
         return this;
     }
 

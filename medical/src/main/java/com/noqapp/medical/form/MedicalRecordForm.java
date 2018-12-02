@@ -4,6 +4,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.domain.types.medical.FormVersionEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
@@ -36,6 +37,7 @@ public class MedicalRecordForm {
     private BusinessTypeEnum businessType;
     private String queueUserId;
     private ScrubbedInput codeQR;
+    private FormVersionEnum formVersion;
 
     private String pastHistory;
     private String familyHistory;
@@ -50,6 +52,8 @@ public class MedicalRecordForm {
     private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
     private MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
     private List<MedicalMedicineEntity> medicalMedicines = new ArrayList<>();
+    private String noteForPatient;
+    private String noteToDiagnoser;
     private String diagnosis;
     private String planToPatient;
     private String followUpInDays;
@@ -155,6 +159,15 @@ public class MedicalRecordForm {
 
     public MedicalRecordForm setCodeQR(ScrubbedInput codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public MedicalRecordForm setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 
@@ -272,6 +285,24 @@ public class MedicalRecordForm {
 
     public MedicalRecordForm setMedicalMedicines(List<MedicalMedicineEntity> medicalMedicines) {
         this.medicalMedicines = medicalMedicines;
+        return this;
+    }
+
+    public String getNoteForPatient() {
+        return noteForPatient;
+    }
+
+    public MedicalRecordForm setNoteForPatient(String noteForPatient) {
+        this.noteForPatient = noteForPatient;
+        return this;
+    }
+
+    public String getNoteToDiagnoser() {
+        return noteToDiagnoser;
+    }
+
+    public MedicalRecordForm setNoteToDiagnoser(String noteToDiagnoser) {
+        this.noteToDiagnoser = noteToDiagnoser;
         return this;
     }
 
