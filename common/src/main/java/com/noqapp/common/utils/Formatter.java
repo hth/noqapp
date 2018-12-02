@@ -161,6 +161,7 @@ public final class Formatter {
 
     /**
      * Removes country code from phone.
+     * Note: Do not pass a Raw Phone as it will strip few digits.
      *
      * @param phone should begin with +
      * @return
@@ -169,7 +170,7 @@ public final class Formatter {
         try {
             assertThat(phone, containsString("+"));
             /* Remove `+` sign with country code before sending the number back. */
-            return RegExUtils.removeFirst(phone, "\\+" + String.valueOf(findCountryCode(phone)));
+            return RegExUtils.removeFirst(phone, "\\+" + findCountryCode(phone));
         } catch (AssertionError a) {
             LOG.warn("Phone number should begin with + phone={}", phone);
             try {

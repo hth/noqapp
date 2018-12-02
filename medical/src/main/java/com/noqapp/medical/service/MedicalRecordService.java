@@ -135,10 +135,13 @@ public class MedicalRecordService {
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
             .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate() : null)
+            .setNoteForPatient(medicalRecordForm.getNoteForPatient())
+            .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())
             .setDiagnosedById(diagnosedById)
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBizCategoryId(bizStore.getBizCategoryId())
-            .setCodeQR(bizStore.getCodeQR());
+            .setCodeQR(bizStore.getCodeQR())
+            .setFormVersion(medicalRecordForm.getFormVersion());
 
         if (null != medicalRecordForm.getMedicalPhysicalHistoricals()) {
             populateWithMedicalPhysical(medicalRecordForm, medicalRecord);
@@ -224,10 +227,13 @@ public class MedicalRecordService {
                         ? null
                         : jsonRecord.getPlanToPatient())
                 .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate() : null)
+                .setNoteForPatient(jsonRecord.getNoteForPatient())
+                .setNoteToDiagnoser(jsonRecord.getNoteToDiagnoser())
                 .setDiagnosedById(jsonRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
-                .setCodeQR(bizStore.getCodeQR());
+                .setCodeQR(bizStore.getCodeQR())
+                .setFormVersion(jsonRecord.getFormVersion());
 
             if (null == medicalRecord.getMedicalPhysical()) {
                 if (null != jsonRecord.getMedicalPhysical()) {
@@ -504,6 +510,7 @@ public class MedicalRecordService {
             for (MedicalRecordEntity medicalRecord : medicalRecords) {
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord
+                    .setFormVersion(medicalRecord.getFormVersion())
                     .setBusinessType(medicalRecord.getBusinessType())
                     .setQueueUserId(medicalRecord.getQueueUserId())
                     .setPastHistory(medicalRecord.getPastHistory())
@@ -516,6 +523,8 @@ public class MedicalRecordService {
                     .setDiagnosis(medicalRecord.getDiagnosis())
                     .setPlanToPatient(medicalRecord.getPlanToPatient())
                     .setFollowUpInDays(null == medicalRecord.getFollowUpDay() ? null : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
+                    .setNoteForPatient(medicalRecord.getNoteForPatient())
+                    .setNoteToDiagnoser(medicalRecord.getNoteToDiagnoser())
                     .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
                     .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
                     .setBusinessName(medicalRecord.getBusinessName())

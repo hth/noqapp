@@ -566,16 +566,15 @@ public class AccountService {
         }
 
         userProfile.setGender(registerUser.getGender());
-        userProfile.setAddress(registerUser.getAddress());
+        if (StringUtils.isNotBlank(registerUser.getAddress())) {
+            userProfile.setAddress(registerUser.getAddress());
+        }
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
-            LOG.debug("Raw={}, WithCountry={}",
-                Formatter.phoneStripCountryCode(registerUser.getPhoneNotFormatted()),
-                registerUser.getPhoneWithCountryCode());
-
+            LOG.debug("Raw={}, WithCountry={}", registerUser.getPhoneNotFormatted(), registerUser.getPhoneWithCountryCode());
             /* Fix to make sure county code is not appended to Phone Raw. */
             userProfile.setPhone(registerUser.getPhoneWithCountryCode());
-            userProfile.setPhoneRaw(Formatter.phoneStripCountryCode(registerUser.getPhoneNotFormatted()));
+            userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
         }
         userProfile.setTimeZone(registerUser.getTimeZone());
         userProfile.setBirthday(registerUser.getBirthday());
