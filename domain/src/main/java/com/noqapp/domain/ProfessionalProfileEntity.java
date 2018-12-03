@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonNameDatePair;
+import com.noqapp.domain.types.medical.FormVersionEnum;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -63,6 +64,9 @@ public class ProfessionalProfileEntity extends BaseEntity {
 
     @Field("DD")
     private String dataDictionary;
+
+    @Field ("FV")
+    private FormVersionEnum formVersion = FormVersionEnum.MFD1;
 
     @SuppressWarnings("unused")
     public ProfessionalProfileEntity() {
@@ -152,6 +156,15 @@ public class ProfessionalProfileEntity extends BaseEntity {
 
     public ProfessionalProfileEntity setDataDictionary(String dataDictionary) {
         this.dataDictionary = dataDictionary;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public ProfessionalProfileEntity setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 
