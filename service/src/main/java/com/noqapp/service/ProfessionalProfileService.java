@@ -97,7 +97,8 @@ public class ProfessionalProfileService {
             .setAwards(professionalProfile.getAwardsAsJson())
             .setDataDictionary(professionalProfile.getDataDictionary())
             .setReviews(reviews)
-            .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs());
+            .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs())
+            .setFormVersion(professionalProfile.getFormVersion());
     }
 
     public ProfessionalProfileEntity findByQid(String qid) {
