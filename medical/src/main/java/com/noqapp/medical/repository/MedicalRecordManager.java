@@ -17,5 +17,6 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
 
     List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int afterHour, int beforeHour);
 
+    /** Finds followup between two dates i.e now and three days from now. */
     List<MedicalRecordEntity> findAllFollowUp(String codeQR);
 }
