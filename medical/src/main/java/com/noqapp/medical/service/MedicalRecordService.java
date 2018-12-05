@@ -295,6 +295,9 @@ public class MedicalRecordService {
         }
 
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        if (medicalRecord == null) {
+            return null;
+        }
         return getJsonMedicalRecord(medicalRecord);
     }
 
