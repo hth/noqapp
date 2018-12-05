@@ -15,7 +15,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
@@ -160,12 +159,13 @@ public class MedicalRecordService {
     }
 
     @Mobile
-    public void addMedicalRecord(JsonMedicalRecord jsonRecord) {
+    public void addMedicalRecord(JsonMedicalRecord jsonRecord, String diagnosedById) {
         try {
-            LOG.info("Add medical record");
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(diagnosedById);
+            LOG.info("Add medical record {} {}", diagnosedById, userProfile.getLevel());
 
             /* Check if user has proper role to allow adding of medical record. */
-            if (!businessUserStoreService.hasAccessWithUserLevel(jsonRecord.getDiagnosedById(), jsonRecord.getCodeQR(), UserLevelEnum.S_MANAGER)) {
+            if (!businessUserStoreService.hasAccessWithUserLevel(jsonRecord.getDiagnosedById(), jsonRecord.getCodeQR(), userProfile.getLevel())) {
                 LOG.info("Your are not authorized to add medical record mail={}", jsonRecord.getDiagnosedById());
                 return;
             }
@@ -188,72 +188,87 @@ public class MedicalRecordService {
                     : jsonRecord.getRecordReferenceId());
             }
 
+            switch (userProfile.getLevel()) {
+                case S_MANAGER:
+                    medicalRecord
+                        .setBusinessType(bizStore.getBusinessType())
+                        .setPastHistory(
+                            StringUtils.isBlank(jsonRecord.getPastHistory())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getPastHistory().trim()))
+                        .setFamilyHistory(
+                            StringUtils.isBlank(jsonRecord.getFamilyHistory())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getFamilyHistory().trim()))
+                        .setKnownAllergies(
+                            StringUtils.isBlank(jsonRecord.getKnownAllergies())
+                                ? null :
+                                StringUtils.capitalize(jsonRecord.getKnownAllergies().trim()))
+                        .setChiefComplain(
+                            StringUtils.isBlank(jsonRecord.getChiefComplain())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getChiefComplain().trim()))
+                        .setExamination(
+                            StringUtils.isBlank(jsonRecord.getExamination())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getExamination().trim()))
+                        .setClinicalFinding(
+                            StringUtils.isBlank(jsonRecord.getClinicalFinding())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getClinicalFinding().trim()))
+                        .setProvisionalDifferentialDiagnosis(
+                            StringUtils.isBlank(jsonRecord.getProvisionalDifferentialDiagnosis())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getProvisionalDifferentialDiagnosis().trim()))
+                        .setDiagnosis(
+                            StringUtils.isBlank(jsonRecord.getDiagnosis())
+                                ? null
+                                : StringUtils.capitalize(jsonRecord.getDiagnosis().trim()))
+                        .setPlanToPatient(
+                            StringUtils.isBlank(jsonRecord.getPlanToPatient())
+                                ? null
+                                : jsonRecord.getPlanToPatient())
+                        .setNoteForPatient(jsonRecord.getNoteForPatient())
+                        .setNoteToDiagnoser(jsonRecord.getNoteToDiagnoser())
+                        .setDiagnosedById(diagnosedById)
+                        .setFormVersion(jsonRecord.getFormVersion());
+
+                    if (null == medicalRecord.getMedicalPhysical()) {
+                        if (null != jsonRecord.getMedicalPhysical()) {
+                            populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
+                        }
+                    } else {
+                        updateMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
+                    }
+
+                    if (null != jsonRecord.getMedicalMedicines()) {
+                        populateWithMedicalMedicine(jsonRecord, medicalRecord);
+                    }
+
+                    if (null != jsonRecord.getMedicalPathologies()) {
+                        populateWithPathologies(jsonRecord, medicalRecord);
+                    }
+
+                    if (null != jsonRecord.getMedicalRadiologies()) {
+                        populateWithMedicalRadiologies(jsonRecord, medicalRecord);
+                    }
+                    break;
+                case Q_SUPERVISOR:
+                    if (null == medicalRecord.getMedicalPhysical()) {
+                        if (null != jsonRecord.getMedicalPhysical()) {
+                            populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
+                        }
+                    } else {
+                        updateMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
+                    }
+                    break;
+            }
             medicalRecord
-                .setBusinessType(bizStore.getBusinessType())
-                .setPastHistory(
-                    StringUtils.isBlank(jsonRecord.getPastHistory())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getPastHistory().trim()))
-                .setFamilyHistory(
-                    StringUtils.isBlank(jsonRecord.getFamilyHistory())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getFamilyHistory().trim()))
-                .setKnownAllergies(
-                    StringUtils.isBlank(jsonRecord.getKnownAllergies())
-                        ? null :
-                        StringUtils.capitalize(jsonRecord.getKnownAllergies().trim()))
-                .setChiefComplain(
-                    StringUtils.isBlank(jsonRecord.getChiefComplain())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getChiefComplain().trim()))
-                .setExamination(
-                    StringUtils.isBlank(jsonRecord.getExamination())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getExamination().trim()))
-                .setClinicalFinding(
-                    StringUtils.isBlank(jsonRecord.getClinicalFinding())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getClinicalFinding().trim()))
-                .setProvisionalDifferentialDiagnosis(
-                    StringUtils.isBlank(jsonRecord.getProvisionalDifferentialDiagnosis())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getProvisionalDifferentialDiagnosis().trim()))
-                .setDiagnosis(
-                    StringUtils.isBlank(jsonRecord.getDiagnosis())
-                        ? null
-                        : StringUtils.capitalize(jsonRecord.getDiagnosis().trim()))
-                .setPlanToPatient(
-                    StringUtils.isBlank(jsonRecord.getPlanToPatient())
-                        ? null
-                        : jsonRecord.getPlanToPatient())
                 .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate() : null)
-                .setNoteForPatient(jsonRecord.getNoteForPatient())
-                .setNoteToDiagnoser(jsonRecord.getNoteToDiagnoser())
-                .setDiagnosedById(jsonRecord.getDiagnosedById())
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
-                .setCodeQR(bizStore.getCodeQR())
-                .setFormVersion(jsonRecord.getFormVersion());
+                .setCodeQR(bizStore.getCodeQR());
 
-            if (null == medicalRecord.getMedicalPhysical()) {
-                if (null != jsonRecord.getMedicalPhysical()) {
-                    populateWithMedicalPhysical(jsonRecord, medicalRecord);
-                }
-            } else {
-                updateMedicalPhysical(jsonRecord, medicalRecord);
-            }
-
-            if (null != jsonRecord.getMedicalMedicines()) {
-                populateWithMedicalMedicine(jsonRecord, medicalRecord);
-            }
-
-            if (null != jsonRecord.getMedicalPathologies()) {
-                populateWithPathologies(jsonRecord, medicalRecord);
-            }
-
-            if (null != jsonRecord.getMedicalRadiologies()) {
-                populateWithMedicalRadiologies(jsonRecord, medicalRecord);
-            }
 
             //TODO remove this temp code below for record access
 //            medicalRecord.addRecordAccessed(
@@ -390,7 +405,7 @@ public class MedicalRecordService {
         medicalRecord.setMedicalMedication(medicalMedication);
     }
 
-    private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+    private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String qid) {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
 
@@ -398,7 +413,7 @@ public class MedicalRecordService {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(jsonMedicalRecord.getQueueUserId());
                 /* Setting its own ObjectId. */
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
-                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical);
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical, qid);
             }
             LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
         } catch (Exception e) {
@@ -406,16 +421,14 @@ public class MedicalRecordService {
         }
     }
 
-    private void updateMedicalPhysicalData(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, MedicalPhysicalEntity medicalPhysical) {
+    private void updateMedicalPhysicalData(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, MedicalPhysicalEntity medicalPhysical, String diagnosedById) {
         medicalPhysical
             .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
             .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
             .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
             .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
             .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
-            .setDiagnosedById(StringUtils.isBlank(jsonMedicalRecord.getMedicalPhysical().getDiagnosedById())
-                ? jsonMedicalRecord.getDiagnosedById()
-                : jsonMedicalRecord.getMedicalPhysical().getDiagnosedById());
+            .setDiagnosedById(diagnosedById);
 
         LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
         medicalPhysicalManager.save(medicalPhysical);
@@ -424,12 +437,12 @@ public class MedicalRecordService {
         medicalRecord.setMedicalPhysical(medicalPhysical);
     }
 
-    private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+    private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String diagnosedById) {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
 
             if (jsonMedicalRecord.getMedicalPhysical() != null) {
-                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalRecord.getMedicalPhysical());
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalRecord.getMedicalPhysical(), diagnosedById);
             }
             LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
         } catch (Exception e) {
