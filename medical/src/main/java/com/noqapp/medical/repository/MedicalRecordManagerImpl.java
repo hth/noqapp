@@ -87,8 +87,9 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
 
     @Override
     public List<MedicalRecordEntity> findAllFollowUp(String codeQR) {
+        DateTime now = DateUtil.now();
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("FP").gte(DateUtil.now().minusDays(3))),
+            query(where("QR").is(codeQR).and("FP").gte(DateUtil.midnight(now)).lte(DateUtil.midnight(now).plusDays(3))),
             MedicalRecordEntity.class,
             TABLE
         );
