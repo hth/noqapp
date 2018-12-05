@@ -14,7 +14,8 @@ public enum HealthCareServiceEnum {
     SONO("SONO", "Sonography"),
     XRAY("XRAY", "X-ray"),
     PHYS("PHYS", "Physiotherapy"),
-    PATH("PATH", "Pathology");
+    PATH("PATH", "Pathology"),
+    SPEC("SPEC", "Special Diagnostic");
 
     private final String description;
     private final String name;

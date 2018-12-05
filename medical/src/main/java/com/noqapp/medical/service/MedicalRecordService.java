@@ -546,7 +546,10 @@ public class MedicalRecordService {
     }
 
     private JsonMedicalRecord getJsonMedicalRecord(MedicalRecordEntity medicalRecord) {
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById());
+        UserProfileEntity userProfile = null;
+        if (StringUtils.isNotBlank(medicalRecord.getDiagnosedById())) {
+            userProfile = userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById());
+        }
         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
         jsonMedicalRecord
             .setFormVersion(medicalRecord.getFormVersion())
