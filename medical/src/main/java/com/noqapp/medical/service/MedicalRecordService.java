@@ -5,6 +5,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
@@ -41,6 +42,7 @@ import com.noqapp.medical.repository.MedicalRadiologyManager;
 import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PurchaseOrderService;
@@ -76,9 +78,10 @@ public class MedicalRecordService {
     private MedicalPathologyTestManager medicalPathologyTestManager;
     private MedicalRadiologyManager medicalRadiologyManager;
     private MedicalRadiologyTestManager medicalRadiologyTestManager;
-    private BizStoreManager bizStoreManager;
-    private BusinessUserStoreService businessUserStoreService;
     private UserProfileManager userProfileManager;
+    private BizStoreManager bizStoreManager;
+    private QueueManager queueManager;
+    private BusinessUserStoreService businessUserStoreService;
     private PurchaseOrderService purchaseOrderService;
 
     private ExecutorService executorService;
@@ -93,9 +96,10 @@ public class MedicalRecordService {
         MedicalPathologyTestManager medicalPathologyTestManager,
         MedicalRadiologyManager medicalRadiologyManager,
         MedicalRadiologyTestManager medicalRadiologyTestManager,
-        BizStoreManager bizStoreManager,
-        BusinessUserStoreService businessUserStoreService,
         UserProfileManager userProfileManager,
+        BizStoreManager bizStoreManager,
+        QueueManager queueManager,
+        BusinessUserStoreService businessUserStoreService,
         PurchaseOrderService purchaseOrderService
     ) {
         this.medicalRecordManager = medicalRecordManager;
@@ -106,9 +110,10 @@ public class MedicalRecordService {
         this.medicalPathologyTestManager = medicalPathologyTestManager;
         this.medicalRadiologyManager = medicalRadiologyManager;
         this.medicalRadiologyTestManager = medicalRadiologyTestManager;
-        this.bizStoreManager = bizStoreManager;
-        this.businessUserStoreService = businessUserStoreService;
         this.userProfileManager = userProfileManager;
+        this.bizStoreManager = bizStoreManager;
+        this.queueManager = queueManager;
+        this.businessUserStoreService = businessUserStoreService;
         this.purchaseOrderService = purchaseOrderService;
 
         this.executorService = newCachedThreadPool();
@@ -280,6 +285,17 @@ public class MedicalRecordService {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
             throw e;
         }
+    }
+
+    @Mobile
+    public JsonMedicalRecord retrieveMedicalRecord(String codeQR, String recordReferenceId) {
+        QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
+        if (queue == null) {
+            return null;
+        }
+
+        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        return getJsonMedicalRecord(medicalRecord);
     }
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -521,76 +537,83 @@ public class MedicalRecordService {
         for (String queueUserId : queueUserIds) {
             List<MedicalRecordEntity> medicalRecords = historicalRecords(queueUserId);
             for (MedicalRecordEntity medicalRecord : medicalRecords) {
-                JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
-                jsonMedicalRecord
-                    .setFormVersion(medicalRecord.getFormVersion())
-                    .setBusinessType(medicalRecord.getBusinessType())
-                    .setQueueUserId(medicalRecord.getQueueUserId())
-                    .setPastHistory(medicalRecord.getPastHistory())
-                    .setFamilyHistory(medicalRecord.getFamilyHistory())
-                    .setKnownAllergies(medicalRecord.getKnownAllergies())
-                    .setChiefComplain(medicalRecord.getChiefComplain())
-                    .setExamination(medicalRecord.getExamination())
-                    .setClinicalFinding(medicalRecord.getClinicalFinding())
-                    .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
-                    .setDiagnosis(medicalRecord.getDiagnosis())
-                    .setPlanToPatient(medicalRecord.getPlanToPatient())
-                    .setFollowUpInDays(null == medicalRecord.getFollowUpDay() ? null : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
-                    .setNoteForPatient(medicalRecord.getNoteForPatient())
-                    .setNoteToDiagnoser(medicalRecord.getNoteToDiagnoser())
-                    .setDiagnosedById(userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById()).getName())
-                    .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
-                    .setBusinessName(medicalRecord.getBusinessName())
-                    .setBizCategoryName(medicalRecord.getBizCategoryId() == null
-                        ? "NA"
-                        : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
-
-                if (null != medicalRecord.getMedicalPhysical()) {
-                    jsonMedicalRecord.setMedicalPhysical(
-                        new JsonMedicalPhysical()
-                            .setTemperature(medicalRecord.getMedicalPhysical().getTemperature())
-                            .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
-                            .setPluse(medicalRecord.getMedicalPhysical().getPluse())
-                            .setOxygen(medicalRecord.getMedicalPhysical().getOxygen())
-                            .setWeight(medicalRecord.getMedicalPhysical().getWeight()));
-                }
-
-                if (null != medicalRecord.getMedicalMedication()) {
-                    List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedication().getId());
-                    for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
-                        jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
-                    }
-                }
-
-                if (null != medicalRecord.getMedicalLaboratory()) {
-                    List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
-                    for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
-                        jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
-                    }
-                }
-
-                if (null != medicalRecord.getMedicalRadiology()) {
-                    List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRecord.getMedicalRadiology().getId());
-                    for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
-                        jsonMedicalRecord.addMedicalRadiology(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
-                    }
-                }
-
-                List<JsonRecordAccess> jsonRecordAccesses = new ArrayList<>();
-                for (Long date : medicalRecord.getRecordAccessed().keySet()) {
-                    String accessedBy = medicalRecord.getRecordAccessed().get(date);
-                    JsonRecordAccess jsonRecordAccess = new JsonRecordAccess()
-                        .setRecordAccessedDate(DateUtil.dateToString(new Date(date)))
-                        .setRecordAccessedQid("#######");
-
-                    jsonRecordAccesses.add(jsonRecordAccess);
-                }
-                jsonMedicalRecord.setRecordAccess(jsonRecordAccesses);
+                JsonMedicalRecord jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
                 jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
             }
         }
 
         return jsonMedicalRecordList;
+    }
+
+    private JsonMedicalRecord getJsonMedicalRecord(MedicalRecordEntity medicalRecord) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById());
+        JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+        jsonMedicalRecord
+            .setFormVersion(medicalRecord.getFormVersion())
+            .setBusinessType(medicalRecord.getBusinessType())
+            .setQueueUserId(medicalRecord.getQueueUserId())
+            .setPastHistory(medicalRecord.getPastHistory())
+            .setFamilyHistory(medicalRecord.getFamilyHistory())
+            .setKnownAllergies(medicalRecord.getKnownAllergies())
+            .setChiefComplain(medicalRecord.getChiefComplain())
+            .setExamination(medicalRecord.getExamination())
+            .setClinicalFinding(medicalRecord.getClinicalFinding())
+            .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
+            .setDiagnosis(medicalRecord.getDiagnosis())
+            .setPlanToPatient(medicalRecord.getPlanToPatient())
+            .setFollowUpInDays(null == medicalRecord.getFollowUpDay() ? null : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
+            .setNoteForPatient(medicalRecord.getNoteForPatient())
+            .setNoteToDiagnoser(medicalRecord.getNoteToDiagnoser())
+            .setDiagnosedById(medicalRecord.getDiagnosedById())
+            .setDiagnosedByDisplayName(userProfile == null ? "" : userProfile.getName())
+            .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
+            .setBusinessName(medicalRecord.getBusinessName())
+            .setBizCategoryName(medicalRecord.getBizCategoryId() == null
+                ? "NA"
+                : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+
+        if (null != medicalRecord.getMedicalPhysical()) {
+            jsonMedicalRecord.setMedicalPhysical(
+                new JsonMedicalPhysical()
+                    .setTemperature(medicalRecord.getMedicalPhysical().getTemperature())
+                    .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
+                    .setPluse(medicalRecord.getMedicalPhysical().getPluse())
+                    .setOxygen(medicalRecord.getMedicalPhysical().getOxygen())
+                    .setWeight(medicalRecord.getMedicalPhysical().getWeight()));
+        }
+
+        if (null != medicalRecord.getMedicalMedication()) {
+            List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedication().getId());
+            for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
+                jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
+            }
+        }
+
+        if (null != medicalRecord.getMedicalLaboratory()) {
+            List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
+            for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
+                jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+            }
+        }
+
+        if (null != medicalRecord.getMedicalRadiology()) {
+            List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRecord.getMedicalRadiology().getId());
+            for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
+                jsonMedicalRecord.addMedicalRadiology(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
+            }
+        }
+
+        List<JsonRecordAccess> jsonRecordAccesses = new ArrayList<>();
+        for (Long date : medicalRecord.getRecordAccessed().keySet()) {
+            String accessedBy = medicalRecord.getRecordAccessed().get(date);
+            JsonRecordAccess jsonRecordAccess = new JsonRecordAccess()
+                .setRecordAccessedDate(DateUtil.dateToString(new Date(date)))
+                .setRecordAccessedQid("#######");
+
+            jsonRecordAccesses.add(jsonRecordAccess);
+        }
+        jsonMedicalRecord.setRecordAccess(jsonRecordAccesses);
+        return jsonMedicalRecord;
     }
 
     @Mobile
