@@ -426,4 +426,16 @@ public class JsonMedicalRecord extends AbstractDomain {
         this.diagnosedByDisplayName = diagnosedByDisplayName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonMedicalRecord{" +
+            "queueUserId='" + queueUserId + '\'' +
+            ", diagnosedById='" + diagnosedById + '\'' +
+            ", businessName='" + businessName + '\'' +
+            ", formVersion=" + formVersion +
+            ", recordReferenceId='" + recordReferenceId + '\'' +
+            ", diagnosedByDisplayName='" + diagnosedByDisplayName + '\'' +
+            '}';
+    }
 }

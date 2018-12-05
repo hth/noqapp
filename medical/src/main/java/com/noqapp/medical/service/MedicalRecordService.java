@@ -170,8 +170,8 @@ public class MedicalRecordService {
             LOG.info("Add medical record {} {}", diagnosedById, userProfile.getLevel());
 
             /* Check if user has proper role to allow adding of medical record. */
-            if (!businessUserStoreService.hasAccessWithUserLevel(jsonRecord.getDiagnosedById(), jsonRecord.getCodeQR(), userProfile.getLevel())) {
-                LOG.info("Your are not authorized to add medical record mail={}", jsonRecord.getDiagnosedById());
+            if (!businessUserStoreService.hasAccessWithUserLevel(diagnosedById, jsonRecord.getCodeQR(), userProfile.getLevel())) {
+                LOG.info("Your are not authorized to add medical record mail={} {}", diagnosedById, jsonRecord.getCodeQR());
                 return;
             }
 
