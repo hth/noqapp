@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,6 +128,10 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty("rr")
     private String recordReferenceId;
+
+    @Transient
+    @JsonProperty("dbn")
+    private String diagnosedByDisplayName;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -409,6 +415,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getDiagnosedByDisplayName() {
+        return diagnosedByDisplayName;
+    }
+
+    public JsonMedicalRecord setDiagnosedByDisplayName(String diagnosedByDisplayName) {
+        this.diagnosedByDisplayName = diagnosedByDisplayName;
         return this;
     }
 }

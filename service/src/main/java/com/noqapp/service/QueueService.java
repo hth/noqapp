@@ -216,6 +216,10 @@ public class QueueService {
         return findQueuedOne(codeQR, null, qid);
     }
 
+    public QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId) {
+        return queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
+    }
+
     /** Finds clients who are yet to be serviced. */
     public JsonQueuePersonList findAllClientQueuedOrAborted(String codeQR) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();

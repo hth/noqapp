@@ -573,4 +573,13 @@ public class QueueManagerImpl implements QueueManager {
             TABLE
         );
     }
+
+    @Override
+    public QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR).and("RR").is(recordReferenceId)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
 }

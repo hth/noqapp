@@ -135,4 +135,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findReviews(String codeQR);
 
     List<QueueEntity> findLevelUpReviews(String bizNameId);
+
+    QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId);
 }
