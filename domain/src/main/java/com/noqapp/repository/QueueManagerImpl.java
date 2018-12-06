@@ -148,16 +148,16 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity findToAbort(String codeQR, String did, String qid) {
+    public QueueEntity findToAbort(String codeQR, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q)
+            query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)
                     .orOperator(
                             where("QID").is(qid),
                             where("GQ").is(qid)
                     ));
         } else {
-            query = query(where("QR").is(codeQR).and("DID").is(did).and("QS").is(QueueUserStateEnum.Q));
+            query = query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q));
         }
 
         return mongoTemplate.findOne(
