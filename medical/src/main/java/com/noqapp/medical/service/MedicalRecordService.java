@@ -291,12 +291,12 @@ public class MedicalRecordService {
     public JsonMedicalRecord retrieveMedicalRecord(String codeQR, String recordReferenceId) {
         QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
         if (queue == null) {
-            return null;
+            return new JsonMedicalRecord().setCodeQR(codeQR).setRecordReferenceId(recordReferenceId);
         }
 
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
         if (medicalRecord == null) {
-            return null;
+            return new JsonMedicalRecord().setCodeQR(codeQR).setRecordReferenceId(recordReferenceId);
         }
         return getJsonMedicalRecord(medicalRecord);
     }
