@@ -28,7 +28,11 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     boolean doesExistsByQid(String codeQR, int tokenNumber, String qid);
 
-    QueueEntity findToAbort(String codeQR, String did, String qid);
+    /**
+     * Note: No DID used here as user should be able to abort from any where.
+     * When registered from Web there is no device id. Hence allow abort from any logged in device.
+     */
+    QueueEntity findToAbort(String codeQR, String qid);
 
     @Mobile
     QueueEntity updateAndGetNextInQueue(

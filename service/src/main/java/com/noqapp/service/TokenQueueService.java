@@ -350,17 +350,14 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public JsonResponse abortQueue(String codeQR, String did, String qid) {
+    public JsonResponse abortQueue(String codeQR, String qid) {
         try {
-            QueueEntity queue = queueManager.findToAbort(codeQR, did, qid);
-            LOG.info("abort queue={}", queue);
-
+            QueueEntity queue = queueManager.findToAbort(codeQR, qid);
             if (queue == null) {
-                LOG.warn("Not joined to queue did={}, ignore abort", did);
+                LOG.error("Not joined to queue qid={}, ignore abort", qid);
                 return new JsonResponse(false);
             }
-
-            LOG.info("Found queue id={}", queue.getId());
+            LOG.info("Aborting queue qid={} id={} queue={}", qid, queue.getId(), queue);
             queueManager.abort(queue.getId());
             return new JsonResponse(true);
         } catch (Exception e) {
