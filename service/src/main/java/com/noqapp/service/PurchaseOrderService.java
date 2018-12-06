@@ -189,7 +189,7 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
         if (DateUtil.getDaysBetween(purchaseOrder.getCreated(), DateUtil.nowDate()) > 30) {
             LOG.error("Order expired transactionId={}", transactionId);
-            throw new OrderFailedReActivationException("Cannot activate this order");
+            throw new OrderFailedReActivationException("Order cannot be activated after 30 days");
         }
 
         switch (purchaseOrder.getPresentOrderState()) {
