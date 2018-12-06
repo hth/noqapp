@@ -292,7 +292,7 @@ public class MedicalRecordService {
         QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
         if (queue == null) {
             LOG.error("Not valid request for medical record codeQR={} recordReferenceId={}", codeQR, recordReferenceId);
-            return new JsonMedicalRecord();
+            return null;
         }
 
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
