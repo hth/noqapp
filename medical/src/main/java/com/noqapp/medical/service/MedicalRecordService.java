@@ -291,7 +291,8 @@ public class MedicalRecordService {
     public JsonMedicalRecord retrieveMedicalRecord(String codeQR, String recordReferenceId) {
         QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
         if (queue == null) {
-            return new JsonMedicalRecord().setCodeQR(codeQR).setRecordReferenceId(recordReferenceId);
+            LOG.error("Found in valid request codeQR={} recordReferenceId={}", codeQR, recordReferenceId);
+            return new JsonMedicalRecord();
         }
 
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
