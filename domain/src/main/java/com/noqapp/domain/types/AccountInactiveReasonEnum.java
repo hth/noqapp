@@ -11,7 +11,9 @@ package com.noqapp.domain.types;
         "PMD.LongVariable"
 })
 public enum AccountInactiveReasonEnum {
-    ANV("ACCOUNT_NOT_VALIDATED", "Account Not Validated");
+    ANV("ANV", "Account Not Validated"),
+    BOC("BOC", "Breach Of Compliance"),
+    BUP("BUP", "Breach Of Users Policy");
 
     private final String name;
     private final String description;
