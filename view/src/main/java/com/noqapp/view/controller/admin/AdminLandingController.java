@@ -31,8 +31,8 @@ public class AdminLandingController {
 
     @Autowired
     public AdminLandingController(
-            @Value("${nextPage:/admin/landing}")
-            String nextPage
+        @Value("${nextPage:/admin/landing}")
+        String nextPage
     ) {
         this.nextPage = nextPage;
     }
