@@ -222,9 +222,7 @@ public class ForgotController {
             LOG.warn("Failed validation");
             return authenticatePage;
         } else {
-            ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(
-                    forgotAuthenticateForm.getAuthenticationKey());
-
+            ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(forgotAuthenticateForm.getAuthenticationKey());
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {

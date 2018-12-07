@@ -31,8 +31,8 @@ public class ElasticController {
 
     @Autowired
     public ElasticController(
-            @Value("${nextPage:/admin/elastic}")
-            String nextPage
+        @Value("${nextPage:/admin/elastic}")
+        String nextPage
     ) {
         this.nextPage = nextPage;
     }

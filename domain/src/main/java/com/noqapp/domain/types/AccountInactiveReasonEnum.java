@@ -1,5 +1,8 @@
 package com.noqapp.domain.types;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * User: hitender
  * Date: 11/18/16 6:05 PM
@@ -29,6 +32,14 @@ public enum AccountInactiveReasonEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static Map<String, String> asMapWithNameAsKey() {
+        return new LinkedHashMap<String, String>() {{
+            put(ANV.name, ANV.description);
+            put(BOC.name, BOC.description);
+            put(BUP.name, BUP.description);
+        }};
     }
 
     @Override
