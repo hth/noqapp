@@ -107,7 +107,7 @@
                                         <td style="font-size:13px;">${searchUserForm.status}</td>
                                         <td style="font-size:13px;">
                                             <form:select path="accountInactiveReason" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:option value="" label="Re-Activate Account"/>
+                                                <form:option value="" label="--- Select ---"/>
                                                 <form:options items="${searchUserForm.accountInactiveReasons}" />
                                             </form:select>
                                         </td>
