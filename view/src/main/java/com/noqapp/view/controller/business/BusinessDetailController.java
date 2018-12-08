@@ -156,7 +156,7 @@ public class BusinessDetailController {
                     .setBusinessName(bizName.getBusinessName())
                     .setImageLocationCodeQR(codeQRFile.toURI());
 
-            File file = pdfGenerateService.createPDF(xmlBusinessCodeQR.asXML(), bizName.getBusinessName());
+            File file = pdfGenerateService.createPDF(xmlBusinessCodeQR.asXML(), bizName.getBusinessName(), PdfGenerateService.PDF_FOR.BIZ);
             WebUtil.setContentType(file.getName(), response);
             response.setHeader("Content-Disposition", "inline; filename=\"" + "NoQueue_" + bizName.getBusinessName() + ".pdf\"");
             IOUtils.copy(new FileInputStream(file), response.getOutputStream());
