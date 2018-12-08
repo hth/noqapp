@@ -45,6 +45,11 @@ public class PdfGenerateService {
 
     private Resource businessDetailXsl;
 
+    //TODO fix medicalRecordXsl
+    private Resource medicalRecordXsl;
+
+    public enum PDF_FOR {BIZ, MED}
+
     private FopFactory fopFactory;
     private FOUserAgent userAgent;
 
@@ -54,9 +59,13 @@ public class PdfGenerateService {
             Resource fopConfig,
 
             @Value("${businessDetailXsl:classpath:/xslfo/xslt/business-detail.xsl}")
-            Resource businessDetailXsl
+            Resource businessDetailXsl,
+
+            @Value("${medicalRecordXsl:classpath:/xslfo/xslt/medical-record.xsl}")
+            Resource medicalRecordXsl
     ) throws IOException {
         this.businessDetailXsl = businessDetailXsl;
+        this.medicalRecordXsl = medicalRecordXsl;
 
         try {
             if (fopConfig.exists()) {
@@ -75,7 +84,7 @@ public class PdfGenerateService {
         }
     }
 
-    public File createPDF(String xmlContent, String businessName) {
+    public File createPDF(String xmlContent, String businessName, PDF_FOR pdfFor) {
         OutputStream out = null;
         try {
             File toFile = FileUtil.createTempFile(FileUtil.createRandomFilenameOf16Chars(), FileExtensionTypeEnum.PDF.name().toLowerCase());
@@ -88,7 +97,15 @@ public class PdfGenerateService {
 
             // Step 4: Setup JAXP using identity transformer
             TransformerFactory factory = TransformerFactory.newInstance();
-            StreamSource xslt = new StreamSource(businessDetailXsl.getInputStream());
+            StreamSource xslt = null;
+            switch (pdfFor) {
+                case BIZ:
+                    xslt = new StreamSource(businessDetailXsl.getInputStream());
+                    break;
+                case MED:
+                    xslt = new StreamSource(medicalRecordXsl.getInputStream());
+                    break;
+            }
             Transformer transformer = factory.newTransformer(xslt); // identity transformer
 
             // Step 5: Setup input and output for XSLT transformation
