@@ -94,7 +94,7 @@ public class UserController {
         RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Admin user search qid={}", queueUser.getQueueUserId());
+        LOG.info("Admin user action on user qid={}", queueUser.getQueueUserId());
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(searchUserForm.getQid().getText());
         if (null != userAccount) {
