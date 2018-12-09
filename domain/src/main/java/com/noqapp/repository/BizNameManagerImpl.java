@@ -3,15 +3,19 @@ package com.noqapp.repository;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DataProtectionEnum;
 
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +30,7 @@ import org.springframework.util.Assert;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -181,5 +186,15 @@ public final class BizNameManagerImpl implements BizNameManager {
             BizNameEntity.class,
             TABLE
         ).stream();
+    }
+
+    @Override
+    public void updateDataProtection(Map<String, DataProtectionEnum> dataProtections, String id) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            update("DP", dataProtections),
+            BizNameEntity.class,
+            TABLE
+        );
     }
 }

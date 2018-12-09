@@ -16,6 +16,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
+import com.noqapp.domain.types.DataProtectionEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -542,5 +543,9 @@ public class BizService {
 
     public void unsetScheduledTask(String bizStoreId) {
         bizStoreManager.unsetScheduledTask(bizStoreId);
+    }
+
+    public void updateDataProtection(Map<String, DataProtectionEnum> dataProtections, String id) {
+        bizNameManager.updateDataProtection(dataProtections, id);
     }
 }
