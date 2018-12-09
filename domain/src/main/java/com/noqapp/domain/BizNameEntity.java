@@ -7,7 +7,9 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DataProtectionEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -21,9 +23,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -143,6 +147,12 @@ public class BizNameEntity extends BaseEntity {
 
     @Field("BI")
     private Set<String> businessServiceImages = new LinkedHashSet<>();
+
+    @Field("DP")
+    private Map<String, DataProtectionEnum> dataProtections = new HashMap<String, DataProtectionEnum>() {{
+        put(UserLevelEnum.S_MANAGER.name(), DataProtectionEnum.L);
+        put(UserLevelEnum.Q_SUPERVISOR.name(), DataProtectionEnum.L);
+    }};
 
     /* When business is closed for national holiday. This automatically respond with all store as closed. */
     @Field ("DC")
@@ -480,6 +490,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity addBusinessServiceImages(String businessServiceImage) {
         this.businessServiceImages.add(businessServiceImage);
+        return this;
+    }
+
+    public Map<String, DataProtectionEnum> getDataProtections() {
+        return dataProtections;
+    }
+
+    public BizNameEntity setDataProtections(Map<String, DataProtectionEnum> dataProtections) {
+        this.dataProtections = dataProtections;
         return this;
     }
 

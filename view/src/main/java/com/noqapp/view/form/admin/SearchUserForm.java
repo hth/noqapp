@@ -16,7 +16,7 @@ public class SearchUserForm {
     private AccountInactiveReasonEnum accountInactiveReason;
     private String status;
 
-    Map<String, String> accountInactiveReasons;
+    private Map<String, String> accountInactiveReasons;
 
     public ScrubbedInput getQid() {
         return qid;

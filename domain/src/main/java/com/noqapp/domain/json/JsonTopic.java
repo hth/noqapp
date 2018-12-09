@@ -35,6 +35,9 @@ public class JsonTopic extends JsonToken {
     @JsonProperty("hour")
     private JsonHour hour;
 
+    @JsonProperty("dp")
+    private JsonDataProtection jsonDataProtection;
+
     private JsonTopic() {
         super();
     }
@@ -54,6 +57,15 @@ public class JsonTopic extends JsonToken {
 
     public JsonTopic setHour(JsonHour hour) {
         this.hour = hour;
+        return this;
+    }
+
+    public JsonDataProtection getJsonDataProtection() {
+        return jsonDataProtection;
+    }
+
+    public JsonTopic setJsonDataProtection(JsonDataProtection jsonDataProtection) {
+        this.jsonDataProtection = jsonDataProtection;
         return this;
     }
 }

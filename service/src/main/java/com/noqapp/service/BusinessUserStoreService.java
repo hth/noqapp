@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import static java.util.Comparator.comparing;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
@@ -11,6 +12,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.QueueSupervisor;
+import com.noqapp.domain.json.JsonDataProtection;
 import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
@@ -27,7 +29,9 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -119,9 +123,12 @@ public class BusinessUserStoreService {
         LOG.info("Found user associated to business count={} qid={}", size, qid);
 
         String[] codes = new String[queueLimit <= size ? queueLimit : size];
+        Map<String, JsonDataProtection> dataProtectionHashMap = new HashMap<>();
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
+            BizNameEntity bizName = bizService.getByBizNameId(businessUserStore.getBizNameId());
+            dataProtectionHashMap.put(businessUserStore.getCodeQR(), new JsonDataProtection().setDataProtections(bizName.getDataProtections()));
             i++;
         }
 
@@ -130,7 +137,10 @@ public class BusinessUserStoreService {
         List<JsonTopic> jsonTopics = new ArrayList<>();
         for (TokenQueueEntity tokenQueue : tokenQueues) {
             JsonHour jsonHour = getJsonHour(tokenQueue.getId());
-            jsonTopics.add(new JsonTopic(tokenQueue).setHour(jsonHour));
+            jsonTopics.add(
+                new JsonTopic(tokenQueue)
+                    .setHour(jsonHour)
+                    .setJsonDataProtection(dataProtectionHashMap.get(tokenQueue.getId())));
         }
 
         LOG.info("Sending jsonTopic count={} for qid={}", jsonTopics.size(), qid);
