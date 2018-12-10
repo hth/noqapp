@@ -577,6 +577,14 @@ public class FileService {
 
                             map = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SCAN);
                             break;
+                        case SPEC:
+                            records = CSVFormat.DEFAULT
+                                .withHeader(RADIOLOGY_PRODUCT_HEADERS)
+                                .withFirstRecordAsHeader()
+                                .parse(new InputStreamReader(in));
+
+                            map = LabCategoryEnum.asMapWithNameAsKey_Self(LabCategoryEnum.SPEC);
+                            break;
                         case PHYS:
                             LOG.error("Reached unsupported condition={}", bizStore.getBizCategoryId());
                             throw new UnsupportedOperationException("Reached unsupported condition " + bizStore.getBizCategoryId());
@@ -643,7 +651,7 @@ public class FileService {
                         storeProduct
                             .setBizStoreId(bizStore.getId())
                             .setStoreCategoryId(storeCategoryId)
-                            .setProductName(record.get("Name"))
+                            .setProductName(record.get("Name").trim())
                             .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
                             .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                             .setProductInfo(record.get("Info"))
@@ -657,7 +665,7 @@ public class FileService {
                         storeProduct
                             .setBizStoreId(bizStore.getId())
                             .setStoreCategoryId(storeCategoryId)
-                            .setProductName(record.get("Name"))
+                            .setProductName(record.get("Name").trim())
                             .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
                             .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                             .setProductInfo(record.get("Info"))
@@ -671,7 +679,7 @@ public class FileService {
                         storeProduct
                             .setBizStoreId(bizStore.getId())
                             .setStoreCategoryId(storeCategoryId)
-                            .setProductName(record.get("Name"))
+                            .setProductName(record.get("Name").trim())
                             .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
                             .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                             .setProductInfo(record.get("Info"))
@@ -685,7 +693,21 @@ public class FileService {
                         storeProduct
                             .setBizStoreId(bizStore.getId())
                             .setStoreCategoryId(storeCategoryId)
-                            .setProductName(record.get("Name"))
+                            .setProductName(record.get("Name").trim())
+                            .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
+                            .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
+                            .setProductInfo(record.get("Info"))
+                            .setUnitValue(1)
+                            .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                            .setPackageSize(1)
+                            .setProductType(ProductTypeEnum.HS)
+                            .setProductReference(null);
+                        break;
+                    case SPEC:
+                        storeProduct
+                            .setBizStoreId(bizStore.getId())
+                            .setStoreCategoryId(storeCategoryId)
+                            .setProductName(record.get("Name").trim())
                             .setProductPrice(StringUtils.isBlank(record.get("Price")) ? 100 : Integer.parseInt(record.get("Price")) * 100)
                             .setProductDiscount(StringUtils.isBlank(record.get("Discount")) ? 0 : Integer.parseInt(record.get("Discount")) * 100)
                             .setProductInfo(record.get("Info"))
@@ -834,6 +856,24 @@ public class FileService {
                                 try {
                                     printer.printRecord(
                                         LabCategoryEnum.MRI.getDescription(),
+                                        storeProduct.getProductName(),
+                                        storeProduct.getProductPrice() / 100,
+                                        storeProduct.getProductDiscount() / 100,
+                                        storeProduct.getProductInfo(),
+                                        storeProduct.getId()
+                                    );
+                                } catch (IOException e) {
+                                    LOG.error("Failed writing to a file id={} storeName={}", storeProduct.getId(), bizStore.getDisplayName());
+                                }
+                            });
+                        }
+                        break;
+                    case SPEC:
+                        try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(RADIOLOGY_PRODUCT_HEADERS))) {
+                            storeProducts.forEach((storeProduct) -> {
+                                try {
+                                    printer.printRecord(
+                                        LabCategoryEnum.SPEC.getDescription(),
                                         storeProduct.getProductName(),
                                         storeProduct.getProductPrice() / 100,
                                         storeProduct.getProductDiscount() / 100,
