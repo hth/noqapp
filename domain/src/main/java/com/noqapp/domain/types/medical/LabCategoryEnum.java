@@ -15,7 +15,8 @@ public enum LabCategoryEnum {
     SCAN("SCAN", "CT Scan"),
     SONO("SONO", "Sonography"),
     XRAY("XRAY", "X-ray"),
-    PATH("PATH", "Pathology");
+    PATH("PATH", "Pathology"),
+    SPEC("SPEC", "Special Diagnostic");
 
     private final String description;
     private final String name;
@@ -54,6 +55,7 @@ public enum LabCategoryEnum {
             put(SONO.name, SONO.description);
             put(XRAY.name, XRAY.description);
             put(MRI.name, MRI.description);
+            put(SPEC.name, SPEC.description);
         }};
     }
 
@@ -64,6 +66,7 @@ public enum LabCategoryEnum {
             put(SONO.description, SONO.name);
             put(XRAY.description, XRAY.name);
             put(MRI.description, MRI.name);
+            put(SPEC.description, SPEC.name);
         }};
     }
 

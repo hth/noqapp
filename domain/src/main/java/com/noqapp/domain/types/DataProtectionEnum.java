@@ -8,9 +8,9 @@ import java.util.Map;
  * 2018-12-09 11:04
  */
 public enum DataProtectionEnum {
-    L("L", "Low"),
-    M("M", "Medium"),
-    H("H", "High");
+    L("L", "Low Protection"),
+    M("M", "Medium Protection"),
+    H("H", "High Protection");
 
     private final String description;
     private final String name;
