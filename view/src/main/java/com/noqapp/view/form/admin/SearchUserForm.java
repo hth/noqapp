@@ -2,6 +2,7 @@ package com.noqapp.view.form.admin;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import com.noqapp.domain.types.ActionTypeEnum;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class SearchUserForm {
     private ScrubbedInput qid;
     private ScrubbedInput displayName;
     private AccountInactiveReasonEnum accountInactiveReason;
-    private String status;
+    private ActionTypeEnum status;
 
     private Map<String, String> accountInactiveReasons;
 
@@ -45,12 +46,12 @@ public class SearchUserForm {
         return this;
     }
 
-    public String getStatus() {
+    public ActionTypeEnum getStatus() {
         return status;
     }
 
     public SearchUserForm setStatus(boolean status) {
-        this.status = status ? "ACTIVE" : "IN-ACTIVE";
+        this.status = status ? ActionTypeEnum.ACTIVE : ActionTypeEnum.INACTIVE;
         return this;
     }
 
