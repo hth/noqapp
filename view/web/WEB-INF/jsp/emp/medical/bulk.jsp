@@ -189,13 +189,4 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
-<script>
-    $(function () {
-        $(".datepicker").datepicker({
-            dateFormat: 'yy-mm-dd'
-        });
-    });
-</script>
 </html>
