@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -95,24 +96,45 @@
                                 <tr>
                                     <th width="4%">&nbsp;</th>
                                     <th width="30%">Name</th>
-                                    <th width="10%">Status</th>
-                                    <th width="30%">Account Inactive Reason</th>
-                                    <th width="20%"></th>
+                                    <th width="25%">Status</th>
+                                    <th width="25%">Account Inactive Reason</th>
+                                    <th width="16%"></th>
                                 </tr>
                                 <tr>
                                     <form:form method="POST" action="./action.htm" modelAttribute="searchUserForm">
                                         <form:hidden path="qid" />
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>
                                         <td style="font-size:13px;">${searchUserForm.displayName}</td>
-                                        <td style="font-size:13px;">${searchUserForm.status}</td>
                                         <td style="font-size:13px;">
-                                            <form:select path="accountInactiveReason" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:option value="" label="--- Select ---"/>
-                                                <form:options items="${searchUserForm.accountInactiveReasons}" />
-                                            </form:select>
+                                            ${searchUserForm.status}
+                                            <c:if test="${searchUserForm.status eq ActionTypeEnum.INACTIVE}">
+                                                <span style="display:block; font-size:13px;">Reason: ${searchUserForm.accountInactiveReason.description}</span>
+                                            </c:if>
+                                        </td>
+                                        <td style="font-size:13px;">
+                                            <c:choose>
+                                                <c:when test="${searchUserForm.status eq ActionTypeEnum.ACTIVE}">
+                                                    <form:select path="accountInactiveReason" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                        <form:option value="" label="--- Select ---"/>
+                                                        <form:options items="${searchUserForm.accountInactiveReasons}" />
+                                                    </form:select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:select path="accountInactiveReason" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                        <form:option value="" label="--- Select ---"/>
+                                                    </form:select>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                         <td class="Tleft" width="90px" nowrap>
-                                            <input type="submit" value="UPDATE" class="add-btn" style="margin: 5px 0 0 0" name="update-user">
+                                            <c:choose>
+                                                <c:when test="${searchUserForm.status eq ActionTypeEnum.ACTIVE}">
+                                                    <input type="submit" value="MAKE INACTIVE" class="add-btn" style="margin: 5px 0 0 0" name="update-user">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="submit" value="ACTIVATE" class="add-btn" style="margin: 5px 0 0 0" name="update-user">
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </form:form>
                                 </tr>
