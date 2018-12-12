@@ -8,8 +8,6 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.social.exception.AccountNotActiveException;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,25 +77,24 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
             LOG.info("qid={} accountValidated={}", userAccount.getQueueUserId(), userAccount.isAccountValidated());
 
-            boolean condition = isUserActive(userAccount);
-            if (!condition) {
+            doesUserHasInActiveReason(userAccount);
+            if (userAccount.isActive()) {
+                return new QueueUser(
+                    userProfile.getEmail(),
+                    userAccount.getUserAuthentication().getPassword(),
+                    getAuthorities(userAccount.getRoles()),
+                    userProfile.getQueueUserId(),
+                    userProfile.getLevel(),
+                    userAccount.isActive(),
+                    userAccount.isAccountValidated(),
+                    userProfile.getCountryShortName(),
+                    userAccount.getDisplayName()
+                );
+            } else {
                 /* Throw exception when its NOT a social signup. */
-                throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
-                    (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
-                    " when we start accepting new users.");
+                LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
+                throw new AccountNotActiveException("Account not active");
             }
-
-            return new QueueUser(
-                userProfile.getEmail(),
-                userAccount.getUserAuthentication().getPassword(),
-                getAuthorities(userAccount.getRoles()),
-                userProfile.getQueueUserId(),
-                userProfile.getLevel(),
-                true, //All above condition has already been validated. What remains is "Active".
-                userAccount.isAccountValidated(),
-                userProfile.getCountryShortName(),
-                userAccount.getDisplayName()
-            );
         }
     }
 
@@ -107,7 +104,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param userAccount
      * @return
      */
-    public boolean isUserActive(UserAccountEntity userAccount) {
+    public void doesUserHasInActiveReason(UserAccountEntity userAccount) {
         if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
@@ -120,8 +117,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     throw new AccountNotActiveException("Account not active");
             }
         }
-
-        return userAccount.isActive();
     }
 
     /**
