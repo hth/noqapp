@@ -60,24 +60,38 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * @param email - lower case string
+     * @param mail - lower case string
      * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        LOG.info("login attempted email={}", email);
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        LOG.info("login attempted mail={}", mail);
 
         /* Always check user login with lower letter email case. */
-        UserProfileEntity userProfile = userProfilePreferenceService.findOneByMail(email);
+        UserProfileEntity userProfile = userProfilePreferenceService.findOneByMail(mail);
         if (null == userProfile) {
-            LOG.warn("Not found user with email={}", email);
+            LOG.warn("Not found user with mail={}", mail);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
             LOG.info("qid={} accountValidated={}", userAccount.getQueueUserId(), userAccount.isAccountValidated());
 
-            doesUserHasInActiveReason(userAccount);
+            try {
+                doesUserHasInActiveReason(userAccount);
+            } catch (AccountNotActiveException e) {
+                return new QueueUser(
+                    userProfile.getEmail(),
+                    userAccount.getUserAuthentication().getPassword(),
+                    getAuthorities(userAccount.getRoles()),
+                    userProfile.getQueueUserId(),
+                    userProfile.getLevel(),
+                    false,
+                    userAccount.isAccountValidated(),
+                    userProfile.getCountryShortName(),
+                    userAccount.getDisplayName()
+                );
+            }
             if (userAccount.isActive()) {
                 return new QueueUser(
                     userProfile.getEmail(),
