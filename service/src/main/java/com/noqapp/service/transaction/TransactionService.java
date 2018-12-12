@@ -3,6 +3,7 @@ package com.noqapp.service.transaction;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.StoreProductEntity;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -69,7 +71,11 @@ public class TransactionService {
                 }
 
                 return;
+            } catch (DuplicateKeyException e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+                throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
             } catch (Exception e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed to complete transaction");
             }
         }
@@ -86,6 +92,9 @@ public class TransactionService {
                 mongoOperations.withSession(session).insert(purchaseOrderProduct);
             }
             session.commitTransaction();
+        } catch (DuplicateKeyException e) {
+            LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+            throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
         } catch (Exception e) {
             LOG.error("Failed transaction bizStoreId={} qid={}", purchaseOrder.getBizStoreId(), purchaseOrder.getQueueUserId());
             session.abortTransaction();
@@ -105,7 +114,11 @@ public class TransactionService {
                 }
                 LOG.info("Store product removed={} added={} bizStoreId={} qid={}", deletedCount, storeProducts.size(), bizStoreId, qid);
                 return;
+            } catch (DuplicateKeyException e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+                throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
             } catch (Exception e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed to complete transaction");
             }
         }
@@ -123,6 +136,9 @@ public class TransactionService {
             }
             session.commitTransaction();
             LOG.info("Store product removed={} added={} bizStoreId={} qid={}", deleteResult.getDeletedCount(), storeProducts.size(), bizStoreId, qid);
+        } catch (DuplicateKeyException e) {
+            LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+            throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
         } catch (Exception e) {
             LOG.error("Failed transaction bizStoreId={} qid={}", bizStoreId, qid);
             session.abortTransaction();
