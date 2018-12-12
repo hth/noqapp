@@ -62,12 +62,16 @@ public class TransactionService {
     public void completePurchase(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
-            purchaseOrderManager.save(purchaseOrder);
-            for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
-                purchaseOrderProductManager.save(purchaseOrderProduct);
-            }
+            try {
+                purchaseOrderManager.save(purchaseOrder);
+                for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+                    purchaseOrderProductManager.save(purchaseOrderProduct);
+                }
 
-            return;
+                return;
+            } catch (Exception e) {
+                throw new FailedTransactionException("Failed to complete transaction");
+            }
         }
 
         ClientSessionOptions sessionOptions = ClientSessionOptions.builder()
@@ -94,12 +98,16 @@ public class TransactionService {
     public void bulkProductUpdate(List<StoreProductEntity> storeProducts, String bizStoreId, String qid) {
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
-            long deletedCount = storeProductManager.removedStoreProduct(bizStoreId);
-            for (StoreProductEntity storeProduct : storeProducts) {
-                storeProductManager.save(storeProduct);
+            try {
+                long deletedCount = storeProductManager.removedStoreProduct(bizStoreId);
+                for (StoreProductEntity storeProduct : storeProducts) {
+                    storeProductManager.save(storeProduct);
+                }
+                LOG.info("Store product removed={} added={} bizStoreId={} qid={}", deletedCount, storeProducts.size(), bizStoreId, qid);
+                return;
+            } catch (Exception e) {
+                throw new FailedTransactionException("Failed to complete transaction");
             }
-            LOG.info("Store product removed={} added={} bizStoreId={} qid={}", deletedCount, storeProducts.size(), bizStoreId, qid);
-            return;
         }
 
         ClientSessionOptions sessionOptions = ClientSessionOptions.builder()
