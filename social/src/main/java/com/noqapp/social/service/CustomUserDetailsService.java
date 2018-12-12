@@ -93,7 +93,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             } else {
                 /* Throw exception when its NOT a social signup. */
                 LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
-                throw new AccountNotActiveException("Account not active");
+                throw new AccountNotActiveException("Account is blocked. Contact support.");
             }
         }
     }
@@ -111,10 +111,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 case BOC:
                 case BUP:
                     LOG.warn("Account In Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                    throw new AccountNotActiveException("Account not active");
+                    throw new AccountNotActiveException("Account is blocked. Contact support.");
                 default:
-                    LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
-                    throw new AccountNotActiveException("Account not active");
+                    LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
+                    throw new AccountNotActiveException("Account is blocked. Contact support.");
             }
         }
     }

@@ -86,11 +86,18 @@
 
                     <div class="otp">
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
-                            <div class="error-box">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
                             </div>
+                        </div>
+                        </c:if>
+                        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'i--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                You have been blocked. Please contact support through NoQApp mobile application.
+                            </div>
+                        </div>
                         </c:if>
                         <form id="verification-code-form" action="" style="display: none;">
                             <span><br></span>
@@ -190,6 +197,10 @@
         </c:if>
 
         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
+        onSignOutClick();
+        </c:if>
+
+        <c:if test="${!empty param.loginFailure and param.loginFailure eq 'i--'}">
         onSignOutClick();
         </c:if>
 
