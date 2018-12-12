@@ -6,6 +6,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.social.exception.AccountNotActiveException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -110,11 +111,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
-                    LOG.info("Account is inactive for reason={}", userAccount.getAccountInactiveReason());
-                    throw new RuntimeException(accountNotValidatedMessage);
+                case BOC:
+                case BUP:
+                    LOG.warn("Account In Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
+                    throw new AccountNotActiveException("Account not active");
                 default:
                     LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
-                    return false;
+                    throw new AccountNotActiveException("Account not active");
             }
         }
 

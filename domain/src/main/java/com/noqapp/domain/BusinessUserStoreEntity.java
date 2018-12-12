@@ -105,4 +105,15 @@ public class BusinessUserStoreEntity extends BaseEntity {
     public int hashCode() {
         return Objects.hash(codeQR);
     }
+
+    @Override
+    public String toString() {
+        return "BusinessUserStoreEntity{" +
+            "queueUserId='" + queueUserId + '\'' +
+            ", bizStoreId='" + bizStoreId + '\'' +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", userLevel=" + userLevel +
+            '}';
+    }
 }
