@@ -79,7 +79,7 @@ public class LoginPhoneController {
             redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
         } catch (AccountNotActiveException e) {
             LOG.warn("Failed user InActive uid={} phone={} {}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone(), userAccount.getAccountInactiveReason());
-            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
+            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=i--#");
         }
         LOG.info("Redirecting user to link={}", redirect);
         return String.format("{ \"next\" : \"%s\" }", redirect);
