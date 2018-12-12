@@ -1,8 +1,10 @@
 package com.noqapp.domain.types.catgeory;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * hitender
@@ -45,5 +47,34 @@ public enum HealthCareServiceEnum {
         }
 
         return a;
+    }
+
+    public static Map<String, String> asMapWithNameAsKey() {
+        return new LinkedHashMap<String, String>() {{
+            put(MRI.name, MRI.description);
+            put(SCAN.name, SCAN.description);
+            put(SONO.name, SONO.description);
+            put(XRAY.name, XRAY.description);
+            put(PHYS.name, PHYS.description);
+            put(PATH.name, PATH.description);
+            put(SPEC.name, SPEC.description);
+        }};
+    }
+
+    public static Map<String, String> asMapWithDescriptionAsKey() {
+        return new LinkedHashMap<String, String>() {{
+            put(MRI.description, MRI.name);
+            put(SCAN.description, SCAN.name);
+            put(SONO.description, SONO.name);
+            put(XRAY.description, XRAY.name);
+            put(PHYS.description, PHYS.name);
+            put(PATH.description, PATH.name);
+            put(SPEC.description, SPEC.name);
+        }};
+    }
+
+    @Override
+    public String toString() {
+        return description;
     }
 }

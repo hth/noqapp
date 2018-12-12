@@ -116,7 +116,7 @@ public class FileService {
         "Reference"
     };
 
-    private static String[] RADIOLOGY_PRODUCT_HEADERS = {
+    public static String[] RADIOLOGY_PRODUCT_HEADERS = {
         "Category",
         "Name",
         "Price",

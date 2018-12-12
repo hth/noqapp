@@ -7,7 +7,9 @@ import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
 import com.noqapp.medical.repository.UserMedicalProfileManagerImpl;
+import com.noqapp.medical.service.MedicalFileService;
 import com.noqapp.medical.service.UserMedicalProfileService;
+import com.noqapp.medical.transaction.MedicalTransactionService;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizNameManagerImpl;
 import com.noqapp.repository.BizStoreManager;
@@ -96,6 +98,8 @@ public class ITest extends RealMongoForITest {
     protected GenerateUserIdService generateUserIdService;
     protected EmailValidateService emailValidateService;
     protected QueueService queueService;
+    protected MedicalFileService medicalFileService;
+    protected MedicalTransactionService medicalTransactionService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -231,6 +235,14 @@ public class ITest extends RealMongoForITest {
             storeProductManager,
             bizService,
             storeCategoryService
+        );
+
+        medicalFileService = new MedicalFileService();
+        medicalTransactionService = new MedicalTransactionService(
+            getMongoTemplate(),
+            transactionManager(),
+            getMongoTemplate(),
+            masterLabManager
         );
     }
 }

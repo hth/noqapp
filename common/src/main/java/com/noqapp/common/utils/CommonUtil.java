@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +43,7 @@ public final class CommonUtil {
 
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
+    private static final Pattern p = Pattern.compile("\\{([^}]*)\\}");
 
     private static Random random = new Random();
 
@@ -235,5 +238,20 @@ public final class CommonUtil {
         }
 
         return "N/A";
+    }
+
+    /**
+     * Parses error message to increase readability like { : "KUB", : "SONO" } to : "KUB", : "SONO"
+     * E11000 duplicate key error collection: TABLE_NAME.COLLECTION NAME index: some_idx dup key: { : "KUB", : "SONO" }
+     * @param errorMessage
+     * @return
+     */
+    public static String parseForDuplicateException(String errorMessage) {
+        Matcher m = p.matcher(errorMessage);
+        if (m.find()) {
+            return (m.group(1));
+        }
+
+        return null;
     }
 }
