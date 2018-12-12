@@ -4,6 +4,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FirebaseService;
+import com.noqapp.social.exception.AccountNotActiveException;
 import com.noqapp.view.form.UserLoginPhoneForm;
 
 import org.slf4j.Logger;
@@ -25,10 +26,10 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 8/5/17 6:09 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/open/phone")
@@ -51,17 +52,17 @@ public class LoginPhoneController {
     }
 
     @PostMapping(
-            value = "/login",
-            headers = "Accept=application/json",
-            produces = "application/json")
+        value = "/login",
+        headers = "Accept=application/json",
+        produces = "application/json")
     @ResponseBody
     public String phoneLogin(
-            @ModelAttribute("userLoginPhoneForm")
-            UserLoginPhoneForm userLoginPhoneForm,
+        @ModelAttribute("userLoginPhoneForm")
+        UserLoginPhoneForm userLoginPhoneForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse httpServletResponse
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse httpServletResponse
     ) {
         UserProfileEntity userProfile = firebaseService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
         if (null == userProfile) {
@@ -73,7 +74,13 @@ public class LoginPhoneController {
             userAccount.setPhoneValidated(true);
             accountService.save(userAccount);
         }
-        String redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
+        String redirect;
+        try {
+            redirect = loginController.determineTargetUrlAfterLogin(userAccount, userProfile);
+        } catch (AccountNotActiveException e) {
+            LOG.warn("Failed user InActive uid={} phone={} {}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone(), userAccount.getAccountInactiveReason());
+            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
+        }
         LOG.info("Redirecting user to link={}", redirect);
         return String.format("{ \"next\" : \"%s\" }", redirect);
     }

@@ -32,11 +32,11 @@ import java.util.stream.Collectors;
  * User: hitender
  * Date: 3/29/14 12:33 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -49,11 +49,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     public CustomUserDetailsService(
-            @Value ("${CustomUserDetailsService.account.not.validated.message}")
-            String accountNotValidatedMessage,
+        @Value("${CustomUserDetailsService.account.not.validated.message}")
+        String accountNotValidatedMessage,
 
-            UserProfilePreferenceService userProfilePreferenceService,
-            AccountService accountService
+        UserProfilePreferenceService userProfilePreferenceService,
+        AccountService accountService
     ) {
         this.accountNotValidatedMessage = accountNotValidatedMessage;
 
@@ -83,20 +83,20 @@ public class CustomUserDetailsService implements UserDetailsService {
             if (!condition) {
                 /* Throw exception when its NOT a social signup. */
                 throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
-                        (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
-                        " when we start accepting new users.");
+                    (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
+                    " when we start accepting new users.");
             }
 
             return new QueueUser(
-                    userProfile.getEmail(),
-                    userAccount.getUserAuthentication().getPassword(),
-                    getAuthorities(userAccount.getRoles()),
-                    userProfile.getQueueUserId(),
-                    userProfile.getLevel(),
-                    condition,
-                    userAccount.isAccountValidated(),
-                    userProfile.getCountryShortName(),
-                    userAccount.getDisplayName()
+                userProfile.getEmail(),
+                userAccount.getUserAuthentication().getPassword(),
+                getAuthorities(userAccount.getRoles()),
+                userProfile.getQueueUserId(),
+                userProfile.getLevel(),
+                true, //All above condition has already been validated. What remains is "Active".
+                userAccount.isAccountValidated(),
+                userProfile.getCountryShortName(),
+                userAccount.getDisplayName()
             );
         }
     }
@@ -121,7 +121,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
         }
 
-        return true;
+        return userAccount.isActive();
     }
 
     /**

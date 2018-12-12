@@ -6,6 +6,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.security.OnLoginAuthenticationSuccessHandler;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.LoginService;
+import com.noqapp.social.exception.AccountNotActiveException;
 import com.noqapp.social.service.CustomUserDetailsService;
 import com.noqapp.view.cache.CachedUserAgentStringParser;
 import com.noqapp.view.form.UserLoginForm;
@@ -188,7 +189,8 @@ public class LoginController {
         return determineTargetUrlAfterLogin(userAccount, userProfile);
     }
 
-    String determineTargetUrlAfterLogin(UserAccountEntity userAccount, UserProfileEntity userProfile) {
+    String determineTargetUrlAfterLogin(UserAccountEntity userAccount, UserProfileEntity userProfile) throws AccountNotActiveException {
+        customUserDetailsService.doesUserHasInActiveReason(userAccount);
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
         UserDetails userDetails = new QueueUser(
                 userProfile.getEmail(),
@@ -196,7 +198,7 @@ public class LoginController {
                 authorities,
                 userProfile.getQueueUserId(),
                 userProfile.getLevel(),
-                customUserDetailsService.isUserActive(userAccount),
+                userAccount.isActive(),
                 userAccount.isAccountValidated(),
                 userProfile.getCountryShortName(),
                 userAccount.getDisplayName()

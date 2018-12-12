@@ -30,14 +30,14 @@ import java.io.IOException;
  * User: hitender
  * Date: 11/24/16 3:34 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/registrationMerchant")
+@RequestMapping(value = "/open/registrationMerchant")
 public class RegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
@@ -45,14 +45,14 @@ public class RegistrationController {
     private MailService mailService;
     private LoginController loginController;
 
-    @Value ("${registrationPage:/open/register}")
+    @Value("${registrationPage:/open/register}")
     private String registrationPage;
 
     @Autowired
     public RegistrationController(
-            AccountService accountService,
-            MailService mailService,
-            LoginController loginController
+        AccountService accountService,
+        MailService mailService,
+        LoginController loginController
     ) {
         this.accountService = accountService;
         this.mailService = mailService;
@@ -61,8 +61,8 @@ public class RegistrationController {
 
     @PostMapping
     public String signUp(
-            @ModelAttribute ("merchantRegistration")
-            MerchantRegistrationForm merchantRegistration
+        @ModelAttribute("merchantRegistration")
+        MerchantRegistrationForm merchantRegistration
     ) {
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhone());
 
@@ -71,23 +71,23 @@ public class RegistrationController {
             merchantRegistration.setAccountExists(true);
             return registrationPage;
         }
-                                                               
+
         UserAccountEntity userAccount;
         try {
             userAccount = accountService.createNewAccount(
-                    merchantRegistration.getPhone(),
-                    merchantRegistration.getFirstName().getText(),
-                    merchantRegistration.getLastName().getText(),
-                    StringUtils.lowerCase(merchantRegistration.getMail().getText()),
-                    StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
-                    GenderEnum.valueOf(merchantRegistration.getGender().getText()),
-                    merchantRegistration.findCountryShortFromPhone(),
-                    /* Timezone from website is difficult to compute, hence passing null. */
-                    null,
-                    merchantRegistration.getPassword().getText(),
-                    null,
-                    true,
-                    merchantRegistration.isNotAdult());
+                merchantRegistration.getPhone(),
+                merchantRegistration.getFirstName().getText(),
+                merchantRegistration.getLastName().getText(),
+                StringUtils.lowerCase(merchantRegistration.getMail().getText()),
+                StringUtils.isNotBlank(merchantRegistration.getBirthday().getText()) ? merchantRegistration.getBirthday().getText() : "",
+                GenderEnum.valueOf(merchantRegistration.getGender().getText()),
+                merchantRegistration.findCountryShortFromPhone(),
+                /* Timezone from website is difficult to compute, hence passing null. */
+                null,
+                merchantRegistration.getPassword().getText(),
+                null,
+                true,
+                merchantRegistration.isNotAdult());
 
             if (null == userAccount) {
                 LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());
@@ -103,9 +103,9 @@ public class RegistrationController {
 
         LOG.info("Registered new user qid={}", userAccount.getQueueUserId());
         mailService.sendValidationMailOnAccountCreation(
-                userAccount.getUserId(),
-                userAccount.getQueueUserId(),
-                userAccount.getName());
+            userAccount.getUserId(),
+            userAccount.getQueueUserId(),
+            userAccount.getName());
 
         LOG.info("Account registered success");
         String redirect = loginController.continueLoginAfterRegistration(userAccount.getQueueUserId());
@@ -120,10 +120,10 @@ public class RegistrationController {
      * @return
      * @throws IOException
      */
-    @PostMapping (
-            value = "/availability",
-            headers = "Accept=application/json",
-            produces = "application/json"
+    @PostMapping(
+        value = "/availability",
+        headers = "Accept=application/json",
+        produces = "application/json"
     )
     @ResponseBody
     public String getAvailability(@RequestBody String body) throws IOException {
@@ -141,9 +141,9 @@ public class RegistrationController {
             LOG.info("Email={} provided during registration exists", email);
             availabilityStatus = AvailabilityStatus.notAvailable(email);
             return String.format("{ \"valid\" : %b, \"message\" : \"<b>%s</b> is already registered. %s\" }",
-                    availabilityStatus.isAvailable(),
-                    email,
-                    StringUtils.join(availabilityStatus.getSuggestions()));
+                availabilityStatus.isAvailable(),
+                email,
+                StringUtils.join(availabilityStatus.getSuggestions()));
         }
         LOG.info("Email available={} for registration", email);
         availabilityStatus = AvailabilityStatus.available();
