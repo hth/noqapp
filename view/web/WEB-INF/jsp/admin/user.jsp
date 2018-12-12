@@ -104,7 +104,17 @@
                                     <form:form method="POST" action="./action.htm" modelAttribute="searchUserForm">
                                         <form:hidden path="qid" />
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>
-                                        <td style="font-size:13px;">${searchUserForm.displayName}</td>
+                                        <td style="font-size:13px;">
+                                            ${searchUserForm.displayName}
+                                            <c:choose>
+                                                <c:when test="${searchUserForm.dependent}">
+                                                    <span style="display:block; font-size:13px;">Guardian Phone: ${searchUserForm.guardianPhone}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;">Phone: ${searchUserForm.phone}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                         <td style="font-size:13px;">
                                             ${searchUserForm.status}
                                             <c:if test="${searchUserForm.status eq ActionTypeEnum.INACTIVE}">
