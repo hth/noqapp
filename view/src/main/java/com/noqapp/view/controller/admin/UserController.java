@@ -2,6 +2,7 @@ package com.noqapp.view.controller.admin;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.service.AccountService;
@@ -70,7 +71,11 @@ public class UserController {
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(searchUserForm.getQid().getText());
         if (null != userAccount) {
-            searchUserForm.setQid(new ScrubbedInput(userAccount.getQueueUserId()))
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(userAccount.getQueueUserId());
+            searchUserForm
+                .setQid(new ScrubbedInput(userAccount.getQueueUserId()))
+                .setPhone(new ScrubbedInput(userProfile.getPhone()))
+                .setGuardianPhone(new ScrubbedInput(userProfile.getGuardianPhone()))
                 .setDisplayName(new ScrubbedInput(userAccount.getDisplayName()))
                 .setAccountInactiveReason(userAccount.getAccountInactiveReason())
                 .setStatus(userAccount.isActive())

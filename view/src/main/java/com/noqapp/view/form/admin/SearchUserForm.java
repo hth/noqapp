@@ -4,6 +4,8 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.ActionTypeEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Map;
 
 /**
@@ -13,6 +15,9 @@ import java.util.Map;
 public class SearchUserForm {
 
     private ScrubbedInput qid;
+    private ScrubbedInput phone;
+    private boolean dependent;
+    private ScrubbedInput guardianPhone;
     private ScrubbedInput displayName;
     private AccountInactiveReasonEnum accountInactiveReason;
     private ActionTypeEnum status;
@@ -25,6 +30,31 @@ public class SearchUserForm {
 
     public SearchUserForm setQid(ScrubbedInput qid) {
         this.qid = qid;
+        return this;
+    }
+
+    public ScrubbedInput getPhone() {
+        return phone;
+    }
+
+    public SearchUserForm setPhone(ScrubbedInput phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public boolean isDependent() {
+        return dependent;
+    }
+
+    public ScrubbedInput getGuardianPhone() {
+        return guardianPhone;
+    }
+
+    public SearchUserForm setGuardianPhone(ScrubbedInput guardianPhone) {
+        this.guardianPhone = guardianPhone;
+        if(StringUtils.isNotBlank(guardianPhone.getText())) {
+            this.dependent = true;
+        }
         return this;
     }
 
