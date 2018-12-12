@@ -26,7 +26,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
      */
     List<UserProfileEntity> searchAllByName(String name);
 
-    UserProfileEntity findOneByMail(String email);
+    UserProfileEntity findOneByMail(String mail);
 
     /**
      * Phone number should come with country code.

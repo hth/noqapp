@@ -51,12 +51,8 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-store">
-                        <div class="addbtn-store">
-                            Do something related to medical.
-                        </div>
-
-                        <div class="store">
-                            Do something related to medical.
+                        <div class="store-table">
+                            User Control: <a href="/emp/medical/masterLab/bulk.htm">Bulk Upload</a>
                         </div>
                     </div>
                 </div>

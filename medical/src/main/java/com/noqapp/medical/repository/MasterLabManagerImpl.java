@@ -4,8 +4,11 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MasterLabEntity;
+
+import com.mongodb.client.result.DeleteResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +74,27 @@ public class MasterLabManagerImpl implements MasterLabManager {
     }
 
     @Override
+    public long deleteMatching(HealthCareServiceEnum healthCareService) {
+        DeleteResult deleteResult = mongoTemplate.remove(
+            query(where("HS").is(healthCareService)),
+            MasterLabEntity.class,
+            TABLE
+        );
+
+        return deleteResult.getDeletedCount();
+    }
+
+    @Override
     public void deleteAll() {
         mongoTemplate.remove(new Query(), MasterLabEntity.class);
+    }
+
+    @Override
+    public List<MasterLabEntity> findAllMatching(HealthCareServiceEnum healthCareService) {
+        return mongoTemplate.find(
+            query(where("HS").is(healthCareService)),
+            MasterLabEntity.class,
+            TABLE
+        );
     }
 }

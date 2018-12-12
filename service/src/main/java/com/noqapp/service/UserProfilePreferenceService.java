@@ -36,8 +36,8 @@ public class UserProfilePreferenceService {
         this.userPreferenceManager = userPreferenceManager;
     }
 
-    public UserProfileEntity findOneByMail(String email) {
-        return userProfileManager.findOneByMail(email);
+    public UserProfileEntity findOneByMail(String mail) {
+        return userProfileManager.findOneByMail(mail);
     }
 
     public UserProfileEntity findByQueueUserId(String qid) {

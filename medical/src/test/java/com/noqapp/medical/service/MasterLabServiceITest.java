@@ -28,7 +28,7 @@ class MasterLabServiceITest extends ITest {
 
     @BeforeEach
     void setUp() {
-        masterLabService = new MasterLabService(masterLabManager, ftpService, fileService);
+        masterLabService = new MasterLabService(masterLabManager, ftpService, fileService, medicalFileService, medicalTransactionService);
     }
 
     @Test

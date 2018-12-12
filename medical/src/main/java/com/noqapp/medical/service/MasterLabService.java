@@ -5,11 +5,16 @@ import static com.noqapp.service.FtpService.MASTER_MEDICAL;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.medical.repository.MasterLabManager;
+import com.noqapp.medical.transaction.MedicalTransactionService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
+import com.noqapp.service.exceptions.CSVParsingException;
+import com.noqapp.service.exceptions.CSVProcessingException;
+import com.noqapp.service.exceptions.FailedTransactionException;
 
 import org.apache.commons.vfs2.FileObject;
 
@@ -21,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,16 +46,22 @@ public class MasterLabService {
     private MasterLabManager masterLabManager;
     private FtpService ftpService;
     private FileService fileService;
+    private MedicalFileService medicalFileService;
+    private MedicalTransactionService medicalTransactionService;
 
     @Autowired
     public MasterLabService(
         MasterLabManager masterLabManager,
         FtpService ftpService,
-        FileService fileService
+        FileService fileService,
+        MedicalFileService medicalFileService,
+        MedicalTransactionService medicalTransactionService
     ) {
         this.masterLabManager = masterLabManager;
         this.ftpService = ftpService;
         this.fileService = fileService;
+        this.medicalFileService = medicalFileService;
+        this.medicalTransactionService = medicalTransactionService;
     }
 
     public List<MasterLabEntity> findAll() {
@@ -112,5 +124,29 @@ public class MasterLabService {
 
     public List<MasterLabEntity> findAllMatching(MedicalDepartmentEnum medicalDepartment) {
         return masterLabManager.findAllMatching(medicalDepartment);
+    }
+
+    public int bulkUpdateStoreProduct(InputStream in, HealthCareServiceEnum healthCareService) {
+        try {
+            List<MasterLabEntity> masterLabs = medicalFileService.processUploadedForMasterProductCSVFile(in, healthCareService);
+            if (!masterLabs.isEmpty()) {
+                medicalTransactionService.bulkProductUpdate(masterLabs, healthCareService);
+            }
+            in.close();
+            return masterLabs.size();
+        } catch (CSVParsingException e) {
+            LOG.warn("Failed parsing CSV file healthCareService={} reason={}", healthCareService, e.getLocalizedMessage());
+            throw e;
+        } catch (CSVProcessingException e) {
+            LOG.warn("Failed processing CSV file healthCareService={} reason={}", healthCareService, e.getLocalizedMessage());
+            throw e;
+        } catch(FailedTransactionException e) {
+            LOG.warn("Failed transaction healthCareService={} reason={}", healthCareService, e.getLocalizedMessage());
+            throw e;
+        } catch (IOException e) {
+            LOG.error("Error reason={}", e.getLocalizedMessage(), e);
+        }
+
+        return 0;
     }
 }
