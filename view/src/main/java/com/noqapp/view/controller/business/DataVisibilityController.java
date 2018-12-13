@@ -5,11 +5,11 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.DataProtectionEnum;
+import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
-import com.noqapp.view.form.business.DataProtectionForm;
+import com.noqapp.view.form.business.DataVisibilityForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +40,9 @@ import javax.servlet.http.HttpServletResponse;
     "PMD.LongVariable"
 })
 @Controller
-@RequestMapping(value = "/business/dataProtection")
-public class DataProtectionController {
-    private static final Logger LOG = LoggerFactory.getLogger(DataProtectionController.class);
+@RequestMapping(value = "/business/dataVisibility")
+public class DataVisibilityController {
+    private static final Logger LOG = LoggerFactory.getLogger(DataVisibilityController.class);
 
     private String nextPage;
 
@@ -50,8 +50,8 @@ public class DataProtectionController {
     private BusinessUserService businessUserService;
 
     @Autowired
-    public DataProtectionController(
-        @Value("${nextPage:/business/dataProtection}")
+    public DataVisibilityController(
+        @Value("${nextPage:/business/dataVisibility}")
         String nextPage,
 
         BizService bizService,
@@ -68,8 +68,8 @@ public class DataProtectionController {
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
-        @ModelAttribute("dataProtectionForm")
-        DataProtectionForm dataProtectionForm,
+        @ModelAttribute("dataVisibilityForm")
+        DataVisibilityForm dataVisibilityForm,
 
         HttpServletResponse response
     ) throws IOException {
@@ -84,18 +84,18 @@ public class DataProtectionController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();
-        Map<String, DataProtectionEnum>  maps = bizName.getDataProtections();
-        dataProtectionForm
-            .setDataProtectionForSupervisor(maps.get(UserLevelEnum.Q_SUPERVISOR.name()))
-            .setDataProtectionForManager(maps.get(UserLevelEnum.S_MANAGER.name()))
-            .setDataProtections(DataProtectionEnum.asMapWithNameAsKey());
+        Map<String, DataVisibilityEnum>  maps = bizName.getDataVisibilities();
+        dataVisibilityForm
+            .setDataVisibilityForSupervisor(maps.get(UserLevelEnum.Q_SUPERVISOR.name()))
+            .setDataVisibilityForManager(maps.get(UserLevelEnum.S_MANAGER.name()))
+            .setDataVisibilities(DataVisibilityEnum.asMapWithNameAsKey());
         return nextPage;
     }
 
-    @PostMapping(value = "/landing",  params = {"update-dataProtection"}, produces = "text/html;charset=UTF-8")
+    @PostMapping(value = "/landing",  params = {"update-dataVisibility"}, produces = "text/html;charset=UTF-8")
     public String update(
-        @ModelAttribute("dataProtectionForm")
-        DataProtectionForm dataProtectionForm,
+        @ModelAttribute("dataVisibilityForm")
+        DataVisibilityForm dataVisibilityForm,
 
         HttpServletResponse response
     ) throws IOException {
@@ -110,15 +110,15 @@ public class DataProtectionController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();
-        Map<String, DataProtectionEnum> map = new HashMap<>();
-        map.put(UserLevelEnum.Q_SUPERVISOR.name(), dataProtectionForm.getDataProtectionForSupervisor());
-        map.put(UserLevelEnum.S_MANAGER.name(), dataProtectionForm.getDataProtectionForManager());
-        bizService.updateDataProtection(map, bizName.getId());
+        Map<String, DataVisibilityEnum> map = new HashMap<>();
+        map.put(UserLevelEnum.Q_SUPERVISOR.name(), dataVisibilityForm.getDataVisibilityForSupervisor());
+        map.put(UserLevelEnum.S_MANAGER.name(), dataVisibilityForm.getDataVisibilityForManager());
+        bizService.updateDataVisibility(map, bizName.getId());
 
-        return "redirect:" + "/business/dataProtection/landing" + ".htm";
+        return "redirect:" + "/business/dataVisibility/landing" + ".htm";
     }
 
-    @PostMapping(value = "/landing", params = {"cancel-dataProtection"})
+    @PostMapping(value = "/landing", params = {"cancel-dataVisibility"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading admin landing after user search cancelled");
         return "redirect:/business/landing.htm";

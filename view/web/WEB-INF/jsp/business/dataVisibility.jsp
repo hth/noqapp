@@ -51,7 +51,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-new">
-                        <form:form method="POST" action="./landing.htm" modelAttribute="dataProtectionForm">
+                        <form:form method="POST" action="./landing.htm" modelAttribute="dataVisibilityForm">
                             <ul class="list-form">
                                 <li>
                                     <div class="alert-info">
@@ -62,24 +62,24 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="dataProtectionForSupervisor" cssErrorClass="lb_error">Supervisor</form:label>
+                                        <form:label path="dataVisibilityForSupervisor" cssErrorClass="lb_error">Supervisor</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="dataProtectionForSupervisor" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                        <form:select path="dataVisibilityForSupervisor" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:option value="" label="--- Select ---"/>
-                                            <form:options items="${dataProtectionForm.dataProtections}" />
+                                            <form:options items="${dataVisibilityForm.dataVisibilities}" />
                                         </form:select>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="dataProtectionForManager" cssErrorClass="lb_error">Manager/Doctor</form:label>
+                                        <form:label path="dataVisibilityForManager" cssErrorClass="lb_error">Manager/Doctor</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="dataProtectionForManager" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                        <form:select path="dataVisibilityForManager" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:option value="" label="--- Select ---"/>
-                                            <form:options items="${dataProtectionForm.dataProtections}" />
+                                            <form:options items="${dataVisibilityForm.dataVisibilities}" />
                                         </form:select>
                                     </div>
                                     <div class="clearFix"></div>
@@ -88,10 +88,10 @@
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
                                         <div class="left-btn">
-                                            <input type="submit" value="UPDATE" class="next-btn" name="update-dataProtection">
+                                            <input type="submit" value="UPDATE" class="next-btn" name="update-dataVisibility">
                                         </div>
                                         <div class="right-btn">
-                                            <input type="submit" value="CANCEL" class="cancel-btn" name="cancel-dataProtection">
+                                            <input type="submit" value="CANCEL" class="cancel-btn" name="cancel-dataVisibility">
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>

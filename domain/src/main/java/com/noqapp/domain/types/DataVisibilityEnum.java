@@ -7,15 +7,15 @@ import java.util.Map;
  * hitender
  * 2018-12-09 11:04
  */
-public enum DataProtectionEnum {
-    L("L", "Low Protection"),
-    M("M", "Medium Protection"),
-    H("H", "High Protection");
+public enum DataVisibilityEnum {
+    L("L", "Less Visibility"),
+    M("M", "Medium Visibility"),
+    H("H", "High Visibility");
 
     private final String description;
     private final String name;
 
-    DataProtectionEnum(String name, String description) {
+    DataVisibilityEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
