@@ -53,7 +53,7 @@ public class SearchUserForm {
 
     public SearchUserForm setGuardianPhone(ScrubbedInput guardianPhone) {
         this.guardianPhone = guardianPhone;
-        if(StringUtils.isNotBlank(guardianPhone.getText())) {
+        if (StringUtils.isNotBlank(guardianPhone.getText())) {
             this.dependent = true;
         }
         return this;

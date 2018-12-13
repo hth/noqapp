@@ -71,15 +71,7 @@ public class UserController {
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(searchUserForm.getQid().getText());
         if (null != userAccount) {
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(userAccount.getQueueUserId());
-            searchUserForm
-                .setQid(new ScrubbedInput(userAccount.getQueueUserId()))
-                .setPhone(new ScrubbedInput(userProfile.getPhone()))
-                .setGuardianPhone(new ScrubbedInput(userProfile.getGuardianPhone()))
-                .setDisplayName(new ScrubbedInput(userAccount.getDisplayName()))
-                .setAccountInactiveReason(userAccount.getAccountInactiveReason())
-                .setStatus(userAccount.isActive())
-                .setAccountInactiveReasons(AccountInactiveReasonEnum.asMapWithNameAsKey());
+            populateSearchUserForm(searchUserForm, userAccount);
         } else {
             searchUserForm.setNoUserFound(true);
         }
@@ -121,20 +113,32 @@ public class UserController {
                         LOG.error("Reached unsupported condition actionType={}", searchUserForm.getAccountInactiveReason());
                         throw new UnsupportedOperationException("Reached unsupported condition for actionType " + searchUserForm.getAccountInactiveReason());
                 }
-            } else {
+
+                accountService.save(userAccount);
+                accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId());
+            } else if (!userAccount.isActive()) {
                 LOG.info("Activating account for qid={}", searchUserForm.getQid());
                 userAccount.setAccountInactiveReason(null);
                 userAccount.active();
+
+                accountService.save(userAccount);
+                accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId());
             }
-            accountService.save(userAccount);
-            accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId());
-            searchUserForm.setQid(new ScrubbedInput(userAccount.getQueueUserId()))
-                .setDisplayName(new ScrubbedInput(userAccount.getDisplayName()))
-                .setAccountInactiveReason(userAccount.getAccountInactiveReason())
-                .setStatus(userAccount.isActive())
-                .setAccountInactiveReasons(AccountInactiveReasonEnum.asMapWithNameAsKey());
+
+            populateSearchUserForm(searchUserForm, userAccount);
         }
         redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
         return "redirect:" + "/admin/user/landing" + ".htm";
+    }
+
+    private void populateSearchUserForm(SearchUserForm searchUserForm, UserAccountEntity userAccount) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(userAccount.getQueueUserId());
+        searchUserForm.setQid(new ScrubbedInput(userAccount.getQueueUserId()))
+            .setPhone(new ScrubbedInput(userProfile.getPhone()))
+            .setGuardianPhone(new ScrubbedInput(userProfile.getGuardianPhone()))
+            .setDisplayName(new ScrubbedInput(userAccount.getDisplayName()))
+            .setAccountInactiveReason(userAccount.getAccountInactiveReason())
+            .setStatus(userAccount.isActive())
+            .setAccountInactiveReasons(AccountInactiveReasonEnum.asMapWithNameAsKey());
     }
 }
