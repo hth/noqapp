@@ -108,10 +108,6 @@ public class ProfessionalProfileService {
     @Mobile
     public JsonProfessionalProfile getJsonProfessionalProfileByQid(String qid) {
         ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
-        if (null == professionalProfile) {
-            LOG.warn("Failure to find professional profile qid={}", qid);
-            return null;
-        }
         return getJsonProfessionalProfile(professionalProfile);
     }
 
