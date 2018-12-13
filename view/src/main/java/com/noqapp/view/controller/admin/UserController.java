@@ -80,6 +80,8 @@ public class UserController {
                 .setAccountInactiveReason(userAccount.getAccountInactiveReason())
                 .setStatus(userAccount.isActive())
                 .setAccountInactiveReasons(AccountInactiveReasonEnum.asMapWithNameAsKey());
+        } else {
+            searchUserForm.setNoUserFound(true);
         }
         redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
         return "redirect:" + "/admin/user/landing" + ".htm";
@@ -103,19 +105,17 @@ public class UserController {
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(searchUserForm.getQid().getText());
         if (null != userAccount) {
-            if(searchUserForm.getAccountInactiveReason() != null) {
+            if (searchUserForm.getAccountInactiveReason() != null) {
+                userAccount.inActive();
                 switch (searchUserForm.getAccountInactiveReason()) {
                     case ANV:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.ANV);
-                        userAccount.inActive();
                         break;
                     case BOC:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.BOC);
-                        userAccount.inActive();
                         break;
                     case BUP:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.BUP);
-                        userAccount.inActive();
                         break;
                     default:
                         LOG.error("Reached unsupported condition actionType={}", searchUserForm.getAccountInactiveReason());
