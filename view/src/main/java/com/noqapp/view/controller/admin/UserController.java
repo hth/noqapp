@@ -80,6 +80,8 @@ public class UserController {
                 .setAccountInactiveReason(userAccount.getAccountInactiveReason())
                 .setStatus(userAccount.isActive())
                 .setAccountInactiveReasons(AccountInactiveReasonEnum.asMapWithNameAsKey());
+        } else {
+            searchUserForm.setNoUserFound(true);
         }
         redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
         return "redirect:" + "/admin/user/landing" + ".htm";

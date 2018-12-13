@@ -23,6 +23,7 @@ public class SearchUserForm {
     private ActionTypeEnum status;
 
     private Map<String, String> accountInactiveReasons;
+    private boolean noUserFound;
 
     public ScrubbedInput getQid() {
         return qid;
@@ -91,6 +92,15 @@ public class SearchUserForm {
 
     public SearchUserForm setAccountInactiveReasons(Map<String, String> accountInactiveReasons) {
         this.accountInactiveReasons = accountInactiveReasons;
+        return this;
+    }
+
+    public boolean isNoUserFound() {
+        return noUserFound;
+    }
+
+    public SearchUserForm setNoUserFound(boolean noUserFound) {
+        this.noUserFound = noUserFound;
         return this;
     }
 }

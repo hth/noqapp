@@ -91,7 +91,7 @@
                     <div class="add-store">
                         <div class="store-table">
                         <c:choose>
-                        <c:when test="${!empty fn:trim(searchUserForm.qid)}">
+                        <c:when test="${!searchUserForm.noUserFound and !empty fn:trim(searchUserForm.qid)}">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <th width="4%">&nbsp;</th>
@@ -152,7 +152,12 @@
                         </c:when>
                         <c:otherwise>
                             <div class="alert-info">
-                                <div class="no-approve">Submit to find user.</div>
+                                <div class="no-approve">
+                                    Submit to find user.
+                                    <c:if test="${!empty fn:trim(searchUserForm.qid)}">
+                                        No user found ${searchUserForm.qid}
+                                    </c:if>
+                                </div>
                             </div>
                         </c:otherwise>
                         </c:choose>
