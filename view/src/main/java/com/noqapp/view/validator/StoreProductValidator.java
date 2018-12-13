@@ -55,6 +55,9 @@ public class StoreProductValidator implements Validator {
                     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "unitOfMeasurement", "field.required", new Object[]{"Measurement"});
                     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "packageSize", "field.required", new Object[]{"Package Size"});
                     break;
+                default:
+                    LOG.error("Reached unsupported condition={}", form.getBusinessType());
+                    throw new UnsupportedOperationException("Reached unsupported condition " + form.getBusinessType());
             }
 
             if (!errors.hasErrors()) {

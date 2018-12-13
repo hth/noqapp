@@ -159,6 +159,9 @@ public class MailProcess {
                         case F:
                             failure++;
                             break;
+                        default:
+                            LOG.error("Reached unsupported condition={}", mailStatus);
+                            throw new UnsupportedOperationException("Reached unsupported condition " + mailStatus);
                     }
                 } catch (MessagingException | UnsupportedEncodingException | NoSuchMethodError e) {
                     /* NoSuchMethodError normally happens when DKIM issue. */
