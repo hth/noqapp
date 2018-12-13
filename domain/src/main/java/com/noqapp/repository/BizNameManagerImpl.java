@@ -8,7 +8,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DataProtectionEnum;
+import com.noqapp.domain.types.DataVisibilityEnum;
 
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
@@ -189,10 +189,10 @@ public final class BizNameManagerImpl implements BizNameManager {
     }
 
     @Override
-    public void updateDataProtection(Map<String, DataProtectionEnum> dataProtections, String id) {
+    public void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
-            update("DP", dataProtections),
+            update("DV", dataVisibilities),
             BizNameEntity.class,
             TABLE
         );

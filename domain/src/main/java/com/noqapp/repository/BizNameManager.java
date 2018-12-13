@@ -2,7 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DataProtectionEnum;
+import com.noqapp.domain.types.DataVisibilityEnum;
 
 import java.util.List;
 import java.util.Map;
@@ -72,6 +72,6 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     /** Find all businesses in a particular timezone. */
     Stream<BizNameEntity> findAll(String timeZone);
 
-    void updateDataProtection(Map<String, DataProtectionEnum> dataProtections, String id);
+    void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id);
 }
 

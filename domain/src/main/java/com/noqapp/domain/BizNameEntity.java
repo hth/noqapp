@@ -7,7 +7,7 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BillingPlanEnum;
 import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DataProtectionEnum;
+import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
@@ -148,10 +148,10 @@ public class BizNameEntity extends BaseEntity {
     @Field("BI")
     private Set<String> businessServiceImages = new LinkedHashSet<>();
 
-    @Field("DP")
-    private Map<String, DataProtectionEnum> dataProtections = new HashMap<String, DataProtectionEnum>() {{
-        put(UserLevelEnum.S_MANAGER.name(), DataProtectionEnum.L);
-        put(UserLevelEnum.Q_SUPERVISOR.name(), DataProtectionEnum.L);
+    @Field("DV")
+    private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<String, DataVisibilityEnum>() {{
+        put(UserLevelEnum.S_MANAGER.name(), DataVisibilityEnum.H);
+        put(UserLevelEnum.Q_SUPERVISOR.name(), DataVisibilityEnum.H);
     }};
 
     /* When business is closed for national holiday. This automatically respond with all store as closed. */
@@ -493,12 +493,12 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
-    public Map<String, DataProtectionEnum> getDataProtections() {
-        return dataProtections;
+    public Map<String, DataVisibilityEnum> getDataVisibilities() {
+        return dataVisibilities;
     }
 
-    public BizNameEntity setDataProtections(Map<String, DataProtectionEnum> dataProtections) {
-        this.dataProtections = dataProtections;
+    public BizNameEntity setDataVisibilities(Map<String, DataVisibilityEnum> dataVisibilities) {
+        this.dataVisibilities = dataVisibilities;
         return this;
     }
 

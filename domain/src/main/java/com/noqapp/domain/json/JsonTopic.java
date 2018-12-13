@@ -35,8 +35,8 @@ public class JsonTopic extends JsonToken {
     @JsonProperty("hour")
     private JsonHour hour;
 
-    @JsonProperty("dp")
-    private JsonDataProtection jsonDataProtection;
+    @JsonProperty("dv")
+    private JsonDataVisibility jsonDataVisibility;
 
     private JsonTopic() {
         super();
@@ -60,12 +60,12 @@ public class JsonTopic extends JsonToken {
         return this;
     }
 
-    public JsonDataProtection getJsonDataProtection() {
-        return jsonDataProtection;
+    public JsonDataVisibility getJsonDataVisibility() {
+        return jsonDataVisibility;
     }
 
-    public JsonTopic setJsonDataProtection(JsonDataProtection jsonDataProtection) {
-        this.jsonDataProtection = jsonDataProtection;
+    public JsonTopic setJsonDataVisibility(JsonDataVisibility jsonDataVisibility) {
+        this.jsonDataVisibility = jsonDataVisibility;
         return this;
     }
 }
