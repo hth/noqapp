@@ -6,6 +6,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.json.JsonReviewList;
+import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -42,6 +43,7 @@ public class ProfessionalProfileService {
         this.reviewService = reviewService;
     }
 
+    /** Create professional profile or activate existing profile if marked deleted. */
     public void createProfessionalProfile(String qid) {
         ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
         if (null == professionalProfile) {
@@ -54,19 +56,20 @@ public class ProfessionalProfileService {
     }
 
     /** Delete valid only when license field empty or education field is empty. */
-    public void softDeleteProfessionalProfileProfile(String qid) {
+    public CommonStatusEnum softDeleteProfessionalProfileProfile(String qid) {
         if (professionalProfileManager.existsQid(qid)) {
             ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
-            if (null == professionalProfile.getLicenses()
-                || null == professionalProfile.getEducation()
-                || professionalProfile.getLicenses().isEmpty()
-                || professionalProfile.getEducation().isEmpty()) {
+            if ((null == professionalProfile.getLicenses() || professionalProfile.getLicenses().isEmpty())
+                && (null == professionalProfile.getEducation() || professionalProfile.getEducation().isEmpty())) {
                 professionalProfile.markAsDeleted();
                 professionalProfileManager.save(professionalProfile);
+                return CommonStatusEnum.SUCCESS;
             } else {
                 LOG.warn("Skip deleting professional profile qid={}", qid);
+                return CommonStatusEnum.FAILURE;
             }
         }
+        return CommonStatusEnum.FAILURE;
     }
 
     private ProfessionalProfileEntity findByWebProfileId(String webProfileId) {
@@ -103,6 +106,15 @@ public class ProfessionalProfileService {
 
     public ProfessionalProfileEntity findByQid(String qid) {
         return professionalProfileManager.findOne(qid);
+    }
+
+    public ProfessionalProfileEntity findByQidAndRemoveAnySoftDelete(String qid) {
+        ProfessionalProfileEntity professionalProfile = findByQid(qid);
+        if (professionalProfile.isDeleted()) {
+            professionalProfile = professionalProfileManager.removeMarkedAsDeleted(qid);
+        }
+
+        return professionalProfile;
     }
 
     @Mobile

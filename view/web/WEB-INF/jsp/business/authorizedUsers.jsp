@@ -96,7 +96,7 @@
                                         </tr>
                                         <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
                                         <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
-                                            <tr>
+                                            <tr id="authorized_${status.count}">
                                                 <td>${status.count}&nbsp;</td>
                                                 <td nowrap>
                                                     <c:choose>
@@ -164,6 +164,12 @@
                                                 </c:choose>
                                                 </td>
                                             </tr>
+                                            <tr id="authorized_${status.count}_S" style="display:none;">
+                                                <td colspan="7"></td>
+                                            </tr>
+                                            <tr id="authorized_${status.count}_F" style="display:none;">
+                                                <td colspan="7"></td>
+                                            </tr>
                                         </c:forEach>
                                     </table>
                                 </c:when>
@@ -212,7 +218,10 @@
 <script>
     function changeUserLevel(id, position) {
         var userLevel = $( "#userLevel" + position).val();
+        var s = "authorized_" + position + "_S";
+        var f = "authorized_" + position + "_F";
         $.ajax({
+            type: "POST",
             url: '${pageContext. request. contextPath}/business/changeLevel.htm',
             data: {
                 id: id,
@@ -220,8 +229,25 @@
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                $("#" + s + ' > td').attr('id', s + 's').removeAttr("style");
+                $("#" + f + ' > td').attr('id', f + 'f').removeAttr("style");
             },
-            type: "POST"
+            success: function (data) {
+                var text;
+                if (data.action === 'SUCCESS') {
+                    $("#" + s).removeAttr("style");
+                    $("#" + s + ' > td')
+                        .attr('id', s + 's')
+                        .css('text-align','right').css("background-color", "#fff0f0").css("color", "#0D8B0B")
+                        .html(data.text).delay(5000).fadeOut('slow');
+                } else {
+                    $("#" + f).removeAttr("style");
+                    $("#" + f + ' > td')
+                        .attr('id', f + 'f')
+                        .css('text-align','right').css("background-color", "#fecfcf").css("color", "#c72926")
+                        .html(data.text).delay(5000).fadeOut('slow');
+                }
+            }
         });
     }
 </script>

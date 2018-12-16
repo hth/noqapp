@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.domain.types.CommonStatusEnum.FAILURE;
 import static java.util.Comparator.comparing;
 
 import com.noqapp.domain.BizNameEntity;
@@ -15,7 +16,9 @@ import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonDataVisibility;
 import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
 
@@ -55,6 +58,7 @@ public class BusinessUserStoreService {
     private TokenQueueService tokenQueueService;
     private AccountService accountService;
     private BizService bizService;
+    private ProfessionalProfileService professionalProfileService;
 
     @Autowired
     public BusinessUserStoreService(
@@ -66,7 +70,8 @@ public class BusinessUserStoreService {
         BusinessUserService businessUserService,
         TokenQueueService tokenQueueService,
         AccountService accountService,
-        BizService bizService
+        BizService bizService,
+        ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
@@ -75,6 +80,7 @@ public class BusinessUserStoreService {
         this.tokenQueueService = tokenQueueService;
         this.accountService = accountService;
         this.bizService = bizService;
+        this.professionalProfileService = professionalProfileService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -228,16 +234,43 @@ public class BusinessUserStoreService {
      * As of now, there is no support for same QID being used between different businesses.
      * Means, no two business will have same user as Supervisor or Manager.
      */
-    public long changeUserLevel(String qid, UserLevelEnum userLevel) {
+    public long changeUserLevel(String qid, UserLevelEnum changeToUserLevel, BusinessTypeEnum businessType) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-        userProfile.setLevel(userLevel);
+        if(userProfile.getLevel() == changeToUserLevel) {
+            LOG.warn("Changing to same level qid={} level={}", qid, changeToUserLevel);
+            return -1;
+        }
+
+        if (FAILURE == checkIfProfileIsOfAProfessional(qid, changeToUserLevel, businessType, userProfile.getLevel())) {
+            LOG.info("Failed changing level, exiting {} level={} businessType={}", qid, changeToUserLevel, businessType);
+            return 0;
+        }
+        userProfile.setLevel(changeToUserLevel);
         accountService.save(userProfile);
 
-        long change = businessUserStoreManager.updateUserLevel(qid, userLevel);
-        change = change + businessUserService.updateUserLevel(qid, userLevel);
-        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(qid, userLevel);
+        long change = businessUserStoreManager.updateUserLevel(qid, changeToUserLevel);
+        change = change + businessUserService.updateUserLevel(qid, changeToUserLevel);
+        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(qid, changeToUserLevel);
         accountService.save(userAccount);
         return change;
+    }
+
+    /**
+     * Before downgrading Manager/Doctor when business type is a doctor.
+     * Check if Professional profile is empty. Otherwise throw error.
+     */
+    private CommonStatusEnum checkIfProfileIsOfAProfessional(String qid, UserLevelEnum changeToUserLevel, BusinessTypeEnum businessType, UserLevelEnum currentUserLevel) {
+        if (BusinessTypeEnum.DO == businessType) {
+            if (UserLevelEnum.S_MANAGER == currentUserLevel) {
+                /* Down grading level from S_MANAGER. */
+                return professionalProfileService.softDeleteProfessionalProfileProfile(qid);
+            } else if (UserLevelEnum.S_MANAGER == changeToUserLevel) {
+                /* Upgrading level to S_MANAGER. */
+                professionalProfileService.createProfessionalProfile(qid);
+                return CommonStatusEnum.SUCCESS;
+            }
+        }
+        return CommonStatusEnum.SUCCESS;
     }
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
