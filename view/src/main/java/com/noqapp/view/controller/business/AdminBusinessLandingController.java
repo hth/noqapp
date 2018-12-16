@@ -16,6 +16,7 @@ import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
@@ -47,6 +48,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -424,7 +426,7 @@ public class AdminBusinessLandingController {
                     businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
 
                     if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
-                        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+                        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQidAndRemoveAnySoftDelete(businessUser.getQueueUserId());
                         if (null != professionalProfile) {
                             bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                             professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
@@ -466,7 +468,7 @@ public class AdminBusinessLandingController {
                             userProfile.getLevel());
 
                     if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
-                        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+                        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQidAndRemoveAnySoftDelete(businessUser.getQueueUserId());
                         if (null != professionalProfile) {
                             bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                             professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
@@ -606,9 +608,10 @@ public class AdminBusinessLandingController {
         value = "/changeLevel",
         headers = "Accept=application/json",
         produces = "application/json")
-    public void changeLevel(
+    @ResponseBody
+    public String changeLevel(
         @RequestParam("id")
-        ScrubbedInput id,
+        ScrubbedInput businessUserId,
 
         @RequestParam ("userLevel")
         ScrubbedInput userLevel,
@@ -620,21 +623,38 @@ public class AdminBusinessLandingController {
         if (null == businessUser) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
-            return;
+            return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" }", businessUserId.getText(), CommonStatusEnum.FAILURE.name());
         }
         LOG.info("Change Level bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         try {
-            BusinessUserEntity businessUserOfId = businessUserService.findById(id.getText());
-            long change = businessUserStoreService.changeUserLevel(businessUserOfId.getQueueUserId(), UserLevelEnum.valueOf(userLevel.getText()));
-            if (2 == change) {
-                LOG.info("Changed userLevel successfully for qid={} level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+            BusinessUserEntity businessUserOfId = businessUserService.findById(businessUserId.getText());
+            long change = businessUserStoreService.changeUserLevel(
+                businessUserOfId.getQueueUserId(),
+                UserLevelEnum.valueOf(userLevel.getText()),
+                businessUserOfId.getBizName().getBusinessType());
+            String text;
+            if (-1 == change) {
+                text = "Failed. User role is already set to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
+                LOG.info("Failed changing to same userLevel for qid={} to level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                    businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
+            } else if (2 <= change) {
+                text = "Successfully changed user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
+                LOG.info("Changed userLevel successfully for qid={} to level={}",
+                    businessUserOfId.getQueueUserId(), userLevel.getText());
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                    businessUserId.getText(), CommonStatusEnum.SUCCESS.name(), text);
             } else {
-                LOG.warn("Failed changing userLevel successfully for qid={} level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+                text = "Failed changing user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
+                LOG.error("Failed changing userLevel for qid={} to level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                    businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
             }
         } catch (Exception e) {
             LOG.error("Failed changing userLevel reason={}", e.getLocalizedMessage(), e);
+            return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" }", businessUserId.getText(), CommonStatusEnum.FAILURE.name());
         }
     }
 

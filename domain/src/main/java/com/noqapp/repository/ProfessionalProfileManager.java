@@ -13,7 +13,7 @@ public interface ProfessionalProfileManager extends RepositoryManager<Profession
     boolean existsQid(String qid);
 
     /** Remove soft delete when the person is added again. */
-    void removeMarkedAsDeleted(String qid);
+    ProfessionalProfileEntity removeMarkedAsDeleted(String qid);
 
     ProfessionalProfileEntity findByWebProfileId(String webProfileId);
 }
