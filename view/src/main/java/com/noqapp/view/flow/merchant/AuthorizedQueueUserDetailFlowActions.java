@@ -3,6 +3,7 @@ package com.noqapp.view.flow.merchant;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.AuthorizedQueueUser;
 import com.noqapp.domain.helper.CommonHelper;
@@ -12,6 +13,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.flow.merchant.exception.AuthorizedQueueUserDetailException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
@@ -44,6 +46,7 @@ public class AuthorizedQueueUserDetailFlowActions {
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
     private AccountService accountService;
+    private ProfessionalProfileService professionalProfileService;
 
     @Autowired
     public AuthorizedQueueUserDetailFlowActions(
@@ -54,7 +57,8 @@ public class AuthorizedQueueUserDetailFlowActions {
             BizService bizService,
             BusinessUserService businessUserService,
             BusinessUserStoreService businessUserStoreService,
-            AccountService accountService
+            AccountService accountService,
+            ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
 
@@ -63,6 +67,7 @@ public class AuthorizedQueueUserDetailFlowActions {
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
         this.accountService = accountService;
+        this.professionalProfileService = professionalProfileService;
     }
 
     @SuppressWarnings("all")
@@ -132,6 +137,9 @@ public class AuthorizedQueueUserDetailFlowActions {
                 );
 
                 businessUserStoreService.save(businessUserStoreEntity);
+                ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(authorizedQueueUser.getQid());
+                professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
+                professionalProfileService.save(professionalProfile);
             } catch (RuntimeException e) {
                 LOG.error("Failed to authorize user to business profile qid={} bizStoreId={} reason={}",
                         authorizedQueueUser.getQid(),
