@@ -50,14 +50,13 @@
 
 		<p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Dear ${profileName},</strong></p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-			To confirm your email address, please enter the OTP below in mobile screen
+			To confirm your email address, please enter the OTP below in your screen
 			<span style="padding: 15px; display: block; font-size: x-large; color: black; font-weight: bold; font-family: 'Roboto', sans-serif">${mailOTP}</span>
 			Code is case sensitive. This code expires in 15 minutes.
 		</p>
 		<p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
 			<strong>Wondering why you got this email?</strong>
-			It's sent when someone sign's up or changes a contact email address for a NoQApp account. If you didn't do
-			this,
+			It's sent when someone sign's up or changes a contact email address for a NoQApp account. If you didn't do this,
 			don't worry. Your email address cannot be used as a contact address with NoQueue's NoQApp without your
 			verification.
 		</p>
