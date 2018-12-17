@@ -74,14 +74,16 @@ public class AdminBusinessLandingController {
 
     private int queueLimit;
     private String nextPage;
+    private String listQueueSupervisorPage;
+    private String authorizedUsersPage;
+    private String preferredBusinessPage;
+
     private String migrateBusinessRegistrationFlow;
     private String storeActionFlow;
     private String addQueueSupervisorFlow;
     private String queueUserDetailFlow;
-    private String listQueueSupervisorPage;
-    private String authorizedUsersPage;
+    private String addNewAgentFlow;
     private String editBusinessFlow;
-    private String preferredBusinessPage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -99,6 +101,15 @@ public class AdminBusinessLandingController {
             @Value ("${nextPage:/business/landing}")
             String nextPage,
 
+            @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
+            String listQueueSupervisorPage,
+
+            @Value ("${preferredBusinessPage:/business/preferredBusiness}")
+            String preferredBusinessPage,
+
+            @Value("${authorizedUsersPage:/business/authorizedUsers}")
+            String authorizedUsersPage,
+
             @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
             String migrateBusinessRegistrationFlow,
 
@@ -108,20 +119,14 @@ public class AdminBusinessLandingController {
             @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
             String addQueueSupervisorFlow,
 
-            @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
-            String listQueueSupervisorPage,
-
-            @Value("${authorizedUsersPage:/business/authorizedUsers}")
-            String authorizedUsersPage,
+            @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
+            String addNewAgentFlow,
 
             @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
             String queueUserDetailFlow,
 
             @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
             String editBusinessFlow,
-
-            @Value ("${preferredBusinessPage:/business/preferredBusiness}")
-            String preferredBusinessPage,
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
@@ -133,16 +138,18 @@ public class AdminBusinessLandingController {
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
-        this.businessUserService = businessUserService;
-        this.storeActionFlow = storeActionFlow;
-        this.addQueueSupervisorFlow = addQueueSupervisorFlow;
-        this.queueUserDetailFlow = queueUserDetailFlow;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
-        this.authorizedUsersPage = authorizedUsersPage;
-        this.editBusinessFlow = editBusinessFlow;
         this.preferredBusinessPage = preferredBusinessPage;
+        this.authorizedUsersPage = authorizedUsersPage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
+        this.storeActionFlow = storeActionFlow;
+        this.addQueueSupervisorFlow = addQueueSupervisorFlow;
+        this.addNewAgentFlow = addNewAgentFlow;
+        this.queueUserDetailFlow = queueUserDetailFlow;
+        this.editBusinessFlow = editBusinessFlow;
+
+        this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
@@ -572,9 +579,7 @@ public class AdminBusinessLandingController {
         }
     }
 
-    /**
-     * List all users with role of Queue Supervisor and Manager managing queues for business.
-     */
+    /** List all users with role of Queue Supervisor and Manager managing queues for business. */
     @GetMapping (value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
     public String authorizedUsers(
             @ModelAttribute ("queueSupervisorForm")
@@ -601,6 +606,22 @@ public class AdminBusinessLandingController {
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
         queueSupervisorForm.setQueueSupervisors(businessUserStoreService.getAuthorizedUsersForBusiness(businessUser.getBizName().getId()));
         return authorizedUsersPage;
+    }
+
+    /** Add new agent. */
+    @GetMapping (value = "/addNewAgent", produces = "text/html;charset=UTF-8")
+    public String addNewAgent(HttpServletResponse response) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Add new agent to business {} qid={} level={}", addNewAgentFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        return addNewAgentFlow;
     }
 
     /** Note: As of now, there is no support for same QID being used between different businesses. Level change is across the board. */
