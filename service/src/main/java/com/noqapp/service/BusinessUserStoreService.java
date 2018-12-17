@@ -13,6 +13,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.annotation.Television;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonDataVisibility;
 import com.noqapp.domain.json.JsonHour;
@@ -378,5 +379,10 @@ public class BusinessUserStoreService {
     @Mobile
     public BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR) {
         return businessUserStoreManager.findOneByQidAndCodeQR(qid, codeQR);
+    }
+
+    @Television
+    public BusinessUserStoreEntity findOneByCodeQR(String codeQR) {
+        return businessUserStoreManager.findOneByCodeQR(codeQR);
     }
 }

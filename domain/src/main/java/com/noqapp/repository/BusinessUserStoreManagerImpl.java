@@ -222,4 +222,13 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
         LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
         return updateResult.getModifiedCount();
     }
+
+    @Override
+    public BusinessUserStoreEntity findOneByCodeQR(String codeQR) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR)),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
+    }
 }

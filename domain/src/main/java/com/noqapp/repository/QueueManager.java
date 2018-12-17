@@ -120,6 +120,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     long countAllQueued(String codeQR);
 
     long previouslyVisitedClientCount(String codeQR);
+
     long newVisitClientCount(String codeQR);
 
     /** Mostly when client is from Web. */
@@ -134,6 +135,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId);
 
+    /* Limit to top 10. */
     List<QueueEntity> findYetToBeServed(String codeQR);
 
     List<QueueEntity> findReviews(String codeQR);
