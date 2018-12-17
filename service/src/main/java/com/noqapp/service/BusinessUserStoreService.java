@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import static com.noqapp.domain.types.CommonStatusEnum.FAILURE;
+import static com.noqapp.domain.types.CommonStatusEnum.SUCCESS;
 import static java.util.Comparator.comparing;
 
 import com.noqapp.domain.BizNameEntity;
@@ -236,7 +237,7 @@ public class BusinessUserStoreService {
      */
     public long changeUserLevel(String qid, UserLevelEnum changeToUserLevel, BusinessTypeEnum businessType) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-        if(userProfile.getLevel() == changeToUserLevel) {
+        if (userProfile.getLevel() == changeToUserLevel) {
             LOG.warn("Changing to same level qid={} level={}", qid, changeToUserLevel);
             return -1;
         }
@@ -266,11 +267,17 @@ public class BusinessUserStoreService {
                 return professionalProfileService.softDeleteProfessionalProfileProfile(qid);
             } else if (UserLevelEnum.S_MANAGER == changeToUserLevel) {
                 /* Upgrading level to S_MANAGER. */
+                UserAccountEntity userAccountEntity = accountService.findByQueueUserId(qid);
+                if (!userAccountEntity.isPhoneValidated()) {
+                    LOG.warn("Cannot upgrade to level for business={} when phone is not validated {}", businessType, qid);
+                    return FAILURE;
+                }
+
                 professionalProfileService.createProfessionalProfile(qid);
-                return CommonStatusEnum.SUCCESS;
+                return SUCCESS;
             }
         }
-        return CommonStatusEnum.SUCCESS;
+        return SUCCESS;
     }
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
