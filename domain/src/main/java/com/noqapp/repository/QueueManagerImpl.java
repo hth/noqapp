@@ -550,7 +550,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public List<QueueEntity> findYetToBeServed(String codeQR) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
+            query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(DESC, "TN")).limit(10),
             QueueEntity.class,
             TABLE
         );

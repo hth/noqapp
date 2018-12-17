@@ -38,4 +38,6 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
     BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR);
 
     long updateUserLevel(String qid, UserLevelEnum userLevel);
+
+    BusinessUserStoreEntity findOneByCodeQR(String codeQR);
 }

@@ -14,6 +14,7 @@ import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedDependent;
 import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.json.tv.JsonQueuedPersonTV;
 import com.noqapp.domain.stats.HealthCareStat;
 import com.noqapp.domain.stats.HealthCareStatList;
 import com.noqapp.domain.stats.NewRepeatCustomers;
@@ -315,6 +316,19 @@ public class QueueService {
         }
     }
 
+    private void populateInJsonQueuePersonTVList(List<JsonQueuedPersonTV> jsonQueuedPersonTVList, List<QueueEntity> queues) {
+        for (QueueEntity queue : queues) {
+            JsonQueuedPersonTV jsonQueuedPerson = new JsonQueuedPersonTV()
+                .setQueueUserId(queue.getQueueUserId())
+                .setCustomerName(queue.getCustomerName())
+                .setCustomerPhone(queue.getCustomerPhone())
+                .setQueueUserState(queue.getQueueUserState())
+                .setToken(queue.getTokenNumber());
+
+            jsonQueuedPersonTVList.add(jsonQueuedPerson);
+        }
+    }
+
     /**
      * When merchant has served a specific token.
      *
@@ -519,10 +533,18 @@ public class QueueService {
     }
 
     @Mobile
-    public String findYetToBeServed(String codeQR) {
+    public JsonQueuePersonList findYetToBeServed(String codeQR) {
         List<QueueEntity> queues = queueManager.findYetToBeServed(codeQR);
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
         populateInJsonQueuePersonList(queuedPeople, queues);
-        return new JsonQueuePersonList().setQueuedPeople(queuedPeople).asJson();
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
+    @Mobile
+    public List<JsonQueuedPersonTV> findYetToBeServedForTV(String codeQR) {
+        List<QueueEntity> queues = queueManager.findYetToBeServed(codeQR);
+        List<JsonQueuedPersonTV> jsonQueuedPersonTVList = new ArrayList<>();
+        populateInJsonQueuePersonTVList(jsonQueuedPersonTVList, queues);
+        return jsonQueuedPersonTVList;
     }
 }
