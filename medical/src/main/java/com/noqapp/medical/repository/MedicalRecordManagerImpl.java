@@ -59,7 +59,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public List<MedicalRecordEntity> historicalRecords(String qid, int limit) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)).limit(limit).with(new Sort(ASC, "C")),
+                query(where("QID").is(qid).and("DBI").exists(true)).limit(limit).with(new Sort(ASC, "C")),
                 MedicalRecordEntity.class,
                 TABLE
         );
