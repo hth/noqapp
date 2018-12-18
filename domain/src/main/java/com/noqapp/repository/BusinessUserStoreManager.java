@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.annotation.Television;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel);
 
+    @Television
+    BusinessUserStoreEntity findUserManagingStoreWithCodeQRAndUserLevel(String codeQR, UserLevelEnum userLevel);
+
     long deleteAllManagingStore(String bizStoreId);
 
     void activateAccount(String qid, String bizNameId);
@@ -38,6 +42,4 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
     BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR);
 
     long updateUserLevel(String qid, UserLevelEnum userLevel);
-
-    BusinessUserStoreEntity findOneByCodeQR(String codeQR);
 }

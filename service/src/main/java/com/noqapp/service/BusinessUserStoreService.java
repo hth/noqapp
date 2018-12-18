@@ -382,7 +382,7 @@ public class BusinessUserStoreService {
     }
 
     @Television
-    public BusinessUserStoreEntity findOneByCodeQR(String codeQR) {
-        return businessUserStoreManager.findOneByCodeQR(codeQR);
+    public BusinessUserStoreEntity findUserManagingStoreWithCodeQRAndUserLevel(String codeQR) {
+        return businessUserStoreManager.findUserManagingStoreWithCodeQRAndUserLevel(codeQR, UserLevelEnum.S_MANAGER);
     }
 }

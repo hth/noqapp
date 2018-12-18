@@ -155,6 +155,21 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
+    public BusinessUserStoreEntity findUserManagingStoreWithCodeQRAndUserLevel(String codeQR, UserLevelEnum userLevel) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR)
+                .and("UL").is(userLevel)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
         return mongoTemplate.find(
                 query(where("BS").is(bizStoreId).and("UL").is(userLevel).andOperator(isNotDeleted())),
@@ -221,14 +236,5 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
 
         LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
         return updateResult.getModifiedCount();
-    }
-
-    @Override
-    public BusinessUserStoreEntity findOneByCodeQR(String codeQR) {
-        return mongoTemplate.findOne(
-            query(where("QR").is(codeQR)),
-            BusinessUserStoreEntity.class,
-            TABLE
-        );
     }
 }
