@@ -38,8 +38,8 @@ public class JsonQueueTV extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("wp")
-    private String webProfileId;
+    @JsonProperty ("pi")
+    private String profileImage;
 
     @JsonProperty("ed")
     private List<JsonNameDatePair> education;
@@ -56,12 +56,12 @@ public class JsonQueueTV extends AbstractDomain {
         return this;
     }
 
-    public String getWebProfileId() {
-        return webProfileId;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public JsonQueueTV setWebProfileId(String webProfileId) {
-        this.webProfileId = webProfileId;
+    public JsonQueueTV setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
         return this;
     }
 
