@@ -53,6 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -69,6 +70,8 @@ import java.util.concurrent.ExecutorService;
 @Service
 public class MedicalRecordService {
     private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordService.class);
+
+    private int limitRecords;
 
     private MedicalRecordManager medicalRecordManager;
     private MedicalPhysicalManager medicalPhysicalManager;
@@ -88,6 +91,9 @@ public class MedicalRecordService {
 
     @Autowired
     public MedicalRecordService(
+        @Value("${MedicalRecordService.limitRecords}")
+        int limitRecords,
+
         MedicalRecordManager medicalRecordManager,
         MedicalPhysicalManager medicalPhysicalManager,
         MedicalMedicationManager medicalMedicationManager,
@@ -102,6 +108,8 @@ public class MedicalRecordService {
         BusinessUserStoreService businessUserStoreService,
         PurchaseOrderService purchaseOrderService
     ) {
+        this.limitRecords = limitRecords;
+
         this.medicalRecordManager = medicalRecordManager;
         this.medicalPhysicalManager = medicalPhysicalManager;
         this.medicalMedicationManager = medicalMedicationManager;
@@ -498,7 +506,7 @@ public class MedicalRecordService {
     }
 
     public List<MedicalRecordEntity> historicalRecords(String qid) {
-        return medicalRecordManager.historicalRecords(qid, 5);
+        return medicalRecordManager.historicalRecords(qid, limitRecords);
     }
 
     public List<MedicalPhysicalEntity> findByQid(String qid) {
