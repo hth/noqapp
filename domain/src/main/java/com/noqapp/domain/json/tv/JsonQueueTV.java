@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.tv;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonNameDatePair;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,6 +41,9 @@ public class JsonQueueTV extends AbstractDomain {
     @JsonProperty("wp")
     private String webProfileId;
 
+    @JsonProperty("ed")
+    private List<JsonNameDatePair> education;
+
     @JsonProperty("qps")
     private List<JsonQueuedPersonTV> jsonQueuedPersonTVList = new ArrayList<>();
 
@@ -58,6 +62,15 @@ public class JsonQueueTV extends AbstractDomain {
 
     public JsonQueueTV setWebProfileId(String webProfileId) {
         this.webProfileId = webProfileId;
+        return this;
+    }
+
+    public List<JsonNameDatePair> getEducation() {
+        return education;
+    }
+
+    public JsonQueueTV setEducation(List<JsonNameDatePair> education) {
+        this.education = education;
         return this;
     }
 
