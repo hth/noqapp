@@ -141,7 +141,7 @@ public class WebJoinQueueController {
         String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
-        int requesterTime = Integer.parseInt(String.valueOf(localTime.getHour()) + String.valueOf(localTime.getMinute()));
+        int requesterTime = Integer.parseInt(localTime.getHour() + String.valueOf(localTime.getMinute()));
         LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={}", requesterTime, ipAddress, codeQRDecoded);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
