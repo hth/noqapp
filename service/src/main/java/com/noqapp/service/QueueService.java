@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
@@ -320,7 +321,7 @@ public class QueueService {
         for (QueueEntity queue : queues) {
             JsonQueuedPersonTV jsonQueuedPerson = new JsonQueuedPersonTV()
                 .setQueueUserId(queue.getQueueUserId())
-                .setCustomerName(queue.getCustomerName())
+                .setCustomerName(CommonUtil.abbreviateName(queue.getCustomerName()))
                 .setCustomerPhone(queue.getCustomerPhone())
                 .setQueueUserState(queue.getQueueUserState())
                 .setToken(queue.getTokenNumber());
