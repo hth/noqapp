@@ -110,13 +110,14 @@ public final class DateUtil {
         return Date.from(instant);
     }
 
-    /**
-     * Gets current time on UTC. This is required when setting up cron task as server time is set on UTC.
-     *
-     * @return
-     */
+    /** Gets current time on UTC. This is required when setting up cron task as server time is set on UTC. */
     public static Date getUTCDate() {
         return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
+    }
+
+    /** Gets current day of weekn on UTC. */
+    public static int getUTCDayOfWeek() {
+        return new DateTime(DateTimeZone.UTC).getDayOfWeek();
     }
 
     public static LocalTime getTimeAtTimeZone(String forTimeZone) {
