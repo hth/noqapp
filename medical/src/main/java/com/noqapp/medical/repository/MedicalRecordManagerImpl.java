@@ -94,4 +94,13 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
             TABLE
         );
     }
+
+    @Override
+    public MedicalRecordEntity findOne() {
+        return mongoTemplate.find(
+            query(where("DBI").exists(true)),
+            MedicalRecordEntity.class,
+            TABLE
+        ).get(0);
+    }
 }

@@ -19,4 +19,7 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
 
     /** Finds followup between two dates i.e now and three days from now. */
     List<MedicalRecordEntity> findAllFollowUp(String codeQR);
+
+    //TODO remove me
+    MedicalRecordEntity findOne();
 }
