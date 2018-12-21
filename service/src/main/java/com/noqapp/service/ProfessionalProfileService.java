@@ -1,12 +1,20 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.json.JsonReviewList;
+import com.noqapp.domain.json.tv.JsonProfessionalProfileTV;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
+import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -30,19 +38,25 @@ public class ProfessionalProfileService {
 
     public enum POPULATE_PROFILE {SELF, PUBLIC, TV}
 
+    private ReviewService reviewService;
     private ProfessionalProfileManager professionalProfileManager;
     private UserProfileManager userProfileManager;
-    private ReviewService reviewService;
+    private BusinessUserStoreManager businessUserStoreManager;
+    private BizStoreManager bizStoreManager;
 
     @Autowired
     public ProfessionalProfileService(
+        ReviewService reviewService,
         ProfessionalProfileManager professionalProfileManager,
         UserProfileManager userProfileManager,
-        ReviewService reviewService
+        BusinessUserStoreManager businessUserStoreManager,
+        BizStoreManager bizStoreManager
     ) {
+        this.reviewService = reviewService;
         this.professionalProfileManager = professionalProfileManager;
         this.userProfileManager = userProfileManager;
-        this.reviewService = reviewService;
+        this.businessUserStoreManager = businessUserStoreManager;
+        this.bizStoreManager = bizStoreManager;
     }
 
     /** Create professional profile or activate existing profile if marked deleted. */
@@ -111,7 +125,15 @@ public class ProfessionalProfileService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
         switch (populateProfile) {
             case TV:
-                return new JsonProfessionalProfile()
+                String professionType = "";
+                if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
+                    BusinessUserStoreEntity businessUserStore = businessUserStoreManager.findUserManagingStoreWithUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(businessUserStore.getCodeQR());
+                    professionType = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                }
+                return new JsonProfessionalProfileTV()
+                    .setProfileImage(userProfile.getProfileImage())
+                    .setProfessionType(professionType)
                     .setName(userProfile.getName())
                     .setWebProfileId(professionalProfile.getWebProfileId())
                     .setPracticeStart(professionalProfile.getPracticeStart())
