@@ -28,6 +28,8 @@ import java.util.Set;
 public class ProfessionalProfileService {
     private static final Logger LOG = LoggerFactory.getLogger(ProfessionalProfileService.class);
 
+    public enum POPULATE_PROFILE {SELF, PUBLIC, TV}
+
     private ProfessionalProfileManager professionalProfileManager;
     private UserProfileManager userProfileManager;
     private ReviewService reviewService;
@@ -76,34 +78,6 @@ public class ProfessionalProfileService {
         return professionalProfileManager.findByWebProfileId(webProfileId);
     }
 
-    @Mobile
-    public JsonProfessionalProfile findByWebProfileIdAsJson(String webProfileId) {
-        ProfessionalProfileEntity professionalProfile = findByWebProfileId(webProfileId);
-        return getJsonProfessionalProfile(professionalProfile);
-    }
-
-    private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile) {
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
-        Set<String> codeQRs = professionalProfile.getManagerAtStoreCodeQRs();
-
-        Map<String, JsonReviewList> reviews = new HashMap<>();
-        for (String codeQR : codeQRs) {
-            reviews.put(codeQR, reviewService.findQueueReviews(codeQR));
-        }
-        return new JsonProfessionalProfile()
-            .setName(userProfile.getName())
-            .setWebProfileId(professionalProfile.getWebProfileId())
-            .setPracticeStart(professionalProfile.getPracticeStart())
-            .setAboutMe(professionalProfile.getAboutMe())
-            .setEducation(professionalProfile.getEducationAsJson())
-            .setLicenses(professionalProfile.getLicensesAsJson())
-            .setAwards(professionalProfile.getAwardsAsJson())
-            .setDataDictionary(professionalProfile.getDataDictionary())
-            .setReviews(reviews)
-            .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs())
-            .setFormVersion(professionalProfile.getFormVersion());
-    }
-
     public ProfessionalProfileEntity findByQid(String qid) {
         return professionalProfileManager.findOne(qid);
     }
@@ -117,13 +91,60 @@ public class ProfessionalProfileService {
         return professionalProfile;
     }
 
-    @Mobile
-    public JsonProfessionalProfile getJsonProfessionalProfileByQid(String qid) {
-        ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
-        return getJsonProfessionalProfile(professionalProfile);
-    }
-
     public void save(ProfessionalProfileEntity professionalProfile) {
         professionalProfileManager.save(professionalProfile);
+    }
+
+    @Mobile
+    public JsonProfessionalProfile findByWebProfileIdAsJson(String webProfileId) {
+        ProfessionalProfileEntity professionalProfile = findByWebProfileId(webProfileId);
+        return getJsonProfessionalProfile(professionalProfile, POPULATE_PROFILE.PUBLIC);
+    }
+
+    @Mobile
+    public JsonProfessionalProfile getJsonProfessionalProfile(String qid, POPULATE_PROFILE populateProfile) {
+        ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
+        return getJsonProfessionalProfile(professionalProfile, populateProfile);
+    }
+
+    private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile, POPULATE_PROFILE populateProfile) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
+        switch (populateProfile) {
+            case TV:
+                return new JsonProfessionalProfile()
+                    .setName(userProfile.getName())
+                    .setWebProfileId(professionalProfile.getWebProfileId())
+                    .setPracticeStart(professionalProfile.getPracticeStart())
+                    .setAboutMe(professionalProfile.getAboutMe())
+                    .setEducation(professionalProfile.getEducationAsJson())
+                    .setLicenses(professionalProfile.getLicensesAsJson())
+                    .setAwards(professionalProfile.getAwardsAsJson())
+                    //.setDataDictionary(professionalProfile.getDataDictionary())
+                    //.setReviews(reviews)
+                    .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs())
+                    .setFormVersion(professionalProfile.getFormVersion());
+            case PUBLIC:
+            case SELF:
+            default:
+                Set<String> codeQRs = professionalProfile.getManagerAtStoreCodeQRs();
+
+                Map<String, JsonReviewList> reviews = new HashMap<>();
+                for (String codeQR : codeQRs) {
+                    reviews.put(codeQR, reviewService.findQueueReviews(codeQR));
+                }
+                return new JsonProfessionalProfile()
+                    .setName(userProfile.getName())
+                    .setWebProfileId(professionalProfile.getWebProfileId())
+                    .setPracticeStart(professionalProfile.getPracticeStart())
+                    .setAboutMe(professionalProfile.getAboutMe())
+                    .setEducation(professionalProfile.getEducationAsJson())
+                    .setLicenses(professionalProfile.getLicensesAsJson())
+                    .setAwards(professionalProfile.getAwardsAsJson())
+                    .setDataDictionary(populateProfile == POPULATE_PROFILE.SELF ? professionalProfile.getDataDictionary() : null)
+                    .setReviews(reviews)
+                    .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs())
+                    .setFormVersion(professionalProfile.getFormVersion());
+
+        }
     }
 }
