@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static com.noqapp.service.ProfessionalProfileService.POPULATE_PROFILE.PUBLIC;
+
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -99,7 +101,7 @@ public class ShowProfessionalProfileHTMLService {
                 }
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
-                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfileByQid(businessUserStore.getQueueUserId());
+                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfile(businessUserStore.getQueueUserId(), PUBLIC);
 
                 List<BizStoreEntity> bizStores = new ArrayList<>();
                 Set<String> managersAtStoreCodeQRs = jsonProfessionalProfile.getManagerAtStoreCodeQRs();
