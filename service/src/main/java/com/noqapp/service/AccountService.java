@@ -463,14 +463,22 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case Q_SUPERVISOR:
-                roles.add(RoleEnum.ROLE_CLIENT);
-                roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
+                if (!userAccount.isPhoneValidated()) {
+                    roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
+                } else {
+                    roles.add(RoleEnum.ROLE_CLIENT);
+                    roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
+                }
                 userAccount.setRoles(roles);
                 break;
             case S_MANAGER:
-                roles.add(RoleEnum.ROLE_CLIENT);
-                roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
-                roles.add(RoleEnum.ROLE_S_MANAGER);
+                if (!userAccount.isPhoneValidated()) {
+                    roles.add(RoleEnum.ROLE_S_MANAGER);
+                } else {
+                    roles.add(RoleEnum.ROLE_CLIENT);
+                    roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
+                    roles.add(RoleEnum.ROLE_S_MANAGER);
+                }
                 userAccount.setRoles(roles);
                 break;
             case M_ADMIN:

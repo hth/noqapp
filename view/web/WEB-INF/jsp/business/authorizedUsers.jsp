@@ -59,10 +59,14 @@
                         <div class="alert-info">
                             <p>
                                 Delete operation removes user permanently from ${queueSupervisorForm.queueName}.
-                                To add the user back, you would need to again add them as "Add New Queue Supervisor".
+                                To add the user back, you would need to again add them as "Add New Queue Supervisor"
+                                OR "Add New Agent"
                             </p>
                         </div>
                         <div class="add-store">
+                            <div class="addbtn-store">
+                                <a href="/business/addNewAgent.htm" class="add-btn">Add New Agent</a>
+                            </div>
                             <div class="store-table">
                                 <spring:hasBindErrors name="errorMessage">
                                 <div class="error-box">

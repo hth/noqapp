@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
+
+    <on-start>
+        <evaluate expression="addNewAgentFlowActions.createNewAgentUser()"
+                  result="flowScope.merchantRegistration"/>
+    </on-start>
+
+    <view-state id="detail" model="merchantRegistration">
+        <transition on="submit" to="validateUserDetails"/>
+        <transition on="recover" to="passwordRecover"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
+
+    <action-state id="validateUserDetails">
+        <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistration, true, messageContext)" />
+        <transition on="success" to="verify" />
+        <transition on="failure" to="detail"/>
+    </action-state>
+
+    <view-state id="verify" model="merchantRegistration">
+        <on-entry>
+            <evaluate expression="addNewAgentFlowActions.sendMailVerificationOTP(merchantRegistration)"
+                      result="flowScope.mailOTP" />
+        </on-entry>
+        <transition on="verify" to="validateMailAddress"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
+
+    <action-state id="validateMailAddress">
+        <evaluate expression="addNewAgentFlowActions.validateMail(merchantRegistration, mailOTP)" />
+        <transition on="success" to="logout" />
+        <transition on="failure" to="logout"/>
+    </action-state>
+
+    <view-state id="passwordRecover" model="merchantRegistration">
+        <transition on="sendRecoveryMail" to="sendRecoveryMailValidate" history="invalidate"/>
+    </view-state>
+
+    <action-state id="sendRecoveryMailValidate">
+        <evaluate expression="userRegistrationValidation.passwordRecover(merchantRegistration, messageContext)"/>
+        <transition on="success" to="passwordRecoverSuccess"/>
+        <transition on="failure" to="passwordRecover"/>
+    </action-state>
+
+    <view-state id="passwordRecoverSuccess">
+        <on-entry>
+            <evaluate expression="userRegistrationFlowActions.sendPasswordRecoveryMail(merchantRegistration)"/>
+        </on-entry>
+    </view-state>
+
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/business/landing.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="logout"/>
+    </global-transitions>
+</flow>

@@ -57,6 +57,28 @@ public class UserRegistrationValidation {
         this.accountService = accountService;
     }
 
+    /**
+     * Used in validating when adding New Agent.
+     */
+    @SuppressWarnings("unused")
+    public String validateUserDetails(MerchantRegistrationForm merchantRegistration, boolean warnWhenUnderAge, MessageContext messageContext) {
+        String status = validateUserDetails(merchantRegistration, messageContext);
+        if (warnWhenUnderAge) {
+            if (merchantRegistration.isNotAdult()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("birthday")
+                        .defaultText("Person is under 18 years of age. Only adults allowed.")
+                        .build());
+                status = "failure";
+            }
+        }
+
+        return status;
+    }
+
+    @SuppressWarnings("unused")
     public String validateUserDetails(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
         LOG.info("New user signUp validation mail={}", merchantRegistration.getMail());
         String status = LandingController.SUCCESS;
@@ -199,6 +221,7 @@ public class UserRegistrationValidation {
         return status;
     }
 
+    @SuppressWarnings("unused")
     public String passwordRecover(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
         LOG.info("New user signUp validation mail={}", merchantRegistration.getMail());
         String status = LandingController.SUCCESS;
