@@ -139,7 +139,7 @@ public class ProfessionalProfileService {
                     .setPracticeStart(professionalProfile.getPracticeStart())
                     .setAboutMe(professionalProfile.getAboutMe())
                     .setEducation(professionalProfile.getEducationAsJson())
-                    .setLicenses(professionalProfile.getLicensesAsJson())
+                    //.setLicenses(professionalProfile.getLicensesAsJson())
                     .setAwards(professionalProfile.getAwardsAsJson())
                     //.setDataDictionary(professionalProfile.getDataDictionary())
                     //.setReviews(reviews)
@@ -162,7 +162,7 @@ public class ProfessionalProfileService {
                     .setEducation(professionalProfile.getEducationAsJson())
                     .setLicenses(professionalProfile.getLicensesAsJson())
                     .setAwards(professionalProfile.getAwardsAsJson())
-                    .setDataDictionary(populateProfile == POPULATE_PROFILE.SELF ? professionalProfile.getDataDictionary() : null)
+                    .setDataDictionary(POPULATE_PROFILE.SELF == populateProfile ? professionalProfile.getDataDictionary() : null)
                     .setReviews(reviews)
                     .setManagerAtStoreCodeQRs(professionalProfile.getManagerAtStoreCodeQRs())
                     .setFormVersion(professionalProfile.getFormVersion());
