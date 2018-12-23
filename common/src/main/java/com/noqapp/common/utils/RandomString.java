@@ -17,18 +17,15 @@ import java.util.Random;
 public final class RandomString {
 
     private static final int CHARACTER_SIZE = 32;
-    private static final char[] SYMBOLS = new char[36];
+    private static final String randomString = "123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    private static final char[] SYMBOLS = new char[33];
     private static final String QID_SHORTEN = "^10+(?!$)";
     private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
 
     static {
-        for (int idx = 0; idx < 10; ++idx) {
-            SYMBOLS[idx] = (char) ('0' + idx);
-        }
-
-        for (int idx = 10; idx < 36; ++idx) {
-            SYMBOLS[idx] = (char) ('a' + idx - 10);
+        for (int idx = 0; idx < 33; ++idx) {
+            SYMBOLS[idx] = randomString.charAt(idx);
         }
     }
 
