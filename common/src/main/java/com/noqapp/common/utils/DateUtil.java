@@ -239,7 +239,7 @@ public final class DateUtil {
             .plus(1, ChronoUnit.DAYS)
             .minus(1, ChronoUnit.MINUTES);
         Date untilEndOfDay = Date.from(untilInstant);
-        LOG.info("isThisDayBetween from={} until={} day={}", fromDay, untilEndOfDay, day);
+        LOG.info("isThisDayBetween from={} until={} DAY={}", fromDay, untilEndOfDay, day);
         switch (day) {
             case TOMORROW:
                 return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilEndOfDay);

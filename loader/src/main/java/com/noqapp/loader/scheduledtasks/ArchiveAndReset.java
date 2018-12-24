@@ -327,8 +327,13 @@ public class ArchiveAndReset {
 
             bizService.modifyOne(storeHour);
         } else {
-            bizService.unsetScheduledTask(bizStore.getId());
-            scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
+            Date today = DateUtil.dateAtTimeZone(bizStore.getTimeZone());
+            if (today.after(until)) {
+                /* Remove schedule only when today is after set until schedule. */
+                LOG.info("Removing schedule displayName={} today={} until={}", bizStore.getDisplayName(), today, until);
+                bizService.unsetScheduledTask(bizStore.getId());
+                scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
+            }
         }
     }
 
