@@ -1,6 +1,6 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.DateUtil.Day.TODAY;
+import static com.noqapp.common.utils.DateUtil.DAY.TODAY;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;

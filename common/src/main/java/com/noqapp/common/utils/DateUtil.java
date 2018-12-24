@@ -54,7 +54,7 @@ public final class DateUtil {
     public static final SimpleDateFormat SDF_DD_MMM_YYYY = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
-    public enum Day {TODAY, TOMORROW}
+    public enum DAY {TODAY, TOMORROW}
 
     private DateUtil() {
     }
@@ -232,14 +232,14 @@ public final class DateUtil {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    public static boolean isThisDayBetween(Date fromDay, Date untilDay, Day day, ZoneId zoneId) {
+    public static boolean isThisDayBetween(Date fromDay, Date untilDay, DAY day, ZoneId zoneId) {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), zoneId);
         /* To get until date as YYYY-MM-DD 11:59 PM. */
         Instant untilInstant = untilDay.toInstant()
             .plus(1, ChronoUnit.DAYS)
             .minus(1, ChronoUnit.MINUTES);
         Date untilEndOfDay = Date.from(untilInstant);
-        LOG.info("isThisDayBetween from={} until={} day={}", fromDay, untilEndOfDay, day);
+        LOG.info("isThisDayBetween from={} until={} DAY={}", fromDay, untilEndOfDay, day);
         switch (day) {
             case TOMORROW:
                 return isThisDayBetween(midnight(Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))), fromDay, untilEndOfDay);
@@ -265,7 +265,7 @@ public final class DateUtil {
     /**
      * Compute UTC based DateTime.
      */
-    public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay, Day day) {
+    public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay, DAY day) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
             String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
