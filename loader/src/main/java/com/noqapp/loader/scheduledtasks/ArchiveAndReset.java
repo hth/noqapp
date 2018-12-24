@@ -1,6 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static com.noqapp.common.utils.DateUtil.Day.TOMORROW;
+import static com.noqapp.common.utils.DateUtil.DAY.TOMORROW;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;

@@ -1,6 +1,6 @@
 package com.noqapp.common.utils;
 
-import static com.noqapp.common.utils.DateUtil.Day.TODAY;
+import static com.noqapp.common.utils.DateUtil.DAY.TODAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.joda.time.DateTime;
