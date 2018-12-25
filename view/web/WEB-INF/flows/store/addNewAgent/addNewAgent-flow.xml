@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
+
+    <on-start>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')"
+                  result="flowScope.bizStoreId" />
+        <evaluate expression="addNewAgentFlowActions.createNewAgentUser()"
+                  result="flowScope.merchantRegistration"/>
+    </on-start>
+
+    <view-state id="addNewAgent" model="merchantRegistration">
+        <transition on="submit" to="validateUserDetails"/>
+        <transition on="recover" to="inviteAgent"/>
+    </view-state>
+
+    <action-state id="validateUserDetails">
+        <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistration, true, messageContext)" />
+        <transition on="success" to="addNewAgentVerify" />
+        <transition on="failure" to="detail"/>
+    </action-state>
+
+    <view-state id="addNewAgentVerify" model="merchantRegistration">
+        <on-entry>
+            <evaluate expression="addNewAgentFlowActions.sendMailVerificationOTP(merchantRegistration)"
+                      result="flowScope.mailOTP" />
+        </on-entry>
+        <transition on="verify" to="createAccountAndInvite"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="createAccountAndInvite">
+        <evaluate expression="addNewAgentFlowActions.createAccountAndInvite(merchantRegistration, mailOTP, bizStoreId, externalContext)" />
+        <transition on="success" to="success" />
+        <transition on="failure" to="addNewAgentOTPFailure"/>
+    </action-state>
+
+    <view-state id="inviteAgent" model="merchantRegistration">
+        <transition on="sendInviteAgentMail" to="checkIfInviteCouldBeSent" history="invalidate"/>
+    </view-state>
+
+    <action-state id="checkIfInviteCouldBeSent">
+        <evaluate expression="addNewAgentFlowActions.checkIfInviteCouldBeSent(merchantRegistration)"/>
+        <transition on="success" to="inviteAgentVerify"/>
+        <transition on="failure" to="inviteAgentFailure"/>
+    </action-state>
+
+    <view-state id="inviteAgentVerify" model="merchantRegistration">
+        <on-entry>
+            <evaluate expression="addNewAgentFlowActions.sendInviteMailOTP(merchantRegistration)"
+                      result="flowScope.mailOTP" />
+        </on-entry>
+        <transition on="verify" to="completeInvite"/>
+        <transition on="cancel" to="inviteAgentOTPFailure"/>
+    </view-state>
+
+    <action-state id="completeInvite">
+        <evaluate expression="addNewAgentFlowActions.completeInvite(merchantRegistration, mailOTP, bizStoreId, externalContext)" />
+        <transition on="success" to="success" />
+        <transition on="failure" to="inviteAgentOTPFailure"/>
+    </action-state>
+
+    <view-state id="inviteAgentFailure">
+        <transition on="ok" to="home" history="invalidate"/>
+    </view-state>
+
+    <view-state id="inviteAgentOTPFailure">
+        <transition on="ok" to="home" history="invalidate"/>
+    </view-state>
+
+    <view-state id="addNewAgentOTPFailure">
+        <transition on="ok" to="home" history="invalidate"/>
+    </view-state>
+
+    <view-state id="success">
+        <transition on="ok" to="home" history="invalidate"/>
+    </view-state>
+
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <end-state id="home" view="externalRedirect:contextRelative:/business/#{bizStoreId}/listQueueSupervisor.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>

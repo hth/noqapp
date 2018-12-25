@@ -58,6 +58,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addNewAgent.htm" class="add-btn">Add New Agent</a>
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add new queue supervisor</a>
                             </div>
                             <div class="store-table">
@@ -96,7 +97,14 @@
                                             <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
                                             <td>
                                                 <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
-                                                <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                <c:choose>
+                                                    <c:when test="${queueSupervisor.phoneValidated}">
+                                                        <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:13px;"><p>Phone: N/A</p></span>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                             <td>
                                                 <c:choose>

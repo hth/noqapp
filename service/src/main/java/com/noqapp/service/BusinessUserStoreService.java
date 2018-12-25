@@ -283,20 +283,9 @@ public class BusinessUserStoreService {
 
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
-        QueueSupervisor queueSupervisor = new QueueSupervisor();
-        queueSupervisor.setBusinessUserId(businessUser.getId())
-            .setStoreId(bizStoreId)
-            .setBusinessId(bizNameId)
-            .setName(userProfile.getName())
-            .setPhone(userProfile.getPhone())
-            .setCountryShortName(userProfile.getCountryShortName())
-            .setAddress(userProfile.getAddress())
-            .setEmail(userProfile.getEmail())
-            .setQueueUserId(qid)
-            .setUserLevel(userProfile.getLevel())
-            .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
-        return queueSupervisor;
+        return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount);
     }
 
     /**
@@ -312,27 +301,37 @@ public class BusinessUserStoreService {
 
         for (BusinessUserEntity businessUser : businessUsers) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
-            QueueSupervisor queueSupervisor = new QueueSupervisor();
-            queueSupervisor.setBusinessUserId(businessUser.getId())
-                .setStoreId(bizStoreId)
-                .setBusinessId(bizNameId)
-                .setName(userProfile.getName())
-                .setPhone(userProfile.getPhone())
-                .setCountryShortName(userProfile.getCountryShortName())
-                .setAddress(userProfile.getAddress())
-                .setEmail(userProfile.getEmail())
-                .setQueueUserId(userProfile.getQueueUserId())
-                .setUserLevel(userProfile.getLevel())
-                .setCreated(businessUser.getCreated())
-                .setActive(businessUser.isActive())
-                .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
-
-            queueSupervisors.add(queueSupervisor);
+            UserAccountEntity userAccount = accountService.findByQueueUserId(businessUser.getQueueUserId());
+            queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount));
         }
 
         /* Sort by name. */
         queueSupervisors.sort(comparing(QueueSupervisor::getName));
         return queueSupervisors;
+    }
+
+    private QueueSupervisor populateQueueSupervisor(
+        String bizNameId,
+        String bizStoreId,
+        BusinessUserEntity businessUser,
+        UserProfileEntity userProfile,
+        UserAccountEntity userAccount
+    ) {
+        return new QueueSupervisor()
+            .setBusinessUserId(businessUser.getId())
+            .setStoreId(bizStoreId)
+            .setBusinessId(bizNameId)
+            .setName(userProfile.getName())
+            .setPhone(userProfile.getPhone())
+            .setPhoneValidated(userAccount.isPhoneValidated())
+            .setCountryShortName(userProfile.getCountryShortName())
+            .setAddress(userProfile.getAddress())
+            .setEmail(userProfile.getEmail())
+            .setQueueUserId(userProfile.getQueueUserId())
+            .setUserLevel(userProfile.getLevel())
+            .setCreated(businessUser.getCreated())
+            .setActive(businessUser.isActive())
+            .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
     }
 
     /**

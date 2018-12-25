@@ -498,19 +498,37 @@ public class AdminBusinessLandingController {
                     userProfile = accountService.findProfileByQueueUserId(qid);
                     switch (userProfile.getLevel()) {
                         case Q_SUPERVISOR:
+                            if (accountService.isPhoneValidated(qid)) {
+                                userProfile
+                                    .setLevel(UserLevelEnum.CLIENT)
+                                    .setBusinessType(null);
+                            } else {
+                                userProfile
+                                    .setLevel(UserLevelEnum.Q_SUPERVISOR)
+                                    .setBusinessType(null);
+                            }
+                            break;
                         case M_ADMIN:
-                            userProfile.setLevel(UserLevelEnum.CLIENT)
+                            userProfile
+                                .setLevel(UserLevelEnum.CLIENT)
                                 .setBusinessType(null);
                             break;
                         case S_MANAGER:
-                            ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
-                            if (null == professionalProfile) {
-                                userProfile.setLevel(UserLevelEnum.CLIENT)
-                                    .setBusinessType(null);
+                            if (accountService.isPhoneValidated(qid)) {
+                                ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+                                if (null == professionalProfile) {
+                                    userProfile
+                                        .setLevel(UserLevelEnum.CLIENT)
+                                        .setBusinessType(null);
+                                } else {
+                                    //TODO(hth) currently removes all the code QR, it should only remove the specific code qr of the businesses.
+                                    professionalProfile.setManagerAtStoreCodeQRs(new HashSet<>());
+                                    professionalProfileService.save(professionalProfile);
+                                }
                             } else {
-                                //TODO(hth) currently removes all the code QR, it should only remove the specific code qr of the businesses.
-                                professionalProfile.setManagerAtStoreCodeQRs(new HashSet<>());
-                                professionalProfileService.save(professionalProfile);
+                                userProfile
+                                    .setLevel(UserLevelEnum.Q_SUPERVISOR)
+                                    .setBusinessType(null);
                             }
                             break;
                         default:
@@ -518,9 +536,7 @@ public class AdminBusinessLandingController {
                              * Could be session not expired, and user is still logged in
                              * and access secured page with previous role.
                              */
-                            LOG.error("Reached unsupported condition as userLevel={} mail={}",
-                                    userProfile.getLevel(), userProfile.getEmail());
-
+                            LOG.error("Reached unsupported condition userLevel={} mail={}", userProfile.getLevel(), userProfile.getEmail());
                             throw new UnsupportedOperationException("Reached unsupported condition");
                     }
                     accountService.save(userProfile);
@@ -529,7 +545,6 @@ public class AdminBusinessLandingController {
                             userProfile.getQueueUserId(),
                             userProfile.getLevel());
                     accountService.save(userAccount);
-
                     break;
                 case "REMOVE":
                     /* This removes from administrating a Queue. Does not remove from business. */
@@ -609,8 +624,14 @@ public class AdminBusinessLandingController {
     }
 
     /** Add new agent. */
-    @GetMapping (value = "/addNewAgent", produces = "text/html;charset=UTF-8")
-    public String addNewAgent(HttpServletResponse response) throws IOException {
+    @GetMapping (value = "/{bizStoreId}/addNewAgent", produces = "text/html;charset=UTF-8")
+    public String addNewAgent(
+        @PathVariable ("bizStoreId")
+        ScrubbedInput bizStoreId,
+
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
+    ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -621,6 +642,7 @@ public class AdminBusinessLandingController {
         LOG.info("Add new agent to business {} qid={} level={}", addNewAgentFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
         return addNewAgentFlow;
     }
 

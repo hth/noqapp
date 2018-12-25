@@ -98,5 +98,14 @@ public class UserAccountManagerImpl implements UserAccountManager {
                 TABLE
         );
     }
+
+    @Override
+    public boolean isPhoneValidated(String qid) {
+        return mongoTemplate.exists(
+            query(where("QID").is(qid).and("PV").is(true)),
+            UserAccountEntity.class,
+            TABLE
+        );
+    }
 }
 

@@ -35,6 +35,14 @@ public final class MerchantRegistrationForm implements Serializable {
 
     private String captcha;
 
+    /* These codes are for mail OTP verification. Used when registering new agent. */
+    private String code1;
+    private String code2;
+    private String code3;
+    private String code4;
+    private String code5;
+    private String code6;
+
     /* After mail has been sent when user requested password recover. */
     private MailTypeEnum mailSendState;
 
@@ -141,6 +149,60 @@ public final class MerchantRegistrationForm implements Serializable {
         return this;
     }
 
+    public String getCode1() {
+        return code1;
+    }
+
+    public MerchantRegistrationForm setCode1(String code1) {
+        this.code1 = code1;
+        return this;
+    }
+
+    public String getCode2() {
+        return code2;
+    }
+
+    public MerchantRegistrationForm setCode2(String code2) {
+        this.code2 = code2;
+        return this;
+    }
+
+    public String getCode3() {
+        return code3;
+    }
+
+    public MerchantRegistrationForm setCode3(String code3) {
+        this.code3 = code3;
+        return this;
+    }
+
+    public String getCode4() {
+        return code4;
+    }
+
+    public MerchantRegistrationForm setCode4(String code4) {
+        this.code4 = code4;
+        return this;
+    }
+
+    public String getCode5() {
+        return code5;
+    }
+
+    public MerchantRegistrationForm setCode5(String code5) {
+        this.code5 = code5;
+        return this;
+    }
+
+    public String getCode6() {
+        return code6;
+    }
+
+    public MerchantRegistrationForm setCode6(String code6) {
+        this.code6 = code6;
+        return this;
+    }
+
     public MailTypeEnum getMailSendState() {
         return mailSendState;
     }
@@ -154,6 +216,11 @@ public final class MerchantRegistrationForm implements Serializable {
     public String findCountryShortFromPhone() {
         Assertions.assertNotNull(phone, "Phone should be not null and contain +");
         return Formatter.getCountryShortNameFromCountryCode(Formatter.findCountryCode(phone));
+    }
+
+    @Transient
+    public String getCode() {
+        return code1 + code2 + code3 + code4 + code5 + code6;
     }
 
     @Override

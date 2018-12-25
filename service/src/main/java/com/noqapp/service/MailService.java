@@ -182,9 +182,7 @@ public class MailService {
         }
 
         if (userAccount.isAccountValidated()) {
-            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(
-                    userAccount.getQueueUserId());
-
+            ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getQueueUserId());
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("to", userAccount.getName());
             rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
@@ -321,17 +319,24 @@ public class MailService {
         return MailTypeEnum.SUCCESS;
     }
 
-    /**
-     * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
-     *
-     * @param userId
-     * @param qid
-     * @param name
-     */
+    /** Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com. */
     public void sendValidationMailOnAccountCreation(String userId, String qid, String name) {
         if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
             executorService.submit(() -> accountValidationMail(userId, name, accountValidate.getAuthenticationKey()));
+        }
+    }
+
+    /**
+     * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
+     * This mail is send before creating an account.
+     */
+    public void sendOTPMail(String userId, String name, String otp, String message) {
+        if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
+            Map<String, Object> rootMap = new HashMap<>();
+            rootMap.put("mailOTP", otp);
+            rootMap.put("message", message);
+            sendAnyMail(userId, name, "Confirmation mail for NoQApp", rootMap, "mail/mail-otp.ftl");
         }
     }
 

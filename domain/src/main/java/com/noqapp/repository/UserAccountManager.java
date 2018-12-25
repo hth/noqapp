@@ -19,4 +19,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
 
     long countRegisteredBetweenDates(Date from, Date to);
+
+    boolean isPhoneValidated(String qid);
 }

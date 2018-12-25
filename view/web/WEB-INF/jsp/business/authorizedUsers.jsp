@@ -59,7 +59,8 @@
                         <div class="alert-info">
                             <p>
                                 Delete operation removes user permanently from ${queueSupervisorForm.queueName}.
-                                To add the user back, you would need to again add them as "Add New Queue Supervisor".
+                                To add the user back, you would need to again add them as "Add New Queue Supervisor"
+                                OR "Add New Agent"
                             </p>
                         </div>
                         <div class="add-store">
@@ -108,7 +109,14 @@
                                                 </td>
                                                 <td>
                                                     <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
-                                                    <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                    <c:choose>
+                                                        <c:when test="${queueSupervisor.phoneValidated}">
+                                                            <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;"><p>Phone: N/A</p></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                                 <td>
                                                     <c:choose>
