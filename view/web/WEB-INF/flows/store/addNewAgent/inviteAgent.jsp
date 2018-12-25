@@ -10,16 +10,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101872684-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-101872684-1');
-    </script>
 </head>
 
 <body>
@@ -27,10 +17,23 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></div>
-        <div class="top-menu-right">
-            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Merchant Register</a></span>
+        <div class="logo-left">
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></a>
+        </div>
+        <div class="top-menu-right2">
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="dropdown-inner">
+                        <a href="${pageContext.request.contextPath}/">Home</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="Logout" class="button-txt"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="clearFix"></div>
@@ -44,8 +47,8 @@
         <div class="warp-inner">
             <!-- login-box -->
             <div class="login-box">
-                <h2><fmt:message key="account.recover.title"/></h2>
-                <p class="mB20 Tcenter"><fmt:message key="account.recover.sub.title"/></p>
+                <h2>INVITE REGISTERED USER</h2>
+                <p class="mB20 Tcenter">One time password will be been sent to email ${merchantRegistration.mail}</p>
                 <div class="form-style">
                     <form:form method="post" modelAttribute="merchantRegistration">
                         <form:hidden path="mail"/>
@@ -71,7 +74,7 @@
                             <form:input path="mail" cssClass="form-field" required="required" type="email" disabled="true" cssErrorClass="form-field error-field"/>
                             <%--<input name="_eventId_sendRecoveryMail" class="form-btn mT10" value="Send Recovery Email" type="submit">--%>
                             <div class="button-btn">
-                                <button name="_eventId_sendRecoveryMail" class="ladda-button form-btn" style="width:100%;">Send Recovery Email</button>
+                                <button name="_eventId_sendInviteAgentMail" class="ladda-button form-btn" style="width:100%;">Send Invite Email</button>
                             </div>
                         </div>
                     </form:form>
@@ -108,7 +111,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/intl-tel-input/js/intlTelInput.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">

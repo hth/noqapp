@@ -18,13 +18,30 @@
 </head>
 
 <body>
-
-
 <div class="main-warp">
     <!-- header -->
     <div class="header">
         <div class="warp-inner">
-            <div class="logo"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png"/></div>
+            <div class="logo-left">
+                <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></a>
+            </div>
+            <div class="top-menu-right2">
+                <div class="dropdown">
+                    <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                        <div class="dropdown-inner">
+                            <a href="${pageContext.request.contextPath}/">Home</a>
+                            <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                                <input type="submit" value="Logout" class="button-txt"/>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearFix"></div>
         </div>
     </div>
     <!-- header end -->
@@ -38,37 +55,19 @@
                     <div class="otp">
                         <form:form modelAttribute="merchantRegistration">
                             <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                            <h2>Failure</h2>
+                            <span>OTP did not match. Failed to invite ${merchantRegistration.mail}. Try again.</span>
                             <span><br></span>
                             <span><br></span>
-                            <h2>OTP</h2>
-                            <span>One time password has been sent to email ${merchantRegistration.mail}. Please enter mailed OTP here.</span>
-                            <span><br></span>
-                            <ul class="enter-code-box" id="verification-code">
-                                <li><form:input path="code1" class="enter-f" maxlength="1"/></li>
-                                <li><form:input path="code2" class="enter-f" maxlength="1"/></li>
-                                <li><form:input path="code3" class="enter-f" maxlength="1"/></li>
-                                <li><form:input path="code4" class="enter-f" maxlength="1"/></li>
-                                <li><form:input path="code5" class="enter-f" maxlength="1"/></li>
-                                <li><form:input path="code6" class="enter-f" maxlength="1"/></li>
-                                <div class="clearFix"></div>
-                            </ul>
-                            <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    <span class="mdl-textfield__error"> </span>
-                                </div>
-                            </div>
                             <div class="button-btn">
-                                <button name="_eventId_verify" class="ladda-button next-btn" style="width:46%; float: left">Verify</button>
-                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:46%; float: right">Cancel</button>
+                                <button name="_eventId_ok" class="ladda-button next-btn" style="width:100%;">OK</button>
                             </div>
                         </form:form>
                     </div>
 
                 </div>
             </div>
-
             <!-- login-box -->
-
         </div>
     </div>
     <!-- content end -->
@@ -96,26 +95,8 @@
     <!-- Foote End -->
 
 </div>
-
-
-
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/firebaseAuthenticate.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".enter-f").keyup(function () {
-            if (this.value.length >= this.maxLength) {
-                var split = this.name.split('code');
-                var nextId = Number(split[1]) + 1;
-                if ($(this).length)
-                {
-                    $("#code"+ nextId).focus();
-                    $(this).blur();
-                }
-            }
-        });
-    });
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">

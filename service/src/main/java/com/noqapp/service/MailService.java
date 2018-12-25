@@ -331,10 +331,11 @@ public class MailService {
      * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
      * This mail is send before creating an account.
      */
-    public void sendValidationMailBeforeAccountCreation(String userId, String name, String otp) {
+    public void sendOTPMail(String userId, String name, String otp, String message) {
         if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("mailOTP", otp);
+            rootMap.put("message", message);
             sendAnyMail(userId, name, "Confirmation mail for NoQApp", rootMap, "mail/mail-otp.ftl");
         }
     }

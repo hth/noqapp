@@ -18,16 +18,6 @@
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101872684-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-101872684-1');
-    </script>
 </head>
 
 <body>
@@ -74,11 +64,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -112,21 +102,20 @@
                                     <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" class="form-btn mT10" />--%>
 
                                     <div class="button-btn">
-                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%">Recover Password</button>
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%">Invite Registered User</button>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <%--<input id="recover_btn_id" type="submit" value="Recover Password" name="_eventId_recover" style="display: none;" class="form-btn mT10" />--%>
 
                                     <div class="button-btn">
-                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%; display: none;">Recover Password</button>
+                                        <button id="recover_btn_id" name="_eventId_recover" class="ladda-button form-btn" style="width:100%; display: none;">Invite Registered User</button>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
                                 <%--<input name="_eventId_submit" class="form-btn mT10" value="Sign Up" type="submit">--%>
                             <div class="button-btn">
                                 <button name="_eventId_submit" class="ladda-button next-btn" style="width:100%;">Register</button>
-                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:100%;">Cancel</button>
                             </div>
                         </div>
                     </form:form>
@@ -164,10 +153,10 @@
 
 
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript">
-
     $(document).ready(function() {
         // check name availability on focus lost
         $('#mail').blur(function() {
@@ -182,7 +171,7 @@
     function checkAvailability() {
         $.ajax({
             type: "POST",
-            url: '${pageContext. request. contextPath}/open/registrationMerchant/availability.htm',
+            url: '${pageContext. request. contextPath}/business/webService/availability.htm',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },

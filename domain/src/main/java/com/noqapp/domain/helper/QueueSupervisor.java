@@ -18,6 +18,7 @@ public class QueueSupervisor {
     private String businessId;
     private String name;
     private String phone;
+    private boolean phoneValidated;
     private String address;
     private String countryShortName;
     private String email;
@@ -69,6 +70,15 @@ public class QueueSupervisor {
 
     public QueueSupervisor setPhone(String phone) {
         this.phone = phone;
+        return this;
+    }
+
+    public boolean isPhoneValidated() {
+        return phoneValidated;
+    }
+
+    public QueueSupervisor setPhoneValidated(boolean phoneValidated) {
+        this.phoneValidated = phoneValidated;
         return this;
     }
 
