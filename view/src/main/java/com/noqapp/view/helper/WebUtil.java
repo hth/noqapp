@@ -1,8 +1,7 @@
 package com.noqapp.view.helper;
 
 import com.noqapp.common.type.FileExtensionTypeEnum;
-
-import org.apache.commons.io.FilenameUtils;
+import com.noqapp.common.utils.FileUtil;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WebUtil {
 
     public static void setContentType(String filename, HttpServletResponse response) {
-        String extension = FilenameUtils.getExtension(filename);
+        String extension = FileUtil.getFileExtension(filename);
         if (extension.endsWith(FileExtensionTypeEnum.JPG.name().toLowerCase()) || extension.endsWith(FileExtensionTypeEnum.JPEG.name().toLowerCase())) {
             response.setContentType("image/jpeg");
         } else if (extension.endsWith("gif")) {

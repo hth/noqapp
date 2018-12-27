@@ -367,7 +367,7 @@ public class FileService {
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, width, (int) (height / aspectRatio));
-        File scaledFile = createTempFile(FilenameUtils.getBaseName(file.getName()) + APPEND, FilenameUtils.getExtension(file.getName()));
+        File scaledFile = createTempFile(FilenameUtils.getBaseName(file.getName()) + APPEND, FileUtil.getFileExtension(file.getName()));
 
         ImageIO.write(bufferedImage, PNG_FORMAT, scaledFile);
         return scaledFile;
