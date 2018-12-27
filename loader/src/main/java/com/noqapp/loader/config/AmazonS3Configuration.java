@@ -3,9 +3,11 @@ package com.noqapp.loader.config;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.Protocol;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +24,10 @@ public class AmazonS3Configuration {
     @Value("${aws.s3.accessKey}")
     private String accessKey;
 
-    @Value ("${aws.s3.secretKey}")
+    @Value("${aws.s3.secretKey}")
     private String secretKey;
 
-    @Value ("${aws.s3.bucketName}")
+    @Value("${aws.s3.bucketName}")
     private String bucketName;
 
     @Bean
@@ -34,9 +36,13 @@ public class AmazonS3Configuration {
         clientConfiguration.setProtocol(Protocol.HTTPS);
 
         final AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        AmazonS3 s3client = new AmazonS3Client(credentials, clientConfiguration);
+        AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withClientConfiguration(clientConfiguration)
+            .withRegion(Regions.AP_SOUTH_1)
+            .build();
 
-        Assert.isTrue(s3client.doesBucketExist(bucketName), "bucketName " + bucketName + " exists");
+        Assert.isTrue(s3client.doesBucketExistV2(bucketName), "bucketName " + bucketName + " exists");
         return s3client;
     }
 }
