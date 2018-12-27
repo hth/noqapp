@@ -87,8 +87,8 @@ import javax.imageio.ImageIO;
 @Service
 public class FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
+    private static final String APPEND = "_s";          /* Append to scaled image post fix. */
     private static final String PNG_FORMAT = "png";
-    private static final String SCALED_IMAGE_POST_FIX = "_s";
     private static String[] STORE_PRODUCT_HEADERS = {
         "Category",
         "Name",
@@ -195,9 +195,7 @@ public class FileService {
                 s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
             }
 
-            toFile = writeToFile(
-                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
-                    bufferedImage);
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageProfileWidth, imageProfileHeight);
 
             String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
@@ -259,9 +257,7 @@ public class FileService {
                 businessServiceImages.remove(lastImage);
             }
 
-            toFile = writeToFile(
-                    createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
-                    bufferedImage);
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
 
             String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
@@ -314,9 +310,7 @@ public class FileService {
                 images.remove(lastImage);
             }
 
-            toFile = writeToFile(
-                createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename),
-                bufferedImage);
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
 
             String toFileAbsolutePath = getTmpDir()                     // /java/temp/directory
@@ -355,8 +349,7 @@ public class FileService {
         ftpService.delete(imageName, codeQR, FtpService.SERVICE);
 
         /* Delete from S3. */
-        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE)
-                .setCodeQR(codeQR);
+        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE).setCodeQR(codeQR);
         s3FileManager.save(s3File);
     }
 
@@ -374,9 +367,7 @@ public class FileService {
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
         BufferedImage bufferedImage = resizeImage(image, width, (int) (height / aspectRatio));
-        File scaledFile = createTempFile(
-                FilenameUtils.getBaseName(file.getName()) + SCALED_IMAGE_POST_FIX,
-                FilenameUtils.getExtension(file.getName()));
+        File scaledFile = createTempFile(FilenameUtils.getBaseName(file.getName()) + APPEND, FilenameUtils.getExtension(file.getName()));
 
         ImageIO.write(bufferedImage, PNG_FORMAT, scaledFile);
         return scaledFile;
