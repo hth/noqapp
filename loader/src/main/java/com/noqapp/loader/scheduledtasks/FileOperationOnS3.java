@@ -320,8 +320,9 @@ public class FileOperationOnS3 {
                 }
             }
 
-            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName);
-            deleteObjectsRequest.setKeys(keys);
+            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName)
+                .withKeys(keys)
+                .withQuiet(false);
             try {
                 deleteObjectsResult = amazonS3.deleteObjects(deleteObjectsRequest);
                 if (deleteObjectsResult.getDeletedObjects().size() == s3Files.size()) {
