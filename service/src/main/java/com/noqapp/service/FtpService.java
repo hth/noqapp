@@ -37,8 +37,10 @@ import java.io.InputStream;
 public class FtpService {
     private static final Logger LOG = LoggerFactory.getLogger(FtpService.class);
 
-    public static String PROFILE = FileUtil.getFileSeparator() + "profile";
-    public static String SERVICE = FileUtil.getFileSeparator() + "service";
+    public static String PROFILE_AWS = "profile";
+    public static String SERVICE_AWS = "service";
+    public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
+    public static String SERVICE = FileUtil.getFileSeparator() + SERVICE_AWS;
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + "medical";

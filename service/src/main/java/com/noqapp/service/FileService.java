@@ -196,12 +196,12 @@ public class FileService {
                 if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
                     String fileName_o = getFilenameWithOriginal(existingProfileImage);
                     ftpService.delete(fileName_o, null, FtpService.PROFILE);
-                    s3FileManager.save(new S3FileEntity(qid, fileName_o, FtpService.PROFILE));
+                    s3FileManager.save(new S3FileEntity(qid, fileName_o, FtpService.PROFILE_AWS));
                 }
 
                 /* Delete existing file if user changed profile image before the upload process began. */
                 ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
-                s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+                s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE_AWS));
             }
 
             toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
@@ -256,7 +256,7 @@ public class FileService {
 
             /* Delete existing file if user changed profile image before the upload process began. */
             ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
-            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE_AWS));
             accountService.unsetUserProfileImage(qid);
         }
     }
@@ -370,7 +370,7 @@ public class FileService {
         ftpService.delete(imageName, codeQR, FtpService.SERVICE);
 
         /* Delete from S3. */
-        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE).setCodeQR(codeQR);
+        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE_AWS).setCodeQR(codeQR);
         s3FileManager.save(s3File);
     }
 
