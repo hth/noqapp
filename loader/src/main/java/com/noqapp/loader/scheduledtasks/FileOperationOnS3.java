@@ -204,7 +204,7 @@ public class FileOperationOnS3 {
                 "serviceUpload",
                 serviceUploadSwitch);
 
-        /**
+        /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
@@ -298,7 +298,7 @@ public class FileOperationOnS3 {
                 "deleteOnS3",
                 s3DeleteSwitch);
 
-        /**
+        /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
@@ -342,6 +342,19 @@ public class FileOperationOnS3 {
                             deleteError.getCode(),
                             deleteError.getMessage());
                 }
+            } catch (AmazonServiceException ase) {
+                LOG.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, "
+                    + "but was rejected with an error response for some reason.");
+                LOG.error("Error Message={}", ase.getMessage());
+                LOG.error("HTTP Status Code={}", ase.getStatusCode());
+                LOG.error("AWS Error Code={}", ase.getErrorCode());
+                LOG.error("Error Type={}", ase.getErrorType());
+                LOG.error("Request ID={}", ase.getRequestId());
+            } catch (AmazonClientException ace) {
+                LOG.error("Caught an AmazonClientException, which means the client encountered "
+                    + "a serious internal problem while trying to communicate with S3, "
+                    + "such as not being able to access the network.");
+                LOG.error("Error Message={}", ace.getMessage(), ace);
             } finally {
                 if (deleteObjectsResult == null) {
                     statsCron.addStats("found", s3Files.size());
