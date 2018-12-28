@@ -17,6 +17,7 @@ import com.noqapp.service.exceptions.CSVProcessingException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,9 +106,9 @@ public class MasterLabService {
 
     /** Create zip file of preferred business product list. */
     @Mobile
-    public FileObject getMasterTarGZ() {
+    public FileObject getMasterTarGZ(DefaultFileSystemManager manager) {
         if (ftpService.existFolder(MASTER_MEDICAL)) {
-            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(MASTER_MEDICAL);
+            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(MASTER_MEDICAL, manager);
             if (null != fileObjects && 0 < fileObjects.length) {
                 return fileObjects[0];
             }
