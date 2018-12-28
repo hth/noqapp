@@ -24,8 +24,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
-import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
+import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.S3FileManager;
@@ -43,6 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -281,10 +282,8 @@ public class FileService {
             toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
 
-            String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
-                    + getFileSeparator()                                    // FileSeparator /
-                    + filename;                                             // filename.extension
-
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, bizName.getCodeQR(), FtpService.SERVICE);
@@ -334,10 +333,8 @@ public class FileService {
             toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
 
-            String toFileAbsolutePath = getTmpDir()                     // /java/temp/directory
-                + getFileSeparator()                                    // FileSeparator /
-                + filename;                                             // filename.extension
-
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, bizStore.getCodeQR(), FtpService.SERVICE);
@@ -515,9 +512,9 @@ public class FileService {
 
     /** Create zip file of preferred business product list. */
     @Mobile
-    public FileObject getPreferredBusinessTarGZ(String bizStoreId) {
+    public FileObject getPreferredBusinessTarGZ(String bizStoreId, DefaultFileSystemManager manager) {
         if (ftpService.existFolder(PREFERRED_STORE + "/" + bizStoreId)) {
-            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
+            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId, manager);
             if (null != fileObjects && 0 < fileObjects.length) {
                 return fileObjects[0];
             }

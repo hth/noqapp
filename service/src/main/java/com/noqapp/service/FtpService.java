@@ -112,12 +112,10 @@ public class FtpService {
         }
     }
 
-    public FileObject[] getAllFilesInDirectory(String directory) {
+    public FileObject[] getAllFilesInDirectory(String directory, DefaultFileSystemManager manager) {
         Assert.isTrue(directory.startsWith(FileUtil.getFileSeparator()), "should start with file path");
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
 
         try {
-            manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + directory), fileSystemOptions);
             LOG.info("Found directory={} status={}", directory, remoteFile.exists());
             return remoteFile.getChildren();

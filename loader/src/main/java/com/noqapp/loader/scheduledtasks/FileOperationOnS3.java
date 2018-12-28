@@ -22,6 +22,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileContent;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs2.impl.StandardFileSystemManager;
 
@@ -122,39 +123,40 @@ public class FileOperationOnS3 {
             return;
         }
 
-        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PROFILE);
-        if (fileObjects.length == 0) {
-            /* No image to upload. */
-            return;
-        } else {
-            LOG.info("Files to upload to cloud, count={}", fileObjects.length);
-        }
-
-        int success = 0, failure = 0;
         /* Moved manager initialization here to manage FileContent failure. */
         DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
             manager.init();
-            for (FileObject document : fileObjects) {
-                try {
-                    FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE, manager);
-                    ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
-                    success = uploadToS3(
+            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PROFILE, manager);
+            if (fileObjects.length == 0) {
+                /* No image to upload. */
+                return;
+            } else {
+                LOG.info("Files to upload to cloud, count={}", fileObjects.length);
+            }
+
+            int success = 0, failure = 0;
+            try {
+                for (FileObject document : fileObjects) {
+                    try {
+                        FileContent fileContent = ftpService.getFileContent(document.getName().getBaseName(), null, PROFILE, manager);
+                        ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
+                        success = uploadToS3(
                             success,
                             PROFILE,
                             document.getName().getBaseName(),
                             fileContent.getInputStream(),
                             objectMetadata);
 
-                    ftpService.delete(document.getName().getBaseName(), null, PROFILE);
-                } catch (AmazonServiceException e) {
-                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
-                                    "document:{} " +
-                                    "Error Message:{} " +
-                                    "HTTP Status Code:{} " +
-                                    "AWS Error Code:{} " +
-                                    "Error Type:{} " +
-                                    "Request ID:{}",
+                        ftpService.delete(document.getName().getBaseName(), null, PROFILE);
+                    } catch (AmazonServiceException e) {
+                        LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                "document:{} " +
+                                "Error Message:{} " +
+                                "HTTP Status Code:{} " +
+                                "AWS Error Code:{} " +
+                                "Error Type:{} " +
+                                "Request ID:{}",
                             document.getName().getBaseName(),
                             e.getLocalizedMessage(),
                             e.getStatusCode(),
@@ -163,37 +165,43 @@ public class FileOperationOnS3 {
                             e.getRequestId(),
                             e);
 
-                    failure++;
-                } catch (AmazonClientException e) {
-                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                                    "document:{} " +
-                                    "reason={}",
+                        failure++;
+                    } catch (AmazonClientException e) {
+                        LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                "document:{} " +
+                                "reason={}",
                             document.getName().getBaseName(),
                             e.getLocalizedMessage(),
                             e);
 
-                    failure++;
-                } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}",
+                        failure++;
+                    } catch (Exception e) {
+                        LOG.error("S3 image upload failure document={} reason={}",
                             document.getName().getBaseName(),
                             e.getLocalizedMessage(),
                             e);
-                    failure++;
+
+                        failure++;
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error("Failed S3 uploading profile reason={}", e.getLocalizedMessage(), e);
+            } finally {
+                manager.close();
+                if (0 != success || 0 != failure) {
+                    statsCron.addStats("found", success + failure);
+                    statsCron.addStats("success", success);
+                    statsCron.addStats("failure", failure);
+                    statsCronService.save(statsCron);
+
+                    /* Without if condition its too noisy. */
+                    LOG.info("Complete found={} success={} failure={}", success + failure, success, failure);
                 }
             }
-        } catch (Exception e) {
-            LOG.error("Error S3 uploading profile reason={}", e.getLocalizedMessage(), e);
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", PROFILE, e.getLocalizedMessage(), e);
         } finally {
             manager.close();
-            if (0 != success || 0 != failure) {
-                statsCron.addStats("found", success + failure);
-                statsCron.addStats("success", success);
-                statsCron.addStats("failure", failure);
-                statsCronService.save(statsCron);
-
-                /* Without if condition its too noisy. */
-                LOG.info("Complete found={} success={} failure={}", success + failure, success, failure);
-            }
         }
     }
 
@@ -214,40 +222,41 @@ public class FileOperationOnS3 {
             return;
         }
 
-        FileObject[] fileObjects = ftpService.getAllFilesInDirectory(SERVICE);
-        if (fileObjects.length == 0) {
-            /* No image to upload. */
-            return;
-        } else {
-            LOG.info("Files to upload to cloud, count={}", fileObjects.length);
-        }
-
-        int success = 0, failure = 0;
         /* Moved manager initialization here to manage FileContent failure. */
         DefaultFileSystemManager manager = new StandardFileSystemManager();
         try {
             manager.init();
-            for (FileObject document : fileObjects) {
-                for (FileObject fileObject : document.getChildren()) {
-                    try {
-                        FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE, manager);
-                        ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
-                        success = uploadToS3(
+            FileObject[] fileObjects = ftpService.getAllFilesInDirectory(SERVICE, manager);
+            if (fileObjects.length == 0) {
+                /* No image to upload. */
+                return;
+            } else {
+                LOG.info("Files to upload to cloud, count={}", fileObjects.length);
+            }
+
+            int success = 0, failure = 0;
+            try {
+                for (FileObject document : fileObjects) {
+                    for (FileObject fileObject : document.getChildren()) {
+                        try {
+                            FileContent fileContent = ftpService.getFileContent(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE, manager);
+                            ObjectMetadata objectMetadata = getObjectMetadata(fileContent.getSize(), fileContent.getContentInfo().getContentType());
+                            success = uploadToS3(
                                 success,
                                 SERVICE,
                                 document.getName().getBaseName() + FileUtil.getFileSeparator() + fileObject.getName().getBaseName(),
                                 fileContent.getInputStream(),
                                 objectMetadata);
 
-                        ftpService.delete(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
-                    } catch (AmazonServiceException e) {
-                        LOG.error("Amazon S3 rejected request with an error response for some reason " +
-                                        "document:{} " +
-                                        "Error Message:{} " +
-                                        "HTTP Status Code:{} " +
-                                        "AWS Error Code:{} " +
-                                        "Error Type:{} " +
-                                        "Request ID:{}",
+                            ftpService.delete(fileObject.getName().getBaseName(), document.getName().getBaseName(), SERVICE);
+                        } catch (AmazonServiceException e) {
+                            LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                    "document:{} " +
+                                    "Error Message:{} " +
+                                    "HTTP Status Code:{} " +
+                                    "AWS Error Code:{} " +
+                                    "Error Type:{} " +
+                                    "Request ID:{}",
                                 document.getName().getBaseName(),
                                 e.getLocalizedMessage(),
                                 e.getStatusCode(),
@@ -256,38 +265,44 @@ public class FileOperationOnS3 {
                                 e.getRequestId(),
                                 e);
 
-                        failure++;
-                    } catch (AmazonClientException e) {
-                        LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                                        "document:{} " +
-                                        "reason={}",
+                            failure++;
+                        } catch (AmazonClientException e) {
+                            LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                    "document:{} " +
+                                    "reason={}",
                                 document.getName().getBaseName(),
                                 e.getLocalizedMessage(),
                                 e);
 
-                        failure++;
-                    } catch (Exception e) {
-                        LOG.error("S3 image upload failure document={} reason={}",
+                            failure++;
+                        } catch (Exception e) {
+                            LOG.error("S3 image upload failure document={} reason={}",
                                 document.getName().getBaseName(),
                                 e.getLocalizedMessage(),
                                 e);
-                        failure++;
+
+                            failure++;
+                        }
                     }
                 }
+            } catch (Exception e) {
+                LOG.error("Failed S3 uploading service reason={}", e.getLocalizedMessage(), e);
+            } finally {
+                manager.close();
+                if (0 != success || 0 != failure) {
+                    statsCron.addStats("found", success + failure);
+                    statsCron.addStats("success", success);
+                    statsCron.addStats("failure", failure);
+                    statsCronService.save(statsCron);
+
+                    /* Without if condition its too noisy. */
+                    LOG.info("Complete found={} success={} failure={}", success + failure, success, failure);
+                }
             }
-        } catch (Exception e) {
-            LOG.error("Error S3 uploading service reason={}", e.getLocalizedMessage(), e);
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", SERVICE, e.getLocalizedMessage(), e);
         } finally {
             manager.close();
-            if (0 != success || 0 != failure) {
-                statsCron.addStats("found", success + failure);
-                statsCron.addStats("success", success);
-                statsCron.addStats("failure", failure);
-                statsCronService.save(statsCron);
-
-                /* Without if condition its too noisy. */
-                LOG.info("Complete found={} success={} failure={}", success + failure, success, failure);
-            }
         }
     }
 
