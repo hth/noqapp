@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.FileUtil.DOT;
 import static com.noqapp.common.utils.FileUtil.createRandomFilenameOf24Chars;
 import static com.noqapp.common.utils.FileUtil.createTempFile;
 import static com.noqapp.common.utils.FileUtil.getFileExtension;
@@ -182,6 +183,7 @@ public class FileService {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
+        File tempFileOriginal = null;
 
         try {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
@@ -190,22 +192,37 @@ public class FileService {
             if (StringUtils.isNotBlank(userProfile.getProfileImage())) {
                 String existingProfileImage = userProfile.getProfileImage();
 
+                /* Delete original image when business type is DO. */
+                if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
+                    String fileName_o = getFilenameWithOriginal(existingProfileImage);
+                    ftpService.delete(fileName_o, null, FtpService.PROFILE);
+                    s3FileManager.save(new S3FileEntity(qid, fileName_o, FtpService.PROFILE_AWS));
+                }
+
                 /* Delete existing file if user changed profile image before the upload process began. */
                 ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
-                s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+                s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE_AWS));
             }
 
             toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
             decreaseResolution = decreaseResolution(toFile, imageProfileWidth, imageProfileHeight);
 
-            String toFileAbsolutePath = getTmpDir()                         // /java/temp/directory
-                    + getFileSeparator()                                    // FileSeparator /
-                    + filename;                                             // filename.extension
-
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
             tempFile = new File(toFileAbsolutePath);
             writeToFile(tempFile, ImageIO.read(decreaseResolution));
             ftpService.upload(filename, null, FtpService.PROFILE);
             accountService.addUserProfileImage(qid, filename);
+
+            if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
+                String fileName_o = getFilenameWithOriginal(filename);
+
+                // /java/temp/directory/filename.extension
+                String toFileAbsolutePathForOriginal = getTmpDir() + getFileSeparator() + fileName_o;
+                tempFileOriginal = new File(toFileAbsolutePathForOriginal);
+                writeToFile(tempFileOriginal, ImageIO.read(toFile));
+                ftpService.upload(fileName_o, null, FtpService.PROFILE);
+            }
 
             LOG.debug("Uploaded profile file={}", toFileAbsolutePath);
         } catch (IOException e) {
@@ -222,6 +239,10 @@ public class FileService {
             if (null != tempFile) {
                 tempFile.delete();
             }
+
+            if (null != tempFileOriginal) {
+                tempFileOriginal.delete();
+            }
         }
     }
 
@@ -235,7 +256,7 @@ public class FileService {
 
             /* Delete existing file if user changed profile image before the upload process began. */
             ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
-            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE));
+            s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE_AWS));
             accountService.unsetUserProfileImage(qid);
         }
     }
@@ -349,7 +370,7 @@ public class FileService {
         ftpService.delete(imageName, codeQR, FtpService.SERVICE);
 
         /* Delete from S3. */
-        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE).setCodeQR(codeQR);
+        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE_AWS).setCodeQR(codeQR);
         s3FileManager.save(s3File);
     }
 
@@ -936,5 +957,12 @@ public class FileService {
         }
 
         return file;
+    }
+
+    private String getFilenameWithOriginal(String filename) {
+        String baseName = FilenameUtils.getBaseName(filename) + "_o";
+        String fileExtension = FileUtil.getFileExtension(filename);
+
+        return baseName + DOT + fileExtension;
     }
 }
