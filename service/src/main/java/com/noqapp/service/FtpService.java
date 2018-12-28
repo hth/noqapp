@@ -37,13 +37,17 @@ import java.io.InputStream;
 public class FtpService {
     private static final Logger LOG = LoggerFactory.getLogger(FtpService.class);
 
-    public static String PROFILE_AWS = "profile";
-    public static String SERVICE_AWS = "service";
+    /** AWS needs without file separator. */
+    static String PROFILE_AWS = "profile";
+    static String SERVICE_AWS = "service";
+    static String MEDICAL_AWS = "medical";
+
+    /** FTP needs with file separator. */
     public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
     public static String SERVICE = FileUtil.getFileSeparator() + SERVICE_AWS;
 
     /** TODO(hth) Medical stores all medical record related images. */
-    public static String MEDICAL = FileUtil.getFileSeparator() + "medical";
+    public static String MEDICAL = FileUtil.getFileSeparator() + MEDICAL_AWS;
     public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL};
 
     public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
