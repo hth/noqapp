@@ -7,7 +7,8 @@
     <secured attributes="ROLE_M_ADMIN, ROLE_TECHNICIAN, ROLE_SUPERVISOR" match="any"/>
 
     <on-start>
-        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')" result="conversationScope.bizStoreId" />
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')"
+                  result="conversationScope.bizStoreId" />
         <evaluate expression="storeFlowActions.populateStore(bizStoreId)"
                   result="flowScope.registerBusiness"/>
     </on-start>
