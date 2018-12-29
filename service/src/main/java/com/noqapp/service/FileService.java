@@ -90,7 +90,9 @@ import javax.imageio.ImageIO;
 public class FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
     private static final String APPEND = "_s";          /* Append to scaled image post fix. */
+    private static final String ORIGINAL = "_o";        /* Append to original image post fix. */
     private static final String PNG_FORMAT = "png";
+
     private static String[] STORE_PRODUCT_HEADERS = {
         "Category",
         "Name",
@@ -957,7 +959,7 @@ public class FileService {
     }
 
     private String getFilenameWithOriginal(String filename) {
-        String baseName = FilenameUtils.getBaseName(filename) + "_o";
+        String baseName = FilenameUtils.getBaseName(filename) + ORIGINAL;
         String fileExtension = FileUtil.getFileExtension(filename);
 
         return baseName + DOT + fileExtension;
