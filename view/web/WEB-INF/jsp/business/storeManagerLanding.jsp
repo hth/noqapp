@@ -32,6 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <a href="${pageContext.request.contextPath}/business/store/publishArticle/landing.htm">Publish Article</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
