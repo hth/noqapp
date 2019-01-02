@@ -51,6 +51,9 @@ public class StoreProductValidator implements Validator {
 
             switch (form.getBusinessType()) {
                 case PH:
+                case RS:
+                case GS:
+                case ST:
                     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "unitValue", "field.required", new Object[]{"Unit"});
                     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "unitOfMeasurement", "field.required", new Object[]{"Measurement"});
                     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "packageSize", "field.required", new Object[]{"Package Size"});
