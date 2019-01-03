@@ -371,7 +371,7 @@ public class MedicalRecordService {
                 .setStrength(jsonMedicalMedicine.getStrength())
                 .setDailyFrequency(jsonMedicalMedicine.getDailyFrequency())
                 .setCourse(jsonMedicalMedicine.getCourse())
-                .setMedicationWithFood(jsonMedicalMedicine.getMedicationWithFood())
+                .setMedicationIntake(jsonMedicalMedicine.getMedicationIntake())
                 .setMedicationType(jsonMedicalMedicine.getPharmacyCategory())
                 .setMedicalMedicationReferenceId(medicalMedication.getId())
                 .setPharmacyReferenceId("")             //TODO(hth) with pharmacy medicine id

@@ -78,7 +78,8 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="phoneNumber" cssErrorClass="lb_error">Phone Number</form:label></div>
+                                            <form:label path="phoneNumber" cssErrorClass="lb_error">Phone Number</form:label>
+                                        </div>
                                         <div class="col-fields">
                                             <form:input path="phoneNumber" cssClass="form-fe" cssErrorClass="form-fe lb_error" readonly="true"/>
                                             <span class="info-txt">(Must be a registered user)</span>
@@ -88,7 +89,8 @@
 
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Invitee Code</form:label></div>
+                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Invitee Code</form:label>
+                                        </div>
                                         <div class="col-fields">
                                             <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
                                             <span class="info-txt">(Owner of the Phone Number has to share invite code with you)</span>

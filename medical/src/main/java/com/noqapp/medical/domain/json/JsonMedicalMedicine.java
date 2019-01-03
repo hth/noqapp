@@ -50,8 +50,8 @@ public class JsonMedicalMedicine extends AbstractDomain {
     @JsonProperty("co")
     private String course;
 
-    @JsonProperty("mf")
-    private String medicationWithFood;
+    @JsonProperty("mi")
+    private String medicationIntake;
 
     @JsonProperty("pc")
     private String pharmacyCategory;
@@ -92,12 +92,12 @@ public class JsonMedicalMedicine extends AbstractDomain {
         return this;
     }
 
-    public String getMedicationWithFood() {
-        return medicationWithFood;
+    public String getMedicationIntake() {
+        return medicationIntake;
     }
 
-    public JsonMedicalMedicine setMedicationWithFood(String medicationWithFood) {
-        this.medicationWithFood = medicationWithFood;
+    public JsonMedicalMedicine setMedicationIntake(String medicationIntake) {
+        this.medicationIntake = medicationIntake;
         return this;
     }
 
@@ -116,7 +116,7 @@ public class JsonMedicalMedicine extends AbstractDomain {
                 .setStrength(medicalMedicine.getStrength())
                 .setDailyFrequency(medicalMedicine.getDailyFrequency())
                 .setCourse(medicalMedicine.getCourse())
-                .setMedicationWithFood(medicalMedicine.getMedicationWithFood())
+                .setMedicationIntake(medicalMedicine.getMedicationIntake())
                 .setPharmacyCategory(medicalMedicine.getMedicationType());
     }
 

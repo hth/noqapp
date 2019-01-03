@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 })
 /* https://memorynotfound.com/spring-mvc-file-upload-example-validator/ */
 public class FileUploadForm {
-    MultipartFile file;
+    private transient MultipartFile file;
 
     public MultipartFile getFile() {
         return file;

@@ -2,22 +2,17 @@ package com.noqapp.domain.types.medical;
 
 /**
  * hitender
- * 5/30/18 12:04 AM
+ * 2019-01-03 13:29
  */
-public enum BloodTypeEnum {
-    AP("AP", "A+"),
-    AN("AN", "A-"),
-    BP("BP", "B+"),
-    BN("BN", "B-"),
-    OP("OP", "O+"),
-    ON("ON", "O-"),
-    ABP("ABP", "AB+"),
-    ABN("ABN", "AB-");
+public enum MedicationIntakeEnum {
+    BF("BF", "Before Food"),
+    AF("AF", "After Food"),
+    ES("ES", "Empty Stomach");
 
     private final String description;
     private final String name;
 
-    BloodTypeEnum(String name, String description) {
+    MedicationIntakeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

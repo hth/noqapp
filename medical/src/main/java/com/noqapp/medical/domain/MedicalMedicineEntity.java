@@ -51,8 +51,8 @@ public class MedicalMedicineEntity extends BaseEntity {
     @Field("CO")
     private String course;
 
-    @Field("MF")
-    private String medicationWithFood;
+    @Field("MI")
+    private String medicationIntake;
 
     @Field ("MT")
     private String medicationType;
@@ -120,12 +120,12 @@ public class MedicalMedicineEntity extends BaseEntity {
         return this;
     }
 
-    public String getMedicationWithFood() {
-        return medicationWithFood;
+    public String getMedicationIntake() {
+        return medicationIntake;
     }
 
-    public MedicalMedicineEntity setMedicationWithFood(String medicationWithFood) {
-        this.medicationWithFood = medicationWithFood;
+    public MedicalMedicineEntity setMedicationIntake(String medicationIntake) {
+        this.medicationIntake = medicationIntake;
         return this;
     }
 

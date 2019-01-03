@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_S_MANAGER" match="any"/>
+
+    <on-start>
+        <evaluate expression="publishArticleFlowActions.initiatePublishArticle()"
+                  result="flowScope.publishArticleForm"/>
+    </on-start>
+
+    <view-state id="startPublish" model="publishArticleForm">
+        <transition on="preview" to="validate"/>
+        <transition on="cancelPublish" to="cancelPublish"/>
+    </view-state>
+
+    <action-state id="validate">
+        <evaluate expression="publishArticleValidator.validate(publishArticleForm, messageContext)" />
+        <transition on="success" to="previewPublish"/>
+        <transition on="failure" to="startPublish"/>
+    </action-state>
+
+    <view-state id="previewPublish" model="publishArticleForm">
+        <transition on="confirm" to="confirm"/>
+        <transition on="revise" to="startPublish"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="confirm">
+        <evaluate expression="publishArticleFlowActions.confirm(publishArticleForm)" />
+        <transition on="success" to="home"/>
+        <transition on="failure" to="startPublish"/>
+    </action-state>
+
+    <end-state id="home"
+               view="externalRedirect:contextRelative:/business/store/landing.htm"/>
+
+    <view-state id="cancelPublish"
+                view="externalRedirect:contextRelative:/business/store/landing.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>
