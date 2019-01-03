@@ -28,7 +28,7 @@ import java.util.List;
 })
 @Repository
 public class MedicalPathologyTestManagerImpl implements MedicalPathologyTestManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalPathologyTestManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
         MedicalPathologyTestEntity.class,
         Document.class,

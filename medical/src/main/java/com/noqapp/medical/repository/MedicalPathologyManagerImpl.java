@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 })
 @Repository
 public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalPathologyManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
         MedicalPathologyEntity.class,
         Document.class,

@@ -28,7 +28,7 @@ import java.util.List;
 })
 @Repository
 public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalPhysicalManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             MedicalPhysicalEntity.class,
             Document.class,

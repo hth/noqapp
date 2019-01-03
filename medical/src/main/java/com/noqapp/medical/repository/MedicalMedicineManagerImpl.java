@@ -31,7 +31,7 @@ import java.util.List;
 })
 @Repository
 public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalMedicineManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             MedicalMedicineEntity.class,
             Document.class,
