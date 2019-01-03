@@ -41,7 +41,7 @@ public class AnyTask {
 
     @Autowired
     public AnyTask(
-        @Value("${oneTimeStatusSwitch:ON}")
+        @Value("${oneTimeStatusSwitch:OFF}")
         String oneTimeStatusSwitch,
 
         Environment environment,
