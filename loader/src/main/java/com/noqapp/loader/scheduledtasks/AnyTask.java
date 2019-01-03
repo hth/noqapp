@@ -148,7 +148,7 @@ public class AnyTask {
             add(new MasterLabEntity().setProductName("3DCT Pelvis").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("3DCT TM JT").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis PLAIN").setHealthCareService(SCAN));
-            add(new MasterLabEntity().setProductName("Abdomen & Pelvis (Double contrast)").setHealthCareService(SCAN));
+            add(new MasterLabEntity().setProductName("Abdomen & Pelvis (Double Contrast)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis (Plain)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis 3 Phase(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Abdomen KUB").setHealthCareService(SCAN));
