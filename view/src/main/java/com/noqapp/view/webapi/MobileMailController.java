@@ -103,15 +103,11 @@ public class MobileMailController {
             }
 
             if (!map.isEmpty()) {
-                Map<String, Object> rootMap = new HashMap<>();
-                rootMap.put("mailOTP", map.get("mailOTP").getText());
-
-                mailService.sendAnyMail(
+                mailService.sendOTPMail(
                     map.get("userId").getText(),
                     map.get("name").getText(),
-                    "Confirmation mail for NoQApp",
-                    rootMap,
-                    "mail/mail-otp.ftl");
+                    map.get("mailOTP").getText(),
+                    "email address");
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
