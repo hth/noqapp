@@ -169,7 +169,7 @@ public class AnyTask {
             add(new MasterLabEntity().setProductName("HRCT Temportal Bone(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("HRCT Temportal Bone").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("KUB").setHealthCareService(SCAN));
-            add(new MasterLabEntity().setProductName("KUB + contrast").setHealthCareService(SCAN));
+            add(new MasterLabEntity().setProductName("KUB + Contrast").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Neck & Chest(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Neck & Chest Abdomen & Pelvis").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Pelvis").setHealthCareService(SCAN));
