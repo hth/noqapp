@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
 })
 @Repository
 public class MedicalMedicationManagerImpl implements MedicalMedicationManager {
-    private static final Logger LOG = LoggerFactory.getLogger(MedicalRecordManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalMedicationManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             MedicalMedicationEntity.class,
             Document.class,
