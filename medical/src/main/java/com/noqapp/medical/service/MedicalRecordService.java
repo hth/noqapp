@@ -453,9 +453,11 @@ public class MedicalRecordService {
         medicalPhysical
             .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
             .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
-            .setPluse(jsonMedicalRecord.getMedicalPhysical().getPluse())
+            .setPulse(jsonMedicalRecord.getMedicalPhysical().getPulse())
             .setOxygen(jsonMedicalRecord.getMedicalPhysical().getOxygen())
+            .setRespiratory(jsonMedicalRecord.getMedicalPhysical().getRespiratory())
             .setWeight(jsonMedicalRecord.getMedicalPhysical().getWeight())
+            .setHeight(jsonMedicalRecord.getMedicalPhysical().getHeight())
             .setDiagnosedById(diagnosedById);
 
         LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
@@ -489,9 +491,11 @@ public class MedicalRecordService {
                 medicalPhysical
                     .setTemperature(medicalPhysical.getTemperature())
                     .setBloodPressure(medicalPhysical.getBloodPressure())
-                    .setPluse(medicalPhysical.getPluse())
+                    .setPulse(medicalPhysical.getPulse())
                     .setOxygen(medicalPhysical.getOxygen())
-                    .setWeight(medicalPhysical.getWeight());
+                    .setRespiratory(medicalPhysical.getRespiratory())
+                    .setWeight(medicalPhysical.getWeight())
+                    .setHeight(medicalPhysical.getHeight());
 
                 LOG.info("Before save of MedicalPhysical={}", medicalPhysical);
                 medicalPhysicalManager.save(medicalPhysical);
@@ -592,9 +596,11 @@ public class MedicalRecordService {
                 new JsonMedicalPhysical()
                     .setTemperature(medicalRecord.getMedicalPhysical().getTemperature())
                     .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
-                    .setPluse(medicalRecord.getMedicalPhysical().getPluse())
+                    .setPulse(medicalRecord.getMedicalPhysical().getPulse())
                     .setOxygen(medicalRecord.getMedicalPhysical().getOxygen())
-                    .setWeight(medicalRecord.getMedicalPhysical().getWeight()));
+                    .setRespiratory(medicalRecord.getMedicalPhysical().getRespiratory())
+                    .setWeight(medicalRecord.getMedicalPhysical().getWeight())
+                    .setHeight(medicalRecord.getMedicalPhysical().getHeight()));
         }
 
         if (null != medicalRecord.getMedicalMedication()) {

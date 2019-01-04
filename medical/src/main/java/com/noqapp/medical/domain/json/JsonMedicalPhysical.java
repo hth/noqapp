@@ -14,17 +14,17 @@ import org.slf4j.LoggerFactory;
  * hitender
  * 6/16/18 7:25 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,7 +35,7 @@ public class JsonMedicalPhysical extends AbstractDomain {
     private String temperature;
 
     @JsonProperty("pl")
-    private String pluse;
+    private String pulse;
 
     @JsonProperty("bp")
     private String[] bloodPressure;
@@ -43,8 +43,14 @@ public class JsonMedicalPhysical extends AbstractDomain {
     @JsonProperty("ox")
     private String oxygen;
 
+    @JsonProperty("rp")
+    private String respiratory;
+
     @JsonProperty("wt")
     private String weight;
+
+    @JsonProperty("ht")
+    private String height;
 
     @JsonProperty("dbi")
     private String diagnosedById;
@@ -58,12 +64,12 @@ public class JsonMedicalPhysical extends AbstractDomain {
         return this;
     }
 
-    public String getPluse() {
-        return pluse;
+    public String getPulse() {
+        return pulse;
     }
 
-    public JsonMedicalPhysical setPluse(String pluse) {
-        this.pluse = pluse;
+    public JsonMedicalPhysical setPulse(String pulse) {
+        this.pulse = pulse;
         return this;
     }
 
@@ -85,6 +91,15 @@ public class JsonMedicalPhysical extends AbstractDomain {
         return this;
     }
 
+    public String getHeight() {
+        return height;
+    }
+
+    public JsonMedicalPhysical setHeight(String height) {
+        this.height = height;
+        return this;
+    }
+
     public String getOxygen() {
         return oxygen;
     }
@@ -94,12 +109,21 @@ public class JsonMedicalPhysical extends AbstractDomain {
         return this;
     }
 
-  public String getDiagnosedById() {
-    return diagnosedById;
-  }
+    public String getRespiratory() {
+        return respiratory;
+    }
 
-  public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
-    this.diagnosedById = diagnosedById;
-    return this;
-  }
+    public JsonMedicalPhysical setRespiratory(String respiratory) {
+        this.respiratory = respiratory;
+        return this;
+    }
+
+    public String getDiagnosedById() {
+        return diagnosedById;
+    }
+
+    public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
+        this.diagnosedById = diagnosedById;
+        return this;
+    }
 }
