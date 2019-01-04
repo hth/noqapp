@@ -73,7 +73,7 @@ public class MedicalRecordForm {
             for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
                 add(new MedicalPhysicalForm()
                     .setBloodPressure(medicalPhysical.getBloodPressure())
-                    .setPluse(medicalPhysical.getPluse())
+                    .setPulse(medicalPhysical.getPulse())
                     .setWeight(medicalPhysical.getWeight()));
             }
         }};

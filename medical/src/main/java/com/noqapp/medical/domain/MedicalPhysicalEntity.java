@@ -37,7 +37,7 @@ public class MedicalPhysicalEntity extends BaseEntity {
     private String temperature;
 
     @Field("PL")
-    private String pluse;
+    private String pulse;
 
     @Field("BP")
     private String[] bloodPressure;
@@ -45,9 +45,15 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("OX")
     private String oxygen;
 
+    @Field("RP")
+    private String respiratory;
+
     //WT in kg
     @Field("WT")
     private String weight;
+
+    @Field("HT")
+    private String height;
     /** General Physical Exam Ends. */
 
     @NotNull
@@ -71,12 +77,12 @@ public class MedicalPhysicalEntity extends BaseEntity {
         return this;
     }
 
-    public String getPluse() {
-        return pluse;
+    public String getPulse() {
+        return pulse;
     }
 
-    public MedicalPhysicalEntity setPluse(String pluse) {
-        this.pluse = pluse;
+    public MedicalPhysicalEntity setPulse(String pulse) {
+        this.pulse = pulse;
         return this;
     }
 
@@ -98,12 +104,30 @@ public class MedicalPhysicalEntity extends BaseEntity {
         return this;
     }
 
+    public String getRespiratory() {
+        return respiratory;
+    }
+
+    public MedicalPhysicalEntity setRespiratory(String respiratory) {
+        this.respiratory = respiratory;
+        return this;
+    }
+
     public String getWeight() {
         return weight;
     }
 
     public MedicalPhysicalEntity setWeight(String weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public MedicalPhysicalEntity setHeight(String height) {
+        this.height = height;
         return this;
     }
 
@@ -120,7 +144,7 @@ public class MedicalPhysicalEntity extends BaseEntity {
     public String toString() {
         return "MedicalPhysicalEntity{" +
                 "queueUserId='" + queueUserId + '\'' +
-                ", pluse='" + pluse + '\'' +
+                ", pulse='" + pulse + '\'' +
                 ", bloodPressure=" + Arrays.toString(bloodPressure) +
                 ", weight='" + weight + '\'' +
                 '}';

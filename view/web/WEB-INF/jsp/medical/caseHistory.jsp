@@ -182,10 +182,10 @@
                         <ul class="list-form">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="medicalPhysical.pluse" cssErrorClass="lb_error">Pluse</form:label>
+                                    <form:label path="medicalPhysical.pulse" cssErrorClass="lb_error">Pluse</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="medicalPhysical.pluse" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    <form:input path="medicalPhysical.pulse" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>

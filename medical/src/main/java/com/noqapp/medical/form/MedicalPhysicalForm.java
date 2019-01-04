@@ -6,17 +6,17 @@ package com.noqapp.medical.form;
  */
 public class MedicalPhysicalForm {
 
-    private String pluse;
+    private String pulse;
     private String[] bloodPressure;
     //WT in kg
     private String weight;
 
-    public String getPluse() {
-        return pluse;
+    public String getPulse() {
+        return pulse;
     }
 
-    public MedicalPhysicalForm setPluse(String pluse) {
-        this.pluse = pluse;
+    public MedicalPhysicalForm setPulse(String pulse) {
+        this.pulse = pulse;
         return this;
     }
 
