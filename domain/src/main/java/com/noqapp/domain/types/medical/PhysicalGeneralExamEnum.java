@@ -6,10 +6,12 @@ package com.noqapp.domain.types.medical;
  */
 public enum PhysicalGeneralExamEnum {
     TE("TM", "Temperature"),
-    PL("PL", "Pluse"),
+    PL("PL", "Pulse"),
     BP("BP", "Blood Pressure"),
     OX("OX", "O2 Scan"),
-    WT("WT", "Weight");
+    RP("RP", "Respiratory"),
+    WT("WT", "Weight"),
+    HT("HT", "Height");
 
     private final String description;
     private final String name;
