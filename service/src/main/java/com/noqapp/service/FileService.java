@@ -15,6 +15,7 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.PublishArticleEntity;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.StoreProductEntity;
@@ -23,11 +24,13 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.CSVParsingException;
@@ -140,6 +143,7 @@ public class FileService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private StoreProductManager storeProductManager;
+    private PublishArticleManager publishArticleManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
 
@@ -163,6 +167,7 @@ public class FileService {
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
             StoreProductManager storeProductManager,
+            PublishArticleManager publishArticleManager,
             BizService bizService,
             StoreCategoryService storeCategoryService
     ) {
@@ -177,6 +182,7 @@ public class FileService {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.storeProductManager = storeProductManager;
+        this.publishArticleManager = publishArticleManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
     }
@@ -261,6 +267,55 @@ public class FileService {
             ftpService.delete(existingProfileImage, null, FtpService.PROFILE);
             s3FileManager.save(new S3FileEntity(qid, existingProfileImage, FtpService.PROFILE_AWS));
             accountService.unsetUserProfileImage(qid);
+        }
+    }
+
+    @Async
+    public void addArticleImage(String publishId, String filename, BufferedImage bufferedImage) {
+        PublishArticleEntity publishArticle = publishArticleManager.findOne(publishId);
+        deleteArticleImage(publishArticle);
+
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+        try {
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, publishId, FtpService.ARTICLE);
+
+            publishArticle
+                .setBannerImage(filename)
+                .setValidateStatus(ValidateStatusEnum.P);
+            publishArticleManager.save(publishArticle);
+        } catch (IOException e) {
+            LOG.error("Failed adding bizName image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
+    public void deleteArticleImage(PublishArticleEntity publishArticle) {
+        if (StringUtils.isNotBlank(publishArticle.getBannerImage())) {
+            /* Delete existing file business service image before the upload process began. */
+            ftpService.delete(publishArticle.getBannerImage(), null, FtpService.ARTICLE);
+
+            /* Delete from S3. */
+            s3FileManager.save(new S3FileEntity(publishArticle.getQueueUserId(), publishArticle.getId() + "/" + publishArticle.getBannerImage(), FtpService.ARTICLE_AWS));
         }
     }
 

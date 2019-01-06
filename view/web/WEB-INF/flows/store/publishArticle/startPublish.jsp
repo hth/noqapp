@@ -92,7 +92,7 @@
                                     </li>
                                 </ul>
 
-                                <form:textarea path="article" rows="10" cols="80" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                <form:textarea path="article" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
                                 <span style="display:block; font-size:13px; padding-top: 5px; text-align: right;">1000 characters</span>
                             </div>
 
