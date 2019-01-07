@@ -65,7 +65,7 @@ public class MasterLabService {
         this.medicalTransactionService = medicalTransactionService;
     }
 
-    public List<MasterLabEntity> findAll() {
+    private List<MasterLabEntity> findAll() {
         return masterLabManager.findAll();
     }
 
