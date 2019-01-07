@@ -29,6 +29,8 @@ import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.ProfessionalProfileManager;
+import com.noqapp.repository.PublishArticleManager;
+import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerImpl;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -125,6 +127,7 @@ public class ITest extends RealMongoForITest {
     protected BusinessCustomerManager businessCustomerManager;
     protected ApiHealthNowManager apiHealthNowManager;
     protected MasterLabManager masterLabManager;
+    protected PublishArticleManager publishArticleManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -160,6 +163,7 @@ public class ITest extends RealMongoForITest {
         businessCustomerManager = new BusinessCustomerManagerImpl(getMongoTemplate());
         apiHealthNowManager = new ApiHealthNowManagerImpl(getMongoTemplate());
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
+        publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -233,6 +237,7 @@ public class ITest extends RealMongoForITest {
             bizNameManager,
             bizStoreManager,
             storeProductManager,
+            publishArticleManager,
             bizService,
             storeCategoryService
         );
