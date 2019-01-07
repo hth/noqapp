@@ -393,7 +393,7 @@ public class FileOperationOnS3 {
                 }
             }
         } catch (FileSystemException e) {
-            LOG.error("Failed to get directory reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed to get directory={} reason={}", location, e.getLocalizedMessage(), e);
         } finally {
             manager.close();
         }
