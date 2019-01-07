@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.PublishArticleEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.PublishArticleManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,10 @@ public class PublishArticleService {
 
     public PublishArticleEntity findOnePendingReview(String id) {
         return publishArticleManager.findOnePendingReview(id);
+    }
+
+    @Mobile
+    public List<PublishArticleEntity> getLatestArticle() {
+        return publishArticleManager.getLatestArticle();
     }
 }

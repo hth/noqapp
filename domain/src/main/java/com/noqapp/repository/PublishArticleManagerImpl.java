@@ -1,5 +1,7 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -119,6 +121,20 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
     public PublishArticleEntity findOnePendingReview(String id) {
         return mongoTemplate.findOne(
             query(where("id").is(id).and("VS").is(ValidateStatusEnum.P)),
+            PublishArticleEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<PublishArticleEntity> getLatestArticle() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.A)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ).limit(10).with(new Sort(Sort.Direction.ASC, "PD")),
             PublishArticleEntity.class,
             TABLE
         );
