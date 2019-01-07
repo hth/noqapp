@@ -41,4 +41,12 @@ public class PublishArticleService {
     public void takeOffOrOnline(String id, boolean active) {
         publishArticleManager.takeOffOrOnline(id, active);
     }
+
+    public List<PublishArticleEntity> findPendingApprovals() {
+        return publishArticleManager.findPendingApprovals();
+    }
+
+    public PublishArticleEntity findOnePendingReview(String id) {
+        return publishArticleManager.findOnePendingReview(id);
+    }
 }

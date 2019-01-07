@@ -4,6 +4,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.types.ValidateStatusEnum;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * hitender
@@ -15,7 +16,7 @@ public class PublishArticleForm extends FileUploadForm implements Serializable {
     private String article;
     private String bannerImage;
 
-    private String publishDate;
+    private Date publishDate;
     private ValidateStatusEnum validateStatus = ValidateStatusEnum.I;
 
     /* Other properties. */
@@ -57,11 +58,11 @@ public class PublishArticleForm extends FileUploadForm implements Serializable {
         return this;
     }
 
-    public String getPublishDate() {
+    public Date getPublishDate() {
         return publishDate;
     }
 
-    public PublishArticleForm setPublishDate(String publishDate) {
+    public PublishArticleForm setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
         return this;
     }

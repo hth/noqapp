@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -103,5 +104,23 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
     @Override
     public void deleteHard(PublishArticleEntity object) {
         mongoTemplate.remove(object, TABLE);
+    }
+
+    @Override
+    public List<PublishArticleEntity> findPendingApprovals() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.P)).with(new Sort(Sort.Direction.ASC, "C")),
+            PublishArticleEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public PublishArticleEntity findOnePendingReview(String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(id).and("VS").is(ValidateStatusEnum.P)),
+            PublishArticleEntity.class,
+            TABLE
+        );
     }
 }

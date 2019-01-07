@@ -75,7 +75,7 @@ public class PublishArticleController {
         @Value("${aws.s3.bucketName}")
         String bucketName,
 
-        @Value("${nextPage:/business/publishArticleLanding}")
+        @Value("${nextPage:/business/publishArticle/landing}")
         String nextPage,
 
         @Value("${publishArticleFlow:redirect:/store/publishArticle.htm}")
@@ -114,7 +114,9 @@ public class PublishArticleController {
                     .setBannerImage(publishArticle.getBannerImage())
                     .setPublishId(new ScrubbedInput(publishArticle.getId()))
                     .setActive(publishArticle.isActive())
-                    .setValidateStatus(publishArticle.getValidateStatus()));
+                    .setValidateStatus(publishArticle.getValidateStatus())
+                    .setPublishDate(publishArticle.getPublishDate()));
+
         }
         model.addAttribute("publishArticleForms", publishArticleForms);
         return nextPage;
@@ -190,9 +192,8 @@ public class PublishArticleController {
         publishArticleForm
             .setPublishId(new ScrubbedInput(publishId))
             .setBannerImage(publishArticle.getBannerImage());
-        model.addAttribute("publishArticleForm", publishArticleForm);
         model.addAttribute("bucketName", bucketName);
-        return "/business/publishArticlePhoto";
+        return "/business/publishArticle/photo";
     }
 
     /** For uploading service image. */

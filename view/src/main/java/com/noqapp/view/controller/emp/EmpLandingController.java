@@ -1,12 +1,18 @@
 package com.noqapp.view.controller.emp;
 
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.PublishArticleEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.PublishArticleService;
 import com.noqapp.service.emp.EmpLandingService;
+import com.noqapp.view.form.PublishArticleForm;
 import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
 import com.noqapp.view.form.emp.EmpLandingForm;
 
@@ -19,11 +25,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender
@@ -40,14 +52,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EmpLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(EmpLandingController.class);
 
+    private String bucketName;
     private String empLanding;
     private String businessAwaitingApproval;
+
     private BusinessUserService businessUserService;
     private AccountService accountService;
     private EmpLandingService empLandingService;
+    private PublishArticleService publishArticleService;
 
     @Autowired
     public EmpLandingController(
+            @Value("${aws.s3.bucketName}")
+            String bucketName,
+
             @Value ("${empLanding:/emp/landing}")
             String empLanding,
 
@@ -56,14 +74,17 @@ public class EmpLandingController {
 
             BusinessUserService businessUserService,
             AccountService accountService,
-            EmpLandingService empLandingService
+            EmpLandingService empLandingService,
+            PublishArticleService publishArticleService
     ) {
+        this.bucketName = bucketName;
         this.empLanding = empLanding;
         this.businessAwaitingApproval = businessAwaitingApproval;
 
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.empLandingService = empLandingService;
+        this.publishArticleService = publishArticleService;
     }
 
     @GetMapping
@@ -73,11 +94,10 @@ public class EmpLandingController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
-
         empLandingForm
                 .setAwaitingApprovalCount(businessUserService.awaitingBusinessApprovalCount())
-                .setBusinessUsers(businessUserService.awaitingBusinessApprovals());
-
+                .setBusinessUsers(businessUserService.awaitingBusinessApprovals())
+                .setPublishArticles(publishArticleService.findPendingApprovals());
         return empLanding;
     }
 
@@ -138,6 +158,70 @@ public class EmpLandingController {
                 businessAwaitingApprovalForm.getBusinessUser().getId(),
                 queueUser.getQueueUserId());
 
+        return "redirect:" + "/emp/landing.htm";
+    }
+
+    @GetMapping(value = "/publishArticle/{publishId}/preview", produces = "text/html;charset=UTF-8")
+    public String newArticle(
+        @PathVariable("publishId")
+        ScrubbedInput publishId,
+
+        @ModelAttribute("publishArticleForm")
+        PublishArticleForm publishArticleForm,
+
+        Model model,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed to preview article qid={}", queueUser.getQueueUserId());
+        PublishArticleEntity publishArticle = publishArticleService.findOnePendingReview(publishId.getText());
+        if (null == publishArticle) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
+
+        publishArticleForm
+            .setBannerImage(publishArticle.getBannerImage())
+            .setArticleTitle(new ScrubbedInput(publishArticle.getTitle()))
+            .setArticle(publishArticle.getContent())
+            .setPublishId(new ScrubbedInput(publishArticle.getId()));
+        model.addAttribute("bucketName", bucketName);
+        return "/emp/publishArticle/preview";
+    }
+
+    @PostMapping(value = "/publishArticle/preview", produces = "text/html;charset=UTF-8")
+    public String newArticle(
+        @ModelAttribute("publishArticleForm")
+        PublishArticleForm publishArticleForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed to preview article qid={}", queueUser.getQueueUserId());
+        PublishArticleEntity publishArticle = publishArticleService.findOnePendingReview(publishArticleForm.getPublishId().getText());
+        if (null == publishArticle) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
+
+        switch (publishArticleForm.getValidateStatus()) {
+            case A:
+                if (null == publishArticle.getPublishDate()) {
+                    publishArticle.setPublishDate(new Date());
+                }
+                publishArticle.setValidateStatus(ValidateStatusEnum.A);
+                break;
+            case R:
+                publishArticle.setValidateStatus(ValidateStatusEnum.R);
+                break;
+            default:
+                LOG.error("Reached unsupported condition={}", publishArticleForm.getValidateStatus());
+                throw new UnsupportedOperationException("Reached unsupported condition " + publishArticleForm.getValidateStatus());
+        }
+        publishArticle.setValidateByQid(queueUser.getQueueUserId());
+        publishArticleService.save(publishArticle);
         return "redirect:" + "/emp/landing.htm";
     }
 }

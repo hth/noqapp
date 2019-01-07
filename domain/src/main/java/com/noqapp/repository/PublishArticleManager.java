@@ -20,4 +20,8 @@ public interface PublishArticleManager extends RepositoryManager<PublishArticleE
     void takeOffOrOnline(String id, boolean active);
 
     PublishArticleEntity changeStatus(String id, ValidateStatusEnum validateStatus);
+
+    List<PublishArticleEntity> findPendingApprovals();
+
+    PublishArticleEntity findOnePendingReview(String id);
 }

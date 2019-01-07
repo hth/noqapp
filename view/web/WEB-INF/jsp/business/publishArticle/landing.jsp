@@ -1,5 +1,5 @@
 <%@ page import="com.noqapp.domain.types.ValidateStatusEnum" %>
-<%@ include file="../include.jsp" %>
+<%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -122,12 +122,12 @@
                                                 <td nowrap>
                                                     <c:choose>
                                                         <c:when test="${!empty item.bannerImage}">
-                                                            Exists
+                                                            Image Exists
                                                             <br/>
                                                             <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload.htm" class="add-btn">Edit Image</a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            N/A
+                                                            Image Missing
                                                             <br/>
                                                             <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload.htm" class="add-btn">Add Image</a>
                                                         </c:otherwise>
@@ -136,7 +136,7 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${!empty item.publishDate}">
-                                                            ${item.publishDate}
+                                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.publishDate}"/>
                                                         </c:when>
                                                         <c:otherwise>
                                                             N/A
