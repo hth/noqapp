@@ -1,10 +1,21 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.PublishArticleEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.PublishArticleService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.form.PublishArticleForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +34,21 @@ public class PublishArticleFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(PublishArticleFlowActions.class);
 
     private BusinessUserService businessUserService;
+    private PublishArticleService publishArticleService;
+    private BusinessUserStoreService businessUserStoreService;
+    private BizService bizService;
 
     @Autowired
-    public PublishArticleFlowActions(BusinessUserService businessUserService) {
+    public PublishArticleFlowActions(
+        BusinessUserService businessUserService,
+        PublishArticleService publishArticleService,
+        BusinessUserStoreService businessUserStoreService,
+        BizService bizService
+    ) {
         this.businessUserService = businessUserService;
+        this.publishArticleService = publishArticleService;
+        this.businessUserStoreService = businessUserStoreService;
+        this.bizService = bizService;
     }
 
     /**
@@ -34,7 +56,21 @@ public class PublishArticleFlowActions {
      * @return
      */
     @SuppressWarnings("unused")
-    public PublishArticleForm initiatePublishArticle() {
+    public PublishArticleForm initiatePublishArticle(String publishId) {
+        if (StringUtils.isBlank(publishId)) {
+            return PublishArticleForm.newInstance();
+        } else {
+            PublishArticleEntity publishArticle = publishArticleService.findOne(publishId);
+            return PublishArticleForm.newInstance()
+                .setArticleTitle(new ScrubbedInput(publishArticle.getTitle()))
+                .setArticle(publishArticle.getContent())
+                .setPublishId(new ScrubbedInput(publishId))
+                .setBannerImage(publishArticle.getBannerImage());
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public String confirm(PublishArticleForm publishArticleForm) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -43,12 +79,32 @@ public class PublishArticleFlowActions {
         }
         /* Above condition to make sure users with right roles and access gets access. */
 
-        return PublishArticleForm.newInstance();
-    }
+        if (publishArticleForm.getPublishId() == null) {
+            String businessCategoryId = null;
+            if (BusinessTypeEnum.DO == businessUser.getBizName().getBusinessType()) {
+                BusinessUserStoreEntity businessUserStore = businessUserStoreService.findUserManagingStoreWithUserLevel(queueUser.getQueueUserId(), businessUser.getUserLevel());
+                BizStoreEntity bizStore = bizService.getByStoreId(businessUserStore.getBizStoreId());
+                businessCategoryId = bizStore.getBizCategoryId();
+            }
 
-    @SuppressWarnings("unused")
-    public String confirm(PublishArticleForm publishArticleForm) {
-        LOG.info("{}", publishArticleForm.getFile().getContentType());
+            PublishArticleEntity publishArticle = new PublishArticleEntity()
+                .setQueueUserId(queueUser.getQueueUserId())
+                .setTitle(publishArticleForm.getArticleTitle().getText())
+                .setBusinessType(businessUser.getBizName().getBusinessType())
+                .setBizCategoryId(businessCategoryId)
+                .setValidateStatus(publishArticleForm.getValidateStatus())
+                .setContent(publishArticleForm.getArticle());
+
+            publishArticleService.save(publishArticle);
+        } else {
+            PublishArticleEntity publishArticle = publishArticleService.findOne(publishArticleForm.getPublishId().getText());
+            publishArticle
+                .setTitle(publishArticleForm.getArticleTitle().getText())
+                .setValidateStatus(StringUtils.isBlank(publishArticle.getBannerImage()) ? ValidateStatusEnum.I : ValidateStatusEnum.P)
+                .setContent(publishArticleForm.getArticle());
+
+            publishArticleService.save(publishArticle);
+        }
         return "success";
     }
 }

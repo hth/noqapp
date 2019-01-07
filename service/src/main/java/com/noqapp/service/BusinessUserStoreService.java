@@ -384,4 +384,8 @@ public class BusinessUserStoreService {
     public BusinessUserStoreEntity findUserManagingStoreWithCodeQRAndUserLevel(String codeQR) {
         return businessUserStoreManager.findUserManagingStoreWithCodeQRAndUserLevel(codeQR, UserLevelEnum.S_MANAGER);
     }
+
+    public BusinessUserStoreEntity findUserManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
+        return businessUserStoreManager.findUserManagingStoreWithUserLevel(qid, userLevel);
+    }
 }

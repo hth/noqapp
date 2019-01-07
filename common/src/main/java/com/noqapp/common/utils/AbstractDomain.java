@@ -44,8 +44,9 @@ public abstract class AbstractDomain {
     public String asXML() {
         try {
             XmlMapper xmlMapper = new XmlMapper();
-            xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
-                    .enable(SerializationFeature.INDENT_OUTPUT);
+            xmlMapper
+                .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+                .enable(SerializationFeature.INDENT_OUTPUT);
             return xmlMapper.writeValueAsString(this);
         } catch (IOException e) {
             LOG.error("Failed XML transforming object error={}", e.getLocalizedMessage(), e);

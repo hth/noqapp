@@ -27,8 +27,8 @@ public class MigrateToBusinessProfileValidator {
 
     @Autowired
     public MigrateToBusinessProfileValidator(
-            UserFlowValidator userFlowValidator,
-            AccountService accountService
+        UserFlowValidator userFlowValidator,
+        AccountService accountService
     ) {
         this.userFlowValidator = userFlowValidator;
         this.accountService = accountService;
@@ -56,37 +56,37 @@ public class MigrateToBusinessProfileValidator {
              * address and phone are from different countries. Or user does not exists.
              */
             LOG.error("Could not find user with phone={} countryShortName={} qid={}",
-                    registerUser.getPhoneWithCountryCode(),
-                    registerUser.getCountryShortName(),
-                    qid);
+                registerUser.getPhoneWithCountryCode(),
+                registerUser.getCountryShortName(),
+                qid);
 
             if (!queueUser.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "address")
-                                .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "address")
+                        .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
+                        .build());
 
                 status = "failure";
             } else {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "phone")
-                                .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "phone")
+                        .defaultText("Could not find user with phone number " + registerUser.getPhoneWithCountryCode())
+                        .build());
 
                 status = "failure";
             }
         } else if (!userProfile.getQueueUserId().equalsIgnoreCase(qid)) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "phone")
-                            .defaultText("User already exists with this number. Please try to recover account before proceeding.")
-                            .build());
-            
+                new MessageBuilder()
+                    .error()
+                    .source(source + "phone")
+                    .defaultText("User already exists with this number. Please try to recover account before proceeding.")
+                    .build());
+
             status = "failure";
         }
 

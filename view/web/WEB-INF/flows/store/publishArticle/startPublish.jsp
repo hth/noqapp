@@ -72,15 +72,15 @@
 
                             <div class="add-new">
                                 <ul class="list-form">
-                                    <li>
-                                        <div class="col-lable3" style="padding-top: 30px;">
-                                            <form:label path="file" cssErrorClass="lb_error">Select Article Image</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input class="next-btn" type="file" path="file" id="file"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
+                                    <%--<li>--%>
+                                        <%--<div class="col-lable3" style="padding-top: 30px;">--%>
+                                            <%--<form:label path="file" cssErrorClass="lb_error">Select Article Image</form:label>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="col-fields">--%>
+                                            <%--<form:input class="next-btn" type="file" path="file" id="file"/>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="clearFix"></div>--%>
+                                    <%--</li>--%>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="articleTitle" cssErrorClass="lb_error">Title</form:label>
@@ -92,8 +92,8 @@
                                     </li>
                                 </ul>
 
-                                <form:textarea path="article" rows="10" cols="80" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
-                                <span style="display:block; font-size:13px; padding-top: 5px; text-align: right;">1000 characters</span>
+                                <form:textarea path="article" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                <span style="display:block; font-size:13px; padding-top: 5px; text-align: right;">minimum 1000 characters</span>
                             </div>
 
                             <div class="col-lable3"></div>

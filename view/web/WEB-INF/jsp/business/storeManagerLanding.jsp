@@ -32,7 +32,6 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/store/publishArticle/landing.htm">Publish Article</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
@@ -64,8 +63,9 @@
                                 <c:choose>
                                     <c:when test="${not empty storeManagerForm.businessTypeMap[BusinessTypeEnum.DO]}">
                                         <div class="alert-info" style="text-align: left">
-                                            <p>Contact Administrator to modify details</p>
+                                            <p>Contact Administrator to modify store details</p>
                                         </div>
+                                        <a href="/business/store/publishArticle/landing.htm" class="add-btn">Publish Article</a>
                                     </c:when>
                                     <c:otherwise>
                                         <!-- Currently Managers are not supported to add new store. -->

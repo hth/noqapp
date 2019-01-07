@@ -51,12 +51,11 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Total awaiting approvals: <span>${empLandingForm.awaitingApprovalCount}</span></h3>
+                        <h3>Total business awaiting approvals: <span>${empLandingForm.awaitingApprovalCount}</span></h3>
                         <c:choose>
                         <c:when test="${!empty empLandingForm.businessUsers}">
                         <div class="add-store">
                             <div class="store-table">
-
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th width="4%">&nbsp;</th>
@@ -67,7 +66,10 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td><a href="/emp/landing/${businessUser.id}.htm">${businessUser.bizName.businessName}</a></td>
-                                        <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/><span class="light-color">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span></td>
+                                        <td>
+                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/>
+                                            <span class="light-color">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span>
+                                        </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -77,6 +79,41 @@
                         <c:otherwise>
                         <div class="alert-info">
                             <div class="no-approve">There are no new business to approve.</div>
+                        </div>
+                        </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <br/>
+                <div class="admin-content">
+                    <div class="store">
+                        <h3>Total article awaiting approvals: <span>${empLandingForm.publishArticles.size()}</span></h3>
+                        <c:choose>
+                        <c:when test="${!empty empLandingForm.publishArticles}">
+                        <div class="add-store">
+                            <div class="store-table">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th width="4%">&nbsp;</th>
+                                        <th width="64%">Article Title</th>
+                                        <th width="20%">Category</th>
+                                        <th width="12%"></th>
+                                    </tr>
+                                    <c:forEach items="${empLandingForm.publishArticles}" var="publishArticle" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td>${publishArticle.title}</td>
+                                        <td>${publishArticle.businessType.description}</td>
+                                        <td><a href="${pageContext.request.contextPath}/emp/landing/publishArticle/${publishArticle.id}/preview.htm" class="add-btn">Preview</a></td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </div>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="alert-info">
+                            <div class="no-approve">There are no new article to approve.</div>
                         </div>
                         </c:otherwise>
                         </c:choose>
