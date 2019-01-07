@@ -52,7 +52,7 @@ public class PublishArticleService {
     }
 
     @Mobile
-    public List<PublishArticleEntity> getLatestArticle() {
-        return publishArticleManager.getLatestArticle();
+    public List<PublishArticleEntity> getLatestArticles() {
+        return publishArticleManager.getLatestArticles();
     }
 }

@@ -127,7 +127,7 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
     }
 
     @Override
-    public List<PublishArticleEntity> getLatestArticle() {
+    public List<PublishArticleEntity> getLatestArticles() {
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
                 .andOperator(
