@@ -82,7 +82,7 @@
                                         <%--<div class="clearFix"></div>--%>
                                     <%--</li>--%>
                                     <li>
-                                        <div class="col-lable3">
+                                        <div class="col-lable3" style="padding-top: 30px;">
                                             <form:label path="articleTitle" cssErrorClass="lb_error">Title</form:label>
                                         </div>
                                         <div class="col-fields">
