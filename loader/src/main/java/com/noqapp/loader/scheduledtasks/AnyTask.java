@@ -41,7 +41,7 @@ public class AnyTask {
 
     @Autowired
     public AnyTask(
-        @Value("${oneTimeStatusSwitch:ON}")
+        @Value("${oneTimeStatusSwitch:OFF}")
         String oneTimeStatusSwitch,
 
         Environment environment,
@@ -69,7 +69,8 @@ public class AnyTask {
         LOG.info("Run someTask in AnyTask");
 
         /* Write your method after here. Un-comment @Scheduled. */
-        masterLabManager.deleteAll();
+        masterLabManager.deleteMatching(MRI);
+        masterLabManager.deleteMatching(SCAN);
 
         List<MasterLabEntity> masterRadiologies = new ArrayList<MasterLabEntity>() {{
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis").setHealthCareService(MRI));
@@ -81,7 +82,7 @@ public class AnyTask {
             add(new MasterLabEntity().setProductName("Brain & Orbit").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain With CP Angle").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain With CV Junction").setHealthCareService(MRI));
-            add(new MasterLabEntity().setProductName("Brain With IAM ").setHealthCareService(MRI));
+            add(new MasterLabEntity().setProductName("Brain With IAM").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain With Venogram").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain – Pitutary P+C").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain + DTI").setHealthCareService(MRI));
@@ -178,7 +179,7 @@ public class AnyTask {
             add(new MasterLabEntity().setProductName("PNS - HRCT(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Pulmonary Angio").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Thorax").setHealthCareService(SCAN));
-            add(new MasterLabEntity().setProductName("Thorax(p+c)").setHealthCareService(SCAN));
+            add(new MasterLabEntity().setProductName("Thorax(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("TM Jt").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("TM Jt(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Upper Abdomen").setHealthCareService(SCAN));
@@ -189,12 +190,12 @@ public class AnyTask {
             add(new MasterLabEntity().setProductName("Dental Maxilla").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Angio of Abdomen").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Face").setHealthCareService(SCAN));
-            add(new MasterLabEntity().setProductName("Bronchoscopy With Chest ").setHealthCareService(SCAN));
+            add(new MasterLabEntity().setProductName("Bronchoscopy With Chest").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Bronchoscopy With Chest(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Brain With Pituitary Fossa").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Brain With Pituitary Fossa(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Aorta Angio").setHealthCareService(SCAN));
-            add(new MasterLabEntity().setProductName("Abdomen & Pelvis ").setHealthCareService(SCAN));
+            add(new MasterLabEntity().setProductName("Abdomen & Pelvis").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Orbit").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Orbit(P+C)").setHealthCareService(SCAN));
             add(new MasterLabEntity().setProductName("Whole Body").setHealthCareService(SCAN));
