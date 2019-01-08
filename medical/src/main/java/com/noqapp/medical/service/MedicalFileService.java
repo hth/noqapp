@@ -41,15 +41,13 @@ public class MedicalFileService {
                 case SONO:
                 case SCAN:
                 case SPEC:
+                case PATH:
                     records = CSVFormat.DEFAULT
                         .withHeader(RADIOLOGY_PRODUCT_HEADERS)
                         .withFirstRecordAsHeader()
                         .parse(new InputStreamReader(in));
                     break;
                 case PHYS:
-                    LOG.error("Reached unsupported condition={}", healthCareService);
-                    throw new UnsupportedOperationException("Reached unsupported condition " + healthCareService);
-                case PATH:
                     LOG.error("Reached unsupported condition={}", healthCareService);
                     throw new UnsupportedOperationException("Reached unsupported condition " + healthCareService);
                 default:
@@ -83,14 +81,13 @@ public class MedicalFileService {
             case SCAN:
             case MRI:
             case SPEC:
+            case PATH:
                 masterLab
                     .setProductName(record.get("Name").trim())
                     .setProductShortName(record.get("Name").trim())
                     .setHealthCareService(healthCareService);
                 break;
             case PHYS:
-                break;
-            case PATH:
                 break;
             default:
                 LOG.error("Reached unsupported condition={}", healthCareService);
