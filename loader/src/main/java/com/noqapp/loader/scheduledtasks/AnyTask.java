@@ -41,7 +41,7 @@ public class AnyTask {
 
     @Autowired
     public AnyTask(
-        @Value("${oneTimeStatusSwitch:ON}")
+        @Value("${oneTimeStatusSwitch:OFF}")
         String oneTimeStatusSwitch,
 
         Environment environment,
@@ -69,7 +69,8 @@ public class AnyTask {
         LOG.info("Run someTask in AnyTask");
 
         /* Write your method after here. Un-comment @Scheduled. */
-        masterLabManager.deleteAll();
+        masterLabManager.deleteMatching(MRI);
+        masterLabManager.deleteMatching(SCAN);
 
         List<MasterLabEntity> masterRadiologies = new ArrayList<MasterLabEntity>() {{
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis").setHealthCareService(MRI));
