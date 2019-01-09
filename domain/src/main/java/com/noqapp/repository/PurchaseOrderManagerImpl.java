@@ -63,8 +63,13 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public void save(PurchaseOrderEntity object) {
-        if (object.getId() != null) {
+        if (null != object.getId()) {
             object.setUpdated();
+        }
+
+        /* Add Transaction Id when empty. This gets replaced right after this step. */
+        if (null == object.getTransactionId()) {
+            object.setTransactionId(object.getId());
         }
         mongoTemplate.save(object, TABLE);
     }
