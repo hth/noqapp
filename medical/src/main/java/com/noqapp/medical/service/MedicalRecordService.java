@@ -28,6 +28,7 @@ import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
+import com.noqapp.medical.domain.json.JsonMedicalPhysicalList;
 import com.noqapp.medical.domain.json.JsonMedicalRadiology;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
@@ -585,6 +586,31 @@ public class MedicalRecordService {
         return jsonMedicalRecordList;
     }
 
+    /** Populate data for client case histories.*/
+    @Mobile
+    public JsonMedicalPhysicalList populateMedicalPhysicalHistory(String qid) {
+        JsonMedicalPhysicalList jsonMedicalPhysicalList = new JsonMedicalPhysicalList();
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
+        List<String> queueUserIds = new LinkedList<String>() {{
+            add(qid);
+        }};
+
+        for (UserProfileEntity userProfileOfDependent : dependentUserProfiles) {
+            queueUserIds.add(userProfileOfDependent.getQueueUserId());
+        }
+
+        for (String queueUserId : queueUserIds) {
+            List<MedicalPhysicalEntity> medicalPhysicals = findByQid(queueUserId);
+            for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
+                jsonMedicalPhysicalList.addJsonMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
+            }
+        }
+
+        return jsonMedicalPhysicalList;
+    }
+
     private JsonMedicalRecord getJsonMedicalRecord(MedicalRecordEntity medicalRecord) {
         UserProfileEntity userProfile = null;
         if (StringUtils.isNotBlank(medicalRecord.getDiagnosedById())) {
@@ -616,15 +642,7 @@ public class MedicalRecordService {
                 : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
 
         if (null != medicalRecord.getMedicalPhysical()) {
-            jsonMedicalRecord.setMedicalPhysical(
-                new JsonMedicalPhysical()
-                    .setTemperature(medicalRecord.getMedicalPhysical().getTemperature())
-                    .setBloodPressure(medicalRecord.getMedicalPhysical().getBloodPressure())
-                    .setPulse(medicalRecord.getMedicalPhysical().getPulse())
-                    .setOxygen(medicalRecord.getMedicalPhysical().getOxygen())
-                    .setRespiratory(medicalRecord.getMedicalPhysical().getRespiratory())
-                    .setWeight(medicalRecord.getMedicalPhysical().getWeight())
-                    .setHeight(medicalRecord.getMedicalPhysical().getHeight()));
+            jsonMedicalRecord.setMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalRecord.getMedicalPhysical()));
         }
 
         if (null != medicalRecord.getMedicalMedication()) {

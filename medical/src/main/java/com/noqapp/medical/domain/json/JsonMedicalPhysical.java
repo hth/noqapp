@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.medical.domain.MedicalPhysicalEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.beans.Transient;
 
 /**
  * hitender
@@ -125,5 +128,17 @@ public class JsonMedicalPhysical extends AbstractDomain {
     public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
         this.diagnosedById = diagnosedById;
         return this;
+    }
+
+    @Transient
+    public static JsonMedicalPhysical populateJsonMedicalPhysical(MedicalPhysicalEntity medicalPhysical) {
+        return new JsonMedicalPhysical()
+            .setTemperature(medicalPhysical.getTemperature())
+            .setBloodPressure(medicalPhysical.getBloodPressure())
+            .setPulse(medicalPhysical.getPulse())
+            .setOxygen(medicalPhysical.getOxygen())
+            .setRespiratory(medicalPhysical.getRespiratory())
+            .setWeight(medicalPhysical.getWeight())
+            .setHeight(medicalPhysical.getHeight());
     }
 }
