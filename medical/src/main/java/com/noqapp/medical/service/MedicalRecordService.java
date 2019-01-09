@@ -565,16 +565,7 @@ public class MedicalRecordService {
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
-        List<String> queueUserIds = new LinkedList<String>() {{
-            add(qid);
-        }};
-
-        for (UserProfileEntity userProfileOfDependent : dependentUserProfiles) {
-            queueUserIds.add(userProfileOfDependent.getQueueUserId());
-        }
-
+        List<String> queueUserIds = getAllQIDsForGuardian(qid);
         for (String queueUserId : queueUserIds) {
             List<MedicalRecordEntity> medicalRecords = historicalRecords(queueUserId);
             for (MedicalRecordEntity medicalRecord : medicalRecords) {
@@ -591,6 +582,18 @@ public class MedicalRecordService {
     public JsonMedicalPhysicalList populateMedicalPhysicalHistory(String qid) {
         JsonMedicalPhysicalList jsonMedicalPhysicalList = new JsonMedicalPhysicalList();
 
+        List<String> queueUserIds = getAllQIDsForGuardian(qid);
+        for (String queueUserId : queueUserIds) {
+            List<MedicalPhysicalEntity> medicalPhysicals = findByQid(queueUserId);
+            for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
+                jsonMedicalPhysicalList.addJsonMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
+            }
+        }
+
+        return jsonMedicalPhysicalList;
+    }
+
+    private List<String> getAllQIDsForGuardian(String qid) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
         List<String> queueUserIds = new LinkedList<String>() {{
@@ -600,15 +603,7 @@ public class MedicalRecordService {
         for (UserProfileEntity userProfileOfDependent : dependentUserProfiles) {
             queueUserIds.add(userProfileOfDependent.getQueueUserId());
         }
-
-        for (String queueUserId : queueUserIds) {
-            List<MedicalPhysicalEntity> medicalPhysicals = findByQid(queueUserId);
-            for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
-                jsonMedicalPhysicalList.addJsonMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
-            }
-        }
-
-        return jsonMedicalPhysicalList;
+        return queueUserIds;
     }
 
     private JsonMedicalRecord getJsonMedicalRecord(MedicalRecordEntity medicalRecord) {
