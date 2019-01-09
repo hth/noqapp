@@ -330,6 +330,25 @@ public class MedicalRecordService {
 
         medicalRadiologyManager.save(medicalRadiology);
         medicalRecord.setMedicalRadiology(medicalRadiology);
+
+        executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord));
+    }
+
+    /** Creates order from radiology prescribed. */
+    private void createRadiologyOrder(JsonMedicalRecord jsonMedicalRecord) {
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
+        for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRecord.getMedicalRadiologies()) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                .setProductName(jsonMedicalRadiology.getName())
+                .setProductPrice(0)
+                .setProductDiscount(0)
+                .setProductId(null)
+                .setProductQuantity(jsonMedicalRadiology.getTimes());
+
+            jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
+        }
+
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -352,6 +371,25 @@ public class MedicalRecordService {
 
         medicalPathologyManager.save(medicalPathology);
         medicalRecord.setMedicalLaboratory(medicalPathology);
+
+        executorService.submit(() -> createPathologyOrder(jsonMedicalRecord));
+    }
+
+    /** Creates order from pathology lab test prescribed. */
+    private void createPathologyOrder(JsonMedicalRecord jsonMedicalRecord) {
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
+        for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                .setProductName(jsonMedicalPathology.getName())
+                .setProductPrice(0)
+                .setProductDiscount(0)
+                .setProductId(null)
+                .setProductQuantity(jsonMedicalPathology.getTimes());
+
+            jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
+        }
+
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -402,21 +440,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
-        jsonPurchaseOrder
-            .setCustomerName(userProfile.getName())
-            .setDeliveryAddress(userProfile.getAddress())
-            .setCustomerPhone(userProfile.getPhone())
-            .setDeliveryType(DeliveryTypeEnum.TO)
-            .setPaymentType(PaymentTypeEnum.CA)
-            .setBizStoreId(jsonMedicalRecord.getStoreIdPharmacy());
-
-        purchaseOrderService.createOrder(
-            jsonPurchaseOrder,
-            jsonMedicalRecord.getQueueUserId(),
-            null,
-            TokenServiceEnum.M
-        );
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
     }
 
     //TODO(hth) not tested web logic
@@ -653,5 +677,28 @@ public class MedicalRecordService {
         }
 
         return new JsonQueuePersonList().setQueuedPeople(jsonQueuedPeople).asJson();
+    }
+
+    /**
+     * Puts in a purchase order.
+     * @param jsonMedicalRecord
+     * @param jsonPurchaseOrder
+     */
+    private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
+        jsonPurchaseOrder
+            .setCustomerName(userProfile.getName())
+            .setDeliveryAddress(userProfile.getAddress())
+            .setCustomerPhone(userProfile.getPhone())
+            .setDeliveryType(DeliveryTypeEnum.TO)
+            .setPaymentType(PaymentTypeEnum.CA)
+            .setBizStoreId(jsonMedicalRecord.getStoreIdPharmacy());
+
+        purchaseOrderService.createOrder(
+            jsonPurchaseOrder,
+            jsonMedicalRecord.getQueueUserId(),
+            null,
+            TokenServiceEnum.M
+        );
     }
 }
