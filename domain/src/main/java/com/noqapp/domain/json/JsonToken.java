@@ -167,12 +167,14 @@ public class JsonToken extends AbstractDomain {
     @Override
     public String toString() {
         return "JsonToken{" +
-                "codeQR='" + codeQR + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", queueStatus=" + queueStatus +
-                ", servingNumber=" + servingNumber +
-                ", token=" + token +
-                ", customerName='" + customerName + '\'' +
-                '}';
+            "codeQR='" + codeQR + '\'' +
+            ", displayName='" + displayName + '\'' +
+            ", businessType=" + businessType +
+            ", queueStatus=" + queueStatus +
+            ", servingNumber=" + servingNumber +
+            ", token=" + token +
+            ", customerName='" + customerName + '\'' +
+            ", expectedServiceBegin='" + expectedServiceBegin + '\'' +
+            '}';
     }
 }
