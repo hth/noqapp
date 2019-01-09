@@ -348,7 +348,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdRadiology());
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -389,7 +389,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdPathology());
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -440,7 +440,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder);
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdPharmacy());
     }
 
     //TODO(hth) not tested web logic
@@ -684,7 +684,7 @@ public class MedicalRecordService {
      * @param jsonMedicalRecord
      * @param jsonPurchaseOrder
      */
-    private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder) {
+    private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder, String bizStoreId) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
         jsonPurchaseOrder
             .setCustomerName(userProfile.getName())
@@ -692,7 +692,7 @@ public class MedicalRecordService {
             .setCustomerPhone(userProfile.getPhone())
             .setDeliveryType(DeliveryTypeEnum.TO)
             .setPaymentType(PaymentTypeEnum.CA)
-            .setBizStoreId(jsonMedicalRecord.getStoreIdPharmacy());
+            .setBizStoreId(bizStoreId);
 
         purchaseOrderService.createOrder(
             jsonPurchaseOrder,
