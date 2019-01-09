@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
+
 /**
  * hitender
  * 4/3/18 6:07 PM
@@ -53,5 +55,10 @@ public class JsonMedicalPathology extends AbstractDomain {
     public JsonMedicalPathology setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
+    }
+
+    @Transient
+    public int getTimes() {
+        return 1;
     }
 }
