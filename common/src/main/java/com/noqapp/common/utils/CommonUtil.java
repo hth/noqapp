@@ -188,8 +188,8 @@ public final class CommonUtil {
             + "-" + token
             + "-" + (random.ints(0, 100).findFirst().getAsInt() + 100)
             + "-" + generateHexFromObjectId().substring(0, 8);
-        
-        LOG.info("{}", transactionId);
+
+        LOG.info("transaction id={} storeId={} token={}", transactionId, storeId, token);
         return transactionId;
     }
 
