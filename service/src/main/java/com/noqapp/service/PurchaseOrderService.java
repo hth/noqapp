@@ -289,7 +289,6 @@ public class PurchaseOrderService {
         }
         transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
         JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-        LOG.debug("JsonToken={}", jsonToken);
         Date expectedServiceBegin = null;
         try {
             if (null != jsonToken.getExpectedServiceBegin()) {

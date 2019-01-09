@@ -184,13 +184,10 @@ public final class CommonUtil {
     }
 
     public static String generateTransactionId(String storeId, int token) {
-        String transactionId = storeId.substring(18, 24)
+        return storeId.substring(18, 24)
             + "-" + token
             + "-" + (random.ints(0, 100).findFirst().getAsInt() + 100)
-            + "-" + generateHexFromObjectId().substring(16, 24);
-
-        LOG.info("transaction id={} storeId={} token={}", transactionId, storeId, token);
-        return transactionId;
+            + "-" + generateHexFromObjectId().substring(0, 8);
     }
 
     /**
