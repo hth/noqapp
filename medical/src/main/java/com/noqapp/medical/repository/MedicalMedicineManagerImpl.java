@@ -79,11 +79,7 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         List<MedicalMedicineEntity> medicalMedicines = new LinkedList<>();
         for (String id : ids) {
-            medicalMedicines.add(mongoTemplate.findOne(
-                query(where("id").is(new ObjectId(id))),
-                MedicalMedicineEntity.class,
-                TABLE
-            ));
+            medicalMedicines.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), MedicalMedicineEntity.class, TABLE));
         }
         return medicalMedicines;
     }

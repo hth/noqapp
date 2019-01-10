@@ -30,6 +30,7 @@ import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
 import com.noqapp.medical.domain.json.JsonMedicalPhysicalList;
 import com.noqapp.medical.domain.json.JsonMedicalRadiology;
+import com.noqapp.medical.domain.json.JsonMedicalRadiologyList;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
 import com.noqapp.medical.domain.json.JsonRecordAccess;
@@ -263,7 +264,7 @@ public class MedicalRecordService {
                         populateWithPathologies(jsonRecord, medicalRecord);
                     }
 
-                    if (null != jsonRecord.getMedicalRadiologies()) {
+                    if (null != jsonRecord.getMedicalRadiologyLists()) {
                         populateWithMedicalRadiologies(jsonRecord, medicalRecord);
                     }
                     break;
@@ -312,33 +313,37 @@ public class MedicalRecordService {
     }
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
-        if (jsonMedicalRecord.getMedicalRadiologies().isEmpty()) {
+        if (jsonMedicalRecord.getMedicalRadiologyLists().isEmpty()) {
             return;
         }
 
-        MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
-        medicalRadiology
-            .setQueueUserId(jsonMedicalRecord.getQueueUserId())
-            .setId(CommonUtil.generateHexFromObjectId());
+        for (JsonMedicalRadiologyList jsonMedicalRadiologyList : jsonMedicalRecord.getMedicalRadiologyLists()) {
 
-        for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRecord.getMedicalRadiologies()) {
-            MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
-            medicalRadiologyTest.setName(jsonMedicalRadiology.getName());
-            medicalRadiologyTest.setMedicalRadiologyReferenceId(medicalRadiology.getId());
-            medicalRadiologyTestManager.save(medicalRadiologyTest);
-            medicalRadiology.addMedicalRadiologyXRayIds(medicalRadiologyTest.getId());
+            MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
+            medicalRadiology
+                .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                .setLabCategory(jsonMedicalRadiologyList.getLabCategory())
+                .setId(CommonUtil.generateHexFromObjectId());
+
+            for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
+                MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
+                medicalRadiologyTest.setName(jsonMedicalRadiology.getName());
+                medicalRadiologyTest.setMedicalRadiologyReferenceId(medicalRadiology.getId());
+                medicalRadiologyTestManager.save(medicalRadiologyTest);
+                medicalRadiology.addMedicalRadiologyXRayIds(medicalRadiologyTest.getId());
+            }
+
+            medicalRadiologyManager.save(medicalRadiology);
+            medicalRecord.addMedicalRadiology(medicalRadiology.getId());
+
+            executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList));
         }
-
-        medicalRadiologyManager.save(medicalRadiology);
-        medicalRecord.setMedicalRadiology(medicalRadiology);
-
-        executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord));
     }
 
     /** Creates order from radiology prescribed. */
-    private void createRadiologyOrder(JsonMedicalRecord jsonMedicalRecord) {
+    private void createRadiologyOrder(JsonMedicalRecord jsonMedicalRecord, JsonMedicalRadiologyList jsonMedicalRadiologyList) {
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
-        for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRecord.getMedicalRadiologies()) {
+        for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
                 .setProductName(jsonMedicalRadiology.getName())
                 .setProductPrice(0)
@@ -349,7 +354,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdRadiology());
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRadiologyList.getBizStoreId());
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -542,8 +547,12 @@ public class MedicalRecordService {
         return medicalPhysicalManager.findByQid(qid);
     }
 
-    public List<MedicalMedicineEntity> findByIds(List<String> ids) {
+    public List<MedicalMedicineEntity> findMedicinesByIds(List<String> ids) {
         return medicalMedicineManager.findByIds(ids);
+    }
+
+    private List<MedicalRadiologyEntity> findRadiologiesById(List<String> ids) {
+        return medicalRadiologyManager.findByIds(ids);
     }
 
     @Mobile
@@ -654,10 +663,17 @@ public class MedicalRecordService {
             }
         }
 
-        if (null != medicalRecord.getMedicalRadiology()) {
-            List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRecord.getMedicalRadiology().getId());
-            for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
-                jsonMedicalRecord.addMedicalRadiology(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
+        if (!medicalRecord.getMedicalRadiologies().isEmpty()) {
+            List<MedicalRadiologyEntity> medicalRadiologies = findRadiologiesById(medicalRecord.getMedicalRadiologies());
+            for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList()
+                    .setLabCategory(medicalRadiology.getLabCategory());
+
+                List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRadiology.getId());
+                for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
+                    jsonMedicalRadiologyList.addJsonMedicalRadiologies(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
+                }
+                jsonMedicalRecord.addMedicalRadiologyLists(jsonMedicalRadiologyList);
             }
         }
 

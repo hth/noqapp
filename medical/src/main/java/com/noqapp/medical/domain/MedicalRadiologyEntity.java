@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -32,6 +33,9 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
+    @Field("LC")
+    private LabCategoryEnum labCategory;
+
     @Field("RD")
     private List<String> medicalRadiologyXRayIds = new LinkedList<>();
 
@@ -41,6 +45,15 @@ public class MedicalRadiologyEntity extends BaseEntity {
 
     public MedicalRadiologyEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public LabCategoryEnum getLabCategory() {
+        return labCategory;
+    }
+
+    public MedicalRadiologyEntity setLabCategory(LabCategoryEnum labCategory) {
+        this.labCategory = labCategory;
         return this;
     }
 

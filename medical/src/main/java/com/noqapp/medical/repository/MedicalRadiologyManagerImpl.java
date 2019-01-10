@@ -1,7 +1,12 @@
 package com.noqapp.medical.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
+
+import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * hitender
@@ -47,5 +55,14 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     @Override
     public void deleteHard(MedicalRadiologyEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public List<MedicalRadiologyEntity> findByIds(List<String> ids) {
+        List<MedicalRadiologyEntity> medicalRadiologies = new LinkedList<>();
+        for (String id : ids) {
+            medicalRadiologies.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), MedicalRadiologyEntity.class, TABLE));
+        }
+        return medicalRadiologies;
     }
 }

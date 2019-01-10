@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
@@ -70,9 +72,8 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("MP")
     private MedicalPathologyEntity medicalLaboratory;
 
-    @DBRef
     @Field("RE")
-    private MedicalRadiologyEntity medicalRadiology;
+    private List<String> medicalRadiologies = new LinkedList<>();
 
     @DBRef
     @Field("ME")
@@ -221,17 +222,19 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalRadiologyEntity getMedicalRadiology() {
-        return medicalRadiology;
+    public List<String> getMedicalRadiologies() {
+        return medicalRadiologies;
     }
 
-    public MedicalRecordEntity setMedicalRadiology(MedicalRadiologyEntity medicalRadiology) {
-        this.medicalRadiology = medicalRadiology;
+    public MedicalRecordEntity setMedicalRadiologies(List<String> medicalRadiologies) {
+        this.medicalRadiologies = medicalRadiologies;
         return this;
     }
 
-    public MedicalMedicationEntity getMedicalMedication() {
-        return medicalMedication;
+    public MedicalRecordEntity addMedicalRadiology(String medicalRadiologyId) {
+        this.medicalRadiologies.add(medicalRadiologyId);
+        return this;
+    }
     }
 
     public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
@@ -355,23 +358,32 @@ public class MedicalRecordEntity extends BaseEntity {
     @Override
     public String toString() {
         return "MedicalRecordEntity{" +
-                "businessType=" + businessType +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", chiefComplain='" + chiefComplain + '\'' +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicalPhysical=" + medicalPhysical +
-                ", clinicalFinding='" + clinicalFinding + '\'' +
-                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalLaboratory=" + medicalLaboratory +
-                ", medicalRadiology=" + medicalRadiology +
-                ", medicalMedication=" + medicalMedication +
-                ", diagnosedById='" + diagnosedById + '\'' +
-                ", recordAccessed=" + recordAccessed +
-                ", businessName='" + businessName + '\'' +
-                ", bizCategoryId='" + bizCategoryId + '\'' +
-                ", id='" + id + '\'' +
-                '}';
+            "businessType=" + businessType +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", pastHistory='" + pastHistory + '\'' +
+            ", familyHistory='" + familyHistory + '\'' +
+            ", knownAllergies='" + knownAllergies + '\'' +
+            ", medicalPhysicalId='" + medicalPhysicalId + '\'' +
+            ", chiefComplain='" + chiefComplain + '\'' +
+            ", examination='" + examination + '\'' +
+            ", clinicalFinding='" + clinicalFinding + '\'' +
+            ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+            ", medicalLaboratoryId='" + medicalLaboratoryId + '\'' +
+            ", medicalRadiologies=" + medicalRadiologies +
+            ", medicalMedicationId='" + medicalMedicationId + '\'' +
+            ", diagnosis='" + diagnosis + '\'' +
+            ", planToPatient='" + planToPatient + '\'' +
+            ", followUpDay=" + followUpDay +
+            ", notifiedFollowUp=" + notifiedFollowUp +
+            ", noteForPatient='" + noteForPatient + '\'' +
+            ", noteToDiagnoser='" + noteToDiagnoser + '\'' +
+            ", diagnosedById='" + diagnosedById + '\'' +
+            ", recordAccessed=" + recordAccessed +
+            ", businessName='" + businessName + '\'' +
+            ", bizCategoryId='" + bizCategoryId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", formVersion=" + formVersion +
+            ", id='" + id + '\'' +
+            '}';
     }
 }
