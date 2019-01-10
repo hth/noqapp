@@ -36,8 +36,8 @@ public class ElasticsearchClientConfiguration {
     public RestHighLevelClient createRestHighLevelClient() {
         LOG.info("Host={} Port={}", elasticHost, elasticPort);
         return new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost(elasticHost, elasticPort, "http")));
+            RestClient.builder(
+                new HttpHost(elasticHost, elasticPort, "http")));
     }
 
     public String[] previousIndices() {
