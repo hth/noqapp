@@ -21,7 +21,7 @@ public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
     /* Helps in migrating to new index by adding new name like v1 to v2 to string array. */
-    private static final String[] INDEX_VERSION = {"v8", "v0", "v1"};
+    private static final String[] INDEX_VERSION = {"v1", "v2"};
 
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqapp_" + INDEX_VERSION[INDEX_VERSION.length - 1];
@@ -36,8 +36,8 @@ public class ElasticsearchClientConfiguration {
     public RestHighLevelClient createRestHighLevelClient() {
         LOG.info("Host={} Port={}", elasticHost, elasticPort);
         return new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost(elasticHost, elasticPort, "http")));
+            RestClient.builder(
+                new HttpHost(elasticHost, elasticPort, "http")));
     }
 
     public String[] previousIndices() {
