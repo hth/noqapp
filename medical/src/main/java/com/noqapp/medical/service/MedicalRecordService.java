@@ -248,7 +248,7 @@ public class MedicalRecordService {
                         .setDiagnosedById(diagnosedById)
                         .setFormVersion(jsonRecord.getFormVersion());
 
-                    if (null == medicalRecord.getMedicalPhysical()) {
+                    if (null == medicalRecord.getMedicalPhysicalId()) {
                         if (null != jsonRecord.getMedicalPhysical()) {
                             populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                         }
@@ -269,7 +269,7 @@ public class MedicalRecordService {
                     }
                     break;
                 case Q_SUPERVISOR:
-                    if (null == medicalRecord.getMedicalPhysical()) {
+                    if (null == medicalRecord.getMedicalPhysicalId()) {
                         if (null != jsonRecord.getMedicalPhysical()) {
                             populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                         }
@@ -376,7 +376,7 @@ public class MedicalRecordService {
         }
 
         medicalPathologyManager.save(medicalPathology);
-        medicalRecord.setMedicalLaboratory(medicalPathology);
+        medicalRecord.setMedicalLaboratoryId(medicalPathology.getId());
 
         executorService.submit(() -> createPathologyOrder(jsonMedicalRecord));
     }
@@ -427,7 +427,7 @@ public class MedicalRecordService {
         }
 
         medicalMedicationManager.save(medicalMedication);
-        medicalRecord.setMedicalMedication(medicalMedication);
+        medicalRecord.setMedicalMedicationId(medicalMedication.getId());
 
         executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
     }
@@ -460,7 +460,7 @@ public class MedicalRecordService {
         }
 
         medicalMedicationManager.save(medicalMedication);
-        medicalRecord.setMedicalMedication(medicalMedication);
+        medicalRecord.setMedicalMedicationId(medicalMedication.getId());
     }
 
     private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String qid) {
@@ -473,7 +473,7 @@ public class MedicalRecordService {
                 medicalPhysical.setId(CommonUtil.generateHexFromObjectId());
                 updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical, qid);
             }
-            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
+            LOG.info("Populate medical physical complete medicalPhysicalId={}", medicalRecord.getMedicalPhysicalId());
         } catch (Exception e) {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
@@ -494,7 +494,7 @@ public class MedicalRecordService {
         medicalPhysicalManager.save(medicalPhysical);
 
         /* Add the Medical Physical to Medical Record. */
-        medicalRecord.setMedicalPhysical(medicalPhysical);
+        medicalRecord.setMedicalPhysicalId(medicalPhysical.getId());
     }
 
     private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String diagnosedById) {
@@ -502,9 +502,10 @@ public class MedicalRecordService {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
 
             if (jsonMedicalRecord.getMedicalPhysical() != null) {
-                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalRecord.getMedicalPhysical(), diagnosedById);
+                MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
+                updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical, diagnosedById);
             }
-            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
+            LOG.info("Populate medical physical complete medicalPhysicalId={}", medicalRecord.getMedicalPhysicalId());
         } catch (Exception e) {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
@@ -531,9 +532,9 @@ public class MedicalRecordService {
                 medicalPhysicalManager.save(medicalPhysical);
 
                 /* Add the Medical Physical to Medical Record. */
-                medicalRecord.setMedicalPhysical(medicalPhysical);
+                medicalRecord.setMedicalPhysicalId(medicalPhysical.getId());
             }
-            LOG.info("Populate medical physical complete medicalPhysical={}", medicalRecord.getMedicalPhysical());
+            LOG.info("Populate medical physical complete medicalPhysicalId={}", medicalRecord.getMedicalPhysicalId());
         } catch (Exception e) {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
@@ -563,6 +564,10 @@ public class MedicalRecordService {
     @Mobile
     public List<MedicalRadiologyTestEntity> findRadiologyTestByIds(String referenceId) {
         return medicalRadiologyTestManager.findRadiologyTestByIds(referenceId);
+    }
+
+    public MedicalMedicationEntity findByMedicationId(String id) {
+        return medicalMedicationManager.findOneById(id);
     }
 
     public List<MedicalMedicineEntity> findByMedicationRefId(String referenceId) {
@@ -645,19 +650,20 @@ public class MedicalRecordService {
                 ? "NA"
                 : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
 
-        if (null != medicalRecord.getMedicalPhysical()) {
-            jsonMedicalRecord.setMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalRecord.getMedicalPhysical()));
+        if (null != medicalRecord.getMedicalPhysicalId()) {
+            MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
+            jsonMedicalRecord.setMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
         }
 
-        if (null != medicalRecord.getMedicalMedication()) {
-            List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedication().getId());
+        if (null != medicalRecord.getMedicalMedicationId()) {
+            List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedicationId());
             for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
                 jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
             }
         }
 
-        if (null != medicalRecord.getMedicalLaboratory()) {
-            List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratory().getId());
+        if (null != medicalRecord.getMedicalLaboratoryId()) {
+            List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratoryId());
             for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
                 jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
             }

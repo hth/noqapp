@@ -1,6 +1,6 @@
 package com.noqapp.medical.repository;
 
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -52,6 +52,15 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     }
 
     @Override
+    public MedicalPhysicalEntity findOne(String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(id)),
+            MedicalPhysicalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void deleteHard(MedicalPhysicalEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
     }
@@ -59,7 +68,7 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     @Override
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)).with(new Sort(ASC, "C")),
+                query(where("QID").is(qid)).with(new Sort(DESC, "C")),
                 MedicalPhysicalEntity.class,
                 TABLE
         );

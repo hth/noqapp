@@ -6,7 +6,6 @@ import com.noqapp.domain.types.medical.FormVersionEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -52,9 +51,8 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("KA")
     private String knownAllergies;
 
-    @DBRef
-    @Field("PY")
-    private MedicalPhysicalEntity medicalPhysical;
+    @Field("PI")
+    private String medicalPhysicalId;
 
     @Field("CC")
     private String chiefComplain;
@@ -68,16 +66,14 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("DD")
     private String provisionalDifferentialDiagnosis;
 
-    @DBRef
-    @Field("MP")
-    private MedicalPathologyEntity medicalLaboratory;
+    @Field("LI")
+    private String medicalLaboratoryId;
 
-    @Field("RE")
+    @Field("RI")
     private List<String> medicalRadiologies = new LinkedList<>();
 
-    @DBRef
-    @Field("ME")
-    private MedicalMedicationEntity medicalMedication;
+    @Field("MI")
+    private String medicalMedicationId;
 
     @Field("DI")
     private String diagnosis;
@@ -168,12 +164,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalPhysicalEntity getMedicalPhysical() {
-        return medicalPhysical;
+    public String getMedicalPhysicalId() {
+        return medicalPhysicalId;
     }
 
-    public MedicalRecordEntity setMedicalPhysical(MedicalPhysicalEntity medicalPhysical) {
-        this.medicalPhysical = medicalPhysical;
+    public MedicalRecordEntity setMedicalPhysicalId(String medicalPhysicalId) {
+        this.medicalPhysicalId = medicalPhysicalId;
         return this;
     }
 
@@ -213,12 +209,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalPathologyEntity getMedicalLaboratory() {
-        return medicalLaboratory;
+    public String getMedicalLaboratoryId() {
+        return medicalLaboratoryId;
     }
 
-    public MedicalRecordEntity setMedicalLaboratory(MedicalPathologyEntity medicalLaboratory) {
-        this.medicalLaboratory = medicalLaboratory;
+    public MedicalRecordEntity setMedicalLaboratoryId(String medicalLaboratoryId) {
+        this.medicalLaboratoryId = medicalLaboratoryId;
         return this;
     }
 
@@ -235,10 +231,13 @@ public class MedicalRecordEntity extends BaseEntity {
         this.medicalRadiologies.add(medicalRadiologyId);
         return this;
     }
+
+    public String getMedicalMedicationId() {
+        return medicalMedicationId;
     }
 
-    public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
-        this.medicalMedication = medicalMedication;
+    public MedicalRecordEntity setMedicalMedicationId(String medicalMedicationId) {
+        this.medicalMedicationId = medicalMedicationId;
         return this;
     }
 
