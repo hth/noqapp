@@ -98,7 +98,7 @@ public class ProfessionalProfileService {
 
     public ProfessionalProfileEntity findByQidAndRemoveAnySoftDelete(String qid) {
         ProfessionalProfileEntity professionalProfile = findByQid(qid);
-        if (professionalProfile.isDeleted()) {
+        if (null != professionalProfile && professionalProfile.isDeleted()) {
             professionalProfile = professionalProfileManager.removeMarkedAsDeleted(qid);
         }
 
