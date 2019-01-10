@@ -53,7 +53,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("ka")
     private String knownAllergies;
 
-    @JsonProperty("pe")
+    @JsonProperty("ps")
     private JsonMedicalPhysical medicalPhysical;
 
     @JsonProperty("cc")
@@ -68,13 +68,13 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("dd")
     private String provisionalDifferentialDiagnosis;
 
-    @JsonProperty("le")
+    @JsonProperty("pa")
     private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
-    @JsonProperty("re")
+    @JsonProperty("rs")
     private List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
 
     @JsonProperty("me")
