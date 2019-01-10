@@ -51,7 +51,7 @@ public class MedicalMedicationManagerImpl implements MedicalMedicationManager {
 
     @Override
     public void deleteHard(MedicalMedicationEntity object) {
-
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
