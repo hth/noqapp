@@ -18,6 +18,7 @@ import org.springframework.data.annotation.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class MedicalRecordForm {
     private String clinicalFinding;
     private String provisionalDifferentialDiagnosis;
     private MedicalPathologyEntity medicalLaboratory = new MedicalPathologyEntity();
-    private MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
+    private List<MedicalRadiologyEntity> medicalRadiologies = new LinkedList<>();
     private MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
     private List<MedicalMedicineEntity> medicalMedicines = new ArrayList<>();
     private String noteForPatient;
@@ -69,7 +70,7 @@ public class MedicalRecordForm {
     }
 
     public MedicalRecordForm populatePhysicalHistoricalForm(List<MedicalPhysicalEntity> medicalPhysicals) {
-        medicalPhysicalHistoricals = new ArrayList<MedicalPhysicalForm>() {{
+        medicalPhysicalHistoricals = new LinkedList<MedicalPhysicalForm>() {{
             for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
                 add(new MedicalPhysicalForm()
                     .setBloodPressure(medicalPhysical.getBloodPressure())
@@ -261,12 +262,12 @@ public class MedicalRecordForm {
         return this;
     }
 
-    public MedicalRadiologyEntity getMedicalRadiology() {
-        return medicalRadiology;
+    public List<MedicalRadiologyEntity> getMedicalRadiologies() {
+        return medicalRadiologies;
     }
 
-    public MedicalRecordForm setMedicalRadiology(MedicalRadiologyEntity medicalRadiology) {
-        this.medicalRadiology = medicalRadiology;
+    public MedicalRecordForm setMedicalRadiologies(List<MedicalRadiologyEntity> medicalRadiologies) {
+        this.medicalRadiologies = medicalRadiologies;
         return this;
     }
 
@@ -354,26 +355,35 @@ public class MedicalRecordForm {
     @Override
     public String toString() {
         return "MedicalRecordForm{" +
-                "patientName='" + patientName + '\'' +
-                ", gender=" + gender +
-                ", age=" + age +
-                ", guardianName='" + guardianName + '\'' +
-                ", guardianPhone='" + guardianPhone + '\'' +
-                ", token=" + token +
-                ", businessType=" + businessType +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", codeQR=" + codeQR +
-                ", chiefComplain='" + chiefComplain + '\'' +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicalPhysicalHistoricals=" + medicalPhysicalHistoricals +
-                ", clinicalFinding='" + clinicalFinding + '\'' +
-                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalLaboratory=" + medicalLaboratory +
-                ", medicalRadiology=" + medicalRadiology +
-                ", medicalMedication=" + medicalMedication +
-                ", recordAccessed=" + recordAccessed +
-                '}';
+            "patientName='" + patientName + '\'' +
+            ", gender=" + gender +
+            ", age='" + age + '\'' +
+            ", guardianName='" + guardianName + '\'' +
+            ", guardianPhone='" + guardianPhone + '\'' +
+            ", token=" + token +
+            ", businessType=" + businessType +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", codeQR=" + codeQR +
+            ", formVersion=" + formVersion +
+            ", pastHistory='" + pastHistory + '\'' +
+            ", familyHistory='" + familyHistory + '\'' +
+            ", knownAllergies='" + knownAllergies + '\'' +
+            ", medicalPhysical=" + medicalPhysical +
+            ", chiefComplain='" + chiefComplain + '\'' +
+            ", examination='" + examination + '\'' +
+            ", medicalPhysicalHistoricals=" + medicalPhysicalHistoricals +
+            ", clinicalFinding='" + clinicalFinding + '\'' +
+            ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+            ", medicalLaboratory=" + medicalLaboratory +
+            ", medicalRadiologies=" + medicalRadiologies +
+            ", medicalMedication=" + medicalMedication +
+            ", medicalMedicines=" + medicalMedicines +
+            ", noteForPatient='" + noteForPatient + '\'' +
+            ", noteToDiagnoser='" + noteToDiagnoser + '\'' +
+            ", diagnosis='" + diagnosis + '\'' +
+            ", planToPatient='" + planToPatient + '\'' +
+            ", followUpInDays='" + followUpInDays + '\'' +
+            ", recordAccessed=" + recordAccessed +
+            '}';
     }
 }

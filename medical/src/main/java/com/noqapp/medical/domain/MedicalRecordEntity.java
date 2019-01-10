@@ -6,12 +6,13 @@ import com.noqapp.domain.types.medical.FormVersionEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
@@ -50,9 +51,8 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("KA")
     private String knownAllergies;
 
-    @DBRef
-    @Field("PY")
-    private MedicalPhysicalEntity medicalPhysical;
+    @Field("PI")
+    private String medicalPhysicalId;
 
     @Field("CC")
     private String chiefComplain;
@@ -66,17 +66,14 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("DD")
     private String provisionalDifferentialDiagnosis;
 
-    @DBRef
-    @Field("MP")
-    private MedicalPathologyEntity medicalLaboratory;
+    @Field("LI")
+    private String medicalLaboratoryId;
 
-    @DBRef
-    @Field("RE")
-    private MedicalRadiologyEntity medicalRadiology;
+    @Field("RI")
+    private List<String> medicalRadiologies = new LinkedList<>();
 
-    @DBRef
-    @Field("ME")
-    private MedicalMedicationEntity medicalMedication;
+    @Field("MI")
+    private String medicalMedicationId;
 
     @Field("DI")
     private String diagnosis;
@@ -167,12 +164,12 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalPhysicalEntity getMedicalPhysical() {
-        return medicalPhysical;
+    public String getMedicalPhysicalId() {
+        return medicalPhysicalId;
     }
 
-    public MedicalRecordEntity setMedicalPhysical(MedicalPhysicalEntity medicalPhysical) {
-        this.medicalPhysical = medicalPhysical;
+    public MedicalRecordEntity setMedicalPhysicalId(String medicalPhysicalId) {
+        this.medicalPhysicalId = medicalPhysicalId;
         return this;
     }
 
@@ -212,30 +209,35 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalPathologyEntity getMedicalLaboratory() {
-        return medicalLaboratory;
+    public String getMedicalLaboratoryId() {
+        return medicalLaboratoryId;
     }
 
-    public MedicalRecordEntity setMedicalLaboratory(MedicalPathologyEntity medicalLaboratory) {
-        this.medicalLaboratory = medicalLaboratory;
+    public MedicalRecordEntity setMedicalLaboratoryId(String medicalLaboratoryId) {
+        this.medicalLaboratoryId = medicalLaboratoryId;
         return this;
     }
 
-    public MedicalRadiologyEntity getMedicalRadiology() {
-        return medicalRadiology;
+    public List<String> getMedicalRadiologies() {
+        return medicalRadiologies;
     }
 
-    public MedicalRecordEntity setMedicalRadiology(MedicalRadiologyEntity medicalRadiology) {
-        this.medicalRadiology = medicalRadiology;
+    public MedicalRecordEntity setMedicalRadiologies(List<String> medicalRadiologies) {
+        this.medicalRadiologies = medicalRadiologies;
         return this;
     }
 
-    public MedicalMedicationEntity getMedicalMedication() {
-        return medicalMedication;
+    public MedicalRecordEntity addMedicalRadiology(String medicalRadiologyId) {
+        this.medicalRadiologies.add(medicalRadiologyId);
+        return this;
     }
 
-    public MedicalRecordEntity setMedicalMedication(MedicalMedicationEntity medicalMedication) {
-        this.medicalMedication = medicalMedication;
+    public String getMedicalMedicationId() {
+        return medicalMedicationId;
+    }
+
+    public MedicalRecordEntity setMedicalMedicationId(String medicalMedicationId) {
+        this.medicalMedicationId = medicalMedicationId;
         return this;
     }
 
@@ -355,23 +357,32 @@ public class MedicalRecordEntity extends BaseEntity {
     @Override
     public String toString() {
         return "MedicalRecordEntity{" +
-                "businessType=" + businessType +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", chiefComplain='" + chiefComplain + '\'' +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicalPhysical=" + medicalPhysical +
-                ", clinicalFinding='" + clinicalFinding + '\'' +
-                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalLaboratory=" + medicalLaboratory +
-                ", medicalRadiology=" + medicalRadiology +
-                ", medicalMedication=" + medicalMedication +
-                ", diagnosedById='" + diagnosedById + '\'' +
-                ", recordAccessed=" + recordAccessed +
-                ", businessName='" + businessName + '\'' +
-                ", bizCategoryId='" + bizCategoryId + '\'' +
-                ", id='" + id + '\'' +
-                '}';
+            "businessType=" + businessType +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", pastHistory='" + pastHistory + '\'' +
+            ", familyHistory='" + familyHistory + '\'' +
+            ", knownAllergies='" + knownAllergies + '\'' +
+            ", medicalPhysicalId='" + medicalPhysicalId + '\'' +
+            ", chiefComplain='" + chiefComplain + '\'' +
+            ", examination='" + examination + '\'' +
+            ", clinicalFinding='" + clinicalFinding + '\'' +
+            ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+            ", medicalLaboratoryId='" + medicalLaboratoryId + '\'' +
+            ", medicalRadiologies=" + medicalRadiologies +
+            ", medicalMedicationId='" + medicalMedicationId + '\'' +
+            ", diagnosis='" + diagnosis + '\'' +
+            ", planToPatient='" + planToPatient + '\'' +
+            ", followUpDay=" + followUpDay +
+            ", notifiedFollowUp=" + notifiedFollowUp +
+            ", noteForPatient='" + noteForPatient + '\'' +
+            ", noteToDiagnoser='" + noteToDiagnoser + '\'' +
+            ", diagnosedById='" + diagnosedById + '\'' +
+            ", recordAccessed=" + recordAccessed +
+            ", businessName='" + businessName + '\'' +
+            ", bizCategoryId='" + bizCategoryId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", formVersion=" + formVersion +
+            ", id='" + id + '\'' +
+            '}';
     }
 }

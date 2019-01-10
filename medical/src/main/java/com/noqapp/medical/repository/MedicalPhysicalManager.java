@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface MedicalPhysicalManager extends RepositoryManager<MedicalPhysicalEntity> {
 
+    MedicalPhysicalEntity findOne(String id);
+
     List<MedicalPhysicalEntity> findByQid(String qid);
 }

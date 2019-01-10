@@ -6,8 +6,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 
-import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +49,11 @@ public class MedicalMedicationManagerImpl implements MedicalMedicationManager {
 
     @Override
     public void deleteHard(MedicalMedicationEntity object) {
-
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override
     public MedicalMedicationEntity findOneById(String id) {
-        return mongoTemplate.findOne(query(where("_id").is(new ObjectId(id))), MedicalMedicationEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), MedicalMedicationEntity.class, TABLE);
     }
 }

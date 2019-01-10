@@ -49,7 +49,7 @@ public class UserMedicalProfileManagerImpl implements UserMedicalProfileManager 
 
     @Override
     public void deleteHard(UserMedicalProfileEntity object) {
-
+        throw new UnsupportedOperationException("Method not implemented");
     }
 
     @Override

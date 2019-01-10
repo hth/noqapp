@@ -53,7 +53,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("ka")
     private String knownAllergies;
 
-    @JsonProperty("pe")
+    @JsonProperty("ps")
     private JsonMedicalPhysical medicalPhysical;
 
     @JsonProperty("cc")
@@ -68,14 +68,14 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("dd")
     private String provisionalDifferentialDiagnosis;
 
-    @JsonProperty("le")
+    @JsonProperty("pa")
     private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
-    @JsonProperty("re")
-    private List<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+    @JsonProperty("rs")
+    private List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
 
     @JsonProperty("me")
     private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
@@ -85,9 +85,6 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty("sf")
     private String storeIdPharmacy;
-
-    @JsonProperty("sr")
-    private String storeIdRadiology;
 
     @JsonProperty("sp")
     private String storeIdPathology;
@@ -246,17 +243,17 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public List<JsonMedicalRadiology> getMedicalRadiologies() {
-        return medicalRadiologies;
+    public List<JsonMedicalRadiologyList> getMedicalRadiologyLists() {
+        return medicalRadiologyLists;
     }
 
-    public JsonMedicalRecord setMedicalRadiologies(List<JsonMedicalRadiology> medicalRadiologies) {
-        this.medicalRadiologies = medicalRadiologies;
+    public JsonMedicalRecord setMedicalRadiologyLists(List<JsonMedicalRadiologyList> medicalRadiologyLists) {
+        this.medicalRadiologyLists = medicalRadiologyLists;
         return this;
     }
 
-    public JsonMedicalRecord addMedicalRadiology(JsonMedicalRadiology medicalRadiology) {
-        this.medicalRadiologies.add(medicalRadiology);
+    public JsonMedicalRecord addMedicalRadiologyLists(JsonMedicalRadiologyList medicalRadiologyList) {
+        this.medicalRadiologyLists.add(medicalRadiologyList);
         return this;
     }
 
@@ -289,15 +286,6 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setStoreIdPharmacy(String storeIdPharmacy) {
         this.storeIdPharmacy = storeIdPharmacy;
-        return this;
-    }
-
-    public String getStoreIdRadiology() {
-        return storeIdRadiology;
-    }
-
-    public JsonMedicalRecord setStoreIdRadiology(String storeIdRadiology) {
-        this.storeIdRadiology = storeIdRadiology;
         return this;
     }
 
