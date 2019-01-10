@@ -5,6 +5,7 @@ package com.noqapp.domain.types.medical;
  * 2019-01-03 13:29
  */
 public enum MedicationIntakeEnum {
+    AT("AT", "Any Time"),
     BF("BF", "Before Food"),
     AF("AF", "After Food"),
     ES("ES", "Empty Stomach");
