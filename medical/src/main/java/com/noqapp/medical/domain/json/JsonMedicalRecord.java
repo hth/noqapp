@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.medical.FormVersionEnum;
 
@@ -43,15 +44,6 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     @JsonProperty("qid")
     private String queueUserId;
-
-    @JsonProperty("ph")
-    private String pastHistory;
-
-    @JsonProperty("fh")
-    private String familyHistory;
-
-    @JsonProperty("ka")
-    private String knownAllergies;
 
     @JsonProperty("ps")
     private JsonMedicalPhysical medicalPhysical;
@@ -126,6 +118,9 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("rr")
     private String recordReferenceId;
 
+    @JsonProperty("um")
+    private JsonUserMedicalProfile jsonUserMedicalProfile;
+
     @Transient
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
@@ -145,33 +140,6 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
-        return this;
-    }
-
-    public String getPastHistory() {
-        return pastHistory;
-    }
-
-    public JsonMedicalRecord setPastHistory(String pastHistory) {
-        this.pastHistory = pastHistory;
-        return this;
-    }
-
-    public String getFamilyHistory() {
-        return familyHistory;
-    }
-
-    public JsonMedicalRecord setFamilyHistory(String familyHistory) {
-        this.familyHistory = familyHistory;
-        return this;
-    }
-
-    public String getKnownAllergies() {
-        return knownAllergies;
-    }
-
-    public JsonMedicalRecord setKnownAllergies(String knownAllergies) {
-        this.knownAllergies = knownAllergies;
         return this;
     }
 
@@ -403,6 +371,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonMedicalRecord setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
     }
 

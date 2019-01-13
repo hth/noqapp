@@ -13,19 +13,19 @@ import javax.validation.constraints.NotNull;
 
 /**
  * hitender
- * 5/25/18 8:44 AM
+ * 2019-01-13 15:19
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
-@Document(collection = "USER_MEDICAL_PROFILE")
+@Document(collection = "USER_MEDICAL_PROFILE_H")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "user_medical_profile_idx", def = "{'QID' : 1}", unique = true),
+    @CompoundIndex(name = "user_medical_profile_h_idx", def = "{'QID' : 1}", unique = false),
 })
-public class UserMedicalProfileEntity extends BaseEntity {
+public class UserMedicalProfileHistoryEntity extends BaseEntity {
 
     @NotNull
     @Field("QID")
@@ -52,22 +52,20 @@ public class UserMedicalProfileEntity extends BaseEntity {
     @Field("EB")
     private String editedByQID;
 
-    @SuppressWarnings("unused")
-    private UserMedicalProfileEntity() {}
-
-    public UserMedicalProfileEntity(@NotNull String queueUserId) {
-        this.queueUserId = queueUserId;
-    }
-
     public String getQueueUserId() {
         return queueUserId;
+    }
+
+    public UserMedicalProfileHistoryEntity setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
     }
 
     public BloodTypeEnum getBloodType() {
         return bloodType;
     }
 
-    public UserMedicalProfileEntity setBloodType(BloodTypeEnum bloodType) {
+    public UserMedicalProfileHistoryEntity setBloodType(BloodTypeEnum bloodType) {
         this.bloodType = bloodType;
         return this;
     }
@@ -76,7 +74,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return occupation;
     }
 
-    public UserMedicalProfileEntity setOccupation(OccupationEnum occupation) {
+    public UserMedicalProfileHistoryEntity setOccupation(OccupationEnum occupation) {
         this.occupation = occupation;
         return this;
     }
@@ -85,7 +83,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return pastHistory;
     }
 
-    public UserMedicalProfileEntity setPastHistory(String pastHistory) {
+    public UserMedicalProfileHistoryEntity setPastHistory(String pastHistory) {
         this.pastHistory = pastHistory;
         return this;
     }
@@ -94,7 +92,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return familyHistory;
     }
 
-    public UserMedicalProfileEntity setFamilyHistory(String familyHistory) {
+    public UserMedicalProfileHistoryEntity setFamilyHistory(String familyHistory) {
         this.familyHistory = familyHistory;
         return this;
     }
@@ -103,7 +101,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return knownAllergies;
     }
 
-    public UserMedicalProfileEntity setKnownAllergies(String knownAllergies) {
+    public UserMedicalProfileHistoryEntity setKnownAllergies(String knownAllergies) {
         this.knownAllergies = knownAllergies;
         return this;
     }
@@ -112,7 +110,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return medicineAllergies;
     }
 
-    public UserMedicalProfileEntity setMedicineAllergies(String medicineAllergies) {
+    public UserMedicalProfileHistoryEntity setMedicineAllergies(String medicineAllergies) {
         this.medicineAllergies = medicineAllergies;
         return this;
     }
@@ -121,7 +119,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return editedByQID;
     }
 
-    public UserMedicalProfileEntity setEditedByQID(String editedByQID) {
+    public UserMedicalProfileHistoryEntity setEditedByQID(String editedByQID) {
         this.editedByQID = editedByQID;
         return this;
     }

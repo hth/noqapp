@@ -42,15 +42,6 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("PH")
-    private String pastHistory;
-
-    @Field("FH")
-    private String familyHistory;
-
-    @Field("KA")
-    private String knownAllergies;
-
     @Field("PI")
     private String medicalPhysicalId;
 
@@ -134,33 +125,6 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
-        return this;
-    }
-
-    public String getPastHistory() {
-        return pastHistory;
-    }
-
-    public MedicalRecordEntity setPastHistory(String pastHistory) {
-        this.pastHistory = pastHistory;
-        return this;
-    }
-
-    public String getFamilyHistory() {
-        return familyHistory;
-    }
-
-    public MedicalRecordEntity setFamilyHistory(String familyHistory) {
-        this.familyHistory = familyHistory;
-        return this;
-    }
-
-    public String getKnownAllergies() {
-        return knownAllergies;
-    }
-
-    public MedicalRecordEntity setKnownAllergies(String knownAllergies) {
-        this.knownAllergies = knownAllergies;
         return this;
     }
 
@@ -359,9 +323,6 @@ public class MedicalRecordEntity extends BaseEntity {
         return "MedicalRecordEntity{" +
             "businessType=" + businessType +
             ", queueUserId='" + queueUserId + '\'' +
-            ", pastHistory='" + pastHistory + '\'' +
-            ", familyHistory='" + familyHistory + '\'' +
-            ", knownAllergies='" + knownAllergies + '\'' +
             ", medicalPhysicalId='" + medicalPhysicalId + '\'' +
             ", chiefComplain='" + chiefComplain + '\'' +
             ", examination='" + examination + '\'' +

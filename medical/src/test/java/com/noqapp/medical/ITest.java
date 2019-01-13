@@ -5,6 +5,8 @@ import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
+import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
+import com.noqapp.medical.repository.UserMedicalProfileHistoryManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
 import com.noqapp.medical.repository.UserMedicalProfileManagerImpl;
 import com.noqapp.medical.service.MedicalFileService;
@@ -120,6 +122,7 @@ public class ITest extends RealMongoForITest {
     protected BusinessUserManager businessUserManager;
     protected ProfessionalProfileManager professionalProfileManager;
     protected UserMedicalProfileManager userMedicalProfileManager;
+    protected UserMedicalProfileHistoryManager userMedicalProfileHistoryManager;
     protected StoreCategoryManager storeCategoryManager;
     protected PreferredBusinessManager preferredBusinessManager;
     protected ScheduledTaskManager scheduledTaskManager;
@@ -151,6 +154,7 @@ public class ITest extends RealMongoForITest {
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
         userMedicalProfileManager = new UserMedicalProfileManagerImpl(getMongoTemplate());
+        userMedicalProfileHistoryManager = new UserMedicalProfileHistoryManagerImpl(getMongoTemplate());
         s3FileManager = new S3FileManagerImpl(getMongoTemplate());
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
@@ -165,7 +169,7 @@ public class ITest extends RealMongoForITest {
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
 
-        userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager);
+        userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
         inviteService = new InviteService(inviteManager);
         emailValidateService = new EmailValidateService(emailValidateManager);
