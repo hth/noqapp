@@ -29,8 +29,18 @@ public class UserMedicalProfileService {
         this.userMedicalProfileHistoryManager = userMedicalProfileHistoryManager;
     }
 
-    public void save(UserMedicalProfileEntity userMedicalProfile, UserMedicalProfileHistoryEntity userMedicalProfileHistory) {
-        if (null != userMedicalProfileHistory) {
+    public void save(UserMedicalProfileEntity userMedicalProfile) {
+        UserMedicalProfileEntity history = findOne(userMedicalProfile.getQueueUserId());
+        if (null != history) {
+            UserMedicalProfileHistoryEntity userMedicalProfileHistory = new UserMedicalProfileHistoryEntity()
+                .setQueueUserId(history.getQueueUserId())
+                .setBloodType(history.getBloodType())
+                .setOccupation(history.getOccupation())
+                .setPastHistory(history.getPastHistory())
+                .setFamilyHistory(history.getFamilyHistory())
+                .setKnownAllergies(history.getKnownAllergies())
+                .setMedicineAllergies(history.getMedicineAllergies())
+                .setEditedByQID(history.getEditedByQID());
             userMedicalProfileHistoryManager.save(userMedicalProfileHistory);
         }
         userMedicalProfileManager.save(userMedicalProfile);

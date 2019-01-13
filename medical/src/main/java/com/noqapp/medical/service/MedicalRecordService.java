@@ -27,7 +27,6 @@ import com.noqapp.medical.domain.MedicalRadiologyEntity;
 import com.noqapp.medical.domain.MedicalRadiologyTestEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
-import com.noqapp.medical.domain.UserMedicalProfileHistoryEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
@@ -207,20 +206,9 @@ public class MedicalRecordService {
             //TODO remove false to true condition
             if (!jsonRecord.getJsonUserMedicalProfile().isHistoryDirty()) {
                 JsonUserMedicalProfile jsonUserMedicalProfile = jsonRecord.getJsonUserMedicalProfile();
-                UserMedicalProfileHistoryEntity userMedicalProfileHistory = null;
                 UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
                 if (null == userMedicalProfile) {
                     userMedicalProfile = new UserMedicalProfileEntity(jsonRecord.getQueueUserId());
-                } else {
-                    userMedicalProfileHistory = new UserMedicalProfileHistoryEntity()
-                        .setQueueUserId(userMedicalProfile.getQueueUserId())
-                        .setBloodType(userMedicalProfile.getBloodType())
-                        .setOccupation(userMedicalProfile.getOccupation())
-                        .setPastHistory(userMedicalProfile.getPastHistory())
-                        .setFamilyHistory(userMedicalProfile.getFamilyHistory())
-                        .setKnownAllergies(userMedicalProfile.getKnownAllergies())
-                        .setMedicineAllergies(userMedicalProfile.getMedicineAllergies())
-                        .setEditedByQID(userMedicalProfile.getEditedByQID());
                 }
 
                 userMedicalProfile
@@ -239,7 +227,7 @@ public class MedicalRecordService {
                         ? null
                         : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
                     .setEditedByQID(diagnosedById);
-                userMedicalProfileService.save(userMedicalProfile, userMedicalProfileHistory);
+                userMedicalProfileService.save(userMedicalProfile);
             }
 
             switch (userProfile.getLevel()) {
