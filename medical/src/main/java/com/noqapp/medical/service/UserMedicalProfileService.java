@@ -3,6 +3,8 @@ package com.noqapp.medical.service;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
+import com.noqapp.medical.domain.UserMedicalProfileHistoryEntity;
+import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,21 @@ import org.springframework.stereotype.Service;
 public class UserMedicalProfileService {
 
     private UserMedicalProfileManager userMedicalProfileManager;
+    private UserMedicalProfileHistoryManager userMedicalProfileHistoryManager;
 
     @Autowired
-    public UserMedicalProfileService(UserMedicalProfileManager userMedicalProfileManager) {
+    public UserMedicalProfileService(
+        UserMedicalProfileManager userMedicalProfileManager,
+        UserMedicalProfileHistoryManager userMedicalProfileHistoryManager
+    ) {
         this.userMedicalProfileManager = userMedicalProfileManager;
+        this.userMedicalProfileHistoryManager = userMedicalProfileHistoryManager;
     }
 
-    public void save(UserMedicalProfileEntity userMedicalProfile) {
+    public void save(UserMedicalProfileEntity userMedicalProfile, UserMedicalProfileHistoryEntity userMedicalProfileHistory) {
+        if (null != userMedicalProfileHistory) {
+            userMedicalProfileHistoryManager.save(userMedicalProfileHistory);
+        }
         userMedicalProfileManager.save(userMedicalProfile);
     }
 
@@ -38,7 +48,10 @@ public class UserMedicalProfileService {
             return new JsonUserMedicalProfile()
                 .setBloodType(userMedicalProfile.getBloodType())
                 .setOccupation(userMedicalProfile.getOccupation())
-                .setHeight(userMedicalProfile.getHeight());
+                .setPastHistory(userMedicalProfile.getPastHistory())
+                .setFamilyHistory(userMedicalProfile.getFamilyHistory())
+                .setKnownAllergies(userMedicalProfile.getKnownAllergies())
+                .setMedicineAllergies(userMedicalProfile.getMedicineAllergies());
         }
 
         return new JsonUserMedicalProfile();

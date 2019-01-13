@@ -13,8 +13,11 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
+import com.noqapp.medical.domain.UserMedicalProfileEntity;
 import com.noqapp.medical.form.MedicalRecordForm;
+import com.noqapp.medical.form.UserMedicalProfileForm;
 import com.noqapp.medical.service.MedicalRecordService;
+import com.noqapp.medical.service.UserMedicalProfileService;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.QueueService;
@@ -63,11 +66,12 @@ public class MedicalRecordController {
 
     private String nextPage;
 
+    private RegisteredDeviceManager registeredDeviceManager;
     private QueueService queueService;
     private TokenQueueService tokenQueueService;
     private AccountService accountService;
     private MedicalRecordService medicalRecordService;
-    private RegisteredDeviceManager registeredDeviceManager;
+    private UserMedicalProfileService userMedicalProfileService;
     private ApiHealthService apiHealthService;
 
     @Autowired
@@ -75,20 +79,22 @@ public class MedicalRecordController {
             @Value("${nextPage:/medical/caseHistory}")
             String nextPage,
 
+            RegisteredDeviceManager registeredDeviceManager,
             QueueService queueService,
             TokenQueueService tokenQueueService,
             AccountService accountService,
             MedicalRecordService medicalRecordService,
-            RegisteredDeviceManager registeredDeviceManager,
+            UserMedicalProfileService userMedicalProfileService,
             ApiHealthService apiHealthService
     ) {
         this.nextPage = nextPage;
 
+        this.registeredDeviceManager = registeredDeviceManager;
         this.queueService = queueService;
         this.tokenQueueService = tokenQueueService;
         this.accountService = accountService;
         this.medicalRecordService = medicalRecordService;
-        this.registeredDeviceManager = registeredDeviceManager;
+        this.userMedicalProfileService = userMedicalProfileService;
         this.apiHealthService = apiHealthService;
     }
 
@@ -138,7 +144,6 @@ public class MedicalRecordController {
                 //Perform Account Registry
             }
 
-
             List<MedicalRecordEntity> historicalMedicalRecords = medicalRecordService.historicalRecords(recordOwner);
             List<MedicalRecordForm> historicalMedicalRecordForms = new LinkedList<>();
             for (MedicalRecordEntity medicalRecord : historicalMedicalRecords) {
@@ -152,9 +157,6 @@ public class MedicalRecordController {
                         .populatePhysicalHistoricalForm(medicalPhysicals)
                         .setBusinessType(medicalRecord.getBusinessType())
                         .setChiefComplain(medicalRecord.getChiefComplain())
-                        .setPastHistory(medicalRecord.getPastHistory())
-                        .setFamilyHistory(medicalRecord.getFamilyHistory())
-                        .setKnownAllergies(medicalRecord.getKnownAllergies())
                         .setClinicalFinding(medicalRecord.getClinicalFinding())
                         .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
                         .setMedicalMedication(medicalRecordService.findByMedicationId(medicalRecord.getMedicalMedicationId()));
@@ -164,6 +166,16 @@ public class MedicalRecordController {
                 historicalMedicalRecordForms.add(historicalMedicalRecordForm);
             }
 
+            UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(recordOwner);
+            UserMedicalProfileForm userMedicalProfileForm = new UserMedicalProfileForm()
+                .setBloodType(userMedicalProfile.getBloodType())
+                .setOccupation(userMedicalProfile.getOccupation())
+                .setPastHistory(userMedicalProfile.getPastHistory())
+                .setFamilyHistory(userMedicalProfile.getFamilyHistory())
+                .setKnownAllergies(userMedicalProfile.getKnownAllergies())
+                .setMedicineAllergies(userMedicalProfile.getMedicineAllergies());
+
+            modelAndView.addObject("userMedicalProfileForm", userMedicalProfileForm);
             modelAndView.addObject("medicalRecordForm", medicalRecordForm);
             modelAndView.addObject("historicalMedicalRecordForms", historicalMedicalRecordForms);
             return modelAndView;

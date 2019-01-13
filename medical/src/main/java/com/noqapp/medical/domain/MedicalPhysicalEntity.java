@@ -52,6 +52,7 @@ public class MedicalPhysicalEntity extends BaseEntity {
     @Field("WT")
     private String weight;
 
+    //Height in cms
     @Field("HT")
     private String height;
     /** General Physical Exam Ends. */

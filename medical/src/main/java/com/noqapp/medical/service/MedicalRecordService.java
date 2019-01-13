@@ -12,6 +12,7 @@ import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedPerson;
+import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
@@ -25,6 +26,8 @@ import com.noqapp.medical.domain.MedicalPhysicalEntity;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 import com.noqapp.medical.domain.MedicalRadiologyTestEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
+import com.noqapp.medical.domain.UserMedicalProfileEntity;
+import com.noqapp.medical.domain.UserMedicalProfileHistoryEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
@@ -88,6 +91,7 @@ public class MedicalRecordService {
     private QueueManager queueManager;
     private BusinessUserStoreService businessUserStoreService;
     private PurchaseOrderService purchaseOrderService;
+    private UserMedicalProfileService userMedicalProfileService;
 
     private ExecutorService executorService;
 
@@ -108,7 +112,8 @@ public class MedicalRecordService {
         BizStoreManager bizStoreManager,
         QueueManager queueManager,
         BusinessUserStoreService businessUserStoreService,
-        PurchaseOrderService purchaseOrderService
+        PurchaseOrderService purchaseOrderService,
+        UserMedicalProfileService userMedicalProfileService
     ) {
         this.limitRecords = limitRecords;
 
@@ -125,6 +130,7 @@ public class MedicalRecordService {
         this.queueManager = queueManager;
         this.businessUserStoreService = businessUserStoreService;
         this.purchaseOrderService = purchaseOrderService;
+        this.userMedicalProfileService = userMedicalProfileService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -139,9 +145,6 @@ public class MedicalRecordService {
         medicalRecord.setId(CommonUtil.generateHexFromObjectId());
         medicalRecord
             .setBusinessType(bizStore.getBusinessType())
-            .setPastHistory(StringUtils.capitalize(medicalRecordForm.getPastHistory().trim()))
-            .setFamilyHistory(StringUtils.capitalize(medicalRecordForm.getFamilyHistory().trim()))
-            .setKnownAllergies(StringUtils.capitalize(medicalRecordForm.getKnownAllergies().trim()))
             .setChiefComplain(StringUtils.capitalize(medicalRecordForm.getChiefComplain().trim()))
             .setExamination(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setClinicalFinding(StringUtils.capitalize(medicalRecordForm.getClinicalFinding().trim()))
@@ -166,9 +169,7 @@ public class MedicalRecordService {
         }
 
         //TODO remove this temp code below for record access
-        medicalRecord.addRecordAccessed(
-            Instant.now().toEpochMilli(),
-            diagnosedById);
+        medicalRecord.addRecordAccessed(Instant.now().toEpochMilli(), diagnosedById);
         medicalRecordManager.save(medicalRecord);
         LOG.info("Saved medical record={}", medicalRecord);
     }
@@ -203,22 +204,48 @@ public class MedicalRecordService {
                     : jsonRecord.getRecordReferenceId());
             }
 
+            //TODO remove false to true condition
+            if (!jsonRecord.getJsonUserMedicalProfile().isHistoryDirty()) {
+                JsonUserMedicalProfile jsonUserMedicalProfile = jsonRecord.getJsonUserMedicalProfile();
+                UserMedicalProfileHistoryEntity userMedicalProfileHistory = null;
+                UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
+                if (null == userMedicalProfile) {
+                    userMedicalProfile = new UserMedicalProfileEntity(jsonRecord.getQueueUserId());
+                } else {
+                    userMedicalProfileHistory = new UserMedicalProfileHistoryEntity()
+                        .setQueueUserId(userMedicalProfile.getQueueUserId())
+                        .setBloodType(userMedicalProfile.getBloodType())
+                        .setOccupation(userMedicalProfile.getOccupation())
+                        .setPastHistory(userMedicalProfile.getPastHistory())
+                        .setFamilyHistory(userMedicalProfile.getFamilyHistory())
+                        .setKnownAllergies(userMedicalProfile.getKnownAllergies())
+                        .setMedicineAllergies(userMedicalProfile.getMedicineAllergies())
+                        .setEditedByQID(userMedicalProfile.getEditedByQID());
+                }
+
+                userMedicalProfile
+                    .setBloodType(jsonUserMedicalProfile.getBloodType())
+                    .setOccupation(jsonUserMedicalProfile.getOccupation())
+                    .setPastHistory(StringUtils.isBlank(jsonUserMedicalProfile.getPastHistory())
+                        ? null
+                        : StringUtils.capitalize(jsonUserMedicalProfile.getPastHistory().trim()))
+                    .setFamilyHistory(StringUtils.isBlank(jsonUserMedicalProfile.getFamilyHistory())
+                        ? null
+                        : StringUtils.capitalize(jsonUserMedicalProfile.getFamilyHistory().trim()))
+                    .setKnownAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getKnownAllergies())
+                        ? null
+                        : StringUtils.capitalize(jsonUserMedicalProfile.getKnownAllergies().trim()))
+                    .setMedicineAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getMedicineAllergies())
+                        ? null
+                        : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
+                    .setEditedByQID(diagnosedById);
+                userMedicalProfileService.save(userMedicalProfile, userMedicalProfileHistory);
+            }
+
             switch (userProfile.getLevel()) {
                 case S_MANAGER:
                     medicalRecord
                         .setBusinessType(bizStore.getBusinessType())
-                        .setPastHistory(
-                            StringUtils.isBlank(jsonRecord.getPastHistory())
-                                ? null
-                                : StringUtils.capitalize(jsonRecord.getPastHistory().trim()))
-                        .setFamilyHistory(
-                            StringUtils.isBlank(jsonRecord.getFamilyHistory())
-                                ? null
-                                : StringUtils.capitalize(jsonRecord.getFamilyHistory().trim()))
-                        .setKnownAllergies(
-                            StringUtils.isBlank(jsonRecord.getKnownAllergies())
-                                ? null :
-                                StringUtils.capitalize(jsonRecord.getKnownAllergies().trim()))
                         .setChiefComplain(
                             StringUtils.isBlank(jsonRecord.getChiefComplain())
                                 ? null
@@ -625,14 +652,14 @@ public class MedicalRecordService {
         if (StringUtils.isNotBlank(medicalRecord.getDiagnosedById())) {
             userProfile = userProfileManager.findByQueueUserId(medicalRecord.getDiagnosedById());
         }
-        JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+
+        JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord()
+            .setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(medicalRecord.getQueueUserId()));
+
         jsonMedicalRecord
             .setFormVersion(medicalRecord.getFormVersion())
             .setBusinessType(medicalRecord.getBusinessType())
             .setQueueUserId(medicalRecord.getQueueUserId())
-            .setPastHistory(medicalRecord.getPastHistory())
-            .setFamilyHistory(medicalRecord.getFamilyHistory())
-            .setKnownAllergies(medicalRecord.getKnownAllergies())
             .setChiefComplain(medicalRecord.getChiefComplain())
             .setExamination(medicalRecord.getExamination())
             .setClinicalFinding(medicalRecord.getClinicalFinding())
