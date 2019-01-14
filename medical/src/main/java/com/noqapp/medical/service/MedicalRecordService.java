@@ -344,6 +344,7 @@ public class MedicalRecordService {
             } else {
                 medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
                 medicalRadiology.setMedicalRadiologyXRayIds(new LinkedList<>());
+                medicalRecord.setMedicalRadiologies(new LinkedList<>());
             }
 
             for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
