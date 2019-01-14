@@ -62,4 +62,14 @@ public class PreferredBusinessEntity extends BaseEntity {
         this.preferredBusinessName = preferredBusinessName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "PreferredBusinessEntity{" +
+            "bizNameId='" + bizNameId + '\'' +
+            ", preferredBizNameId='" + preferredBizNameId + '\'' +
+            ", businessType=" + businessType +
+            ", preferredBusinessName='" + preferredBusinessName + '\'' +
+            '}';
+    }
 }
