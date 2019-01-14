@@ -12,4 +12,6 @@ import java.util.List;
 public interface MedicalRadiologyTestManager extends RepositoryManager<MedicalRadiologyTestEntity> {
 
     List<MedicalRadiologyTestEntity> findRadiologyTestByIds(String medicalRadiologyReferenceId);
+
+    void deleteByRadiologyReferenceId(String medicalRadiologyReferenceId);
 }
