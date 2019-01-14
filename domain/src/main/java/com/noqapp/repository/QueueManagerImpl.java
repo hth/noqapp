@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
 import com.mongodb.ReadPreference;
@@ -412,7 +413,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review) {
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
             query = query(
@@ -441,7 +442,7 @@ public class QueueManagerImpl implements QueueManager {
         if (StringUtils.isBlank(review)) {
             update = entityUpdate(update("RA", ratingCount).set("HR", hoursSaved));
         } else {
-            update = entityUpdate(update("RA", ratingCount).set("HR", hoursSaved).set("RV", review));
+            update = entityUpdate(update("RA", ratingCount).set("HR", hoursSaved).set("RV", review).set("ST", sentimentType));
         }
 
         return mongoTemplate.updateFirst(query, update, QueueEntity.class, TABLE).getModifiedCount() > 0;

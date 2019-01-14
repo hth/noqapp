@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.SentimentTypeEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType);
 
     @Mobile
     boolean hasClientVisitedThisStore(String codeQR, String qid);

@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
 import org.slf4j.Logger;
@@ -120,6 +121,9 @@ public class QueueEntity extends BaseEntity {
     /* This data is associated to record that needs to be created against this queue entry. */
     @Field ("RR")
     private String recordReferenceId;
+
+    @Field("ST")
+    private SentimentTypeEnum sentimentType;
 
     @SuppressWarnings("unused")
     public QueueEntity() {
@@ -358,6 +362,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public SentimentTypeEnum getSentimentType() {
+        return sentimentType;
+    }
+
+    public QueueEntity setSentimentType(SentimentTypeEnum sentimentType) {
+        this.sentimentType = sentimentType;
         return this;
     }
 
