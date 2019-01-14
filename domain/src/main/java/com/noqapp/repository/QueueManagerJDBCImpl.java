@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.QueueRowMapper;
+import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,14 +39,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D)" +
+        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:v,:u,:c,:a,:d)";
+            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:st,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid_Simple =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "ORDER BY C DESC";
@@ -53,7 +54,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "AND " +
@@ -65,7 +66,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? AND U >= ? " +
             "AND " +
@@ -75,7 +76,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByCodeQR_AndNotNullQID =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
@@ -103,7 +104,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findByDid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? " +
             "AND " +
@@ -113,7 +114,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? AND U >= ? " +
             "AND " +
@@ -166,6 +167,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("sb", queue.getServiceBeginTime());
                 namedParameters.addValue("se", queue.getServiceEndTime());
                 namedParameters.addValue("bn", queue.getBizNameId());
+                namedParameters.addValue("st", queue.getSentimentType());
 
                 namedParameters.addValue("v", queue.getVersion());
                 namedParameters.addValue("u", queue.getUpdated());
@@ -255,16 +257,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     @CustomTransactional
-    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review) {
+    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType) {
         try {
             if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, review, codeQR, did, qid, token) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0 AND ST = ?",
+                    ratingCount, hoursSaved, review, codeQR, did, qid, token, sentimentType) > 0;
             } else {
                 return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0",
-                    ratingCount, hoursSaved, review, codeQR, did, token) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0 AND ST = ?",
+                    ratingCount, hoursSaved, review, codeQR, did, token, sentimentType) > 0;
             }
         } catch (Exception e) {
             LOG.error("Failed review update codeQR={} token={} did={} qid={} ratingCount={} hoursSaved={} review={} reason={}",

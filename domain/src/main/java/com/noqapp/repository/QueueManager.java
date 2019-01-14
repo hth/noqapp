@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.List;
@@ -111,7 +112,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void increaseAttemptToSendNotificationCount(String id);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review);
+    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType);
 
     @Mobile
     List<QueueEntity> findAllClientQueuedOrAborted(String codeQR);

@@ -23,8 +23,15 @@ import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
+import edu.stanford.nlp.util.CoreMap;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -56,17 +63,19 @@ public class NoQAppInitializationCheckBean {
     private BizStoreElasticService bizStoreElasticService;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
+    private StanfordCoreNLP stanfordCoreNLP;
 
     @Autowired
     public NoQAppInitializationCheckBean(
-            Environment environment,
-            DataSource dataSource,
-            FirebaseConfig firebaseConfig,
-            RestHighLevelClient restHighLevelClient,
-            ElasticAdministrationService elasticAdministrationService,
-            BizStoreElasticService bizStoreElasticService,
-            DatabaseReader databaseReader,
-            FtpService ftpService
+        Environment environment,
+        DataSource dataSource,
+        FirebaseConfig firebaseConfig,
+        RestHighLevelClient restHighLevelClient,
+        ElasticAdministrationService elasticAdministrationService,
+        BizStoreElasticService bizStoreElasticService,
+        DatabaseReader databaseReader,
+        FtpService ftpService,
+        StanfordCoreNLP stanfordCoreNLP
     ) {
         this.environment = environment;
         this.dataSource = dataSource;
@@ -76,6 +85,7 @@ public class NoQAppInitializationCheckBean {
         this.bizStoreElasticService = bizStoreElasticService;
         this.databaseReader = databaseReader;
         this.ftpService = ftpService;
+        this.stanfordCoreNLP = stanfordCoreNLP;
     }
 
     @PostConstruct
@@ -165,6 +175,17 @@ public class NoQAppInitializationCheckBean {
                 databaseReader.getMetadata().getBinaryFormatMinorVersion(),
                 databaseReader.getMetadata().getBuildDate(),
                 databaseReader.getMetadata().getIpVersion());
+    }
+
+    @PostConstruct
+    public void checkNLP() {
+        String text = "NoQueue is now up and running with sentiments.";
+        Annotation annotation = stanfordCoreNLP.process(text);
+        List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+        for (CoreMap sentence : sentences) {
+            String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+            LOG.info("{} {}", sentiment, sentence);
+        }
     }
 
     @PreDestroy

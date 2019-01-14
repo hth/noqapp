@@ -3,6 +3,7 @@ package com.noqapp.domain.mapper;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -35,11 +36,13 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int SB = 15;
     private static final int SE = 16;
     private static final int BN = 17;
-    private static final int V = 18;
-    private static final int U = 19;
-    private static final int C = 20;
-    private static final int A = 21;
-    private static final int D = 22;
+    private static final int ST = 18;
+
+    private static final int V = 19;
+    private static final int U = 20;
+    private static final int C = 21;
+    private static final int A = 22;
+    private static final int D = 23;
 
     @Override
     public QueueEntity extractData(@NotNull ResultSet rs) throws SQLException {
@@ -62,6 +65,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setServiceBeginTime(rs.getTimestamp(SB));
         queue.setServiceEndTime(rs.getTimestamp(SE));
         queue.setBizNameId(rs.getString(BN));
+        queue.setSentimentType(SentimentTypeEnum.valueOf(rs.getString(ST)));
         queue.setVersion(rs.getInt(V));
         queue.setCreateAndUpdate(rs.getTimestamp(U));
         queue.setCreated(rs.getTimestamp(C));
