@@ -62,4 +62,13 @@ public class MedicalRadiologyTestManagerImpl implements MedicalRadiologyTestMana
             TABLE
         );
     }
+
+    @Override
+    public void deleteByRadiologyReferenceId(String medicalRadiologyReferenceId) {
+        mongoTemplate.remove(
+            query(where("RRI").is(medicalRadiologyReferenceId)),
+            MedicalRadiologyTestEntity.class,
+            TABLE
+        );
+    }
 }

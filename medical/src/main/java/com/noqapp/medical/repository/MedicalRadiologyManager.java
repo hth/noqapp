@@ -1,5 +1,6 @@
 package com.noqapp.medical.repository;
 
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 import com.noqapp.repository.RepositoryManager;
 
@@ -12,4 +13,6 @@ import java.util.List;
 public interface MedicalRadiologyManager  extends RepositoryManager<MedicalRadiologyEntity> {
 
     List<MedicalRadiologyEntity> findByIds(List<String> ids);
+
+    MedicalRadiologyEntity findOne(List<String> ids, LabCategoryEnum labCategory)
 }

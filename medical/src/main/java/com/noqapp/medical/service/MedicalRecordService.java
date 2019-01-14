@@ -332,13 +332,19 @@ public class MedicalRecordService {
             return;
         }
 
+        List<String> medicalRadiologies = medicalRecord.getMedicalRadiologies();
         for (JsonMedicalRadiologyList jsonMedicalRadiologyList : jsonMedicalRecord.getMedicalRadiologyLists()) {
-
-            MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
-            medicalRadiology
-                .setQueueUserId(jsonMedicalRecord.getQueueUserId())
-                .setLabCategory(jsonMedicalRadiologyList.getLabCategory())
-                .setId(CommonUtil.generateHexFromObjectId());
+            MedicalRadiologyEntity medicalRadiology = medicalRadiologyManager.findOne(medicalRadiologies, jsonMedicalRadiologyList.getLabCategory());
+            if (null == medicalRadiology) {
+                medicalRadiology = new MedicalRadiologyEntity();
+                medicalRadiology
+                    .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                    .setLabCategory(jsonMedicalRadiologyList.getLabCategory())
+                    .setId(CommonUtil.generateHexFromObjectId());
+            } else {
+                medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
+                medicalRadiology.setMedicalRadiologyXRayIds(new LinkedList<>());
+            }
 
             for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
                 MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
