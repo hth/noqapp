@@ -398,9 +398,13 @@ public class QueueEntity extends BaseEntity {
             ", expectedServiceBegin=" + expectedServiceBegin +
             ", tokenService=" + tokenService +
             ", clientVisitedThisStore=" + clientVisitedThisStore +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
             ", guardianQid='" + guardianQid + '\'' +
             ", businessCustomerId='" + businessCustomerId + '\'' +
+            ", businessCustomerIdChangeCount=" + businessCustomerIdChangeCount +
             ", recordReferenceId='" + recordReferenceId + '\'' +
+            ", sentimentType=" + sentimentType +
             '}';
     }
 }
