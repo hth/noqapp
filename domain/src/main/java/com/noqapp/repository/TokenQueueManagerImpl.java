@@ -153,7 +153,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         }
 
         UpdateResult updateResult = mongoTemplate.updateFirst(
-            query(where("_id").is(codeQR).and("TP").is(topic)),
+            query(where("id").is(codeQR).and("TP").is(topic)),
             update,
             TokenQueueEntity.class,
             TABLE
