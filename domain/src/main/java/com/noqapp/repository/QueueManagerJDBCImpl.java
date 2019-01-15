@@ -147,7 +147,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
             int i = 0;
             for (QueueEntity queue : queues) {
-                LOG.info("Added queue id={}", queue.getId());
+                LOG.info("Added queue id={} {}", queue.getId(), queue);
 
                 MapSqlParameterSource namedParameters = new MapSqlParameterSource();
                 namedParameters.addValue("id", queue.getId());

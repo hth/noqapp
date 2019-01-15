@@ -48,7 +48,7 @@ as a value, then it gets endless connections.
     CREATE TABLE noqapp_test.PURCHASE_ORDER
     (
         ID VARCHAR(24)      NOT NULL,
-        QID VARCHAR(13)    NOT NULL,
+        QID VARCHAR(13)     NOT NULL,
         BS VARCHAR(24)      NOT NULL,
         BN VARCHAR(24)      NOT NULL,
         QR VARCHAR(30)      NOT NULL,
