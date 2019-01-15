@@ -41,11 +41,11 @@ import javax.sql.DataSource;
  * User: hitender
  * Date: 3/12/17 12:31 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 @PropertySource("classpath:build-info.properties")
@@ -136,11 +136,11 @@ public class NoQAppInitializationCheckBean {
 
             MainResponse mainResponse = restHighLevelClient.info(RequestOptions.DEFAULT);
             LOG.info("Elastic {} connected clusterName={} nodeName={}\n  build={}\n  clusterUuid={}\n",
-                    mainResponse.getVersion(),
-                    mainResponse.getClusterName(),
-                    mainResponse.getNodeName(),
-                    mainResponse.getBuild(),
-                    mainResponse.getClusterUuid());
+                mainResponse.getVersion(),
+                mainResponse.getClusterName(),
+                mainResponse.getNodeName(),
+                mainResponse.getBuild(),
+                mainResponse.getClusterUuid());
         } catch (IOException e) {
             LOG.error("Elastic could not be connected");
             throw new RuntimeException("Elastic could not be connected");
@@ -152,8 +152,8 @@ public class NoQAppInitializationCheckBean {
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
             boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
-                    BizStoreElastic.INDEX,
-                    BizStoreElastic.TYPE);
+                BizStoreElastic.INDEX,
+                BizStoreElastic.TYPE);
 
             if (createdMappingSuccessfully) {
                 LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
@@ -170,11 +170,11 @@ public class NoQAppInitializationCheckBean {
     @PostConstruct
     public void checkGeoLite() {
         LOG.info("{} major={} minor={}\n  buildDate={}\n  ipVersion={}\n ",
-                databaseReader.getMetadata().getDatabaseType(),
-                databaseReader.getMetadata().getBinaryFormatMajorVersion(),
-                databaseReader.getMetadata().getBinaryFormatMinorVersion(),
-                databaseReader.getMetadata().getBuildDate(),
-                databaseReader.getMetadata().getIpVersion());
+            databaseReader.getMetadata().getDatabaseType(),
+            databaseReader.getMetadata().getBinaryFormatMajorVersion(),
+            databaseReader.getMetadata().getBinaryFormatMinorVersion(),
+            databaseReader.getMetadata().getBuildDate(),
+            databaseReader.getMetadata().getIpVersion());
     }
 
     @PostConstruct

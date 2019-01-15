@@ -26,18 +26,18 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 11/7/14 11:43 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @RestController
-@RequestMapping (value = "/webapi/mobile/mail")
+@RequestMapping(value = "/webapi/mobile/mail")
 public class MobileMailController {
     private static final Logger LOG = LoggerFactory.getLogger(MobileMailController.class);
 
-    @Value ("${web.access.api.token}")
+    @Value("${web.access.api.token}")
     private String webApiAccessToken;
 
     private MailService mailService;
@@ -49,13 +49,13 @@ public class MobileMailController {
 
     @PostMapping(value = "/accountSignup")
     public void accountValidationMail(
-            @RequestBody
-            String accountSignup,
+        @RequestBody
+        String accountSignup,
 
-            @RequestHeader ("X-R-API-MOBILE")
-            String apiAccessToken,
+        @RequestHeader("X-R-API-MOBILE")
+        String apiAccessToken,
 
-            HttpServletResponse httpServletResponse
+        HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("starting to send accountValidationMail");
 
@@ -69,9 +69,9 @@ public class MobileMailController {
 
             if (!map.isEmpty()) {
                 mailService.sendValidationMailOnAccountCreation(
-                        map.get("userId").getText(),
-                        map.get("qid").getText(),
-                        map.get("name").getText());
+                    map.get("userId").getText(),
+                    map.get("qid").getText(),
+                    map.get("name").getText());
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
@@ -87,7 +87,7 @@ public class MobileMailController {
         @RequestBody
         String mailChange,
 
-        @RequestHeader ("X-R-API-MOBILE")
+        @RequestHeader("X-R-API-MOBILE")
         String apiAccessToken,
 
         HttpServletResponse httpServletResponse
@@ -123,7 +123,7 @@ public class MobileMailController {
         @RequestBody
         String feedback,
 
-        @RequestHeader ("X-R-API-MOBILE")
+        @RequestHeader("X-R-API-MOBILE")
         String apiAccessToken,
 
         HttpServletResponse httpServletResponse
@@ -147,7 +147,7 @@ public class MobileMailController {
                 rootMap.put("body", map.get("body").getText());
 
                 mailService.sendAnyMail(
-                   "contact@noqapp.com",
+                    "contact@noqapp.com",
                     "NoQueue Inc",
                     "Feedback from: " + map.get("name").getText(),
                     rootMap,

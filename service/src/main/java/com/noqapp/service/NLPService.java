@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,18 +30,25 @@ public class NLPService {
         this.stanfordCoreNLP = stanfordCoreNLP;
     }
 
+    /**
+     * Only computes Negative and Positive sentiments. Neutral is considered as Positive sentiment.
+     *
+     * @param text
+     * @return
+     */
+    @Mobile
     public SentimentTypeEnum computeSentiment(String text) {
-        int totalCount = 0;
+        int sentimentState = 0;
         SentimentTypeEnum sentimentType;
         if (StringUtils.isNotBlank(text)) {
             Annotation annotation = stanfordCoreNLP.process(text);
             List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
             for (CoreMap sentence : sentences) {
                 sentimentType = SentimentTypeEnum.byDescription(sentence.get(SentimentCoreAnnotations.SentimentClass.class));
-                totalCount = totalCount + sentimentType.getValue();
+                sentimentState = sentimentState + sentimentType.getValue();
             }
         }
 
-        return totalCount < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
+        return sentimentState < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
     }
 }
