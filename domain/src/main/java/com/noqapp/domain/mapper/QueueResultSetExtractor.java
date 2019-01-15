@@ -65,7 +65,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setServiceBeginTime(rs.getTimestamp(SB));
         queue.setServiceEndTime(rs.getTimestamp(SE));
         queue.setBizNameId(rs.getString(BN));
-        queue.setSentimentType(SentimentTypeEnum.valueOf(rs.getString(ST)));
+        queue.setSentimentType(null == rs.getString(ST) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
         queue.setVersion(rs.getInt(V));
         queue.setCreateAndUpdate(rs.getTimestamp(U));
         queue.setCreated(rs.getTimestamp(C));

@@ -1,3 +1,10 @@
+### Change Jan 15 2019
+
+Add column ST
+
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `ST` VARCHAR(1) AFTER `BN`;
+
 ### Change Oct 26 2018
 
 Add column AN
