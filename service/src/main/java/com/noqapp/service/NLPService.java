@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,13 @@ public class NLPService {
         this.stanfordCoreNLP = stanfordCoreNLP;
     }
 
+    /**
+     * Only computes Negative and Positive sentiments. Neutral is considered as Positive sentiment.
+     *
+     * @param text
+     * @return
+     */
+    @Mobile
     public SentimentTypeEnum computeSentiment(String text) {
         int totalCount = 0;
         SentimentTypeEnum sentimentType;
