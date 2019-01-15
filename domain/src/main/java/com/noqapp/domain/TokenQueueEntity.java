@@ -43,6 +43,9 @@ public class TokenQueueEntity extends BaseEntity {
     @Field ("BT")
     private BusinessTypeEnum businessType;
 
+    @Field ("BC")
+    private String bizCategoryId;
+
     @Field ("QS")
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
 
@@ -58,10 +61,11 @@ public class TokenQueueEntity extends BaseEntity {
         this.displayName = displayName;
     }
 
-    public TokenQueueEntity(String topic, String displayName, BusinessTypeEnum businessType) {
+    public TokenQueueEntity(String topic, String displayName, BusinessTypeEnum businessType, String bizCategoryId) {
         this.topic = topic;
         this.displayName = displayName;
         this.businessType = businessType;
+        this.bizCategoryId = bizCategoryId;
     }
 
     public int getLastNumber() {
@@ -100,6 +104,15 @@ public class TokenQueueEntity extends BaseEntity {
 
     public TokenQueueEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public TokenQueueEntity setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 

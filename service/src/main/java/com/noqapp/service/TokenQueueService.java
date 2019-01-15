@@ -109,7 +109,12 @@ public class TokenQueueService {
     }
 
     //TODO has to createUpdate by cron job
-    public void createUpdate(String codeQR, String topic, String displayName, BusinessTypeEnum businessType) {
+    public void createUpdate(BizStoreEntity bizStore) {
+        String codeQR = bizStore.getCodeQR();
+        String topic = bizStore.getTopic();
+        String displayName = bizStore.getDisplayName();
+        BusinessTypeEnum businessType = bizStore.getBusinessType();
+        String bizCategoryId = bizStore.getBizCategoryId();
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         try {
@@ -117,15 +122,16 @@ public class TokenQueueService {
             Assertions.assertTrue(topic.endsWith(codeQR), "Topic and CodeQR should match significantly");
             TokenQueueEntity token = findByCodeQR(codeQR);
             if (null == token) {
-                token = new TokenQueueEntity(topic, displayName, businessType);
+                token = new TokenQueueEntity(topic, displayName, businessType, bizCategoryId);
                 token.setId(codeQR);
                 tokenQueueManager.save(token);
             } else {
                 boolean updateSuccess = tokenQueueManager.updateDisplayNameAndBusinessType(
-                        codeQR,
-                        topic,
-                        displayName,
-                        businessType);
+                    codeQR,
+                    topic,
+                    displayName,
+                    businessType,
+                    bizCategoryId);
 
                 if (!updateSuccess) {
                     LOG.error("Failed update for codeQR={} topic={} displayName={}", codeQR, topic, displayName);

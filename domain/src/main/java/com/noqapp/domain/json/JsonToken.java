@@ -52,6 +52,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty ("bc")
+    private String bizCategoryId;
+
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
@@ -77,6 +80,7 @@ public class JsonToken extends AbstractDomain {
         this.displayName = tokenQueue.getDisplayName();
         this.queueStatus = tokenQueue.getQueueStatus();
         this.businessType = tokenQueue.getBusinessType();
+        this.bizCategoryId = tokenQueue.getBizCategoryId();
     }
 
     public JsonToken(String codeQR, BusinessTypeEnum businessType) {
@@ -117,6 +121,10 @@ public class JsonToken extends AbstractDomain {
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
     }
 
     public QueueStatusEnum getQueueStatus() {

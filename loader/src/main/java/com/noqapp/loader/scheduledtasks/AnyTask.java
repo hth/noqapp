@@ -1,11 +1,13 @@
 package com.noqapp.loader.scheduledtasks;
 
-
 import static com.noqapp.domain.types.catgeory.HealthCareServiceEnum.MRI;
 import static com.noqapp.domain.types.catgeory.HealthCareServiceEnum.SCAN;
 
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.medical.repository.MasterLabManager;
+import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.TokenQueueManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,19 +41,28 @@ public class AnyTask {
     private Environment environment;
     private MasterLabManager masterLabManager;
 
+    private TokenQueueManager tokenQueueManager;
+    private BizStoreManager bizStoreManager;
+
     @Autowired
     public AnyTask(
         @Value("${oneTimeStatusSwitch:ON}")
         String oneTimeStatusSwitch,
 
         Environment environment,
-        MasterLabManager masterLabManager
+        MasterLabManager masterLabManager,
+
+        BizStoreManager bizStoreManager,
+        TokenQueueManager tokenQueueManager
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
         this.masterLabManager = masterLabManager;
         this.environment = environment;
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
+
+        this.bizStoreManager = bizStoreManager;
+        this.tokenQueueManager = tokenQueueManager;
     }
 
     /**
@@ -203,6 +214,16 @@ public class AnyTask {
 
         for (MasterLabEntity masterRadiology : masterRadiologies) {
             masterLabManager.save(masterRadiology);
+        }
+
+        List<BizStoreEntity> bizStores = bizStoreManager.getAll(0, 1000);
+        for (BizStoreEntity bizStore : bizStores) {
+            tokenQueueManager.updateDisplayNameAndBusinessType(
+                bizStore.getCodeQR(),
+                bizStore.getTopic(),
+                bizStore.getDisplayName(),
+                bizStore.getBusinessType(),
+                bizStore.getBizCategoryId());
         }
     }
 }
