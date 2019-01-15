@@ -13,6 +13,8 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,9 +145,16 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
     @Override
     public boolean updateDisplayNameAndBusinessType(String codeQR, String topic, String displayName, BusinessTypeEnum businessType, String bizCategoryId) {
+        Update update;
+        if (StringUtils.isBlank(bizCategoryId)) {
+            update = entityUpdate(update("DN", displayName).set("BT", businessType));
+        } else {
+            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("BC", bizCategoryId));
+        }
+
         UpdateResult updateResult = mongoTemplate.updateFirst(
             query(where("_id").is(codeQR).and("TP").is(topic)),
-            entityUpdate(update("DN", displayName).set("BT", businessType).set("BC", bizCategoryId)),
+            update,
             TokenQueueEntity.class,
             TABLE
         );
