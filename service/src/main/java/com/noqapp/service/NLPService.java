@@ -38,17 +38,17 @@ public class NLPService {
      */
     @Mobile
     public SentimentTypeEnum computeSentiment(String text) {
-        int totalCount = 0;
+        int sentimentState = 0;
         SentimentTypeEnum sentimentType;
         if (StringUtils.isNotBlank(text)) {
             Annotation annotation = stanfordCoreNLP.process(text);
             List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
             for (CoreMap sentence : sentences) {
                 sentimentType = SentimentTypeEnum.byDescription(sentence.get(SentimentCoreAnnotations.SentimentClass.class));
-                totalCount = totalCount + sentimentType.getValue();
+                sentimentState = sentimentState + sentimentType.getValue();
             }
         }
 
-        return totalCount < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
+        return sentimentState < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
     }
 }
