@@ -47,8 +47,10 @@ public class NLPService {
                 sentimentType = SentimentTypeEnum.byDescription(sentence.get(SentimentCoreAnnotations.SentimentClass.class));
                 sentimentState = sentimentState + sentimentType.getValue();
             }
+
+            return sentimentState < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
         }
 
-        return sentimentState < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
+        return null;
     }
 }

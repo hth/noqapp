@@ -161,4 +161,50 @@ public class MobileMailController {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
         }
     }
+
+    @PostMapping(value = "/negativeReview")
+    public void negativeReview(
+        @RequestBody
+        String reviewSentiment,
+
+        @RequestHeader("X-R-API-MOBILE")
+        String apiAccessToken,
+
+        HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.info("Feedback mail being generated");
+
+        if (webApiAccessToken.equals(apiAccessToken)) {
+            Map<String, ScrubbedInput> map = new HashMap<>();
+            try {
+                map = ParseJsonStringToMap.jsonStringToMap(reviewSentiment);
+            } catch (IOException e) {
+                LOG.error("Could not parse feedbackJson={} reason={}", reviewSentiment, e.getLocalizedMessage(), e);
+            }
+
+            if (!map.isEmpty()) {
+                Map<String, Object> rootMap = new HashMap<>();
+                rootMap.put("storeName", map.get("storeName").getText());
+                rootMap.put("reviewerName", map.get("reviewerName").getText());
+                rootMap.put("reviewerPhone", map.get("reviewerPhone").getText());
+                rootMap.put("ratingCount", map.get("ratingCount").getText());
+                rootMap.put("hourSaved", map.get("hourSaved").getText());
+                rootMap.put("review", map.get("review").getText());
+                rootMap.put("sentiment", map.get("sentiment").getText());
+
+                mailService.sendAnyMail(
+                    map.get("sentimentWatcherEmail").getText(),
+                    "Customer Sentiment Watcher",
+                    "Review for: " + map.get("storeName").getText(),
+                    rootMap,
+                    "mail/reviewSentiment.ftl");
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+        }
+    }
 }

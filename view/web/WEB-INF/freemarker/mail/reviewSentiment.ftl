@@ -40,32 +40,28 @@
 
 <body>
 
-<div class="email-style"
-        style="background:#f1f1f1;  font-size: 14px; padding:10px 5px; font-family: 'Roboto', sans-serif; color: #222">
-
+<div class="email-style" style="background:#f1f1f1;  font-size: 14px; padding:10px 5px; font-family: 'Roboto', sans-serif; color: #222">
     <div class="content-txt" style="font-size:16px; padding:0 15px; font-family: 'Roboto', sans-serif;">
         <div class="logo" style="width:220px; padding:15px 0 10px 0">
             <#include "../NoQApp.svg">
         </div>
 
-        <p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Dear ${to},</strong></p>
+        <p style="padding-bottom:15px; font-family: 'Roboto', sans-serif;"><strong>Dear ${storeName},</strong></p>
         <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            You've entered ${contact_email} as the contact email address for your NoQApp ID. To complete the process, we
-            just need to verify that this email address belongs to you. Simply click the link below and sign in using your
-            NoQApp ID and password.
+            A review with ${sentiment} sentiment, was submitted. Review detail is below.
         </p>
         <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            <a href="${https}://${domain}/open/validate.htm?authenticationKey=${link}" style="padding:8px 15px; background:#ff1c79; color:#fff; text-decoration: none">Activate Account</a>
-        </p>
-        <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            <strong>Wondering why you got this email?</strong>
-            It's sent when someone sign's up or changes a contact email address for a NoQApp account. If you didn't do
-            this, don't worry. Your email address cannot be used as a contact address with NoQueue's NoQApp without your
-            verification.
+            Store: ${storeName}<br/>
+            Reviewer: ${reviewerName}<br/>
+            Phone: ${reviewerName}<br/>
+
+            Rating: ${ratingCount}<br/>
+            Hour Saved: ${hourSaved}<br/>
+            Review: ${review}<br/>
         </p>
         <p style="font-family: 'Roboto', sans-serif;">
             Thanks, <br/>
-            <strong>NoQueue Customer Support</strong>
+            <strong>NoQueue Customer Satisfaction Team</strong>
         </p>
         <br/><br/><br/>
     </div>
