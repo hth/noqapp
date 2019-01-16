@@ -125,6 +125,10 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
 
+    @Transient
+    @JsonProperty("at")
+    private String areaAndTown;
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -389,6 +393,15 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setDiagnosedByDisplayName(String diagnosedByDisplayName) {
         this.diagnosedByDisplayName = diagnosedByDisplayName;
+        return this;
+    }
+
+    public String getAreaAndTown() {
+        return areaAndTown;
+    }
+
+    public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
+        this.areaAndTown = areaAndTown;
         return this;
     }
 

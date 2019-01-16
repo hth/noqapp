@@ -315,16 +315,21 @@ public class MedicalRecordService {
     @Mobile
     public JsonMedicalRecord retrieveMedicalRecord(String codeQR, String recordReferenceId) {
         QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
-        if (queue == null) {
+        if (null == queue) {
             LOG.error("Not valid request for medical record codeQR={} recordReferenceId={}", codeQR, recordReferenceId);
             return null;
         }
 
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
-        if (medicalRecord == null) {
-            return new JsonMedicalRecord().setCodeQR(codeQR).setRecordReferenceId(recordReferenceId);
+        if (null == medicalRecord) {
+            return new JsonMedicalRecord()
+                .setCodeQR(codeQR)
+                .setRecordReferenceId(recordReferenceId)
+                .setBusinessName(bizStore.getBizName().getBusinessName())
+                .setAreaAndTown(bizStore.getAreaAndTown());
         }
-        return getJsonMedicalRecord(medicalRecord);
+        return getJsonMedicalRecord(medicalRecord).setAreaAndTown(bizStore.getAreaAndTown());
     }
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
