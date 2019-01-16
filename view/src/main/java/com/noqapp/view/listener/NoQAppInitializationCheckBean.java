@@ -179,12 +179,12 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkNLP() {
-        String text = "NoQueue is now up and running with sentiments.";
+        String text = "NoQueue is now up and running with sentiments that are ";
         Annotation annotation = stanfordCoreNLP.process(text);
         List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
         for (CoreMap sentence : sentences) {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-            LOG.info("{} {}", sentiment, sentence);
+            LOG.info("{} {}", sentence, sentiment);
         }
     }
 
