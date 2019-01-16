@@ -18,3 +18,7 @@ Update All
 
     db.M_RECORD.update({},  { $set : {"BS" : "5b392567783cea3482064bdd"}}, false, true);    
     
+Remove one field
+
+    db.getCollection('TOKEN_QUEUE').update({}, {$unset: {BC:""}} , {multi: true});
+    
