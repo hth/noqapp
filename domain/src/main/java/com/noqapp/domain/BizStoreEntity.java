@@ -280,6 +280,12 @@ public class BizStoreEntity extends BaseEntity {
         return getAddressWrappedMore();
     }
 
+    /** Something like Sunnyvale, California. */
+    @Transient
+    public String getAreaAndTown() {
+        return area + ", " + town;
+    }
+
     /**
      * Escape String for Java Script.
      *
