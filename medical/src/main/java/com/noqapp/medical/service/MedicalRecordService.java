@@ -756,11 +756,6 @@ public class MedicalRecordService {
             .setPaymentType(PaymentTypeEnum.CA)
             .setBizStoreId(bizStoreId);
 
-        purchaseOrderService.createOrder(
-            jsonPurchaseOrder,
-            jsonMedicalRecord.getQueueUserId(),
-            null,
-            TokenServiceEnum.M
-        );
+        purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);
     }
 }
