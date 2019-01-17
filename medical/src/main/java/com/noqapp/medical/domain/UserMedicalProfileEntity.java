@@ -49,6 +49,9 @@ public class UserMedicalProfileEntity extends BaseEntity {
     @Field("MA")
     private String medicineAllergies;
 
+    @Field("PG")
+    private boolean pregnant;
+
     @Field("EB")
     private String editedByQID;
 
@@ -114,6 +117,15 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     public UserMedicalProfileEntity setMedicineAllergies(String medicineAllergies) {
         this.medicineAllergies = medicineAllergies;
+        return this;
+    }
+
+    public boolean isPregnant() {
+        return pregnant;
+    }
+
+    public UserMedicalProfileEntity setPregnant(boolean pregnant) {
+        this.pregnant = pregnant;
         return this;
     }
 
