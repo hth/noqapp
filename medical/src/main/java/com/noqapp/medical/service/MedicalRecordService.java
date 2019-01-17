@@ -741,11 +741,7 @@ public class MedicalRecordService {
         return new JsonQueuePersonList().setQueuedPeople(jsonQueuedPeople).asJson();
     }
 
-    /**
-     * Puts in a purchase order.
-     * @param jsonMedicalRecord
-     * @param jsonPurchaseOrder
-     */
+    /** Puts in a purchase order. */
     private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder, String bizStoreId) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
         jsonPurchaseOrder
