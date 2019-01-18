@@ -259,7 +259,7 @@ public class BizStoreElasticService {
                 dslQuery
         );
 
-        LOG.info("DSL Query result={}", result);
+        LOG.debug("DSL Query result={}", result);
         return result;
     }
 
