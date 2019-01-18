@@ -111,13 +111,9 @@ public class BizStoreElasticList extends AbstractDomain {
         }
 
         for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
-            BizStoreElastic bizStoreElastic = elasticBizStoreSource.getBizStoreElastic();
-            LOG.info("{}, {}, hashCode={} {}",
-                    bizStoreElastic.getDisplayName(),
-                    bizStoreElastic.getBusinessName(),
-                    bizStoreElastic.hashCode(),
-                    bizStoreElastic);
-            bizStoreElastics.add(bizStoreElastic);
+            BizStoreElastic elastic = elasticBizStoreSource.getBizStoreElastic();
+            LOG.debug("{}, {}, hashCode={} {}", elastic.getDisplayName(), elastic.getBusinessName(), elastic.hashCode(), elastic);
+            bizStoreElastics.add(elastic);
         }
         LOG.info("After count={}", bizStoreElastics.size());
         return this;
