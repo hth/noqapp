@@ -179,10 +179,10 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("ED")
     private List<JsonNameDatePair> education;
 
-    /** This field is normally used in level condition, other times its anyway deleted from elastic. */
+    /** This field is normally used in level-up condition, other times its anyway deleted/removed from elastic. */
     @Transient
     @JsonProperty("A")
-    private boolean active;
+    private boolean active = true;
 
     public String getId() {
         return id;

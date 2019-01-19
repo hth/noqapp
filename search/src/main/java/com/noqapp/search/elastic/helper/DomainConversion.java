@@ -28,13 +28,12 @@ public class DomainConversion {
 
     /**
      * Sets business images based on business types.
-     *
      * Note: Keep updating these based on business type.
      */
     public static BusinessImageHolder populateBizAndStoreImages(BizStoreEntity bizStore) {
         String bannerImage = "";
         Set<String> serviceImages;
-        
+
         String codeQR;
         switch (bizStore.getBusinessType()) {
             case DO:
@@ -71,42 +70,42 @@ public class DomainConversion {
         }
 
         return new BizStoreElastic()
-                .setId(bizStore.getId())
-                .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setBusinessType(bizStore.getBusinessType())
-                /*
-                 * Business Category below is replaced with text at a later stage in process by method
-                 * BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName(),
-                 * right before insert to Elastic.
-                 */
-                .setBizCategoryName(null)
-                .setBizCategoryId(bizStore.getBizCategoryId())
-                .setAddress(bizStore.getAddress())
-                .setArea(bizStore.getArea())
-                .setTown(bizStore.getTown())
-                .setDistrict(bizStore.getDistrict())
-                .setState(bizStore.getState())
-                .setStateShortName(bizStore.getStateShortName())
-                .setPostalCode(bizStore.getPostalCode())
-                .setCountry(bizStore.getCountry())
-                .setCountryShortName(bizStore.getCountryShortName())
-                .setPhone(bizStore.getPhone())
-                .setPhoneRaw(bizStore.getPhoneRaw())
-                .setGeoPointOfQ(bizStore.getGeoPointOfQ())
-                .setPlaceId(bizStore.getPlaceId())
-                .setPlaceType(bizStore.getPlaceType())
-                .setRating(bizStore.getRating())
-                .setRatingCount(bizStore.getReviewCount())
-                .setBizNameId(bizStore.getBizName().getId())
-                .setDisplayName(bizStore.getDisplayName())
-                .setCodeQR(bizStore.getCodeQR())
-                .setTimeZone(bizStore.getTimeZone())
-                .setGeoHash(bizStore.getGeoPoint().getGeohash())
-                .setWebLocation(bizStore.getWebLocation())
-                .setFamousFor(bizStore.getFamousFor())
-                .setDisplayImage(businessImageHolder.getBannerImage())
-                .setStoreHourElasticList(getStoreHourElastics(storeHours))
-                .setBizServiceImages(businessImageHolder.getServiceImages());
+            .setId(bizStore.getId())
+            .setBusinessName(bizStore.getBizName().getBusinessName())
+            .setBusinessType(bizStore.getBusinessType())
+            /*
+             * Business Category below is replaced with text at a later stage in process by method
+             * BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName(),
+             * right before insert to Elastic.
+             */
+            .setBizCategoryName(null)
+            .setBizCategoryId(bizStore.getBizCategoryId())
+            .setAddress(bizStore.getAddress())
+            .setArea(bizStore.getArea())
+            .setTown(bizStore.getTown())
+            .setDistrict(bizStore.getDistrict())
+            .setState(bizStore.getState())
+            .setStateShortName(bizStore.getStateShortName())
+            .setPostalCode(bizStore.getPostalCode())
+            .setCountry(bizStore.getCountry())
+            .setCountryShortName(bizStore.getCountryShortName())
+            .setPhone(bizStore.getPhone())
+            .setPhoneRaw(bizStore.getPhoneRaw())
+            .setGeoPointOfQ(bizStore.getGeoPointOfQ())
+            .setPlaceId(bizStore.getPlaceId())
+            .setPlaceType(bizStore.getPlaceType())
+            .setRating(bizStore.getRating())
+            .setRatingCount(bizStore.getReviewCount())
+            .setBizNameId(bizStore.getBizName().getId())
+            .setDisplayName(bizStore.getDisplayName())
+            .setCodeQR(bizStore.getCodeQR())
+            .setTimeZone(bizStore.getTimeZone())
+            .setGeoHash(bizStore.getGeoPoint().getGeohash())
+            .setWebLocation(bizStore.getWebLocation())
+            .setFamousFor(bizStore.getFamousFor())
+            .setDisplayImage(businessImageHolder.getBannerImage())
+            .setStoreHourElasticList(getStoreHourElastics(storeHours))
+            .setBizServiceImages(businessImageHolder.getServiceImages());
     }
 
     @Mobile
@@ -114,12 +113,12 @@ public class DomainConversion {
         List<StoreHourElastic> storeHourElastics = new LinkedList<>();
         for (StoreHourEntity storeHour : storeHours) {
             storeHourElastics.add(new StoreHourElastic()
-                    .setDayOfWeek(storeHour.getDayOfWeek())
-                    .setStartHour(storeHour.getStartHour())
-                    .setEndHour(storeHour.getEndHour())
-                    .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
-                    .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
-                    .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
+                .setDayOfWeek(storeHour.getDayOfWeek())
+                .setStartHour(storeHour.getStartHour())
+                .setEndHour(storeHour.getEndHour())
+                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
             );
         }
         return storeHourElastics;
