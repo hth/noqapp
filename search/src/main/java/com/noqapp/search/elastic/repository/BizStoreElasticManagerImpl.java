@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.repository;
 
+import static org.elasticsearch.action.DocWriteRequest.OpType;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 import com.noqapp.domain.helper.CommonHelper;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -182,12 +182,11 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             } else {
                 long created = 0, updated = 0, deleted = 0;
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
-                    if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.INDEX
-                        || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
+                    if (bulkItemResponse.getOpType() == OpType.INDEX || bulkItemResponse.getOpType() == OpType.CREATE) {
                         created++;
-                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.UPDATE) {
+                    } else if (bulkItemResponse.getOpType() == OpType.UPDATE) {
                         updated++;
-                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.DELETE) {
+                    } else if (bulkItemResponse.getOpType() == OpType.DELETE) {
                         deleted++;
                     }
                 }
