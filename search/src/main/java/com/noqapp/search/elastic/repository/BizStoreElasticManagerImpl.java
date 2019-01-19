@@ -55,10 +55,10 @@ import java.util.concurrent.TimeUnit;
  * Date: 11/193/16 1:49 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizStoreElastic> {
@@ -68,9 +68,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
     //Set cache parameters
     private final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
-            .maximumSize(1000)
-            .expireAfterWrite(2, TimeUnit.MINUTES)
-            .build();
+        .maximumSize(1000)
+        .expireAfterWrite(2, TimeUnit.MINUTES)
+        .build();
 
     @Autowired
     public BizStoreElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
@@ -82,10 +82,10 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         try {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
             IndexRequest request = new IndexRequest(
-                    BizStoreElastic.INDEX,
-                    BizStoreElastic.TYPE,
-                    bizStoreElastic.getId())
-                    .source(bizStoreElastic.asJson(), XContentType.JSON);
+                BizStoreElastic.INDEX,
+                BizStoreElastic.TYPE,
+                bizStoreElastic.getId())
+                .source(bizStoreElastic.asJson(), XContentType.JSON);
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             if (indexResponse.getResult() == DocWriteResponse.Result.CREATED) {
@@ -117,9 +117,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     @Override
     public void delete(String id) {
         DeleteRequest request = new DeleteRequest(
-                BizStoreElastic.INDEX,
-                BizStoreElastic.TYPE,
-                id);
+            BizStoreElastic.INDEX,
+            BizStoreElastic.TYPE,
+            id);
 
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
@@ -157,16 +157,16 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
             request.add(
-                    new IndexRequest(
-                            BizStoreElastic.INDEX,
-                            BizStoreElastic.TYPE,
-                            /*
-                             *  Recommend to remove your id for indexing as it checks before insert,
-                             *  that slows the process of insert. But having your existing index
-                             *  helps shorten data, and easy lookup by id.
-                             */
-                            bizStoreElastic.getId()
-                    ).source(bizStoreElastic.asJson(), XContentType.JSON));
+                new IndexRequest(
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE,
+                    /*
+                     *  Recommend to remove your id for indexing as it checks before insert,
+                     *  that slows the process of insert. But having your existing index
+                     *  helps shorten data, and easy lookup by id.
+                     */
+                    bizStoreElastic.getId()
+                ).source(bizStoreElastic.asJson(), XContentType.JSON));
         }
 
         try {
@@ -176,14 +176,14 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                     if (bulkItemResponse.isFailed()) {
                         BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
                         LOG.info("Failed during saving id={} message={} cause={} status={}",
-                                failure.getId(), failure.getMessage(), failure.getCause(), failure.getStatus());
+                            failure.getId(), failure.getMessage(), failure.getCause(), failure.getStatus());
                     }
                 }
             } else {
                 long created = 0, updated = 0, deleted = 0;
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
                     if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.INDEX
-                            || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
+                        || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
                         created++;
                     } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.UPDATE) {
                         updated++;
@@ -226,12 +226,12 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
         /* Size limits to fetching X data. Defaults to 10. */
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-                .query(matchQuery("N", "+" + businessName))
-                .size(limitRecords);
+            .query(matchQuery("N", "+" + businessName))
+            .size(limitRecords);
 
         SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX)
-                .source(searchSourceBuilder)
-                .scroll(TimeValue.timeValueSeconds(10L));
+            .source(searchSourceBuilder)
+            .scroll(TimeValue.timeValueSeconds(10L));
         try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             String scrollId = searchResponse.getScrollId();
