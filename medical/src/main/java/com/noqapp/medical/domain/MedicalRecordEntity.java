@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -104,6 +105,10 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field ("FV")
     private FormVersionEnum formVersion;
 
+    @Field("TIS")
+    private List<String> transactionIds = new ArrayList<>();
+
+    @SuppressWarnings("unused")
     private MedicalRecordEntity() {}
 
     public MedicalRecordEntity(String queueUserId) {
@@ -315,6 +320,20 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setFormVersion(FormVersionEnum formVersion) {
         this.formVersion = formVersion;
+        return this;
+    }
+
+    public List<String> getTransactionIds() {
+        return transactionIds;
+    }
+
+    public MedicalRecordEntity setTransactionIds(List<String> transactionIds) {
+        this.transactionIds = transactionIds;
+        return this;
+    }
+
+    public MedicalRecordEntity addTransactionId(String transactionId) {
+        this.transactionIds.add(transactionId);
         return this;
     }
 

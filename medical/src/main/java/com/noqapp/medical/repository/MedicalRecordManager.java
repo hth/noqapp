@@ -22,4 +22,6 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
 
     //TODO remove me
     MedicalRecordEntity findOne();
+
+    void addTransactionId(String recordReferenceId, String transactionId);
 }

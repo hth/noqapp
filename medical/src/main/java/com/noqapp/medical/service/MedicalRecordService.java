@@ -150,7 +150,9 @@ public class MedicalRecordService {
             .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
-            .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate() : null)
+            .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays())
+                ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate()
+                : null)
             .setNoteForPatient(medicalRecordForm.getNoteForPatient())
             .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())
             .setDiagnosedById(diagnosedById)
@@ -294,7 +296,9 @@ public class MedicalRecordService {
                     break;
             }
             medicalRecord
-                .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate() : null)
+                .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays())
+                    ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
+                    : null)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
                 .setCodeQR(bizStore.getCodeQR());
@@ -753,5 +757,6 @@ public class MedicalRecordService {
             .setBizStoreId(bizStoreId);
 
         purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);
+        medicalRecordManager.addTransactionId(jsonMedicalRecord.getRecordReferenceId(), jsonPurchaseOrder.getTransactionId());
     }
 }
