@@ -5,6 +5,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -203,6 +204,16 @@ public class MedicalRecordService {
                 medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
                     ? CommonUtil.generateHexFromObjectId()
                     : jsonRecord.getRecordReferenceId());
+            } else {
+                List<String> transactionIds = medicalRecord.getTransactionIds();
+                if (null != transactionIds) {
+                    for (String transactionId : transactionIds) {
+                        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId);
+                        purchaseOrderService.cancelOrderByMerchant(purchaseOrder);
+                    }
+
+                    medicalRecord.setTransactionIds(new ArrayList<>());
+                }
             }
 
             //TODO remove false to true condition

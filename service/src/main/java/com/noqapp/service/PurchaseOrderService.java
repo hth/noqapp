@@ -220,6 +220,10 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
+        return cancelOrderByMerchant(purchaseOrder);
+    }
+
+    public JsonPurchaseOrderList cancelOrderByMerchant(PurchaseOrderEntity purchaseOrder) {
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
@@ -1098,5 +1102,9 @@ public class PurchaseOrderService {
         String review
     ) {
         return purchaseOrderManagerJDBC.reviewService(codeQR, token, did, qid, ratingCount, review);
+    }
+
+    public PurchaseOrderEntity findByTransactionId(String transactionId) {
+        return purchaseOrderManager.findByTransactionId(transactionId);
     }
 }
