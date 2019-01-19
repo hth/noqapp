@@ -1,6 +1,8 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -401,7 +403,11 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
         return mongoTemplate.findOne(
-            query(where("TI").is(transactionId)),
+            query(where("TI").is(transactionId)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted())
+            ),
             PurchaseOrderEntity.class,
             TABLE
         );
