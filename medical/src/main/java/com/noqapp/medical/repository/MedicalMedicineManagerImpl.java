@@ -76,6 +76,15 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     }
 
     @Override
+    public void deleteByMedicationRefId(String medicalMedicineReferenceId) {
+        mongoTemplate.remove(
+            query(where("MRI").is(medicalMedicineReferenceId)),
+            MedicalMedicineEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         List<MedicalMedicineEntity> medicalMedicines = new LinkedList<>();
         for (String id : ids) {

@@ -66,6 +66,15 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     }
 
     @Override
+    public void deleteHard(String id) {
+        mongoTemplate.remove(
+            query(where("id").is(id)),
+            MedicalPhysicalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return mongoTemplate.find(
                 query(where("QID").is(qid)).with(new Sort(DESC, "C")),

@@ -5,6 +5,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -150,7 +151,9 @@ public class MedicalRecordService {
             .setProvisionalDifferentialDiagnosis(StringUtils.capitalize(medicalRecordForm.getProvisionalDifferentialDiagnosis().trim()))
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
-            .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate() : null)
+            .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays())
+                ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate()
+                : null)
             .setNoteForPatient(medicalRecordForm.getNoteForPatient())
             .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())
             .setDiagnosedById(diagnosedById)
@@ -201,35 +204,19 @@ public class MedicalRecordService {
                 medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
                     ? CommonUtil.generateHexFromObjectId()
                     : jsonRecord.getRecordReferenceId());
-            }
+            } else {
+                List<String> transactionIds = medicalRecord.getTransactionIds();
+                if (null != transactionIds) {
+                    for (String transactionId : transactionIds) {
+                        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId);
+                        purchaseOrderService.cancelOrderByMerchant(purchaseOrder.getCodeQR(), purchaseOrder.getTokenNumber());
+                    }
 
-            //TODO remove false to true condition
-            if (!jsonRecord.getJsonUserMedicalProfile().isHistoryDirty()) {
-                JsonUserMedicalProfile jsonUserMedicalProfile = jsonRecord.getJsonUserMedicalProfile();
-                UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
-                if (null == userMedicalProfile) {
-                    userMedicalProfile = new UserMedicalProfileEntity(jsonRecord.getQueueUserId());
+                    medicalRecord.setTransactionIds(new ArrayList<>());
                 }
-
-                userMedicalProfile
-                    .setBloodType(jsonUserMedicalProfile.getBloodType())
-                    .setOccupation(jsonUserMedicalProfile.getOccupation())
-                    .setPastHistory(StringUtils.isBlank(jsonUserMedicalProfile.getPastHistory())
-                        ? null
-                        : StringUtils.capitalize(jsonUserMedicalProfile.getPastHistory().trim()))
-                    .setFamilyHistory(StringUtils.isBlank(jsonUserMedicalProfile.getFamilyHistory())
-                        ? null
-                        : StringUtils.capitalize(jsonUserMedicalProfile.getFamilyHistory().trim()))
-                    .setKnownAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getKnownAllergies())
-                        ? null
-                        : StringUtils.capitalize(jsonUserMedicalProfile.getKnownAllergies().trim()))
-                    .setMedicineAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getMedicineAllergies())
-                        ? null
-                        : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
-                    .setEditedByQID(diagnosedById);
-                userMedicalProfileService.save(userMedicalProfile);
             }
 
+            updateUserMedicalProfile(jsonRecord, diagnosedById);
             switch (userProfile.getLevel()) {
                 case S_MANAGER:
                     medicalRecord
@@ -264,7 +251,7 @@ public class MedicalRecordService {
                         .setFormVersion(jsonRecord.getFormVersion());
 
                     if (null == medicalRecord.getMedicalPhysicalId()) {
-                        if (null != jsonRecord.getMedicalPhysical()) {
+                        if (null != jsonRecord.getMedicalPhysical() && jsonRecord.getMedicalPhysical().isPhysicalDirty()) {
                             populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                         }
                     } else {
@@ -294,7 +281,9 @@ public class MedicalRecordService {
                     break;
             }
             medicalRecord
-                .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays()) ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate() : null)
+                .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays())
+                    ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
+                    : null)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizCategoryId(bizStore.getBizCategoryId())
                 .setCodeQR(bizStore.getCodeQR());
@@ -309,6 +298,34 @@ public class MedicalRecordService {
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
             throw e;
+        }
+    }
+
+    private void updateUserMedicalProfile(JsonMedicalRecord jsonRecord, String diagnosedById) {
+        if (jsonRecord.getJsonUserMedicalProfile().isHistoryDirty()) {
+            JsonUserMedicalProfile jsonUserMedicalProfile = jsonRecord.getJsonUserMedicalProfile();
+            UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
+            if (null == userMedicalProfile) {
+                userMedicalProfile = new UserMedicalProfileEntity(jsonRecord.getQueueUserId());
+            }
+
+            userMedicalProfile
+                .setBloodType(jsonUserMedicalProfile.getBloodType())
+                .setOccupation(jsonUserMedicalProfile.getOccupation())
+                .setPastHistory(StringUtils.isBlank(jsonUserMedicalProfile.getPastHistory())
+                    ? null
+                    : StringUtils.capitalize(jsonUserMedicalProfile.getPastHistory().trim()))
+                .setFamilyHistory(StringUtils.isBlank(jsonUserMedicalProfile.getFamilyHistory())
+                    ? null
+                    : StringUtils.capitalize(jsonUserMedicalProfile.getFamilyHistory().trim()))
+                .setKnownAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getKnownAllergies())
+                    ? null
+                    : StringUtils.capitalize(jsonUserMedicalProfile.getKnownAllergies().trim()))
+                .setMedicineAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getMedicineAllergies())
+                    ? null
+                    : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
+                .setEditedByQID(diagnosedById);
+            userMedicalProfileService.save(userMedicalProfile);
         }
     }
 
@@ -333,24 +350,28 @@ public class MedicalRecordService {
     }
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        /* Delete Existing. */
+        if (null != medicalRecord.getMedicalRadiologies()) {
+            List<MedicalRadiologyEntity> medicalRadiologies = medicalRadiologyManager.findByIds(medicalRecord.getMedicalRadiologies());
+            for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
+                medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
+                medicalRadiologyManager.deleteHard(medicalRadiology);
+            }
+            medicalRecord.setMedicalRadiologies(new LinkedList<>());
+        }
+
+        /* Exit when empty. */
         if (jsonMedicalRecord.getMedicalRadiologyLists().isEmpty()) {
             return;
         }
 
-        List<String> medicalRadiologies = medicalRecord.getMedicalRadiologies();
+        /* Create new when not empty. */
         for (JsonMedicalRadiologyList jsonMedicalRadiologyList : jsonMedicalRecord.getMedicalRadiologyLists()) {
-            MedicalRadiologyEntity medicalRadiology = medicalRadiologyManager.findOne(medicalRadiologies, jsonMedicalRadiologyList.getLabCategory());
-            if (null == medicalRadiology) {
-                medicalRadiology = new MedicalRadiologyEntity();
-                medicalRadiology
-                    .setQueueUserId(jsonMedicalRecord.getQueueUserId())
-                    .setLabCategory(jsonMedicalRadiologyList.getLabCategory())
-                    .setId(CommonUtil.generateHexFromObjectId());
-            } else {
-                medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
-                medicalRadiology.setMedicalRadiologyXRayIds(new LinkedList<>());
-                medicalRecord.setMedicalRadiologies(new LinkedList<>());
-            }
+            MedicalRadiologyEntity medicalRadiology = new MedicalRadiologyEntity();
+            medicalRadiology
+                .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                .setLabCategory(jsonMedicalRadiologyList.getLabCategory())
+                .setId(CommonUtil.generateHexFromObjectId());
 
             for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
                 MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
@@ -385,10 +406,19 @@ public class MedicalRecordService {
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        /* Delete Existing. */
+        if (null != medicalRecord.getMedicalLaboratoryId()) {
+            medicalPathologyTestManager.deleteByPathologyReferenceId(medicalRecord.getMedicalLaboratoryId());
+            medicalPathologyManager.deleteHard(medicalRecord.getMedicalLaboratoryId());
+            medicalRecord.setMedicalLaboratoryId(null);
+        }
+
+        /* Exit when empty. */
         if (jsonMedicalRecord.getMedicalPathologies().isEmpty()) {
             return;
         }
 
+        /* Create new when not empty. */
         MedicalPathologyEntity medicalPathology = new MedicalPathologyEntity();
         medicalPathology
             .setQueueUserId(jsonMedicalRecord.getQueueUserId())
@@ -426,10 +456,19 @@ public class MedicalRecordService {
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
+        /* Delete Existing. */
+        if (null != medicalRecord.getMedicalMedicationId()) {
+            medicalMedicineManager.deleteByMedicationRefId(medicalRecord.getMedicalMedicationId());
+            medicalMedicationManager.deleteHard(medicalRecord.getMedicalMedicationId());
+            medicalRecord.setMedicalMedicationId(null);
+        }
+
+        /* Exit when empty. */
         if (jsonMedicalRecord.getMedicalMedicines().isEmpty()) {
             return;
         }
 
+        /* Create new when not empty. */
         MedicalMedicationEntity medicalMedication = new MedicalMedicationEntity();
         medicalMedication
             .setQueueUserId(jsonMedicalRecord.getQueueUserId())
@@ -493,7 +532,6 @@ public class MedicalRecordService {
     private void populateWithMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String qid) {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
-
             if (jsonMedicalRecord.getMedicalPhysical() != null) {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(jsonMedicalRecord.getQueueUserId());
                 /* Setting its own ObjectId. */
@@ -506,7 +544,12 @@ public class MedicalRecordService {
         }
     }
 
-    private void updateMedicalPhysicalData(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, MedicalPhysicalEntity medicalPhysical, String diagnosedById) {
+    private void updateMedicalPhysicalData(
+        JsonMedicalRecord jsonMedicalRecord,
+        MedicalRecordEntity medicalRecord,
+        MedicalPhysicalEntity medicalPhysical,
+        String diagnosedById
+    ) {
         medicalPhysical
             .setTemperature(jsonMedicalRecord.getMedicalPhysical().getTemperature())
             .setBloodPressure(jsonMedicalRecord.getMedicalPhysical().getBloodPressure())
@@ -527,10 +570,12 @@ public class MedicalRecordService {
     private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String diagnosedById) {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
-
-            if (jsonMedicalRecord.getMedicalPhysical() != null) {
+            if (null != jsonMedicalRecord.getMedicalPhysical() && jsonMedicalRecord.getMedicalPhysical().isPhysicalDirty()) {
                 MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
                 updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical, diagnosedById);
+            } else {
+                medicalPhysicalManager.deleteHard(medicalRecord.getMedicalPhysicalId());
+                medicalRecord.setMedicalPhysicalId(null);
             }
             LOG.info("Populate medical physical complete medicalPhysicalId={}", medicalRecord.getMedicalPhysicalId());
         } catch (Exception e) {
@@ -541,7 +586,6 @@ public class MedicalRecordService {
     private void populateWithMedicalPhysical(MedicalRecordForm medicalRecordForm, MedicalRecordEntity medicalRecord) {
         try {
             LOG.info("Populate medical physical qid={}", medicalRecordForm.getQueueUserId());
-
             if (medicalRecordForm.getMedicalPhysical() != null) {
                 MedicalPhysicalEntity medicalPhysical = new MedicalPhysicalEntity(medicalRecordForm.getQueueUserId());
                 /* Setting its own ObjectId. */
@@ -753,5 +797,6 @@ public class MedicalRecordService {
             .setBizStoreId(bizStoreId);
 
         purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);
+        medicalRecordManager.addTransactionId(jsonMedicalRecord.getRecordReferenceId(), jsonPurchaseOrder.getTransactionId());
     }
 }

@@ -1,6 +1,8 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
+import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -393,6 +395,19 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     public List<PurchaseOrderEntity> findReviews(String codeQR) {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("RA").gt(0)),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public PurchaseOrderEntity findByTransactionId(String transactionId) {
+        return mongoTemplate.findOne(
+            query(where("TI").is(transactionId)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted())
+            ),
             PurchaseOrderEntity.class,
             TABLE
         );

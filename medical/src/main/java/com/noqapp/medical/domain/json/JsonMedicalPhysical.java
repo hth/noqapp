@@ -58,6 +58,9 @@ public class JsonMedicalPhysical extends AbstractDomain {
     @JsonProperty("dbi")
     private String diagnosedById;
 
+    @JsonProperty("pd")
+    private boolean physicalDirty;
+
     public String getTemperature() {
         return temperature;
     }
@@ -127,6 +130,15 @@ public class JsonMedicalPhysical extends AbstractDomain {
 
     public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
         this.diagnosedById = diagnosedById;
+        return this;
+    }
+
+    public boolean isPhysicalDirty() {
+        return physicalDirty;
+    }
+
+    public JsonMedicalPhysical setPhysicalDirty(boolean physicalDirty) {
+        this.physicalDirty = physicalDirty;
         return this;
     }
 

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -102,5 +103,15 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
             MedicalRecordEntity.class,
             TABLE
         ).get(0);
+    }
+
+    @Override
+    public void addTransactionId(String recordReferenceId, String transactionId) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(recordReferenceId)),
+            new Update().addToSet("TIS", transactionId),
+            MedicalRecordEntity.class,
+            TABLE
+        );
     }
 }

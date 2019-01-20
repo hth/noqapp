@@ -7,8 +7,6 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 
-import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +53,7 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
 
     @Override
     public void deleteHard(MedicalRadiologyEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object);
     }
 
     @Override

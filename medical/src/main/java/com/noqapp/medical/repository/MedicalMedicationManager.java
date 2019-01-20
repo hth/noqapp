@@ -10,4 +10,6 @@ import com.noqapp.repository.RepositoryManager;
 public interface MedicalMedicationManager extends RepositoryManager<MedicalMedicationEntity> {
 
     MedicalMedicationEntity findOneById(String id);
+
+    void deleteHard(String id);
 }
