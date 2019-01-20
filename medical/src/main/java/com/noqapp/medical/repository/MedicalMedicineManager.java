@@ -15,5 +15,7 @@ public interface MedicalMedicineManager extends RepositoryManager<MedicalMedicin
 
     List<MedicalMedicineEntity> findByMedicationRefId(String medicalMedicineReferenceId);
 
+    void deleteByMedicationRefId(String medicalMedicineReferenceId);
+
     List<MedicalMedicineEntity> findByIds(List<String> ids);
 }

@@ -8,4 +8,5 @@ import com.noqapp.repository.RepositoryManager;
  * 7/25/18 1:32 AM
  */
 public interface MedicalPathologyManager extends RepositoryManager<MedicalPathologyEntity> {
+    void deleteHard(String id);
 }

@@ -12,4 +12,6 @@ import java.util.List;
 public interface MedicalPathologyTestManager extends RepositoryManager<MedicalPathologyTestEntity> {
 
     List<MedicalPathologyTestEntity> findPathologyTestByIds(String medicalPathologyReferenceId);
+
+    void deleteByPathologyReferenceId(String medicalPathologyReferenceId);
 }

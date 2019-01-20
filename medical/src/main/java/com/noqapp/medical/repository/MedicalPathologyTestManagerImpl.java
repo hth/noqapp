@@ -62,4 +62,13 @@ public class MedicalPathologyTestManagerImpl implements MedicalPathologyTestMana
             TABLE
         );
     }
+
+    @Override
+    public void deleteByPathologyReferenceId(String medicalPathologyReferenceId) {
+        mongoTemplate.remove(
+            query(where("PRI").is(medicalPathologyReferenceId)),
+            MedicalPathologyTestEntity.class,
+            TABLE
+        );
+    }
 }

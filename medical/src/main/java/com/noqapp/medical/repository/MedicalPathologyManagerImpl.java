@@ -1,5 +1,8 @@
 package com.noqapp.medical.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
 
@@ -47,5 +50,14 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
     @Override
     public void deleteHard(MedicalPathologyEntity object) {
         throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    @Override
+    public void deleteHard(String id) {
+        mongoTemplate.remove(
+            query(where("id").is(id)),
+            MedicalPathologyEntity.class,
+            TABLE
+        );
     }
 }

@@ -8,6 +8,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
@@ -27,13 +28,17 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
@@ -43,6 +48,7 @@ import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
+import com.noqapp.service.exceptions.PurchaseOrderFailException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -67,8 +73,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +92,7 @@ public class PurchaseOrderService {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
     private BizStoreManager bizStoreManager;
+    private BusinessUserManager businessUserManager;
     private TokenQueueService tokenQueueService;
     private StoreHourManager storeHourManager;
     private StoreProductService storeProductService;
@@ -97,12 +106,15 @@ public class PurchaseOrderService {
     private TokenQueueManager tokenQueueManager;
     private AccountService accountService;
     private TransactionService transactionService;
+    private NLPService nlpService;
+    private MailService mailService;
 
     private ExecutorService executorService;
 
     @Autowired
     public PurchaseOrderService(
         BizStoreManager bizStoreManager,
+        BusinessUserManager businessUserManager,
         TokenQueueService tokenQueueService,
         StoreHourManager storeHourManager,
         StoreProductService storeProductService,
@@ -115,9 +127,12 @@ public class PurchaseOrderService {
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
         AccountService accountService,
-        TransactionService transactionService
+        TransactionService transactionService,
+        NLPService nlpService,
+        MailService mailService
     ) {
         this.bizStoreManager = bizStoreManager;
+        this.businessUserManager = businessUserManager;
         this.tokenQueueService = tokenQueueService;
         this.storeHourManager = storeHourManager;
         this.storeProductService = storeProductService;
@@ -131,6 +146,8 @@ public class PurchaseOrderService {
         this.tokenQueueManager = tokenQueueManager;
         this.accountService = accountService;
         this.transactionService = transactionService;
+        this.nlpService = nlpService;
+        this.mailService = mailService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -144,17 +161,22 @@ public class PurchaseOrderService {
         if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
             LOG.warn("When store closed or prevent joining, attempting to create new order");
 
+            /* Check always if store is active or not. */
             if (!bizStore.isActive()) {
                 throw new StoreInActiveException("Store is offline bizStoreId " + bizStore.getId());
             }
-            if (storeHour.isDayClosed()) {
-                throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
-            }
-            if (storeHour.isTempDayClosed()) {
-                throw new StoreTempDayClosedException("Store is temporary closed bizStoreId " + bizStore.getId());
-            }
-            if (storeHour.isPreventJoining()) {
-                throw new StorePreventJoiningException("Store not accepting new orders bizStoreId " + bizStore.getId());
+
+            /* Skip for HS as the orders are placed through internally. */
+            if (bizStore.getBusinessType() != BusinessTypeEnum.HS) {
+                if (storeHour.isDayClosed()) {
+                    throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
+                }
+                if (storeHour.isTempDayClosed()) {
+                    throw new StoreTempDayClosedException("Store is temporary closed bizStoreId " + bizStore.getId());
+                }
+                if (storeHour.isPreventJoining()) {
+                    throw new StorePreventJoiningException("Store not accepting new orders bizStoreId " + bizStore.getId());
+                }
             }
         }
 
@@ -220,10 +242,6 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
-        return cancelOrderByMerchant(purchaseOrder);
-    }
-
-    public JsonPurchaseOrderList cancelOrderByMerchant(PurchaseOrderEntity purchaseOrder) {
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
@@ -291,41 +309,47 @@ public class PurchaseOrderService {
         if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice())) {
             throw new PriceMismatchException("Price sent and computed does not match");
         }
-        transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
-        JsonToken jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-        Date expectedServiceBegin = null;
+        JsonToken jsonToken;
         try {
-            if (null != jsonToken.getExpectedServiceBegin()) {
-                expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+            jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+            transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
+            Date expectedServiceBegin = null;
+            try {
+                if (null != jsonToken.getExpectedServiceBegin()) {
+                    expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
+                }
+            } catch (ParseException e) {
+                LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
             }
-        } catch (ParseException e) {
-            LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
+
+            if (null != jsonPurchaseOrder.getPresentOrderState()) {
+                /* Set the old state before resetting. */
+                purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
+            }
+
+            /* Success in transaction. Change status to PO to initialize. */
+            purchaseOrder
+                .addOrderState(PurchaseOrderStateEnum.VB)
+                .addOrderState(PurchaseOrderStateEnum.PO)
+                .setTokenNumber(jsonToken.getToken())
+                .setExpectedServiceBegin(expectedServiceBegin)
+                .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
+            purchaseOrderManager.save(purchaseOrder);
+            executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
+            userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
+
+            doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
+            jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
+                .setToken(purchaseOrder.getTokenNumber())
+                .setServingNumber(jsonToken.getServingNumber())
+                .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
+                .setTransactionId(purchaseOrder.getTransactionId())
+                .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
+                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+        } catch (Exception e) {
+            LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
+            throw new PurchaseOrderFailException("Failed getting token");
         }
-
-        if (null != jsonPurchaseOrder.getPresentOrderState()) {
-            /* Set the old state before resetting. */
-            purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
-        }
-
-        /* Success in transaction. Change status to PO to initialize. */
-        purchaseOrder
-            .addOrderState(PurchaseOrderStateEnum.VB)
-            .addOrderState(PurchaseOrderStateEnum.PO)
-            .setTokenNumber(jsonToken.getToken())
-            .setExpectedServiceBegin(expectedServiceBegin)
-            .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
-        purchaseOrderManager.save(purchaseOrder);
-        executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
-        userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
-
-        doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
-        jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
-            .setToken(purchaseOrder.getTokenNumber())
-            .setServingNumber(jsonToken.getServingNumber())
-            .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
-            .setTransactionId(purchaseOrder.getTransactionId())
-            .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
-            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
     }
 
     private void updatePurchaseOrderWithUserDetail(PurchaseOrderEntity purchaseOrder) {
@@ -1058,30 +1082,22 @@ public class PurchaseOrderService {
         return jsonPurchaseOrders.isEmpty() ? null : jsonPurchaseOrders.get(0);
     }
 
-    /**
-     * Since review can be done in background. Moved logic to thread.
-     *
-     * @param codeQR
-     * @param token
-     * @param did
-     * @param qid
-     * @param ratingCount
-     */
+    /** Since review can be done in background. Moved logic to thread. */
     @Mobile
     public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
         executorService.submit(() -> reviewingService(codeQR, token, did, qid, ratingCount, review));
         return true;
     }
 
-    /**
-     * Submitting review.
-     */
+    /** Submitting review. */
     private void reviewingService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+        SentimentTypeEnum sentimentType = nlpService.computeSentiment(review);
         boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, did, qid, ratingCount, review);
         if (!reviewSubmitStatus) {
             //TODO(hth) make sure for Guardian this is taken care. Right now its ignore "GQ" add to MySQL Table
             reviewSubmitStatus = reviewHistoricalService(codeQR, token, did, qid, ratingCount, review);
         }
+        sendMailWhenSentimentIsNegative(codeQR, token, ratingCount, review, sentimentType);
 
         LOG.info("Review update status={} codeQR={} token={} ratingCount={} hoursSaved={} did={} qid={} review={}",
             reviewSubmitStatus,
@@ -1106,5 +1122,30 @@ public class PurchaseOrderService {
 
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
         return purchaseOrderManager.findByTransactionId(transactionId);
+    }
+
+    private void sendMailWhenSentimentIsNegative(String codeQR, int token, int ratingCount, String review, SentimentTypeEnum sentimentType) {
+        if (SentimentTypeEnum.N == sentimentType) {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+            List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizStore.getBizName().getId(), UserLevelEnum.M_ADMIN);
+
+            PurchaseOrderEntity purchaseOrder = findOne(codeQR, token);
+            for (BusinessUserEntity businessUser : businessUsers) {
+                Map<String, Object> rootMap = new HashMap<>();
+                rootMap.put("storeName", purchaseOrder.getDisplayName());
+                rootMap.put("reviewerName", purchaseOrder.getCustomerName());
+                rootMap.put("reviewerPhone", purchaseOrder.getCustomerPhone());
+                rootMap.put("ratingCount", ratingCount);
+                rootMap.put("review", review);
+                rootMap.put("sentiment", sentimentType.getDescription());
+
+                mailService.sendAnyMail(
+                    accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getEmail(),
+                    "Customer Sentiment Watcher",
+                    "Review for: " + purchaseOrder.getDisplayName(),
+                    rootMap,
+                    "mail/reviewSentiment.ftl");
+            }
+        }
     }
 }

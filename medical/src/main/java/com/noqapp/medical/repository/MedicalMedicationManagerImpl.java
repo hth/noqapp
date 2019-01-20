@@ -53,6 +53,15 @@ public class MedicalMedicationManagerImpl implements MedicalMedicationManager {
     }
 
     @Override
+    public void deleteHard(String id) {
+        mongoTemplate.remove(
+            query(where("id").is(id)),
+            MedicalMedicationEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public MedicalMedicationEntity findOneById(String id) {
         return mongoTemplate.findOne(query(where("id").is(id)), MedicalMedicationEntity.class, TABLE);
     }
