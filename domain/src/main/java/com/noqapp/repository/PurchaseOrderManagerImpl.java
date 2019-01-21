@@ -97,22 +97,15 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
-//        return mongoTemplate.find(
-//                query(where("QID").is(qid)
-//                    .andOperator(
-//                        where("PS").ne(PurchaseOrderStateEnum.OD),
-//                        where("PS").ne(PurchaseOrderStateEnum.CO)
-//                    )
-//                ),
-//                PurchaseOrderEntity.class,
-//                TABLE
-//        );
-
-        //TODO(hth) removed Cancel condition for now. But technically should include cancel.
         return mongoTemplate.find(
-            query(where("QID").is(qid).and("PS").ne(PurchaseOrderStateEnum.OD)),
-            PurchaseOrderEntity.class,
-            TABLE
+                query(where("QID").is(qid)
+                    .andOperator(
+                        where("PS").ne(PurchaseOrderStateEnum.OD),
+                        where("PS").ne(PurchaseOrderStateEnum.CO)
+                    )
+                ),
+                PurchaseOrderEntity.class,
+                TABLE
         );
     }
 
