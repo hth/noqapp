@@ -251,7 +251,7 @@ public class MedicalRecordService {
                         .setFormVersion(jsonRecord.getFormVersion());
 
                     if (null == medicalRecord.getMedicalPhysicalId()) {
-                        if (null != jsonRecord.getMedicalPhysical() && jsonRecord.getMedicalPhysical().isPhysicalDirty()) {
+                        if (null != jsonRecord.getMedicalPhysical() && jsonRecord.getMedicalPhysical().isPhysicalFilled()) {
                             populateWithMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                         }
                     } else {
@@ -570,7 +570,7 @@ public class MedicalRecordService {
     private void updateMedicalPhysical(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord, String diagnosedById) {
         try {
             LOG.info("Populate medical physical qid={}", jsonMedicalRecord.getQueueUserId());
-            if (null != jsonMedicalRecord.getMedicalPhysical() && jsonMedicalRecord.getMedicalPhysical().isPhysicalDirty()) {
+            if (null != jsonMedicalRecord.getMedicalPhysical() && jsonMedicalRecord.getMedicalPhysical().isPhysicalFilled()) {
                 MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
                 updateMedicalPhysicalData(jsonMedicalRecord, medicalRecord, medicalPhysical, diagnosedById);
             } else {

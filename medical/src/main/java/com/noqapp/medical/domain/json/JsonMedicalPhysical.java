@@ -58,8 +58,8 @@ public class JsonMedicalPhysical extends AbstractDomain {
     @JsonProperty("dbi")
     private String diagnosedById;
 
-    @JsonProperty("pd")
-    private boolean physicalDirty;
+    @JsonProperty("pf")
+    private boolean physicalFilled;
 
     public String getTemperature() {
         return temperature;
@@ -133,12 +133,12 @@ public class JsonMedicalPhysical extends AbstractDomain {
         return this;
     }
 
-    public boolean isPhysicalDirty() {
-        return physicalDirty;
+    public boolean isPhysicalFilled() {
+        return physicalFilled;
     }
 
-    public JsonMedicalPhysical setPhysicalDirty(boolean physicalDirty) {
-        this.physicalDirty = physicalDirty;
+    public JsonMedicalPhysical setPhysicalFilled(boolean physicalFilled) {
+        this.physicalFilled = physicalFilled;
         return this;
     }
 
@@ -151,6 +151,7 @@ public class JsonMedicalPhysical extends AbstractDomain {
             .setOxygen(medicalPhysical.getOxygen())
             .setRespiratory(medicalPhysical.getRespiratory())
             .setWeight(medicalPhysical.getWeight())
-            .setHeight(medicalPhysical.getHeight());
+            .setHeight(medicalPhysical.getHeight())
+            .setPhysicalFilled(true);
     }
 }
