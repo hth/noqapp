@@ -149,27 +149,27 @@ public class FileService {
 
     @Autowired
     public FileService(
-            @Value ("${image.profile.width:192}")
-            int imageProfileWidth,
+        @Value("${image.profile.width:192}")
+        int imageProfileWidth,
 
-            @Value ("${image.profile.height:192}")
-            int imageProfileHeight,
+        @Value("${image.profile.height:192}")
+        int imageProfileHeight,
 
-            @Value ("${image.service.width:650}")
-            int imageServiceWidth,
+        @Value("${image.service.width:650}")
+        int imageServiceWidth,
 
-            @Value ("${image.service.height:450}")
-            int imageServiceHeight,
+        @Value("${image.service.height:450}")
+        int imageServiceHeight,
 
-            AccountService accountService,
-            FtpService ftpService,
-            S3FileManager s3FileManager,
-            BizNameManager bizNameManager,
-            BizStoreManager bizStoreManager,
-            StoreProductManager storeProductManager,
-            PublishArticleManager publishArticleManager,
-            BizService bizService,
-            StoreCategoryService storeCategoryService
+        AccountService accountService,
+        FtpService ftpService,
+        S3FileManager s3FileManager,
+        BizNameManager bizNameManager,
+        BizStoreManager bizStoreManager,
+        StoreProductManager storeProductManager,
+        PublishArticleManager publishArticleManager,
+        BizService bizService,
+        StoreCategoryService storeCategoryService
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
@@ -557,7 +557,7 @@ public class FileService {
         String fileName = bizStoreId + "_" + DateUtil.dateToString(new Date());
         File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
         tar.deleteOnExit();
-        createTarGZ(pathOfCSV.toFile(), tar,  fileName);
+        createTarGZ(pathOfCSV.toFile(), tar, fileName);
 
         /* Clean up existing file before uploading. */
         ftpService.deleteAllFilesInDirectory(PREFERRED_STORE + "/" + bizStoreId);
