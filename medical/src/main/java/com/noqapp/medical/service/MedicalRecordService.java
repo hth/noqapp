@@ -347,6 +347,7 @@ public class MedicalRecordService {
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
         if (null == medicalRecord) {
             return new JsonMedicalRecord()
+                .setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(queue.getQueueUserId()))
                 .setCodeQR(codeQR)
                 .setRecordReferenceId(recordReferenceId)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
