@@ -7,6 +7,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +56,7 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     @Override
     public MedicalPhysicalEntity findOne(String id) {
         return mongoTemplate.findOne(
-            query(where("id").is(id)),
+            query(where("id").is(new ObjectId(id))),
             MedicalPhysicalEntity.class,
             TABLE
         );
@@ -68,7 +70,7 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     @Override
     public void deleteHard(String id) {
         mongoTemplate.remove(
-            query(where("id").is(id)),
+            query(where("id").is(new ObjectId(id))),
             MedicalPhysicalEntity.class,
             TABLE
         );
