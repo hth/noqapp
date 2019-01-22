@@ -65,6 +65,9 @@ public class JsonPreferredBusiness extends AbstractDomain {
     @JsonProperty("p")
     private String storePhone;
 
+    @JsonProperty("a")
+    private boolean active;
+
     public JsonPreferredBusiness(BizStoreEntity bizStore) {
         this.bizStoreId = bizStore.getId();
         this.codeQR = bizStore.getCodeQR();
@@ -78,6 +81,7 @@ public class JsonPreferredBusiness extends AbstractDomain {
         this.town = bizStore.getTown();
         this.countryShortName = bizStore.getCountryShortName();
         this.storePhone = bizStore.getPhoneFormatted();
+        this.active = bizStore.isActive();
     }
 
     public String getBizStoreId() {
@@ -126,6 +130,10 @@ public class JsonPreferredBusiness extends AbstractDomain {
 
     public String getStorePhone() {
         return storePhone;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     @Override
