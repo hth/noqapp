@@ -6,6 +6,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +57,7 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
     @Override
     public void deleteHard(String id) {
         mongoTemplate.remove(
-            query(where("id").is(id)),
+            query(where("id").is(new ObjectId(id))),
             MedicalPathologyEntity.class,
             TABLE
         );

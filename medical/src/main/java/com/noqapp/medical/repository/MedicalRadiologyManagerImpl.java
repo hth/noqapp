@@ -7,6 +7,8 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.medical.domain.MedicalRadiologyEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +62,7 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     public List<MedicalRadiologyEntity> findByIds(List<String> ids) {
         List<MedicalRadiologyEntity> medicalRadiologies = new LinkedList<>();
         for (String id : ids) {
-            medicalRadiologies.add(mongoTemplate.findOne(query(where("id").is(id)), MedicalRadiologyEntity.class, TABLE));
+            medicalRadiologies.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), MedicalRadiologyEntity.class, TABLE));
         }
         return medicalRadiologies;
     }
@@ -69,7 +71,7 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     public MedicalRadiologyEntity findOne(List<String> ids, LabCategoryEnum labCategory) {
         List<MedicalRadiologyEntity> medicalRadiologies = new LinkedList<>();
         for (String id : ids) {
-            medicalRadiologies.add(mongoTemplate.findOne(query(where("id").is(id).and("LC").is(labCategory)), MedicalRadiologyEntity.class, TABLE));
+            medicalRadiologies.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id)).and("LC").is(labCategory)), MedicalRadiologyEntity.class, TABLE));
         }
         if (medicalRadiologies.isEmpty()) {
             return null;
