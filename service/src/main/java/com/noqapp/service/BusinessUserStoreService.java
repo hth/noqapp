@@ -8,6 +8,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
@@ -285,7 +286,8 @@ public class BusinessUserStoreService {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
-        return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount);
+        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(qid);
+        return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile);
     }
 
     /**
@@ -302,7 +304,8 @@ public class BusinessUserStoreService {
         for (BusinessUserEntity businessUser : businessUsers) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
             UserAccountEntity userAccount = accountService.findByQueueUserId(businessUser.getQueueUserId());
-            queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount));
+            ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+            queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile));
         }
 
         /* Sort by name. */
@@ -315,10 +318,12 @@ public class BusinessUserStoreService {
         String bizStoreId,
         BusinessUserEntity businessUser,
         UserProfileEntity userProfile,
-        UserAccountEntity userAccount
+        UserAccountEntity userAccount,
+        ProfessionalProfileEntity professionalProfile
     ) {
-        return new QueueSupervisor()
+        QueueSupervisor queueSupervisor = new QueueSupervisor()
             .setBusinessUserId(businessUser.getId())
+            .setBusinessType(businessUser.getBizName().getBusinessType())
             .setStoreId(bizStoreId)
             .setBusinessId(bizNameId)
             .setName(userProfile.getName())
@@ -332,6 +337,14 @@ public class BusinessUserStoreService {
             .setCreated(businessUser.getCreated())
             .setActive(businessUser.isActive())
             .setBusinessUserRegistrationStatus(businessUser.getBusinessUserRegistrationStatus());
+
+        if (null != professionalProfile) {
+            queueSupervisor
+                .setEducations(professionalProfile.getEducation())
+                .setLicenses(professionalProfile.getLicenses());
+        }
+
+        return queueSupervisor;
     }
 
     /**

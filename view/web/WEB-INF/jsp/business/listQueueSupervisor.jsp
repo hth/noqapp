@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.UserLevelEnum" %>
+<%@ page import="com.noqapp.domain.types.UserLevelEnum, com.noqapp.domain.types.BusinessTypeEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -94,7 +94,36 @@
                                         <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                         <tr>
                                             <td style="font-size:13px;">${status.count}&nbsp;</td>
-                                            <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
+                                            <td nowrap>
+                                                <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
+                                                <c:if test="${queueSupervisor.userLevel eq UserLevelEnum.S_MANAGER && queueSupervisor.businessType eq BusinessTypeEnum.DO}">
+                                                    <c:choose>
+                                                        <c:when test="${!empty queueSupervisor.educations}">
+                                                            <span style="display:block; font-size:11px;">Educations:
+                                                            <c:forEach items="${queueSupervisor.educations}" var="item" varStatus="status">
+                                                                ${item.name},&nbsp;
+                                                            </c:forEach>
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:11px;">Educations: N/A</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                    <c:choose>
+                                                        <c:when test="${!empty queueSupervisor.licenses}">
+                                                            <span style="display:block; font-size:11px;">Licenses:
+                                                            <c:forEach items="${ queueSupervisor.licenses}" var="item" varStatus="status">
+                                                                ${item.name},&nbsp;
+                                                            </c:forEach>
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:11px;">Licenses: N/A</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:if>
+                                            </td>
                                             <td>
                                                 <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
                                                 <c:choose>
@@ -193,7 +222,36 @@
                                     <c:forEach items="${queueSupervisorForm.availableQueueSupervisor}" var="queueSupervisor" varStatus="status">
                                     <tr>
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>
-                                        <td nowrap><span style="display:block; font-size:13px;">${queueSupervisor.name}</span></td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
+                                            <c:if test="${queueSupervisor.userLevel eq UserLevelEnum.S_MANAGER && queueSupervisor.businessType eq BusinessTypeEnum.DO}">
+                                                <c:choose>
+                                                    <c:when test="${!empty queueSupervisor.educations}">
+                                                        <span style="display:block; font-size:11px;">Educations:
+                                                        <c:forEach items="${queueSupervisor.educations}" var="item" varStatus="status">
+                                                            ${item.name},&nbsp;
+                                                        </c:forEach>
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:11px;">Educations: N/A</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <c:choose>
+                                                    <c:when test="${!empty queueSupervisor.licenses}">
+                                                        <span style="display:block; font-size:11px;">Licenses:
+                                                        <c:forEach items="${ queueSupervisor.licenses}" var="item" varStatus="status">
+                                                            ${item.name},&nbsp;
+                                                        </c:forEach>
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:11px;">Licenses: N/A</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:if>
+                                        </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
                                             <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
