@@ -740,34 +740,42 @@ public class MedicalRecordService {
 
         if (null != medicalRecord.getMedicalPhysicalId()) {
             MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
-            jsonMedicalRecord.setMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
+            if (null != medicalPhysical) {
+                jsonMedicalRecord.setMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
+            }
         }
 
         if (null != medicalRecord.getMedicalMedicationId()) {
             List<MedicalMedicineEntity> medicalMedicines = findByMedicationRefId(medicalRecord.getMedicalMedicationId());
-            for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
-                jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
+            if (null != medicalMedicines) {
+                for (MedicalMedicineEntity medicalMedicine : medicalMedicines) {
+                    jsonMedicalRecord.addMedicine(JsonMedicalMedicine.fromMedicalMedicine(medicalMedicine));
+                }
             }
         }
 
         if (null != medicalRecord.getMedicalLaboratoryId()) {
             List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratoryId());
-            for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
-                jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+            if (null != medicalPathologyTests) {
+                for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
+                    jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+                }
             }
         }
 
         if (!medicalRecord.getMedicalRadiologies().isEmpty()) {
             List<MedicalRadiologyEntity> medicalRadiologies = findRadiologiesById(medicalRecord.getMedicalRadiologies());
-            for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
-                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList()
-                    .setLabCategory(medicalRadiology.getLabCategory());
+            if (null != medicalRadiologies) {
+                for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList()
+                        .setLabCategory(medicalRadiology.getLabCategory());
 
-                List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRadiology.getId());
-                for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
-                    jsonMedicalRadiologyList.addJsonMedicalRadiologies(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
+                    List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRadiology.getId());
+                    for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
+                        jsonMedicalRadiologyList.addJsonMedicalRadiologies(new JsonMedicalRadiology().setName(medicalRadiologyTest.getName()));
+                    }
+                    jsonMedicalRecord.addMedicalRadiologyLists(jsonMedicalRadiologyList);
                 }
-                jsonMedicalRecord.addMedicalRadiologyLists(jsonMedicalRadiologyList);
             }
         }
 
