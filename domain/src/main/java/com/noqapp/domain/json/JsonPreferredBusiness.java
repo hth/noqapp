@@ -47,6 +47,9 @@ public class JsonPreferredBusiness extends AbstractDomain {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty("bc")
+    private String bizCategoryId;
+
     @JsonProperty("sa")
     private String storeAddress;
 
@@ -69,6 +72,7 @@ public class JsonPreferredBusiness extends AbstractDomain {
         this.businessName = bizStore.getBizName().getBusinessName();
         this.displayName = bizStore.getDisplayName();
         this.businessType = bizStore.getBusinessType();
+        this.bizCategoryId = bizStore.getBizCategoryId();
         this.storeAddress = bizStore.getAddress();
         this.area = bizStore.getArea();
         this.town = bizStore.getTown();
@@ -98,6 +102,10 @@ public class JsonPreferredBusiness extends AbstractDomain {
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
     }
 
     public String getStoreAddress() {
