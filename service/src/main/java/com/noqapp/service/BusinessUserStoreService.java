@@ -364,7 +364,8 @@ public class BusinessUserStoreService {
         String qid,
         BizStoreEntity bizStore,
         BusinessUserRegistrationStatusEnum businessUserRegistrationStatus,
-        UserLevelEnum userLevel) {
+        UserLevelEnum userLevel
+    ) {
         BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
             qid,
             bizStore.getId(),
