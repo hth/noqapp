@@ -286,7 +286,10 @@ public class BusinessUserStoreService {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
-        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(qid);
+        ProfessionalProfileEntity professionalProfile = null;
+        if (BusinessTypeEnum.DO == businessUser.getBizName().getBusinessType()) {
+            professionalProfile = professionalProfileService.findByQid(qid);
+        }
         return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile);
     }
 
@@ -304,7 +307,10 @@ public class BusinessUserStoreService {
         for (BusinessUserEntity businessUser : businessUsers) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
             UserAccountEntity userAccount = accountService.findByQueueUserId(businessUser.getQueueUserId());
-            ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+            ProfessionalProfileEntity professionalProfile = null;
+            if (BusinessTypeEnum.DO == businessUser.getBizName().getBusinessType()) {
+                professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
+            }
             queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile));
         }
 
