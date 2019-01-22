@@ -1,10 +1,13 @@
 package com.noqapp.domain.helper;
 
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,6 +30,9 @@ public class QueueSupervisor {
     private boolean active;
     private Date created;
     private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus;
+    private BusinessTypeEnum businessType;
+    private List<NameDatePair> educations = new LinkedList<>();
+    private List<NameDatePair> licenses = new LinkedList<>();
 
     public String getBusinessUserId() {
         return businessUserId;
@@ -151,6 +157,33 @@ public class QueueSupervisor {
 
     public QueueSupervisor setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
         this.businessUserRegistrationStatus = businessUserRegistrationStatus;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public QueueSupervisor setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public List<NameDatePair> getEducations() {
+        return educations;
+    }
+
+    public QueueSupervisor setEducations(List<NameDatePair> educations) {
+        this.educations = educations;
+        return this;
+    }
+
+    public List<NameDatePair> getLicenses() {
+        return licenses;
+    }
+
+    public QueueSupervisor setLicenses(List<NameDatePair> licenses) {
+        this.licenses = licenses;
         return this;
     }
 
