@@ -353,20 +353,20 @@
                                 <div class="store-table">
                                     <c:choose>
                                         <c:when test="${!empty professionalProfileForm.awards}">
-                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
-                                                    <tr>
-                                                        <td width="5%">${status.count}&nbsp;</td>
-                                                        <td width="75%" nowrap>${nameDatePair.name}</td>
-                                                        <td width="20%">${nameDatePair.monthYear}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </table>
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <c:forEach items="${professionalProfileForm.awards}" var="nameDatePair" varStatus="status">
+                                            <tr>
+                                                <td width="5%">${status.count}&nbsp;</td>
+                                                <td width="75%" nowrap>${nameDatePair.name}</td>
+                                                <td width="20%">${nameDatePair.monthYear}</td>
+                                            </tr>
+                                            </c:forEach>
+                                        </table>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="alert-info">
-                                                <p>No award information added.</p>
-                                            </div>
+                                        <div class="alert-info">
+                                            <p>No award information added.</p>
+                                        </div>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -382,20 +382,20 @@
                                 <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty professionalProfileForm.education}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
-                                                <tr>
-                                                    <td width="5%">${status.count}&nbsp;</td>
-                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
-                                                    <td width="20%">${nameDatePair.monthYear}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <c:forEach items="${professionalProfileForm.education}" var="nameDatePair" varStatus="status">
+                                        <tr>
+                                            <td width="5%">${status.count}&nbsp;</td>
+                                            <td width="75%" nowrap>${nameDatePair.name}</td>
+                                            <td width="20%">${nameDatePair.monthYear}</td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>No education information added.</p>
-                                        </div>
+                                    <div class="alert-info">
+                                        <p>No education information added.</p>
+                                    </div>
                                     </c:otherwise>
                                 </c:choose>
                                 </div>
@@ -411,20 +411,20 @@
                                 <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty professionalProfileForm.licenses}">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
-                                                <tr>
-                                                    <td width="5%">${status.count}&nbsp;</td>
-                                                    <td width="75%" nowrap>${nameDatePair.name}</td>
-                                                    <td width="20%">${nameDatePair.monthYear}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <c:forEach items="${professionalProfileForm.licenses}" var="nameDatePair" varStatus="status">
+                                        <tr>
+                                            <td width="5%">${status.count}&nbsp;</td>
+                                            <td width="75%" nowrap>${nameDatePair.name}</td>
+                                            <td width="20%">${nameDatePair.monthYear}</td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="alert-info">
-                                            <p>No license information added.</p>
-                                        </div>
+                                    <div class="alert-info">
+                                        <p>No license information added.</p>
+                                    </div>
                                     </c:otherwise>
                                 </c:choose>
                                 </div>
@@ -432,7 +432,7 @@
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
                                 <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
                                 </c:if>
-                                <span style="display:block; font-size:13px; padding-top: 20px;">License information is not visible publicly</span>
+                                <span style="display:block; font-size:13px; padding-top: 20px;">This information is public. Will be shown in prescriptions and all printouts.</span>
                             </fieldset>
                         </ul>
                     </div>
