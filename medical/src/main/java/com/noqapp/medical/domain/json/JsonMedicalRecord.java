@@ -129,6 +129,10 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty("at")
     private String areaAndTown;
 
+    @Transient
+    @JsonProperty("li")
+    private List<String> licenses = new ArrayList<>();
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -402,6 +406,20 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
         this.areaAndTown = areaAndTown;
+        return this;
+    }
+
+    public List<String> getLicenses() {
+        return licenses;
+    }
+
+    public JsonMedicalRecord setLicenses(List<String> licenses) {
+        this.licenses = licenses;
+        return this;
+    }
+
+    public JsonMedicalRecord addLicense(String license) {
+        this.licenses.add(license);
         return this;
     }
 
