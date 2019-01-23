@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonPreferredBusinessBucket extends AbstractDomain {
 
+    @JsonProperty("pbl")
     private List<JsonPreferredBusinessList> jsonPreferredBusinessLists = new ArrayList<>();
 
     public List<JsonPreferredBusinessList> getJsonPreferredBusinessLists() {
