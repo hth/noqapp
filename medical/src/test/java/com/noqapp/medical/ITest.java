@@ -5,6 +5,8 @@ import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
+import com.noqapp.medical.repository.MedicalRecordManager;
+import com.noqapp.medical.repository.MedicalRecordManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
 import com.noqapp.medical.repository.UserMedicalProfileHistoryManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
@@ -131,6 +133,7 @@ public class ITest extends RealMongoForITest {
     protected ApiHealthNowManager apiHealthNowManager;
     protected MasterLabManager masterLabManager;
     protected PublishArticleManager publishArticleManager;
+    protected MedicalRecordManager medicalRecordManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -168,6 +171,7 @@ public class ITest extends RealMongoForITest {
         apiHealthNowManager = new ApiHealthNowManagerImpl(getMongoTemplate());
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
+        medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -246,7 +250,7 @@ public class ITest extends RealMongoForITest {
             storeCategoryService
         );
 
-        medicalFileService = new MedicalFileService();
+        medicalFileService = new MedicalFileService(medicalRecordManager, s3FileManager, fileService ,ftpService);
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
             transactionManager(),
