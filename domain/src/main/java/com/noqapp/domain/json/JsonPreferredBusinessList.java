@@ -29,8 +29,20 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonPreferredBusinessList extends AbstractDomain {
+    @JsonProperty("qr")
+    private String codeQR;
+
     @JsonProperty("pbs")
     private List<JsonPreferredBusiness> preferredBusinesses = new ArrayList<>();
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonPreferredBusinessList setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
 
     public List<JsonPreferredBusiness> getPreferredBusinesses() {
         return preferredBusinesses;
