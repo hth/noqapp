@@ -479,13 +479,13 @@ public class FileService {
         return ImageIO.read(is);
     }
 
-    private File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
+    public File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
         File toFile = createTempFile(FilenameUtils.getBaseName(filename), getFileExtension(filename));
         writeToFile(toFile, bufferedImage);
         return toFile;
     }
 
-    private void writeToFile(File file, BufferedImage bufferedImage) throws IOException {
+    public void writeToFile(File file, BufferedImage bufferedImage) throws IOException {
         ImageIO.write(bufferedImage, PNG_FORMAT, file);
     }
 

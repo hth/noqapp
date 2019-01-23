@@ -40,7 +40,7 @@ public class FtpService {
     /** AWS needs without file separator. */
     static String PROFILE_AWS = "profile";
     static String SERVICE_AWS = "service";
-    static String MEDICAL_AWS = "medical";
+    public static String MEDICAL_AWS = "medical";
     static String ARTICLE_AWS = "article";
 
     /** FTP needs with file separator. */

@@ -108,6 +108,9 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("TIS")
     private List<String> transactionIds = new ArrayList<>();
 
+    @Field("IM")
+    private List<String> images;
+
     @SuppressWarnings("unused")
     private MedicalRecordEntity() {}
 
@@ -334,6 +337,23 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity addTransactionId(String transactionId) {
         this.transactionIds.add(transactionId);
+        return this;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public MedicalRecordEntity setImages(List<String> images) {
+        this.images = images;
+        return this;
+    }
+
+    public MedicalRecordEntity addImage(String image) {
+        if (images == null) {
+            images = new LinkedList<>();
+        }
+        this.images.add(image);
         return this;
     }
 
