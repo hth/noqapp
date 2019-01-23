@@ -81,7 +81,9 @@ public class PreferredBusinessService {
                 jsonPreferredBusinesses.add(new JsonPreferredBusiness(bs));
             }
 
-            jsonPreferredBusinessList.addPreferredBusinesses(jsonPreferredBusinesses);
+            jsonPreferredBusinessList
+                .addPreferredBusinesses(jsonPreferredBusinesses)
+                .setCodeQR(bizStore.getCodeQR());
         }
         return jsonPreferredBusinessList;
     }
