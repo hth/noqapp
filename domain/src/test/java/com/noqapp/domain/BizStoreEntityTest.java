@@ -12,31 +12,31 @@ import org.junit.jupiter.api.Test;
 class BizStoreEntityTest {
 
     private BizStoreEntity bizStore1 = BizStoreEntity.newInstance();
-    private BizStoreEntity bizStore2= BizStoreEntity.newInstance();
-    private BizStoreEntity bizStore3= BizStoreEntity.newInstance();
+    private BizStoreEntity bizStore2 = BizStoreEntity.newInstance();
+    private BizStoreEntity bizStore3 = BizStoreEntity.newInstance();
 
     @BeforeEach
     void setUp() {
         bizStore1.setAddress("665 W Olive Ave, Sunnyvale, CA 94086, USA")
-                .setArea("Sunnyvale")
-                .setTown("Sunnyvale")
-                .setDistrict("Santa Clara County")
-                .setState("California")
-                .setStateShortName("CA");
+            .setArea("Sunnyvale")
+            .setTown("Sunnyvale")
+            .setDistrict("Santa Clara County")
+            .setState("California")
+            .setStateShortName("CA");
 
         bizStore2.setAddress("Plot 12-13, Sector 20, Kopar Khairane, Navi Mumbai, Maharashtra 400709, India")
-                .setArea("Kopar Khairane")
-                .setTown("Navi Mumbai")
-                .setDistrict("Thane")
-                .setState("Maharashtra")
-                .setStateShortName("MH");
+            .setArea("Kopar Khairane")
+            .setTown("Navi Mumbai")
+            .setDistrict("Thane")
+            .setState("Maharashtra")
+            .setStateShortName("MH");
 
         bizStore3.setAddress("Near PHED Office, Ladnun, Nagaur, Rajasthan 341306, India")
-                .setArea("Shaheria Bass")
-                .setTown("Ladnun")
-                .setDistrict("Nagaur")
-                .setState("Rajasthan")
-                .setStateShortName("RJ");
+            .setArea("Shaheria Bass")
+            .setTown("Ladnun")
+            .setDistrict("Nagaur")
+            .setState("Rajasthan")
+            .setStateShortName("RJ");
     }
 
     @Test
