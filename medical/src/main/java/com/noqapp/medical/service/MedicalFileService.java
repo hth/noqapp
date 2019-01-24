@@ -9,6 +9,7 @@ import static com.noqapp.service.FileService.RADIOLOGY_PRODUCT_HEADERS;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.S3FileEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.medical.domain.MedicalRecordEntity;
@@ -135,8 +136,10 @@ public class MedicalFileService {
         return masterLab;
     }
 
+    @Mobile
     @Async
     public void addMedicalImage(String recordReferenceId, String filename, BufferedImage bufferedImage) {
+        LOG.debug("Adding medical image {} {}", recordReferenceId, filename);
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
 
         File toFile = null;
@@ -165,7 +168,10 @@ public class MedicalFileService {
         }
     }
 
-    public void deleteMedicalImage(String qid, String medicalReferenceId, String filename) {
+    @Mobile
+    @Async
+    public void removeMedicalImage(String qid, String medicalReferenceId, String filename) {
+        LOG.debug("Remove medical image {} {} {}", qid, medicalReferenceId, filename);
         if (StringUtils.isNotBlank(filename)) {
             /* Delete existing file business service image before the upload process began. */
             ftpService.delete(filename, null, FtpService.MEDICAL);
