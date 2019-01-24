@@ -47,7 +47,7 @@ import javax.imageio.ImageIO;
  */
 @Service
 public class MedicalFileService {
-    private static final Logger LOG = LoggerFactory.getLogger(com.noqapp.service.FileService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MedicalFileService.class);
 
     private MedicalRecordManager medicalRecordManager;
     private S3FileManager s3FileManager;
