@@ -31,10 +31,10 @@ import java.time.Instant;
  * 11/17/17 6:49 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class ElasticAdministrationService {
@@ -47,15 +47,15 @@ public class ElasticAdministrationService {
 
     @Autowired
     public ElasticAdministrationService(
-            @Value("${elastic.host}")
-            String elasticHost,
+        @Value("${elastic.host}")
+        String elasticHost,
 
-            @Value("${elastic.port}")
-            int elasticPort,
+        @Value("${elastic.port}")
+        int elasticPort,
 
-            OkHttpClient okHttpClient,
-            ApiHealthService apiHealthService,
-            ElasticsearchClientConfiguration elasticsearchClientConfiguration
+        OkHttpClient okHttpClient,
+        ApiHealthService apiHealthService,
+        ElasticsearchClientConfiguration elasticsearchClientConfiguration
     ) {
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
@@ -83,21 +83,21 @@ public class ElasticAdministrationService {
 
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()
-                    .url(elasticURI + index)
-                    .put(body)
-                    .build();
+                .url(elasticURI + index)
+                .put(body)
+                .build();
             boolean result = parseResponse(request);
             if (!result) {
-                LOG.error("Failed to insert mapping in index={} type={} data={}", index, type ,json);
+                LOG.error("Failed to insert mapping in index={} type={} data={}", index, type, json);
             }
             return result;
         } finally {
             apiHealthService.insert(
-                    "/addMapping",
-                    "addMapping",
-                    this.getClass().getName(),
-                    Duration.between(start, Instant.now()),
-                    HealthStatusEnum.G);
+                "/addMapping",
+                "addMapping",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         }
     }
 
@@ -112,9 +112,9 @@ public class ElasticAdministrationService {
         try {
             if (!doesIndexExists(index)) {
                 Request request = new Request.Builder()
-                        .url(elasticURI + index)
-                        .put(RequestBody.create(JSON, "{}"))
-                        .build();
+                    .url(elasticURI + index)
+                    .put(RequestBody.create(JSON, "{}"))
+                    .build();
                 boolean result = parseResponse(request);
                 if (!result) {
                     LOG.error("Failed to created index");
@@ -125,11 +125,11 @@ public class ElasticAdministrationService {
             return true;
         } finally {
             apiHealthService.insert(
-                    "/createIndex",
-                    "createIndex",
-                    this.getClass().getName(),
-                    Duration.between(start, Instant.now()),
-                    HealthStatusEnum.G);
+                "/createIndex",
+                "createIndex",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         }
     }
 
@@ -154,9 +154,9 @@ public class ElasticAdministrationService {
         Instant start = Instant.now();
         try {
             Request request = new Request.Builder()
-                    .url(elasticURI + index)
-                    .delete()
-                    .build();
+                .url(elasticURI + index)
+                .delete()
+                .build();
             boolean result = parseResponse(request);
             if (!result) {
                 LOG.error("Failed to delete");
@@ -164,11 +164,11 @@ public class ElasticAdministrationService {
             return result;
         } finally {
             apiHealthService.insert(
-                    "/deleteIndex",
-                    "deleteIndex",
-                    this.getClass().getName(),
-                    Duration.between(start, Instant.now()),
-                    HealthStatusEnum.G);
+                "/deleteIndex",
+                "deleteIndex",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         }
     }
 
@@ -181,9 +181,9 @@ public class ElasticAdministrationService {
     public boolean doesIndexExists(String index) {
         Instant start = Instant.now();
         Request request = new Request.Builder()
-                .url(elasticURI + index)
-                .head()
-                .build();
+            .url(elasticURI + index)
+            .head()
+            .build();
         Response response;
         try {
             response = okHttpClient.newCall(request).execute();
@@ -195,11 +195,11 @@ public class ElasticAdministrationService {
             return false;
         } finally {
             apiHealthService.insert(
-                    "/doesIndexExists",
-                    "doesIndexExists",
-                    this.getClass().getName(),
-                    Duration.between(start, Instant.now()),
-                    HealthStatusEnum.G);
+                "/doesIndexExists",
+                "doesIndexExists",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         }
 
         return response.code() == 200;
@@ -217,9 +217,9 @@ public class ElasticAdministrationService {
         Instant start = Instant.now();
         RequestBody body = RequestBody.create(JSON, query);
         Request request = new Request.Builder()
-                .url(elasticURI + indexPattern)
-                .post(body)
-                .build();
+            .url(elasticURI + indexPattern)
+            .post(body)
+            .build();
 
         Response response = null;
         try {
@@ -245,11 +245,11 @@ public class ElasticAdministrationService {
             }
 
             apiHealthService.insert(
-                    "/executeDSLQuerySearch",
-                    "executeDSLQuerySearch",
-                    this.getClass().getName(),
-                    Duration.between(start, Instant.now()),
-                    HealthStatusEnum.G);
+                "/executeDSLQuerySearch",
+                "executeDSLQuerySearch",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
         }
     }
 

@@ -66,21 +66,21 @@ import java.util.stream.Stream;
  * Date: 11/14/17 2:55 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
     private static final long MINUTES = 10L;
 
-    private static String[] includeFields = new String[] {
-            "N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH",
-            "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR",
-            "GH", "WL", "FF", "DI"};
-    private static String[] excludeFields = new String[] {"_type"};
+    private static String[] includeFields = new String[]{
+        "N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH",
+        "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR",
+        "GH", "WL", "FF", "DI"};
+    private static String[] excludeFields = new String[]{"_type"};
 
     private BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager;
     private ElasticAdministrationService elasticAdministrationService;
@@ -93,12 +93,12 @@ public class BizStoreElasticService {
 
     @Autowired
     public BizStoreElasticService(
-            BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
-            ElasticAdministrationService elasticAdministrationService,
-            ElasticsearchClientConfiguration elasticsearchClientConfiguration,
-            BizStoreManager bizStoreManager,
-            StoreHourManager storeHourManager,
-            ApiHealthService apiHealthService
+        BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
+        ElasticAdministrationService elasticAdministrationService,
+        ElasticsearchClientConfiguration elasticsearchClientConfiguration,
+        BizStoreManager bizStoreManager,
+        StoreHourManager storeHourManager,
+        ApiHealthService apiHealthService
     ) {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -143,15 +143,15 @@ public class BizStoreElasticService {
                 BizStoreElastic bizStoreElastic = null;
                 try {
                     bizStoreElastic = DomainConversion.getAsBizStoreElastic(
-                            bizStore,
-                            storeHourManager.findAll(bizStore.getId()));
+                        bizStore,
+                        storeHourManager.findAll(bizStore.getId()));
 
                     bizStoreElastics.add(bizStoreElastic);
                 } catch (Exception e) {
                     LOG.error("Failed to insert in elastic data={} reason={}",
-                            bizStoreElastic,
-                            e.getLocalizedMessage(),
-                            e);
+                        bizStoreElastic,
+                        e.getLocalizedMessage(),
+                        e);
                 }
             });
             save(bizStoreElastics);
@@ -159,11 +159,11 @@ public class BizStoreElasticService {
         }
 
         apiHealthService.insert(
-                "/addAllBizStoreToElastic",
-                "addAllBizStoreToElastic",
-                this.getClass().getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+            "/addAllBizStoreToElastic",
+            "addAllBizStoreToElastic",
+            this.getClass().getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
         LOG.info("Added total={} BizStore to Elastic in duration={}", count, Duration.between(start, Instant.now()).toMillis());
     }
 
@@ -188,11 +188,11 @@ public class BizStoreElasticService {
         if (StringUtils.isNotBlank(searchParameter)) {
             /* Search across all the specified fields. */
             q.setConditions(new Conditions()
-                    .setOptions(new Options()
-                            .setQueryStringMultiMatch(new QueryString()
-                                    .setQuery(searchParameter)
-                            )
+                .setOptions(new Options()
+                    .setQueryStringMultiMatch(new QueryString()
+                        .setQuery(searchParameter)
                     )
+                )
             );
         } else {
             /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
@@ -201,17 +201,17 @@ public class BizStoreElasticService {
 
         if (StringUtils.isNotBlank(geoHash)) {
             q.getConditions().setFilter(new Filter()
-                    .setGeoDistance(new GeoDistance()
-                            .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
-                            .setGeoHash(geoHash)
-                    ));
+                .setGeoDistance(new GeoDistance()
+                    .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
+                    .setGeoHash(geoHash)
+                ));
         }
 
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
-                .setFrom(0)
-                .setSize(PaginationEnum.TEN.getLimit())
-                .setQuery(q);
+            .setFrom(0)
+            .setSize(PaginationEnum.TEN.getLimit())
+            .setQuery(q);
 
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
         if (StringUtils.isNotBlank(result)) {
@@ -234,11 +234,11 @@ public class BizStoreElasticService {
     private String executeSearchOnBizStoreUsingDSL(String dslQuery) {
         LOG.info("DSL Query={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
-                BizStoreElastic.INDEX
-                        + "/"
-                        + BizStoreElastic.TYPE
-                        + "/_search?pretty=true",
-                dslQuery
+            BizStoreElastic.INDEX
+                + "/"
+                + BizStoreElastic.TYPE
+                + "/_search?pretty=true",
+            dslQuery
         );
 
         LOG.info("DSL Query result={}", result);
@@ -252,11 +252,11 @@ public class BizStoreElasticService {
     private String executeSearchOnBizStoreUsingDSLFilteredData(String dslQuery) {
         LOG.info("DSL Query={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
-                BizStoreElastic.INDEX
-                        + "/"
-                        + BizStoreElastic.TYPE
-                        + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
-                dslQuery
+            BizStoreElastic.INDEX
+                + "/"
+                + BizStoreElastic.TYPE
+                + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
+            dslQuery
         );
 
         LOG.debug("DSL Query result={}", result);
@@ -265,11 +265,11 @@ public class BizStoreElasticService {
 
     @Mobile
     public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(
-            String query,
-            String cityName,
-            String geoHash,
-            String filters,
-            String scrollId
+        String query,
+        String cityName,
+        String geoHash,
+        String filters,
+        String scrollId
     ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
@@ -294,8 +294,8 @@ public class BizStoreElasticService {
                 //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
 
                 searchSourceBuilder.query(geoDistanceQuery("GH")
-                        .geohash(geoHash)
-                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC));
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
@@ -351,31 +351,31 @@ public class BizStoreElasticService {
             for (SearchHit hit : searchHits) {
                 Map<String, Object> map = hit.getSourceAsMap();
                 BizStoreElastic bizStoreElastic = new BizStoreElastic()
-                        .setId(map.containsKey("id") ? map.get("id").toString() : "")
-                        .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
-                        .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
-                        .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
-                        .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
-                        .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
-                        .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
-                        .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
-                        .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")
-                        .setStoreHourElasticList(map.containsKey("SH") ? (List<StoreHourElastic>) map.get("SH") : new ArrayList<>())
-                        .setState(map.containsKey("ST") ? map.get("ST").toString() : "")
-                        .setStateShortName(map.containsKey("SS") ? map.get("SS").toString() : "")
-                        .setCountry(map.containsKey("CC") ? map.get("CC").toString() : "")
-                        .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
-                        .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
-                        .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
-                        .setRating(map.containsKey("RA") ? Float.valueOf(map.get("RA").toString()) : 3.0f)
-                        .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
-                        .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
-                        .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
-                        .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
-                        .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
-                        .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
-                        .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
-                        .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
+                    .setId(map.containsKey("id") ? map.get("id").toString() : "")
+                    .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
+                    .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
+                    .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
+                    .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
+                    .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
+                    .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
+                    .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
+                    .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")
+                    .setStoreHourElasticList(map.containsKey("SH") ? (List<StoreHourElastic>) map.get("SH") : new ArrayList<>())
+                    .setState(map.containsKey("ST") ? map.get("ST").toString() : "")
+                    .setStateShortName(map.containsKey("SS") ? map.get("SS").toString() : "")
+                    .setCountry(map.containsKey("CC") ? map.get("CC").toString() : "")
+                    .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
+                    .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
+                    .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
+                    .setRating(map.containsKey("RA") ? Float.valueOf(map.get("RA").toString()) : 3.0f)
+                    .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
+                    .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
+                    .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
+                    .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
+                    .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
+                    .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
+                    .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
+                    .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
                 bizStoreElastics.addBizStoreElastic(bizStoreElastic);
             }
         }
@@ -394,7 +394,7 @@ public class BizStoreElasticService {
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
             bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
 
-            hits ++;
+            hits++;
         }
         bizStoreElastics.setBizStoreElastics(bizStoreElasticSet);
         return bizStoreElastics;
