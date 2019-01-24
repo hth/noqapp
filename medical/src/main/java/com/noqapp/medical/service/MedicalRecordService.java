@@ -5,12 +5,10 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonQueuePersonList;
@@ -49,7 +47,6 @@ import com.noqapp.medical.repository.MedicalRadiologyManager;
 import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserStoreService;
@@ -92,7 +89,6 @@ public class MedicalRecordService {
     private UserProfileManager userProfileManager;
     private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
-    private ProfessionalProfileManager professionalProfileManager;
     private BusinessUserStoreService businessUserStoreService;
     private PurchaseOrderService purchaseOrderService;
     private UserMedicalProfileService userMedicalProfileService;
@@ -115,7 +111,6 @@ public class MedicalRecordService {
         UserProfileManager userProfileManager,
         BizStoreManager bizStoreManager,
         QueueManager queueManager,
-        ProfessionalProfileManager professionalProfileManager,
         BusinessUserStoreService businessUserStoreService,
         PurchaseOrderService purchaseOrderService,
         UserMedicalProfileService userMedicalProfileService
@@ -133,7 +128,6 @@ public class MedicalRecordService {
         this.userProfileManager = userProfileManager;
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
-        this.professionalProfileManager = professionalProfileManager;
         this.businessUserStoreService = businessUserStoreService;
         this.purchaseOrderService = purchaseOrderService;
         this.userMedicalProfileService = userMedicalProfileService;
@@ -354,17 +348,8 @@ public class MedicalRecordService {
                 .setAreaAndTown(bizStore.getAreaAndTown());
         }
 
-        List<String> license = new ArrayList<>();
-        if (StringUtils.isNotBlank(medicalRecord.getDiagnosedById())) {
-            ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(medicalRecord.getDiagnosedById());
-            List<NameDatePair> licenses = professionalProfile.getLicenses();
-            for (NameDatePair nameDatePair : licenses) {
-                license.add(nameDatePair.getName());
-            }
-        }
         return getJsonMedicalRecord(medicalRecord)
-            .setAreaAndTown(bizStore.getAreaAndTown())
-            .setLicenses(license);
+            .setAreaAndTown(bizStore.getAreaAndTown());
     }
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -737,7 +722,8 @@ public class MedicalRecordService {
             .setBusinessName(medicalRecord.getBusinessName())
             .setBizCategoryName(medicalRecord.getBizCategoryId() == null
                 ? "NA"
-                : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+                : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription())
+            .setImages(medicalRecord.getImages());
 
         if (null != medicalRecord.getMedicalPhysicalId()) {
             MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
