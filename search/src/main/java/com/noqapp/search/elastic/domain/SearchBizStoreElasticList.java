@@ -121,7 +121,7 @@ public class SearchBizStoreElasticList extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "BizStoreElasticList{" +
+        return "SearchBizStoreElasticList{" +
             "scrollId='" + scrollId + '\'' +
             ", cityName='" + cityName + '\'' +
             ", jsonCategories=" + jsonCategories +
