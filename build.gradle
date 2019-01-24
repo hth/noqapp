@@ -114,7 +114,7 @@ subprojects {
     }
 
     spotbugs {
-        toolVersion = '3.1.9'
+        toolVersion = '3.1.11'
     }
 
     pmd {
