@@ -255,6 +255,7 @@ public class FileService {
         }
     }
 
+    @Mobile
     @Async
     public void removeProfileImage(String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);

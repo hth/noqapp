@@ -173,11 +173,18 @@ public class MedicalFileService {
     public void removeMedicalImage(String qid, String medicalReferenceId, String filename) {
         LOG.debug("Remove medical image {} {} {}", qid, medicalReferenceId, filename);
         if (StringUtils.isNotBlank(filename)) {
-            /* Delete existing file business service image before the upload process began. */
-            ftpService.delete(filename, null, FtpService.MEDICAL);
+            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(medicalReferenceId);
+            if (null != medicalRecord.getImages() && !medicalRecord.getImages().isEmpty()) {
+                /* Delete existing file business service image before the upload process began. */
+                ftpService.delete(filename, medicalReferenceId, FtpService.MEDICAL);
 
-            /* Delete from S3. */
-            s3FileManager.save(new S3FileEntity(qid, medicalReferenceId + "/" + filename, FtpService.MEDICAL_AWS));
+                /* Delete from S3. */
+                s3FileManager.save(new S3FileEntity(qid, medicalReferenceId + "/" + filename, FtpService.MEDICAL_AWS));
+                medicalRecord.getImages().remove(filename);
+                medicalRecordManager.save(medicalRecord);
+            } else {
+                LOG.warn("Not file exists for medicalRecordId={} by qid={} filename={}", medicalReferenceId, qid, filename);
+            }
         }
     }
 }
