@@ -77,25 +77,25 @@
                     <c:choose>
                     <c:when test="${!empty searchResult}">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
-                        <c:forEach items="${searchResult}" var="elasticBizStoreSource" varStatus="status">
+                        <c:forEach items="${searchResult}" var="searchElasticBizStoreSource" varStatus="status">
                         <tr>
                             <td nowrap style="border: 0px;">
-                                <a href="../${elasticBizStoreSource.bizStoreElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSource.bizStoreElastic.displayName}</a>
+                                <a href="../${searchElasticBizStoreSource.searchBizStoreElastic.codeQR}/q.htm" target="_blank">${searchElasticBizStoreSource.searchBizStoreElastic.displayName}</a>
                                 <c:choose>
-                                <c:when test="${!empty elasticBizStoreSource.bizStoreElastic.bizCategoryName}">
+                                <c:when test="${!empty searchElasticBizStoreSource.searchBizStoreElastic.bizCategoryName}">
                                 <span style="display:block; font-size:13px;">
-                                    ${elasticBizStoreSource.bizStoreElastic.businessType.description}, ${elasticBizStoreSource.bizStoreElastic.bizCategoryName}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
-                                        <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                    ${searchElasticBizStoreSource.searchBizStoreElastic.businessType.description}, ${searchElasticBizStoreSource.searchBizStoreElastic.bizCategoryName}, ${searchElasticBizStoreSource.searchBizStoreElastic.area} ${searchElasticBizStoreSource.searchBizStoreElastic.town};
+                                        <a href="https://noqapp.com/b/s${searchElasticBizStoreSource.searchBizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
                                 </c:when>
                                 <c:otherwise>
                                 <span style="display:block; font-size:13px;">
-                                    ${elasticBizStoreSource.bizStoreElastic.businessType.description}, ${elasticBizStoreSource.bizStoreElastic.area} ${elasticBizStoreSource.bizStoreElastic.town};
-                                        <a href="https://noqapp.com/b/s${elasticBizStoreSource.bizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                    ${searchElasticBizStoreSource.searchBizStoreElastic.businessType.description}, ${searchElasticBizStoreSource.searchBizStoreElastic.area} ${searchElasticBizStoreSource.searchBizStoreElastic.town};
+                                        <a href="https://noqapp.com/b/s${searchElasticBizStoreSource.searchBizStoreElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
                                 </span>
                                 </c:otherwise>
                                 </c:choose>
-                                <span style="display:block; font-size:13px;">${elasticBizStoreSource.bizStoreElastic.businessName}</span>
+                                <span style="display:block; font-size:13px;">${searchElasticBizStoreSource.searchBizStoreElastic.businessName}</span>
                             </td>
                         </tr>
                         </c:forEach>
