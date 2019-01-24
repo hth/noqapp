@@ -352,6 +352,24 @@ public class MedicalRecordService {
             .setAreaAndTown(bizStore.getAreaAndTown());
     }
 
+    @Mobile
+    public JsonMedicalRecord findMedicalRecord(String codeQR, String recordReferenceId) {
+        QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
+        if (null == queue) {
+            LOG.error("Not valid request for medical record codeQR={} recordReferenceId={}", codeQR, recordReferenceId);
+            return null;
+        }
+
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        if (null == medicalRecord) {
+            return null;
+        }
+
+        return getJsonMedicalRecord(medicalRecord)
+            .setAreaAndTown(bizStore.getAreaAndTown());
+    }
+
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
         /* Delete Existing. */
         if (null != medicalRecord.getMedicalRadiologies()) {
