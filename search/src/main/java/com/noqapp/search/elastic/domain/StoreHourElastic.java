@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * hitender
  * 4/6/18 12:38 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -32,16 +32,16 @@ public class StoreHourElastic extends AbstractDomain {
     @JsonProperty("DW")
     private int dayOfWeek;
 
-    @JsonProperty ("TF")
+    @JsonProperty("TF")
     private int tokenAvailableFrom;
 
-    @JsonProperty ("SH")
+    @JsonProperty("SH")
     private int startHour;
 
-    @JsonProperty ("TE")
+    @JsonProperty("TE")
     private int tokenNotAvailableFrom;
 
-    @JsonProperty ("EH")
+    @JsonProperty("EH")
     private int endHour;
 
     @JsonProperty("DC")
