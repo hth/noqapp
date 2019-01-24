@@ -337,19 +337,18 @@ public class MedicalRecordService {
             return null;
         }
 
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        JsonMedicalRecord jsonMedicalRecord;
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
         if (null == medicalRecord) {
-            return new JsonMedicalRecord()
+            jsonMedicalRecord = new JsonMedicalRecord()
                 .setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(queue.getQueueUserId()))
                 .setCodeQR(codeQR)
-                .setRecordReferenceId(recordReferenceId)
-                .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setAreaAndTown(bizStore.getAreaAndTown());
+                .setRecordReferenceId(recordReferenceId);
+        } else {
+            jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
         }
-
-        return getJsonMedicalRecord(medicalRecord)
-            .setAreaAndTown(bizStore.getAreaAndTown());
+        populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
+        return jsonMedicalRecord;
     }
 
     @Mobile
@@ -360,13 +359,21 @@ public class MedicalRecordService {
             return null;
         }
 
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
         if (null == medicalRecord) {
             return null;
+        } else {
+            JsonMedicalRecord jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
+            populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
+            return jsonMedicalRecord;
         }
+    }
 
-        return getJsonMedicalRecord(medicalRecord)
+    private void populateJsonMedicalRecordWithStoreDetails(String codeQR, JsonMedicalRecord jsonMedicalRecord) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        jsonMedicalRecord
+            /* setBusinessName is also populated from MedicalRecordEntity. */
+            .setBusinessName(bizStore.getBizName().getBusinessName())
             .setAreaAndTown(bizStore.getAreaAndTown());
     }
 
@@ -666,7 +673,7 @@ public class MedicalRecordService {
         return medicalMedicineManager.findByMedicationRefId(referenceId);
     }
 
-    /** Populate data for client case histories.*/
+    /** Populate data for client case histories. */
     @Mobile
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
@@ -683,7 +690,7 @@ public class MedicalRecordService {
         return jsonMedicalRecordList;
     }
 
-    /** Populate data for client case histories.*/
+    /** Populate data for client case histories. */
     @Mobile
     public JsonMedicalPhysicalList populateMedicalPhysicalHistory(String qid) {
         JsonMedicalPhysicalList jsonMedicalPhysicalList = new JsonMedicalPhysicalList();
