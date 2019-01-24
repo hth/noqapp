@@ -106,14 +106,17 @@ public class JsonMedicalRecord extends AbstractDomain {
     @JsonProperty ("bc")
     private String bizCategoryName;
 
-    @JsonProperty ("u")
-    private String createDate;
-
     @JsonProperty ("qr")
     private String codeQR;
 
     @JsonProperty("fv")
     private FormVersionEnum formVersion;
+
+    @JsonProperty("im")
+    private List<String> images;
+
+    @JsonProperty ("u")
+    private String createDate;
 
     @JsonProperty("rr")
     private String recordReferenceId;
@@ -128,10 +131,6 @@ public class JsonMedicalRecord extends AbstractDomain {
     @Transient
     @JsonProperty("at")
     private String areaAndTown;
-
-    @Transient
-    @JsonProperty("li")
-    private List<String> licenses = new ArrayList<>();
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -346,15 +345,6 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public JsonMedicalRecord setCreateDate(String createDate) {
-        this.createDate = createDate;
-        return this;
-    }
-
     public String getCodeQR() {
         return codeQR;
     }
@@ -370,6 +360,24 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
         this.formVersion = formVersion;
+        return this;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public JsonMedicalRecord setImages(List<String> images) {
+        this.images = images;
+        return this;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public JsonMedicalRecord setCreateDate(String createDate) {
+        this.createDate = createDate;
         return this;
     }
 
@@ -406,20 +414,6 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
         this.areaAndTown = areaAndTown;
-        return this;
-    }
-
-    public List<String> getLicenses() {
-        return licenses;
-    }
-
-    public JsonMedicalRecord setLicenses(List<String> licenses) {
-        this.licenses = licenses;
-        return this;
-    }
-
-    public JsonMedicalRecord addLicense(String license) {
-        this.licenses.add(license);
         return this;
     }
 

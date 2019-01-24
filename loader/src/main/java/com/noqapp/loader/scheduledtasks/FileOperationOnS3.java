@@ -49,11 +49,11 @@ import java.util.List;
  * hitender
  * 5/27/18 4:09 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class FileOperationOnS3 {
@@ -74,22 +74,22 @@ public class FileOperationOnS3 {
     private StatsCronEntity statsCron;
 
     public FileOperationOnS3(
-            @Value("${aws.s3.bucketName}")
-            String bucketName,
+        @Value("${aws.s3.bucketName}")
+        String bucketName,
 
-            @Value ("${FileOperationOnS3.upload.profile.switch:ON}")
-            String profileUploadSwitch,
+        @Value("${FileOperationOnS3.upload.profile.switch:ON}")
+        String profileUploadSwitch,
 
-            @Value ("${FileOperationOnS3.upload.service.switch:ON}")
-            String serviceUploadSwitch,
+        @Value("${FileOperationOnS3.upload.service.switch:ON}")
+        String serviceUploadSwitch,
 
-            @Value ("${FileOperationOnS3.delete.s3.switch:ON}")
-            String s3DeleteSwitch,
+        @Value("${FileOperationOnS3.delete.s3.switch:ON}")
+        String s3DeleteSwitch,
 
-            StatsCronService statsCronService,
-            FtpService ftpService,
-            AmazonS3 amazonS3,
-            S3FileManager s3FileManager
+        StatsCronService statsCronService,
+        FtpService ftpService,
+        AmazonS3 amazonS3,
+        S3FileManager s3FileManager
     ) {
         this.bucketName = bucketName;
         this.profileUploadSwitch = profileUploadSwitch;
@@ -108,12 +108,12 @@ public class FileOperationOnS3 {
      *
      * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
     public void profileUpload() {
         statsCron = new StatsCronEntity(
-                FileOperationOnS3.class.getName(),
-                "profileUpload",
-                profileUploadSwitch);
+            FileOperationOnS3.class.getName(),
+            "profileUpload",
+            profileUploadSwitch);
 
         /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
@@ -207,12 +207,12 @@ public class FileOperationOnS3 {
         }
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
     public void pushToS3() {
         statsCron = new StatsCronEntity(
-                FileOperationOnS3.class.getName(),
-                "serviceUpload",
-                serviceUploadSwitch);
+            FileOperationOnS3.class.getName(),
+            "serviceUpload",
+            serviceUploadSwitch);
 
         /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
@@ -233,9 +233,9 @@ public class FileOperationOnS3 {
     @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.deleteOnS3}")
     public void deleteOnS3() {
         statsCron = new StatsCronEntity(
-                FileOperationOnS3.class.getName(),
-                "deleteOnS3",
-                s3DeleteSwitch);
+            FileOperationOnS3.class.getName(),
+            "deleteOnS3",
+            s3DeleteSwitch);
 
         /*
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
@@ -277,9 +277,9 @@ public class FileOperationOnS3 {
                 LOG.error("Printing error data...");
                 for (MultiObjectDeleteException.DeleteError deleteError : e.getErrors()) {
                     LOG.warn("Object Key: {} {} {}",
-                            deleteError.getKey(),
-                            deleteError.getCode(),
-                            deleteError.getMessage());
+                        deleteError.getKey(),
+                        deleteError.getCode(),
+                        deleteError.getMessage());
                 }
             } catch (AmazonServiceException ase) {
                 LOG.error("Caught an AmazonServiceException, which means your request made it to Amazon S3, "
@@ -307,8 +307,8 @@ public class FileOperationOnS3 {
                     statsCronService.save(statsCron);
 
                     LOG.info("Successfully found count={} and deleted count={}",
-                            s3Files.size(),
-                            deleteObjectsResult.getDeletedObjects().size());
+                        s3Files.size(),
+                        deleteObjectsResult.getDeletedObjects().size());
                 }
             }
         }
@@ -425,10 +425,10 @@ public class FileOperationOnS3 {
      */
     private PutObjectRequest getPutObjectRequest(String folderName, String key, InputStream inputStream, ObjectMetadata objectMetadata) {
         return new PutObjectRequest(
-                bucketName,
-                folderName.replaceFirst(FileUtil.getFileSeparator(), "") + FileUtil.getFileSeparator() + key,
-                inputStream,
-                objectMetadata);
+            bucketName,
+            folderName.replaceFirst(FileUtil.getFileSeparator(), "") + FileUtil.getFileSeparator() + key,
+            inputStream,
+            objectMetadata);
     }
 
     /**
@@ -445,17 +445,16 @@ public class FileOperationOnS3 {
 
     private String computeFileYearMonthDayLocation() {
         ZonedDateTime zonedDateTime = getUTCZonedDateTime();
-        return String.valueOf(zonedDateTime.getYear()) +
-                "-" +
-                TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()) +
-                "/" +
-                TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()) +
-                "/";
+        return zonedDateTime.getYear() +
+            "-" +
+            TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()) +
+            "/" +
+            TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()) +
+            "/";
     }
 
     /**
      * Why convert to UTC when the date is already saved as UTC time in Database?.
-     *
      * This is to protect when some smarty forgets to set the time to UTC on server since JVM time is used with local
      * timezone. In worst case scenario, if Mongo DB date format is changed from UTC to something new. Second scenario
      * is highly unlikely.
