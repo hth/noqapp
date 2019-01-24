@@ -25,16 +25,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ElasticResult {
+public class ElasticResult<T> {
 
     @JsonProperty("hits")
-    private ElasticHits hits;
+    private ElasticHits<T> hits;
 
     public ElasticHits getHits() {
         return hits;
     }
 
-    public ElasticResult setHits(ElasticHits hits) {
+    public ElasticResult setHits(ElasticHits<T> hits) {
         this.hits = hits;
         return this;
     }

@@ -15,16 +15,7 @@ import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
-import com.noqapp.search.elastic.dsl.Conditions;
-import com.noqapp.search.elastic.dsl.Filter;
-import com.noqapp.search.elastic.dsl.GeoDistance;
-import com.noqapp.search.elastic.dsl.Options;
-import com.noqapp.search.elastic.dsl.Query;
-import com.noqapp.search.elastic.dsl.QueryString;
-import com.noqapp.search.elastic.dsl.Search;
 import com.noqapp.search.elastic.helper.DomainConversion;
-import com.noqapp.search.elastic.json.ElasticBizStoreSource;
-import com.noqapp.search.elastic.json.ElasticResult;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -176,58 +167,6 @@ public class BizStoreElasticService {
         return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.TEN.getLimit());
     }
 
-    public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter) {
-        return createBizStoreSearchDSLQuery(searchParameter, null);
-    }
-
-    /** Search executed through website. */
-    public List<ElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
-        LOG.info("User search parameter={}", searchParameter);
-
-        Query q = new Query();
-        if (StringUtils.isNotBlank(searchParameter)) {
-            /* Search across all the specified fields. */
-            q.setConditions(new Conditions()
-                .setOptions(new Options()
-                    .setQueryStringMultiMatch(new QueryString()
-                        .setQuery(searchParameter)
-                    )
-                )
-            );
-        } else {
-            /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
-            q.setConditions(new Conditions().setOptions(new Options().setQueryStringMatchAll(new QueryString().setFields(null))));
-        }
-
-        if (StringUtils.isNotBlank(geoHash)) {
-            q.getConditions().setFilter(new Filter()
-                .setGeoDistance(new GeoDistance()
-                    .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
-                    .setGeoHash(geoHash)
-                ));
-        }
-
-        LOG.info("Elastic query q={}", q.asJson());
-        Search search = new Search()
-            .setFrom(0)
-            .setSize(PaginationEnum.TEN.getLimit())
-            .setQuery(q);
-
-        String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
-        if (StringUtils.isNotBlank(result)) {
-            try {
-                //TODO(hth) this is hard coded to just one type of search; should be extendable for other searches.
-                ElasticResult elasticResult = objectMapper.readValue(result, ElasticResult.class);
-                return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
-            } catch (IOException e) {
-                LOG.error("Failed parsing elastic result searchParameter={} reason={}", searchParameter, e.getLocalizedMessage(), e);
-                return new ArrayList<>();
-            }
-        }
-
-        return new ArrayList<>();
-    }
-
     /**
      * Performs search on the index with provided DSL.
      */
@@ -242,24 +181,6 @@ public class BizStoreElasticService {
         );
 
         LOG.info("DSL Query result={}", result);
-        return result;
-    }
-
-    /**
-     * Performs search on the index with provided DSL with filtered set of data sent in response. The fields below
-     * are fetched when searched. Fetched fields are populated in mapped object.
-     */
-    private String executeSearchOnBizStoreUsingDSLFilteredData(String dslQuery) {
-        LOG.info("DSL Query={}", dslQuery);
-        String result = elasticAdministrationService.executeDSLQuerySearch(
-            BizStoreElastic.INDEX
-                + "/"
-                + BizStoreElastic.TYPE
-                + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
-            dslQuery
-        );
-
-        LOG.debug("DSL Query result={}", result);
         return result;
     }
 

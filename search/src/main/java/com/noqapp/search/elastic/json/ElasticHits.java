@@ -28,16 +28,16 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ElasticHits {
+public class ElasticHits<T> {
 
     @JsonProperty("hits")
-    private List<ElasticBizStoreSource> elasticSources = new LinkedList<>();
+    private List<T> elasticSources = new LinkedList<>();
 
-    public List<ElasticBizStoreSource> getElasticSources() {
+    public List<T> getElasticSources() {
         return elasticSources;
     }
 
-    public ElasticHits setElasticSources(List<ElasticBizStoreSource> elasticSources) {
+    public ElasticHits setElasticSources(List<T> elasticSources) {
         this.elasticSources = elasticSources;
         return this;
     }
