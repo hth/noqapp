@@ -54,7 +54,7 @@ public class BizStoreElasticList extends AbstractDomain {
 
     /** Do not make it Set. */
     @JsonProperty("result")
-    private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new HashSet<>();
 
     public String getScrollId() {
         return scrollId;
