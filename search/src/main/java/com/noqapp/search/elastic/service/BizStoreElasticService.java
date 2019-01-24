@@ -27,6 +27,7 @@ import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 import com.noqapp.search.elastic.json.ElasticResult;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -216,8 +217,7 @@ public class BizStoreElasticService {
         String result = executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
         if (StringUtils.isNotBlank(result)) {
             try {
-                //TODO(hth) this is hard coded to just one type of search; should be extendable for other searches.
-                ElasticResult elasticResult = objectMapper.readValue(result, ElasticResult.class);
+                ElasticResult elasticResult = objectMapper.readValue(result, new TypeReference<ElasticResult<ElasticBizStoreSource>>(){});
                 return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
             } catch (IOException e) {
                 LOG.error("Failed parsing elastic result searchParameter={} reason={}", searchParameter, e.getLocalizedMessage(), e);
