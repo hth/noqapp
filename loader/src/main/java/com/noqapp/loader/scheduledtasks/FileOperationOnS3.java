@@ -108,7 +108,7 @@ public class FileOperationOnS3 {
      *
      * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
     public void profileUpload() {
         statsCron = new StatsCronEntity(
             FileOperationOnS3.class.getName(),
@@ -207,7 +207,7 @@ public class FileOperationOnS3 {
         }
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.profileUpload}")
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
     public void pushToS3() {
         statsCron = new StatsCronEntity(
             FileOperationOnS3.class.getName(),
