@@ -40,16 +40,16 @@ import java.util.Set;
  * Date: 11/15/17 4:28 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -166,7 +166,7 @@ public class BizStoreElastic extends AbstractDomain {
     private List<AmenityEnum> amenities = new LinkedList<>();
 
     @Transient
-    @JsonProperty ("FA")
+    @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
@@ -529,38 +529,38 @@ public class BizStoreElastic extends AbstractDomain {
         BusinessImageHolder businessImageHolder = DomainConversion.populateBizAndStoreImages(bizStore);
 
         return new BizStoreElastic()
-                //.setId missing intentionally
-                .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setBusinessType(bizStore.getBusinessType())
-                .setBizCategoryId(bizStore.getBizCategoryId())
-                .setAddress(bizStore.getAddress())
-                .setArea(bizStore.getArea())
-                .setTown(bizStore.getTown())
-                .setDistrict(bizStore.getDistrict())
-                .setState(bizStore.getState())
-                .setStateShortName(bizStore.getStateShortName())
-                .setPostalCode(bizStore.getPostalCode())
-                .setCountry(bizStore.getCountry())
-                .setCountryShortName(bizStore.getCountryShortName())
-                .setPhone(bizStore.getPhone())
-                .setPhoneRaw(bizStore.getPhoneRaw())
-                .setGeoPointOfQ(bizStore.getGeoPointOfQ())
-                .setPlaceId(bizStore.getPlaceId())
-                .setPlaceType(bizStore.getPlaceType())
-                .setRating(bizStore.getRating())
-                .setRatingCount(bizStore.getReviewCount())
-                .setBizNameId(bizStore.getBizName().getId())
-                .setDisplayName(bizStore.getDisplayName())
-                .setCodeQR(bizStore.getCodeQR())
-                .setTimeZone(bizStore.getTimeZone())
-                .setGeoHash(bizStore.getGeoPoint().getGeohash())
-                .setWebLocation(bizStore.getWebLocation())
-                .setFamousFor(bizStore.getFamousFor())
-                .setDisplayImage(businessImageHolder.getBannerImage())
-                .setBizServiceImages(businessImageHolder.getServiceImages())
-                .setAmenities(bizStore.getAmenities())
-                .setFacilities(bizStore.getFacilities())
-                .setActive(bizStore.isActive());
+            //.setId missing intentionally
+            .setBusinessName(bizStore.getBizName().getBusinessName())
+            .setBusinessType(bizStore.getBusinessType())
+            .setBizCategoryId(bizStore.getBizCategoryId())
+            .setAddress(bizStore.getAddress())
+            .setArea(bizStore.getArea())
+            .setTown(bizStore.getTown())
+            .setDistrict(bizStore.getDistrict())
+            .setState(bizStore.getState())
+            .setStateShortName(bizStore.getStateShortName())
+            .setPostalCode(bizStore.getPostalCode())
+            .setCountry(bizStore.getCountry())
+            .setCountryShortName(bizStore.getCountryShortName())
+            .setPhone(bizStore.getPhone())
+            .setPhoneRaw(bizStore.getPhoneRaw())
+            .setGeoPointOfQ(bizStore.getGeoPointOfQ())
+            .setPlaceId(bizStore.getPlaceId())
+            .setPlaceType(bizStore.getPlaceType())
+            .setRating(bizStore.getRating())
+            .setRatingCount(bizStore.getReviewCount())
+            .setBizNameId(bizStore.getBizName().getId())
+            .setDisplayName(bizStore.getDisplayName())
+            .setCodeQR(bizStore.getCodeQR())
+            .setTimeZone(bizStore.getTimeZone())
+            .setGeoHash(bizStore.getGeoPoint().getGeohash())
+            .setWebLocation(bizStore.getWebLocation())
+            .setFamousFor(bizStore.getFamousFor())
+            .setDisplayImage(businessImageHolder.getBannerImage())
+            .setBizServiceImages(businessImageHolder.getServiceImages())
+            .setAmenities(bizStore.getAmenities())
+            .setFacilities(bizStore.getFacilities())
+            .setActive(bizStore.isActive());
     }
 
     @Override
@@ -576,11 +576,11 @@ public class BizStoreElastic extends AbstractDomain {
                 return Objects.equals(bizNameId, that.bizNameId);
             case BK:
                 return Objects.equals(bizNameId, that.bizNameId) &&
-                        Objects.equals(placeId, that.placeId);
+                    Objects.equals(placeId, that.placeId);
             default:
                 return Objects.equals(bizNameId, that.bizNameId) &&
-                        Objects.equals(bizCategoryId, that.bizCategoryId) &&
-                        Objects.equals(address, that.address);
+                    Objects.equals(bizCategoryId, that.bizCategoryId) &&
+                    Objects.equals(address, that.address);
         }
     }
 
