@@ -18,9 +18,6 @@ import com.noqapp.search.elastic.domain.StoreHourElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -80,8 +77,6 @@ public class BizStoreElasticService {
     private StoreHourManager storeHourManager;
     private ApiHealthService apiHealthService;
 
-    private ObjectMapper objectMapper;
-
     @Autowired
     public BizStoreElasticService(
         BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
@@ -91,9 +86,6 @@ public class BizStoreElasticService {
         StoreHourManager storeHourManager,
         ApiHealthService apiHealthService
     ) {
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
         this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
@@ -185,7 +177,7 @@ public class BizStoreElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(
+    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(
         String query,
         String cityName,
         String geoHash,
@@ -236,7 +228,7 @@ public class BizStoreElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) {
+    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -304,14 +296,14 @@ public class BizStoreElasticService {
 
     @Mobile
     public BizStoreElasticList nearMeSearch(String geoHash, String scrollId) {
-        BizStoreElasticList bizStoreElastics = executeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+        BizStoreElasticList bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
         while (bizStoreElasticSet.size() < PaginationEnum.TEN.getLimit() && hits < 3) {
             LOG.debug("NearMe found size={} scrollId={}",
                 bizStoreElasticSet.size(),
                 bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10));
-            BizStoreElasticList bizStoreElasticsFetched = executeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
+            BizStoreElasticList bizStoreElasticsFetched = executeNearMeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
             bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
             bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
 
