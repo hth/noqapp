@@ -52,9 +52,9 @@ public class SearchBizStoreElasticList extends AbstractDomain {
     @JsonProperty("categories")
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
-    /** Do not make it Set. */
+    /** Do not make it a Set. Intentionally using List here */
     @JsonProperty("result")
-    private Collection<SearchBizStoreElastic> searchBizStoreElastics = new HashSet<>();
+    private Collection<SearchBizStoreElastic> searchBizStoreElastics = new ArrayList<>();
 
     public String getScrollId() {
         return scrollId;
