@@ -17,7 +17,6 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -103,12 +102,8 @@ public class SearchBizStoreElasticList extends AbstractDomain {
     }
 
     @Transient
-    public SearchBizStoreElasticList populateBizStoreElasticSet(List<SearchElasticBizStoreSource> searchElasticBizStoreSources) {
+    public SearchBizStoreElasticList populateSearchBizStoreElasticArray(List<SearchElasticBizStoreSource> searchElasticBizStoreSources) {
         LOG.info("Before count={}", searchElasticBizStoreSources.size());
-
-        if (!searchElasticBizStoreSources.isEmpty()) {
-            searchBizStoreElastics = new HashSet<>();
-        }
 
         for (SearchElasticBizStoreSource searchElasticBizStoreSource : searchElasticBizStoreSources) {
             SearchBizStoreElastic elastic = searchElasticBizStoreSource.getSearchBizStoreElastic();
