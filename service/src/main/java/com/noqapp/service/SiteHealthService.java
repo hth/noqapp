@@ -31,8 +31,8 @@ public class SiteHealthService {
 
     @Autowired
     public SiteHealthService(
-            GenerateUserIdService generateUserIdService,
-            QueueManagerJDBC queueManagerJDBC
+        GenerateUserIdService generateUserIdService,
+        QueueManagerJDBC queueManagerJDBC
     ) {
         this.generateUserIdService = generateUserIdService;
         this.queueManagerJDBC = queueManagerJDBC;
