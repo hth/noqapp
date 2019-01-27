@@ -71,7 +71,6 @@ public class PreferredBusinessService {
     }
     
     private JsonPreferredBusinessList getJsonPreferredBusinessList(BizStoreEntity bizStore, List<PreferredBusinessEntity> preferredBusinesses) {
-        JsonPreferredBusinessList jsonPreferredBusinessList = new JsonPreferredBusinessList();
         List<JsonPreferredBusiness> jsonPreferredBusinesses = new LinkedList<>();
         for (PreferredBusinessEntity preferredBusiness : preferredBusinesses) {
             String preferredBizNameId = preferredBusiness.getPreferredBizNameId();
@@ -80,12 +79,10 @@ public class PreferredBusinessService {
                 LOG.debug("{}", new JsonPreferredBusiness(bs));
                 jsonPreferredBusinesses.add(new JsonPreferredBusiness(bs));
             }
-
-            jsonPreferredBusinessList
-                .addPreferredBusinesses(jsonPreferredBusinesses)
-                .setCodeQR(bizStore.getCodeQR());
         }
-        return jsonPreferredBusinessList;
+        return new JsonPreferredBusinessList()
+            .addPreferredBusinesses(jsonPreferredBusinesses)
+            .setCodeQR(bizStore.getCodeQR());
     }
 
     public void deleteById(String id) {
