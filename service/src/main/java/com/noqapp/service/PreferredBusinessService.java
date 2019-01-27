@@ -10,9 +10,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PreferredBusinessManager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +22,6 @@ import java.util.List;
  */
 @Service
 public class PreferredBusinessService {
-    private static final Logger LOG = LoggerFactory.getLogger(PreferredBusinessService.class);
 
     private PreferredBusinessManager preferredBusinessManager;
     private BizStoreManager bizStoreManager;
@@ -76,7 +72,6 @@ public class PreferredBusinessService {
             String preferredBizNameId = preferredBusiness.getPreferredBizNameId();
             List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(preferredBizNameId, bizStore.getPoint(), 10.0);
             for (BizStoreEntity bs : bizStores) {
-                LOG.debug("{}", new JsonPreferredBusiness(bs));
                 jsonPreferredBusinesses.add(new JsonPreferredBusiness(bs));
             }
         }

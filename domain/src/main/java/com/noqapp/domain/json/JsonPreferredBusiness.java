@@ -135,21 +135,4 @@ public class JsonPreferredBusiness extends AbstractDomain {
     public boolean isActive() {
         return active;
     }
-
-    @Override
-    public String toString() {
-        return "JsonPreferredBusiness{" +
-            "bizStoreId='" + bizStoreId + '\'' +
-            ", codeQR='" + codeQR + '\'' +
-            ", geoHash='" + geoHash + '\'' +
-            ", businessName='" + businessName + '\'' +
-            ", displayName='" + displayName + '\'' +
-            ", businessType=" + businessType +
-            ", storeAddress='" + storeAddress + '\'' +
-            ", area='" + area + '\'' +
-            ", town='" + town + '\'' +
-            ", countryShortName='" + countryShortName + '\'' +
-            ", storePhone='" + storePhone + '\'' +
-            '}';
-    }
 }
