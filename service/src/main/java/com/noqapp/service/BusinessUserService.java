@@ -17,11 +17,11 @@ import java.util.List;
  * User: hitender
  * Date: 11/23/16 5:09 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class BusinessUserService {
@@ -74,10 +74,10 @@ public class BusinessUserService {
 
     /**
      * //TODO currently there can be just one entry for business user. To support multiple, this will return a list.
-     * @deprecated  As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
-     * Implement multiple account support.
      *
      * @return
+     * @deprecated As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
+     * Implement multiple account support.
      */
     @Deprecated
     public BusinessUserEntity loadBusinessUser() {

@@ -44,21 +44,21 @@ public class ShowProfessionalProfileHTMLService {
 
     @Autowired
     public ShowProfessionalProfileHTMLService(
-            @Value("${parentHost}")
-            String parentHost,
+        @Value("${parentHost}")
+        String parentHost,
 
-            @Value ("${domain}")
-            String domain,
+        @Value ("${domain}")
+        String domain,
 
-            @Value ("${https}")
-            String https,
+        @Value ("${https}")
+        String https,
 
-            BizService bizService,
-            FreemarkerService freemarkerService,
-            ShowHTMLService showHTMLService,
-            ProfessionalProfileService professionalProfileService,
-            BusinessUserStoreService businessUserStoreService,
-            AccountService accountService
+        BizService bizService,
+        FreemarkerService freemarkerService,
+        ShowHTMLService showHTMLService,
+        ProfessionalProfileService professionalProfileService,
+        BusinessUserStoreService businessUserStoreService,
+        AccountService accountService
     ) {
         this.bizService = bizService;
         this.freemarkerService = freemarkerService;

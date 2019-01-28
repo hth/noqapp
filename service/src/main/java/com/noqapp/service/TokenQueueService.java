@@ -83,16 +83,16 @@ public class TokenQueueService {
 
     @Autowired
     public TokenQueueService(
-            TokenQueueManager tokenQueueManager,
-            FirebaseMessageService firebaseMessageService,
-            QueueManager queueManager,
-            AccountService accountService,
-            RegisteredDeviceManager registeredDeviceManager,
-            QueueManagerJDBC queueManagerJDBC,
-            StoreHourManager storeHourManager,
-            BizStoreManager bizStoreManager,
-            BusinessCustomerService businessCustomerService,
-            ApiHealthService apiHealthService
+        TokenQueueManager tokenQueueManager,
+        FirebaseMessageService firebaseMessageService,
+        QueueManager queueManager,
+        AccountService accountService,
+        RegisteredDeviceManager registeredDeviceManager,
+        QueueManagerJDBC queueManagerJDBC,
+        StoreHourManager storeHourManager,
+        BizStoreManager bizStoreManager,
+        BusinessCustomerService businessCustomerService,
+        ApiHealthService apiHealthService
     ) {
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseMessageService = firebaseMessageService;
@@ -169,12 +169,12 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken getNextToken(
-            String codeQR,
-            String did,
-            String qid,
-            String guardianQid,
-            long averageServiceTime,
-            TokenServiceEnum tokenService
+        String codeQR,
+        String did,
+        String qid,
+        String guardianQid,
+        long averageServiceTime,
+        TokenServiceEnum tokenService
     ) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
@@ -248,10 +248,10 @@ public class TokenQueueService {
     }
 
     Date computeExpectedServiceBeginTime(
-            long averageServiceTime,
-            ZoneId zoneId,
-            StoreHourEntity storeHour,
-            TokenQueueEntity tokenQueue
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        TokenQueueEntity tokenQueue
     ) {
         Date expectedServiceBegin = null;
         if (0 != averageServiceTime) {
@@ -383,18 +383,18 @@ public class TokenQueueService {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName());
-        }
-
-        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setToken(tokenQueue.getLastNumber());
+                .setToken(tokenQueue.getLastNumber())
+                .setCustomerName(queue.getCustomerName());
+        }
+
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            .setQueueStatus(tokenQueue.getQueueStatus())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setToken(tokenQueue.getLastNumber());
     }
 
     /**
@@ -418,18 +418,18 @@ public class TokenQueueService {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setServingNumber(serving)
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setToken(tokenQueue.getLastNumber())
-                    .setCustomerName(queue.getCustomerName());
-        }
-
-        return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(serving)
                 .setDisplayName(tokenQueue.getDisplayName())
-                .setToken(tokenQueue.getLastNumber());
+                .setToken(tokenQueue.getLastNumber())
+                .setCustomerName(queue.getCustomerName());
+        }
+
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            .setQueueStatus(tokenQueue.getQueueStatus())
+            .setServingNumber(serving)
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setToken(tokenQueue.getLastNumber());
     }
 
     /**
@@ -474,12 +474,12 @@ public class TokenQueueService {
 
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
             jsonMessage.getNotification()
-                    .setTitle(title)
-                    .setBody(body);
+                .setTitle(title)
+                .setBody(body);
         } else {
             jsonMessage.setNotification(null);
             jsonData.setTitle(title)
-                    .setBody(body);
+                .setBody(body);
         }
 
         jsonMessage.setData(jsonData);
@@ -502,19 +502,19 @@ public class TokenQueueService {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData()
-                    //Added additional info to message for Android to not crash as it looks for CodeQR.
-                    //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
-                    .setCodeQR(tokenQueue.getId())
-                    .setBusinessType(tokenQueue.getBusinessType());
+                //Added additional info to message for Android to not crash as it looks for CodeQR.
+                //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
+                .setCodeQR(tokenQueue.getId())
+                .setBusinessType(tokenQueue.getBusinessType());
 
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
-                        .setTitle(title)
-                        .setBody(body);
+                    .setTitle(title)
+                    .setBody(body);
             } else {
                 jsonMessage.setNotification(null);
                 jsonData.setTitle(title)
-                        .setBody(body);
+                    .setBody(body);
             }
 
             jsonMessage.setData(jsonData);
@@ -543,12 +543,12 @@ public class TokenQueueService {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType()).getJsonTopicQueueData()
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                    .setCodeQR(codeQR)
-                    .setQueueStatus(queueStatus)
-                    .setGoTo(goTo)
-                    .setBusinessType(tokenQueue.getBusinessType());
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenQueue.getCurrentlyServing())
+                .setCodeQR(codeQR)
+                .setQueueStatus(queueStatus)
+                .setGoTo(goTo)
+                .setBusinessType(tokenQueue.getBusinessType());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
@@ -575,25 +575,25 @@ public class TokenQueueService {
                     long confirmedWaiting = queueManager.countAllQueued(codeQR);
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
-                                .setBody("Now has " + tokenQueue.totalWaiting() + " waiting. Confirmed waiting " + confirmedWaiting)
-                                .setTitle(tokenQueue.getDisplayName() + " Queue");
+                            .setBody("Now has " + tokenQueue.totalWaiting() + " waiting. Confirmed waiting " + confirmedWaiting)
+                            .setTitle(tokenQueue.getDisplayName() + " Queue");
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now has " + tokenQueue.totalWaiting() + " waiting. Confirmed waiting " + confirmedWaiting)
-                                .setTitle(tokenQueue.getDisplayName() + " Queue");
+                            .setTitle(tokenQueue.getDisplayName() + " Queue");
                     }
                     break;
                 default:
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
-                                .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                                .setLocKey("serving")
-                                .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
-                                .setTitle(tokenQueue.getDisplayName());
+                            .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                            .setLocKey("serving")
+                            .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
+                            .setTitle(tokenQueue.getDisplayName());
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                                .setTitle(tokenQueue.getDisplayName());
+                            .setTitle(tokenQueue.getDisplayName());
                     }
             }
 
@@ -612,30 +612,30 @@ public class TokenQueueService {
      * and mark it Personal.
      */
     private void invokeThreadSendMessageToSelectedTokenUser(
-            String codeQR,
-            QueueStatusEnum queueStatus,
-            TokenQueueEntity tokenQueue,
-            String goTo,
-            int tokenNumber
+        String codeQR,
+        QueueStatusEnum queueStatus,
+        TokenQueueEntity tokenQueue,
+        String goTo,
+        int tokenNumber
     ) {
         LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
         QueueEntity queue = findOne(codeQR, tokenNumber);
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.findAll(queue.getQueueUserId(), queue.getDid());
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.debug("Personal message of being served is sent to qid={} deviceId={} deviceType={} with tokenNumber={}",
-                    registeredDevice.getQueueUserId(),
-                    registeredDevice.getDeviceId(),
-                    registeredDevice.getDeviceType(),
-                    tokenNumber);
+                registeredDevice.getQueueUserId(),
+                registeredDevice.getDeviceId(),
+                registeredDevice.getDeviceType(),
+                tokenNumber);
 
             JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
             JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getMessageOrigin(), FirebaseMessageTypeEnum.P).getJsonTopicQueueData()
-                    .setLastNumber(tokenQueue.getLastNumber())
-                    .setCurrentlyServing(tokenNumber)
-                    .setCodeQR(codeQR)
-                    .setQueueStatus(queueStatus)
-                    .setGoTo(goTo)
-                    .setBusinessType(tokenQueue.getBusinessType());
+                .setLastNumber(tokenQueue.getLastNumber())
+                .setCurrentlyServing(tokenNumber)
+                .setCodeQR(codeQR)
+                .setQueueStatus(queueStatus)
+                .setGoTo(goTo)
+                .setBusinessType(tokenQueue.getBusinessType());
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
@@ -654,20 +654,20 @@ public class TokenQueueService {
                 case N:
                 default:
                     LOG.debug("Personal device is of type={} did={} token={}",
-                            registeredDevice.getDeviceType(),
-                            registeredDevice.getDeviceId(),
-                            registeredDevice.getToken());
+                        registeredDevice.getDeviceType(),
+                        registeredDevice.getDeviceId(),
+                        registeredDevice.getToken());
 
                     if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                         jsonMessage.getNotification()
-                                .setBody("Now Serving " + tokenNumber)
-                                .setLocKey("serving")
-                                .setLocArgs(new String[]{String.valueOf(tokenNumber)})
-                                .setTitle(tokenQueue.getDisplayName());
+                            .setBody("Now Serving " + tokenNumber)
+                            .setLocKey("serving")
+                            .setLocArgs(new String[]{String.valueOf(tokenNumber)})
+                            .setTitle(tokenQueue.getDisplayName());
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now Serving " + tokenNumber)
-                                .setTitle(tokenQueue.getDisplayName());
+                            .setTitle(tokenQueue.getDisplayName());
                     }
             }
 

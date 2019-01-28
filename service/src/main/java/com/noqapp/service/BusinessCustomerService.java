@@ -24,9 +24,9 @@ public class BusinessCustomerService {
 
     @Autowired
     public BusinessCustomerService(
-            BusinessCustomerManager businessCustomerManager,
-            UserProfileManager userProfileManager,
-            QueueManager queueManager
+        BusinessCustomerManager businessCustomerManager,
+        UserProfileManager userProfileManager,
+        QueueManager queueManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
         this.userProfileManager = userProfileManager;
@@ -39,9 +39,9 @@ public class BusinessCustomerService {
     @Mobile
     public void addBusinessCustomer(String qid, String codeQR, String bizNameId, String businessCustomerId) {
         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(
-                qid,
-                bizNameId,
-                businessCustomerId
+            qid,
+            bizNameId,
+            businessCustomerId
         );
         businessCustomerManager.save(businessCustomer);
 
@@ -65,7 +65,7 @@ public class BusinessCustomerService {
         queueManager.save(queue);
     }
 
-        @Mobile
+    @Mobile
     public UserProfileEntity findByBusinessCustomerIdAndBizNameId(String businessCustomerId, String bizNameId) {
         BusinessCustomerEntity businessCustomer = findOneByCustomerId(businessCustomerId, bizNameId);
         if (null == businessCustomer) {
@@ -75,7 +75,7 @@ public class BusinessCustomerService {
     }
 
     public BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
-       return businessCustomerManager.findOneByQid(qid, bizNameId);
+        return businessCustomerManager.findOneByQid(qid, bizNameId);
     }
 
     @Mobile
