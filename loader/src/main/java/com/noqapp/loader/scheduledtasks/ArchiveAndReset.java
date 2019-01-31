@@ -60,6 +60,7 @@ public class ArchiveAndReset {
     private static final Logger LOG = LoggerFactory.getLogger(ArchiveAndReset.class);
 
     private String moveToRDBS;
+    private int timeDelayInMinutes;
 
     private BizStoreManager bizStoreManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
@@ -81,6 +82,9 @@ public class ArchiveAndReset {
         @Value("${QueueHistory.moveToRDBS}")
         String moveToRDBS,
 
+        @Value("${QueueHistory.timeDelayInMinutes}")
+        int timeDelayInMinutes,
+
         BizStoreManager bizStoreManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         QueueManager queueManager,
@@ -95,6 +99,8 @@ public class ArchiveAndReset {
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
     ) {
         this.moveToRDBS = moveToRDBS;
+        this.timeDelayInMinutes = timeDelayInMinutes;
+
         this.bizStoreManager = bizStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.queueManager = queueManager;
@@ -128,7 +134,7 @@ public class ArchiveAndReset {
          * Added lag of 60 minutes. This should be 5 minutes. The day we get stores open 24hrs, this should be
          * reverted back to 5 minutes.
          */
-        Date date = Date.from(Instant.now().minus(60, ChronoUnit.MINUTES));
+        Date date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
         /* Only find stores that are active and not deleted. */
         List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
