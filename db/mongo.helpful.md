@@ -22,3 +22,8 @@ Remove one field
 
     db.getCollection('TOKEN_QUEUE').update({}, {$unset: {BC:""}} , {multi: true});
     
+Registered Device Clean Up
+
+    db.getCollection('REGISTERED_DEVICE').remove({"TK" : "BLACKLISTED"})
+    db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lte : ISODate("2018-12-01 09:52:42.492Z")}})    
+    
