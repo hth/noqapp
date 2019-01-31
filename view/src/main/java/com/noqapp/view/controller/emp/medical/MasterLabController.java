@@ -6,6 +6,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.service.MasterLabService;
+import com.noqapp.service.FtpService;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
 import com.noqapp.service.exceptions.FailedTransactionException;
@@ -13,12 +14,18 @@ import com.noqapp.view.form.emp.medical.MasterLabForm;
 import com.noqapp.view.validator.CSVFileValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileUtil;
+import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
+import org.apache.commons.vfs2.impl.StandardFileSystemManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +40,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -71,9 +80,7 @@ public class MasterLabController {
         this.apiHealthService = apiHealthService;
     }
 
-    /**
-     * Gymnastic for PRG.
-     */
+    /** Gymnastic for PRG. */
     @GetMapping(value = "/bulk")
     public String bulk(
         @ModelAttribute("masterLabForm")
@@ -113,13 +120,12 @@ public class MasterLabController {
 
         BindingResult result,
         RedirectAttributes redirectAttrs,
-        HttpServletRequest httpServletRequest,
-        HttpServletResponse response
+        HttpServletRequest httpServletRequest
     ) {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Uploading store product CSV qid={} healthCareService={}", queueUser.getQueueUserId(), masterLabForm.getHealthCareService());
+        LOG.info("Uploading data to master lab {} as CSV qid={}", masterLabForm.getHealthCareService(), queueUser.getQueueUserId());
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
@@ -182,5 +188,54 @@ public class MasterLabController {
             }
         }
         return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+    }
+
+    /** Gets file of all products as zip in CSV format for preferred business store id. */
+    @PostMapping(
+        value = "/bulk/download",
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public void download(HttpServletResponse response) {
+        boolean methodStatusSuccess = true;
+        Instant start = Instant.now();
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Downloading master med lab data as CSV tar qid={} healthCareService={}", queueUser.getQueueUserId());
+
+        DefaultFileSystemManager manager = new StandardFileSystemManager();
+        try {
+            manager.init();
+            FileObject fileObject = masterLabService.getMasterTarGZ(manager);
+            if (fileObject != null && fileObject.getContent() != null) {
+                response.setHeader("Content-disposition", "attachment; filename=\"" + com.noqapp.common.utils.FileUtil.getFileName(fileObject) + "\"");
+                response.setContentType("application/gzip");
+                response.setContentLength((int)fileObject.getContent().getSize());
+                try (OutputStream out = response.getOutputStream()) {
+                    out.write(FileUtil.getContent(fileObject));
+                } catch (IOException e) {
+                    LOG.error("Failed to get file for reason={}", e.getLocalizedMessage(), e);
+                }
+
+                return;
+            }
+
+            LOG.warn("Failed getting lab file");
+            response.setContentType("application/gzip");
+            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", ""));
+            response.setContentLength(0);
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", FtpService.MASTER_MEDICAL, e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+        } catch (Exception e) {
+            LOG.error("Failed getting lab qid={} message={}", queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
+            methodStatusSuccess = false;
+        } finally {
+            manager.close();
+            apiHealthService.insert(
+                "/api/m/h/lab/file",
+                "file",
+                MasterLabController.class.getName(),
+                Duration.between(start, Instant.now()),
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
+        }
     }
 }
