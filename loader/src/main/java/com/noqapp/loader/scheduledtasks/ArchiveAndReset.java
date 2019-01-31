@@ -50,16 +50,17 @@ import java.util.TimeZone;
  * Date: 3/10/17 2:57 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class ArchiveAndReset {
     private static final Logger LOG = LoggerFactory.getLogger(ArchiveAndReset.class);
 
     private String moveToRDBS;
+    private int timeDelayInMinutes;
 
     private BizStoreManager bizStoreManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
@@ -78,23 +79,28 @@ public class ArchiveAndReset {
 
     @Autowired
     public ArchiveAndReset(
-            @Value("${QueueHistory.moveToRDBS}")
-            String moveToRDBS,
+        @Value("${QueueHistory.moveToRDBS}")
+        String moveToRDBS,
 
-            BizStoreManager bizStoreManager,
-            StatsBizStoreDailyManager statsBizStoreDailyManager,
-            QueueManager queueManager,
-            TokenQueueManager tokenQueueManager,
-            QueueManagerJDBC queueManagerJDBC,
-            StatsCronService statsCronService,
-            BizService bizService,
-            ScheduledTaskManager scheduledTaskManager,
-            PurchaseOrderManager purchaseOrderManager,
-            PurchaseOrderProductManager purchaseOrderProductManager,
-            PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
-            PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
+        @Value("${QueueHistory.timeDelayInMinutes}")
+        int timeDelayInMinutes,
+
+        BizStoreManager bizStoreManager,
+        StatsBizStoreDailyManager statsBizStoreDailyManager,
+        QueueManager queueManager,
+        TokenQueueManager tokenQueueManager,
+        QueueManagerJDBC queueManagerJDBC,
+        StatsCronService statsCronService,
+        BizService bizService,
+        ScheduledTaskManager scheduledTaskManager,
+        PurchaseOrderManager purchaseOrderManager,
+        PurchaseOrderProductManager purchaseOrderProductManager,
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+        PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
     ) {
         this.moveToRDBS = moveToRDBS;
+        this.timeDelayInMinutes = timeDelayInMinutes;
+
         this.bizStoreManager = bizStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.queueManager = queueManager;
@@ -112,9 +118,9 @@ public class ArchiveAndReset {
     @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
     public void doArchiveAndReset() {
         statsCron = new StatsCronEntity(
-                ArchiveAndReset.class.getName(),
-                "queuePastData",
-                moveToRDBS);
+            ArchiveAndReset.class.getName(),
+            "queuePastData",
+            moveToRDBS);
 
         int found, failure = 0, success = 0;
         if ("OFF".equalsIgnoreCase(moveToRDBS)) {
@@ -128,7 +134,7 @@ public class ArchiveAndReset {
          * Added lag of 60 minutes. This should be 5 minutes. The day we get stores open 24hrs, this should be
          * reverted back to 5 minutes.
          */
-        Date date = Date.from(Instant.now().minus(60, ChronoUnit.MINUTES));
+        Date date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
         /* Only find stores that are active and not deleted. */
         List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
         found = bizStores.size();
@@ -148,14 +154,14 @@ public class ArchiveAndReset {
                             LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
                             throw new UnsupportedOperationException("Reached Unsupported Condition");
                     }
-                    success ++;
+                    success++;
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
-                            bizStore.getId(),
-                            bizStore.getCodeQR(),
-                            e.getLocalizedMessage(),
-                            e);
+                        bizStore.getId(),
+                        bizStore.getCodeQR(),
+                        e.getLocalizedMessage(),
+                        e);
                 }
             }
         } catch (Exception e) {
@@ -175,10 +181,10 @@ public class ArchiveAndReset {
 
     private void queueArchiveAndReset(BizStoreEntity bizStore) {
         LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
-                bizStore.getDisplayName(),
-                bizStore.getQueueHistory(),
-                bizStore.getBizName().getBusinessName(),
-                bizStore.getId());
+            bizStore.getDisplayName(),
+            bizStore.getQueueHistory(),
+            bizStore.getBizName().getBusinessName(),
+            bizStore.getId());
 
         List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
         StatsBizStoreDailyEntity statsBizStoreDaily;
@@ -339,19 +345,19 @@ public class ArchiveAndReset {
 
     /** Saves daily stats for BizStore Queues. */
     private StatsBizStoreDailyEntity saveDailyQueueStat(
-            String bizStoreId,
-            String bizNameId,
-            String codeQR,
-            List<QueueEntity> queues
+        String bizStoreId,
+        String bizNameId,
+        String codeQR,
+        List<QueueEntity> queues
     ) {
         long totalServiceTimeInMilliSeconds = 0, totalHoursSaved = 0;
         int totalServiced = 0,
-                totalNoShow = 0,
-                totalAbort = 0,
-                totalRating = 0,
-                totalCustomerRated = 0,
-                clientsVisitedThisStore = 0,
-                clientsVisitedThisBusiness = 0;
+            totalNoShow = 0,
+            totalAbort = 0,
+            totalRating = 0,
+            totalCustomerRated = 0,
+            clientsVisitedThisStore = 0,
+            clientsVisitedThisBusiness = 0;
 
         for (QueueEntity queue : queues) {
             try {
@@ -419,26 +425,26 @@ public class ArchiveAndReset {
 
         /* Store meta data. */
         statsBizStoreDaily
-                .setBizStoreId(bizStoreId)
-                .setBizNameId(bizNameId)
-                .setCodeQR(codeQR);
+            .setBizStoreId(bizStoreId)
+            .setBizNameId(bizNameId)
+            .setCodeQR(codeQR);
 
         /* Service time and number of clients. */
         statsBizStoreDaily
-                .setTotalServiceTime(totalServiceTimeInMilliSeconds)
-                .setTotalServiced(totalServiced)
-                .setTotalAbort(totalAbort)
-                .setTotalNoShow(totalNoShow)
-                .setTotalClient(totalServiced + totalAbort + totalNoShow)
-                .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced)
-                .setClientsPreviouslyVisitedThisStore(clientsVisitedThisStore)
-                .setClientsPreviouslyVisitedThisBusiness(clientsVisitedThisBusiness);
+            .setTotalServiceTime(totalServiceTimeInMilliSeconds)
+            .setTotalServiced(totalServiced)
+            .setTotalAbort(totalAbort)
+            .setTotalNoShow(totalNoShow)
+            .setTotalClient(totalServiced + totalAbort + totalNoShow)
+            .setAverageServiceTime(0 == totalServiced ? 0 : totalServiceTimeInMilliSeconds / totalServiced)
+            .setClientsPreviouslyVisitedThisStore(clientsVisitedThisStore)
+            .setClientsPreviouslyVisitedThisBusiness(clientsVisitedThisBusiness);
 
         /* Rating and hours saved is computed only for people who have rated. This comes from review screen. */
         statsBizStoreDaily
-                .setTotalRating(totalRating)
-                .setTotalCustomerRated(totalCustomerRated)
-                .setTotalHoursSaved(totalHoursSaved);
+            .setTotalRating(totalRating)
+            .setTotalCustomerRated(totalCustomerRated)
+            .setTotalHoursSaved(totalHoursSaved);
         return statsBizStoreDaily;
     }
 
