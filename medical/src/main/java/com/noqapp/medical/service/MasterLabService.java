@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -149,5 +150,15 @@ public class MasterLabService {
         }
 
         return 0;
+    }
+
+    @Async
+    public void flagData(String productName, HealthCareServiceEnum healthCareService, String qid) {
+        MasterLabEntity masterLab = masterLabManager.findOne(productName, healthCareService);
+        masterLab
+            .addFlaggedBy(qid)
+            .setTimesFlagged(masterLab.getTimesFlagged() + 1);
+
+        masterLabManager.save(masterLab);
     }
 }

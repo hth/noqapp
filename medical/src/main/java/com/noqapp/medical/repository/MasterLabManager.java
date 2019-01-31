@@ -22,4 +22,6 @@ public interface MasterLabManager extends RepositoryManager<MasterLabEntity> {
     long deleteMatching(HealthCareServiceEnum healthCareService);
 
     List<MasterLabEntity> findAllMatching(HealthCareServiceEnum healthCareService);
+
+    MasterLabEntity findOne(String productName, HealthCareServiceEnum healthCareService);
 }

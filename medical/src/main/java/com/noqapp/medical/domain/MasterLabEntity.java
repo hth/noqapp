@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,12 @@ public class MasterLabEntity extends BaseEntity {
 
     @Field("MD")
     private List<MedicalDepartmentEnum> medicalDepartments  = new ArrayList<>();
+
+    @Field("TF")
+    private int timesFlagged;
+
+    @Field("FB")
+    private List<String> flaggedBy;
 
     public String getProductName() {
         return productName;
@@ -85,6 +92,36 @@ public class MasterLabEntity extends BaseEntity {
 
     public MasterLabEntity setMedicalDepartments(List<MedicalDepartmentEnum> medicalDepartments) {
         this.medicalDepartments = medicalDepartments;
+        return this;
+    }
+
+    public int getTimesFlagged() {
+        return timesFlagged;
+    }
+
+    public MasterLabEntity setTimesFlagged(int timesFlagged) {
+        this.timesFlagged = timesFlagged;
+        return this;
+    }
+
+    public List<String> getFlaggedBy() {
+        return flaggedBy;
+    }
+
+    public MasterLabEntity setFlaggedBy(List<String> flaggedBy) {
+        this.flaggedBy = flaggedBy;
+        return this;
+    }
+
+    public MasterLabEntity addFlaggedBy(String qid) {
+        if (flaggedBy == null) {
+            flaggedBy = new LinkedList<String>() {{
+                add(qid);
+            }};
+        } else {
+            flaggedBy.add(qid);
+        }
+
         return this;
     }
 
