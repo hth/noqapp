@@ -97,4 +97,13 @@ public class MasterLabManagerImpl implements MasterLabManager {
             TABLE
         );
     }
+
+    @Override
+    public MasterLabEntity findOne(String productName, HealthCareServiceEnum healthCareService) {
+        return mongoTemplate.findOne(
+            query(where("HS").is(healthCareService).and("PN").is(productName)),
+            MasterLabEntity.class,
+            TABLE
+        );
+    }
 }
