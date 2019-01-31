@@ -65,16 +65,16 @@ public class QueueService {
 
     @Autowired
     public QueueService(
-            @Value("${limitedToDays:5}")
-            int limitedToDays,
+        @Value("${limitedToDays:5}")
+        int limitedToDays,
 
-            UserProfileManager userProfileManager,
-            BusinessCustomerService businessCustomerService,
-            BizStoreManager bizStoreManager,
-            QueueManager queueManager,
-            QueueManagerJDBC queueManagerJDBC,
-            TokenQueueService tokenQueueService,
-            BusinessUserStoreManager businessUserStoreManager
+        UserProfileManager userProfileManager,
+        BusinessCustomerService businessCustomerService,
+        BizStoreManager bizStoreManager,
+        QueueManager queueManager,
+        QueueManagerJDBC queueManagerJDBC,
+        TokenQueueService tokenQueueService,
+        BusinessUserStoreManager businessUserStoreManager
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -173,8 +173,8 @@ public class QueueService {
             switch (queue.getBusinessType()) {
                 case DO:
                     List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
-                            bizStore.getId(),
-                            UserLevelEnum.S_MANAGER);
+                        bizStore.getId(),
+                        UserLevelEnum.S_MANAGER);
                     if (!businessUsers.isEmpty()) {
                         BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
                         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
@@ -267,18 +267,18 @@ public class QueueService {
     private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
             JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
-                    .setQueueUserId(queue.getQueueUserId())
-                    .setCustomerName(queue.getCustomerName())
-                    .setCustomerPhone(queue.getCustomerPhone())
-                    .setQueueUserState(queue.getQueueUserState())
-                    .setToken(queue.getTokenNumber())
-                    .setServerDeviceId(queue.getServerDeviceId())
-                    .setBusinessCustomerId(queue.getBusinessCustomerId())
-                    .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
-                    .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
-                    .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
-                    .setRecordReferenceId(queue.getRecordReferenceId())
-                    .setCreated(queue.getCreated());
+                .setQueueUserId(queue.getQueueUserId())
+                .setCustomerName(queue.getCustomerName())
+                .setCustomerPhone(queue.getCustomerPhone())
+                .setQueueUserState(queue.getQueueUserState())
+                .setToken(queue.getTokenNumber())
+                .setServerDeviceId(queue.getServerDeviceId())
+                .setBusinessCustomerId(queue.getBusinessCustomerId())
+                .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
+                .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+                .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
+                .setRecordReferenceId(queue.getRecordReferenceId())
+                .setCreated(queue.getCreated());
 
             /* Get dependents when queue status is queued. */
             if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
@@ -342,20 +342,20 @@ public class QueueService {
      * @return
      */
     public JsonToken updateAndGetNextInQueue(
-            String codeQR,
-            int servedNumber,
-            QueueUserStateEnum queueUserState,
-            String goTo,
-            String sid,
-            TokenServiceEnum tokenService
+        String codeQR,
+        int servedNumber,
+        QueueUserStateEnum queueUserState,
+        String goTo,
+        String sid,
+        TokenServiceEnum tokenService
     ) {
         LOG.info("Update and getting next in queue codeQR={} servedNumber={} queueUserState={} goTo={} sid={}",
-                codeQR, servedNumber, queueUserState, goTo, sid);
+            codeQR, servedNumber, queueUserState, goTo, sid);
 
         QueueEntity queue = queueManager.updateAndGetNextInQueue(codeQR, servedNumber, queueUserState, goTo, sid, tokenService);
         if (null != queue) {
             LOG.info("Found queue codeQR={} servedNumber={} queueUserState={} nextToken={}",
-                    codeQR, servedNumber, queueUserState, queue.getTokenNumber());
+                codeQR, servedNumber, queueUserState, queue.getTokenNumber());
 
             return tokenQueueService.updateServing(codeQR, QueueStatusEnum.N, queue.getTokenNumber(), goTo);
         }
@@ -364,11 +364,11 @@ public class QueueService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.D);
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                /* Better to show last number than served number. This is to maintain consistent state. */
-                .setToken(tokenQueue.getCurrentlyServing())
-                .setServingNumber(tokenQueue.getCurrentlyServing())
-                .setDisplayName(tokenQueue.getDisplayName())
-                .setQueueStatus(QueueStatusEnum.D);
+            /* Better to show last number than served number. This is to maintain consistent state. */
+            .setToken(tokenQueue.getCurrentlyServing())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setQueueStatus(QueueStatusEnum.D);
     }
 
     /**
@@ -376,23 +376,23 @@ public class QueueService {
      */
     @Mobile
     public JsonToken pauseServingQueue(
-            String codeQR,
-            int servedNumber,
-            QueueUserStateEnum queueUserState,
-            String sid,
-            TokenServiceEnum tokenService
+        String codeQR,
+        int servedNumber,
+        QueueUserStateEnum queueUserState,
+        String sid,
+        TokenServiceEnum tokenService
     ) {
         LOG.info("Server person is now pausing for queue codeQR={} servedNumber={} queueUserState={} sid={}",
-                codeQR, servedNumber, queueUserState, sid);
+            codeQR, servedNumber, queueUserState, sid);
 
         boolean status = queueManager.updateServedInQueue(codeQR, servedNumber, queueUserState, sid, tokenService);
         LOG.info("Paused status={}", status);
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                .setToken(tokenQueue.getLastNumber())
-                .setServingNumber(servedNumber)
-                .setDisplayName(tokenQueue.getDisplayName())
-                .setQueueStatus(QueueStatusEnum.R);
+            .setToken(tokenQueue.getLastNumber())
+            .setServingNumber(servedNumber)
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setQueueStatus(QueueStatusEnum.R);
     }
 
     /**
@@ -405,9 +405,9 @@ public class QueueService {
      */
     @Mobile
     public JsonToken getNextInQueue(
-            String codeQR,
-            String goTo,
-            String sid
+        String codeQR,
+        String goTo,
+        String sid
     ) {
         LOG.info("Getting next in queue for codeQR={} goTo={} sid={}", codeQR, goTo, sid);
 
@@ -416,10 +416,10 @@ public class QueueService {
             LOG.info("Found queue codeQR={} token={}", codeQR, queue.getTokenNumber());
 
             JsonToken jsonToken = tokenQueueService.updateServing(
-                    codeQR,
-                    QueueStatusEnum.N,
-                    queue.getTokenNumber(),
-                    goTo);
+                codeQR,
+                QueueStatusEnum.N,
+                queue.getTokenNumber(),
+                goTo);
             //TODO(hth) call can be put in thread
             tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.N);
             return jsonToken;
@@ -430,10 +430,10 @@ public class QueueService {
         if (null != tokenQueue) {
             LOG.info("On next, found no one in queue, returning with DONE status");
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                    .setToken(tokenQueue.getLastNumber())
-                    .setServingNumber(tokenQueue.getLastNumber())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(QueueStatusEnum.D);
+                .setToken(tokenQueue.getLastNumber())
+                .setServingNumber(tokenQueue.getLastNumber())
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setQueueStatus(QueueStatusEnum.D);
         }
 
         return null;
@@ -450,26 +450,26 @@ public class QueueService {
      */
     @Mobile
     public JsonToken getThisAsNextInQueue(
-            String codeQR,
-            String goTo,
-            String sid,
-            int token
+        String codeQR,
+        String goTo,
+        String sid,
+        int token
     ) {
         LOG.info("Getting specific token next in queue for codeQR={} goTo={} sid={} token={}",
-                codeQR,
-                goTo,
-                sid,
-                token);
+            codeQR,
+            goTo,
+            sid,
+            token);
 
         QueueEntity queue = queueManager.getThisAsNext(codeQR, goTo, sid, token);
         if (null != queue) {
             LOG.info("Found queue codeQR={} token={}", codeQR, queue.getTokenNumber());
 
             JsonToken jsonToken = tokenQueueService.updateThisServing(
-                    codeQR,
-                    QueueStatusEnum.N,
-                    queue.getTokenNumber(),
-                    goTo);
+                codeQR,
+                QueueStatusEnum.N,
+                queue.getTokenNumber(),
+                goTo);
             //TODO(hth) call can be put in thread
             tokenQueueService.changeQueueStatus(codeQR, QueueStatusEnum.N);
             return jsonToken;
@@ -514,10 +514,10 @@ public class QueueService {
 
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             healthCareStatList.addHealthCareStat(
-                    new HealthCareStat()
-                            .setCodeQR(businessUserStore.getCodeQR())
-                            .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
-                            .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
+                new HealthCareStat()
+                    .setCodeQR(businessUserStore.getCodeQR())
+                    .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
+                    .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
         }
 
         return healthCareStatList;
