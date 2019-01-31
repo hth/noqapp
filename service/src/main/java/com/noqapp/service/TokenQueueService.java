@@ -348,7 +348,7 @@ public class TokenQueueService {
 
             /* Added for business offer to display for new user for that business. */
             queue.setBizNameId(bizStore.getBizName().getId());
-            queue.setClientVisitedThisBusiness(queueManagerJDBC.hasClientVisitedThisStore(bizStore.getBizName().getId(), qid));
+            queue.setClientVisitedThisBusiness(queueManagerJDBC.hasClientVisitedThisBusiness(bizStore.getBizName().getId(), qid));
 
             LOG.debug("Updated Queue={}", queue);
             queueManager.save(queue);
