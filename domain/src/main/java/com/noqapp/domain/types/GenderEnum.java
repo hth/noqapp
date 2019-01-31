@@ -7,5 +7,6 @@ package com.noqapp.domain.types;
  */
 public enum GenderEnum {
     M,
-    F
+    F,
+    T
 }
