@@ -7,6 +7,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 
@@ -102,5 +103,33 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             StatsBizStoreDailyEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public StatsBizStoreDailyEntity repeatAndNewCustomers(String codeQR) {
+        try {
+            TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
+                match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.getDateMinusDay(30)))
+                    .andOperator(
+                        isActive(),
+                        isNotDeleted()
+                    )),
+                group("codeQR")
+                    .first("bizStoreId").as("BS")
+                    .sum("clientsPreviouslyVisitedThisStore").as("VS")
+                    .sum("totalServiced").as("TS")
+                    .sum("totalClient").as("TC")
+            );
+            List<StatsBizStoreDailyEntity> statsBizStores = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
+            if (statsBizStores.size() > 0) {
+                LOG.info("Computing rating for each queue {}", statsBizStores.get(0));
+                return statsBizStores.get(0);
+            }
+
+            return null;
+        } catch (InvalidPersistentPropertyPath e) {
+            LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 }
