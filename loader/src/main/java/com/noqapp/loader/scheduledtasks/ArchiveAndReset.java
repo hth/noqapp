@@ -415,6 +415,7 @@ public class ArchiveAndReset {
                         break;
                     case Q:
                         LOG.warn("Cannot be queued at this stage. Anyhow should be computed NoShow");
+                        totalNoShow += 1;
                         break;
                 }
             } catch (Exception e) {
