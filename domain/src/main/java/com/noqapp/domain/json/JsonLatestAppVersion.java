@@ -29,6 +29,7 @@ public class JsonLatestAppVersion extends AbstractDomain {
 
     @JsonProperty("av")
     private String latestAppVersion;
+    //Note: Can add something like expiredSupportOnDate to automate process of updating app
 
     public JsonLatestAppVersion() {
         //Required default constructor
