@@ -488,7 +488,6 @@ public class QueueService {
     }
 
     private List<YearlyData> lastTwelveMonthVisits(String codeQR) {
-
         Random rand = new Random();
         return new ArrayList<YearlyData>() {
             {
@@ -510,6 +509,7 @@ public class QueueService {
 
     private NewRepeatCustomers repeatAndNewCustomers(String codeQR) {
         StatsBizStoreDailyEntity statsBizStoreDaily = statsBizStoreDailyManager.repeatAndNewCustomers(codeQR);
+        LOG.info("{} and new={} old={}", statsBizStoreDaily, statsBizStoreDaily.newClients(), statsBizStoreDaily.getClientsPreviouslyVisitedThisStore());
         return new NewRepeatCustomers()
             .setCustomerNew(statsBizStoreDaily.newClients())
             .setCustomerRepeat(statsBizStoreDaily.getClientsPreviouslyVisitedThisStore());
