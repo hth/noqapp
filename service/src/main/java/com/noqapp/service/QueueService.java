@@ -5,6 +5,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -30,6 +31,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +64,7 @@ public class QueueService {
     private QueueManagerJDBC queueManagerJDBC;
     private TokenQueueService tokenQueueService;
     private BusinessUserStoreManager businessUserStoreManager;
+    private StatsBizStoreDailyManager statsBizStoreDailyManager;
 
     @Autowired
     public QueueService(
@@ -74,7 +77,8 @@ public class QueueService {
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
         TokenQueueService tokenQueueService,
-        BusinessUserStoreManager businessUserStoreManager
+        BusinessUserStoreManager businessUserStoreManager,
+        StatsBizStoreDailyManager statsBizStoreDailyManager
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -85,6 +89,7 @@ public class QueueService {
         this.queueManagerJDBC = queueManagerJDBC;
         this.tokenQueueService = tokenQueueService;
         this.businessUserStoreManager = businessUserStoreManager;
+        this.statsBizStoreDailyManager = statsBizStoreDailyManager;
     }
 
     @Mobile
@@ -483,6 +488,7 @@ public class QueueService {
     }
 
     private List<YearlyData> lastTwelveMonthVisits(String codeQR) {
+
         Random rand = new Random();
         return new ArrayList<YearlyData>() {
             {
@@ -503,8 +509,10 @@ public class QueueService {
     }
 
     private NewRepeatCustomers repeatAndNewCustomers(String codeQR) {
-        Random rand = new Random();
-        return new NewRepeatCustomers().setCustomerNew(rand.nextInt(50) + 1).setCustomerRepeat(rand.nextInt(50) + 1);
+        StatsBizStoreDailyEntity statsBizStoreDaily = statsBizStoreDailyManager.repeatAndNewCustomers(codeQR);
+        return new NewRepeatCustomers()
+            .setCustomerNew(statsBizStoreDaily.newClients())
+            .setCustomerRepeat(statsBizStoreDaily.getClientsPreviouslyVisitedThisStore());
     }
 
     @Mobile
