@@ -35,6 +35,9 @@ public class NewRepeatCustomers extends AbstractDomain {
     @JsonProperty("r")
     private int customerRepeat;
 
+    @JsonProperty("mn")
+    private int monthOfYear;
+
     public int getCustomerNew() {
         return customerNew;
     }
@@ -50,6 +53,15 @@ public class NewRepeatCustomers extends AbstractDomain {
 
     public NewRepeatCustomers setCustomerRepeat(int customerRepeat) {
         this.customerRepeat = customerRepeat;
+        return this;
+    }
+
+    public int getMonthOfYear() {
+        return monthOfYear;
+    }
+
+    public NewRepeatCustomers setMonthOfYear(int monthOfYear) {
+        this.monthOfYear = monthOfYear;
         return this;
     }
 }

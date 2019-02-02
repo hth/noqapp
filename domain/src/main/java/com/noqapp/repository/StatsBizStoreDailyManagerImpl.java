@@ -5,6 +5,7 @@ import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import com.noqapp.common.utils.DateUtil;
@@ -108,8 +109,10 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
     @Override
     public StatsBizStoreDailyEntity repeatAndNewCustomers(String codeQR) {
         try {
+            Date sinceBeginningOfThisMonth = DateUtil.sinceBeginningOfThisMonth();
             TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
-                match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.getDateMinusDay(30)))
+                match(where("QR").is(codeQR).and("C").gte(sinceBeginningOfThisMonth)
+                //match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.getDateMinusDay(30)))
                     .andOperator(
                         isActive(),
                         isNotDeleted()
@@ -121,12 +124,51 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
                     .sum("totalClient").as("TC")
             );
             List<StatsBizStoreDailyEntity> statsBizStores = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
+
+            StatsBizStoreDailyEntity statsBizStoreDaily;
             if (statsBizStores.size() > 0) {
                 LOG.info("Computing rating for each queue {}", statsBizStores.get(0));
-                return statsBizStores.get(0);
+                statsBizStoreDaily = statsBizStores.get(0);
+                statsBizStoreDaily.setMonthOfYear(DateUtil.getMonthFromDate(sinceBeginningOfThisMonth));
+            } else {
+                statsBizStoreDaily = new StatsBizStoreDailyEntity()
+                    .setMonthOfYear(DateUtil.getMonthFromDate(sinceBeginningOfThisMonth));
             }
-
+            return statsBizStoreDaily;
+        } catch (InvalidPersistentPropertyPath e) {
+            LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
             return null;
+        }
+    }
+
+    /**
+     * Note:
+     * Match: Is like a select query
+     * Project: Are the field you would like to process on. Its can contain multiple fields.
+     * Expression: Some sub expression on existing date field to compute for month. MonthOfYear was added just for this reason.
+     * Group: On a TotalServiced and populate fields like monthOfYear and CodeQR. Do sum of TotalServiced.
+     *
+     * @param codeQR
+     * @return
+     */
+    @Override
+    public List<StatsBizStoreDailyEntity> lastTwelveMonthVisits(String codeQR) {
+        try {
+            TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
+                match(where("QR").is(codeQR).and("C").gte(DateUtil.sinceOneYearAgo())
+                    .andOperator(
+                        isActive(),
+                        isNotDeleted()
+                    )),
+                project("totalServiced")
+                    .andExpression("month(created)").as("monthOfYear")
+                    .andExpression("year(created)").as("year"),
+                group("totalServiced")
+                    .first("monthOfYear").as("MN")
+                    .first("year").as("YY")
+                    .sum("totalServiced").as("TS")
+            );
+            return mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
         } catch (InvalidPersistentPropertyPath e) {
             LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
             return null;
