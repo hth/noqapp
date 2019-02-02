@@ -361,16 +361,16 @@ public class ArchiveAndReset {
 
         for (QueueEntity queue : queues) {
             try {
-                if (queue.hasClientVisitedThisStore()) {
-                    clientsVisitedThisStore++;
-                }
-
-                if (queue.hasClientVisitedThisBusiness()) {
-                    clientsVisitedThisBusiness++;
-                }
-
                 switch (queue.getQueueUserState()) {
                     case S:
+                        if (queue.hasClientVisitedThisStore()) {
+                            clientsVisitedThisStore++;
+                        }
+
+                        if (queue.hasClientVisitedThisBusiness()) {
+                            clientsVisitedThisBusiness++;
+                        }
+
                         totalServiceTimeInMilliSeconds += queue.timeTakenForServiceInMilliSeconds();
                         if (queue.getRatingCount() > 0) {
                             totalRating += queue.getRatingCount();
