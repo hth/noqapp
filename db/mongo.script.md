@@ -1,3 +1,7 @@
+### Change Feb 02, 2019 
+
+    drop index business_customer_bc_idx from BUSINESS_CUSTOMER
+
 Next Release Update Mongo
 
     db.STORE_CATEGORY.dropIndex("store_category_idx");

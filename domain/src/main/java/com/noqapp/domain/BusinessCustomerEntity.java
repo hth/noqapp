@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Document(collection = "BUSINESS_CUSTOMER")
 @CompoundIndexes(value = {
         @CompoundIndex(name = "business_customer_idx", def = "{'QID': -1, 'BN': -1}", unique = true),
-        @CompoundIndex(name = "business_customer_bc_idx", def = "{'BC': -1}", unique = false),
+        @CompoundIndex(name = "business_customer_bb_idx", def = "{'BN': -1, 'BC': -1}", unique = true, background = true),
 })
 public class BusinessCustomerEntity extends BaseEntity {
     @NotNull
