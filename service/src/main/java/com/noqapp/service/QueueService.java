@@ -45,7 +45,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * User: hitender
@@ -488,23 +487,16 @@ public class QueueService {
     }
 
     private List<YearlyData> lastTwelveMonthVisits(String codeQR) {
-        Random rand = new Random();
-        return new ArrayList<YearlyData>() {
-            {
-                add(new YearlyData().setYearMonth(1).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(2).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(3).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(4).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(5).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(6).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(7).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(8).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(9).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(10).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(11).setValue(rand.nextInt(50) + 1));
-                add(new YearlyData().setYearMonth(12).setValue(rand.nextInt(50) + 1));
-            }
-        };
+        List<YearlyData> yearly = new ArrayList<>();
+        List<StatsBizStoreDailyEntity> statsBizStoreDailies = statsBizStoreDailyManager.lastTwelveMonthVisits(codeQR);
+        for (StatsBizStoreDailyEntity statsBizStoreDaily : statsBizStoreDailies) {
+            yearly.add(new YearlyData()
+                .setYearMonth(statsBizStoreDaily.getMonthOfYear())
+                .setYear(statsBizStoreDaily.getYear())
+                .setValue(statsBizStoreDaily.getTotalServiced()));
+        }
+
+        return yearly;
     }
 
     private NewRepeatCustomers repeatAndNewCustomers(String codeQR) {
@@ -512,7 +504,8 @@ public class QueueService {
         LOG.info("{} and new={} old={}", statsBizStoreDaily, statsBizStoreDaily.newClients(), statsBizStoreDaily.getClientsPreviouslyVisitedThisStore());
         return new NewRepeatCustomers()
             .setCustomerNew(statsBizStoreDaily.newClients())
-            .setCustomerRepeat(statsBizStoreDaily.getClientsPreviouslyVisitedThisStore());
+            .setCustomerRepeat(statsBizStoreDaily.getClientsPreviouslyVisitedThisStore())
+            .setMonthOfYear(statsBizStoreDaily.getMonthOfYear());
     }
 
     @Mobile

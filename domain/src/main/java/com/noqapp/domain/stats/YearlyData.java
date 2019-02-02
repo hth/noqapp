@@ -32,6 +32,9 @@ public class YearlyData extends AbstractDomain {
     @JsonProperty("m")
     private int yearMonth;
 
+    @JsonProperty("y")
+    private int year;
+
     @JsonProperty("v")
     private int value;
 
@@ -41,6 +44,15 @@ public class YearlyData extends AbstractDomain {
 
     public YearlyData setYearMonth(int yearMonth) {
         this.yearMonth = yearMonth;
+        return this;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public YearlyData setYear(int year) {
+        this.year = year;
         return this;
     }
 

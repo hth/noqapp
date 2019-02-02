@@ -110,6 +110,14 @@ public final class DateUtil {
         return Date.from(instant);
     }
 
+    public static Date sinceBeginningOfThisMonth() {
+        return Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date sinceOneYearAgo() {
+        return Date.from(LocalDate.now().minusMonths(12).withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
     /** Gets current time on UTC. This is required when setting up cron task as server time is set on UTC. */
     public static Date getUTCDate() {
         return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
@@ -293,5 +301,9 @@ public final class DateUtil {
         return dateToConvert.toInstant()
             .atZone(ZoneOffset.UTC)
             .toLocalDateTime();
+    }
+
+    public static int getMonthFromDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
     }
 }

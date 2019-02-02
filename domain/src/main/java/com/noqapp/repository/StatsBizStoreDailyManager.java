@@ -1,7 +1,6 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.StatsBizStoreDailyEntity;
-import com.noqapp.domain.annotation.Mobile;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,7 @@ public interface StatsBizStoreDailyManager extends RepositoryManager<StatsBizSto
     /** Find all stores stats created since this day. */
     List<StatsBizStoreDailyEntity> findStores(String bizNameId, Date since);
 
-    @Mobile
     StatsBizStoreDailyEntity repeatAndNewCustomers(String codeQR);
+
+    List<StatsBizStoreDailyEntity> lastTwelveMonthVisits(String codeQR);
 }

@@ -81,6 +81,14 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Field ("TH")
     private long totalHoursSaved;
 
+    /* Temp field used only for mongo aggregation framework. */
+    @Field("MN")
+    private int monthOfYear;
+
+    /* Temp field used only for mongo aggregation framework. */
+    @Field("YY")
+    private int year;
+
     public String getBizStoreId() {
         return bizStoreId;
     }
@@ -210,6 +218,24 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @Transient
     public int newClients() {
         return totalClient - clientsPreviouslyVisitedThisStore;
+    }
+
+    public int getMonthOfYear() {
+        return monthOfYear;
+    }
+
+    public StatsBizStoreDailyEntity setMonthOfYear(int monthOfYear) {
+        this.monthOfYear = monthOfYear;
+        return this;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public StatsBizStoreDailyEntity setYear(int year) {
+        this.year = year;
+        return this;
     }
 
     @Override
