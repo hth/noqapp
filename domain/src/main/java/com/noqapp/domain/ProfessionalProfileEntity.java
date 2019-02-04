@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -181,16 +180,5 @@ public class ProfessionalProfileEntity extends BaseEntity {
     @Transient
     public List<JsonNameDatePair> getAwardsAsJson() {
         return getJsonNameDatePairs(awards);
-    }
-
-    private List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
-        List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
-        for (NameDatePair nameDatePair : nameDatePairs) {
-            jsonNameDatePairs.add(new JsonNameDatePair()
-                .setName(nameDatePair.getName())
-                .setMonthYear(nameDatePair.getMonthYear()));
-        }
-
-        return jsonNameDatePairs;
     }
 }

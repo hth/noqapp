@@ -2,9 +2,11 @@ package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.helper.NameDatePair;
+import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -160,5 +162,10 @@ public class UserMedicalProfileEntity extends BaseEntity {
         }
         this.externalMedicalReports.add(externalMedicalReport);
         return this;
+    }
+
+    @Transient
+    public List<JsonNameDatePair> getExternalMedicalReportsAsJson() {
+        return getJsonNameDatePairs(externalMedicalReports);
     }
 }

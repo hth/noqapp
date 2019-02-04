@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.medical;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
@@ -8,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.List;
 
 /**
  * hitender
@@ -49,6 +52,9 @@ public class JsonUserMedicalProfile extends AbstractDomain {
 
     @JsonProperty("hd")
     private boolean historyDirty;
+
+    @JsonProperty("er")
+    private List<JsonNameDatePair> externalMedicalReports;
 
     public BloodTypeEnum getBloodType() {
         return bloodType;
@@ -110,6 +116,15 @@ public class JsonUserMedicalProfile extends AbstractDomain {
 
     public JsonUserMedicalProfile setHistoryDirty(boolean historyDirty) {
         this.historyDirty = historyDirty;
+        return this;
+    }
+
+    public List<JsonNameDatePair> getExternalMedicalReports() {
+        return externalMedicalReports;
+    }
+
+    public JsonUserMedicalProfile setExternalMedicalReports(List<JsonNameDatePair> externalMedicalReports) {
+        this.externalMedicalReports = externalMedicalReports;
         return this;
     }
 }

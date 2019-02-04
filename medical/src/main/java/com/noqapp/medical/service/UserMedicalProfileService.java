@@ -61,7 +61,8 @@ public class UserMedicalProfileService {
                 .setPastHistory(userMedicalProfile.getPastHistory())
                 .setFamilyHistory(userMedicalProfile.getFamilyHistory())
                 .setKnownAllergies(userMedicalProfile.getKnownAllergies())
-                .setMedicineAllergies(userMedicalProfile.getMedicineAllergies());
+                .setMedicineAllergies(userMedicalProfile.getMedicineAllergies())
+                .setExternalMedicalReports(userMedicalProfile.getExternalMedicalReportsAsJson());
         }
 
         return new JsonUserMedicalProfile();
