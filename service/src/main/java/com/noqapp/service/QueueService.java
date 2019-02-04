@@ -494,6 +494,8 @@ public class QueueService {
                 .setYearMonth(statsBizStoreDaily.getMonthOfYear())
                 .setYear(statsBizStoreDaily.getYear())
                 .setValue(statsBizStoreDaily.getTotalServiced()));
+            LOG.debug("{} {} serviced={} codeQR={}",
+                statsBizStoreDaily.getMonthOfYear(), statsBizStoreDaily.getYear(), statsBizStoreDaily.getTotalServiced(), codeQR);
         }
 
         return yearly;

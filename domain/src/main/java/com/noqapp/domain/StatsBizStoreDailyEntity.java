@@ -255,6 +255,8 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
             ", totalRating=" + totalRating +
             ", totalCustomerRated=" + totalCustomerRated +
             ", totalHoursSaved=" + totalHoursSaved +
+            ", monthOfYear=" + monthOfYear +
+            ", year=" + year +
             '}';
     }
 }
