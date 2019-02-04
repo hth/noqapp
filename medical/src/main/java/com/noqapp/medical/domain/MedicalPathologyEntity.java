@@ -35,6 +35,9 @@ public class MedicalPathologyEntity extends BaseEntity {
     @Field("PD")
     private List<String> medicalPathologyTestIds = new LinkedList<>();
 
+    @Field("IM")
+    private List<String> images;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -55,6 +58,15 @@ public class MedicalPathologyEntity extends BaseEntity {
 
     public MedicalPathologyEntity addMedicalPathologyTestId(String medicalPathologyTestId) {
         this.medicalPathologyTestIds.add(medicalPathologyTestId);
+        return this;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public MedicalPathologyEntity setImages(List<String> images) {
+        this.images = images;
         return this;
     }
 }

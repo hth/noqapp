@@ -39,6 +39,9 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("RD")
     private List<String> medicalRadiologyXRayIds = new LinkedList<>();
 
+    @Field("IM")
+    private List<String> images;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -68,6 +71,15 @@ public class MedicalRadiologyEntity extends BaseEntity {
 
     public MedicalRadiologyEntity addMedicalRadiologyXRayIds(String medicalRadiologyXRayId) {
         this.medicalRadiologyXRayIds.add(medicalRadiologyXRayId);
+        return this;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public MedicalRadiologyEntity setImages(List<String> images) {
+        this.images = images;
         return this;
     }
 }
