@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
@@ -8,6 +9,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -54,6 +58,9 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     @Field("EB")
     private String editedByQID;
+
+    @Field("ER")
+    private List<NameDatePair> externalMedicalReports;
 
     @SuppressWarnings("unused")
     private UserMedicalProfileEntity() {}
@@ -135,6 +142,23 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     public UserMedicalProfileEntity setEditedByQID(String editedByQID) {
         this.editedByQID = editedByQID;
+        return this;
+    }
+
+    public List<NameDatePair> getExternalMedicalReports() {
+        return externalMedicalReports;
+    }
+
+    public UserMedicalProfileEntity setExternalMedicalReports(List<NameDatePair> externalMedicalReports) {
+        this.externalMedicalReports = externalMedicalReports;
+        return this;
+    }
+
+    public UserMedicalProfileEntity addExternalMedicalReport(NameDatePair externalMedicalReport) {
+        if (externalMedicalReports == null) {
+            externalMedicalReports = new LinkedList<>();
+        }
+        this.externalMedicalReports.add(externalMedicalReport);
         return this;
     }
 }
