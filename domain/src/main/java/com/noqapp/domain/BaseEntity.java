@@ -1,16 +1,22 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.helper.NameDatePair;
+import com.noqapp.domain.json.JsonNameDatePair;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -138,5 +144,17 @@ public abstract class BaseEntity implements Serializable {
     public void setCreateAndUpdate(Date created) {
         this.created = created;
         this.updated = created;
+    }
+
+    @Transient
+    protected List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
+        List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
+        for (NameDatePair nameDatePair : nameDatePairs) {
+            jsonNameDatePairs.add(new JsonNameDatePair()
+                .setName(nameDatePair.getName())
+                .setMonthYear(nameDatePair.getMonthYear()));
+        }
+
+        return jsonNameDatePairs;
     }
 }
