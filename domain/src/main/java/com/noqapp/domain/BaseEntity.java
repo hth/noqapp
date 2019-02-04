@@ -149,10 +149,12 @@ public abstract class BaseEntity implements Serializable {
     @Transient
     protected List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
         List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
-        for (NameDatePair nameDatePair : nameDatePairs) {
-            jsonNameDatePairs.add(new JsonNameDatePair()
-                .setName(nameDatePair.getName())
-                .setMonthYear(nameDatePair.getMonthYear()));
+        if (null != nameDatePairs) {
+            for (NameDatePair nameDatePair : nameDatePairs) {
+                jsonNameDatePairs.add(new JsonNameDatePair()
+                    .setName(nameDatePair.getName())
+                    .setMonthYear(nameDatePair.getMonthYear()));
+            }
         }
 
         return jsonNameDatePairs;
