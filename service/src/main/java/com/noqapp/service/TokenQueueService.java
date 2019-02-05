@@ -323,6 +323,7 @@ public class TokenQueueService {
                 queue.setCustomerPhone(userProfile.getGuardianPhone());
             }
             queue.setClientVisitedThisStore(queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid));
+            queue.setClientVisitedThisStoreDate(queueManagerJDBC.clientVisitedStoreDate(codeQR, qid));
             if (null != userProfile.getQidOfDependents() && !userProfile.getQidOfDependents().isEmpty()) {
                 queue.setGuardianQid(qid);
             } else if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {

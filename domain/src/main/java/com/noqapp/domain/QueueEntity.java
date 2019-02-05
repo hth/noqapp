@@ -102,6 +102,9 @@ public class QueueEntity extends BaseEntity {
     @Field ("VS")
     private boolean clientVisitedThisStore;
 
+    @Field ("VSD")
+    private Date clientVisitedThisStoreDate;
+
     @Field ("BN")
     private String bizNameId;
 
@@ -308,6 +311,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public Date getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public QueueEntity setClientVisitedThisStoreDate(Date clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
         return this;
     }
 

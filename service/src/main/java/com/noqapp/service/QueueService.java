@@ -280,6 +280,7 @@ public class QueueService {
                 .setBusinessCustomerId(queue.getBusinessCustomerId())
                 .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
                 .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+                .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
                 .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
                 .setRecordReferenceId(queue.getRecordReferenceId())
                 .setCreated(queue.getCreated());
