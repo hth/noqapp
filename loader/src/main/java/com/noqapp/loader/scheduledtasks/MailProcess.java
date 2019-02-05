@@ -225,14 +225,14 @@ public class MailProcess {
                     MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "noqapp.com", "noqapp");
                     mailSender.send(dkimSignedMessage);
                     noAuthenticationException = true;
-                    LOG.info("Mail success... subject={}", mail.getSubject());
+                    LOG.info("Mail success... subject={} to={}", mail.getSubject(), mail.getToMail());
                     return MailStatusEnum.S;
                 } catch (MailAuthenticationException | MailSendException e) {
                     LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
                 } catch (Exception e) {
                     LOG.error(e.getLocalizedMessage());
                 }
-                LOG.warn("Mail fail... subject={}", mail.getSubject());
+                LOG.warn("Mail fail... subject={} to={}", mail.getSubject(), mail.getToMail());
             }
         } catch (MailSendException mailSendException) {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
