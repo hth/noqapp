@@ -70,42 +70,42 @@ public class MailProcess {
 
     @Autowired
     public MailProcess(
-            @Value ("${do.not.reply.email}")
-            String doNotReplyEmail,
+        @Value ("${do.not.reply.email}")
+        String doNotReplyEmail,
 
-            @Value ("${email.address.name}")
-            String emailAddressName,
+        @Value ("${email.address.name}")
+        String emailAddressName,
 
-            @Value ("${dev.sent.to}")
-            String devSentTo,
+        @Value ("${dev.sent.to}")
+        String devSentTo,
 
-            @Value ("${mail.invite.subject}")
-            String mailInviteSubject,
+        @Value ("${mail.invite.subject}")
+        String mailInviteSubject,
 
-            @Value ("${mail.googleSmall:..//jsp//images//smallGoogle.jpg}")
-            String googleSmall,
+        @Value ("${mail.googleSmall:..//jsp//images//smallGoogle.jpg}")
+        String googleSmall,
 
-            @Value ("${mail.googlePlay:..//jsp//images//googlePlay151x47.jpg}")
-            String googlePlay,
+        @Value ("${mail.googlePlay:..//jsp//images//googlePlay151x47.jpg}")
+        String googlePlay,
 
-            @Value ("${mail.facebookSmall:..//jsp//images//smallFacebook.jpg}")
-            String facebookSmall,
+        @Value ("${mail.facebookSmall:..//jsp//images//smallFacebook.jpg}")
+        String facebookSmall,
 
-            @Value ("${mail.appStore:..//jsp//images//app-store151x48.jpg}")
-            String appStore,
+        @Value ("${mail.appStore:..//jsp//images//app-store151x48.jpg}")
+        String appStore,
 
-            @Value ("${MailProcess.emailSwitch}")
-            String emailSwitch,
+        @Value ("${MailProcess.emailSwitch}")
+        String emailSwitch,
 
-            @Value ("${MailProcess.sendAttempt}")
-            int sendAttempt,
+        @Value ("${MailProcess.sendAttempt}")
+        int sendAttempt,
 
-            @Value ("${MailProcess.dkim.der.path}")
-            String dkimPath,
+        @Value ("${MailProcess.dkim.der.path}")
+        String dkimPath,
 
-            JavaMailSenderImpl mailSender,
-            MailManager mailManager,
-            StatsCronService statsCronService
+        JavaMailSenderImpl mailSender,
+        MailManager mailManager,
+        StatsCronService statsCronService
     ) {
         this.doNotReplyEmail = doNotReplyEmail;
         this.emailAddressName = emailAddressName;
@@ -186,9 +186,9 @@ public class MailProcess {
     }
 
     private MailStatusEnum sendMail(
-            MailEntity mail,
-            MimeMessage message,
-            MimeMessageHelper helper
+        MailEntity mail,
+        MimeMessage message,
+        MimeMessageHelper helper
     ) throws MessagingException {
         /* Use the true flag to indicate the text included is HTML. */
         helper.setText(mail.getMessage(), true);
@@ -244,7 +244,7 @@ public class MailProcess {
 
     private FileSystemResource getFileSystemResource(String location) {
         URL url = Thread.currentThread().getContextClassLoader().getResource(location);
-        if (url == null) {
+        if (null == url) {
             try {
                 File file = new File(location);
                 if (file.exists()) {
