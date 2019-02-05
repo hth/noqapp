@@ -127,7 +127,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
 
     private static final String clientVisitedStoreDate =
-        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1 ORDER BY C DESC";
+        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? ORDER BY C DESC LIMIT 1";
 
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
