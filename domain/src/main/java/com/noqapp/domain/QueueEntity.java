@@ -21,105 +21,108 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 12/16/16 12:42 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
-@Document (collection = "QUEUE")
-@CompoundIndexes (value = {
-        @CompoundIndex (name = "queue_idx", def = "{'QR' : -1, 'DID': -1, 'QID': -1, 'GQ' : -1}", unique = false, background = true, sparse = true),
-        @CompoundIndex (name = "queue_tn_idx", def = "{'QR' : -1, 'TN': -1}", unique = true, background = true)
+@Document(collection = "QUEUE")
+@CompoundIndexes(value = {
+    @CompoundIndex(name = "queue_idx", def = "{'QR' : -1, 'DID': -1, 'QID': -1, 'GQ' : -1}", unique = false, background = true, sparse = true),
+    @CompoundIndex(name = "queue_tn_idx", def = "{'QR' : -1, 'TN': -1}", unique = true, background = true)
 })
 public class QueueEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(QueueEntity.class);
 
     @NotNull
-    @Field ("QR")
+    @Field("QR")
     private String codeQR;
 
-    @Field ("DID")
+    @Field("DID")
     private String did;
 
-    @Field ("QID")
+    @Field("QID")
     private String queueUserId;
 
-    @Field ("TN")
+    @Field("TN")
     private int tokenNumber;
 
     @NotNull
-    @Field ("DN")
+    @Field("DN")
     private String displayName;
 
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
-    @Field ("QS")
+    @Field("QS")
     private QueueUserStateEnum queueUserState = QueueUserStateEnum.Q;
 
-    @Field ("NS")
+    @Field("NS")
     private boolean notifiedOnService = false;
 
-    @Field ("NC")
+    @Field("NC")
     private int attemptToSendNotificationCounts = 0;
 
     @NotNull
-    @Field ("CN")
+    @Field("CN")
     private String customerName;
 
-    @Field ("PH")
+    @Field("PH")
     private String customerPhone;
 
-    @Field ("RA")
+    @Field("RA")
     private int ratingCount;
 
-    @Field ("HR")
+    @Field("HR")
     private int hoursSaved;
 
-    @Field ("RV")
+    @Field("RV")
     private String review;
 
     /* Locked when being served. */
-    @Field ("SN")
+    @Field("SN")
     private String serverName;
 
-    @Field ("SID")
+    @Field("SID")
     private String serverDeviceId;
 
-    @Field ("SB")
+    @Field("SB")
     private Date serviceBeginTime;
 
-    @Field ("SE")
+    @Field("SE")
     private Date serviceEndTime;
 
-    @Field ("EB")
+    @Field("EB")
     private Date expectedServiceBegin;
 
-    @Field ("TS")
+    @Field("TS")
     private TokenServiceEnum tokenService;
 
-    @Field ("VS")
+    @Field("VS")
     private boolean clientVisitedThisStore;
 
-    @Field ("BN")
+    @Field("VSD")
+    private Date clientVisitedThisStoreDate;
+
+    @Field("BN")
     private String bizNameId;
 
-    @Field ("VB")
+    @Field("VB")
     private boolean clientVisitedThisBusiness;
 
-    @Field ("GQ")
+    @Field("GQ")
     private String guardianQid;
 
-    @Field ("BC")
+    @Field("BC")
     private String businessCustomerId;
 
     /* This checks how many times the Business Customer Id has been changed. */
-    @Field ("CC")
+    @Field("CC")
     private int businessCustomerIdChangeCount;
 
     /* This data is associated to record that needs to be created against this queue entry. */
-    @Field ("RR")
+    @Field("RR")
     private String recordReferenceId;
 
     @Field("ST")
@@ -131,13 +134,13 @@ public class QueueEntity extends BaseEntity {
     }
 
     public QueueEntity(
-            String codeQR,
-            String did,
-            TokenServiceEnum tokenService,
-            String queueUserId,
-            int tokenNumber,
-            String displayName,
-            BusinessTypeEnum businessType
+        String codeQR,
+        String did,
+        TokenServiceEnum tokenService,
+        String queueUserId,
+        int tokenNumber,
+        String displayName,
+        BusinessTypeEnum businessType
     ) {
         this.codeQR = codeQR;
         this.did = did;
@@ -308,6 +311,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public Date getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public QueueEntity setClientVisitedThisStoreDate(Date clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
         return this;
     }
 

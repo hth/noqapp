@@ -76,6 +76,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    @JsonProperty("vsd")
+    private String clientVisitedThisStoreDate;
+
     @JsonProperty ("vb")
     private boolean clientVisitedThisBusiness;
 
@@ -173,6 +176,17 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public JsonQueuedPerson setClientVisitedThisStoreDate(Date clientVisitedThisStoreDate) {
+        if (null != clientVisitedThisStoreDate) {
+            this.clientVisitedThisStoreDate = DateFormatUtils.format(clientVisitedThisStoreDate, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        }
         return this;
     }
 

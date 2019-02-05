@@ -126,6 +126,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String checkIfClientVisitedStore =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
 
+    private static final String clientVisitedStoreDate =
+        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1 ORDER BY C DESC";
+
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
 
@@ -279,6 +282,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean hasClientVisitedThisStore(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
         return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid}, Boolean.class);
+    }
+
+    @Override
+    public Date clientVisitedStoreDate(String codeQR, String qid) {
+        LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
+        return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid}, Date.class);
     }
 
     @Override
