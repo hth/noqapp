@@ -193,8 +193,13 @@ public class ArchiveAndReset {
             queueManagerJDBC.batchQueues(queues);
 
             /* Complete transaction once data moved. */
-            statsBizStoreDailyManager.save(statsBizStoreDaily);
-            LOG.info("Saved daily queue store stat={}", statsBizStoreDaily);
+            if (statsBizStoreDaily.getTotalClient() > 0) {
+                statsBizStoreDailyManager.save(statsBizStoreDaily);
+                LOG.info("Saved daily queue store stat={}", statsBizStoreDaily);
+            } else {
+                /* Skip stats when totalClient for queue has been zero. */
+                LOG.info("Skipped daily queue store totalClient={} stat={}", statsBizStoreDaily.getTotalClient(), statsBizStoreDaily);
+            }
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             queueManagerJDBC.rollbackQueues(queues);
