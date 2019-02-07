@@ -168,7 +168,11 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
                     .first("year").as("YY")
                     .sum("totalServiced").as("TS")
             );
-            return mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
+            List<StatsBizStoreDailyEntity> a = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
+            for (StatsBizStoreDailyEntity statsBizStoreDailyEntity : a) {
+                LOG.info("{} {} {}", codeQR, statsBizStoreDailyEntity.getMonthOfYear(), statsBizStoreDailyEntity.getYear());
+            }
+            return a;
         } catch (InvalidPersistentPropertyPath e) {
             LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
             return null;
