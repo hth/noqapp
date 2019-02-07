@@ -217,7 +217,7 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
 
     @Transient
     public int newClients() {
-        return totalClient - clientsPreviouslyVisitedThisStore;
+        return totalServiced - clientsPreviouslyVisitedThisStore;
     }
 
     public int getMonthOfYear() {
