@@ -170,7 +170,11 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             );
             List<StatsBizStoreDailyEntity> a = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
             for (StatsBizStoreDailyEntity statsBizStoreDailyEntity : a) {
-                LOG.info("{} {} {}", codeQR, statsBizStoreDailyEntity.getMonthOfYear(), statsBizStoreDailyEntity.getYear());
+                LOG.info("{} {} {} ts={}",
+                    codeQR,
+                    statsBizStoreDailyEntity.getMonthOfYear(),
+                    statsBizStoreDailyEntity.getYear(),
+                    statsBizStoreDailyEntity.getTotalServiced());
             }
             return a;
         } catch (InvalidPersistentPropertyPath e) {
