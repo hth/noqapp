@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.fields;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
@@ -171,20 +172,12 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
                 project("totalServiced")
                     .andExpression("month(created)").as("monthOfYear")
                     .andExpression("year(created)").as("year"),
-                group("totalServiced")
+                group(fields().and("monthOfYear").and("year"))
                     .first("monthOfYear").as("MN")
                     .first("year").as("YY")
                     .sum("totalServiced").as("TS")
             );
-            List<StatsBizStoreDailyEntity> a = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
-            for (StatsBizStoreDailyEntity statsBizStoreDailyEntity : a) {
-                LOG.info("{} {} {} ts={}",
-                    codeQR,
-                    statsBizStoreDailyEntity.getMonthOfYear(),
-                    statsBizStoreDailyEntity.getYear(),
-                    statsBizStoreDailyEntity.getTotalServiced());
-            }
-            return a;
+            return mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
         } catch (InvalidPersistentPropertyPath e) {
             LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
             return null;
