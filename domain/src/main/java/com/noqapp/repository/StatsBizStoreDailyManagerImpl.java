@@ -171,7 +171,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
                 project("totalServiced")
                     .andExpression("month(created)").as("monthOfYear")
                     .andExpression("year(created)").as("year"),
-                group()
+                group("totalServiced")
                     .first("monthOfYear").as("MN")
                     .first("year").as("YY")
                     .sum("totalServiced").as("TS")
