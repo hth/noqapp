@@ -142,6 +142,14 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
     }
 
     /**
+     * Console Query
+     *
+     * db.STATS_BIZ_STORE_DAILY.aggregate([
+     *     { $match: { QR: "5ba1e6e4b85cb7297fadcc8c" }},
+     *     { $project: { TS: "$TS", MN: {$month: "$C"}, YY: {$year: "$C"} }},
+     *     { $group: { _id: {MN: "$MN", YY: "$YY"}, TS: { $sum: "$TS"} }}
+     * ]);
+     *
      * Note:
      * Match: Is like a select query
      * Project: Are the field you would like to process on. Its can contain multiple fields.
