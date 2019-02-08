@@ -1,8 +1,8 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.helper.NameDatePair;
-import com.noqapp.domain.json.JsonNameDatePair;
+import com.noqapp.domain.helper.NameDateHealth;
+import com.noqapp.domain.json.JsonNameDateHealth;
 import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class UserMedicalProfileEntity extends BaseEntity {
     private String editedByQID;
 
     @Field("ER")
-    private List<NameDatePair> externalMedicalReports;
+    private List<NameDateHealth> externalMedicalReports;
 
     @SuppressWarnings("unused")
     private UserMedicalProfileEntity() {}
@@ -147,16 +148,16 @@ public class UserMedicalProfileEntity extends BaseEntity {
         return this;
     }
 
-    public List<NameDatePair> getExternalMedicalReports() {
+    public List<NameDateHealth> getExternalMedicalReports() {
         return externalMedicalReports;
     }
 
-    public UserMedicalProfileEntity setExternalMedicalReports(List<NameDatePair> externalMedicalReports) {
+    public UserMedicalProfileEntity setExternalMedicalReports(List<NameDateHealth> externalMedicalReports) {
         this.externalMedicalReports = externalMedicalReports;
         return this;
     }
 
-    public UserMedicalProfileEntity addExternalMedicalReport(NameDatePair externalMedicalReport) {
+    public UserMedicalProfileEntity addExternalMedicalReport(NameDateHealth externalMedicalReport) {
         if (externalMedicalReports == null) {
             externalMedicalReports = new LinkedList<>();
         }
@@ -165,7 +166,21 @@ public class UserMedicalProfileEntity extends BaseEntity {
     }
 
     @Transient
-    public List<JsonNameDatePair> getExternalMedicalReportsAsJson() {
-        return getJsonNameDatePairs(externalMedicalReports);
+    public List<JsonNameDateHealth> getExternalMedicalReportsAsJson() {
+        List<JsonNameDateHealth> jsonNameDateHealths = new ArrayList<>();
+        if (null != externalMedicalReports) {
+            for (NameDateHealth nameDateHealth : externalMedicalReports) {
+                JsonNameDateHealth jsonNameDateHealth = new JsonNameDateHealth()
+                    .setHealthCareService(nameDateHealth.getHealthCareService());
+
+                jsonNameDateHealth
+                    .setName(nameDateHealth.getName())
+                    .setMonthYear(nameDateHealth.getMonthYear());
+
+                jsonNameDateHealths.add(jsonNameDateHealth);
+            }
+        }
+
+        return jsonNameDateHealths;
     }
 }
