@@ -1,7 +1,7 @@
 package com.noqapp.domain.json.medical;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.json.JsonNameDatePair;
+import com.noqapp.domain.json.JsonNameDateHealth;
 import com.noqapp.domain.types.OccupationEnum;
 import com.noqapp.domain.types.medical.BloodTypeEnum;
 
@@ -54,7 +54,7 @@ public class JsonUserMedicalProfile extends AbstractDomain {
     private boolean historyDirty;
 
     @JsonProperty("er")
-    private List<JsonNameDatePair> externalMedicalReports;
+    private List<JsonNameDateHealth> externalMedicalReports;
 
     public BloodTypeEnum getBloodType() {
         return bloodType;
@@ -119,11 +119,11 @@ public class JsonUserMedicalProfile extends AbstractDomain {
         return this;
     }
 
-    public List<JsonNameDatePair> getExternalMedicalReports() {
+    public List<JsonNameDateHealth> getExternalMedicalReports() {
         return externalMedicalReports;
     }
 
-    public JsonUserMedicalProfile setExternalMedicalReports(List<JsonNameDatePair> externalMedicalReports) {
+    public JsonUserMedicalProfile setExternalMedicalReports(List<JsonNameDateHealth> externalMedicalReports) {
         this.externalMedicalReports = externalMedicalReports;
         return this;
     }
