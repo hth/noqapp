@@ -73,15 +73,6 @@ public class PreferredBusinessManagerImpl implements PreferredBusinessManager {
     }
 
     @Override
-    public List<PreferredBusinessEntity> findAll(String bizNameId, BusinessTypeEnum businessType) {
-        return mongoTemplate.find(
-                query(where("BN").is(bizNameId).and("BT").is(businessType)),
-                PreferredBusinessEntity.class,
-                TABLE
-        );
-    }
-
-    @Override
     public void deleteById(String id) {
         mongoTemplate.remove(
             query(where("_id").is(new ObjectId(id))),

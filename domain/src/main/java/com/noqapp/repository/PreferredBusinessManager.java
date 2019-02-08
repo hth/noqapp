@@ -1,7 +1,6 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PreferredBusinessEntity;
-import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.List;
 
@@ -12,8 +11,6 @@ import java.util.List;
 public interface PreferredBusinessManager extends RepositoryManager<PreferredBusinessEntity> {
 
     List<PreferredBusinessEntity> findAll(String bizNameId);
-
-    List<PreferredBusinessEntity> findAll(String bizNameId, BusinessTypeEnum businessType);
 
     void deleteById(String id);
 
