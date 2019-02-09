@@ -107,7 +107,8 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
 
     @Override
     public void addTransactionId(String recordReferenceId, String transactionId) {
-        mongoTemplate.updateFirst(
+        /* Note: Use findAndModify if you do not want to update @Version. When using updateFirst updates @Version. */
+        mongoTemplate.findAndModify(
             query(where("id").is(recordReferenceId)),
             new Update().addToSet("TIS", transactionId),
             MedicalRecordEntity.class,

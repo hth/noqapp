@@ -6,7 +6,6 @@ import com.noqapp.domain.PreferredBusinessEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPreferredBusiness;
 import com.noqapp.domain.json.JsonPreferredBusinessList;
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PreferredBusinessManager;
 
@@ -56,16 +55,6 @@ public class PreferredBusinessService {
         return getJsonPreferredBusinessList(bizStore, preferredBusinesses);
     }
 
-    public List<PreferredBusinessEntity> findAll(String bizNameId, BusinessTypeEnum businessType) {
-        return preferredBusinessManager.findAll(bizNameId, businessType);
-    }
-
-    @Mobile
-    public JsonPreferredBusinessList findAllAsJson(BizStoreEntity bizStore, BusinessTypeEnum businessType) {
-        List<PreferredBusinessEntity> preferredBusinesses = findAll(bizStore.getBizName().getId(), businessType);
-        return getJsonPreferredBusinessList(bizStore, preferredBusinesses);
-    }
-    
     private JsonPreferredBusinessList getJsonPreferredBusinessList(BizStoreEntity bizStore, List<PreferredBusinessEntity> preferredBusinesses) {
         List<JsonPreferredBusiness> jsonPreferredBusinesses = new LinkedList<>();
         for (PreferredBusinessEntity preferredBusiness : preferredBusinesses) {
