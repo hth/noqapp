@@ -24,4 +24,10 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
     MedicalRecordEntity findOne();
 
     void addTransactionId(String recordReferenceId, String transactionId);
+
+    void addMedicalMedicationId(String recordReferenceId, String medicalMedicationId);
+
+    void addMedicalLaboratoryId(String recordReferenceId, String medicalLaboratoryId);
+
+    void addMedicalRadiologiesId(String recordReferenceId, String medicalRadiologyId);
 }

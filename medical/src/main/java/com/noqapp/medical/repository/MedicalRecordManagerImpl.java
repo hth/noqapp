@@ -3,6 +3,7 @@ package com.noqapp.medical.repository;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
@@ -112,6 +113,36 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
             new Update().addToSet("TIS", transactionId),
             MedicalRecordEntity.class,
             TABLE
+        );
+    }
+
+    @Override
+    public void addMedicalMedicationId(String recordReferenceId, String medicalMedicationId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(recordReferenceId)),
+                update("MI", medicalMedicationId),
+                MedicalRecordEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void addMedicalLaboratoryId(String recordReferenceId, String medicalLaboratoryId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(recordReferenceId)),
+                update("LI", medicalLaboratoryId),
+                MedicalRecordEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void addMedicalRadiologiesId(String recordReferenceId, String medicalRadiologyId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(recordReferenceId)),
+                new Update().addToSet("RI", medicalRadiologyId),
+                MedicalRecordEntity.class,
+                TABLE
         );
     }
 }
