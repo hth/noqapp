@@ -145,4 +145,14 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
                 TABLE
         );
     }
+
+    @Override
+    public void unsetMedicalRadiology(String recordReferenceId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(recordReferenceId)),
+                new Update().unset("RI"),
+                MedicalRecordEntity.class,
+                TABLE
+        );
+    }
 }

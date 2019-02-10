@@ -389,7 +389,7 @@ public class MedicalRecordService {
                 medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
                 medicalRadiologyManager.deleteHard(medicalRadiology);
             }
-            medicalRecord.setMedicalRadiologies(new LinkedList<>());
+            medicalRecordManager.unsetMedicalRadiology(jsonMedicalRecord.getRecordReferenceId());
         }
 
         /* Exit when empty. */
