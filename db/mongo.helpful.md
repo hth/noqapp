@@ -25,5 +25,9 @@ Remove one field
 Registered Device Clean Up
 
     db.getCollection('REGISTERED_DEVICE').remove({"TK" : "BLACKLISTED"})
-    db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lte : ISODate("2018-12-01 09:52:42.492Z")}})    
+    db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lte : ISODate("2018-12-01 09:52:42.492Z")}})
+    
+Find within range
+
+    db.USER_PROFILE.find( { QID: { $gt: "100000000009", $lt : "100000000019" } } );        
     
