@@ -258,17 +258,17 @@ public class MedicalRecordService {
                         updateMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                     }
 
-                    if (null != jsonRecord.getMedicalMedicines()) {
-                        populateWithMedicalMedicine(jsonRecord, medicalRecord);
-                    }
-
-                    if (null != jsonRecord.getMedicalPathologies()) {
-                        populateWithPathologies(jsonRecord, medicalRecord);
-                    }
-
-                    if (null != jsonRecord.getMedicalRadiologyLists()) {
-                        populateWithMedicalRadiologies(jsonRecord, medicalRecord);
-                    }
+//                    if (null != jsonRecord.getMedicalMedicines()) {
+//                        populateWithMedicalMedicine(jsonRecord, medicalRecord);
+//                    }
+//
+//                    if (null != jsonRecord.getMedicalPathologies()) {
+//                        populateWithPathologies(jsonRecord, medicalRecord);
+//                    }
+//
+//                    if (null != jsonRecord.getMedicalRadiologyLists()) {
+//                        populateWithMedicalRadiologies(jsonRecord, medicalRecord);
+//                    }
                     break;
                 case Q_SUPERVISOR:
                     if (null == medicalRecord.getMedicalPhysicalId()) {
