@@ -414,7 +414,7 @@ public class MedicalRecordService {
             }
 
             medicalRadiologyManager.save(medicalRadiology);
-            medicalRecord.addMedicalRadiology(medicalRadiology.getId());
+            medicalRecordManager.addMedicalRadiologiesId(jsonMedicalRecord.getRecordReferenceId(), medicalRadiology.getId());
 
             executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList));
         }
@@ -465,7 +465,7 @@ public class MedicalRecordService {
         }
 
         medicalPathologyManager.save(medicalPathology);
-        medicalRecord.setMedicalLaboratoryId(medicalPathology.getId());
+        medicalRecordManager.addMedicalLaboratoryId(jsonMedicalRecord.getRecordReferenceId(), medicalPathology.getId());
 
         executorService.submit(() -> createPathologyOrder(jsonMedicalRecord));
     }
@@ -525,7 +525,7 @@ public class MedicalRecordService {
         }
 
         medicalMedicationManager.save(medicalMedication);
-        medicalRecord.setMedicalMedicationId(medicalMedication.getId());
+        medicalRecordManager.addMedicalMedicationId(jsonMedicalRecord.getRecordReferenceId(), medicalMedication.getId());
 
         executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
     }
