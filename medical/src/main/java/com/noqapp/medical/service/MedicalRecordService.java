@@ -18,6 +18,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
@@ -257,18 +258,6 @@ public class MedicalRecordService {
                     } else {
                         updateMedicalPhysical(jsonRecord, medicalRecord, diagnosedById);
                     }
-
-//                    if (null != jsonRecord.getMedicalMedicines()) {
-//                        populateWithMedicalMedicine(jsonRecord, medicalRecord);
-//                    }
-//
-//                    if (null != jsonRecord.getMedicalPathologies()) {
-//                        populateWithPathologies(jsonRecord, medicalRecord);
-//                    }
-//
-//                    if (null != jsonRecord.getMedicalRadiologyLists()) {
-//                        populateWithMedicalRadiologies(jsonRecord, medicalRecord);
-//                    }
                     break;
                 case Q_SUPERVISOR:
                     if (null == medicalRecord.getMedicalPhysicalId()) {
@@ -294,6 +283,21 @@ public class MedicalRecordService {
 //                Instant.now().toEpochMilli(),
 //                medical.getDiagnosedById());
             medicalRecordManager.save(medicalRecord);
+
+            /* Place medical order after saving medical record. There are version clash hence persist after saving medical record. */
+            if (userProfile.getLevel() == UserLevelEnum.S_MANAGER) {
+                if (null != jsonRecord.getMedicalMedicines()) {
+                    populateWithMedicalMedicine(jsonRecord, medicalRecord);
+                }
+
+                if (null != jsonRecord.getMedicalPathologies()) {
+                    populateWithPathologies(jsonRecord, medicalRecord);
+                }
+
+                if (null != jsonRecord.getMedicalRadiologyLists()) {
+                    populateWithMedicalRadiologies(jsonRecord, medicalRecord);
+                }
+            }
             LOG.info("Saved medical record={}", medicalRecord);
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
