@@ -120,6 +120,7 @@ public class BusinessStatsMail {
                         int totalRating = 0;
                         int totalCustomerRated = 0;
                         long totalHoursSaved = 0;
+                        Map<String, String> timeOfServices = new HashMap<>();
 
                         businessCount.getAndIncrement();
                         try {
@@ -133,6 +134,8 @@ public class BusinessStatsMail {
                             int storeTotalRating;
                             int storeTotalCustomerRated;
                             long storeTotalHoursSaved;
+                            String firstServicedOrSkipped;
+                            String lastServicedOrSkipped;
 
                             for (StatsBizStoreDailyEntity statsBizStoreDaily : statsBizStores) {
                                 BizStoreEntity bizStore = bizStoreManager.getById(statsBizStoreDaily.getBizStoreId());
@@ -152,6 +155,9 @@ public class BusinessStatsMail {
                                 storeTotalRating = statsBizStoreDaily.getTotalRating();
                                 storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
                                 storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
+                                firstServicedOrSkipped = DateUtil.dateToString(statsBizStoreDaily.getFirstServicedOrSkipped());
+                                lastServicedOrSkipped = DateUtil.dateToString(statsBizStoreDaily.getLastServicedOrSkipped());
+                                timeOfServices.put(storeName, firstServicedOrSkipped + " - " + lastServicedOrSkipped);
 
                                 if (storeTotalClient > 0) {
                                     Map<String, Object> rootMap = new HashMap<>();
@@ -179,6 +185,7 @@ public class BusinessStatsMail {
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
+                                    rootMap.put("timeOfService", firstServicedOrSkipped + " - " + lastServicedOrSkipped);
 
                                     List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
                                     LOG.info("Found business users size={} {} storeTotalClient={}", businessUserStores.size(), businessUserStores, storeTotalClient);
@@ -230,6 +237,7 @@ public class BusinessStatsMail {
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
                             rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
+                            rootMap.put("timeOfServices", timeOfServices);
 
                             List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
                             for (BusinessUserEntity businessUser : businessUsers) {
