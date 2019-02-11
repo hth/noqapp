@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -50,15 +51,49 @@
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-content">
-                    <div class="store">
-                        <div class="add-store">
-                            <div class="store-table">
-                                User Control: <a href="/admin/user/landing.htm">Active / In-Active User</a>
-                            </div>
-                            <div class="store-table">
-                                Global Notification: <a href="/admin/notification/landing.htm">Sends Notifications To All</a>
-                            </div>
-                        </div>
+                    <div class="add-new">
+                        <form:form method="POST" action="./landing.htm" modelAttribute="sendNotificationForm">
+                            <ul class="list-form">
+                                <li>
+                                    <div class="alert-info">
+                                        <p>
+                                            Send Notification to all
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="title" cssErrorClass="lb_error">Title</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="body" cssErrorClass="lb_error">Body</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="body" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li class="mB0">
+                                    <div class="col-lable3"></div>
+                                    <div class="col-fields">
+                                        <div class="left-btn">
+                                            <input type="submit" value="SEND" class="next-btn" name="send-notification">
+                                        </div>
+                                        <div class="right-btn">
+                                            <input type="submit" value="CANCEL" class="cancel-btn" name="cancel-send-notification">
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+                        </form:form>
                     </div>
                 </div>
             </div>
