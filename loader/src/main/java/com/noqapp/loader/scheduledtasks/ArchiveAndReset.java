@@ -12,6 +12,7 @@ import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
@@ -451,7 +452,36 @@ public class ArchiveAndReset {
             .setTotalRating(totalRating)
             .setTotalCustomerRated(totalCustomerRated)
             .setTotalHoursSaved(totalHoursSaved);
+
+        computeBeginAndEndTimeOfService(queues, statsBizStoreDaily);
         return statsBizStoreDaily;
+    }
+
+    private void computeBeginAndEndTimeOfService(List<QueueEntity> queues, StatsBizStoreDailyEntity statsBizStoreDaily) {
+        Date firstServicedOrSkipped = null;
+        Date lastServicedOrSkipped = null;
+
+        QueueEntity queueFirst = queues.stream()
+            .filter(queue -> queue.getQueueUserState() == QueueUserStateEnum.S || queue.getQueueUserState() == QueueUserStateEnum.N)
+            .findFirst()
+            .orElse(null);
+
+        if (null != queueFirst) {
+            QueueEntity queueLast = queues.stream()
+                .filter(queue -> queue.getQueueUserState() == QueueUserStateEnum.S || queue.getQueueUserState() == QueueUserStateEnum.N)
+                .reduce((first, second) -> second)
+                .orElse(null);
+
+            firstServicedOrSkipped = queueFirst.getServiceBeginTime();
+            if (null != queueLast) {
+                lastServicedOrSkipped = queueLast.getServiceEndTime();
+            }
+        }
+
+        statsBizStoreDaily
+            .setFirstServicedOrSkipped(firstServicedOrSkipped)
+            .setLastServicedOrSkipped(lastServicedOrSkipped);
+        LOG.info("Computed {} {} {}", statsBizStoreDaily.getCodeQR(), firstServicedOrSkipped, lastServicedOrSkipped);
     }
 
     /** Saves daily stats for BizStore Order. */

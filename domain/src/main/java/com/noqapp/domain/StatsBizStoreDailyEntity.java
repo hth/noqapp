@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -80,6 +82,12 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     @NotNull
     @Field ("TH")
     private long totalHoursSaved;
+
+    @Field ("FS")
+    Date firstServicedOrSkipped;
+
+    @Field ("LS")
+    Date lastServicedOrSkipped;
 
     /* Temp field used only for mongo aggregation framework. */
     @Field("MN")
@@ -212,6 +220,24 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
 
     public StatsBizStoreDailyEntity setTotalHoursSaved(long totalHoursSaved) {
         this.totalHoursSaved = totalHoursSaved;
+        return this;
+    }
+
+    public Date getFirstServicedOrSkipped() {
+        return firstServicedOrSkipped;
+    }
+
+    public StatsBizStoreDailyEntity setFirstServicedOrSkipped(Date firstServicedOrSkipped) {
+        this.firstServicedOrSkipped = firstServicedOrSkipped;
+        return this;
+    }
+
+    public Date getLastServicedOrSkipped() {
+        return lastServicedOrSkipped;
+    }
+
+    public StatsBizStoreDailyEntity setLastServicedOrSkipped(Date lastServicedOrSkipped) {
+        this.lastServicedOrSkipped = lastServicedOrSkipped;
         return this;
     }
 
