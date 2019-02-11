@@ -733,6 +733,7 @@ public class MedicalRecordService {
             .setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(medicalRecord.getQueueUserId()));
 
         jsonMedicalRecord
+            .setRecordReferenceId(medicalRecord.getId())
             .setFormVersion(medicalRecord.getFormVersion())
             .setBusinessType(medicalRecord.getBusinessType())
             .setQueueUserId(medicalRecord.getQueueUserId())
