@@ -1,0 +1,31 @@
+package com.noqapp.view.form.admin;
+
+import com.noqapp.common.utils.ScrubbedInput;
+
+/**
+ * hitender
+ * 2019-02-11 18:29
+ */
+public class SendNotificationForm {
+
+    private ScrubbedInput title;
+    private ScrubbedInput body;
+
+    public ScrubbedInput getTitle() {
+        return title;
+    }
+
+    public SendNotificationForm setTitle(ScrubbedInput title) {
+        this.title = title;
+        return this;
+    }
+
+    public ScrubbedInput getBody() {
+        return body;
+    }
+
+    public SendNotificationForm setBody(ScrubbedInput body) {
+        this.body = body;
+        return this;
+    }
+}
