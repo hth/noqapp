@@ -32,19 +32,17 @@ public class FirebaseMessageService {
 
     @Autowired
     public FirebaseMessageService(
-            @Value ("${firebase.server.key}")
-            String firebaseServerKey,
+        @Value ("${firebase.server.key}")
+        String firebaseServerKey,
 
-            OkHttpClient okHttpClient
+        OkHttpClient okHttpClient
     ) {
         this.authorizationKey = "key=" + firebaseServerKey;
 
         this.okHttpClient = okHttpClient;
     }
 
-    /**
-     * Sends message to topic when any change happens in queue.
-     */
+    /** Sends message to topic when any change happens in queue. */
     @Mobile
     public boolean messageToTopic(JsonMessage jsonMessage) {
         LOG.info("Sending FCM message with body={}", jsonMessage.asJson());
