@@ -155,8 +155,8 @@ public class BusinessStatsMail {
                                 storeTotalRating = statsBizStoreDaily.getTotalRating();
                                 storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
                                 storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
-                                firstServicedOrSkipped = DateUtil.dateToString(statsBizStoreDaily.getFirstServicedOrSkipped());
-                                lastServicedOrSkipped = DateUtil.dateToString(statsBizStoreDaily.getLastServicedOrSkipped());
+                                firstServicedOrSkipped = statsBizStoreDaily.getFirstServicedOrSkipped();
+                                lastServicedOrSkipped = statsBizStoreDaily.getLastServicedOrSkipped();
                                 timeOfServices.put(storeName, firstServicedOrSkipped + " - " + lastServicedOrSkipped);
 
                                 if (storeTotalClient > 0) {

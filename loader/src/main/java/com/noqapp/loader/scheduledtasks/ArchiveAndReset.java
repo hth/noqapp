@@ -458,8 +458,8 @@ public class ArchiveAndReset {
     }
 
     private void computeBeginAndEndTimeOfService(List<QueueEntity> queues, StatsBizStoreDailyEntity statsBizStoreDaily) {
-        Date firstServicedOrSkipped = null;
-        Date lastServicedOrSkipped = null;
+        String firstServicedOrSkipped = null;
+        String lastServicedOrSkipped = null;
 
         QueueEntity queueFirst = queues.stream()
             .filter(queue -> queue.getQueueUserState() == QueueUserStateEnum.S || queue.getQueueUserState() == QueueUserStateEnum.N)
@@ -472,9 +472,10 @@ public class ArchiveAndReset {
                 .reduce((first, second) -> second)
                 .orElse(null);
 
-            firstServicedOrSkipped = queueFirst.getServiceBeginTime();
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(statsBizStoreDaily.getCodeQR());
+            firstServicedOrSkipped = String.valueOf(CommonUtil.getTimeIn24HourFormat(DateUtil.convertToLocalDateTime(queueFirst.getServiceBeginTime(), bizStore.getTimeZone())));
             if (null != queueLast) {
-                lastServicedOrSkipped = queueLast.getServiceEndTime();
+                lastServicedOrSkipped = String.valueOf(CommonUtil.getTimeIn24HourFormat(DateUtil.convertToLocalDateTime(queueLast.getServiceEndTime(), bizStore.getTimeZone())));
             }
         }
 

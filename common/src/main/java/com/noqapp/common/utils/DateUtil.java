@@ -303,6 +303,11 @@ public final class DateUtil {
             .toLocalDateTime();
     }
 
+    public static ZonedDateTime convertToLocalDateTime(Date dateToConvert, String timeZone) {
+        return dateToConvert.toInstant()
+            .atZone(ZoneId.of(timeZone));
+    }
+
     public static int getMonthFromDate(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
     }

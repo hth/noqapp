@@ -161,7 +161,7 @@ public final class CommonUtil {
      */
     public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
         /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
-        return Integer.valueOf(String.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute())));
+        return Integer.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
     }
 
     /**
