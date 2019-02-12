@@ -161,7 +161,11 @@ public class BusinessStatsMail {
                                 lastServicedOrSkipped = statsBizStoreDaily.getLastServicedOrSkipped() == null
                                     ? "NA"
                                     : statsBizStoreDaily.getLastServicedOrSkipped();
-                                timeOfServices.put(storeName, firstServicedOrSkipped + " - " + lastServicedOrSkipped);
+
+                                /* Add details when data is not null. */
+                                if (statsBizStoreDaily.getFirstServicedOrSkipped() != null || statsBizStoreDaily.getLastServicedOrSkipped() != null) {
+                                    timeOfServices.put(storeName, firstServicedOrSkipped + " - " + lastServicedOrSkipped);
+                                }
 
                                 if (storeTotalClient > 0) {
                                     Map<String, Object> rootMap = new HashMap<>();
