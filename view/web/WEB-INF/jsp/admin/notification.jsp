@@ -86,7 +86,16 @@
                                         <form:label path="body" cssErrorClass="lb_error">Body</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="body" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:textarea path="body" rows ="7" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="ignoreSentiments" cssErrorClass="lb_error">Ignore Negative Sentiments</form:label>
+                                    </div>
+                                    <div id="addressStoreCheckBox" class="col-fields">
+                                        <form:checkbox path="ignoreSentiments" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -104,7 +113,7 @@
                                     <div class="clearFix"></div>
                                 </li>
                                 <c:if test="${sendNotificationForm.success}">
-                                    Sent successfully to ${sendNotificationForm.sendCount} people
+                                    Sent successfully to ${sendNotificationForm.sentCount} people
                                 </c:if>
                             </ul>
                         </form:form>
