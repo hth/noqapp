@@ -260,4 +260,13 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public List<UserProfileEntity> findAll() {
         return mongoTemplate.findAll(UserProfileEntity.class);
     }
+
+    @Override
+    public List<UserProfileEntity> findAllPhoneOwners() {
+        return mongoTemplate.find(
+            query(where("GP").exists(false)),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
 }

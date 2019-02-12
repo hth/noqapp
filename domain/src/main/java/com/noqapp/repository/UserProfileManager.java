@@ -58,4 +58,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     @Deprecated
     List<UserProfileEntity> findAll();
+
+    List<UserProfileEntity> findAllPhoneOwners();
 }
