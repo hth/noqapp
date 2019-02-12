@@ -394,6 +394,14 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
+    public List<QueueEntity> findByCodeQRSortedByToken(String codeQR) {
+        return mongoTemplate.find(
+                query(where("QR").is(codeQR)).with(new Sort(ASC, "TN")),
+                QueueEntity.class,
+                TABLE
+        );
+    }
+
     public long deleteByCodeQR(String codeQR) {
         return mongoTemplate.remove(
                 query(where("QR").is(codeQR)),

@@ -187,7 +187,7 @@ public class ArchiveAndReset {
             bizStore.getBizName().getBusinessName(),
             bizStore.getId());
 
-        List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
+        List<QueueEntity> queues = queueManager.findByCodeQRSortedByToken(bizStore.getCodeQR());
         StatsBizStoreDailyEntity statsBizStoreDaily;
         try {
             statsBizStoreDaily = saveDailyQueueStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
@@ -477,12 +477,13 @@ public class ArchiveAndReset {
             if (null != queueLast) {
                 lastServicedOrSkipped = String.valueOf(CommonUtil.getTimeIn24HourFormat(DateUtil.convertToLocalDateTime(queueLast.getServiceEndTime(), bizStore.getTimeZone())));
             }
+            
+            LOG.info("Computed {} {} {}", statsBizStoreDaily.getCodeQR(), firstServicedOrSkipped, lastServicedOrSkipped);
         }
 
         statsBizStoreDaily
             .setFirstServicedOrSkipped(firstServicedOrSkipped)
             .setLastServicedOrSkipped(lastServicedOrSkipped);
-        LOG.info("Computed {} {} {}", statsBizStoreDaily.getCodeQR(), firstServicedOrSkipped, lastServicedOrSkipped);
     }
 
     /** Saves daily stats for BizStore Order. */
