@@ -10,6 +10,8 @@ public class SendNotificationForm {
 
     private ScrubbedInput title;
     private ScrubbedInput body;
+    private int sentCount;
+    private boolean success;
 
     public ScrubbedInput getTitle() {
         return title;
@@ -26,6 +28,24 @@ public class SendNotificationForm {
 
     public SendNotificationForm setBody(ScrubbedInput body) {
         this.body = body;
+        return this;
+    }
+
+    public int getSentCount() {
+        return sentCount;
+    }
+
+    public SendNotificationForm setSentCount(int sentCount) {
+        this.sentCount = sentCount;
+        return this;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public SendNotificationForm setSuccess(boolean success) {
+        this.success = success;
         return this;
     }
 }
