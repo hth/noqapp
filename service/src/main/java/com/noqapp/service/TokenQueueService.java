@@ -474,27 +474,31 @@ public class TokenQueueService {
     public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin) {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-        String token = registeredDevice.getToken();
-        JsonMessage jsonMessage = new JsonMessage(token);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        if (registeredDevice != null) {
+            String token = registeredDevice.getToken();
+            JsonMessage jsonMessage = new JsonMessage(token);
+            JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
 
-        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
-            jsonMessage.getNotification()
-                .setTitle(title)
-                .setBody(body);
-        } else {
-            jsonMessage.setNotification(null);
-            jsonData.setTitle(title)
-                .setBody(body);
-        }
+            if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+                jsonMessage.getNotification()
+                    .setTitle(title)
+                    .setBody(body);
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setTitle(title)
+                    .setBody(body);
+            }
 
-        jsonMessage.setData(jsonData);
-        LOG.info("Specific Message={}", jsonMessage.asJson());
-        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            jsonMessage.setData(jsonData);
+            LOG.info("Specific Message={}", jsonMessage.asJson());
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent supervisor invite message={}", jsonMessage.asJson());
+            }
         } else {
-            LOG.info("Sent supervisor invite message={}", jsonMessage.asJson());
+            LOG.warn("Skipped as no registered device found for qid={}", qid);
         }
     }
 
