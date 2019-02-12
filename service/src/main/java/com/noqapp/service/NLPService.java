@@ -1,9 +1,11 @@
 package com.noqapp.service;
 
-import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,9 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * hitender
@@ -22,6 +26,7 @@ import java.util.List;
  */
 @Service
 public class NLPService {
+    private static final Logger LOG = LoggerFactory.getLogger(NLPService.class);
 
     private StanfordCoreNLP stanfordCoreNLP;
 
@@ -36,7 +41,6 @@ public class NLPService {
      * @param text
      * @return
      */
-    @Mobile
     public SentimentTypeEnum computeSentiment(String text) {
         int sentimentState = 0;
         SentimentTypeEnum sentimentType;
@@ -46,9 +50,30 @@ public class NLPService {
             for (CoreMap sentence : sentences) {
                 sentimentType = SentimentTypeEnum.byDescription(sentence.get(SentimentCoreAnnotations.SentimentClass.class));
                 sentimentState = sentimentState + sentimentType.getValue();
+                LOG.info("{} {}", sentimentType, sentence);
             }
 
             return sentimentState < 0 ? SentimentTypeEnum.N : SentimentTypeEnum.P;
+        }
+
+        return null;
+    }
+
+    /** This is mostly used to log and spot negative sentiments. */
+    public Map<String, SentimentTypeEnum> computeSentimentPerSentence(String text) {
+        Map<String, SentimentTypeEnum> deconstruct = new LinkedHashMap<>();
+        if (StringUtils.isNotBlank(text)) {
+            Annotation annotation = stanfordCoreNLP.process(text);
+            List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+            for (CoreMap sentence : sentences) {
+                SentimentTypeEnum sentimentType = SentimentTypeEnum.byDescription(sentence.get(SentimentCoreAnnotations.SentimentClass.class));
+                if (sentimentType == SentimentTypeEnum.N) {
+                    deconstruct.put(sentence.toString(), sentimentType);
+                    LOG.info("{} {}", sentimentType, sentence);
+                }
+            }
+
+            return deconstruct;
         }
 
         return null;

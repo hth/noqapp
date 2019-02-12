@@ -10,6 +10,7 @@ public class SendNotificationForm {
 
     private ScrubbedInput title;
     private ScrubbedInput body;
+    private boolean ignoreSentiments;
     private int sentCount;
     private boolean success;
 
@@ -28,6 +29,15 @@ public class SendNotificationForm {
 
     public SendNotificationForm setBody(ScrubbedInput body) {
         this.body = body;
+        return this;
+    }
+
+    public boolean isIgnoreSentiments() {
+        return ignoreSentiments;
+    }
+
+    public SendNotificationForm setIgnoreSentiments(boolean ignoreSentiments) {
+        this.ignoreSentiments = ignoreSentiments;
         return this;
     }
 

@@ -13,6 +13,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.Map;
+
 /**
  * hitender
  * 2019-02-12 06:41
@@ -62,22 +64,32 @@ public class SendNotificationValidator implements Validator {
                         "Body minimum length is should be greater than 3 and less than 256 characters");
                 }
 
-                SentimentTypeEnum sentimentType = nlpService.computeSentiment(form.getTitle().getText());
-                if (sentimentType == SentimentTypeEnum.N) {
-                    LOG.warn("Found {} for {}", sentimentType, form.getTitle().getText());
-                    errors.rejectValue("title",
-                        "improve.statement.sentiment",
-                        new Object[]{"Title"},
-                        "Please make message under title better");
-                }
+                if (!form.isIgnoreSentiments()) {
+                    SentimentTypeEnum sentimentType = nlpService.computeSentiment(form.getTitle().getText());
+                    if (sentimentType == SentimentTypeEnum.N) {
+                        LOG.warn("Found {} for {}", sentimentType, form.getTitle().getText());
+                        Map<String, SentimentTypeEnum> deconstruct = nlpService.computeSentimentPerSentence(form.getTitle().getText());
+                        for (String sentence : deconstruct.keySet()) {
+                            LOG.info("{} {}", deconstruct.get(sentence), sentence);
+                        }
+                        errors.rejectValue("title",
+                            "improve.statement.sentiment",
+                            new Object[]{"Title"},
+                            "Please make message under title better");
+                    }
 
-                sentimentType = nlpService.computeSentiment(form.getBody().getText());
-                if (sentimentType == SentimentTypeEnum.N) {
-                    LOG.warn("Found {} for {}", sentimentType, form.getBody().getText());
-                    errors.rejectValue("body",
-                        "improve.statement.sentiment",
-                        new Object[]{"Body"},
-                        "Please make message under body better");
+                    sentimentType = nlpService.computeSentiment(form.getBody().getText());
+                    if (sentimentType == SentimentTypeEnum.N) {
+                        LOG.warn("Found {} for {}", sentimentType, form.getBody().getText());
+                        Map<String, SentimentTypeEnum> deconstruct = nlpService.computeSentimentPerSentence(form.getBody().getText());
+                        for (String sentence : deconstruct.keySet()) {
+                            LOG.info("{} {}", deconstruct.get(sentence), sentence);
+                        }
+                        errors.rejectValue("body",
+                            "improve.statement.sentiment",
+                            new Object[]{"Body"},
+                            "Please make message under body better");
+                    }
                 }
             }
         }
