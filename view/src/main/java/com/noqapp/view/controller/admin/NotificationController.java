@@ -104,6 +104,8 @@ public class NotificationController {
                     sendNotificationForm.getBody().getText(),
                     userProfile.getQueueUserId(),
                     MessageOriginEnum.D);
+
+                sentCount++;
             } else {
                 if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
                     tokenQueueService.sendMessageToSpecificUser(
@@ -111,10 +113,10 @@ public class NotificationController {
                         sendNotificationForm.getBody().getText(),
                         userProfile.getQueueUserId(),
                         MessageOriginEnum.D);
+
+                    sentCount++;
                 }
             }
-
-            sentCount++;
         }
         sendNotificationForm
             .setSentCount(sentCount)
