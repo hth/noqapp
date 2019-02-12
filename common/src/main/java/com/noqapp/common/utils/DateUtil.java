@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -123,9 +124,14 @@ public final class DateUtil {
         return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
     }
 
-    /** Gets current day of weekn on UTC. */
+    /** Gets current day of week on UTC. */
     public static int getUTCDayOfWeek() {
         return new DateTime(DateTimeZone.UTC).getDayOfWeek();
+    }
+
+    public static DayOfWeek getDayOfWeekFromDate(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
+        return localDate.getDayOfWeek();
     }
 
     public static LocalTime getTimeAtTimeZone(String forTimeZone) {
