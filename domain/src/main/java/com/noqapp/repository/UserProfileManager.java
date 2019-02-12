@@ -5,6 +5,7 @@ import com.noqapp.domain.annotation.Mobile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -59,5 +60,5 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     @Deprecated
     List<UserProfileEntity> findAll();
 
-    List<UserProfileEntity> findAllPhoneOwners();
+    Stream<UserProfileEntity> findAllPhoneOwners();
 }

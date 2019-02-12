@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -262,11 +263,11 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public List<UserProfileEntity> findAllPhoneOwners() {
+    public Stream<UserProfileEntity> findAllPhoneOwners() {
         return mongoTemplate.find(
             query(where("GP").exists(false)),
             UserProfileEntity.class,
             TABLE
-        );
+        ).stream();
     }
 }
