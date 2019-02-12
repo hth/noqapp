@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -108,6 +110,7 @@ public class BusinessStatsMail {
             date.set(Calendar.HOUR_OF_DAY, 7);
             List<String> zones = getAllTimeZones(date);
             Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
+            DayOfWeek dayOfWeek = DateUtil.getDayOfWeekFromDate(since);
             for (String zone : zones) {
                 try (Stream<BizNameEntity> stream = bizNameManager.findAll(zone)) {
                     stream.iterator().forEachRemaining(bizName -> {
@@ -163,8 +166,14 @@ public class BusinessStatsMail {
                                     : statsBizStoreDaily.getLastServicedOrSkipped();
 
                                 /* Add details when data is not null. */
-                                if (statsBizStoreDaily.getFirstServicedOrSkipped() != null || statsBizStoreDaily.getLastServicedOrSkipped() != null) {
-                                    timeOfServices.put(storeName, firstServicedOrSkipped + " - " + lastServicedOrSkipped);
+                                if (null != statsBizStoreDaily.getFirstServicedOrSkipped() || null != statsBizStoreDaily.getLastServicedOrSkipped()) {
+                                    String startHour = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(dayOfWeek));
+                                    String endHour = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(dayOfWeek));
+                                    timeOfServices.put(
+                                        storeName,
+                                        computeBeforeAfterSchedule(startHour, firstServicedOrSkipped)
+                                            + " - "
+                                            + computeBeforeAfterSchedule(endHour, lastServicedOrSkipped));
                                 }
 
                                 if (storeTotalClient > 0) {
@@ -291,5 +300,17 @@ public class BusinessStatsMail {
             }
         }
         return ret;
+    }
+
+    private String computeBeforeAfterSchedule(String expected, String actual) {
+        int exp = Integer.valueOf(expected);
+        int act = Integer.valueOf(actual);
+        if (act < exp) {
+            return "Schedule [" + expected + "] [Arrived: " + actual + "] (Early)";
+        } else if (act > exp) {
+            return "Schedule [" + expected + "] [Arrived: " + actual + "] (Late)";
+        } else {
+            return "Schedule [" + expected + "] [Arrived: " + actual + "] (On time)";
+        }
     }
 }
