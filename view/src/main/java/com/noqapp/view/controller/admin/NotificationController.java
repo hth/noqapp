@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -96,34 +97,36 @@ public class NotificationController {
         }
 
         try {
-            List<UserProfileEntity> userProfiles = userProfileManager.findAllPhoneOwners();
-            int sentCount = 0;
-            for (UserProfileEntity userProfile : userProfiles) {
-                if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
-                    tokenQueueService.sendMessageToSpecificUser(
-                        sendNotificationForm.getTitle().getText(),
-                        sendNotificationForm.getBody().getText(),
-                        userProfile.getQueueUserId(),
-                        MessageOriginEnum.D);
-
-                    sentCount++;
-                } else {
-                    if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
+            AtomicInteger sentCount = new AtomicInteger();
+            try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
+                stream.iterator().forEachRemaining(userProfile -> {
+                    if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
                         tokenQueueService.sendMessageToSpecificUser(
                             sendNotificationForm.getTitle().getText(),
                             sendNotificationForm.getBody().getText(),
                             userProfile.getQueueUserId(),
                             MessageOriginEnum.D);
 
-                        sentCount++;
+                        sentCount.getAndIncrement();
+                    } else {
+                        if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
+                            tokenQueueService.sendMessageToSpecificUser(
+                                sendNotificationForm.getTitle().getText(),
+                                sendNotificationForm.getBody().getText(),
+                                userProfile.getQueueUserId(),
+                                MessageOriginEnum.D);
+
+                            sentCount.getAndIncrement();
+                        }
                     }
-                }
+                });
             }
             sendNotificationForm
-                .setSentCount(sentCount)
+                .setSentCount(sentCount.get())
                 .setSuccess(true)
                 .setIgnoreSentiments(false);
             redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
+            LOG.info("Sent global notification {} {} {}", sentCount.get(), sendNotificationForm.getTitle(), sendNotificationForm.getBody());
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
@@ -135,5 +138,4 @@ public class NotificationController {
         LOG.info("Loading admin landing after user search cancelled");
         return "redirect:/admin/landing.htm";
     }
-
 }
