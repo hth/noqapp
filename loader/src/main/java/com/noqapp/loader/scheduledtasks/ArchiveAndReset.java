@@ -187,7 +187,7 @@ public class ArchiveAndReset {
             bizStore.getBizName().getBusinessName(),
             bizStore.getId());
 
-        List<QueueEntity> queues = queueManager.findByCodeQR(bizStore.getCodeQR());
+        List<QueueEntity> queues = queueManager.findByCodeQRSortedByToken(bizStore.getCodeQR());
         StatsBizStoreDailyEntity statsBizStoreDaily;
         try {
             statsBizStoreDaily = saveDailyQueueStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);

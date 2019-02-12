@@ -106,6 +106,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM);
 
     List<QueueEntity> findByCodeQR(String codeQR);
+    List<QueueEntity> findByCodeQRSortedByToken(String codeQR);
 
     long deleteByCodeQR(String codeQR);
 
