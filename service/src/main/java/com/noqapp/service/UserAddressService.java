@@ -39,9 +39,9 @@ public class UserAddressService {
 
         DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(address), 0);
         UserAddressEntity userAddress = new UserAddressEntity(qid, address)
-                .setLastUsed()
-                .setCountryShortName(decodedAddress.getCountryShortName())
-                .setGeoHash(decodedAddress.getGeoPoint() == null ? null : decodedAddress.getGeoPoint().getGeohash());
+            .setLastUsed()
+            .setCountryShortName(decodedAddress.getCountryShortName())
+            .setGeoHash(decodedAddress.getGeoPoint() == null ? null : decodedAddress.getGeoPoint().getGeohash());
         userAddress.setId(id);
         userAddressManager.save(userAddress);
     }
@@ -63,10 +63,10 @@ public class UserAddressService {
         List<UserAddressEntity> userAddresses = getAll(qid);
         for (UserAddressEntity userAddress : userAddresses) {
             jsonUserAddressList.addJsonUserAddresses(new JsonUserAddress()
-                    .setId(userAddress.getId())
-                    .setAddress(userAddress.getAddress())
-                    .setGeoHash(userAddress.getGeoHash())
-                    .setCountryShortName(userAddress.getCountryShortName()));
+                .setId(userAddress.getId())
+                .setAddress(userAddress.getAddress())
+                .setGeoHash(userAddress.getGeoHash())
+                .setCountryShortName(userAddress.getCountryShortName()));
         }
 
         return jsonUserAddressList;

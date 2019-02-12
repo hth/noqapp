@@ -16,10 +16,10 @@ import java.util.Date;
  * Date: 11/19/16 12:45 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class UserProfilePreferenceService {
@@ -29,8 +29,8 @@ public class UserProfilePreferenceService {
 
     @Autowired
     public UserProfilePreferenceService(
-            UserProfileManager userProfileManager,
-            UserPreferenceManager userPreferenceManager) {
+        UserProfileManager userProfileManager,
+        UserPreferenceManager userPreferenceManager) {
 
         this.userProfileManager = userProfileManager;
         this.userPreferenceManager = userPreferenceManager;

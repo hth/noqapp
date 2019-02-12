@@ -474,7 +474,7 @@ public class TokenQueueService {
     public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin) {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-        if (registeredDevice != null) {
+        if (null != registeredDevice) {
             String token = registeredDevice.getToken();
             JsonMessage jsonMessage = new JsonMessage(token);
             JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
