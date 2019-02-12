@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ public class NotificationController {
 
     private String nextPage;
 
+    private Environment environment;
     private SendNotificationValidator sendNotificationValidator;
     private TokenQueueService tokenQueueService;
     private UserProfileManager userProfileManager;
@@ -45,12 +47,14 @@ public class NotificationController {
         @Value("${nextPage:/admin/notification}")
         String nextPage,
 
+        Environment environment,
         SendNotificationValidator sendNotificationValidator,
         TokenQueueService tokenQueueService,
         UserProfileManager userProfileManager
     ) {
         this.nextPage = nextPage;
 
+        this.environment = environment;
         this.sendNotificationValidator = sendNotificationValidator;
         this.tokenQueueService = tokenQueueService;
         this.userProfileManager = userProfileManager;
@@ -95,13 +99,25 @@ public class NotificationController {
             List<UserProfileEntity> userProfiles = userProfileManager.findAllPhoneOwners();
             int sentCount = 0;
             for (UserProfileEntity userProfile : userProfiles) {
-                tokenQueueService.sendMessageToSpecificUser(
-                    sendNotificationForm.getTitle().getText(),
-                    sendNotificationForm.getBody().getText(),
-                    userProfile.getQueueUserId(),
-                    MessageOriginEnum.D);
+                if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
+                    tokenQueueService.sendMessageToSpecificUser(
+                        sendNotificationForm.getTitle().getText(),
+                        sendNotificationForm.getBody().getText(),
+                        userProfile.getQueueUserId(),
+                        MessageOriginEnum.D);
 
-                sentCount++;
+                    sentCount++;
+                } else {
+                    if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
+                        tokenQueueService.sendMessageToSpecificUser(
+                            sendNotificationForm.getTitle().getText(),
+                            sendNotificationForm.getBody().getText(),
+                            userProfile.getQueueUserId(),
+                            MessageOriginEnum.D);
+
+                        sentCount++;
+                    }
+                }
             }
             sendNotificationForm
                 .setSentCount(sentCount)
