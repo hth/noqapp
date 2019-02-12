@@ -126,6 +126,7 @@ public class NotificationController {
                 .setSuccess(true)
                 .setIgnoreSentiments(false);
             redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
+            LOG.info("Sent global notification {} {} {}", sentCount.get(), sendNotificationForm.getTitle(), sendNotificationForm.getBody());
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
@@ -137,5 +138,4 @@ public class NotificationController {
         LOG.info("Loading admin landing after user search cancelled");
         return "redirect:/admin/landing.htm";
     }
-
 }
