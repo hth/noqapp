@@ -1,4 +1,3 @@
-<%@ page import="com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -53,11 +52,23 @@
                 <div class="admin-content">
                     <div class="add-new">
                         <form:form method="POST" action="./landing.htm" modelAttribute="sendNotificationForm">
+                            <spring:hasBindErrors name="sendNotificationForm">
+                                <div class="error-box">
+                                    <div class="error-txt">
+                                        <ul>
+                                            <c:forEach items="${errors.allErrors}" var="message">
+                                            <li><spring:message message="${message}" /></li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="space10"></div>
+                            </spring:hasBindErrors>
                             <ul class="list-form">
                                 <li>
                                     <div class="alert-info">
                                         <p>
-                                            Send Notification to all
+                                            Sends Notification to all
                                         </p>
                                     </div>
                                 </li>
@@ -75,7 +86,7 @@
                                         <form:label path="body" cssErrorClass="lb_error">Body</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="body" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:textarea path="body" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
