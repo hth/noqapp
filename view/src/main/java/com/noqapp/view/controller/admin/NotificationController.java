@@ -91,22 +91,26 @@ public class NotificationController {
             return "redirect:" + "/admin/notification/landing" + ".htm";
         }
 
-        List<UserProfileEntity> userProfiles = userProfileManager.findAllPhoneOwners();
-        int sentCount = 0;
-        for (UserProfileEntity userProfile : userProfiles) {
-            tokenQueueService.sendMessageToSpecificUser(
-                sendNotificationForm.getTitle().getText(),
-                sendNotificationForm.getBody().getText(),
-                userProfile.getQueueUserId(),
-                MessageOriginEnum.D);
+        try {
+            List<UserProfileEntity> userProfiles = userProfileManager.findAllPhoneOwners();
+            int sentCount = 0;
+            for (UserProfileEntity userProfile : userProfiles) {
+                tokenQueueService.sendMessageToSpecificUser(
+                    sendNotificationForm.getTitle().getText(),
+                    sendNotificationForm.getBody().getText(),
+                    userProfile.getQueueUserId(),
+                    MessageOriginEnum.D);
 
-            sentCount++;
+                sentCount++;
+            }
+            sendNotificationForm
+                .setSentCount(sentCount)
+                .setSuccess(true)
+                .setIgnoreSentiments(false);
+            redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
+        } catch (Exception e) {
+            LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
-        sendNotificationForm
-            .setSentCount(sentCount)
-            .setSuccess(true)
-            .setIgnoreSentiments(false);
-        redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
         return "redirect:" + "/admin/notification/landing" + ".htm";
     }
 
