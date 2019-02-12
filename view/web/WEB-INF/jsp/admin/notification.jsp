@@ -103,6 +103,9 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+                                <c:if test="${sendNotificationForm.success}">
+                                    Sent successfully to ${sendNotificationForm.sendCount} people
+                                </c:if>
                             </ul>
                         </form:form>
                     </div>

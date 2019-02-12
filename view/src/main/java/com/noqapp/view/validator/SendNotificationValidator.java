@@ -64,6 +64,7 @@ public class SendNotificationValidator implements Validator {
 
                 SentimentTypeEnum sentimentType = nlpService.computeSentiment(form.getTitle().getText());
                 if (sentimentType == SentimentTypeEnum.N) {
+                    LOG.warn("Found {} for {}", sentimentType, form.getTitle().getText());
                     errors.rejectValue("title",
                         "improve.statement.sentiment",
                         new Object[]{"Title"},
@@ -72,6 +73,7 @@ public class SendNotificationValidator implements Validator {
 
                 sentimentType = nlpService.computeSentiment(form.getBody().getText());
                 if (sentimentType == SentimentTypeEnum.N) {
+                    LOG.warn("Found {} for {}", sentimentType, form.getBody().getText());
                     errors.rejectValue("body",
                         "improve.statement.sentiment",
                         new Object[]{"Body"},

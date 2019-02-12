@@ -92,6 +92,7 @@ public class NotificationController {
         }
 
         List<UserProfileEntity> userProfiles = userProfileManager.findAllPhoneOwners();
+        int sentCount = 0;
         for (UserProfileEntity userProfile : userProfiles) {
             if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
                 tokenQueueService.sendMessageToSpecificUser(
@@ -99,9 +100,11 @@ public class NotificationController {
                     sendNotificationForm.getBody().getText(),
                     userProfile.getQueueUserId(),
                     MessageOriginEnum.D);
+
+                sentCount++;
             }
         }
-
+        sendNotificationForm.setSentCount(sentCount).setSuccess(true);
         redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
         return "redirect:" + "/admin/notification/landing" + ".htm";
     }
