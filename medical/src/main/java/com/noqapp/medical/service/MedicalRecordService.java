@@ -20,6 +20,7 @@ import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
+import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
@@ -416,12 +417,12 @@ public class MedicalRecordService {
             medicalRadiologyManager.save(medicalRadiology);
             medicalRecordManager.addMedicalRadiologiesId(jsonMedicalRecord.getRecordReferenceId(), medicalRadiology.getId());
 
-            executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList));
+            executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList, medicalRadiology.getId()));
         }
     }
 
     /** Creates order from radiology prescribed. */
-    private void createRadiologyOrder(JsonMedicalRecord jsonMedicalRecord, JsonMedicalRadiologyList jsonMedicalRadiologyList) {
+    private void createRadiologyOrder(JsonMedicalRecord jsonMedicalRecord, JsonMedicalRadiologyList jsonMedicalRadiologyList, String radiologyId) {
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
         for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
@@ -434,7 +435,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRadiologyList.getBizStoreId());
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRadiologyList.getBizStoreId(), radiologyId, jsonMedicalRadiologyList.getLabCategory());
     }
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -467,11 +468,11 @@ public class MedicalRecordService {
         medicalPathologyManager.save(medicalPathology);
         medicalRecordManager.addMedicalLaboratoryId(jsonMedicalRecord.getRecordReferenceId(), medicalPathology.getId());
 
-        executorService.submit(() -> createPathologyOrder(jsonMedicalRecord));
+        executorService.submit(() -> createPathologyOrder(jsonMedicalRecord, medicalPathology.getId()));
     }
 
     /** Creates order from pathology lab test prescribed. */
-    private void createPathologyOrder(JsonMedicalRecord jsonMedicalRecord) {
+    private void createPathologyOrder(JsonMedicalRecord jsonMedicalRecord, String pathologyId) {
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
         for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
@@ -484,7 +485,7 @@ public class MedicalRecordService {
             jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
         }
 
-        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdPathology());
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdPathology(), pathologyId, LabCategoryEnum.PATH);
     }
 
     private void populateWithMedicalMedicine(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
@@ -825,6 +826,31 @@ public class MedicalRecordService {
         }
 
         return new JsonQueuePersonList().setQueuedPeople(jsonQueuedPeople).asJson();
+    }
+
+    /** Puts in a purchase order. */
+    private void placeOrder(
+        JsonMedicalRecord jsonMedicalRecord,
+        JsonPurchaseOrder jsonPurchaseOrder,
+        String bizStoreId,
+        String recordId,
+        LabCategoryEnum labCategory
+    ) {
+        placeOrder(jsonMedicalRecord, jsonPurchaseOrder, bizStoreId);
+        switch (labCategory) {
+            case PATH:
+                medicalPathologyManager.updateWithTransactionId(recordId, jsonPurchaseOrder.getTransactionId());
+                break;
+            case SCAN:
+            case XRAY:
+            case SPEC:
+            case MRI:
+            case SONO:
+                medicalRadiologyManager.updateWithTransactionId(recordId, jsonPurchaseOrder.getTransactionId());
+                break;
+            default:
+                break;
+        }
     }
 
     /** Puts in a purchase order. */

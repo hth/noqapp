@@ -335,11 +335,6 @@ public class MedicalRecordEntity extends BaseEntity {
         return this;
     }
 
-    public MedicalRecordEntity addTransactionId(String transactionId) {
-        this.transactionIds.add(transactionId);
-        return this;
-    }
-
     public List<String> getImages() {
         return images;
     }

@@ -9,4 +9,6 @@ import com.noqapp.repository.RepositoryManager;
  */
 public interface MedicalPathologyManager extends RepositoryManager<MedicalPathologyEntity> {
     void deleteHard(String id);
+
+    void updateWithTransactionId(String id, String transactionId);
 }
