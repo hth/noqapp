@@ -32,6 +32,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -310,5 +311,21 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 RegisteredDeviceEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public Stream<RegisteredDeviceEntity> findAllTokenWithoutQID(AppFlavorEnum appFlavor) {
+        Query query;
+        if (null == appFlavor) {
+            query = query(where("QID").exists(false));
+        } else {
+            query = query(where("QID").exists(false).and("AF").is(appFlavor));
+        }
+
+        return mongoTemplate.find(
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE
+        ).stream();
     }
 }

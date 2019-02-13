@@ -7,6 +7,7 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -66,4 +67,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     long countRegisteredBetweenDates(Date from, Date to, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor);
 
     RegisteredDeviceEntity findRecentDevice(String qid);
+
+    Stream<RegisteredDeviceEntity> findAllTokenWithoutQID(AppFlavorEnum appFlavor);
 }

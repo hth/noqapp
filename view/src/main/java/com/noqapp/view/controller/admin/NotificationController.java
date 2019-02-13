@@ -1,8 +1,10 @@
 package com.noqapp.view.controller.admin;
 
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.admin.SendNotificationForm;
@@ -42,6 +44,7 @@ public class NotificationController {
     private SendNotificationValidator sendNotificationValidator;
     private TokenQueueService tokenQueueService;
     private UserProfileManager userProfileManager;
+    private RegisteredDeviceManager registeredDeviceManager;
 
     @Autowired
     public NotificationController(
@@ -51,7 +54,8 @@ public class NotificationController {
         Environment environment,
         SendNotificationValidator sendNotificationValidator,
         TokenQueueService tokenQueueService,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        RegisteredDeviceManager registeredDeviceManager
     ) {
         this.nextPage = nextPage;
 
@@ -59,6 +63,7 @@ public class NotificationController {
         this.sendNotificationValidator = sendNotificationValidator;
         this.tokenQueueService = tokenQueueService;
         this.userProfileManager = userProfileManager;
+        this.registeredDeviceManager = registeredDeviceManager;
     }
 
     /** Gymnastic for PRG. */
@@ -121,6 +126,21 @@ public class NotificationController {
                     }
                 });
             }
+
+            try (Stream<RegisteredDeviceEntity> stream = registeredDeviceManager.findAllTokenWithoutQID(null)) {
+                stream.iterator().forEachRemaining(registeredDevice -> {
+                    if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
+                        tokenQueueService.sendMessageToSpecificUser(
+                            sendNotificationForm.getTitle().getText(),
+                            sendNotificationForm.getBody().getText(),
+                            registeredDevice,
+                            MessageOriginEnum.D);
+
+                        sentCount.getAndIncrement();
+                    }
+                });
+            }
+
             sendNotificationForm
                 .setSentCount(sentCount.get())
                 .setSuccess(true)
