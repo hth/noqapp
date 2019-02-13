@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -58,6 +59,16 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
     public void deleteHard(String id) {
         mongoTemplate.remove(
             query(where("id").is(new ObjectId(id))),
+            MedicalPathologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updateWithTransactionId(String id, String transactionId) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            Update.update("TI", transactionId),
             MedicalPathologyEntity.class,
             TABLE
         );

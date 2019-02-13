@@ -39,6 +39,9 @@ public class MedicalPathologyEntity extends BaseEntity {
     @Field("IM")
     private List<String> images;
 
+    @Field("TI")
+    private String transactionId;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -68,6 +71,15 @@ public class MedicalPathologyEntity extends BaseEntity {
 
     public MedicalPathologyEntity setImages(List<String> images) {
         this.images = images;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public MedicalPathologyEntity setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 }

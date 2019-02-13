@@ -43,6 +43,9 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("IM")
     private List<String> images;
 
+    @Field("TI")
+    private String transactionId;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -81,6 +84,15 @@ public class MedicalRadiologyEntity extends BaseEntity {
 
     public MedicalRadiologyEntity setImages(List<String> images) {
         this.images = images;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public MedicalRadiologyEntity setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 }
