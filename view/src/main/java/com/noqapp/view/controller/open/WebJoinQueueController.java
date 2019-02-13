@@ -53,7 +53,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -98,14 +97,14 @@ public class WebJoinQueueController {
 
     @Autowired
     public WebJoinQueueController(
-            BizService bizService,
-            ShowHTMLService showHTMLService,
-            TokenQueueService tokenQueueService,
-            QueueService queueService,
-            AccountService accountService,
-            GeoIPLocationService geoIPLocationService,
-            RegisteredDeviceManager registeredDeviceManager,
-            FirebaseService firebaseService
+        BizService bizService,
+        ShowHTMLService showHTMLService,
+        TokenQueueService tokenQueueService,
+        QueueService queueService,
+        AccountService accountService,
+        GeoIPLocationService geoIPLocationService,
+        RegisteredDeviceManager registeredDeviceManager,
+        FirebaseService firebaseService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
@@ -122,53 +121,61 @@ public class WebJoinQueueController {
      */
     @GetMapping(value = "/queue/{codeQR}")
     public String webJoinQueue(
-            @PathVariable("codeQR")
-            ScrubbedInput codeQR,
+        @PathVariable("codeQR")
+        ScrubbedInput codeQR,
 
-            @ModelAttribute("webJoinQueue")
-            WebJoinQueueForm webJoinQueue,
+        @ModelAttribute("webJoinQueue")
+        WebJoinQueueForm webJoinQueue,
 
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws IOException {
-        LOG.info("Coded CodeQR={}", codeQR.getText());
-        String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
+        try {
+            LOG.info("Coded CodeQR={}", codeQR.getText());
+            String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
 
-        if (!bizService.isValidCodeQR(codeQRDecoded)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
-            return null;
-        }
-
-        String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
-        String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
-        LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
-        int requesterTime = Integer.parseInt(String.format(Locale.US, "%02d", localTime.getHour()) + String.format(Locale.US, "%02d", localTime.getMinute()));
-        LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={} requestOriginatorTimeZone={}",
-                requesterTime, ipAddress, codeQRDecoded, requestOriginatorTimeZone);
-
-        BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
-        Map<String, Object> rootMap = new HashMap<>();
-        rootMap.put("requesterTime", DateFormatter.convertMilitaryTo12HourFormat(requesterTime));
-        showHTMLService.populateStore(rootMap, bizStore);
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-
-        int tokenFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
-        int tokenEnd = bizStore.getTokenNotAvailableFrom(zonedDateTime.getDayOfWeek());
-        if (requesterTime > tokenFrom && requesterTime < tokenEnd) {
-            rootMap.put("tokenAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenFrom));
-            rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
-            rootMap.put("tokenNotAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenEnd));
-            rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
-        } else {
-            if (requesterTime < tokenFrom) {
-                rootMap.put("notOpen", "Yes");
-            } else {
-                rootMap.put("closedForTheDay", "Yes");
+            if (!bizService.isValidCodeQR(codeQRDecoded)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
+                return null;
             }
-        }
 
-        webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
-        return joinQueuePage;
+            String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
+            String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
+            LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
+            int requesterTime = DateFormatter.getTimeIn24HourFormat(localTime);
+            LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={} requestOriginatorTimeZone={}",
+                requesterTime,
+                ipAddress,
+                codeQRDecoded,
+                requestOriginatorTimeZone);
+
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
+            Map<String, Object> rootMap = new HashMap<>();
+            rootMap.put("requesterTime", DateFormatter.convertMilitaryTo12HourFormat(requesterTime));
+            showHTMLService.populateStore(rootMap, bizStore);
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+
+            int tokenFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
+            int tokenEnd = bizStore.getTokenNotAvailableFrom(zonedDateTime.getDayOfWeek());
+            if (requesterTime > tokenFrom && requesterTime < tokenEnd) {
+                rootMap.put("tokenAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenFrom));
+                rootMap.put("startHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(zonedDateTime.getDayOfWeek())));
+                rootMap.put("tokenNotAvailableFrom", DateFormatter.convertMilitaryTo12HourFormat(tokenEnd));
+                rootMap.put("endHour", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(zonedDateTime.getDayOfWeek())));
+            } else {
+                if (requesterTime < tokenFrom) {
+                    rootMap.put("notOpen", "Yes");
+                } else {
+                    rootMap.put("closedForTheDay", "Yes");
+                }
+            }
+
+            webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
+            return joinQueuePage;
+        } catch (Exception e) {
+            LOG.error("Failed to load join queue page reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -176,14 +183,14 @@ public class WebJoinQueueController {
      */
     @GetMapping (value = "/{combined}/queueConfirm")
     public String confirm(
-            @PathVariable("combined")
-            ScrubbedInput combined,
+        @PathVariable("combined")
+        ScrubbedInput combined,
 
-            @ModelAttribute("webJoinQueue")
-            WebJoinQueueForm webJoinQueue,
+        @ModelAttribute("webJoinQueue")
+        WebJoinQueueForm webJoinQueue,
 
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws IOException {
         if (StringUtils.isNotBlank(combined.getText())) {
             try {
@@ -221,9 +228,9 @@ public class WebJoinQueueController {
             } catch (Exception e) {
                 LOG.error("Failed loading Web Confirmation text={} reason={}", combined.getText(), e.getLocalizedMessage(), e);
                 LOG.warn(
-                        "404 request access={} header={}",
-                        joinQueueConfirmPage,
-                        HttpRequestResponseParser.printHeader(request)
+                    "404 request access={} header={}",
+                    joinQueueConfirmPage,
+                    HttpRequestResponseParser.printHeader(request)
                 );
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return null;
@@ -238,10 +245,10 @@ public class WebJoinQueueController {
     @PostMapping(value = "/queue")
     @ResponseBody
     public String joinQueue(
-            @ModelAttribute("webJoinQueue")
-            WebJoinQueueForm webJoinQueue,
+        @ModelAttribute("webJoinQueue")
+        WebJoinQueueForm webJoinQueue,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException, ParseException {
         try {
             LOG.info("CodeQR={}", webJoinQueue.getCodeQR().getText());
@@ -259,11 +266,11 @@ public class WebJoinQueueController {
             if (null != queue) {
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQRDecoded);
                 jsonToken = new JsonToken(codeQRDecoded, bizStore.getBusinessType())
-                        .setToken(queue.getTokenNumber())
-                        .setServingNumber(tokenQueue.getCurrentlyServing())
-                        .setDisplayName(tokenQueue.getDisplayName())
-                        .setQueueStatus(tokenQueue.getQueueStatus())
-                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                    .setToken(queue.getTokenNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayName(tokenQueue.getDisplayName())
+                    .setQueueStatus(tokenQueue.getQueueStatus())
+                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
             } else {
                 UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
                 if (bizStore.isAllowLoggedInUser() && userProfile == null) {
@@ -282,12 +289,12 @@ public class WebJoinQueueController {
                     }
                 }
                 jsonToken = tokenQueueService.getNextToken(
-                        codeQRDecoded,
-                        did,
-                        null != userProfile ? userProfile.getQueueUserId() : null,
-                        null,
-                        bizStore.getAverageServiceTime(),
-                        TokenServiceEnum.W
+                    codeQRDecoded,
+                    did,
+                    null != userProfile ? userProfile.getQueueUserId() : null,
+                    null,
+                    bizStore.getAverageServiceTime(),
+                    TokenServiceEnum.W
                 );
 
                 if (null != userProfile) {
@@ -299,10 +306,10 @@ public class WebJoinQueueController {
                     }
                 } else {
                     queueService.addPhoneNumberToExistingQueue(
-                            jsonToken.getToken(),
-                            codeQRDecoded,
-                            did,
-                            webJoinQueue.getPhone().getText());
+                        jsonToken.getToken(),
+                        codeQRDecoded,
+                        did,
+                        webJoinQueue.getPhone().getText());
                 }
             }
 
@@ -314,8 +321,8 @@ public class WebJoinQueueController {
             String expectedServiceBegin = StringUtils.isBlank(jsonToken.getExpectedServiceBegin()) ? "" : jsonToken.getExpectedServiceBegin();
             /* Encoding of data. */
             String combined = jsonToken.getCodeQR()
-                    + "#" + jsonToken.getToken()
-                    + "#" + expectedServiceBegin;
+                + "#" + jsonToken.getToken()
+                + "#" + expectedServiceBegin;
             return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
         } catch (IOException | ParseException e) {
             LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);

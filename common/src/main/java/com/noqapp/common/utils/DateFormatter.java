@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.time.LocalTime;
 import java.util.Locale;
 
 /**
@@ -21,5 +22,11 @@ public class DateFormatter {
 
     public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
         return convertMilitaryTo12HourFormat(String.format(Locale.US, "%04d", rawTimestamp));
+    }
+
+    public static int getTimeIn24HourFormat(LocalTime localTime) {
+        return Integer.parseInt(
+            String.format(Locale.US, "%02d", localTime.getHour())
+                + String.format(Locale.US, "%02d", localTime.getMinute()));
     }
 }
