@@ -317,9 +317,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public Stream<RegisteredDeviceEntity> findAllTokenWithoutQID(AppFlavorEnum appFlavor) {
         Query query;
         if (null == appFlavor) {
-            query = query(where("QID").exists(false));
+            query = query(where("QID").exists(false).and("TK").ne("BLACKLISTED"));
         } else {
-            query = query(where("QID").exists(false).and("AF").is(appFlavor));
+            query = query(where("QID").exists(false).and("TK").ne("BLACKLISTED").and("AF").is(appFlavor));
         }
 
         return mongoTemplate.find(
