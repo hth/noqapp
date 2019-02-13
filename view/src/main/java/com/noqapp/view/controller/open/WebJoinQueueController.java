@@ -53,6 +53,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -141,7 +142,7 @@ public class WebJoinQueueController {
         String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
         String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
         LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
-        int requesterTime = Integer.parseInt(localTime.getHour() + String.valueOf(localTime.getMinute()));
+        int requesterTime = Integer.parseInt(String.format(Locale.US, "%02d", localTime.getHour()) + String.format(Locale.US, "%02d", localTime.getMinute()));
         LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={} requestOriginatorTimeZone={}",
                 requesterTime, ipAddress, codeQRDecoded, requestOriginatorTimeZone);
 
