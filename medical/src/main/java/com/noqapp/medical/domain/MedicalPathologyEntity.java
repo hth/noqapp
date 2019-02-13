@@ -35,6 +35,7 @@ public class MedicalPathologyEntity extends BaseEntity {
     @Field("PD")
     private List<String> medicalPathologyTestIds = new LinkedList<>();
 
+    /** Image resides inside this record. */
     @Field("IM")
     private List<String> images;
 

@@ -39,6 +39,7 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("RD")
     private List<String> medicalRadiologyXRayIds = new LinkedList<>();
 
+    /** Image resides inside this record. */
     @Field("IM")
     private List<String> images;
 
