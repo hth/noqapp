@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
+import com.noqapp.medical.domain.MedicalRadiologyEntity;
 
 import org.bson.types.ObjectId;
 
@@ -69,6 +70,24 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
             Update.update("TI", transactionId),
+            MedicalPathologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public MedicalPathologyEntity findByTransactionId(String transactionId) {
+        return mongoTemplate.findOne(
+            query(where("TI").is(transactionId)),
+            MedicalPathologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public MedicalPathologyEntity findById(String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(new ObjectId(id))),
             MedicalPathologyEntity.class,
             TABLE
         );
