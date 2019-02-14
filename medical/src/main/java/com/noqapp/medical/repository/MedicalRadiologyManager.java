@@ -17,4 +17,8 @@ public interface MedicalRadiologyManager  extends RepositoryManager<MedicalRadio
     MedicalRadiologyEntity findOne(List<String> ids, LabCategoryEnum labCategory);
 
     void updateWithTransactionId(String id, String transactionId);
+
+    MedicalRadiologyEntity findByTransactionId(String transactionId);
+
+    MedicalRadiologyEntity findById(String id);
 }

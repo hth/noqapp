@@ -74,6 +74,14 @@ public class MedicalPathologyEntity extends BaseEntity {
         return this;
     }
 
+    public MedicalPathologyEntity addImage(String image) {
+        if (images == null) {
+            images = new LinkedList<>();
+        }
+        this.images.add(image);
+        return this;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }

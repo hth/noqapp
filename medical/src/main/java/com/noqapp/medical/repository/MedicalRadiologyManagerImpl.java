@@ -89,4 +89,22 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
             TABLE
         );
     }
+
+    @Override
+    public MedicalRadiologyEntity findByTransactionId(String transactionId) {
+        return mongoTemplate.findOne(
+            query(where("TI").is(transactionId)),
+            MedicalRadiologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public MedicalRadiologyEntity findById(String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(new ObjectId(id))),
+            MedicalRadiologyEntity.class,
+            TABLE
+        );
+    }
 }

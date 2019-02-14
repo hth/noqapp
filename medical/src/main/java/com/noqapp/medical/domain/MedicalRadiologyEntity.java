@@ -87,6 +87,14 @@ public class MedicalRadiologyEntity extends BaseEntity {
         return this;
     }
 
+    public MedicalRadiologyEntity addImage(String image) {
+        if (images == null) {
+            images = new LinkedList<>();
+        }
+        this.images.add(image);
+        return this;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }
