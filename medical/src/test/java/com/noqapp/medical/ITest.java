@@ -5,6 +5,10 @@ import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
+import com.noqapp.medical.repository.MedicalPathologyManager;
+import com.noqapp.medical.repository.MedicalPathologyManagerImpl;
+import com.noqapp.medical.repository.MedicalRadiologyManager;
+import com.noqapp.medical.repository.MedicalRadiologyManagerImpl;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.medical.repository.MedicalRecordManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
@@ -136,6 +140,8 @@ public class ITest extends RealMongoForITest {
     protected MasterLabManager masterLabManager;
     protected PublishArticleManager publishArticleManager;
     protected MedicalRecordManager medicalRecordManager;
+    protected MedicalRadiologyManager medicalRadiologyManager;
+    protected MedicalPathologyManager medicalPathologyManager;
     protected StatsBizStoreDailyManager statsBizStoreDailyManager;
 
     protected S3FileManager s3FileManager;
@@ -175,6 +181,8 @@ public class ITest extends RealMongoForITest {
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
         medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
+        medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
+        medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
@@ -255,7 +263,7 @@ public class ITest extends RealMongoForITest {
             storeCategoryService
         );
 
-        medicalFileService = new MedicalFileService(medicalRecordManager, s3FileManager, fileService ,ftpService);
+        medicalFileService = new MedicalFileService(medicalRecordManager, medicalPathologyManager, medicalRadiologyManager, s3FileManager, fileService ,ftpService);
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
             transactionManager(),
