@@ -8,6 +8,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
@@ -15,6 +16,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
+import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MailService;
 import com.noqapp.service.StatsCronService;
@@ -56,6 +58,7 @@ public class BusinessStatsMail {
 
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
+    private StoreHourManager storeHourManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
     private MailService mailService;
     private BusinessUserManager businessUserManager;
@@ -70,6 +73,7 @@ public class BusinessStatsMail {
 
         BizNameManager bizNameManager,
         BizStoreManager bizStoreManager,
+        StoreHourManager storeHourManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         MailService mailService,
         BusinessUserManager businessUserManager,
@@ -81,6 +85,7 @@ public class BusinessStatsMail {
 
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
+        this.storeHourManager = storeHourManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.mailService = mailService;
         this.businessUserManager = businessUserManager;
@@ -167,13 +172,12 @@ public class BusinessStatsMail {
 
                                 /* Add details when data is not null. */
                                 if (null != statsBizStoreDaily.getFirstServicedOrSkipped() || null != statsBizStoreDaily.getLastServicedOrSkipped()) {
-                                    String startHour = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(dayOfWeek));
-                                    String endHour = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(dayOfWeek));
+                                    StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
                                     timeOfServices.put(
                                         storeName,
-                                        computeBeforeAfterSchedule(startHour, firstServicedOrSkipped)
+                                        computeBeforeAfterSchedule(storeHour.getStartHour(), firstServicedOrSkipped, true)
                                             + " - "
-                                            + computeBeforeAfterSchedule(endHour, lastServicedOrSkipped));
+                                            + computeBeforeAfterSchedule(storeHour.getEndHour(), lastServicedOrSkipped, false));
                                 }
 
                                 if (storeTotalClient > 0) {
@@ -202,7 +206,10 @@ public class BusinessStatsMail {
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
-                                    rootMap.put("timeOfService", firstServicedOrSkipped + " - " + lastServicedOrSkipped);
+                                    rootMap.put("timeOfService",
+                                        DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(firstServicedOrSkipped))
+                                            + " - "
+                                            + DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(lastServicedOrSkipped)));
 
                                     List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
                                     LOG.info("Found business users size={} {} storeTotalClient={}", businessUserStores.size(), businessUserStores, storeTotalClient);
@@ -302,15 +309,18 @@ public class BusinessStatsMail {
         return ret;
     }
 
-    private String computeBeforeAfterSchedule(String expected, String actual) {
-        int exp = Integer.valueOf(expected);
+    private String computeBeforeAfterSchedule(int expected, String actual, boolean arrival) {
+        String text = arrival ? "Arrived" : "Departure";
         int act = Integer.valueOf(actual);
-        if (act < exp) {
-            return "Schedule [" + expected + "] [Arrived: " + actual + "] (Early)";
-        } else if (act > exp) {
-            return "Schedule [" + expected + "] [Arrived: " + actual + "] (Late)";
+        if (act < expected) {
+            return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Early)";
+        } else if (act > expected) {
+            return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Late)";
         } else {
-            return "Schedule [" + expected + "] [Arrived: " + actual + "] (On time)";
+            return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (On time)";
         }
     }
 }

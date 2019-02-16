@@ -207,6 +207,9 @@ public class MedicalRecordService {
                     ? CommonUtil.generateHexFromObjectId()
                     : jsonRecord.getRecordReferenceId());
             } else {
+                /* Check if record can be updated. */
+                checkIfMedicalRecordCanBeUpdated(medicalRecord);
+
                 List<String> transactionIds = medicalRecord.getTransactionIds();
                 if (null != transactionIds) {
                     for (String transactionId : transactionIds) {
@@ -303,6 +306,28 @@ public class MedicalRecordService {
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
             throw e;
+        }
+    }
+
+    private void checkIfMedicalRecordCanBeUpdated(MedicalRecordEntity medicalRecord) {
+        String medicalLaboratoryId = medicalRecord.getMedicalLaboratoryId();
+        if (StringUtils.isNotBlank(medicalLaboratoryId)) {
+            MedicalPathologyEntity medicalPathology = medicalPathologyManager.findById(medicalLaboratoryId);
+            if (medicalPathology.getImages() != null && !medicalPathology.getImages().isEmpty()) {
+                LOG.warn("Failed updating as medical pathology contains attachments and images");
+                throw new RuntimeException("Record exists");
+            }
+        }
+
+        List<String> medicalRadiologies = medicalRecord.getMedicalRadiologies();
+        for (String medicalRadiologyId : medicalRadiologies) {
+            if (StringUtils.isNotBlank(medicalRadiologyId)) {
+                MedicalRadiologyEntity medicalRadiology = medicalRadiologyManager.findById(medicalRadiologyId);
+                if (medicalRadiology.getImages() != null && !medicalRadiology.getImages().isEmpty()) {
+                    LOG.warn("Failed updating as medical radiology contains attachments and images");
+                    throw new RuntimeException("Record exists");
+                }
+            }
         }
     }
 

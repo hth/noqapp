@@ -457,7 +457,7 @@ public class ArchiveAndReset {
         return statsBizStoreDaily;
     }
 
-    private void computeBeginAndEndTimeOfService(List<QueueEntity> queues, StatsBizStoreDailyEntity statsBizStoreDaily) {
+    void computeBeginAndEndTimeOfService(List<QueueEntity> queues, StatsBizStoreDailyEntity statsBizStoreDaily) {
         String firstServicedOrSkipped = null;
         String lastServicedOrSkipped = null;
 
