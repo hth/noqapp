@@ -133,6 +133,6 @@ class ArchiveAndResetTest {
             statsBizStoreDaily
         );
 
-        assertEquals(70, Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped()) - Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped()));
+        assertEquals(30, Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped()) - Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped()));
     }
 }
