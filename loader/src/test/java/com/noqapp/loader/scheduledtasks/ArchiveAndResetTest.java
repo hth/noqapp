@@ -31,7 +31,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -133,6 +136,8 @@ class ArchiveAndResetTest {
             statsBizStoreDaily
         );
 
-        assertEquals(30, Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped()) - Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped()));
+        LocalTime lastTime = LocalTime.parse(statsBizStoreDaily.getLastServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime firstTime = LocalTime.parse(statsBizStoreDaily.getFirstServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
+        assertEquals(30, ChronoUnit.MINUTES.between(firstTime, lastTime));
     }
 }
