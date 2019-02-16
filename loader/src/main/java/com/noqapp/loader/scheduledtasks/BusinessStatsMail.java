@@ -206,7 +206,10 @@ public class BusinessStatsMail {
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
-                                    rootMap.put("timeOfService", firstServicedOrSkipped + " - " + lastServicedOrSkipped);
+                                    rootMap.put("timeOfService",
+                                        DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(firstServicedOrSkipped))
+                                            + " - "
+                                            + DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(lastServicedOrSkipped)));
 
                                     List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
                                     LOG.info("Found business users size={} {} storeTotalClient={}", businessUserStores.size(), businessUserStores, storeTotalClient);
