@@ -59,6 +59,12 @@ class ArchiveAndResetTest {
     @Mock private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
+    private String codeQR = CommonUtil.generateHexFromObjectId();
+    private String bizStoreId = CommonUtil.generateHexFromObjectId();
+    private String bizNameId = CommonUtil.generateHexFromObjectId();
+
+    private List<QueueEntity> queues = null;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -79,13 +85,6 @@ class ArchiveAndResetTest {
             purchaseOrderManagerJDBC,
             purchaseOrderProductManagerJDBC
         );
-    }
-
-    @Test
-    void computeBeginAndEndTimeOfService() {
-        String codeQR = CommonUtil.generateHexFromObjectId();
-        String bizStoreId = CommonUtil.generateHexFromObjectId();
-        String bizNameId = CommonUtil.generateHexFromObjectId();
 
         QueueEntity a = new QueueEntity();
         a.setQueueUserState(QueueUserStateEnum.S);
@@ -102,12 +101,15 @@ class ArchiveAndResetTest {
         c.setServiceBeginTime(DateUtil.now().minusMinutes(10).toDate());
         c.setServiceEndTime(DateUtil.now().minusMinutes(0).toDate());
 
-        List<QueueEntity> queues = new LinkedList<QueueEntity>() {{
+        queues = new LinkedList<QueueEntity>() {{
             add(a);
             add(b);
             add(c);
         }};
+    }
 
+    @Test
+    void computeBeginAndEndTimeOfService() {
         StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
         statsBizStoreDaily.setBizStoreId(bizStoreId);
         statsBizStoreDaily.setBizNameId(bizNameId);
