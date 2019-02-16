@@ -31,7 +31,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +59,12 @@ class ArchiveAndResetTest {
     @Mock private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
+    private String codeQR = CommonUtil.generateHexFromObjectId();
+    private String bizStoreId = CommonUtil.generateHexFromObjectId();
+    private String bizNameId = CommonUtil.generateHexFromObjectId();
+
+    private List<QueueEntity> queues = null;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -76,13 +85,6 @@ class ArchiveAndResetTest {
             purchaseOrderManagerJDBC,
             purchaseOrderProductManagerJDBC
         );
-    }
-
-    @Test
-    void computeBeginAndEndTimeOfService() {
-        String codeQR = CommonUtil.generateHexFromObjectId();
-        String bizStoreId = CommonUtil.generateHexFromObjectId();
-        String bizNameId = CommonUtil.generateHexFromObjectId();
 
         QueueEntity a = new QueueEntity();
         a.setQueueUserState(QueueUserStateEnum.S);
@@ -99,12 +101,15 @@ class ArchiveAndResetTest {
         c.setServiceBeginTime(DateUtil.now().minusMinutes(10).toDate());
         c.setServiceEndTime(DateUtil.now().minusMinutes(0).toDate());
 
-        List<QueueEntity> queues = new LinkedList<QueueEntity>() {{
+        queues = new LinkedList<QueueEntity>() {{
             add(a);
             add(b);
             add(c);
         }};
+    }
 
+    @Test
+    void computeBeginAndEndTimeOfService() {
         StatsBizStoreDailyEntity statsBizStoreDaily = new StatsBizStoreDailyEntity();
         statsBizStoreDaily.setBizStoreId(bizStoreId);
         statsBizStoreDaily.setBizNameId(bizNameId);
@@ -133,6 +138,8 @@ class ArchiveAndResetTest {
             statsBizStoreDaily
         );
 
-        assertEquals(30, Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped()) - Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped()));
+        LocalTime lastTime = LocalTime.parse(statsBizStoreDaily.getLastServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime firstTime = LocalTime.parse(statsBizStoreDaily.getFirstServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
+        assertEquals(30, ChronoUnit.MINUTES.between(firstTime, lastTime));
     }
 }
