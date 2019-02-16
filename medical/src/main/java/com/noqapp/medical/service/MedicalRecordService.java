@@ -39,6 +39,7 @@ import com.noqapp.medical.domain.json.JsonMedicalRadiologyList;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
 import com.noqapp.medical.domain.json.JsonMedicalRecordList;
 import com.noqapp.medical.domain.json.JsonRecordAccess;
+import com.noqapp.medical.exception.ExistingLabResultException;
 import com.noqapp.medical.form.MedicalRecordForm;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicineManager;
@@ -303,6 +304,9 @@ public class MedicalRecordService {
                 }
             }
             LOG.info("Saved medical record={}", medicalRecord);
+        } catch (ExistingLabResultException e) {
+            LOG.error("Failed to modify medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
+            throw e;
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
             throw e;
@@ -315,7 +319,7 @@ public class MedicalRecordService {
             MedicalPathologyEntity medicalPathology = medicalPathologyManager.findById(medicalLaboratoryId);
             if (medicalPathology.getImages() != null && !medicalPathology.getImages().isEmpty()) {
                 LOG.warn("Failed updating as medical pathology contains attachments and images");
-                throw new RuntimeException("Record exists");
+                throw new ExistingLabResultException("Cannot modify lab result exists");
             }
         }
 
@@ -325,7 +329,7 @@ public class MedicalRecordService {
                 MedicalRadiologyEntity medicalRadiology = medicalRadiologyManager.findById(medicalRadiologyId);
                 if (medicalRadiology.getImages() != null && !medicalRadiology.getImages().isEmpty()) {
                     LOG.warn("Failed updating as medical radiology contains attachments and images");
-                    throw new RuntimeException("Record exists");
+                    throw new ExistingLabResultException("Cannot modify lab result exists");
                 }
             }
         }
