@@ -102,14 +102,21 @@ public class FileOperationOnS3 {
         this.s3FileManager = s3FileManager;
     }
 
+    /** All various processes has been clubbed to be executed once through common call. */
+    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
+    public void runProcess() {
+        profileUpload();
+        pushToS3();
+        deleteOnS3();
+    }
+
     /**
      * Upload profile image to S3.
      * Note: Cron string blow run every 5 minutes.
      *
      * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
-    public void profileUpload() {
+    private void profileUpload() {
         statsCron = new StatsCronEntity(
             FileOperationOnS3.class.getName(),
             "profileUpload",
@@ -207,8 +214,7 @@ public class FileOperationOnS3 {
         }
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
-    public void pushToS3() {
+    private void pushToS3() {
         statsCron = new StatsCronEntity(
             FileOperationOnS3.class.getName(),
             "serviceUpload",
@@ -230,8 +236,7 @@ public class FileOperationOnS3 {
         }
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.deleteOnS3}")
-    public void deleteOnS3() {
+    private void deleteOnS3() {
         statsCron = new StatsCronEntity(
             FileOperationOnS3.class.getName(),
             "deleteOnS3",
