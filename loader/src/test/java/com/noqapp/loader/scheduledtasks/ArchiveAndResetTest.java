@@ -38,6 +38,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * hitender
@@ -138,8 +139,8 @@ class ArchiveAndResetTest {
             statsBizStoreDaily
         );
 
-        LocalTime lastTime = LocalTime.parse(statsBizStoreDaily.getLastServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
-        LocalTime firstTime = LocalTime.parse(statsBizStoreDaily.getFirstServicedOrSkipped(), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime lastTime = LocalTime.parse(String.format(Locale.US, "%02d", statsBizStoreDaily.getLastServicedOrSkipped()), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime firstTime = LocalTime.parse(String.format(Locale.US, "%02d", statsBizStoreDaily.getFirstServicedOrSkipped()), DateTimeFormatter.ofPattern("HHmm"));
         assertEquals(30, ChronoUnit.MINUTES.between(firstTime, lastTime));
     }
 }
