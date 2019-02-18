@@ -15,4 +15,6 @@ public interface MedicalPathologyManager extends RepositoryManager<MedicalPathol
     MedicalPathologyEntity findByTransactionId(String transactionId);
 
     MedicalPathologyEntity findById(String id);
+
+    void updatePathologyObservation(String id, String observation);
 }
