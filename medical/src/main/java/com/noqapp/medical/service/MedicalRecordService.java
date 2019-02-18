@@ -317,7 +317,7 @@ public class MedicalRecordService {
     private void checkIfMedicalRecordCanBeUpdated(MedicalRecordEntity medicalRecord) {
         String medicalLaboratoryId = medicalRecord.getMedicalLaboratoryId();
         if (StringUtils.isNotBlank(medicalLaboratoryId)) {
-            MedicalPathologyEntity medicalPathology = medicalPathologyManager.findById(medicalLaboratoryId);
+            MedicalPathologyEntity medicalPathology = findPathologyById(medicalLaboratoryId);
             if (medicalPathology.getImages() != null && !medicalPathology.getImages().isEmpty()) {
                 LOG.warn("Failed updating as medical pathology contains attachments and images");
                 throw new ExistingLabResultException("Cannot modify lab result exists");
@@ -327,7 +327,7 @@ public class MedicalRecordService {
         List<String> medicalRadiologies = medicalRecord.getMedicalRadiologies();
         for (String medicalRadiologyId : medicalRadiologies) {
             if (StringUtils.isNotBlank(medicalRadiologyId)) {
-                MedicalRadiologyEntity medicalRadiology = medicalRadiologyManager.findById(medicalRadiologyId);
+                MedicalRadiologyEntity medicalRadiology = findRadiologyById(medicalRadiologyId);
                 if (medicalRadiology.getImages() != null && !medicalRadiology.getImages().isEmpty()) {
                     LOG.warn("Failed updating as medical radiology contains attachments and images");
                     throw new ExistingLabResultException("Cannot modify lab result exists");
@@ -694,6 +694,22 @@ public class MedicalRecordService {
         return medicalRadiologyManager.findByIds(ids);
     }
 
+    public MedicalPathologyEntity findPathologyById(String id) {
+        return medicalPathologyManager.findById(id);
+    }
+
+    public void savePathologyObservation(String id, String observation) {
+        medicalPathologyManager.updatePathologyObservation(id, observation);
+    }
+
+    public MedicalRadiologyEntity findRadiologyById(String id) {
+        return medicalRadiologyManager.findById(id);
+    }
+
+    public void saveRadiologyObservation(String id, String observation) {
+        medicalRadiologyManager.updateRadiologyObservation(id, observation);
+    }
+
     @Mobile
     public List<MedicalPathologyTestEntity> findPathologyTestByIds(String referenceId) {
         return medicalPathologyTestManager.findPathologyTestByIds(referenceId);
@@ -807,7 +823,7 @@ public class MedicalRecordService {
         }
 
         if (null != medicalRecord.getMedicalLaboratoryId()) {
-            MedicalPathologyEntity medicalPathology = medicalPathologyManager.findById(medicalRecord.getMedicalLaboratoryId());
+            MedicalPathologyEntity medicalPathology = findPathologyById(medicalRecord.getMedicalLaboratoryId());
             if (null != medicalPathology) {
                 JsonMedicalPathologyList jsonMedicalPathologyList = new JsonMedicalPathologyList()
                     .setRecordReferenceId(medicalPathology.getId())

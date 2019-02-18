@@ -107,4 +107,14 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
             TABLE
         );
     }
+
+    @Override
+    public void updateRadiologyObservation(String id, String observation) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            Update.update("OB", observation),
+            MedicalRadiologyEntity.class,
+            TABLE
+        );
+    }
 }
