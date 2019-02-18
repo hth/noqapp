@@ -694,19 +694,21 @@ public class MedicalRecordService {
         return medicalRadiologyManager.findByIds(ids);
     }
 
-    public MedicalPathologyEntity findPathologyById(String id) {
+    private MedicalPathologyEntity findPathologyById(String id) {
         return medicalPathologyManager.findById(id);
     }
 
-    public void savePathologyObservation(String id, String observation) {
+    @Mobile
+    public void updatePathologyObservation(String id, String observation) {
         medicalPathologyManager.updatePathologyObservation(id, observation);
     }
 
-    public MedicalRadiologyEntity findRadiologyById(String id) {
+    private MedicalRadiologyEntity findRadiologyById(String id) {
         return medicalRadiologyManager.findById(id);
     }
 
-    public void saveRadiologyObservation(String id, String observation) {
+    @Mobile
+    public void updateRadiologyObservation(String id, String observation) {
         medicalRadiologyManager.updateRadiologyObservation(id, observation);
     }
 
