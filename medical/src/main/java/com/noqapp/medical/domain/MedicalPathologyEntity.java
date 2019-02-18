@@ -39,6 +39,10 @@ public class MedicalPathologyEntity extends BaseEntity {
     @Field("IM")
     private List<String> images;
 
+    /** Doctors observation. */
+    @Field("OB")
+    private String observation;
+
     @Field("TI")
     private String transactionId;
 
@@ -79,6 +83,15 @@ public class MedicalPathologyEntity extends BaseEntity {
             images = new LinkedList<>();
         }
         this.images.add(image);
+        return this;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public MedicalPathologyEntity setObservation(String observation) {
+        this.observation = observation;
         return this;
     }
 

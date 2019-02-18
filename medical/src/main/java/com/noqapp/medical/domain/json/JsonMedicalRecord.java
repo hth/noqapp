@@ -61,7 +61,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     private String provisionalDifferentialDiagnosis;
 
     @JsonProperty("pa")
-    private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
+    private List<JsonMedicalPathologyList> medicalPathologiesLists = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
@@ -195,17 +195,17 @@ public class JsonMedicalRecord extends AbstractDomain {
         return this;
     }
 
-    public List<JsonMedicalPathology> getMedicalPathologies() {
-        return medicalPathologies;
+    public List<JsonMedicalPathologyList> getMedicalPathologiesLists() {
+        return medicalPathologiesLists;
     }
 
-    public JsonMedicalRecord setMedicalPathologies(List<JsonMedicalPathology> medicalPathologies) {
-        this.medicalPathologies = medicalPathologies;
+    public JsonMedicalRecord setMedicalPathologiesLists(List<JsonMedicalPathologyList> medicalPathologiesLists) {
+        this.medicalPathologiesLists = medicalPathologiesLists;
         return this;
     }
 
-    public JsonMedicalRecord addMedicalPathology(JsonMedicalPathology medicalPathology) {
-        this.medicalPathologies.add(medicalPathology);
+    public JsonMedicalRecord addMedicalPathologiesLists(JsonMedicalPathologyList medicalPathologiesList) {
+        this.medicalPathologiesLists.add(medicalPathologiesList);
         return this;
     }
 
