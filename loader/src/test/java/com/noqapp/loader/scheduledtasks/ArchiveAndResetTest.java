@@ -139,8 +139,8 @@ class ArchiveAndResetTest {
             statsBizStoreDaily
         );
 
-        LocalTime lastTime = LocalTime.parse(String.format(Locale.US, "%02d", Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped())), DateTimeFormatter.ofPattern("HHmm"));
-        LocalTime firstTime = LocalTime.parse(String.format(Locale.US, "%02d",  Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped())), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime lastTime = LocalTime.parse(String.format(Locale.US, "%04d", Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped())), DateTimeFormatter.ofPattern("HHmm"));
+        LocalTime firstTime = LocalTime.parse(String.format(Locale.US, "%04d",  Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped())), DateTimeFormatter.ofPattern("HHmm"));
         assertEquals(30, ChronoUnit.MINUTES.between(firstTime, lastTime));
     }
 }
