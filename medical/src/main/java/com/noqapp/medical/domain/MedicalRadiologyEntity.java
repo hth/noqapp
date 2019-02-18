@@ -43,6 +43,10 @@ public class MedicalRadiologyEntity extends BaseEntity {
     @Field("IM")
     private List<String> images;
 
+    /** Doctors observation. */
+    @Field("OB")
+    private String observation;
+
     @Field("TI")
     private String transactionId;
 
@@ -92,6 +96,15 @@ public class MedicalRadiologyEntity extends BaseEntity {
             images = new LinkedList<>();
         }
         this.images.add(image);
+        return this;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public MedicalRadiologyEntity setObservation(String observation) {
+        this.observation = observation;
         return this;
     }
 

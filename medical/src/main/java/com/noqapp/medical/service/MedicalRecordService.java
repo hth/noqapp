@@ -32,6 +32,7 @@ import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
 import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPathology;
+import com.noqapp.medical.domain.json.JsonMedicalPathologyList;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
 import com.noqapp.medical.domain.json.JsonMedicalPhysicalList;
 import com.noqapp.medical.domain.json.JsonMedicalRadiology;
@@ -295,7 +296,7 @@ public class MedicalRecordService {
                     populateWithMedicalMedicine(jsonRecord, medicalRecord);
                 }
 
-                if (null != jsonRecord.getMedicalPathologies()) {
+                if (null != jsonRecord.getMedicalPathologiesLists()) {
                     populateWithPathologies(jsonRecord, medicalRecord);
                 }
 
@@ -476,7 +477,7 @@ public class MedicalRecordService {
         }
 
         /* Exit when empty. */
-        if (jsonMedicalRecord.getMedicalPathologies().isEmpty()) {
+        if (jsonMedicalRecord.getMedicalPathologiesLists().isEmpty()) {
             return;
         }
 
@@ -486,12 +487,14 @@ public class MedicalRecordService {
             .setQueueUserId(jsonMedicalRecord.getQueueUserId())
             .setId(CommonUtil.generateHexFromObjectId());
 
-        for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
-            MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity();
-            medicalPathologyTest.setName(jsonMedicalPathology.getName());
-            medicalPathologyTest.setMedicalPathologyReferenceId(medicalPathology.getId());
-            medicalPathologyTestManager.save(medicalPathologyTest);
-            medicalPathology.addMedicalPathologyTestId(medicalPathologyTest.getId());
+        for (JsonMedicalPathologyList jsonMedicalPathologyList : jsonMedicalRecord.getMedicalPathologiesLists()) {
+            for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalPathologyList.getJsonMedicalPathologies()) {
+                MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity();
+                medicalPathologyTest.setName(jsonMedicalPathology.getName());
+                medicalPathologyTest.setMedicalPathologyReferenceId(medicalPathology.getId());
+                medicalPathologyTestManager.save(medicalPathologyTest);
+                medicalPathology.addMedicalPathologyTestId(medicalPathologyTest.getId());
+            }
         }
 
         medicalPathologyManager.save(medicalPathology);
@@ -503,15 +506,17 @@ public class MedicalRecordService {
     /** Creates order from pathology lab test prescribed. */
     private void createPathologyOrder(JsonMedicalRecord jsonMedicalRecord, String pathologyId) {
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
-        for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
-            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
-                .setProductName(jsonMedicalPathology.getName())
-                .setProductPrice(0)
-                .setProductDiscount(0)
-                .setProductId(null)
-                .setProductQuantity(jsonMedicalPathology.getTimes());
+        for (JsonMedicalPathologyList jsonMedicalPathologyList : jsonMedicalRecord.getMedicalPathologiesLists()) {
+            for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalPathologyList.getJsonMedicalPathologies()) {
+                JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
+                    .setProductName(jsonMedicalPathology.getName())
+                    .setProductPrice(0)
+                    .setProductDiscount(0)
+                    .setProductId(null)
+                    .setProductQuantity(jsonMedicalPathology.getTimes());
 
-            jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
+                jsonPurchaseOrder.addJsonPurchaseOrderProduct(jsonPurchaseOrderProduct);
+            }
         }
 
         placeOrder(jsonMedicalRecord, jsonPurchaseOrder, jsonMedicalRecord.getStoreIdPathology(), pathologyId, LabCategoryEnum.PATH);
@@ -802,11 +807,18 @@ public class MedicalRecordService {
         }
 
         if (null != medicalRecord.getMedicalLaboratoryId()) {
-            List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratoryId());
-            if (null != medicalPathologyTests) {
+            MedicalPathologyEntity medicalPathology = medicalPathologyManager.findById(medicalRecord.getMedicalLaboratoryId());
+            if (null != medicalPathology) {
+                JsonMedicalPathologyList jsonMedicalPathologyList = new JsonMedicalPathologyList()
+                    .setRecordReferenceId(medicalPathology.getId())
+                    .setImages(medicalPathology.getImages())
+                    .setObservation(medicalPathology.getObservation());
+
+                List<MedicalPathologyTestEntity> medicalPathologyTests = findPathologyTestByIds(medicalRecord.getMedicalLaboratoryId());
                 for (MedicalPathologyTestEntity medicalPathologyTest : medicalPathologyTests) {
-                    jsonMedicalRecord.addMedicalPathology(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
+                    jsonMedicalPathologyList.addJsonMedicalPathologies(new JsonMedicalPathology().setName(medicalPathologyTest.getName()));
                 }
+                jsonMedicalRecord.addMedicalPathologiesLists(jsonMedicalPathologyList);
             }
         }
 
@@ -815,7 +827,10 @@ public class MedicalRecordService {
             if (null != medicalRadiologies) {
                 for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList()
-                        .setLabCategory(medicalRadiology.getLabCategory());
+                        .setRecordReferenceId(medicalRadiology.getId())
+                        .setLabCategory(medicalRadiology.getLabCategory())
+                        .setImages(medicalRadiology.getImages())
+                        .setObservation(medicalRadiology.getObservation());
 
                     List<MedicalRadiologyTestEntity> medicalPathologyTests = findRadiologyTestByIds(medicalRadiology.getId());
                     for (MedicalRadiologyTestEntity medicalRadiologyTest : medicalPathologyTests) {
