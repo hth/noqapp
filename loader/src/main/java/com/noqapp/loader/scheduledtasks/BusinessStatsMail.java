@@ -164,10 +164,10 @@ public class BusinessStatsMail {
                                 storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
                                 storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
                                 firstServicedOrSkipped = statsBizStoreDaily.getFirstServicedOrSkipped() == null
-                                    ? "NA"
+                                    ? "N/A"
                                     : statsBizStoreDaily.getFirstServicedOrSkipped();
                                 lastServicedOrSkipped = statsBizStoreDaily.getLastServicedOrSkipped() == null
-                                    ? "NA"
+                                    ? "N/A"
                                     : statsBizStoreDaily.getLastServicedOrSkipped();
 
                                 /* Add details when data is not null. */
@@ -206,10 +206,7 @@ public class BusinessStatsMail {
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
-                                    rootMap.put("timeOfService",
-                                        DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(firstServicedOrSkipped))
-                                            + " - "
-                                            + DateFormatter.convertMilitaryTo12HourFormat(Integer.valueOf(lastServicedOrSkipped)));
+                                    rootMap.put("timeOfService", formattedTime(firstServicedOrSkipped) + " - " + formattedTime(lastServicedOrSkipped));
 
                                     List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
                                     LOG.info("Found business users size={} {} storeTotalClient={}", businessUserStores.size(), businessUserStores, storeTotalClient);
@@ -294,6 +291,19 @@ public class BusinessStatsMail {
         }
     }
 
+    private String formattedTime(String timeAsString) {
+        try {
+            if (timeAsString.equalsIgnoreCase("N/A")) {
+                return "N/A";
+            }
+            int time = Integer.parseInt(timeAsString);
+            return DateFormatter.convertMilitaryTo12HourFormat(time);
+        } catch (Exception e) {
+            LOG.warn("Failed formatting timeAsString={}", timeAsString);
+            return "N/A";
+        }
+    }
+
     /** Load time zone which matches the time set. */
     private List<String> getAllTimeZones(Calendar date) {
         List<String> ret = new ArrayList<>();
@@ -311,16 +321,27 @@ public class BusinessStatsMail {
 
     private String computeBeforeAfterSchedule(int expected, String actual, boolean arrival) {
         String text = arrival ? "Arrived" : "Departure";
-        int act = Integer.valueOf(actual);
-        if (act < expected) {
+        try {
+            if (actual.equalsIgnoreCase("N/A")) {
+                return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                    "[" + text + ": " + "N/A" + "] (--)";
+            }
+
+            int act = Integer.valueOf(actual);
+            if (act < expected) {
+                return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                    "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Early)";
+            } else if (act > expected) {
+                return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                    "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Late)";
+            } else {
+                return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                    "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (On time)";
+            }
+        } catch (Exception e) {
+            LOG.warn("Failed computeBeforeAfterSchedule expected={} actual={} arrival={}", expected, actual, arrival);
             return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
-                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Early)";
-        } else if (act > expected) {
-            return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
-                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Late)";
-        } else {
-            return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
-                "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (On time)";
+                "[" + text + ": " + "N/A" + "] (--)";
         }
     }
 }
