@@ -164,10 +164,10 @@ public class BusinessStatsMail {
                                 storeTotalCustomerRated = statsBizStoreDaily.getTotalCustomerRated();
                                 storeTotalHoursSaved = statsBizStoreDaily.getTotalHoursSaved();
                                 firstServicedOrSkipped = statsBizStoreDaily.getFirstServicedOrSkipped() == null
-                                    ? "NA"
+                                    ? "N/A"
                                     : statsBizStoreDaily.getFirstServicedOrSkipped();
                                 lastServicedOrSkipped = statsBizStoreDaily.getLastServicedOrSkipped() == null
-                                    ? "NA"
+                                    ? "N/A"
                                     : statsBizStoreDaily.getLastServicedOrSkipped();
 
                                 /* Add details when data is not null. */
@@ -293,6 +293,9 @@ public class BusinessStatsMail {
 
     private String formattedTime(String timeAsString) {
         try {
+            if (timeAsString.equalsIgnoreCase("N/A")) {
+                return "N/A";
+            }
             int time = Integer.parseInt(timeAsString);
             return DateFormatter.convertMilitaryTo12HourFormat(time);
         } catch (Exception e) {
@@ -319,6 +322,11 @@ public class BusinessStatsMail {
     private String computeBeforeAfterSchedule(int expected, String actual, boolean arrival) {
         String text = arrival ? "Arrived" : "Departure";
         try {
+            if (actual.equalsIgnoreCase("N/A")) {
+                return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
+                    "[" + text + ": " + "N/A" + "] (--)";
+            }
+
             int act = Integer.valueOf(actual);
             if (act < expected) {
                 return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
