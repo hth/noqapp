@@ -13,6 +13,7 @@ public enum MedicalDepartmentEnum {
     DIA("DIA", "Diabetologist"),
     DIE("DIE", "Dietitian"),
     ENT("ENT", "E.N.T"),
+    OFP("OFP", "Orofacial Pain & TMJ Disorder"),
     GAS("GAS", "Gastroenterology"),
     GPY("GPY", "General Physician"),
     GSR("GSR", "General Surgeon"),
