@@ -39,11 +39,11 @@ public class PeopleInQueueController {
 
     @Autowired
     public PeopleInQueueController(
-            @Value("${nextPage:/business/inQueue}")
-            String nextPage,
+        @Value("${nextPage:/business/inQueue}")
+        String nextPage,
 
-            TokenQueueService tokenQueueService,
-            QueueService queueService
+        TokenQueueService tokenQueueService,
+        QueueService queueService
     ) {
         this.nextPage = nextPage;
 
@@ -53,11 +53,11 @@ public class PeopleInQueueController {
 
     @GetMapping(value = "/{codeQR}", produces = "text/html;charset=UTF-8")
     public String landing(
-            @PathVariable("codeQR")
-            ScrubbedInput codeQR,
+        @PathVariable("codeQR")
+        ScrubbedInput codeQR,
 
-            @ModelAttribute("inQueueForm")
-            InQueueForm inQueueForm
+        @ModelAttribute("inQueueForm")
+        InQueueForm inQueueForm
     ) {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR.getText());
         inQueueForm.setQueueName(tokenQueue.getDisplayName())
