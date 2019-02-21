@@ -57,16 +57,16 @@ public class QueueSupervisorLandingController {
 
     @Autowired
     public QueueSupervisorLandingController(
-            @Value("${nextPage:/business/queueLanding}")
-            String nextPage,
+        @Value("${nextPage:/business/queueLanding}")
+        String nextPage,
 
-            @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
-            String migrateBusinessProfileFlow,
+        @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
+        String migrateBusinessProfileFlow,
 
-            BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService,
-            QueueService queueService,
-            BizService bizService
+        BusinessUserService businessUserService,
+        BusinessUserStoreService businessUserStoreService,
+        QueueService queueService,
+        BizService bizService
     ) {
         this.nextPage = nextPage;
         this.migrateBusinessProfileFlow = migrateBusinessProfileFlow;
@@ -85,10 +85,10 @@ public class QueueSupervisorLandingController {
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
-            @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm,
+        @ModelAttribute ("businessLandingForm")
+        BusinessLandingForm businessLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -105,8 +105,8 @@ public class QueueSupervisorLandingController {
 
     @SuppressWarnings("Duplicates")
     private String nextPage(
-            BusinessUserEntity businessUser,
-            BusinessLandingForm businessLandingForm
+        BusinessUserEntity businessUser,
+        BusinessLandingForm businessLandingForm
     ) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
             case V:
