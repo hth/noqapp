@@ -1,5 +1,6 @@
 package com.noqapp.view.form.business;
 
+import com.noqapp.domain.json.JsonPurchaseOrderList;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
@@ -12,6 +13,7 @@ public class InQueueForm {
     private BusinessTypeEnum businessType;
     private String codeQR;
     private JsonQueuePersonList jsonQueuePersonList;
+    private JsonPurchaseOrderList jsonPurchaseOrderList;
 
     public String getQueueName() {
         return queueName;
@@ -46,6 +48,15 @@ public class InQueueForm {
 
     public InQueueForm setJsonQueuePersonList(JsonQueuePersonList jsonQueuePersonList) {
         this.jsonQueuePersonList = jsonQueuePersonList;
+        return this;
+    }
+
+    public JsonPurchaseOrderList getJsonPurchaseOrderList() {
+        return jsonPurchaseOrderList;
+    }
+
+    public InQueueForm setJsonPurchaseOrderList(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        this.jsonPurchaseOrderList = jsonPurchaseOrderList;
         return this;
     }
 }
