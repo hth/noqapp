@@ -1,8 +1,11 @@
 package com.noqapp.view.form.business;
 
-import com.noqapp.domain.json.JsonPurchaseOrderList;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.types.BusinessTypeEnum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * hitender
@@ -13,7 +16,7 @@ public class InQueueForm {
     private BusinessTypeEnum businessType;
     private String codeQR;
     private JsonQueuePersonList jsonQueuePersonList;
-    private JsonPurchaseOrderList jsonPurchaseOrderList;
+    private List<PurchaseOrderEntity> purchaseOrders = new ArrayList<>();
 
     public String getQueueName() {
         return queueName;
@@ -51,12 +54,12 @@ public class InQueueForm {
         return this;
     }
 
-    public JsonPurchaseOrderList getJsonPurchaseOrderList() {
-        return jsonPurchaseOrderList;
+    public List<PurchaseOrderEntity> getPurchaseOrders() {
+        return purchaseOrders;
     }
 
-    public InQueueForm setJsonPurchaseOrderList(JsonPurchaseOrderList jsonPurchaseOrderList) {
-        this.jsonPurchaseOrderList = jsonPurchaseOrderList;
+    public InQueueForm setPurchaseOrders(List<PurchaseOrderEntity> purchaseOrders) {
+        this.purchaseOrders = purchaseOrders;
         return this;
     }
 }

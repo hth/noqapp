@@ -220,13 +220,15 @@ public class ArchiveAndReset {
     }
 
     private void orderArchiveAndReset(BizStoreEntity bizStore) {
-        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
+        Date until = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
+        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={} until={}",
             bizStore.getDisplayName(),
             bizStore.getQueueHistory(),
             bizStore.getBizName().getBusinessName(),
-            bizStore.getId());
+            bizStore.getId(),
+            until);
 
-        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQR(bizStore.getCodeQR());
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQRUntil(bizStore.getCodeQR(), until);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
             purchaseOrderProductManagerJDBC.batchPurchaseOrderProducts(purchaseOrderProducts);
@@ -238,8 +240,13 @@ public class ArchiveAndReset {
             purchaseOrderManagerJDBC.batchPurchaseOrder(purchaseOrders);
 
             /* Complete Transaction once data has moved. */
-            statsBizStoreDailyManager.save(statsBizStoreDaily);
-            LOG.info("Saved daily order store stat={}", statsBizStoreDaily);
+            if (statsBizStoreDaily.getTotalClient() > 0) {
+                statsBizStoreDailyManager.save(statsBizStoreDaily);
+                LOG.info("Saved daily order store stat={}", statsBizStoreDaily);
+            } else {
+                /* Skip stats when totalClient for queue has been zero. */
+                LOG.info("Skipped daily queue store totalClient={} stat={}", statsBizStoreDaily.getTotalClient(), statsBizStoreDaily);
+            }
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             purchaseOrderManagerJDBC.rollbackPurchaseOrder(purchaseOrders);

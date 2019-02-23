@@ -58,11 +58,11 @@
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Total: <span>${inQueueForm.jsonPurchaseOrderList.purchaseOrders.size()}</span>
+                                Total: <span>${inQueueForm.purchaseOrders.size()}</span>
                             </div>
                             <div class="store-table">
                                 <c:choose>
-                                <c:when test="${!empty inQueueForm.jsonPurchaseOrderList.purchaseOrders}">
+                                <c:when test="${!empty inQueueForm.purchaseOrders}">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
@@ -72,13 +72,20 @@
                                         <th>Payment Type</th>
                                         <th>Order State</th>
                                     </tr>
-                                    <c:forEach items="${inQueueForm.jsonPurchaseOrderList.purchaseOrders}" var="jsonPurchaseOrder" varStatus="status">
+                                    <c:forEach items="${inQueueForm.purchaseOrders}" var="purchaseOrder" varStatus="status">
+                                    <tr>
                                         <td>${status.count}&nbsp;</td>
-                                        <td nowrap>${jsonPurchaseOrder.customerName}</td>
-                                        <td nowrap>${jsonPurchaseOrder.token}</td>
-                                        <td nowrap align="right">${jsonPurchaseOrder.orderPrice}</td>
-                                        <td nowrap align="center">${jsonPurchaseOrder.paymentType.description}</td>
-                                        <td nowrap align="center">${jsonPurchaseOrder.presentOrderState.description}</td>
+                                        <td nowrap>${purchaseOrder.customerName}</td>
+                                        <td nowrap>${purchaseOrder.tokenNumber}</td>
+                                        <td nowrap align="right">${purchaseOrder.orderPrice}</td>
+                                        <td nowrap align="center">
+                                            ${purchaseOrder.paymentType.description}
+                                        </td>
+                                        <td nowrap align="left">
+                                            ${purchaseOrder.presentOrderState.description}
+                                            <span style="display:block; font-size:13px;">Order Date: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></span>
+                                        </td>
+                                    </tr>
                                     </c:forEach>
                                 </table>
                                 </c:when>

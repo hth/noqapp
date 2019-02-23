@@ -513,7 +513,7 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
     }
 
-    private List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
+    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
         return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
     }
 
@@ -534,18 +534,13 @@ public class PurchaseOrderService {
 
     @Mobile
     public String findAllOrderByCodeAsJson(String codeQR) {
-        return findAllOrderByCode(codeQR).asJson();
-    }
-
-    @Mobile
-    public JsonPurchaseOrderList findAllOrderByCode(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOrderByCodeQR(codeQR);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
 
-        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders);
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
     }
 
     /** This is for historical orders placed today, other past orders have moved in archive. */

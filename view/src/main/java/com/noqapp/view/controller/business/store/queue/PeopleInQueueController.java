@@ -76,7 +76,7 @@ public class PeopleInQueueController {
 
         String nextPage;
         if (tokenQueue.getBusinessType().getMessageOrigin() == MessageOriginEnum.O) {
-            inQueueForm.setJsonPurchaseOrderList(purchaseOrderService.findAllOrderByCode(codeQR.getText()));
+            inQueueForm.setPurchaseOrders(purchaseOrderService.findAllOrderByCodeQR(codeQR.getText()));
             nextPage = order;
         } else {
             inQueueForm.setJsonQueuePersonList(queueService.findAllClientQueuedOrAborted(codeQR.getText()));

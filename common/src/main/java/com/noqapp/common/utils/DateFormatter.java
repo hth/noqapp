@@ -29,4 +29,8 @@ public class DateFormatter {
             String.format(Locale.US, "%02d", localTime.getHour())
                 + String.format(Locale.US, "%02d", localTime.getMinute()));
     }
+
+    public static LocalTime getLocalTime(int hourAndMinute) {
+        return LocalTime.parse(String.valueOf(hourAndMinute), java.time.format.DateTimeFormatter.ofPattern("HHmm"));
+    }
 }
