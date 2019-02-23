@@ -80,10 +80,10 @@ public class ArchiveAndReset {
 
     @Autowired
     public ArchiveAndReset(
-        @Value("${QueueHistory.moveToRDBS}")
+        @Value("${ArchiveAndReset.moveToRDBS}")
         String moveToRDBS,
 
-        @Value("${QueueHistory.timeDelayInMinutes}")
+        @Value("${ArchiveAndReset.timeDelayInMinutes}")
         int timeDelayInMinutes,
 
         BizStoreManager bizStoreManager,
@@ -116,7 +116,7 @@ public class ArchiveAndReset {
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
     }
 
-    @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
+    @Scheduled(fixedDelayString = "${loader.ArchiveAndReset.queuePastData}")
     public void doArchiveAndReset() {
         statsCron = new StatsCronEntity(
             ArchiveAndReset.class.getName(),

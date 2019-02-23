@@ -135,7 +135,7 @@ public class QueueSupervisorLandingController {
             .setBizName(bizName.getBusinessName())
             .setBusinessType(bizName.getBusinessType());
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
-        List<JsonTopic> jsonTopics = businessUserStoreService.getQueues(businessUser.getQueueUserId());
+        List<JsonTopic> jsonTopics = businessUserStoreService.getAssignedTokenAndQueues(businessUser.getQueueUserId());
         businessLandingForm.setJsonTopics(jsonTopics);
 
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());

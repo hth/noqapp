@@ -270,7 +270,7 @@ public class AddQueueSupervisorFlowActions {
                 throw new InviteSupervisorException("Reached unsupported condition");
         }
 
-        int supervisorCount = businessUserStoreService.getQueues(userProfile.getQueueUserId()).size();
+        int supervisorCount = businessUserStoreService.getAssignedTokenAndQueues(userProfile.getQueueUserId()).size();
         if (supervisorCount > queueLimit) {
             messageContext.addMessage(
                     new MessageBuilder()
