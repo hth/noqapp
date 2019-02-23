@@ -264,7 +264,7 @@ public class ArchiveAndReset {
     private void doReset(BizStoreEntity bizStore, StatsBizStoreDailyEntity statsBizStoreDaily) {
         DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
         /* In queue history, we set things for tomorrow. */
-        ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
+        ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
         resetStoreOfToday(bizStore, nowDayOfWeek);
 
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
@@ -273,7 +273,7 @@ public class ArchiveAndReset {
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                Date.from(queueHistoryNextRun.toInstant()),
+                Date.from(archiveNextRun.toInstant()),
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -282,7 +282,7 @@ public class ArchiveAndReset {
             bizStoreManager.updateNextRun(
                 bizStore.getId(),
                 bizStore.getTimeZone(),
-                Date.from(queueHistoryNextRun.toInstant()));
+                Date.from(archiveNextRun.toInstant()));
         }
 
         tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
