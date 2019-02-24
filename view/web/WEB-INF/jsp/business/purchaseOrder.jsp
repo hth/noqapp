@@ -71,6 +71,7 @@
                                         <th nowrap>Cost</th>
                                         <th>Payment Type</th>
                                         <th>Order State</th>
+                                        <th>Reports</th>
                                     </tr>
                                     <c:forEach items="${inQueueForm.purchaseOrders}" var="purchaseOrder" varStatus="status">
                                     <tr>
@@ -84,6 +85,18 @@
                                         <td nowrap align="left">
                                             ${purchaseOrder.presentOrderState.description}
                                             <span style="display:block; font-size:13px;">Order Date: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></span>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
+                                                <span style="display:block; font-size:13px;"><a
+                                                        href="https://noqapp.com/b/s${purchaseOrder.id}.html"
+                                                        target="_blank">Web Appointment Link</a></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    N/A
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                     </c:forEach>

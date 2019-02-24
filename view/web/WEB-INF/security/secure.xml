@@ -121,7 +121,7 @@
                        access="hasRole('ROLE_ANALYSIS')" />
 
         <!-- Note: narrowed interceptor has to be before broader interceptor, example '/business/**' for ROLE_SUPERVISOR -->
-        <intercept-url pattern="/business/store/queue/**"
+        <intercept-url pattern="/business/store/sup/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
 
         <intercept-url pattern="/business/store/**"

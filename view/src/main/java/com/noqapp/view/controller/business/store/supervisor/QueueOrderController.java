@@ -1,7 +1,10 @@
-package com.noqapp.view.controller.business.store.queue;
+package com.noqapp.view.controller.business.store.supervisor;
+
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
@@ -13,11 +16,16 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * hitender
@@ -30,9 +38,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping(value = "/business/store/queue/people")
-public class PeopleInQueueController {
-    private static final Logger LOG = LoggerFactory.getLogger(PeopleInQueueController.class);
+@RequestMapping(value = "/business/store/sup")
+public class QueueOrderController {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueOrderController.class);
 
     private String queue;
     private String order;
@@ -42,7 +50,7 @@ public class PeopleInQueueController {
     private PurchaseOrderService purchaseOrderService;
 
     @Autowired
-    public PeopleInQueueController(
+    public QueueOrderController(
         @Value("${nextPage:/business/inQueue}")
         String queue,
 
@@ -67,9 +75,18 @@ public class PeopleInQueueController {
         ScrubbedInput codeQR,
 
         @ModelAttribute("inQueueForm")
-        InQueueForm inQueueForm
-    ) {
+        InQueueForm inQueueForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR.getText());
+        if (null == tokenQueue) {
+            LOG.warn("Could not find codeQR={} qid={} having access as business user", codeQR.getText(), queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+
         inQueueForm.setQueueName(tokenQueue.getDisplayName())
             .setBusinessType(tokenQueue.getBusinessType())
             .setCodeQR(tokenQueue.getId());
