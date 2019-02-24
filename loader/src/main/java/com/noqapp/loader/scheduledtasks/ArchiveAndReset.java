@@ -152,14 +152,13 @@ public class ArchiveAndReset {
                 }
             }
 
-            /*
-             * Date is based on UTC time of the System.
-             * Hence its important to run on UTC time.
-             *
-             * Queue store which are service store can have a different delay. Currently supporting 60 minutes.
-             */
+            /* Queue store which are service store can have a different delay. Currently supporting 60 minutes. */
             date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
-            /* Only find stores that are active and not deleted. */
+
+            /*
+             * Only find stores that are active and not deleted. This is a back up for order too.
+             * Its a catch all store that are suppose to be closed.
+             */
             List<BizStoreEntity> bizStores = bizStoreManager.findAllStoreEndedForTheDay(date);
             found += bizStores.size();
             LOG.info("found={} date={}", found, date);
