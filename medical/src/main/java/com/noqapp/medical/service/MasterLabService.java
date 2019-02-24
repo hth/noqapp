@@ -152,6 +152,7 @@ public class MasterLabService {
         return 0;
     }
 
+    @Mobile
     @Async
     public void flagData(String productName, HealthCareServiceEnum healthCareService, String qid) {
         MasterLabEntity masterLab = masterLabManager.findOne(productName, healthCareService);
