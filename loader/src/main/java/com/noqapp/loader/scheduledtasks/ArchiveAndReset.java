@@ -123,38 +123,49 @@ public class ArchiveAndReset {
             "queuePastData",
             moveToRDBS);
 
-        int found, failure = 0, success = 0;
+        int found = 0, failure = 0, success = 0;
         if ("OFF".equalsIgnoreCase(moveToRDBS)) {
             LOG.debug("feature is {}", moveToRDBS);
         }
 
-        /*
-         * Date is based on UTC time of the System.
-         * Hence its important to run on UTC time.
-         *
-         * Added lag of 60 minutes. This should be 5 minutes. The day we get stores open 24hrs, this should be
-         * reverted back to 5 minutes.
-         */
-        Date date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
-        /* Only find stores that are active and not deleted. */
-        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
-        found = bizStores.size();
-        LOG.info("found={} date={}", found, date);
-
         try {
+            /*
+             * Date is based on UTC time of the System.
+             * Hence its important to run on UTC time.
+             *
+             * Order stores are delayed by 5 minutes.
+             */
+            Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+            List<BizStoreEntity> bizOrderStores = bizStoreManager.findAllOrderEndedForTheDay(date);
+            found = bizOrderStores.size();
+            for (BizStoreEntity bizStore : bizOrderStores) {
+                try {
+                    runSelectiveArchiveBasedOnBusinessType(bizStore);
+                    success++;
+                } catch (Exception e) {
+                    failure++;
+                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
+                        bizStore.getId(),
+                        bizStore.getCodeQR(),
+                        e.getLocalizedMessage(),
+                        e);
+                }
+            }
+
+            /*
+             * Date is based on UTC time of the System.
+             * Hence its important to run on UTC time.
+             *
+             * Queue store which are service store can have a different delay. Currently supporting 60 minutes.
+             */
+            date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
+            /* Only find stores that are active and not deleted. */
+            List<BizStoreEntity> bizStores = bizStoreManager.findAllStoreEndedForTheDay(date);
+            found += bizStores.size();
+            LOG.info("found={} date={}", found, date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
-                    switch (bizStore.getBusinessType().getMessageOrigin()) {
-                        case Q:
-                            queueArchiveAndReset(bizStore);
-                            break;
-                        case O:
-                            orderArchiveAndReset(bizStore);
-                            break;
-                        default:
-                            LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
-                            throw new UnsupportedOperationException("Reached Unsupported Condition");
-                    }
+                    runSelectiveArchiveBasedOnBusinessType(bizStore);
                     success++;
                 } catch (Exception e) {
                     failure++;
@@ -177,6 +188,20 @@ public class ArchiveAndReset {
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
+        }
+    }
+
+    private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
+        switch (bizStore.getBusinessType().getMessageOrigin()) {
+            case Q:
+                queueArchiveAndReset(bizStore);
+                break;
+            case O:
+                orderArchiveAndReset(bizStore);
+                break;
+            default:
+                LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
+                throw new UnsupportedOperationException("Reached Unsupported Condition");
         }
     }
 
