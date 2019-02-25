@@ -453,9 +453,7 @@ public class StoreProductController {
         return "redirect:/business/store/landing.htm";
     }
 
-    /**
-     * Gymnastic for PRG.
-     */
+    /** Gymnastic for PRG. */
     @GetMapping(value = "/bulk/{codeQR}")
     public String bulk(
         @PathVariable("codeQR")

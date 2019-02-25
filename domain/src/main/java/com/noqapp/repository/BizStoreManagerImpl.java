@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaginationEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -270,33 +271,33 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRun(String id, String zoneId, Date queueHistoryNextRun) {
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, queueHistoryNextRun, 0, 0, 0);
+    public boolean updateNextRun(String id, String zoneId, Date archiveNextRun) {
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, 0, 0, 0);
     }
 
     @Override
     public boolean updateNextRunAndRatingWithAverageServiceTime(
             String id,
             String zoneId,
-            Date queueHistoryNextRun,
+            Date archiveNextRun,
             float rating,
             int ratingCount,
             long averageServiceTime
     ) {
-        LOG.info("Set next run for id={} zoneId={} queueHistoryNextRun={} rating={} averageServiceTime={}",
+        LOG.info("Set next run for id={} zoneId={} archiveNextRun={} rating={} averageServiceTime={}",
                 id,
                 zoneId,
-                queueHistoryNextRun,
+                archiveNextRun,
                 rating,
                 averageServiceTime);
 
         Update update;
         if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId)
-                    .set("QH", queueHistoryNextRun));
+                    .set("QH", archiveNextRun));
         } else {
             update = entityUpdate(update("TZ", zoneId)
-                    .set("QH", queueHistoryNextRun)
+                    .set("QH", archiveNextRun)
                     .set("RC", ratingCount)
                     .set("RA", rating));
         }
@@ -315,12 +316,22 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
+    public List<BizStoreEntity> findAllStoreEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
                 query(where("QH").lte(now).and("A").is(true).and("D").is(false)),
                 BizStoreEntity.class,
                 TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> findAllOrderEndedForTheDay(Date now) {
+        LOG.info("Fetch past now={}", now);
+        return mongoTemplate.find(
+            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.ORDERS).and("A").is(true).and("D").is(false)),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 

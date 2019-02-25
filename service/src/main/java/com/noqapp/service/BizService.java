@@ -534,11 +534,11 @@ public class BizService {
     }
 
     @Mobile
-    public boolean updateNextRun(BizStoreEntity bizStore, Date queueHistoryNextRun) {
+    public boolean updateNextRun(BizStoreEntity bizStore, Date archiveNextRun) {
         return bizStoreManager.updateNextRun(
             bizStore.getId(),
             bizStore.getTimeZone(),
-            queueHistoryNextRun);
+            archiveNextRun);
     }
 
     public void unsetScheduledTask(String bizStoreId) {

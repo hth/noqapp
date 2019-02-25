@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.business.store.queue;
+package com.noqapp.view.controller.business.store.supervisor;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -33,6 +33,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * All queue and order supervisor comes to this controller.
+ * It lists all the assigned stores to be supervised.
+ *
  * User: hitender
  * Date: 7/16/17 7:57 AM
  */
@@ -43,9 +46,9 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business/store/queue")
-public class QueueSupervisorLandingController {
-    private static final Logger LOG = LoggerFactory.getLogger(QueueSupervisorLandingController.class);
+@RequestMapping (value = "/business/store/sup")
+public class StoreSupervisorLandingController {
+    private static final Logger LOG = LoggerFactory.getLogger(StoreSupervisorLandingController.class);
 
     private String nextPage;
     private String migrateBusinessProfileFlow;
@@ -56,8 +59,8 @@ public class QueueSupervisorLandingController {
     private BizService bizService;
 
     @Autowired
-    public QueueSupervisorLandingController(
-        @Value("${nextPage:/business/queueLanding}")
+    public StoreSupervisorLandingController(
+        @Value("${nextPage:/business/storeSupervisorLanding}")
         String nextPage,
 
         @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
@@ -135,7 +138,7 @@ public class QueueSupervisorLandingController {
             .setBizName(bizName.getBusinessName())
             .setBusinessType(bizName.getBusinessType());
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
-        List<JsonTopic> jsonTopics = businessUserStoreService.getQueues(businessUser.getQueueUserId());
+        List<JsonTopic> jsonTopics = businessUserStoreService.getAssignedTokenAndQueues(businessUser.getQueueUserId());
         businessLandingForm.setJsonTopics(jsonTopics);
 
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());

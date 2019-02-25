@@ -513,7 +513,7 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
     }
 
-    private List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
+    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
         return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
     }
 

@@ -80,10 +80,10 @@ public class ArchiveAndReset {
 
     @Autowired
     public ArchiveAndReset(
-        @Value("${QueueHistory.moveToRDBS}")
+        @Value("${ArchiveAndReset.moveToRDBS}")
         String moveToRDBS,
 
-        @Value("${QueueHistory.timeDelayInMinutes}")
+        @Value("${ArchiveAndReset.timeDelayInMinutes}")
         int timeDelayInMinutes,
 
         BizStoreManager bizStoreManager,
@@ -116,45 +116,55 @@ public class ArchiveAndReset {
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
     }
 
-    @Scheduled(fixedDelayString = "${loader.QueueHistory.queuePastData}")
+    @Scheduled(fixedDelayString = "${loader.ArchiveAndReset.queuePastData}")
     public void doArchiveAndReset() {
         statsCron = new StatsCronEntity(
             ArchiveAndReset.class.getName(),
             "queuePastData",
             moveToRDBS);
 
-        int found, failure = 0, success = 0;
+        int found = 0, failure = 0, success = 0;
         if ("OFF".equalsIgnoreCase(moveToRDBS)) {
             LOG.debug("feature is {}", moveToRDBS);
         }
 
-        /*
-         * Date is based on UTC time of the System.
-         * Hence its important to run on UTC time.
-         *
-         * Added lag of 60 minutes. This should be 5 minutes. The day we get stores open 24hrs, this should be
-         * reverted back to 5 minutes.
-         */
-        Date date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
-        /* Only find stores that are active and not deleted. */
-        List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
-        found = bizStores.size();
-        LOG.info("found={} date={}", found, date);
-
         try {
+            /*
+             * Date is based on UTC time of the System.
+             * Hence its important to run on UTC time.
+             *
+             * Order stores are delayed by 5 minutes.
+             */
+            Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+            List<BizStoreEntity> bizOrderStores = bizStoreManager.findAllOrderEndedForTheDay(date);
+            found = bizOrderStores.size();
+            for (BizStoreEntity bizStore : bizOrderStores) {
+                try {
+                    runSelectiveArchiveBasedOnBusinessType(bizStore);
+                    success++;
+                } catch (Exception e) {
+                    failure++;
+                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
+                        bizStore.getId(),
+                        bizStore.getCodeQR(),
+                        e.getLocalizedMessage(),
+                        e);
+                }
+            }
+
+            /* Queue store which are service store can have a different delay. Currently supporting 60 minutes. */
+            date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
+
+            /*
+             * Only find stores that are active and not deleted. This is a back up for order too.
+             * Its a catch all store that are suppose to be closed.
+             */
+            List<BizStoreEntity> bizStores = bizStoreManager.findAllStoreEndedForTheDay(date);
+            found += bizStores.size();
+            LOG.info("found={} date={}", found, date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
-                    switch (bizStore.getBusinessType().getMessageOrigin()) {
-                        case Q:
-                            queueArchiveAndReset(bizStore);
-                            break;
-                        case O:
-                            orderArchiveAndReset(bizStore);
-                            break;
-                        default:
-                            LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
-                            throw new UnsupportedOperationException("Reached Unsupported Condition");
-                    }
+                    runSelectiveArchiveBasedOnBusinessType(bizStore);
                     success++;
                 } catch (Exception e) {
                     failure++;
@@ -177,6 +187,20 @@ public class ArchiveAndReset {
                 /* Without if condition its too noisy. */
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
+        }
+    }
+
+    private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
+        switch (bizStore.getBusinessType().getMessageOrigin()) {
+            case Q:
+                queueArchiveAndReset(bizStore);
+                break;
+            case O:
+                orderArchiveAndReset(bizStore);
+                break;
+            default:
+                LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
+                throw new UnsupportedOperationException("Reached Unsupported Condition");
         }
     }
 
@@ -220,13 +244,15 @@ public class ArchiveAndReset {
     }
 
     private void orderArchiveAndReset(BizStoreEntity bizStore) {
-        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={}",
+        Date until = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
+        LOG.info("Stats for bizStore queue={} lastRun={} bizName={} id={} until={}",
             bizStore.getDisplayName(),
             bizStore.getQueueHistory(),
             bizStore.getBizName().getBusinessName(),
-            bizStore.getId());
+            bizStore.getId(),
+            until);
 
-        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQR(bizStore.getCodeQR());
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQRUntil(bizStore.getCodeQR(), until);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
             purchaseOrderProductManagerJDBC.batchPurchaseOrderProducts(purchaseOrderProducts);
@@ -238,8 +264,13 @@ public class ArchiveAndReset {
             purchaseOrderManagerJDBC.batchPurchaseOrder(purchaseOrders);
 
             /* Complete Transaction once data has moved. */
-            statsBizStoreDailyManager.save(statsBizStoreDaily);
-            LOG.info("Saved daily order store stat={}", statsBizStoreDaily);
+            if (statsBizStoreDaily.getTotalClient() > 0) {
+                statsBizStoreDailyManager.save(statsBizStoreDaily);
+                LOG.info("Saved daily order store stat={}", statsBizStoreDaily);
+            } else {
+                /* Skip stats when totalClient for queue has been zero. */
+                LOG.info("Skipped daily queue store totalClient={} stat={}", statsBizStoreDaily.getTotalClient(), statsBizStoreDaily);
+            }
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             purchaseOrderManagerJDBC.rollbackPurchaseOrder(purchaseOrders);
@@ -264,7 +295,7 @@ public class ArchiveAndReset {
     private void doReset(BizStoreEntity bizStore, StatsBizStoreDailyEntity statsBizStoreDaily) {
         DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
         /* In queue history, we set things for tomorrow. */
-        ZonedDateTime queueHistoryNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
+        ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
         resetStoreOfToday(bizStore, nowDayOfWeek);
 
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
@@ -273,7 +304,7 @@ public class ArchiveAndReset {
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                Date.from(queueHistoryNextRun.toInstant()),
+                Date.from(archiveNextRun.toInstant()),
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -282,7 +313,7 @@ public class ArchiveAndReset {
             bizStoreManager.updateNextRun(
                 bizStore.getId(),
                 bizStore.getTimeZone(),
-                Date.from(queueHistoryNextRun.toInstant()));
+                Date.from(archiveNextRun.toInstant()));
         }
 
         tokenQueueManager.resetForNewDay(bizStore.getCodeQR());

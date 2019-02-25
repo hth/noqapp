@@ -18,7 +18,7 @@ public class StoreLandingForm {
     private String displayName;
     private String categoryName;
     private String qrFileName;
-    List<StoreHourEntity> storeHours;
+    private List<StoreHourEntity> storeHours;
 
     public String getBusinessName() {
         return businessName;

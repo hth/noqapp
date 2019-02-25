@@ -224,7 +224,7 @@ public class MedicalRecordController {
                     "",
                     deviceId,
                     TokenServiceEnum.W);
-            return "redirect:/business/store/queue/people/" + medicalRecordForm.getCodeQR() + ".htm";
+            return "redirect:/business/store/sup/" + medicalRecordForm.getCodeQR() + ".htm";
         } catch (Exception e) {
             LOG.error("Failed to get records reason={}", e.getLocalizedMessage(), e);
             methodStatusSuccess = false;

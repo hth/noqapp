@@ -58,87 +58,54 @@
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Total: <span>${inQueueForm.jsonQueuePersonList.queuedPeople.size()}</span>
+                                Total: <span>${inQueueForm.purchaseOrders.size()}</span>
                             </div>
                             <div class="store-table">
                                 <c:choose>
-                                <c:when test="${!empty inQueueForm.jsonQueuePersonList.queuedPeople}">
+                                <c:when test="${!empty inQueueForm.purchaseOrders}">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
                                         <th nowrap>Name</th>
-                                        <th nowrap>Phone</th>
-                                        <th>State</th>
-                                        <th>Token</th>
+                                        <th nowrap>Token</th>
+                                        <th nowrap>Cost</th>
+                                        <th>Payment Type</th>
+                                        <th>Order State</th>
+                                        <th>Reports</th>
                                     </tr>
-                                    <c:forEach items="${inQueueForm.jsonQueuePersonList.queuedPeople}" var="jsonQueuedPerson" varStatus="status">
-                                    <c:choose>
-                                    <c:when test="${jsonQueuedPerson.queueUserState == QueueUserStateEnum.Q}">
+                                    <c:forEach items="${inQueueForm.purchaseOrders}" var="purchaseOrder" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
-                                        <td nowrap>
+                                        <td nowrap>${purchaseOrder.customerName}</td>
+                                        <td nowrap>${purchaseOrder.tokenNumber}</td>
+                                        <td nowrap align="right">${purchaseOrder.orderPrice}</td>
+                                        <td nowrap align="center">
+                                            ${purchaseOrder.paymentType.description}
+                                        </td>
+                                        <td nowrap align="left">
+                                            ${purchaseOrder.presentOrderState.description}
+                                            <span style="display:block; font-size:13px;">Order Date: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></span>
+                                        </td>
+                                        <td>
                                             <c:choose>
-                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
-                                            <c:choose>
-                                            <c:when test="${!empty jsonQueuedPerson.queueUserId}">
-                                            <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.recordReferenceId}.htm" target="_blank">${jsonQueuedPerson.customerName}</a>
-                                            </c:when>
-                                            <c:otherwise>
-                                            ${jsonQueuedPerson.customerName}
-                                            </c:otherwise>
-                                            </c:choose>
-
-                                            <c:if test="${!empty jsonQueuedPerson.minors}">
-                                            <c:forEach items="${jsonQueuedPerson.minors}" var="minor">
-                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;<a href="/medical/record/${inQueueForm.codeQR}/${minor.recordReferenceId}.htm" target="_blank">${minor.customerName} ${minor.gender} ${minor.age} yrs</a></span>
-                                            </c:forEach>
-                                            </c:if>
-                                            </c:when>
-
-                                            <c:otherwise>
-                                            ${jsonQueuedPerson.customerName}
-                                            </c:otherwise>
+                                                <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
+                                                <span style="display:block; font-size:13px;"><a
+                                                        href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                        target="_blank">Add Medical Report</a></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    N/A
+                                                </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td nowrap>${jsonQueuedPerson.phoneFormatted}</td>
-                                        <td nowrap>${jsonQueuedPerson.queueUserState.description}</td>
-                                        <td nowrap>${jsonQueuedPerson.token}</td>
                                     </tr>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <tr>
-                                        <td style="background-color: lightgrey; text-decoration: line-through;">${status.count}&nbsp;</td>
-                                        <td style="background-color: lightgrey; text-decoration: line-through;" nowrap>
-                                            <c:choose>
-                                            <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
-                                            ${jsonQueuedPerson.customerName}
-                                            <c:if test="${!empty jsonQueuedPerson.minors}">
-
-                                            <c:forEach items="${jsonQueuedPerson.minors}" var="minor">
-                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;${minor.customerName} ${minor.gender} ${minor.age}</span>
-                                            </c:forEach>
-
-                                            </c:if>
-                                            </c:when>
-
-                                            <c:otherwise>
-                                            ${jsonQueuedPerson.customerName}
-                                            </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td style="background-color: lightgrey; text-decoration: line-through;" nowrap>${jsonQueuedPerson.phoneFormatted}</td>
-                                        <td style="background-color: lightgrey;" nowrap>${jsonQueuedPerson.queueUserState.description}</td>
-                                        <td style="background-color: lightgrey; text-decoration: line-through;" nowrap>${jsonQueuedPerson.token}</td>
-                                    </tr>
-                                    </c:otherwise>
-                                </c:choose>
-                                </c:forEach>
+                                    </c:forEach>
                                 </table>
                                 </c:when>
                                 <c:otherwise>
-                                <div class="alert-info">
-                                    <p>Could not find any in queue.</p>
-                                </div>
+                                    <div class="alert-info">
+                                        <p>Could not find any orders.</p>
+                                    </div>
                                 </c:otherwise>
                                 </c:choose>
                             </div>

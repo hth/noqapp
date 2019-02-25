@@ -4,6 +4,7 @@ import static com.noqapp.domain.types.MessageOriginEnum.O;
 import static com.noqapp.domain.types.MessageOriginEnum.Q;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -28,6 +29,9 @@ public enum BusinessTypeEnum {
     NC("NC", "Night Club", Q),
     BK("BK", "Bank", Q),
     PA("PA", "Park", Q);
+
+    public static EnumSet<BusinessTypeEnum> ORDERS = EnumSet.of(RS, BA, ST, GS, CF, HS, PH);
+    public static EnumSet<BusinessTypeEnum> QUEUES = EnumSet.of(SM, MT, SC, DO, PW, MU, TA, NC, BK, PA);
 
     private final String description;
     private final String name;

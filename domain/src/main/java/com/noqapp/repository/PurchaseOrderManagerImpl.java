@@ -9,7 +9,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -151,10 +150,17 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
-        Date from = DateUtil.midnight(new Date());
-        Date to = new Date();
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("C").gte(from).lt(to)).with(new Sort(DESC, "C")),
+            query(where("QR").is(codeQR)).with(new Sort(ASC, "TN")),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findAllOrderByCodeQRUntil(String codeQR, Date until) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("C").lte(until)).with(new Sort(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE
         );

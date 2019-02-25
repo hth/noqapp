@@ -1,4 +1,4 @@
-<%@ include file="../../include.jsp" %>
+<%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -51,17 +51,20 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Complete profile -->
-            <sec:authorize access="hasAnyRole('ROLE_S_MANAGER')">
+            <sec:authorize access="hasAnyRole('ROLE_Q_SUPERVISOR')">
                 <div class="admin-main">
                     <!-- File Upload From -->
-                    <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/upload.htm"
-                            modelAttribute="publishArticleForm" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
+                    <form:form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/upload.htm"
+                            modelAttribute="medicalReportForm" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
+                        <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
+                        <input type="hidden" name="labCategory" value="${medicalReportForm.labCategory}"/>
+                        <input type="hidden" name="codeQR" value="${medicalReportForm.codeQR}"/>
                         <div class="admin-title">
-                            <h2>Add Article Image</h2>
+                            <h2>Add Report Image</h2>
                         </div>
 
-                        <spring:hasBindErrors name="publishArticleForm">
+                        <spring:hasBindErrors name="medicalReportForm">
                         <div class="error-box">
                             <div class="error-txt">
                                 <ul>
@@ -78,7 +81,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3" style="padding-top: 30px;">
-                                            <form:label path="file" cssErrorClass="lb_error">Select Article Image</form:label>
+                                            <form:label path="file" cssErrorClass="lb_error">Select Report Image</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input class="next-btn" type="file" path="file" id="file"/>
@@ -90,7 +93,7 @@
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
                                     <div class="left-btn">
-                                        <input name="upload" class="next-btn" value="UPLOAD ARTICLE IMAGE" type="submit">
+                                        <input name="upload" class="next-btn" value="UPLOAD REPORT IMAGE" type="submit">
                                     </div>
                                     <div class="right-btn">
                                         <input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">
@@ -103,22 +106,26 @@
                     </form:form>
 
                     <div class="admin-title">
-                        <h2>Article Image</h2>
+                        <h2>Report Image</h2>
                     </div>
                     <div class="admin-content">
                         <div class="add-new">
                             <c:choose>
-                                <c:when test="${!empty publishArticleForm.bannerImage}">
+                                <c:when test="${!empty medicalReportForm.images}">
                                     <ul class="list-form">
+                                        <c:forEach items="${medicalReportForm.images}" var="image" varStatus="status">
                                         <li>
                                             <div class="col-fields">
-                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/article/${publishArticleForm.publishId}/${publishArticleForm.bannerImage}"
-                                                        <%--onerror="this.src='/static2/internal/img/profile-image-192x192.png'"--%>
+                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
+                                                        onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
                                                         class="img-profile-circle" />
                                             </div>
                                             <div class="col-lable3">
-                                                <form action="${pageContext.request.contextPath}/business/store/publishArticle/deleteImage.htm" method="post">
-                                                    <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
+                                                <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete.htm" method="post">
+                                                    <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
+                                                    <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
+                                                    <input type="hidden" name="filename" value="${image}"/>
+                                                    <input type="hidden" name="labCategory" value="${medicalReportForm.labCategory}"/>
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                                     <div class="left-btn">
                                                         <input name="upload" class="next-btn" value="DELETE" type="submit">
@@ -127,11 +134,12 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        </c:forEach>
                                     </ul>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <div class="no-approve">Please upload article related image.</div>
+                                        <div class="no-approve">Please upload report image.</div>
                                     </div>
                                 </c:otherwise>
                             </c:choose>

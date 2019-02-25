@@ -5,6 +5,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR);
 
     List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR);
+    List<PurchaseOrderEntity> findAllOrderByCodeQRUntil(String codeQR, Date until);
 
     PurchaseOrderEntity findOne(String codeQR, int tokenNumber);
 

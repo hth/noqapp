@@ -119,14 +119,9 @@ public class BusinessUserStoreService {
         return preferredBusinessService.exists(bizStore.getBizName().getId(), preferredBizStore.getBizName().getId());
     }
 
-    /**
-     * Used for queue supervisor role, store manager has little different view.
-     *
-     * @param qid
-     * @return
-     */
+    /** Used for queue supervisor role, store manager has little different view. */
     @Mobile
-    public List<JsonTopic> getQueues(String qid) {
+    public List<JsonTopic> getAssignedTokenAndQueues(String qid) {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, queueLimit);
         int size = businessUserStores.size();
         LOG.info("Found user associated to business count={} qid={}", size, qid);
