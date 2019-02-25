@@ -92,7 +92,7 @@ public class QueueOrderController {
             .setCodeQR(tokenQueue.getId());
 
         String nextPage;
-        if (tokenQueue.getBusinessType().getMessageOrigin() == MessageOriginEnum.O) {
+        if (MessageOriginEnum.O == tokenQueue.getBusinessType().getMessageOrigin()) {
             inQueueForm.setPurchaseOrders(purchaseOrderService.findAllOrderByCodeQR(codeQR.getText()));
             nextPage = order;
         } else {

@@ -90,8 +90,8 @@
                                             <c:choose>
                                                 <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
                                                 <span style="display:block; font-size:13px;"><a
-                                                        href="https://noqapp.com/b/s${purchaseOrder.id}.html"
-                                                        target="_blank">Web Appointment Link</a></span>
+                                                        href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                        target="_blank">Add Medical Report</a></span>
                                                 </c:when>
                                                 <c:otherwise>
                                                     N/A

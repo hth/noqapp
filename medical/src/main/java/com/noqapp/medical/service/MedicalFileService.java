@@ -5,8 +5,10 @@ import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
 import static com.noqapp.common.utils.FileUtil.getFileSeparator;
 import static com.noqapp.common.utils.FileUtil.getTmpDir;
 import static com.noqapp.service.FileService.RADIOLOGY_PRODUCT_HEADERS;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.S3FileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -35,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -43,6 +46,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import javax.imageio.ImageIO;
 
@@ -61,6 +65,8 @@ public class MedicalFileService {
     private FileService fileService;
     private FtpService ftpService;
 
+    private ExecutorService executorService;
+
     @Autowired
     public MedicalFileService(
         MedicalRecordManager medicalRecordManager,
@@ -76,6 +82,8 @@ public class MedicalFileService {
         this.s3FileManager = s3FileManager;
         this.fileService = fileService;
         this.ftpService = ftpService;
+
+        this.executorService = newCachedThreadPool();
     }
 
     /** Process bulk upload of CSV file for a store. */
@@ -326,6 +334,33 @@ public class MedicalFileService {
                     LOG.error("Reached unreachable condition {}", labCategory);
                     throw new UnsupportedOperationException("Reached unreachable condition");
             }
+        }
+    }
+
+    @Mobile
+    public String processMedicalImage(String recordReferenceId, MultipartFile multipartFile) throws IOException {
+        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+        String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
+            executorService.submit(() -> addMedicalImage(recordReferenceId, filename, bufferedImage));
+            return filename;
+        } else {
+            LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());
+            throw new RuntimeException("Mime type mismatch");
+        }
+    }
+
+    public String processLabImage(String transactionId, MultipartFile multipartFile, LabCategoryEnum labCategory) throws IOException {
+        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+        String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
+            executorService.submit(() -> addLabImage(transactionId, filename, bufferedImage, labCategory));
+            return filename;
+        } else {
+            LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());
+            throw new RuntimeException("Mime type mismatch");
         }
     }
 }
