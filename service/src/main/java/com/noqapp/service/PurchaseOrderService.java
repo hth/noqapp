@@ -63,6 +63,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import org.junit.jupiter.api.Assertions;
 
@@ -252,7 +253,12 @@ public class PurchaseOrderService {
         return purchaseOrderManager.isOrderCancelled(codeQR, tokenNumber);
     }
 
-    //TODO needs QID in JsonPurchaseOrder to map with patient id
+    @Mobile
+    public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
+        Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
+        createOrder(jsonPurchaseOrder, jsonPurchaseOrder.getQueueUserId(), did, tokenService);
+    }
+
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
