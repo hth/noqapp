@@ -261,7 +261,14 @@ public class PurchaseOrderService {
 
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
-        BizStoreEntity bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
+        BizStoreEntity bizStore;
+        if (null == jsonPurchaseOrder.getBizStoreId()) {
+            bizStore = bizStoreManager.findByCodeQR(jsonPurchaseOrder.getCodeQR());
+        } else {
+            bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
+        }
+        Assert.notNull(bizStore, "BizStore should not be null");
+
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
