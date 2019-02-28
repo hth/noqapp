@@ -282,8 +282,8 @@ public class PurchaseOrderService {
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
             .setStoreDiscount(bizStore.getDiscount())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
-            .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
-            //.setPaymentType(jsonPurchaseOrder.getPaymentType())
+            .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
+            //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
             .setTokenService(tokenService)
             .setDisplayName(bizStore.getDisplayName())
@@ -601,8 +601,8 @@ public class PurchaseOrderService {
             .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
             .setStoreDiscount(purchaseOrder.getStoreDiscount())
             .setOrderPrice(purchaseOrder.getOrderPrice())
-            .setDeliveryType(purchaseOrder.getDeliveryType())
-            .setPaymentType(purchaseOrder.getPaymentType())
+            .setDeliveryMode(purchaseOrder.getDeliveryMode())
+            .setPaymentMode(purchaseOrder.getPaymentMode())
             .setBusinessType(purchaseOrder.getBusinessType())
             .setJsonPurchaseOrderProducts(jsonPurchaseOrderProducts)
             //Serving Number not set for Merchant
@@ -1042,7 +1042,7 @@ public class PurchaseOrderService {
             LOG.info("Found queue codeQR={} token={}", codeQR, purchaseOrder.getTokenNumber());
             switch (purchaseOrder.getPresentOrderState()) {
                 case OP:
-                    switch (purchaseOrder.getDeliveryType()) {
+                    switch (purchaseOrder.getDeliveryMode()) {
                         case HD:
                             purchaseOrder
                                 .addOrderState(PurchaseOrderStateEnum.PR)
@@ -1054,7 +1054,7 @@ public class PurchaseOrderService {
                                 .addOrderState(PurchaseOrderStateEnum.RD);
                             break;
                         default:
-                            LOG.error("Reached unreachable condition, deliveryType={}", purchaseOrder.getDeliveryType());
+                            LOG.error("Reached unreachable condition, deliveryMode={}", purchaseOrder.getDeliveryMode());
                             throw new UnsupportedOperationException("Reached un-reachable condition for processing order");
                     }
                     break;

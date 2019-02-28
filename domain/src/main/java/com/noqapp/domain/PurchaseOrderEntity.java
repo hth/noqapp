@@ -1,9 +1,9 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
@@ -66,10 +66,10 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String orderPrice;
 
     @Field("DM")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
-    @Field("PT")
-    private PaymentTypeEnum paymentType;
+    @Field("PM")
+    private PaymentModeEnum paymentMode;
 
     @Field("PY")
     private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
@@ -212,21 +212,21 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
-    public DeliveryTypeEnum getDeliveryType() {
-        return deliveryType;
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
     }
 
-    public PurchaseOrderEntity setDeliveryType(DeliveryTypeEnum deliveryType) {
-        this.deliveryType = deliveryType;
+    public PurchaseOrderEntity setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
         return this;
     }
 
-    public PaymentTypeEnum getPaymentType() {
-        return paymentType;
+    public PaymentModeEnum getPaymentMode() {
+        return paymentMode;
     }
 
-    public PurchaseOrderEntity setPaymentType(PaymentTypeEnum paymentType) {
-        this.paymentType = paymentType;
+    public PurchaseOrderEntity setPaymentMode(PaymentModeEnum paymentMode) {
+        this.paymentMode = paymentMode;
         return this;
     }
 
@@ -415,8 +415,8 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", customerPhone='" + customerPhone + '\'' +
             ", storeDiscount=" + storeDiscount +
             ", orderPrice='" + orderPrice + '\'' +
-            ", deliveryType=" + deliveryType +
-            ", paymentType=" + paymentType +
+            ", deliveryMode=" + deliveryMode +
+            ", paymentMode=" + paymentMode +
             ", presentOrderState=" + presentOrderState +
             ", notifiedOnService=" + notifiedOnService +
             ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +

@@ -7,9 +7,9 @@ import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
 
 import com.google.maps.model.LatLng;
 
@@ -189,10 +189,10 @@ public class BizStoreEntity extends BaseEntity {
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @Field("PM")
-    private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
+    private List<PaymentModeEnum> paymentModes = new LinkedList<>();
 
     @Field("DM")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+    private List<DeliveryModeEnum> deliveryModes = new LinkedList<>();
 
     @Field("AM")
     private List<AmenityEnum> amenities = new LinkedList<>();
@@ -624,21 +624,21 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public List<PaymentTypeEnum> getPaymentTypes() {
-        return paymentTypes;
+    public List<PaymentModeEnum> getPaymentModes() {
+        return paymentModes;
     }
 
-    public BizStoreEntity setPaymentTypes(List<PaymentTypeEnum> paymentTypes) {
-        this.paymentTypes = paymentTypes;
+    public BizStoreEntity setPaymentModes(List<PaymentModeEnum> paymentModes) {
+        this.paymentModes = paymentModes;
         return this;
     }
 
-    public List<DeliveryTypeEnum> getDeliveryTypes() {
-        return deliveryTypes;
+    public List<DeliveryModeEnum> getDeliveryModes() {
+        return deliveryModes;
     }
 
-    public BizStoreEntity setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
-        this.deliveryTypes = deliveryTypes;
+    public BizStoreEntity setDeliveryModes(List<DeliveryModeEnum> deliveryModes) {
+        this.deliveryModes = deliveryModes;
         return this;
     }
 

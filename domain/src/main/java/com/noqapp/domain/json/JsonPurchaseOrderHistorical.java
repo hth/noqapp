@@ -5,8 +5,9 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -58,10 +59,13 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     private String orderPrice;
 
     @JsonProperty("dm")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
-    @JsonProperty("pt")
-    private PaymentTypeEnum paymentType;
+    @JsonProperty("pm")
+    private PaymentModeEnum paymentMode;
+
+    @JsonProperty("py")
+    private PaymentStatusEnum paymentStatus;
 
     @JsonProperty("ps")
     private PurchaseOrderStateEnum presentOrderState;
@@ -127,8 +131,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.orderPrice = purchaseOrder.getOrderPrice();
-        this.deliveryType = purchaseOrder.getDeliveryType();
-        this.paymentType = purchaseOrder.getPaymentType();
+        this.deliveryMode = purchaseOrder.getDeliveryMode();
+        this.paymentMode = purchaseOrder.getPaymentMode();
+        this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.presentOrderState = purchaseOrder.getPresentOrderState();
         this.businessType = purchaseOrder.getBusinessType();
         this.ratingCount = purchaseOrder.getRatingCount();

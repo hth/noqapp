@@ -4,8 +4,7 @@ package com.noqapp.domain.types;
  * hitender
  * 3/27/18 10:03 AM
  */
-//Change file name to PaymentMode
-public enum PaymentTypeEnum {
+public enum PaymentModeEnum {
     CA("CA", "Cash"),
     CC("CC", "Credit Card"),
     DC("DC", "Debit Card"),
@@ -15,7 +14,7 @@ public enum PaymentTypeEnum {
     private final String description;
     private final String name;
 
-    PaymentTypeEnum(String name, String description) {
+    PaymentModeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
