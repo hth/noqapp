@@ -5,6 +5,7 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.service.FtpService;
+import com.noqapp.service.payment.PaymentGatewayService;
 
 import com.maxmind.geoip2.DatabaseReader;
 
@@ -63,6 +64,7 @@ public class NoQAppInitializationCheckBean {
     private BizStoreElasticService bizStoreElasticService;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
+    private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
 
     @Autowired
@@ -75,6 +77,7 @@ public class NoQAppInitializationCheckBean {
         BizStoreElasticService bizStoreElasticService,
         DatabaseReader databaseReader,
         FtpService ftpService,
+        PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP
     ) {
         this.environment = environment;
@@ -85,6 +88,7 @@ public class NoQAppInitializationCheckBean {
         this.bizStoreElasticService = bizStoreElasticService;
         this.databaseReader = databaseReader;
         this.ftpService = ftpService;
+        this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
     }
 
@@ -175,6 +179,15 @@ public class NoQAppInitializationCheckBean {
             databaseReader.getMetadata().getBinaryFormatMinorVersion(),
             databaseReader.getMetadata().getBuildDate(),
             databaseReader.getMetadata().getIpVersion());
+    }
+
+    @PostConstruct
+    public void checkPaymentGateway() {
+        boolean cashfreeSuccess = paymentGatewayService.verifyCashfree();
+        if (!cashfreeSuccess) {
+            LOG.error("Cashfree Payment Gateway could not be verified");
+            throw new RuntimeException("Cashfree Payment Gateway could not be verified");
+        }
     }
 
     @PostConstruct

@@ -3,6 +3,7 @@ package com.noqapp.domain.mapper;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
@@ -25,27 +26,28 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int QR = 5;
     private static final int DM = 6;
     private static final int PT = 7;
-    private static final int PS = 8;
-    private static final int DA = 9;
-    private static final int RA = 10;
-    private static final int RV = 11;
-    private static final int TN = 12;
+    private static final int PY = 7+1;
+    private static final int PS = 8+1;
+    private static final int DA = 9+1;
+    private static final int RA = 10+1;
+    private static final int RV = 11+1;
+    private static final int TN = 12+1;
 
-    private static final int SD = 13;
-    private static final int OP = 14;
-    private static final int BT = 15;
-    private static final int SN = 16;
-    private static final int SB = 17;
-    private static final int SE = 18;
-    private static final int TI = 19;
-    private static final int DN = 20;
-    private static final int AN = 21;
+    private static final int SD = 13+1;
+    private static final int OP = 14+1;
+    private static final int BT = 15+1;
+    private static final int SN = 16+1;
+    private static final int SB = 17+1;
+    private static final int SE = 18+1;
+    private static final int TI = 19+1;
+    private static final int DN = 20+1;
+    private static final int AN = 21+1;
 
-    private static final int V = 22;
-    private static final int U = 23;
-    private static final int C = 24;
-    private static final int A = 25;
-    private static final int D = 26;
+    private static final int V = 22+1;
+    private static final int U = 23+1;
+    private static final int C = 24+1;
+    private static final int A = 25+1;
+    private static final int D = 26+1;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -58,6 +60,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setId(rs.getString(ID));
         purchaseOrder.setDeliveryType(DeliveryTypeEnum.valueOf(rs.getString(DM)));
         purchaseOrder.setPaymentType(PaymentTypeEnum.valueOf(rs.getString(PT)));
+        purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
         purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
         purchaseOrder.setDeliveryAddress(rs.getString(DA));
         purchaseOrder.setRatingCount(rs.getInt(RA));

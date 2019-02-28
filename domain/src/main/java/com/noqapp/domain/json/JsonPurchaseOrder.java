@@ -3,8 +3,10 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
@@ -70,6 +72,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("pt")
     private PaymentTypeEnum paymentType;
 
+    @JsonProperty("py")
+    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
+
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
@@ -100,6 +105,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     @JsonProperty("an")
     private String additionalNote;
+
+    @JsonProperty("purt")
+    private JsonPurchaseToken jsonPurchaseToken;
 
     public JsonPurchaseOrder() {
     }
@@ -194,6 +202,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public PaymentStatusEnum getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public JsonPurchaseOrder setPaymentStatus(PaymentStatusEnum paymentStatus) {
+        this.paymentStatus = paymentStatus;
+        return this;
+    }
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -280,6 +297,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public JsonPurchaseToken getJsonPurchaseToken() {
+        return jsonPurchaseToken;
+    }
+
+    public JsonPurchaseOrder setJsonPurchaseToken(JsonPurchaseToken jsonPurchaseToken) {
+        this.jsonPurchaseToken = jsonPurchaseToken;
+        return this;
+    }
+
     /** Mostly used when cancelling the order. */
     public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
         return new JsonPurchaseOrder()
@@ -290,6 +316,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setOrderPrice(po.getOrderPrice())
             .setDeliveryType(po.getDeliveryType())
             .setPaymentType(po.getPaymentType())
+            .setPaymentStatus(po.getPaymentStatus())
             .setBusinessType(po.getBusinessType())
             //Empty purchaseOrderProducts List
             //No Setting Serving Number
@@ -310,6 +337,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryType = purchaseOrder.getDeliveryType();
         this.paymentType = purchaseOrder.getPaymentType();
+        this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.businessType = purchaseOrder.getBusinessType();
 
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
@@ -323,7 +351,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonPurchaseOrder{" +
+        return "JsonPurchaseOrderCF{" +
             "bizStoreId='" + bizStoreId + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
             ", deliveryAddress='" + deliveryAddress + '\'' +
