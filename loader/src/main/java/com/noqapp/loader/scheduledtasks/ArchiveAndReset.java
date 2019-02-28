@@ -253,9 +253,15 @@ public class ArchiveAndReset {
             until);
 
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findAllOrderByCodeQRUntil(bizStore.getCodeQR(), until);
-        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
-            purchaseOrderProductManagerJDBC.batchPurchaseOrderProducts(purchaseOrderProducts);
+        try {
+            for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+                List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+                purchaseOrderProductManagerJDBC.batchPurchaseOrderProducts(purchaseOrderProducts);
+            }
+        } catch (DataIntegrityViolationException e) {
+            purchaseOrderProductManagerJDBC.rollbackPurchaseOrders(purchaseOrders);
+            LOG.error("Completed rollback POP for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            throw e;
         }
 
         StatsBizStoreDailyEntity statsBizStoreDaily;
@@ -275,7 +281,7 @@ public class ArchiveAndReset {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             purchaseOrderManagerJDBC.rollbackPurchaseOrder(purchaseOrders);
             purchaseOrderProductManagerJDBC.rollbackPurchaseOrders(purchaseOrders);
-            LOG.error("Completed rollback for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
+            LOG.error("Completed rollback PO for bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             throw e;
         }
 
