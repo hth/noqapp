@@ -92,7 +92,7 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
             int[] rowUpdated = namedParameterJdbcTemplate.batchUpdate(insert, maps);
             LOG.info("Insert count={} rowUpdated={}", maps.length, rowUpdated.length);
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Failed batch update reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed batch update count={} reason={}", purchaseOrderProducts.size(), e.getLocalizedMessage(), e);
             throw e;
         }
     }
