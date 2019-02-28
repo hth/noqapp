@@ -1,3 +1,7 @@
+### Change March 1, 2019
+
+     db.PURCHASE_ORDER.update({}, {$rename:{"PT":"PM"}}, false, true);
+
 ### Change Feb 02, 2019 
 
     drop index business_customer_bc_idx from BUSINESS_CUSTOMER
