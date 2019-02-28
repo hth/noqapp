@@ -167,10 +167,11 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty("pm")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{
-        add(PaymentTypeEnum.AP);
         add(PaymentTypeEnum.CA);
         add(PaymentTypeEnum.CC);
         add(PaymentTypeEnum.DC);
+        add(PaymentTypeEnum.PT);
+        add(PaymentTypeEnum.UP);
     }};
 
     @JsonProperty("dm")

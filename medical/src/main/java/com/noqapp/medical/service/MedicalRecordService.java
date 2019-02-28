@@ -16,7 +16,6 @@ import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
@@ -923,7 +922,7 @@ public class MedicalRecordService {
             .setDeliveryAddress(userProfile.getAddress())
             .setCustomerPhone(userProfile.getPhone())
             .setDeliveryType(DeliveryTypeEnum.TO)
-            .setPaymentType(PaymentTypeEnum.CA)
+            //.setPaymentType(PaymentTypeEnum.CA)
             .setBizStoreId(bizStoreId);
 
         purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);

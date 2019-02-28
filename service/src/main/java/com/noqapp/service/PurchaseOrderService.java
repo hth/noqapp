@@ -28,6 +28,8 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
+import com.noqapp.domain.json.payment.cashfree.JsonPurchaseOrderCF;
+import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -53,6 +55,7 @@ import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
 import com.noqapp.service.exceptions.StoreTempDayClosedException;
+import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -109,6 +112,7 @@ public class PurchaseOrderService {
     private TransactionService transactionService;
     private NLPService nlpService;
     private MailService mailService;
+    private CashfreeService cashfreeService;
 
     private ExecutorService executorService;
 
@@ -130,7 +134,8 @@ public class PurchaseOrderService {
         AccountService accountService,
         TransactionService transactionService,
         NLPService nlpService,
-        MailService mailService
+        MailService mailService,
+        CashfreeService cashfreeService
     ) {
         this.bizStoreManager = bizStoreManager;
         this.businessUserManager = businessUserManager;
@@ -149,6 +154,7 @@ public class PurchaseOrderService {
         this.transactionService = transactionService;
         this.nlpService = nlpService;
         this.mailService = mailService;
+        this.cashfreeService = cashfreeService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -277,7 +283,7 @@ public class PurchaseOrderService {
             .setStoreDiscount(bizStore.getDiscount())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
             .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
-            .setPaymentType(jsonPurchaseOrder.getPaymentType())
+            //.setPaymentType(jsonPurchaseOrder.getPaymentType())
             .setBusinessType(bizStore.getBusinessType())
             .setTokenService(tokenService)
             .setDisplayName(bizStore.getDisplayName())
@@ -359,6 +365,12 @@ public class PurchaseOrderService {
                 .setTransactionId(purchaseOrder.getTransactionId())
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
                 .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+
+            JsonPurchaseOrderCF jsonPurchaseOrderCF = new JsonPurchaseOrderCF()
+                .setOrderAmount(purchaseOrder.getOrderPrice())
+                .setOrderId(purchaseOrder.getTransactionId());
+            JsonPurchaseToken jsonPurchaseToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
+            jsonPurchaseOrder.setJsonPurchaseToken(jsonPurchaseToken);
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
             throw new PurchaseOrderFailException("Failed getting token");

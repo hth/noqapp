@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -69,6 +70,9 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Field("PT")
     private PaymentTypeEnum paymentType;
+
+    @Field("PY")
+    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
 
     @Field("PS")
     private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
@@ -223,6 +227,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setPaymentType(PaymentTypeEnum paymentType) {
         this.paymentType = paymentType;
+        return this;
+    }
+
+    public PaymentStatusEnum getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public PurchaseOrderEntity setPaymentStatus(PaymentStatusEnum paymentStatus) {
+        this.paymentStatus = paymentStatus;
         return this;
     }
 
