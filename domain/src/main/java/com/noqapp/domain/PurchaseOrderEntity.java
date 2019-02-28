@@ -1,7 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -66,7 +66,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String orderPrice;
 
     @Field("DM")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
     @Field("PM")
     private PaymentModeEnum paymentMode;
@@ -212,12 +212,12 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
-    public DeliveryTypeEnum getDeliveryType() {
-        return deliveryType;
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
     }
 
-    public PurchaseOrderEntity setDeliveryType(DeliveryTypeEnum deliveryType) {
-        this.deliveryType = deliveryType;
+    public PurchaseOrderEntity setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
         return this;
     }
 
@@ -415,7 +415,7 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", customerPhone='" + customerPhone + '\'' +
             ", storeDiscount=" + storeDiscount +
             ", orderPrice='" + orderPrice + '\'' +
-            ", deliveryType=" + deliveryType +
+            ", deliveryMode=" + deliveryMode +
             ", paymentMode=" + paymentMode +
             ", presentOrderState=" + presentOrderState +
             ", notifiedOnService=" + notifiedOnService +

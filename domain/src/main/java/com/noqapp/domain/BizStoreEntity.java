@@ -7,7 +7,7 @@ import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 
@@ -192,7 +192,7 @@ public class BizStoreEntity extends BaseEntity {
     private List<PaymentModeEnum> paymentModes = new LinkedList<>();
 
     @Field("DM")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+    private List<DeliveryModeEnum> deliveryModes = new LinkedList<>();
 
     @Field("AM")
     private List<AmenityEnum> amenities = new LinkedList<>();
@@ -633,12 +633,12 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public List<DeliveryTypeEnum> getDeliveryTypes() {
-        return deliveryTypes;
+    public List<DeliveryModeEnum> getDeliveryModes() {
+        return deliveryModes;
     }
 
-    public BizStoreEntity setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
-        this.deliveryTypes = deliveryTypes;
+    public BizStoreEntity setDeliveryModes(List<DeliveryModeEnum> deliveryModes) {
+        this.deliveryModes = deliveryModes;
         return this;
     }
 

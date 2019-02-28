@@ -3,7 +3,7 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -175,9 +175,9 @@ public class JsonQueue extends AbstractDomain {
     }};
 
     @JsonProperty("dm")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<DeliveryTypeEnum>() {{
-        add(DeliveryTypeEnum.HD);
-        add(DeliveryTypeEnum.TO);
+    private List<DeliveryModeEnum> deliveryModes = new LinkedList<DeliveryModeEnum>() {{
+        add(DeliveryModeEnum.HD);
+        add(DeliveryModeEnum.TO);
     }};
 
     @JsonProperty("am")
@@ -527,12 +527,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public List<DeliveryTypeEnum> getDeliveryTypes() {
-        return deliveryTypes;
+    public List<DeliveryModeEnum> getDeliveryModes() {
+        return deliveryModes;
     }
 
-    public JsonQueue setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
-        this.deliveryTypes = deliveryTypes;
+    public JsonQueue setDeliveryModes(List<DeliveryModeEnum> deliveryModes) {
+        this.deliveryModes = deliveryModes;
         return this;
     }
 

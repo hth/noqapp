@@ -2,7 +2,7 @@ package com.noqapp.domain.mapper;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -60,7 +60,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
                 rs.getString(QR)
         );
         purchaseOrder.setId(rs.getString(ID));
-        purchaseOrder.setDeliveryType(DeliveryTypeEnum.valueOf(rs.getString(DM)));
+        purchaseOrder.setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(DM)));
         purchaseOrder.setPaymentMode(StringUtils.isNotBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
         purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
         purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));

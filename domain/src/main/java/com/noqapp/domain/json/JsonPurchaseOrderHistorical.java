@@ -5,7 +5,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -59,7 +59,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     private String orderPrice;
 
     @JsonProperty("dm")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
     @JsonProperty("pm")
     private PaymentModeEnum paymentMode;
@@ -131,7 +131,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.orderPrice = purchaseOrder.getOrderPrice();
-        this.deliveryType = purchaseOrder.getDeliveryType();
+        this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.paymentMode = purchaseOrder.getPaymentMode();
         this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.presentOrderState = purchaseOrder.getPresentOrderState();
