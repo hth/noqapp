@@ -35,26 +35,26 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D)" +
+        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PM, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qid,:bs,:bn,:qr,:dm,:pt,:ps,:da,:ra,:rv,:tn,:sd,:op,:bt,:sn,:sb,:se,:ti,:dn,:an,:v,:u,:c,:a,:d)";
+            "(:id,:qid,:bs,:bn,:qr,:dm,:pm,:ps,:da,:ra,:rv,:tn,:sd,:op,:bt,:sn,:sb,:se,:ti,:dn,:an,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
     private static final String delete_by_id = "DELETE FROM PURCHASE_ORDER WHERE ID = ?";
 
     private static final String query_by_qid =
-        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
             "ORDER BY C DESC";
 
     private static final String query_by_qid_and_transactionId =
-        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND TI = ? ";
 
     private static final String query_by_qid_where_ps =
-        "SELECT ID, QID, BS, BN, QR, DM, PT, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PS, DA, RA, RV, TN, SD, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND PS = ?" +
             "ORDER BY C DESC";
@@ -93,7 +93,8 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("bn", purchaseOrder.getBizNameId());
                 namedParameters.addValue("qr", purchaseOrder.getCodeQR());
                 namedParameters.addValue("dm", purchaseOrder.getDeliveryType().getName());
-                namedParameters.addValue("pt", purchaseOrder.getPaymentType().getName());
+                namedParameters.addValue("pm", purchaseOrder.getPaymentMode().getName());
+                namedParameters.addValue("py", purchaseOrder.getPaymentStatus().getName());
                 namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().getName());
                 namedParameters.addValue("da", purchaseOrder.getDeliveryAddress());
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());

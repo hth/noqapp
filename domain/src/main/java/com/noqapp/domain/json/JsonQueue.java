@@ -5,7 +5,7 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -166,12 +166,12 @@ public class JsonQueue extends AbstractDomain {
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @JsonProperty("pm")
-    private List<PaymentTypeEnum> paymentTypes = new LinkedList<PaymentTypeEnum>() {{
-        add(PaymentTypeEnum.CA);
-        add(PaymentTypeEnum.CC);
-        add(PaymentTypeEnum.DC);
-        add(PaymentTypeEnum.PT);
-        add(PaymentTypeEnum.UP);
+    private List<PaymentModeEnum> paymentModes = new LinkedList<PaymentModeEnum>() {{
+        add(PaymentModeEnum.CA);
+        add(PaymentModeEnum.CC);
+        add(PaymentModeEnum.DC);
+        add(PaymentModeEnum.PT);
+        add(PaymentModeEnum.UP);
     }};
 
     @JsonProperty("dm")
@@ -518,12 +518,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public List<PaymentTypeEnum> getPaymentTypes() {
-        return paymentTypes;
+    public List<PaymentModeEnum> getPaymentModes() {
+        return paymentModes;
     }
 
-    public JsonQueue setPaymentTypes(List<PaymentTypeEnum> paymentTypes) {
-        this.paymentTypes = paymentTypes;
+    public JsonQueue setPaymentModes(List<PaymentModeEnum> paymentModes) {
+        this.paymentModes = paymentModes;
         return this;
     }
 

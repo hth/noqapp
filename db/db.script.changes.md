@@ -1,3 +1,11 @@
+### Change March 1 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    CHANGE COLUMN `PT` `PM` VARCHAR(2);
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `PY` VARCHAR(2) AFTER `PM`;
+
 ### Change Jan 15 2019
 
 Add column ST

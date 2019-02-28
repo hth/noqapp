@@ -80,7 +80,7 @@
                                         <td nowrap>${purchaseOrder.tokenNumber}</td>
                                         <td nowrap align="right">${purchaseOrder.orderPrice}</td>
                                         <td nowrap align="center">
-                                            ${purchaseOrder.paymentType.description}
+                                            ${purchaseOrder.paymentMode.description}
                                         </td>
                                         <td nowrap align="left">
                                             ${purchaseOrder.presentOrderState.description}

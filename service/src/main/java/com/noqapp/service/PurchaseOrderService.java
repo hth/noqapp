@@ -283,7 +283,7 @@ public class PurchaseOrderService {
             .setStoreDiscount(bizStore.getDiscount())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
             .setDeliveryType(jsonPurchaseOrder.getDeliveryType())
-            //.setPaymentType(jsonPurchaseOrder.getPaymentType())
+            //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
             .setTokenService(tokenService)
             .setDisplayName(bizStore.getDisplayName())
@@ -602,7 +602,7 @@ public class PurchaseOrderService {
             .setStoreDiscount(purchaseOrder.getStoreDiscount())
             .setOrderPrice(purchaseOrder.getOrderPrice())
             .setDeliveryType(purchaseOrder.getDeliveryType())
-            .setPaymentType(purchaseOrder.getPaymentType())
+            .setPaymentMode(purchaseOrder.getPaymentMode())
             .setBusinessType(purchaseOrder.getBusinessType())
             .setJsonPurchaseOrderProducts(jsonPurchaseOrderProducts)
             //Serving Number not set for Merchant

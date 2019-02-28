@@ -6,8 +6,8 @@ import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -66,11 +66,11 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("op")
     private String orderPrice;
 
-    @JsonProperty ("dt")
+    @JsonProperty ("dm")
     private DeliveryTypeEnum deliveryType;
 
-    @JsonProperty ("pt")
-    private PaymentTypeEnum paymentType;
+    @JsonProperty ("pm")
+    private PaymentModeEnum paymentMode;
 
     @JsonProperty("py")
     private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
@@ -193,12 +193,12 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public PaymentTypeEnum getPaymentType() {
-        return paymentType;
+    public PaymentModeEnum getPaymentMode() {
+        return paymentMode;
     }
 
-    public JsonPurchaseOrder setPaymentType(PaymentTypeEnum paymentType) {
-        this.paymentType = paymentType;
+    public JsonPurchaseOrder setPaymentMode(PaymentModeEnum paymentMode) {
+        this.paymentMode = paymentMode;
         return this;
     }
 
@@ -315,7 +315,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setStoreDiscount(po.getStoreDiscount())
             .setOrderPrice(po.getOrderPrice())
             .setDeliveryType(po.getDeliveryType())
-            .setPaymentType(po.getPaymentType())
+            .setPaymentMode(po.getPaymentMode())
             .setPaymentStatus(po.getPaymentStatus())
             .setBusinessType(po.getBusinessType())
             //Empty purchaseOrderProducts List
@@ -336,7 +336,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryType = purchaseOrder.getDeliveryType();
-        this.paymentType = purchaseOrder.getPaymentType();
+        this.paymentMode = purchaseOrder.getPaymentMode();
         this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.businessType = purchaseOrder.getBusinessType();
 
@@ -358,7 +358,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", storeDiscount=" + storeDiscount +
             ", orderPrice='" + orderPrice + '\'' +
             ", deliveryType=" + deliveryType +
-            ", paymentType=" + paymentType +
+            ", paymentMode=" + paymentMode +
             ", businessType=" + businessType +
             ", jsonPurchaseOrderProducts=" + jsonPurchaseOrderProducts +
             ", servingNumber=" + servingNumber +

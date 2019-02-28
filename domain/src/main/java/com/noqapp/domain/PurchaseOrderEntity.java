@@ -2,8 +2,8 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryTypeEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
-import com.noqapp.domain.types.PaymentTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
@@ -68,8 +68,8 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("DM")
     private DeliveryTypeEnum deliveryType;
 
-    @Field("PT")
-    private PaymentTypeEnum paymentType;
+    @Field("PM")
+    private PaymentModeEnum paymentMode;
 
     @Field("PY")
     private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
@@ -221,12 +221,12 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
-    public PaymentTypeEnum getPaymentType() {
-        return paymentType;
+    public PaymentModeEnum getPaymentMode() {
+        return paymentMode;
     }
 
-    public PurchaseOrderEntity setPaymentType(PaymentTypeEnum paymentType) {
-        this.paymentType = paymentType;
+    public PurchaseOrderEntity setPaymentMode(PaymentModeEnum paymentMode) {
+        this.paymentMode = paymentMode;
         return this;
     }
 
@@ -416,7 +416,7 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", storeDiscount=" + storeDiscount +
             ", orderPrice='" + orderPrice + '\'' +
             ", deliveryType=" + deliveryType +
-            ", paymentType=" + paymentType +
+            ", paymentMode=" + paymentMode +
             ", presentOrderState=" + presentOrderState +
             ", notifiedOnService=" + notifiedOnService +
             ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +

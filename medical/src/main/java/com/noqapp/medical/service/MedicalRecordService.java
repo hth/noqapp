@@ -922,7 +922,7 @@ public class MedicalRecordService {
             .setDeliveryAddress(userProfile.getAddress())
             .setCustomerPhone(userProfile.getPhone())
             .setDeliveryType(DeliveryTypeEnum.TO)
-            //.setPaymentType(PaymentTypeEnum.CA)
+            //.setPaymentMode(PaymentModeEnum.CA)
             .setBizStoreId(bizStoreId);
 
         purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);
