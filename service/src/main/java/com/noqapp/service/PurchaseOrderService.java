@@ -224,13 +224,15 @@ public class PurchaseOrderService {
         switch (purchaseOrder.getPresentOrderState()) {
             case IN:
             case PC:
-            case VB:
             case IB:
             case FO:
             case OD:
             case CO:
                 LOG.error("Cannot activate order in state {} transactionId={}", purchaseOrder.getPresentOrderState(), transactionId);
                 throw new OrderFailedReActivationException("Cannot activate this order");
+            case VB:
+            case PO:
+                //Allow activate when in VB state or PO state
             default:
                 List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
                 JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
@@ -346,10 +348,9 @@ public class PurchaseOrderService {
                 purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
             }
 
-            /* Success in transaction. Change status to PO to initialize. */
+            /* Success in transaction. Change status to VB to initialize. */
             purchaseOrder
                 .addOrderState(PurchaseOrderStateEnum.VB)
-                .addOrderState(PurchaseOrderStateEnum.PO)
                 .setTokenNumber(jsonToken.getToken())
                 .setExpectedServiceBegin(expectedServiceBegin)
                 .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
