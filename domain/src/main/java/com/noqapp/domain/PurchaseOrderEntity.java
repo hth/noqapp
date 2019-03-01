@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -400,6 +401,11 @@ public class PurchaseOrderEntity extends BaseEntity {
     public PurchaseOrderEntity setAdditionalNote(String additionalNote) {
         this.additionalNote = additionalNote;
         return this;
+    }
+
+    @Transient
+    public String orderPriceForTransaction() {
+        return String.format("%.2f", orderPrice);
     }
 
     @Override
