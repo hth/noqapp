@@ -34,7 +34,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
-import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
@@ -368,7 +367,7 @@ public class PurchaseOrderService {
                 .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
             JsonPurchaseOrderCF jsonPurchaseOrderCF = new JsonPurchaseOrderCF()
-                .setOrderAmount(purchaseOrder.getOrderPrice())
+                .setOrderAmount(purchaseOrder.orderPriceForTransaction())
                 .setOrderId(purchaseOrder.getTransactionId());
             JsonPurchaseToken jsonPurchaseToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
             jsonPurchaseOrder.setJsonPurchaseToken(jsonPurchaseToken);
