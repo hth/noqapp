@@ -5,6 +5,10 @@
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
     ADD COLUMN `PY` VARCHAR(2) AFTER `PM`;
+    
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE `noqapp_test`.`PURCHASE_ORDER` SET PY = "PP";
+    SET SQL_SAFE_UPDATES = 1;    
 
 ### Change Jan 15 2019
 

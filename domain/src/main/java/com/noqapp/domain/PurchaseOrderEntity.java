@@ -72,7 +72,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private PaymentModeEnum paymentMode;
 
     @Field("PY")
-    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
+    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.PP;
 
     @Field("PS")
     private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
