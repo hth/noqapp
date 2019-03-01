@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonPurchaseOrderCF extends AbstractDomain {
 
+    /** This is transaction Id. */
     @JsonProperty("orderId")
     private String orderId;
 

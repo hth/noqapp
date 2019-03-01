@@ -215,7 +215,7 @@ public class PurchaseOrderService {
 
     /* Activate old order by client. */
     @Mobile
-    public JsonPurchaseOrder activateOrderByClient(String qid, String transactionId) {
+    public JsonPurchaseOrder activateOrderByClient(String qid, String transactionId, String did) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
         if (DateUtil.getDaysBetween(purchaseOrder.getCreated(), DateUtil.nowDate()) > 30) {
             LOG.error("Order expired transactionId={}", transactionId);
@@ -235,7 +235,7 @@ public class PurchaseOrderService {
             default:
                 List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
                 JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
-                createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), purchaseOrder.getDid(), purchaseOrder.getTokenService());
+                createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), did, TokenServiceEnum.C);
                 purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
                 purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
                 return jsonPurchaseOrder;
