@@ -34,6 +34,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
@@ -371,6 +372,7 @@ public class PurchaseOrderService {
                 .setOrderId(purchaseOrder.getTransactionId());
             JsonPurchaseToken jsonPurchaseToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
             jsonPurchaseOrder.setJsonPurchaseToken(jsonPurchaseToken);
+            jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
             throw new PurchaseOrderFailException("Failed getting token");

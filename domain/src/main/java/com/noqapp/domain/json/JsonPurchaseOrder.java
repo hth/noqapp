@@ -73,7 +73,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
     private PaymentModeEnum paymentMode;
 
     @JsonProperty("py")
-    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
+    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.PP;
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
