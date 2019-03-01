@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.beans.Transient;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -403,9 +404,10 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
+    /** Shifting decimal point. */
     @Transient
     public String orderPriceForTransaction() {
-        return String.format("%.2f", orderPrice);
+        return new BigDecimal(orderPrice).scaleByPowerOfTen(-2).toString();
     }
 
     @Override
