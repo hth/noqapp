@@ -138,6 +138,7 @@ public class ArchiveAndReset {
             Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
             List<BizStoreEntity> bizOrderStores = bizStoreManager.findAllOrderEndedForTheDay(date);
             found = bizOrderStores.size();
+            LOG.info("Order Stores found={} date={}", found, date);
             for (BizStoreEntity bizStore : bizOrderStores) {
                 try {
                     runSelectiveArchiveBasedOnBusinessType(bizStore);
@@ -161,7 +162,7 @@ public class ArchiveAndReset {
              */
             List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
             found += bizStores.size();
-            LOG.info("found={} date={}", found, date);
+            LOG.info("Queue Stores found={} date={}", bizStores.size(), date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
                     runSelectiveArchiveBasedOnBusinessType(bizStore);
