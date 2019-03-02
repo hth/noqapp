@@ -159,7 +159,7 @@ public class ArchiveAndReset {
              * Only find stores that are active and not deleted. This is a back up for order too.
              * Its a catch all store that are suppose to be closed.
              */
-            List<BizStoreEntity> bizStores = bizStoreManager.findAllStoreEndedForTheDay(date);
+            List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
             found += bizStores.size();
             LOG.info("found={} date={}", found, date);
             for (BizStoreEntity bizStore : bizStores) {
@@ -168,7 +168,7 @@ public class ArchiveAndReset {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail all including orders if any to RDB bizStore={} codeQR={} reason={}",
+                    LOG.error("Insert fail on Queues to RDB bizStore={} codeQR={} reason={}",
                         bizStore.getId(),
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
