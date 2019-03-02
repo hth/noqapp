@@ -312,7 +312,7 @@ public class PurchaseOrderService {
 
             purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
                 .setQueueUserId(qid)
-                .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
+                .setBizStoreId(bizStore.getId())
                 .setBizNameId(bizStore.getBizName().getId())
                 .setCodeQR(bizStore.getCodeQR())
                 .setBusinessType(bizStore.getBusinessType())
