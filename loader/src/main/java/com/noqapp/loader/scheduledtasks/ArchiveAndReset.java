@@ -144,7 +144,7 @@ public class ArchiveAndReset {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
+                    LOG.error("Insert fail on Orders to RDB bizStore={} codeQR={} reason={}",
                         bizStore.getId(),
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
@@ -168,7 +168,7 @@ public class ArchiveAndReset {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail to RDB bizStore={} codeQR={} reason={}",
+                    LOG.error("Insert fail all including orders if any to RDB bizStore={} codeQR={} reason={}",
                         bizStore.getId(),
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
