@@ -73,7 +73,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
             int ratingCount,
             long averageServiceTime);
 
-    List<BizStoreEntity> findAllStoreEndedForTheDay(Date now);
+    List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
 
     List<BizStoreEntity> findAllOrderEndedForTheDay(Date now);
 
