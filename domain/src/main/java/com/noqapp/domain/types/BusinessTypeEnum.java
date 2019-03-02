@@ -30,9 +30,6 @@ public enum BusinessTypeEnum {
     BK("BK", "Bank", Q),
     PA("PA", "Park", Q);
 
-    public static EnumSet<BusinessTypeEnum> ORDERS = EnumSet.of(RS, BA, ST, GS, CF, HS, PH);
-    public static EnumSet<BusinessTypeEnum> QUEUES = EnumSet.of(SM, MT, SC, DO, PW, MU, TA, NC, BK, PA);
-
     private final String description;
     private final String name;
     private final MessageOriginEnum messageOrigin;
@@ -40,7 +37,14 @@ public enum BusinessTypeEnum {
     BusinessTypeEnum(String name, String description, MessageOriginEnum messageOrigin) {
         this.name = name;
         this.description = description;
-        this.messageOrigin = messageOrigin;
+        switch (messageOrigin) {
+            case O:
+            case Q:
+                this.messageOrigin = messageOrigin;
+                break;
+            default:
+                throw new UnsupportedOperationException("Reached unsupported condition " + messageOrigin);
+        }
     }
 
     public String getName() {
@@ -58,6 +62,19 @@ public enum BusinessTypeEnum {
     public static List<BusinessTypeEnum> asList() {
         BusinessTypeEnum[] all = BusinessTypeEnum.values();
         return Arrays.asList(all);
+    }
+
+    /** For dynamically creating list of business type based on message origin. */
+    public static EnumSet<BusinessTypeEnum> getSelectedMessageOrigin(MessageOriginEnum messageOrigin) {
+        EnumSet<BusinessTypeEnum> businessTypeEnums = EnumSet.noneOf(BusinessTypeEnum.class);
+
+        for (BusinessTypeEnum businessType : BusinessTypeEnum.values()) {
+            if (messageOrigin == businessType.messageOrigin) {
+                businessTypeEnums.add(businessType);
+            }
+        }
+
+        return businessTypeEnums;
     }
 
     @Override

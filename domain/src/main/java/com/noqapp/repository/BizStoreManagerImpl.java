@@ -11,6 +11,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaginationEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -319,7 +320,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
-                query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.QUEUES).and("A").is(true).and("D").is(false)),
+                query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q)).and("A").is(true).and("D").is(false)),
                 BizStoreEntity.class,
                 TABLE
         );
@@ -329,7 +330,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllOrderEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
-            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.ORDERS).and("A").is(true).and("D").is(false)),
+            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.O)).and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         );
