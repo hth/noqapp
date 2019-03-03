@@ -150,7 +150,6 @@ public class ArchiveAndReset {
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
                         e);
-                    throw e;
                 }
             }
 
@@ -175,7 +174,6 @@ public class ArchiveAndReset {
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
                         e);
-                    throw e;
                 }
             }
         } catch (Exception e) {
