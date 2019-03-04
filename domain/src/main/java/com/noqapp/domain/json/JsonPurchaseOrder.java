@@ -106,6 +106,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("an")
     private String additionalNote;
 
+    @JsonProperty("tm")
+    private String transactionMessage;
+
     @JsonProperty("purt")
     private JsonPurchaseToken jsonPurchaseToken;
 
@@ -297,6 +300,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public String getTransactionMessage() {
+        return transactionMessage;
+    }
+
+    public JsonPurchaseOrder setTransactionMessage(String transactionMessage) {
+        this.transactionMessage = transactionMessage;
+        return this;
+    }
+
     public JsonPurchaseToken getJsonPurchaseToken() {
         return jsonPurchaseToken;
     }
@@ -326,10 +338,19 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setTransactionId(po.getTransactionId())
             .setPresentOrderState(po.getPresentOrderState())
             .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setAdditionalNote(po.getAdditionalNote());
+            .setAdditionalNote(po.getAdditionalNote())
+            .setTransactionMessage(po.getTransactionMessage());
     }
 
     public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
+        this(purchaseOrder);
+
+        for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
+        }
+    }
+
+    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
         this.bizStoreId = purchaseOrder.getBizStoreId();
         this.customerPhone = purchaseOrder.getCustomerPhone();
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
@@ -340,13 +361,10 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.businessType = purchaseOrder.getBusinessType();
 
-        for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
-            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
-        }
-
         this.presentOrderState = purchaseOrder.getPresentOrderState();
         this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.additionalNote = purchaseOrder.getAdditionalNote();
+        this.transactionMessage = purchaseOrder.getTransactionMessage();
     }
 
     @Override

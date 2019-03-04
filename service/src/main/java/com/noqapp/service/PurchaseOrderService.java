@@ -34,6 +34,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
@@ -246,6 +248,25 @@ public class PurchaseOrderService {
     @Mobile
     public boolean isOrderCancelled(String qid, String transactionId) {
         return purchaseOrderManager.isOrderCancelled(qid, transactionId);
+    }
+
+    @Mobile
+    public PurchaseOrderEntity updateOnPaymentGatewayNotification(
+        String transactionId,
+        String transactionMessage,
+        String transactionReferenceId,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    ) {
+        return purchaseOrderManager.updateOnPaymentGatewayNotification(
+            transactionId,
+            transactionMessage,
+            transactionReferenceId,
+            paymentStatus,
+            purchaseOrderState,
+            paymentMode
+        );
     }
 
     @Mobile

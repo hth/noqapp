@@ -150,7 +150,6 @@ public class ArchiveAndReset {
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
                         e);
-                    throw e;
                 }
             }
 
@@ -158,8 +157,7 @@ public class ArchiveAndReset {
             date = Date.from(Instant.now().minus(timeDelayInMinutes, ChronoUnit.MINUTES));
 
             /*
-             * Only find stores that are active and not deleted. This is a back up for order too.
-             * Its a catch all store that are suppose to be closed.
+             * Only find stores that are active and not deleted. It processes only queues.
              */
             List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueEndedForTheDay(date);
             found += bizStores.size();
@@ -175,7 +173,6 @@ public class ArchiveAndReset {
                         bizStore.getCodeQR(),
                         e.getLocalizedMessage(),
                         e);
-                    throw e;
                 }
             }
         } catch (Exception e) {

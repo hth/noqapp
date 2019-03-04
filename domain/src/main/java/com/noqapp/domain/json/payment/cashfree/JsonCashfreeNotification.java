@@ -122,4 +122,18 @@ public class JsonCashfreeNotification extends AbstractDomain {
         this.orderId = orderId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonCashfreeNotification{" +
+            "xTime='" + xTime + '\'' +
+            ", txMsg='" + txMsg + '\'' +
+            ", referenceId='" + referenceId + '\'' +
+            ", paymentMode='" + paymentMode + '\'' +
+            ", signature='" + signature + '\'' +
+            ", orderAmount='" + orderAmount + '\'' +
+            ", txStatus='" + txStatus + '\'' +
+            ", orderId='" + orderId + '\'' +
+            '}';
+    }
 }

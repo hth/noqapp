@@ -11,6 +11,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
@@ -407,6 +409,28 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                     isActive(),
                     isNotDeleted())
             ),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public PurchaseOrderEntity updateOnPaymentGatewayNotification(
+        String transactionId,
+        String transactionMessage,
+        String transactionReferenceId,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    ) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId)),
+            update("TM", transactionMessage)
+                .set("TR", transactionReferenceId)
+                .set("PY", paymentStatus)
+                .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
+                .set("PM", paymentMode),
+            FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE
         );

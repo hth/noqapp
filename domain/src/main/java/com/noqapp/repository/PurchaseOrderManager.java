@@ -2,6 +2,8 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
@@ -77,4 +79,13 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     /** Used Internally to modify purchase order. */
     PurchaseOrderEntity findByTransactionId(String transactionId);
+
+    PurchaseOrderEntity updateOnPaymentGatewayNotification(
+        String transactionId,
+        String transactionMessage,
+        String transactionReferenceId,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    );
 }

@@ -132,6 +132,12 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("AN")
     private String additionalNote;
 
+    @Field("TM")
+    private String transactionMessage;
+
+    @Field("TR")
+    private String transactionReferenceId;
+
     @SuppressWarnings("unused")
     public PurchaseOrderEntity() {
         //Default constructor, required to keep bean happy
@@ -401,6 +407,24 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setAdditionalNote(String additionalNote) {
         this.additionalNote = additionalNote;
+        return this;
+    }
+
+    public String getTransactionMessage() {
+        return transactionMessage;
+    }
+
+    public PurchaseOrderEntity setTransactionMessage(String transactionMessage) {
+        this.transactionMessage = transactionMessage;
+        return this;
+    }
+
+    public String getTransactionReferenceId() {
+        return transactionReferenceId;
+    }
+
+    public PurchaseOrderEntity setTransactionReferenceId(String transactionReferenceId) {
+        this.transactionReferenceId = transactionReferenceId;
         return this;
     }
 
