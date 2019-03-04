@@ -66,6 +66,7 @@ public class CashfreeService {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
             jsonPurchaseToken = mapper.readValue(response.body() != null ? response.body().string() : null, JsonPurchaseToken.class);
+            jsonPurchaseToken.setOrderAmount(jsonPurchaseOrderCF.getOrderAmount());
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
             return null;
