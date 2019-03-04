@@ -635,7 +635,10 @@ public class PurchaseOrderService {
             .setTransactionId(purchaseOrder.getTransactionId())
             .setPresentOrderState(purchaseOrder.getPresentOrderState())
             .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setAdditionalNote(purchaseOrder.getAdditionalNote());
+            .setAdditionalNote(purchaseOrder.getAdditionalNote())
+            .setPaymentMode(purchaseOrder.getPaymentMode())
+            .setPaymentStatus(purchaseOrder.getPaymentStatus())
+            .setTransactionMessage(purchaseOrder.getTransactionMessage());
 
         jsonPurchaseOrders.add(jsonPurchaseOrder);
     }
