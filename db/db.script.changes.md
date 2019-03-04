@@ -6,6 +6,12 @@
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
     ADD COLUMN `PY` VARCHAR(2) AFTER `PM`;
     
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `TR` VARCHAR(100) AFTER `TI`;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `TM` VARCHAR(100) AFTER `TR`;
+    
     SET SQL_SAFE_UPDATES = 0;
     UPDATE `noqapp_test`.`PURCHASE_ORDER` SET PY = "PP";
     SET SQL_SAFE_UPDATES = 1;    
