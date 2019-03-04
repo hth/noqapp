@@ -63,7 +63,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         );
         purchaseOrder.setId(rs.getString(ID));
         purchaseOrder.setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(DM)));
-        purchaseOrder.setPaymentMode(StringUtils.isNotBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
+        purchaseOrder.setPaymentMode(StringUtils.isBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
         purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
         purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
         purchaseOrder.setDeliveryAddress(rs.getString(DA));
