@@ -67,6 +67,8 @@ as a value, then it gets endless connections.
         SB DATETIME,
         SE DATETIME,
         TI VARCHAR(100)     NOT NULL,
+        TR VARCHAR(100)     NOT NULL,
+        TM VARCHAR(100)     NOT NULL,
         DN VARCHAR(100)     NOT NULL,
         AN VARCHAR(64),
         V INT(11),
