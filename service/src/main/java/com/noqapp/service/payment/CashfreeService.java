@@ -104,9 +104,8 @@ public class CashfreeService {
 
         Request request = new Request.Builder()
             .url(cashfreeEndpoint + "/api/v1/order/refund")
-            .addHeader("content-type", Constants.JSON.toString())
-            .addHeader("x-client-id", cashfreeMap.get("api"))
-            .addHeader("x-client-secret", cashfreeMap.get("secretKey"))
+            .addHeader("cache-control", "no-cache")
+            .addHeader("content-type", "application/x-www-form-urlencoded")
             .post(formBody)
             .build();
         Response response = null;
@@ -116,10 +115,10 @@ public class CashfreeService {
             ObjectMapper mapper = new ObjectMapper();
             jsonResponseRefund = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponseRefund.class);
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to host while requesting for refund reason={}", e.getLocalizedMessage(), e);
             return null;
         } catch (IOException e) {
-            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making request for refund reason={}", e.getLocalizedMessage(), e);
             return null;
         } finally {
             if (response != null) {

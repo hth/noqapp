@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.beans.Transient;
+
 /**
  * hitender
  * 2019-03-05 06:44
@@ -64,6 +66,11 @@ public class JsonResponseRefund extends AbstractDomain {
     public JsonResponseRefund setReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    @Transient
+    public boolean isOk() {
+        return status.equalsIgnoreCase("OK");
     }
 
     @Override

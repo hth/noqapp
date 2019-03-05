@@ -324,6 +324,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         ).getDeletedCount();
     }
 
+    @Deprecated
     @Override
     public PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId) {
         return mongoTemplate.findAndModify(
