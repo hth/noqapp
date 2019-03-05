@@ -7,11 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.beans.Transient;
-
 /**
  * hitender
- * 2019-02-28 12:11
+ * 2019-03-05 06:44
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -27,7 +25,7 @@ import java.beans.Transient;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonResponse extends AbstractDomain {
+public class JsonResponseRefund extends AbstractDomain {
 
     @JsonProperty("status")
     private String status;
@@ -35,11 +33,14 @@ public class JsonResponse extends AbstractDomain {
     @JsonProperty("reason")
     private String reason;
 
+    @JsonProperty("message")
+    private String message;
+
     public String getStatus() {
         return status;
     }
 
-    public JsonResponse setStatus(String status) {
+    public JsonResponseRefund setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -48,21 +49,17 @@ public class JsonResponse extends AbstractDomain {
         return reason;
     }
 
-    public JsonResponse setReason(String reason) {
+    public JsonResponseRefund setReason(String reason) {
         this.reason = reason;
         return this;
     }
 
-    @Transient
-    public boolean isOk() {
-        return status.equalsIgnoreCase("OK");
+    public String getMessage() {
+        return message;
     }
 
-    @Override
-    public String toString() {
-        return "JsonResponse{" +
-            "status='" + status + '\'' +
-            ", reason='" + reason + '\'' +
-            '}';
+    public JsonResponseRefund setMessage(String message) {
+        this.message = message;
+        return this;
     }
 }

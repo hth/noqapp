@@ -3,7 +3,7 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
-import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
+import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
@@ -109,8 +109,8 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("tm")
     private String transactionMessage;
 
-    @JsonProperty("purt")
-    private JsonPurchaseToken jsonPurchaseToken;
+    @JsonProperty("cft")
+    private JsonResponseWithCFToken jsonResponseWithCFToken;
 
     public JsonPurchaseOrder() {
     }
@@ -309,12 +309,12 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public JsonPurchaseToken getJsonPurchaseToken() {
-        return jsonPurchaseToken;
+    public JsonResponseWithCFToken getJsonResponseWithCFToken() {
+        return jsonResponseWithCFToken;
     }
 
-    public JsonPurchaseOrder setJsonPurchaseToken(JsonPurchaseToken jsonPurchaseToken) {
-        this.jsonPurchaseToken = jsonPurchaseToken;
+    public JsonPurchaseOrder setJsonResponseWithCFToken(JsonResponseWithCFToken jsonResponseWithCFToken) {
+        this.jsonResponseWithCFToken = jsonResponseWithCFToken;
         return this;
     }
 
