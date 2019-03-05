@@ -5,7 +5,6 @@ package com.noqapp.domain.types;
  * 2019-02-28 14:53
  */
 public enum PaymentStatusEnum {
-
     PP("PP", "Pending Payment"),
     PA("PA", "Paid"),
     PF("PF", "Payment Fail"),

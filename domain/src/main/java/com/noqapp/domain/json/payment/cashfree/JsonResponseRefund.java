@@ -27,14 +27,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonResponseRefund extends AbstractDomain {
 
+    /* Status of API call. Values are - OK and ERROR. */
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("reason")
-    private String reason;
-
+    /* Message saying if the transaction was refunded or not. */
     @JsonProperty("message")
     private String message;
+
+    /* reason of failure when status is ERROR. */
+    @JsonProperty("reason")
+    private String reason;
 
     public String getStatus() {
         return status;
@@ -45,21 +48,21 @@ public class JsonResponseRefund extends AbstractDomain {
         return this;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public JsonResponseRefund setReason(String reason) {
-        this.reason = reason;
-        return this;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public JsonResponseRefund setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public JsonResponseRefund setReason(String reason) {
+        this.reason = reason;
         return this;
     }
 }

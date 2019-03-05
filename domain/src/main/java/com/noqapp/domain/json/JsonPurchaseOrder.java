@@ -369,7 +369,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonPurchaseOrderCF{" +
+        return "JsonRequestPurchaseOrderCF{" +
             "bizStoreId='" + bizStoreId + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
             ", deliveryAddress='" + deliveryAddress + '\'' +

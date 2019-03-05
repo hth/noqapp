@@ -28,7 +28,7 @@ import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
-import com.noqapp.domain.json.payment.cashfree.JsonPurchaseOrderCF;
+import com.noqapp.domain.json.payment.cashfree.JsonRequestPurchaseOrderCF;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
@@ -208,10 +208,14 @@ public class PurchaseOrderService {
 
     @Mobile
     public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
-        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
-        return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
+        try {
+            PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByClient(qid, transactionId);
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+            doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+            return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /* Activate old order by client. */
@@ -388,10 +392,10 @@ public class PurchaseOrderService {
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
                 .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
-            JsonPurchaseOrderCF jsonPurchaseOrderCF = new JsonPurchaseOrderCF()
+            JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
                 .setOrderAmount(purchaseOrder.orderPriceForTransaction())
                 .setOrderId(purchaseOrder.getTransactionId());
-            JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
+            JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
             jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
             jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
         } catch (Exception e) {

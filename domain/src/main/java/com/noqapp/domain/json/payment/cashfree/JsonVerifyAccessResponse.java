@@ -27,7 +27,7 @@ import java.beans.Transient;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonResponse extends AbstractDomain {
+public class JsonVerifyAccessResponse extends AbstractDomain {
 
     @JsonProperty("status")
     private String status;
@@ -39,7 +39,7 @@ public class JsonResponse extends AbstractDomain {
         return status;
     }
 
-    public JsonResponse setStatus(String status) {
+    public JsonVerifyAccessResponse setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -48,7 +48,7 @@ public class JsonResponse extends AbstractDomain {
         return reason;
     }
 
-    public JsonResponse setReason(String reason) {
+    public JsonVerifyAccessResponse setReason(String reason) {
         this.reason = reason;
         return this;
     }
@@ -60,7 +60,7 @@ public class JsonResponse extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonResponse{" +
+        return "JsonVerifyAccessResponse{" +
             "status='" + status + '\'' +
             ", reason='" + reason + '\'' +
             '}';
