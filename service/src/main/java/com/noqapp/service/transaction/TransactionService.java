@@ -1,14 +1,18 @@
 package com.noqapp.service.transaction;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.json.payment.cashfree.JsonRequestRefund;
+import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
@@ -25,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -158,15 +163,21 @@ public class TransactionService {
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
             try {
-                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
-                if (purchaseOrder.getPaymentMode() != PaymentModeEnum.CA) {
+                PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
+                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
-                        .setRefundAmount(purchaseOrder.orderPriceForTransaction())
-                        .setRefundNote("Refund request by client")
-                        .setReferenceId(purchaseOrder.getTransactionReferenceId());
-                    cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                        .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
+                        .setRefundNote("Refund initiated by client")
+                        .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
+                    JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                    LOG.info("Refund {}", jsonResponseRefund.toString());
+                    if (!jsonResponseRefund.isOk()) {
+                        LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+                        throw new FailedTransactionException("Failed response from Cashfree");
+                    } else {
+                        return purchaseOrderManager.cancelOrderByClient(qid, transactionId);
+                    }
                 }
-                return purchaseOrder;
             } catch (DuplicateKeyException e) {
                 LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
@@ -183,14 +194,24 @@ public class TransactionService {
         ClientSession session = Objects.requireNonNull(mongoTransactionManager.getDbFactory()).getSession(sessionOptions);
         session.startTransaction();
         try {
-            PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
-            if (purchaseOrder.getPaymentMode() != PaymentModeEnum.CA) {
+            PurchaseOrderEntity purchaseOrder = mongoOperations.withSession(session).findAndModify(
+                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+                FindAndModifyOptions.options().returnNew(true),
+                PurchaseOrderEntity.class
+            );
+
+            /* Initiate refund on cashfree. */
+            if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode()) {
                 JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                     .setRefundAmount(purchaseOrder.orderPriceForTransaction())
-                    .setRefundNote("Refund request by client")
+                    .setRefundNote("Refund initiated by client")
                     .setReferenceId(purchaseOrder.getTransactionReferenceId());
+
                 cashfreeService.refundInitiatedByClient(jsonRequestRefund);
             }
+            session.commitTransaction();
+            LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
             return purchaseOrder;
         } catch (Exception e) {
             LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid);

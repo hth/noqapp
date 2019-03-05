@@ -65,6 +65,8 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     long deleteByCodeQR(String codeQR);
 
+    /** As cancellation is handled in transaction. */
+    @Deprecated
     PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId);
     boolean isOrderCancelled(String qid, String transactionId);
 
