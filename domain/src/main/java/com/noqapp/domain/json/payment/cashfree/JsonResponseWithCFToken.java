@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseToken extends AbstractDomain {
+public class JsonResponseWithCFToken extends AbstractDomain {
 
     @JsonProperty("status")
     private String status;
@@ -36,6 +36,7 @@ public class JsonPurchaseToken extends AbstractDomain {
     @JsonProperty("cftoken")
     private String cftoken;
 
+    /** Order Amount for App to use when hitting Gateway. */
     @JsonProperty("orderAmount")
     private String orderAmount;
 
@@ -43,7 +44,7 @@ public class JsonPurchaseToken extends AbstractDomain {
         return status;
     }
 
-    public JsonPurchaseToken setStatus(String status) {
+    public JsonResponseWithCFToken setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -52,7 +53,7 @@ public class JsonPurchaseToken extends AbstractDomain {
         return message;
     }
 
-    public JsonPurchaseToken setMessage(String message) {
+    public JsonResponseWithCFToken setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -61,7 +62,7 @@ public class JsonPurchaseToken extends AbstractDomain {
         return cftoken;
     }
 
-    public JsonPurchaseToken setCftoken(String cftoken) {
+    public JsonResponseWithCFToken setCftoken(String cftoken) {
         this.cftoken = cftoken;
         return this;
     }
@@ -70,7 +71,7 @@ public class JsonPurchaseToken extends AbstractDomain {
         return orderAmount;
     }
 
-    public JsonPurchaseToken setOrderAmount(String orderAmount) {
+    public JsonResponseWithCFToken setOrderAmount(String orderAmount) {
         this.orderAmount = orderAmount;
         return this;
     }

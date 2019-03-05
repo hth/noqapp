@@ -29,7 +29,7 @@ import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
 import com.noqapp.domain.json.payment.cashfree.JsonPurchaseOrderCF;
-import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
+import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -391,8 +391,8 @@ public class PurchaseOrderService {
             JsonPurchaseOrderCF jsonPurchaseOrderCF = new JsonPurchaseOrderCF()
                 .setOrderAmount(purchaseOrder.orderPriceForTransaction())
                 .setOrderId(purchaseOrder.getTransactionId());
-            JsonPurchaseToken jsonPurchaseToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
-            jsonPurchaseOrder.setJsonPurchaseToken(jsonPurchaseToken);
+            JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonPurchaseOrderCF);
+            jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
             jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());

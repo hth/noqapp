@@ -3,7 +3,7 @@ package com.noqapp.service.payment;
 import com.noqapp.common.config.PaymentGatewayConfiguration;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.json.payment.cashfree.JsonPurchaseOrderCF;
-import com.noqapp.domain.json.payment.cashfree.JsonPurchaseToken;
+import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,7 +49,7 @@ public class CashfreeService {
         this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway();
     }
 
-    public JsonPurchaseToken createTokenForPurchaseOrder(JsonPurchaseOrderCF jsonPurchaseOrderCF) {
+    public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonPurchaseOrderCF jsonPurchaseOrderCF) {
         LOG.info("Sending FCM message with body={}", jsonPurchaseOrderCF.asJson());
 
         RequestBody body = RequestBody.create(Constants.JSON, jsonPurchaseOrderCF.asJson());
@@ -61,12 +61,12 @@ public class CashfreeService {
             .post(body)
             .build();
         Response response = null;
-        JsonPurchaseToken jsonPurchaseToken;
+        JsonResponseWithCFToken jsonResponseWithCFToken;
         try {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
-            jsonPurchaseToken = mapper.readValue(response.body() != null ? response.body().string() : null, JsonPurchaseToken.class);
-            jsonPurchaseToken.setOrderAmount(jsonPurchaseOrderCF.getOrderAmount());
+            jsonResponseWithCFToken = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponseWithCFToken.class);
+            jsonResponseWithCFToken.setOrderAmount(jsonPurchaseOrderCF.getOrderAmount());
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
             return null;
@@ -83,8 +83,8 @@ public class CashfreeService {
             response.code(),
             response.headers(),
             response.message(),
-            jsonPurchaseToken.toString());
+            jsonResponseWithCFToken.toString());
 
-        return jsonPurchaseToken;
+        return jsonResponseWithCFToken;
     }
 }
