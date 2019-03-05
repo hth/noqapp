@@ -27,36 +27,43 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonCashfreeNotification extends AbstractDomain {
 
-    @JsonProperty("xTime")
-    private String xTime;
+    /* Time of the transaction. */
+    @JsonProperty("txTime")
+    private String txTime;
 
+    /* Message related to the transaction. Will have the reason, if payment failed. */
     @JsonProperty("txMsg")
     private String txMsg;
 
+    /* Cashfree generated unique transaction Id. Ex: 140388038803. */
     @JsonProperty("referenceId")
     private String referenceId;
 
+    /* Payment mode used by customer to make the payment. Ex: DEBIT_CARD, MobiKwik, etc. */
     @JsonProperty("paymentMode")
     private String paymentMode;
 
     @JsonProperty("signature")
     private String signature;
 
+    /* Amount of the order. */
     @JsonProperty("orderAmount")
     private String orderAmount;
 
+    /* Payment status for that order. Values can be : SUCCESS, FLAGGED, PENDING, FAILED, CANCELLED. */
     @JsonProperty("txStatus")
     private String txStatus;
 
+    /* Order id for which transaction has been processed. Ex: GZ-212. */
     @JsonProperty("orderId")
     private String orderId;
 
-    public String getxTime() {
-        return xTime;
+    public String getTxTime() {
+        return txTime;
     }
 
-    public JsonCashfreeNotification setxTime(String xTime) {
-        this.xTime = xTime;
+    public JsonCashfreeNotification setTxTime(String txTime) {
+        this.txTime = txTime;
         return this;
     }
 
@@ -126,7 +133,7 @@ public class JsonCashfreeNotification extends AbstractDomain {
     @Override
     public String toString() {
         return "JsonCashfreeNotification{" +
-            "xTime='" + xTime + '\'' +
+            "txTime='" + txTime + '\'' +
             ", txMsg='" + txMsg + '\'' +
             ", referenceId='" + referenceId + '\'' +
             ", paymentMode='" + paymentMode + '\'' +

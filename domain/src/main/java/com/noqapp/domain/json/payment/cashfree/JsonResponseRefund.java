@@ -65,4 +65,13 @@ public class JsonResponseRefund extends AbstractDomain {
         this.reason = reason;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonResponseRefund{" +
+            "status='" + status + '\'' +
+            ", message='" + message + '\'' +
+            ", reason='" + reason + '\'' +
+            '}';
+    }
 }

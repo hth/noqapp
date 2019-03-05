@@ -3,6 +3,7 @@ package com.noqapp.service.payment;
 import com.noqapp.common.config.PaymentGatewayConfiguration;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.json.payment.cashfree.JsonRequestPurchaseOrderCF;
+import com.noqapp.domain.json.payment.cashfree.JsonRequestRefund;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -51,7 +53,7 @@ public class CashfreeService {
     }
 
     public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF) {
-        LOG.info("Sending FCM message with body={}", jsonRequestPurchaseOrderCF.asJson());
+        LOG.info("Send request to create token message with body={}", jsonRequestPurchaseOrderCF.asJson());
 
         RequestBody body = RequestBody.create(Constants.JSON, jsonRequestPurchaseOrderCF.asJson());
         Request request = new Request.Builder()
@@ -69,10 +71,10 @@ public class CashfreeService {
             jsonResponseWithCFToken = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponseWithCFToken.class);
             jsonResponseWithCFToken.setOrderAmount(jsonRequestPurchaseOrderCF.getOrderAmount());
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to host while requesting for token reason={}", e.getLocalizedMessage(), e);
             return null;
         } catch (IOException e) {
-            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making request for token reason={}", e.getLocalizedMessage(), e);
             return null;
         } finally {
             if (response != null) {
@@ -89,7 +91,48 @@ public class CashfreeService {
         return jsonResponseWithCFToken;
     }
 
-    public JsonResponseRefund refundInitiatedByClient() {
-        return new JsonResponseRefund();
+    public JsonResponseRefund refundInitiatedByClient(JsonRequestRefund jsonRequestRefund) {
+        LOG.info("Send request for refund message with body={}", jsonRequestRefund.asJson());
+
+        RequestBody formBody = new FormBody.Builder()
+            .add("appId", cashfreeMap.get("api"))
+            .add("secretKey", cashfreeMap.get("secretKey"))
+            .add("referenceId", jsonRequestRefund.getReferenceId())
+            .add("refundAmount", jsonRequestRefund.getRefundAmount())
+            .add("refundNote", jsonRequestRefund.getRefundNote())
+            .build();
+
+        Request request = new Request.Builder()
+            .url(cashfreeEndpoint + "/api/v1/order/refund")
+            .addHeader("content-type", Constants.JSON.toString())
+            .addHeader("x-client-id", cashfreeMap.get("api"))
+            .addHeader("x-client-secret", cashfreeMap.get("secretKey"))
+            .post(formBody)
+            .build();
+        Response response = null;
+        JsonResponseRefund jsonResponseRefund;
+        try {
+            response = okHttpClient.newCall(request).execute();
+            ObjectMapper mapper = new ObjectMapper();
+            jsonResponseRefund = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponseRefund.class);
+        } catch (UnknownHostException e) {
+            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            return null;
+        } catch (IOException e) {
+            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            return null;
+        } finally {
+            if (response != null) {
+                response.body().close();
+            }
+        }
+
+        LOG.debug("Cashfree success HTTP={} headers={} message={} body={}",
+            response.code(),
+            response.headers(),
+            response.message(),
+            jsonResponseRefund.toString());
+
+        return jsonResponseRefund;
     }
 }

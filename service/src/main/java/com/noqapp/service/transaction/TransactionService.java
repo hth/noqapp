@@ -7,6 +7,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.StoreProductEntity;
+import com.noqapp.domain.json.payment.cashfree.JsonRequestRefund;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
@@ -159,7 +160,11 @@ public class TransactionService {
             try {
                 PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
                 if (purchaseOrder.getPaymentMode() != PaymentModeEnum.CA) {
-                    cashfreeService.refundInitiatedByClient();
+                    JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                        .setRefundAmount(purchaseOrder.orderPriceForTransaction())
+                        .setRefundNote("Refund request by client")
+                        .setReferenceId(purchaseOrder.getTransactionReferenceId());
+                    cashfreeService.refundInitiatedByClient(jsonRequestRefund);
                 }
                 return purchaseOrder;
             } catch (DuplicateKeyException e) {
@@ -180,7 +185,11 @@ public class TransactionService {
         try {
             PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
             if (purchaseOrder.getPaymentMode() != PaymentModeEnum.CA) {
-                cashfreeService.refundInitiatedByClient();
+                JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                    .setRefundAmount(purchaseOrder.orderPriceForTransaction())
+                    .setRefundNote("Refund request by client")
+                    .setReferenceId(purchaseOrder.getTransactionReferenceId());
+                cashfreeService.refundInitiatedByClient(jsonRequestRefund);
             }
             return purchaseOrder;
         } catch (Exception e) {
