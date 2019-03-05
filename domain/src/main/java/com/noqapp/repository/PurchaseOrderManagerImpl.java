@@ -99,15 +99,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)
-                    .andOperator(
-                        where("PS").ne(PurchaseOrderStateEnum.OD),
-                        where("PS").ne(PurchaseOrderStateEnum.CO)
-                    )
-                ),
-                PurchaseOrderEntity.class,
-                TABLE
-        );
+            query(where("QID").is(qid)
+                .andOperator(
+                    where("PS").ne(PurchaseOrderStateEnum.OD),
+                    where("PS").ne(PurchaseOrderStateEnum.CO)
+                )
+            ),
+            PurchaseOrderEntity.class,
+            TABLE);
     }
 
     @Override
@@ -115,16 +114,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.find(
             query(where("NS").is(false).and("NC").lt(numberOfAttemptsToSendFCM).and("PS").is(PurchaseOrderStateEnum.OD)),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     public List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid) {
         return mongoTemplate.find(
             query(where("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.OD)),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -137,8 +134,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 )
             ),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -146,8 +142,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.find(
                 query(where("QR").is(codeQR).and("PS").ne(PurchaseOrderStateEnum.OD)).with(new Sort(DESC, "C")),
                 PurchaseOrderEntity.class,
-                TABLE
-        );
+                TABLE);
     }
 
     @Override
@@ -155,8 +150,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR)).with(new Sort(ASC, "TN")),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -164,8 +158,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("C").lte(until)).with(new Sort(DESC, "C")),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -173,8 +166,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -182,8 +174,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.count(
             query(where("QR").is(codeQR).and("PS").is(PurchaseOrderStateEnum.PO)).with(new Sort(DESC, "C")),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -336,12 +327,11 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId) {
         return mongoTemplate.findAndModify(
-                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
-                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
-                FindAndModifyOptions.options().returnNew(true),
-                PurchaseOrderEntity.class,
-                TABLE
-        );
+            query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE);
     }
 
     @Override
@@ -363,12 +353,11 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public PurchaseOrderEntity cancelOrderByMerchant(String codeQR, int tokenNumber) {
         return mongoTemplate.findAndModify(
-                query(where("TN").is(tokenNumber).and("QR").is(codeQR)),
-                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
-                FindAndModifyOptions.options().returnNew(true),
-                PurchaseOrderEntity.class,
-                TABLE
-        );
+            query(where("TN").is(tokenNumber).and("QR").is(codeQR)),
+            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE);
     }
 
     @Override
@@ -397,8 +386,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("RA").gt(0)),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -410,8 +398,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                     isNotDeleted())
             ),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -432,7 +419,6 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 .set("PM", paymentMode),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 }

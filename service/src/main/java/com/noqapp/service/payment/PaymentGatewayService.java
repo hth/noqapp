@@ -1,7 +1,7 @@
 package com.noqapp.service.payment;
 
 import com.noqapp.common.config.PaymentGatewayConfiguration;
-import com.noqapp.domain.json.payment.cashfree.JsonResponse;
+import com.noqapp.domain.json.payment.cashfree.JsonVerifyAccessResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -61,11 +61,11 @@ public class PaymentGatewayService {
             .post(formBody)
             .build();
         Response response = null;
-        JsonResponse jsonResponse;
+        JsonVerifyAccessResponse jsonVerifyAccessResponse;
         try {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
-            jsonResponse = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponse.class);
+            jsonVerifyAccessResponse = mapper.readValue(response.body() != null ? response.body().string() : null, JsonVerifyAccessResponse.class);
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
             return false;
@@ -82,8 +82,8 @@ public class PaymentGatewayService {
             response.code(),
             response.headers(),
             response.message(),
-            jsonResponse.toString());
+            jsonVerifyAccessResponse.toString());
 
-        return jsonResponse.isOk();
+        return jsonVerifyAccessResponse.isOk();
     }
 }

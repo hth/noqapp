@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrderCF extends AbstractDomain {
+public class JsonRequestPurchaseOrderCF extends AbstractDomain {
 
     /** This is transaction Id. */
     @JsonProperty("orderId")
@@ -41,7 +41,7 @@ public class JsonPurchaseOrderCF extends AbstractDomain {
         return orderId;
     }
 
-    public JsonPurchaseOrderCF setOrderId(String orderId) {
+    public JsonRequestPurchaseOrderCF setOrderId(String orderId) {
         this.orderId = orderId;
         return this;
     }
@@ -50,7 +50,7 @@ public class JsonPurchaseOrderCF extends AbstractDomain {
         return orderAmount;
     }
 
-    public JsonPurchaseOrderCF setOrderAmount(String orderAmount) {
+    public JsonRequestPurchaseOrderCF setOrderAmount(String orderAmount) {
         this.orderAmount = orderAmount;
         return this;
     }
@@ -59,7 +59,7 @@ public class JsonPurchaseOrderCF extends AbstractDomain {
         return orderCurrency;
     }
 
-    public JsonPurchaseOrderCF setOrderCurrency(String orderCurrency) {
+    public JsonRequestPurchaseOrderCF setOrderCurrency(String orderCurrency) {
         this.orderCurrency = orderCurrency;
         return this;
     }

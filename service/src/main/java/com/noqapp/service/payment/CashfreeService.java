@@ -2,7 +2,8 @@ package com.noqapp.service.payment;
 
 import com.noqapp.common.config.PaymentGatewayConfiguration;
 import com.noqapp.common.utils.Constants;
-import com.noqapp.domain.json.payment.cashfree.JsonPurchaseOrderCF;
+import com.noqapp.domain.json.payment.cashfree.JsonRequestPurchaseOrderCF;
+import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,10 +50,10 @@ public class CashfreeService {
         this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway();
     }
 
-    public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonPurchaseOrderCF jsonPurchaseOrderCF) {
-        LOG.info("Sending FCM message with body={}", jsonPurchaseOrderCF.asJson());
+    public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF) {
+        LOG.info("Sending FCM message with body={}", jsonRequestPurchaseOrderCF.asJson());
 
-        RequestBody body = RequestBody.create(Constants.JSON, jsonPurchaseOrderCF.asJson());
+        RequestBody body = RequestBody.create(Constants.JSON, jsonRequestPurchaseOrderCF.asJson());
         Request request = new Request.Builder()
             .url(cashfreeEndpoint + "/api/v2/cftoken/order")
             .addHeader("content-type", Constants.JSON.toString())
@@ -66,7 +67,7 @@ public class CashfreeService {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
             jsonResponseWithCFToken = mapper.readValue(response.body() != null ? response.body().string() : null, JsonResponseWithCFToken.class);
-            jsonResponseWithCFToken.setOrderAmount(jsonPurchaseOrderCF.getOrderAmount());
+            jsonResponseWithCFToken.setOrderAmount(jsonRequestPurchaseOrderCF.getOrderAmount());
         } catch (UnknownHostException e) {
             LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
             return null;
@@ -86,5 +87,9 @@ public class CashfreeService {
             jsonResponseWithCFToken.toString());
 
         return jsonResponseWithCFToken;
+    }
+
+    public JsonResponseRefund refundInitiatedByClient() {
+        return new JsonResponseRefund();
     }
 }

@@ -170,8 +170,7 @@ public class JsonQueue extends AbstractDomain {
         add(PaymentModeEnum.CA);
         add(PaymentModeEnum.CC);
         add(PaymentModeEnum.DC);
-        add(PaymentModeEnum.PT);
-        add(PaymentModeEnum.UP);
+        add(PaymentModeEnum.PTM);
     }};
 
     @JsonProperty("dm")
