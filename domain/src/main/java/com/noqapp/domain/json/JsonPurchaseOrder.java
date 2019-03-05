@@ -363,6 +363,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
         this.presentOrderState = purchaseOrder.getPresentOrderState();
         this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.transactionId = purchaseOrder.getTransactionId();
         this.additionalNote = purchaseOrder.getAdditionalNote();
         this.transactionMessage = purchaseOrder.getTransactionMessage();
     }
