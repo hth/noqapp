@@ -53,7 +53,7 @@ as a value, then it gets endless connections.
         BN VARCHAR(24)      NOT NULL,
         QR VARCHAR(30)      NOT NULL,
         DM VARCHAR(2)       NOT NULL,
-        PM VARCHAR(2)       NOT NULL,
+        PM VARCHAR(3)       NOT NULL,
         PY VARCHAR(2)       NOT NULL,
         PS VARCHAR(2)       NOT NULL,
         DA VARCHAR(128),
