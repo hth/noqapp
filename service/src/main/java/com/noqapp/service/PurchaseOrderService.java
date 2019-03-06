@@ -274,6 +274,23 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public PurchaseOrderEntity updateOnCashPayment(
+        String transactionId,
+        String transactionMessage,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    ) {
+        return purchaseOrderManager.updateOnCashPayment(
+            transactionId,
+            transactionMessage,
+            paymentStatus,
+            purchaseOrderState,
+            paymentMode
+        );
+    }
+
+    @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String codeQR, int tokenNumber) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByMerchant(codeQR, tokenNumber);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());

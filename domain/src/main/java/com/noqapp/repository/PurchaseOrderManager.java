@@ -90,4 +90,12 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     );
+
+    PurchaseOrderEntity updateOnCashPayment(
+        String transactionId,
+        String transactionMessage,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    );
 }
