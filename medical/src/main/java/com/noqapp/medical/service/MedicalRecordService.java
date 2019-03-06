@@ -203,11 +203,20 @@ public class MedicalRecordService {
             MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
             if (null == medicalRecord) {
                 medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
-                /* Setting its own ObjectId when not set. */
-                medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
-                    ? CommonUtil.generateHexFromObjectId()
-                    : jsonRecord.getRecordReferenceId());
+
+                String recordReferenceId;
+                if (StringUtils.isBlank(jsonRecord.getRecordReferenceId())) {
+                    /* Setting its own ObjectId when not set. */
+                    recordReferenceId = CommonUtil.generateHexFromObjectId();
+                    LOG.warn("Record reference id was null for Medical Record {}", recordReferenceId);
+                } else {
+                    recordReferenceId = jsonRecord.getRecordReferenceId();
+                }
+                medicalRecord.setId(recordReferenceId);
             } else {
+                /* Check if patient has been changed. */
+                changePatient(jsonRecord, userProfile, medicalRecord);
+
                 /* Check if record can be updated. */
                 checkIfMedicalRecordCanBeUpdated(medicalRecord);
 
@@ -310,6 +319,19 @@ public class MedicalRecordService {
         } catch (Exception e) {
             LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
             throw e;
+        }
+    }
+
+    private void changePatient(JsonMedicalRecord jsonRecord, UserProfileEntity userProfile, MedicalRecordEntity medicalRecord) {
+        if (!medicalRecord.getQueueUserId().equalsIgnoreCase(jsonRecord.getQueueUserId())) {
+            LOG.warn("Change patient on medical record {} from {} to {}", medicalRecord.getId(), medicalRecord.getQueueUserId(), jsonRecord.getQueueUserId());
+            if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
+                /* Update Queue User Id when user has been changed by doctor. Only doctors can change the queueUserId. */
+                medicalRecord.setQueueUserId(jsonRecord.getQueueUserId());
+            } else {
+                LOG.error("Reached unsupported condition for changing patient in medical record={} by qid={}", medicalRecord.getId(), userProfile.getQueueUserId());
+                throw new UnsupportedOperationException("Reached unsupported condition");
+            }
         }
     }
 
