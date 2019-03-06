@@ -14,7 +14,10 @@
     
     SET SQL_SAFE_UPDATES = 0;
     UPDATE `noqapp_test`.`PURCHASE_ORDER` SET PY = "PP";
-    SET SQL_SAFE_UPDATES = 1;    
+    SET SQL_SAFE_UPDATES = 1;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY PM VARCHAR(3)     
 
 ### Change Jan 15 2019
 
