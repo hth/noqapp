@@ -417,6 +417,7 @@ public class PurchaseOrderService {
             JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
             jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
             jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
+            LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
             throw new PurchaseOrderFailException("Failed getting token");

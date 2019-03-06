@@ -370,14 +370,17 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonRequestPurchaseOrderCF{" +
+        return "JsonPurchaseOrder{" +
             "bizStoreId='" + bizStoreId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", queueUserId='" + queueUserId + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
             ", deliveryAddress='" + deliveryAddress + '\'' +
             ", storeDiscount=" + storeDiscount +
             ", orderPrice='" + orderPrice + '\'' +
             ", deliveryMode=" + deliveryMode +
             ", paymentMode=" + paymentMode +
+            ", paymentStatus=" + paymentStatus +
             ", businessType=" + businessType +
             ", jsonPurchaseOrderProducts=" + jsonPurchaseOrderProducts +
             ", servingNumber=" + servingNumber +
@@ -387,6 +390,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", transactionId='" + transactionId + '\'' +
             ", presentOrderState=" + presentOrderState +
             ", created='" + created + '\'' +
+            ", additionalNote='" + additionalNote + '\'' +
+            ", transactionMessage='" + transactionMessage + '\'' +
+            ", jsonResponseWithCFToken=" + jsonResponseWithCFToken +
             '}';
     }
 }
