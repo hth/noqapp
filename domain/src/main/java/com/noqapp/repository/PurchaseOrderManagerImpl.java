@@ -422,4 +422,24 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             PurchaseOrderEntity.class,
             TABLE);
     }
+
+    @Override
+    public PurchaseOrderEntity updateOnCashPayment(
+        String transactionId,
+        String transactionMessage,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    ) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId)),
+            update("TM", transactionMessage)
+                .unset("TR")
+                .set("PY", paymentStatus)
+                .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
+                .set("PM", paymentMode),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
 }
