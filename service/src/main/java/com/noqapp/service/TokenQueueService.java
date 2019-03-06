@@ -313,10 +313,13 @@ public class TokenQueueService {
     public void updateQueueWithUserDetail(String codeQR, String qid, QueueEntity queue) {
         Assertions.assertNotNull(queue.getId(), "Queue should have been persisted before executing the code");
         if (StringUtils.isNotBlank(qid)) {
+            /* Set record reference id when its blank. This help is changing patient when medical record already exists in queue. */
+            if (StringUtils.isBlank(queue.getRecordReferenceId())) {
+                queue.setRecordReferenceId(CommonUtil.generateHexFromObjectId());
+            }
+
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            queue
-                .setCustomerName(userProfile.getName())
-                .setRecordReferenceId(CommonUtil.generateHexFromObjectId());
+            queue.setCustomerName(userProfile.getName());
             if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
                 queue.setCustomerPhone(userProfile.getPhone());
             } else {
