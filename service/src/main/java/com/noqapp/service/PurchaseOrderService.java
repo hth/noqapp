@@ -263,6 +263,7 @@ public class PurchaseOrderService {
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     ) {
+        Assert.hasText(transactionId, "No transaction id found");
         return purchaseOrderManager.updateOnPaymentGatewayNotification(
             transactionId,
             transactionMessage,
@@ -281,6 +282,7 @@ public class PurchaseOrderService {
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     ) {
+        Assert.hasText(transactionId, "No transaction id found");
         return purchaseOrderManager.updateOnCashPayment(
             transactionId,
             transactionMessage,
