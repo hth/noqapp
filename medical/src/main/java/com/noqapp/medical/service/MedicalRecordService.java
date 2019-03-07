@@ -810,6 +810,7 @@ public class MedicalRecordService {
             .setRecordReferenceId(medicalRecord.getId())
             .setFormVersion(medicalRecord.getFormVersion())
             .setBusinessType(medicalRecord.getBusinessType())
+            .setCodeQR(medicalRecord.getCodeQR())
             .setQueueUserId(medicalRecord.getQueueUserId())
             .setChiefComplain(medicalRecord.getChiefComplain())
             .setExamination(medicalRecord.getExamination())
