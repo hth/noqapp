@@ -2,9 +2,6 @@ package com.noqapp.common.utils;
 
 import com.google.maps.model.LatLng;
 
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
-
 import org.bson.types.ObjectId;
 
 import org.joda.time.DateTime;
@@ -38,8 +35,6 @@ import java.util.stream.Collectors;
  */
 public final class CommonUtil {
     private static final Logger LOG = LoggerFactory.getLogger(CommonUtil.class);
-
-    private static Header dummyHeader = new BasicHeader("A", "A");
 
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
@@ -122,10 +117,6 @@ public final class CommonUtil {
     public static String getCountryNameFromIsoCode(String isoCode) {
         Locale l = new Locale("", isoCode);
         return l.getDisplayCountry();
-    }
-
-    public static Header getMeSomeHeader() {
-        return dummyHeader;
     }
 
     /**
