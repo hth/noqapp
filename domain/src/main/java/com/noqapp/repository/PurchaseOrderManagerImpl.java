@@ -39,6 +39,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -89,9 +90,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity findBy(String qid, String codeQR, int tokenNumber) {
+    public PurchaseOrderEntity findBy(Set<String> qidSet, String codeQR, int tokenNumber) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
+            query(where("QID").in(qidSet).and("QR").is(codeQR).and("TN").is(tokenNumber)),
             PurchaseOrderEntity.class,
             TABLE
         );

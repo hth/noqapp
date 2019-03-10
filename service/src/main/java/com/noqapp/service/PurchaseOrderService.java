@@ -83,6 +83,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -1147,7 +1148,11 @@ public class PurchaseOrderService {
 
     @Mobile
     public JsonPurchaseOrder findBy(String qid, String codeQR, int tokenNumber) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findBy(qid, codeQR, tokenNumber);
+        Validate.isValidQid(qid);
+
+        Set<String> qidSet = accountService.findDependentQIDByPhone(qid);
+        qidSet.add(qid);
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findBy(qidSet, codeQR, tokenNumber);
         if (null == purchaseOrder) {
             return null;
         }
