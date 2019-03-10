@@ -39,6 +39,7 @@ public enum SentimentTypeEnum {
     public static SentimentTypeEnum byDescription(String description) {
         switch (description) {
             case "Positive":
+            case "Very positive":
                 return P;
             case "Negative":
             case "Very negative":
