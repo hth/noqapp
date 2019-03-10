@@ -3,6 +3,7 @@ package com.noqapp.medical.repository;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPhysicalEntity;
@@ -71,6 +72,16 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     public void deleteHard(String id) {
         mongoTemplate.remove(
             query(where("id").is(new ObjectId(id))),
+            MedicalPhysicalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String medicalPhysicalId, String queueUserId) {
+        mongoTemplate.findAndModify(
+            query(where("id").is(new ObjectId(medicalPhysicalId))),
+            update("QID", queueUserId),
             MedicalPhysicalEntity.class,
             TABLE
         );

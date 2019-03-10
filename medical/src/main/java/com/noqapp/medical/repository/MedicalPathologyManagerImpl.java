@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -68,7 +68,7 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
     public void updateWithTransactionId(String id, String transactionId) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
-            Update.update("TI", transactionId),
+            update("TI", transactionId),
             MedicalPathologyEntity.class,
             TABLE
         );
@@ -96,7 +96,17 @@ public class MedicalPathologyManagerImpl implements MedicalPathologyManager {
     public void updatePathologyObservation(String id, String observation) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
-            Update.update("OB", observation),
+            update("OB", observation),
+            MedicalPathologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String medicalLaboratoryId, String queueUserId) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(medicalLaboratoryId))),
+            update("QID", queueUserId),
             MedicalPathologyEntity.class,
             TABLE
         );

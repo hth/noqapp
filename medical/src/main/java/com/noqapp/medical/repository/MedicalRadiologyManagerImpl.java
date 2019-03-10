@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -84,7 +84,7 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     public void updateWithTransactionId(String id, String transactionId) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
-            Update.update("TI", transactionId),
+            update("TI", transactionId),
             MedicalRadiologyEntity.class,
             TABLE
         );
@@ -112,7 +112,17 @@ public class MedicalRadiologyManagerImpl implements MedicalRadiologyManager {
     public void updateRadiologyObservation(String id, String observation) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
-            Update.update("OB", observation),
+            update("OB", observation),
+            MedicalRadiologyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String medicalRadiologyId, String queueUserId) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(medicalRadiologyId))),
+            update("QID", queueUserId),
             MedicalRadiologyEntity.class,
             TABLE
         );

@@ -14,4 +14,6 @@ public interface MedicalPathologyTestManager extends RepositoryManager<MedicalPa
     List<MedicalPathologyTestEntity> findPathologyTestByIds(String medicalPathologyReferenceId);
 
     void deleteByPathologyReferenceId(String medicalPathologyReferenceId);
+
+    void changePatient(String medicalPathologyReferenceId, String queueUserId);
 }

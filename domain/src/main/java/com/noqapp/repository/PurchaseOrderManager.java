@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
@@ -98,4 +99,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     );
+
+    PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
 }

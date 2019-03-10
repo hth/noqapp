@@ -1199,6 +1199,11 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findByTransactionId(transactionId);
     }
 
+    public void changePatient(String transactionId, UserProfileEntity userProfile) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.changePatient(transactionId, userProfile);
+        purchaseOrderProductManager.changePatient(purchaseOrder.getId(), userProfile.getQueueUserId());
+    }
+
     private void sendMailWhenSentimentIsNegative(String codeQR, int token, int ratingCount, String review, SentimentTypeEnum sentimentType) {
         if (SentimentTypeEnum.N == sentimentType) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);

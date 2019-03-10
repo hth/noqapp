@@ -12,4 +12,6 @@ public interface MedicalMedicationManager extends RepositoryManager<MedicalMedic
     MedicalMedicationEntity findOneById(String id);
 
     void deleteHard(String id);
+
+    void changePatient(String id, String queueUserId);
 }
