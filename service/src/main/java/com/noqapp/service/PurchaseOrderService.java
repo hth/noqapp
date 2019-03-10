@@ -320,7 +320,11 @@ public class PurchaseOrderService {
         } else {
             bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
         }
-        Assert.notNull(bizStore, "BizStore should not be null");
+
+        if (null == bizStore) {
+            LOG.error("Failed to find bizStore {} {}", qid, jsonPurchaseOrder);
+            throw new RuntimeException("Store not found");
+        }
 
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
