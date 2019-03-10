@@ -369,7 +369,7 @@ public class MedicalRecordService {
                 throw new UnsupportedOperationException("Reached unsupported condition");
             }
         } else {
-            LOG.error("Reached unsupported condition for changing patient in medical record={} by qid={}", medicalRecord.getId(), userProfile.getQueueUserId());
+            LOG.error("Found same patient for medical record={} by qid={}", medicalRecord.getId(), userProfile.getQueueUserId());
             throw new UnsupportedOperationException("Reached unsupported condition");
         }
     }
