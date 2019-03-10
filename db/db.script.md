@@ -128,3 +128,16 @@ as a value, then it gets endless connections.
     UPDATE noqapp_test.QUEUE set ST =  NOW();
     SET SQL_SAFE_UPDATES = 1;
     
+#### Updated Table
+
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE 
+        noqapp.QUEUE
+    SET 
+        RA = 0,
+        HR = 0,
+        RV = "X"
+    WHERE 
+    	QID = "XX" and DID = "XXX";
+    SET SQL_SAFE_UPDATES = 1;    
+    
