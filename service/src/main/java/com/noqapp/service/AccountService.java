@@ -429,6 +429,11 @@ public class AccountService {
         return userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
     }
 
+    Set<String> findDependentQIDByPhone(String qid) {
+        UserProfileEntity userProfile = findProfileByQueueUserId(qid);
+        return userProfileManager.findDependentQIDByPhone(userProfile.getPhone());
+    }
+
     @Mobile
     public boolean reachedMaxDependents(String qid) {
         UserProfileEntity userProfile = findProfileByQueueUserId(qid);

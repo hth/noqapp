@@ -11,6 +11,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -88,9 +90,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity findBy(String qid, String codeQR, int tokenNumber) {
+    public PurchaseOrderEntity findBy(Set<String> qidSet, String codeQR, int tokenNumber) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
+            query(where("QID").in(qidSet).and("QR").is(codeQR).and("TN").is(tokenNumber)),
             PurchaseOrderEntity.class,
             TABLE
         );
@@ -441,5 +443,19 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
+    }
+
+    @Override
+    public PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId)),
+            update("QID", userProfile.getQueueUserId())
+                .set("CN", userProfile.getName())
+                .set("DA", userProfile.getAddress())
+                .set("CP", StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhone() : userProfile.getGuardianPhone()),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
     }
 }

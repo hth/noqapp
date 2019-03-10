@@ -5,6 +5,7 @@ import com.noqapp.domain.annotation.Mobile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -46,6 +47,8 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     UserProfileEntity inviteCodeExists(String inviteCode);
 
     List<UserProfileEntity> findDependentProfilesByPhone(String phone);
+
+    Set<String> findDependentQIDByPhone(String phone);
 
     long countDependentProfilesByPhone(String phone);
 

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -67,6 +68,16 @@ public class MedicalPathologyTestManagerImpl implements MedicalPathologyTestMana
     public void deleteByPathologyReferenceId(String medicalPathologyReferenceId) {
         mongoTemplate.remove(
             query(where("PRI").is(medicalPathologyReferenceId)),
+            MedicalPathologyTestEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String medicalPathologyReferenceId, String queueUserId) {
+        mongoTemplate.findAndModify(
+            query(where("PRI").is(medicalPathologyReferenceId)),
+            Update.update("QID", queueUserId),
             MedicalPathologyTestEntity.class,
             TABLE
         );

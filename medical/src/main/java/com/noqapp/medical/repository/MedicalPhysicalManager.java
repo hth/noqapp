@@ -16,4 +16,6 @@ public interface MedicalPhysicalManager extends RepositoryManager<MedicalPhysica
     List<MedicalPhysicalEntity> findByQid(String qid);
 
     void deleteHard(String id);
+
+    void changePatient(String medicalPhysicalId, String queueUserId);
 }

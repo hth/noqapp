@@ -14,4 +14,6 @@ public interface MedicalRadiologyTestManager extends RepositoryManager<MedicalRa
     List<MedicalRadiologyTestEntity> findRadiologyTestByIds(String medicalRadiologyReferenceId);
 
     void deleteByRadiologyReferenceId(String medicalRadiologyReferenceId);
+
+    void changePatient(String medicalRadiologyReferenceId, String queueUserId);
 }

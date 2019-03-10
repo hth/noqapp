@@ -23,4 +23,6 @@ public interface MedicalRadiologyManager  extends RepositoryManager<MedicalRadio
     MedicalRadiologyEntity findById(String id);
 
     void updateRadiologyObservation(String id, String observation);
+
+    void changePatient(String medicalRadiologyId, String queueUserId);
 }

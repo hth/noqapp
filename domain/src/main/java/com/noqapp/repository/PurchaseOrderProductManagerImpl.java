@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
@@ -69,5 +70,15 @@ public class PurchaseOrderProductManagerImpl implements PurchaseOrderProductMana
             PurchaseOrderProductEntity.class,
             TABLE
         ).getDeletedCount();
+    }
+
+    @Override
+    public void changePatient(String purchaseOrderId, String queueUserId) {
+        mongoTemplate.findAndModify(
+            query(where("PO").is(purchaseOrderId)),
+            update("QID", queueUserId),
+            PurchaseOrderProductEntity.class,
+            TABLE
+        );
     }
 }

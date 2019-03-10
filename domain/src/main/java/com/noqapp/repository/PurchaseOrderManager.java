@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
@@ -9,6 +10,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -17,7 +19,7 @@ import java.util.List;
 public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEntity> {
     PurchaseOrderEntity findById(String id);
 
-    PurchaseOrderEntity findBy(String qid, String codeQR, int tokenNumber);
+    PurchaseOrderEntity findBy(Set<String> qidSet, String codeQR, int tokenNumber);
 
     List<PurchaseOrderEntity> findAllOpenOrder(String qid);
 
@@ -98,4 +100,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     );
+
+    PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
 }

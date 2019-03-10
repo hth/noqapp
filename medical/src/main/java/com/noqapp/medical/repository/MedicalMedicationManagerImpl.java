@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
@@ -57,7 +58,17 @@ public class MedicalMedicationManagerImpl implements MedicalMedicationManager {
     @Override
     public void deleteHard(String id) {
         mongoTemplate.remove(
-            query(where("id").is(id)),
+            query(where("id").is(new ObjectId(id))),
+            MedicalMedicationEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String id, String queueUserId) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            update("QID", queueUserId),
             MedicalMedicationEntity.class,
             TABLE
         );

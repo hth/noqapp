@@ -18,4 +18,6 @@ public interface MedicalMedicineManager extends RepositoryManager<MedicalMedicin
     void deleteByMedicationRefId(String medicalMedicineReferenceId);
 
     List<MedicalMedicineEntity> findByIds(List<String> ids);
+
+    void changePatient(String medicalMedicineReferenceId, String queueUserId);
 }

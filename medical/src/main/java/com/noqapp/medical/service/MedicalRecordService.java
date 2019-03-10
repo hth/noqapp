@@ -180,6 +180,51 @@ public class MedicalRecordService {
     }
 
     @Mobile
+    public void changePatient(JsonMedicalRecord jsonRecord, String diagnosedById) {
+        UserProfileEntity diagnoserUserProfile = userProfileManager.findByQueueUserId(diagnosedById);
+        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
+
+        /* Check if record can be updated. */
+        checkIfMedicalRecordCanBeUpdated(medicalRecord);
+
+        /* Check if patient has been changed. */
+        changePatient(jsonRecord, diagnoserUserProfile, medicalRecord);
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonRecord.getQueueUserId());
+        /* Now subsequently update all related record. */
+        String medicalPhysicalId = medicalRecord.getMedicalPhysicalId();
+        if (StringUtils.isNotBlank(medicalPhysicalId)) {
+            medicalPhysicalManager.changePatient(medicalPhysicalId, jsonRecord.getQueueUserId());
+        }
+
+        if (!medicalRecord.getMedicalRadiologies().isEmpty()) {
+            for (String medicalRadiologyId : medicalRecord.getMedicalRadiologies()) {
+                medicalRadiologyManager.changePatient(medicalRadiologyId, userProfile.getQueueUserId());
+                medicalRadiologyTestManager.changePatient(medicalRadiologyId, userProfile.getQueueUserId());
+            }
+        }
+
+        if (StringUtils.isNotBlank(medicalRecord.getMedicalLaboratoryId())) {
+            medicalPathologyManager.changePatient(medicalRecord.getMedicalLaboratoryId(), userProfile.getQueueUserId());
+            medicalPathologyTestManager.changePatient(medicalRecord.getMedicalLaboratoryId(), userProfile.getQueueUserId());
+        }
+
+        if (StringUtils.isNotBlank(medicalRecord.getMedicalMedicationId())) {
+            medicalMedicationManager.changePatient(medicalRecord.getMedicalMedicationId(), userProfile.getQueueUserId());
+            medicalMedicineManager.changePatient(medicalRecord.getMedicalMedicationId(), userProfile.getQueueUserId());
+        }
+
+        List<String> transactionIds = medicalRecord.getTransactionIds();
+        if (null != transactionIds) {
+            for (String transactionId : transactionIds) {
+                purchaseOrderService.changePatient(transactionId, userProfile);
+            }
+        }
+
+        medicalRecordManager.save(medicalRecord);
+    }
+
+    @Mobile
     public void addMedicalRecord(JsonMedicalRecord jsonRecord, String diagnosedById) {
         try {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(diagnosedById);
@@ -203,20 +248,11 @@ public class MedicalRecordService {
             MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
             if (null == medicalRecord) {
                 medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
-
-                String recordReferenceId;
-                if (StringUtils.isBlank(jsonRecord.getRecordReferenceId())) {
-                    /* Setting its own ObjectId when not set. */
-                    recordReferenceId = CommonUtil.generateHexFromObjectId();
-                    LOG.warn("Record reference id was null for Medical Record {}", recordReferenceId);
-                } else {
-                    recordReferenceId = jsonRecord.getRecordReferenceId();
-                }
-                medicalRecord.setId(recordReferenceId);
+                /* Setting its own ObjectId when not set. */
+                medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
+                    ? CommonUtil.generateHexFromObjectId()
+                    : jsonRecord.getRecordReferenceId());
             } else {
-                /* Check if patient has been changed. */
-                changePatient(jsonRecord, userProfile, medicalRecord);
-
                 /* Check if record can be updated. */
                 checkIfMedicalRecordCanBeUpdated(medicalRecord);
 
@@ -332,6 +368,9 @@ public class MedicalRecordService {
                 LOG.error("Reached unsupported condition for changing patient in medical record={} by qid={}", medicalRecord.getId(), userProfile.getQueueUserId());
                 throw new UnsupportedOperationException("Reached unsupported condition");
             }
+        } else {
+            LOG.error("Found same patient for medical record={} by qid={}", medicalRecord.getId(), userProfile.getQueueUserId());
+            throw new UnsupportedOperationException("Reached unsupported condition");
         }
     }
 
@@ -459,8 +498,10 @@ public class MedicalRecordService {
 
             for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologyList.getJsonMedicalRadiologies()) {
                 MedicalRadiologyTestEntity medicalRadiologyTest = new MedicalRadiologyTestEntity();
-                medicalRadiologyTest.setName(jsonMedicalRadiology.getName());
-                medicalRadiologyTest.setMedicalRadiologyReferenceId(medicalRadiology.getId());
+                medicalRadiologyTest
+                    .setMedicalRadiologyReferenceId(medicalRadiology.getId())
+                    .setQueueUserId(jsonMedicalRecord.getQueueUserId())
+                    .setName(jsonMedicalRadiology.getName());
                 medicalRadiologyTestManager.save(medicalRadiologyTest);
                 medicalRadiology.addMedicalRadiologyXRayIds(medicalRadiologyTest.getId());
             }
@@ -510,9 +551,10 @@ public class MedicalRecordService {
 
         for (JsonMedicalPathologyList jsonMedicalPathologyList : jsonMedicalRecord.getMedicalPathologiesLists()) {
             for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalPathologyList.getJsonMedicalPathologies()) {
-                MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity();
-                medicalPathologyTest.setName(jsonMedicalPathology.getName());
-                medicalPathologyTest.setMedicalPathologyReferenceId(medicalPathology.getId());
+                MedicalPathologyTestEntity medicalPathologyTest = new MedicalPathologyTestEntity()
+                    .setMedicalPathologyReferenceId(medicalPathology.getId())
+                    .setQueueUserId(medicalPathology.getQueueUserId())
+                    .setName(jsonMedicalPathology.getName());
                 medicalPathologyTestManager.save(medicalPathologyTest);
                 medicalPathology.addMedicalPathologyTestId(medicalPathologyTest.getId());
             }

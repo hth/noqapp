@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
@@ -91,5 +92,15 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
             medicalMedicines.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), MedicalMedicineEntity.class, TABLE));
         }
         return medicalMedicines;
+    }
+
+    @Override
+    public void changePatient(String medicalMedicineReferenceId, String queueUserId) {
+        mongoTemplate.findAndModify(
+            query(where("MRI").is(medicalMedicineReferenceId)),
+            update("QID", queueUserId),
+            MedicalMedicineEntity.class,
+            TABLE
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.noqapp.medical.repository;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalRadiologyTestEntity;
@@ -67,6 +68,16 @@ public class MedicalRadiologyTestManagerImpl implements MedicalRadiologyTestMana
     public void deleteByRadiologyReferenceId(String medicalRadiologyReferenceId) {
         mongoTemplate.remove(
             query(where("RRI").is(medicalRadiologyReferenceId)),
+            MedicalRadiologyTestEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changePatient(String medicalRadiologyReferenceId, String queueUserId) {
+        mongoTemplate.findAndModify(
+            query(where("RRI").is(medicalRadiologyReferenceId)),
+            update("QID", queueUserId),
             MedicalRadiologyTestEntity.class,
             TABLE
         );

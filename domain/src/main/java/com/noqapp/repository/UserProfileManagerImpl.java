@@ -30,7 +30,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -207,6 +209,19 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 UserProfileEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public Set<String> findDependentQIDByPhone(String phone) {
+        Query query = query(where("GP").is(phone));
+        query.fields().include("QID");
+        List<UserProfileEntity> userProfileEntities = mongoTemplate.find(query, UserProfileEntity.class, TABLE);
+
+        Set<String> dependentsQID = new HashSet<>();
+        for (UserProfileEntity userProfile : userProfileEntities) {
+            dependentsQID.add(userProfile.getQueueUserId());
+        }
+        return dependentsQID;
     }
 
     @Override
