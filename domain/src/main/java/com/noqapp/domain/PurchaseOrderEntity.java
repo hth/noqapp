@@ -7,6 +7,8 @@ import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -65,7 +67,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private int storeDiscount;
 
     @Field("PP")
-    private String partialPayment = "0";
+    private String partialPayment;
 
     @Field("OP")
     private String orderPrice;
@@ -443,7 +445,11 @@ public class PurchaseOrderEntity extends BaseEntity {
     /** Shifting decimal point. */
     @Transient
     public String orderPriceForTransaction() {
-        return new BigDecimal(orderPrice).scaleByPowerOfTen(-2).toString();
+        BigDecimal transactionPrice = new BigDecimal(orderPrice);
+        if (StringUtils.isNotBlank(partialPayment)) {
+            transactionPrice = transactionPrice.subtract(new BigDecimal(partialPayment));
+        }
+        return transactionPrice.scaleByPowerOfTen(-2).toString();
     }
 
     @Override
