@@ -36,22 +36,23 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int TN = 13;
 
     private static final int SD = 14;
-    private static final int OP = 15;
-    private static final int BT = 16;
-    private static final int SN = 17;
-    private static final int SB = 18;
-    private static final int SE = 19;
-    private static final int TI = 20;
-    private static final int TR = 21;
-    private static final int TM = 22;
-    private static final int DN = 23;
-    private static final int AN = 24;
+    private static final int PP = 15;
+    private static final int OP = 16;
+    private static final int BT = 17;
+    private static final int SN = 18;
+    private static final int SB = 19;
+    private static final int SE = 20;
+    private static final int TI = 21;
+    private static final int TR = 22;
+    private static final int TM = 23;
+    private static final int DN = 24;
+    private static final int AN = 25;
 
-    private static final int V = 25;
-    private static final int U = 26;
-    private static final int C = 27;
-    private static final int A = 28;
-    private static final int D = 29;
+    private static final int V = 26;
+    private static final int U = 27;
+    private static final int C = 28;
+    private static final int A = 29;
+    private static final int D = 30;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -71,6 +72,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setReview(rs.getString(RV));
         purchaseOrder.setTokenNumber(rs.getInt(TN));
         purchaseOrder.setStoreDiscount(rs.getInt(SD));
+        purchaseOrder.setPartialPayment(rs.getString(PP));
         purchaseOrder.setOrderPrice(rs.getString(OP));
         purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
         purchaseOrder.setServerName(rs.getString(SN));
