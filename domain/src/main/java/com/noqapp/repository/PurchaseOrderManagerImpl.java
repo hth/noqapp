@@ -458,4 +458,17 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             TABLE
         );
     }
+
+    @Override
+    public PurchaseOrderEntity updateWithPartialPayment(String partialPayment, String transactionId) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId).and("PP").exists(false)),
+            update("PP", partialPayment)
+                .set("PY", PaymentStatusEnum.PH)
+                .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
 }
