@@ -358,7 +358,9 @@ public class PurchaseOrderService {
                     .setProductPrice(storeProduct.getProductPrice())
                     .setProductDiscount(storeProduct.getProductDiscount());
             } else {
-                purchaseOrderProduct.setProductName(jsonPurchaseOrderProduct.getProductName());
+                purchaseOrderProduct
+                    .setProductName(jsonPurchaseOrderProduct.getProductName())
+                    .setProductPrice(jsonPurchaseOrderProduct.getProductPrice());
             }
 
             purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
