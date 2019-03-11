@@ -64,6 +64,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("SD")
     private int storeDiscount;
 
+    @Field("PP")
+    private String partialPayment = "0";
+
     @Field("OP")
     private String orderPrice;
 
@@ -208,6 +211,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setStoreDiscount(int storeDiscount) {
         this.storeDiscount = storeDiscount;
+        return this;
+    }
+
+    public String getPartialPayment() {
+        return partialPayment;
+    }
+
+    public PurchaseOrderEntity setPartialPayment(String partialPayment) {
+        this.partialPayment = partialPayment;
         return this;
     }
 

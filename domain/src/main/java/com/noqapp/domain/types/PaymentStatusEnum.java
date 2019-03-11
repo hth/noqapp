@@ -6,6 +6,7 @@ package com.noqapp.domain.types;
  */
 public enum PaymentStatusEnum {
     PP("PP", "Pending Payment"),
+    PH("PH", "Partial Payment"),
     PA("PA", "Paid"),
     PF("PF", "Payment Fail"),
     FP("FP", "Flagged Payment"),
