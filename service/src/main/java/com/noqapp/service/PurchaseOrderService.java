@@ -315,122 +315,117 @@ public class PurchaseOrderService {
 
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
-        try {
-            BizStoreEntity bizStore;
-            if (null == jsonPurchaseOrder.getBizStoreId()) {
-                bizStore = bizStoreManager.findByCodeQR(jsonPurchaseOrder.getCodeQR());
+        BizStoreEntity bizStore;
+        if (null == jsonPurchaseOrder.getBizStoreId()) {
+            bizStore = bizStoreManager.findByCodeQR(jsonPurchaseOrder.getCodeQR());
+        } else {
+            bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
+        }
+
+        if (null == bizStore) {
+            LOG.error("Failed to find bizStore {} {}", qid, jsonPurchaseOrder);
+            throw new RuntimeException("Store not found");
+        }
+
+        PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
+            .setDid(did)
+            .setCustomerName(jsonPurchaseOrder.getCustomerName())
+            .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
+            .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
+            .setStoreDiscount(bizStore.getDiscount())
+            .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
+            .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
+            .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
+            //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
+            .setBusinessType(bizStore.getBusinessType())
+            .setTokenService(tokenService)
+            .setDisplayName(bizStore.getDisplayName())
+            .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
+        purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
+
+        List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
+        int orderPrice = 0;
+        for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
+            StoreProductEntity storeProduct = null;
+            if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
+                storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
+            }
+
+            PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
+            if (null != storeProduct) {
+                purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
+                    .setProductName(storeProduct.getProductName())
+                    .setProductPrice(storeProduct.getProductPrice())
+                    .setProductDiscount(storeProduct.getProductDiscount());
             } else {
-                bizStore = bizStoreManager.getById(jsonPurchaseOrder.getBizStoreId());
+                purchaseOrderProduct.setProductName(jsonPurchaseOrderProduct.getProductName());
             }
 
-            if (null == bizStore) {
-                LOG.error("Failed to find bizStore {} {}", qid, jsonPurchaseOrder);
-                throw new RuntimeException("Store not found");
-            }
-
-            PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
-                .setDid(did)
-                .setCustomerName(jsonPurchaseOrder.getCustomerName())
-                .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
-                .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
-                .setStoreDiscount(bizStore.getDiscount())
-                .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
-                .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
-                .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
-                //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
+            purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
+                .setQueueUserId(qid)
+                .setBizStoreId(bizStore.getId())
+                .setBizNameId(bizStore.getBizName().getId())
+                .setCodeQR(bizStore.getCodeQR())
                 .setBusinessType(bizStore.getBusinessType())
-                .setTokenService(tokenService)
-                .setDisplayName(bizStore.getDisplayName())
-                .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
-            purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
+                .setPurchaseOrderId(purchaseOrder.getId());
+            purchaseOrderProducts.add(purchaseOrderProduct);
+            orderPrice = orderPrice + purchaseOrderProduct.computeCost();
+        }
 
-            List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
-            int orderPrice = 0;
-            for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
-                StoreProductEntity storeProduct = null;
-                if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
-                    storeProduct = storeProductService.findOne(jsonPurchaseOrderProduct.getProductId());
-                }
+        if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
+            LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
+            purchaseOrder.setOrderPrice("0");
+        }
 
-                PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
-                if (null != storeProduct) {
-                    purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
-                        .setProductName(storeProduct.getProductName())
-                        .setProductPrice(storeProduct.getProductPrice())
-                        .setProductDiscount(storeProduct.getProductDiscount());
-                } else {
-                    purchaseOrderProduct.setProductName(jsonPurchaseOrderProduct.getProductName());
-                }
-
-                purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
-                    .setQueueUserId(qid)
-                    .setBizStoreId(bizStore.getId())
-                    .setBizNameId(bizStore.getBizName().getId())
-                    .setCodeQR(bizStore.getCodeQR())
-                    .setBusinessType(bizStore.getBusinessType())
-                    .setPurchaseOrderId(purchaseOrder.getId());
-                purchaseOrderProducts.add(purchaseOrderProduct);
-                orderPrice = orderPrice + purchaseOrderProduct.computeCost();
-            }
-
-            if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
-                LOG.warn("Purchase price NOT set for order={}", purchaseOrder.getId());
-                purchaseOrder.setOrderPrice("0");
-            }
-
-            /* Check if total price computed and submitted is same. */
-            if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice()) && !jsonPurchaseOrder.isCustomized()) {
-                LOG.error("Computed order price {} and submitted order price {}", orderPrice, purchaseOrder.getOrderPrice());
-                throw new PriceMismatchException("Price sent and computed does not match");
-            }
-            JsonToken jsonToken;
+        /* Check if total price computed and submitted is same. */
+        if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice()) && !jsonPurchaseOrder.isCustomized()) {
+            LOG.error("Computed order price {} and submitted order price {}", orderPrice, purchaseOrder.getOrderPrice());
+            throw new PriceMismatchException("Price sent and computed does not match");
+        }
+        JsonToken jsonToken;
+        try {
+            jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+            transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
+            Date expectedServiceBegin = null;
             try {
-                jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-                transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
-                Date expectedServiceBegin = null;
-                try {
-                    if (null != jsonToken.getExpectedServiceBegin()) {
-                        expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
-                    }
-                } catch (ParseException e) {
-                    LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
+                if (null != jsonToken.getExpectedServiceBegin()) {
+                    expectedServiceBegin = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
                 }
-
-                if (null != jsonPurchaseOrder.getPresentOrderState()) {
-                    /* Set the old state before resetting. */
-                    purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
-                }
-
-                /* Success in transaction. Change status to VB to initialize. */
-                purchaseOrder
-                    .addOrderState(PurchaseOrderStateEnum.VB)
-                    .setTokenNumber(jsonToken.getToken())
-                    .setExpectedServiceBegin(expectedServiceBegin)
-                    .setTransactionId(CommonUtil.generateTransactionId(jsonPurchaseOrder.getBizStoreId(), jsonToken.getToken()));
-                purchaseOrderManager.save(purchaseOrder);
-                executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
-                userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
-
-                doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
-                jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
-                    .setToken(purchaseOrder.getTokenNumber())
-                    .setServingNumber(jsonToken.getServingNumber())
-                    .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
-                    .setTransactionId(purchaseOrder.getTransactionId())
-                    .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
-                    .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
-
-                JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
-                    .setOrderAmount(purchaseOrder.orderPriceForTransaction())
-                    .setOrderId(purchaseOrder.getTransactionId());
-                JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
-                jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
-                jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
-                LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
-            } catch (Exception e) {
-                LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
-                throw new PurchaseOrderFailException("Failed creating order");
+            } catch (ParseException e) {
+                LOG.error("Failed to parse date, reason={}", e.getLocalizedMessage(), e);
             }
+
+            if (null != jsonPurchaseOrder.getPresentOrderState()) {
+                /* Set the old state before resetting. */
+                purchaseOrder.addOrderState(jsonPurchaseOrder.getPresentOrderState());
+            }
+
+            /* Success in transaction. Change status to VB to initialize. */
+            purchaseOrder
+                .addOrderState(PurchaseOrderStateEnum.VB)
+                .setTokenNumber(jsonToken.getToken())
+                .setExpectedServiceBegin(expectedServiceBegin)
+                .setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
+            purchaseOrderManager.save(purchaseOrder);
+            executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
+            userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
+
+            doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
+            jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
+                .setToken(purchaseOrder.getTokenNumber())
+                .setServingNumber(jsonToken.getServingNumber())
+                .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
+                .setTransactionId(purchaseOrder.getTransactionId())
+                .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
+                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+
+            JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
+                .setOrderAmount(purchaseOrder.orderPriceForTransaction())
+                .setOrderId(purchaseOrder.getTransactionId());
+            JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
+            jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
+            jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
+            LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
             throw new PurchaseOrderFailException("Failed creating order");
