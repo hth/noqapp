@@ -61,6 +61,7 @@ as a value, then it gets endless connections.
         RV VARCHAR(256),
         TN INT(10),
         SD INT(4),
+        PP VARCHAR(10),
         OP VARCHAR(10),
         BT VARCHAR(2)       NOT NULL, 
         SN VARCHAR(12),

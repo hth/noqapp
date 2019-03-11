@@ -332,6 +332,7 @@ public class PurchaseOrderService {
             .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
             .setStoreDiscount(bizStore.getDiscount())
+            .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())

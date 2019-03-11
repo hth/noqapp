@@ -1,3 +1,8 @@
+### Change March 11 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `PP` VARCHAR(10) AFTER `SD`;
+
 ### Change March 1 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
