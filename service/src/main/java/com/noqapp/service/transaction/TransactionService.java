@@ -34,6 +34,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -194,8 +195,9 @@ public class TransactionService {
         ClientSession session = Objects.requireNonNull(mongoTransactionManager.getDbFactory()).getSession(sessionOptions);
         session.startTransaction();
         try {
+            EnumSet<PurchaseOrderStateEnum> enumSet = EnumSet.of(PurchaseOrderStateEnum.PO, PurchaseOrderStateEnum.VB);
             PurchaseOrderEntity purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").in(enumSet)),
                 entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
                 FindAndModifyOptions.options().returnNew(true),
                 PurchaseOrderEntity.class
