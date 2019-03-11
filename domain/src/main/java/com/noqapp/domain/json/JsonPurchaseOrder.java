@@ -63,6 +63,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("sd")
     private int storeDiscount;
 
+    @JsonProperty("pp")
+    private String partialPayment;
+
     @JsonProperty ("op")
     private String orderPrice;
 
@@ -175,6 +178,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setStoreDiscount(int storeDiscount) {
         this.storeDiscount = storeDiscount;
+        return this;
+    }
+
+    public String getPartialPayment() {
+        return partialPayment;
+    }
+
+    public JsonPurchaseOrder setPartialPayment(String partialPayment) {
+        this.partialPayment = partialPayment;
         return this;
     }
 

@@ -65,7 +65,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private int storeDiscount;
 
     @Field("PP")
-    private String partialPayment;
+    private String partialPayment = "0";
 
     @Field("OP")
     private String orderPrice;

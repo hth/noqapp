@@ -377,6 +377,7 @@ public class PurchaseOrderService {
 
         /* Check if total price computed and submitted is same. */
         if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice())) {
+            LOG.error("Computed order price {} and submitted order price {}", orderPrice, purchaseOrder.getOrderPrice());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
         JsonToken jsonToken;
