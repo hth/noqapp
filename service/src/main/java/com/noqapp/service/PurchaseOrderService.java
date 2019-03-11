@@ -421,17 +421,22 @@ public class PurchaseOrderService {
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
                 .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
-            JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
-                .setOrderAmount(purchaseOrder.orderPriceForTransaction())
-                .setOrderId(purchaseOrder.getTransactionId());
-            JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
-            jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
-            jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
+            populateWithCFToken(jsonPurchaseOrder, purchaseOrder);
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
             throw new PurchaseOrderFailException("Failed creating order");
         }
+    }
+
+    @Mobile
+    public void populateWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, PurchaseOrderEntity purchaseOrder) {
+        JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
+            .setOrderAmount(purchaseOrder.orderPriceForTransaction())
+            .setOrderId(purchaseOrder.getTransactionId());
+        JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
+        jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
+        jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
     }
 
     @Mobile
