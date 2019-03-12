@@ -103,5 +103,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
 
-    PurchaseOrderEntity updateWithPartialPayment(String partialPayment, String transactionId);
+    PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId);
+    PurchaseOrderEntity updateWithCashPayment(String transactionId);
 }
