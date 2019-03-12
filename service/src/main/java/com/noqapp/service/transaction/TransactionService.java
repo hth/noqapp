@@ -223,4 +223,67 @@ public class TransactionService {
             session.close();
         }
     }
+
+    public PurchaseOrderEntity cancelPurchaseInitiatedByMerchant(String qid, String transactionId) {
+        //TODO(hth) this is a hack for supporting integration test
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+            try {
+                PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
+                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
+                    JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                        .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
+                        .setRefundNote("Refund initiated by merchant")
+                        .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
+                    JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                    LOG.info("Refund {}", jsonResponseRefund.toString());
+                    if (!jsonResponseRefund.isOk()) {
+                        LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+                        throw new FailedTransactionException("Failed response from Cashfree");
+                    } else {
+                        return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
+                    }
+                }
+            } catch (DuplicateKeyException e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+                throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
+            } catch (Exception e) {
+                LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+                throw new FailedTransactionException("Failed to complete transaction");
+            }
+        }
+
+        ClientSessionOptions sessionOptions = ClientSessionOptions.builder()
+            .causallyConsistent(true)
+            .build();
+
+        ClientSession session = Objects.requireNonNull(mongoTransactionManager.getDbFactory()).getSession(sessionOptions);
+        session.startTransaction();
+        try {
+            PurchaseOrderEntity purchaseOrder = mongoOperations.withSession(session).findAndModify(
+                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+                entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+                FindAndModifyOptions.options().returnNew(true),
+                PurchaseOrderEntity.class
+            );
+
+            /* Initiate refund on cashfree. */
+            if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode()) {
+                JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                    .setRefundAmount(purchaseOrder.orderPriceForTransaction())
+                    .setRefundNote("Refund initiated by merchant")
+                    .setReferenceId(purchaseOrder.getTransactionReferenceId());
+
+                cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+            }
+            session.commitTransaction();
+            LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
+            return purchaseOrder;
+        } catch (Exception e) {
+            LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid);
+            session.abortTransaction();
+            throw new FailedTransactionException("Failed to complete transaction");
+        } finally {
+            session.close();
+        }
+    }
 }
