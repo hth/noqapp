@@ -405,6 +405,18 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
+        return mongoTemplate.findOne(
+            query(where("TI").is(transactionId).and("BS").is(bizStoreId)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted())
+            ),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public PurchaseOrderEntity updateOnPaymentGatewayNotification(
         String transactionId,
         String transactionMessage,
@@ -460,9 +472,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId) {
+    public PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId, String bizStoreId) {
         return mongoTemplate.findAndModify(
-            query(where("TI").is(transactionId).and("PP").exists(false)),
+            query(where("TI").is(transactionId).and("BS").is(bizStoreId).and("PP").exists(false)),
             update("PP", partialPayment)
                 .set("PY", PaymentStatusEnum.PH)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
@@ -474,9 +486,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithCashPayment(String transactionId) {
+    public PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId) {
         return mongoTemplate.findAndModify(
-            query(where("TI").is(transactionId)),
+            query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
             update("PY", PaymentStatusEnum.PA)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
                 .set("PM", PaymentModeEnum.CA),

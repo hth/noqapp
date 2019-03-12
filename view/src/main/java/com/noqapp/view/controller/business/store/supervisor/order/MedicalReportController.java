@@ -141,7 +141,7 @@ public class MedicalReportController {
                 model.asMap().get("resultImage"));
         }
 
-        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId.getText());
+        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionIdAndBizStore(transactionId.getText(), storeId.getText());
         if (purchaseOrder == null || purchaseOrder.getBusinessType() != BusinessTypeEnum.HS) {
             LOG.warn("Could not find transactionId={} qid={} having access as business user", transactionId.getText(), queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");

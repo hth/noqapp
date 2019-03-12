@@ -443,7 +443,7 @@ public class PurchaseOrderService {
     public JsonPurchaseOrder partialPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
         LOG.info("Partial payment for transactionId={} partialPayment={} by qid={}",
             jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
-        PurchaseOrderEntity purchaseOrderOriginal = purchaseOrderManager.findByTransactionId(jsonPurchaseOrder.getTransactionId());
+        PurchaseOrderEntity purchaseOrderOriginal = findByTransactionIdAndBizStore(jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getBizStoreId());
 
         /* When partial amount is equal to full amount, mark it as cash payment. */
         if (purchaseOrderOriginal.getOrderPrice().equalsIgnoreCase(jsonPurchaseOrder.getPartialPayment())) {
@@ -452,7 +452,8 @@ public class PurchaseOrderService {
 
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCashPayment(
             jsonPurchaseOrder.getPartialPayment(),
-            jsonPurchaseOrder.getTransactionId()
+            jsonPurchaseOrder.getTransactionId(),
+            jsonPurchaseOrder.getBizStoreId()
         );
 
         return new JsonPurchaseOrder(purchaseOrder);
@@ -462,7 +463,7 @@ public class PurchaseOrderService {
     public JsonPurchaseOrder cashPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
         LOG.info("Cash payment for transactionId={} partialPayment={} by qid={}",
             jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(jsonPurchaseOrder.getTransactionId());
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getBizStoreId());
 
         return new JsonPurchaseOrder(purchaseOrder);
     }
@@ -1244,6 +1245,10 @@ public class PurchaseOrderService {
 
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
         return purchaseOrderManager.findByTransactionId(transactionId);
+    }
+
+    public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
+        return purchaseOrderManager.findByTransactionIdAndBizStore(transactionId, bizStoreId);
     }
 
     public void changePatient(String transactionId, UserProfileEntity userProfile) {
