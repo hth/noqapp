@@ -376,9 +376,11 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
         this.bizStoreId = purchaseOrder.getBizStoreId();
+        this.codeQR = purchaseOrder.getCodeQR();
         this.customerPhone = purchaseOrder.getCustomerPhone();
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
         this.storeDiscount = purchaseOrder.getStoreDiscount();
+        this.partialPayment = purchaseOrder.getPartialPayment();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.paymentMode = purchaseOrder.getPaymentMode();
