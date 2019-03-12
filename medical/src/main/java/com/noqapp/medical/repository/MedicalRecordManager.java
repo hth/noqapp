@@ -21,7 +21,10 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
     List<MedicalRecordEntity> findAllFollowUp(String codeQR);
 
     //TODO remove me
+    @Deprecated
     MedicalRecordEntity findOne();
+
+    MedicalRecordEntity findByBizNameId(String bizNameId);
 
     void addTransactionId(String recordReferenceId, String transactionId);
 

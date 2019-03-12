@@ -96,6 +96,9 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field ("N")
     private String businessName;
 
+    @Field ("BN")
+    private String bizNameId;
+
     @Field ("BCI")
     private String bizCategoryId;
 
@@ -296,6 +299,15 @@ public class MedicalRecordEntity extends BaseEntity {
 
     public MedicalRecordEntity setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public MedicalRecordEntity setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
         return this;
     }
 

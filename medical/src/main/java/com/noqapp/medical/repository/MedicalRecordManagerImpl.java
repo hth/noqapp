@@ -1,6 +1,7 @@
 package com.noqapp.medical.repository;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -104,6 +105,15 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
             MedicalRecordEntity.class,
             TABLE
         ).get(0);
+    }
+
+    @Override
+    public MedicalRecordEntity findByBizNameId(String bizNameId) {
+        return mongoTemplate.findOne(
+            query(where("BN").is(bizNameId).and("DBI").exists(true)).with(new Sort(DESC, "C")),
+            MedicalRecordEntity.class,
+            TABLE
+        );
     }
 
     @Override
