@@ -260,7 +260,7 @@ public class TransactionService {
         session.startTransaction();
         try {
             PurchaseOrderEntity purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
+                query(where("TI").is(transactionId).and("PS").is(PurchaseOrderStateEnum.PO)),
                 entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
                 FindAndModifyOptions.options().returnNew(true),
                 PurchaseOrderEntity.class
