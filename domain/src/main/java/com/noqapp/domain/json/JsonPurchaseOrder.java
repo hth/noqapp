@@ -346,9 +346,11 @@ public class JsonPurchaseOrder extends AbstractDomain {
     public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
         return new JsonPurchaseOrder()
             .setBizStoreId(po.getBizStoreId())
+            .setCodeQR(po.getCodeQR())
             .setCustomerPhone(po.getCustomerPhone())
             .setDeliveryAddress(po.getDeliveryAddress())
             .setStoreDiscount(po.getStoreDiscount())
+            .setPartialPayment(po.getPartialPayment())
             .setOrderPrice(po.getOrderPrice())
             .setDeliveryMode(po.getDeliveryMode())
             .setPaymentMode(po.getPaymentMode())
@@ -359,9 +361,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setToken(po.getTokenNumber())
             .setCustomerName(po.getCustomerName())
             //No setting expectedServiceBegin
-            .setTransactionId(po.getTransactionId())
             .setPresentOrderState(po.getPresentOrderState())
             .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setTransactionId(po.getTransactionId())
             .setAdditionalNote(po.getAdditionalNote())
             .setTransactionMessage(po.getTransactionMessage());
     }
