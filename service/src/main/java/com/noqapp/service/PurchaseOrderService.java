@@ -443,6 +443,13 @@ public class PurchaseOrderService {
     public JsonPurchaseOrder partialPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
         LOG.info("Partial payment for transactionId={} partialPayment={} by qid={}",
             jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
+        PurchaseOrderEntity purchaseOrderOriginal = purchaseOrderManager.findByTransactionId(jsonPurchaseOrder.getTransactionId());
+
+        /* When partial amount is equal to full amount, mark it as cash payment. */
+        if (purchaseOrderOriginal.getOrderPrice().equalsIgnoreCase(jsonPurchaseOrder.getPartialPayment())) {
+            return cashPayment(jsonPurchaseOrder, qid);
+        }
+
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCashPayment(
             jsonPurchaseOrder.getPartialPayment(),
             jsonPurchaseOrder.getTransactionId()
