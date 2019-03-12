@@ -687,10 +687,12 @@ public class PurchaseOrderService {
         }
 
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+            .setCodeQR(purchaseOrder.getCodeQR())
             .setBizStoreId(purchaseOrder.getBizStoreId())
             .setCustomerPhone(purchaseOrder.getCustomerPhone())
             .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
             .setStoreDiscount(purchaseOrder.getStoreDiscount())
+            .setPartialPayment(purchaseOrder.getPartialPayment())
             .setOrderPrice(purchaseOrder.getOrderPrice())
             .setDeliveryMode(purchaseOrder.getDeliveryMode())
             .setPaymentMode(purchaseOrder.getPaymentMode())
