@@ -443,10 +443,19 @@ public class PurchaseOrderService {
     public JsonPurchaseOrder partialPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
         LOG.info("Partial payment for transactionId={} partialPayment={} by qid={}",
             jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialPayment(
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCashPayment(
             jsonPurchaseOrder.getPartialPayment(),
             jsonPurchaseOrder.getTransactionId()
         );
+
+        return new JsonPurchaseOrder(purchaseOrder);
+    }
+
+    @Mobile
+    public JsonPurchaseOrder cashPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
+        LOG.info("Cash payment for transactionId={} partialPayment={} by qid={}",
+            jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(jsonPurchaseOrder.getTransactionId());
 
         return new JsonPurchaseOrder(purchaseOrder);
     }
