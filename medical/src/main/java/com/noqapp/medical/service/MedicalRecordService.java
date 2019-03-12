@@ -161,6 +161,7 @@ public class MedicalRecordService {
             .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())
             .setDiagnosedById(diagnosedById)
             .setBusinessName(bizStore.getBizName().getBusinessName())
+            .setBizNameId(bizStore.getBizName().getId())
             .setBizCategoryId(bizStore.getBizCategoryId())
             .setCodeQR(bizStore.getCodeQR())
             .setFormVersion(medicalRecordForm.getFormVersion());
@@ -324,6 +325,7 @@ public class MedicalRecordService {
                     ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
                     : null)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
+                .setBizNameId(bizStore.getBizName().getId())
                 .setBizCategoryId(bizStore.getBizCategoryId())
                 .setCodeQR(bizStore.getCodeQR());
 
