@@ -83,6 +83,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     /** Used Internally to modify purchase order. */
     PurchaseOrderEntity findByTransactionId(String transactionId);
+    PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
 
     PurchaseOrderEntity updateOnPaymentGatewayNotification(
         String transactionId,
@@ -103,6 +104,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
 
-    PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId);
-    PurchaseOrderEntity updateWithCashPayment(String transactionId);
+    PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId, String bizStoreId);
+    PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId);
 }
