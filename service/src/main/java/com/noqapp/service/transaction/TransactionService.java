@@ -169,7 +169,7 @@ public class TransactionService {
             LOG.warn("Refund on partial order is prevented {}", transactionId);
             throw new PurchaseOrderPartialException("Refund failed for partial order");
         }
-        
+
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
             try {
