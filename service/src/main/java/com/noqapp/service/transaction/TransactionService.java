@@ -17,11 +17,14 @@ import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
+import com.noqapp.service.exceptions.PurchaseOrderPartialException;
 import com.noqapp.service.payment.CashfreeService;
 
 import com.mongodb.ClientSessionOptions;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.result.DeleteResult;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,10 +164,15 @@ public class TransactionService {
     }
 
     public PurchaseOrderEntity cancelPurchaseInitiatedByClient(String qid, String transactionId) {
+        PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
+        if (StringUtils.isNotBlank(purchaseOrderBeforeCancel.getPartialPayment())) {
+            LOG.warn("Refund on partial order is prevented {}", transactionId);
+            throw new PurchaseOrderPartialException("Refund failed for partial order");
+        }
+        
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
             try {
-                PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
                 if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
