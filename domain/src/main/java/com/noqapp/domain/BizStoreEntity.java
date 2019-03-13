@@ -156,10 +156,6 @@ public class BizStoreEntity extends BaseEntity {
     @Field("QH")
     private Date queueHistory = new Date();
 
-    //TODO(hth) Change to false after sending notification of change
-    @Field("CQ")
-    private boolean changedCodeQR = false;
-
     @NotNull
     @Field("AO")
     private AddressOriginEnum addressOrigin;
@@ -507,7 +503,6 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setCodeQR(String codeQR) {
         this.codeQR = codeQR;
-        this.changedCodeQR = true;
         return this;
     }
 
