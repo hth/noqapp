@@ -40,6 +40,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
@@ -182,8 +183,8 @@ public class BizService {
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
             rootMap.put("businessTypeMessageOrgin", bizStore.getBusinessType().getMessageOrigin().name());
             if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
-                rootMap.put("productPrice", bizStore.getProductPrice());
-                rootMap.put("cancellationPrice", bizStore.getCancellationPrice());
+                rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : new BigDecimal(bizStore.getProductPrice()).scaleByPowerOfTen(-2).toString());
+                rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
                 rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
             }
 
