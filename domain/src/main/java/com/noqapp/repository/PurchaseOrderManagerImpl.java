@@ -476,7 +476,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId).and("PP").exists(false)),
             update("PP", partialPayment)
-                .set("PY", PaymentStatusEnum.PH)
+                .set("PY", PaymentStatusEnum.MP)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
                 .set("PM", PaymentModeEnum.CA),
             FindAndModifyOptions.options().returnNew(true),

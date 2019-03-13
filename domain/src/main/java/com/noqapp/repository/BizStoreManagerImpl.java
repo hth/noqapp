@@ -13,6 +13,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaginationEnum;
+import com.noqapp.domain.types.ServicePaymentEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -423,6 +425,17 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
             entityUpdate(update("D", true)),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment) {
+        return mongoTemplate.findAndModify(
+            query(where("QR").is(codeQR)),
+            entityUpdate(update("PP", productPrice).set("CF", cancellationPrice).set("SP", servicePayment)),
+            FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE
         );

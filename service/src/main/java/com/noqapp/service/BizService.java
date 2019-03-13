@@ -17,6 +17,8 @@ import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.ServicePaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -78,22 +80,22 @@ public class BizService {
 
     @Autowired
     public BizService(
-            @Value("${degreeInMiles:69.172}")
-            double degreeInMiles,
+        @Value("${degreeInMiles:69.172}")
+        double degreeInMiles,
 
-            @Value("${degreeInKilometers:111.321}")
-            double degreeInKilometers,
+        @Value("${degreeInKilometers:111.321}")
+        double degreeInKilometers,
 
-            BizNameManager bizNameManager,
-            BizStoreManager bizStoreManager,
-            StoreHourManager storeHourManager,
-            TokenQueueService tokenQueueService,
-            QueueService queueService,
-            BusinessUserManager businessUserManager,
-            BusinessUserStoreManager businessUserStoreManager,
-            MailService mailService,
-            UserProfileManager userProfileManager,
-            ScheduledTaskManager scheduledTaskManager
+        BizNameManager bizNameManager,
+        BizStoreManager bizStoreManager,
+        StoreHourManager storeHourManager,
+        TokenQueueService tokenQueueService,
+        QueueService queueService,
+        BusinessUserManager businessUserManager,
+        BusinessUserStoreManager businessUserStoreManager,
+        MailService mailService,
+        UserProfileManager userProfileManager,
+        ScheduledTaskManager scheduledTaskManager
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
@@ -178,6 +180,12 @@ public class BizService {
             rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
             rootMap.put("onlineOrOffline", bizStore.isActive());
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
+            rootMap.put("businessTypeMessageOrgin", bizStore.getBusinessType().getMessageOrigin().name());
+            if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
+                rootMap.put("productPrice", bizStore.getProductPrice());
+                rootMap.put("cancellationPrice", bizStore.getCancellationPrice());
+                rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
+            }
 
             if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
                 ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
@@ -547,5 +555,10 @@ public class BizService {
 
     public void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id) {
         bizNameManager.updateDataVisibility(dataVisibilities, id);
+    }
+
+    @Mobile
+    public BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment) {
+        return bizStoreManager.updateServiceCost(codeQR, productPrice, cancellationPrice, servicePayment);
     }
 }

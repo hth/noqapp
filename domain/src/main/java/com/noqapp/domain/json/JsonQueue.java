@@ -7,6 +7,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.ServicePaymentEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -143,6 +144,21 @@ public class JsonQueue extends AbstractDomain {
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
+
+    //*********************************/
+    //*  Queue Price Setting Starts.  */
+    //*********************************/
+    @JsonProperty("pp")
+    private int productPrice;
+
+    @JsonProperty("cp")
+    private int cancellationPrice;
+
+    @JsonProperty("sp")
+    private ServicePaymentEnum servicePayment;
+    //*********************************/
+    //*  Queue Price Settings Ends.   */
+    //*********************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;
@@ -451,6 +467,33 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public JsonQueue setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public int getCancellationPrice() {
+        return cancellationPrice;
+    }
+
+    public JsonQueue setCancellationPrice(int cancellationPrice) {
+        this.cancellationPrice = cancellationPrice;
+        return this;
+    }
+
+    public ServicePaymentEnum getServicePayment() {
+        return servicePayment;
+    }
+
+    public JsonQueue setServicePayment(ServicePaymentEnum servicePayment) {
+        this.servicePayment = servicePayment;
         return this;
     }
 
