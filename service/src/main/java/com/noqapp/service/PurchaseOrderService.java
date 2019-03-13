@@ -53,6 +53,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
+import com.noqapp.service.exceptions.PurchaseOrderPartialException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -214,6 +215,9 @@ public class PurchaseOrderService {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
             doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
             return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
+        } catch (PurchaseOrderPartialException e) {
+            LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
+            throw e;
         } catch (Exception e) {
             return null;
         }
