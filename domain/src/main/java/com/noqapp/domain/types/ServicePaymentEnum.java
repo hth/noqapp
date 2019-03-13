@@ -2,20 +2,17 @@ package com.noqapp.domain.types;
 
 /**
  * hitender
- * 2019-02-28 14:53
+ * 2019-03-13 11:45
  */
-public enum PaymentStatusEnum {
-    PP("PP", "Pending Payment"),
-    MP("MP", "Multiple Payment"),
-    PA("PA", "Paid"),
-    PF("PF", "Payment Fail"),
-    FP("FP", "Flagged Payment"),
-    PC("PC", "Payment Cancelled");
+public enum ServicePaymentEnum {
+    N("N", "Payment Not Required"),
+    R("R", "Payment Required"),
+    O("O", "Payment Optional");
 
-    private final String description;
     private final String name;
+    private final String description;
 
-    PaymentStatusEnum(String name, String description) {
+    ServicePaymentEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

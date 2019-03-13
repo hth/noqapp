@@ -10,6 +10,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.ServicePaymentEnum;
 
 import com.google.maps.model.LatLng;
 
@@ -210,6 +211,21 @@ public class BizStoreEntity extends BaseEntity {
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
+
+    //*********************************/
+    //*  Queue Price Setting Starts.  */
+    //*********************************/
+    @Field("PP")
+    private int productPrice;
+
+    @Field("CF")
+    private int cancellationPrice;
+
+    @Field("SP")
+    private ServicePaymentEnum servicePayment = ServicePaymentEnum.N;
+    //*********************************/
+    //*  Queue Price Settings Ends.   */
+    //*********************************/
 
     /* Contains Id if a task is assigned. */
     @Field("TA")
@@ -679,6 +695,33 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public BizStoreEntity setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public int getCancellationPrice() {
+        return cancellationPrice;
+    }
+
+    public BizStoreEntity setCancellationPrice(int cancellationPrice) {
+        this.cancellationPrice = cancellationPrice;
+        return this;
+    }
+
+    public ServicePaymentEnum getServicePayment() {
+        return servicePayment;
+    }
+
+    public BizStoreEntity setServicePayment(ServicePaymentEnum servicePayment) {
+        this.servicePayment = servicePayment;
         return this;
     }
 

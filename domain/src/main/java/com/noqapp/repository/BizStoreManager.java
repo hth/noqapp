@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.ServicePaymentEnum;
 
 import org.springframework.data.geo.Point;
 
@@ -97,5 +98,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     /** Need to store references for deleted store. */
     void deleteSoft(String id);
+
+    BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment);
 }
 
