@@ -129,6 +129,9 @@
             }
           }
         },
+        "PP": {
+          "type": "long"
+        },
         "PR": {
           "type": "text",
           "fields": {

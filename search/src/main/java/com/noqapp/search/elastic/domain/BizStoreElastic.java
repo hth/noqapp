@@ -157,6 +157,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+    @JsonProperty("PP")
+    private int productPrice;
+
     @Transient
     @JsonProperty("BI")
     private Set<String> bizServiceImages = new LinkedHashSet<>();
@@ -463,6 +466,15 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public BizStoreElastic setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
     public Set<String> getBizServiceImages() {
         return bizServiceImages;
     }
@@ -551,6 +563,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setRatingCount(bizStore.getReviewCount())
             .setBizNameId(bizStore.getBizName().getId())
             .setDisplayName(bizStore.getDisplayName())
+            .setProductPrice(bizStore.getProductPrice())
             .setCodeQR(bizStore.getCodeQR())
             .setTimeZone(bizStore.getTimeZone())
             .setGeoHash(bizStore.getGeoPoint().getGeohash())

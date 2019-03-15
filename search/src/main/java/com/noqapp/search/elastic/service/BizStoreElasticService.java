@@ -284,6 +284,7 @@ public class BizStoreElasticService {
                     .setRatingCount(map.containsKey("RC") ? Integer.valueOf(map.get("RC").toString()) : 0)
                     .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
                     .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
+                    .setProductPrice(map.containsKey("PP") ? Integer.valueOf(map.get("PP").toString()) : 0)
                     .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                     .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
