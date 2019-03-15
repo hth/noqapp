@@ -181,7 +181,7 @@ public class BizService {
             rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");
             rootMap.put("onlineOrOffline", bizStore.isActive());
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
-            rootMap.put("businessTypeMessageOrgin", bizStore.getBusinessType().getMessageOrigin().name());
+            rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
             if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
                 rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : new BigDecimal(bizStore.getProductPrice()).scaleByPowerOfTen(-2).toString());
                 rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
