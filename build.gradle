@@ -59,7 +59,7 @@ ext {
     geoDBTest = file(geoDBTestFileLocation)
     geoDBProd = file(geoDBProdFileLocation)
 
-    baseName = "noqapp"
+    archiveName = "noqapp"
 }
 
 buildscript {
@@ -337,12 +337,12 @@ subprojects {
 }
 
 project(':common') {
-    jar.baseName = baseName + '-common'
+    jar.baseName = archiveName + '-common'
 }
 
 project(':loader') {
     apply plugin: 'war'
-    jar.baseName = baseName + '-loader'
+    jar.baseName = archiveName + '-loader'
 
     dependencies {
         compile project(':medical')
@@ -352,7 +352,7 @@ project(':loader') {
 }
 
 project(':domain') {
-    jar.baseName = baseName + '-domain'
+    jar.baseName = archiveName + '-domain'
 
     dependencies {
         compile project(':common')
@@ -360,7 +360,7 @@ project(':domain') {
 }
 
 project(':health') {
-    jar.baseName = baseName + '-health'
+    jar.baseName = archiveName + '-health'
 
     dependencies {
         compile project(':common'),
@@ -370,7 +370,7 @@ project(':health') {
 
 project(':security') {
     apply plugin: 'war'
-    jar.baseName = baseName + '-security'
+    jar.baseName = archiveName + '-security'
 
     repositories {
         mavenCentral()
@@ -386,7 +386,7 @@ project(':security') {
 }
 
 project(':service') {
-    jar.baseName = baseName + '-service'
+    jar.baseName = archiveName + '-service'
 
     dependencies {
         compile project(':common'),
@@ -396,7 +396,7 @@ project(':service') {
 }
 
 project(':search') {
-    jar.baseName = baseName + '-search'
+    jar.baseName = archiveName + '-search'
 
     dependencies {
         compile project(':common'),
@@ -406,7 +406,7 @@ project(':search') {
 }
 
 project(':social') {
-    jar.baseName = baseName + '-social'
+    jar.baseName = archiveName + '-social'
 
     dependencies {
         compile project(':common'),
@@ -416,7 +416,7 @@ project(':social') {
 }
 
 project(':medical') {
-    jar.baseName = baseName + '-medical'
+    jar.baseName = archiveName + '-medical'
 
     dependencies {
         compile project(':common'),
@@ -428,8 +428,8 @@ project(':medical') {
 
 project(':view') {
     apply plugin: 'war'
-    jar.baseName = baseName + '-view'
-    war.baseName = baseName + '-view'
+    jar.baseName = archiveName + '-view'
+    war.baseName = archiveName + '-view'
 
     repositories {
         mavenCentral()
@@ -466,7 +466,7 @@ task copyJars(type: Copy) {
 }
 
 task unzip(type: Copy, dependsOn: [':view:war']) {
-    def zipFile = file("view/build/libs/$baseName" + '-view-' + version + '.war')
+    def zipFile = file("view/build/libs/$archiveName" + '-view-' + version + '.war')
 
     from zipTree(zipFile)
     into unzipDir
@@ -897,7 +897,7 @@ publishing {
     publications {
         common(MavenPublication) {
             artifactId 'common'
-            artifact "common/build/libs/$baseName" + '-common-' + version + '.jar'
+            artifact "common/build/libs/$archiveName" + '-common-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -919,7 +919,7 @@ publishing {
 
         domain(MavenPublication) {
             artifactId 'domain'
-            artifact "domain/build/libs/$baseName" + '-domain-' + version + '.jar'
+            artifact "domain/build/libs/$archiveName" + '-domain-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -941,7 +941,7 @@ publishing {
 
         health(MavenPublication) {
             artifactId 'health'
-            artifact "health/build/libs/$baseName" + '-health-' + version + '.jar'
+            artifact "health/build/libs/$archiveName" + '-health-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -963,7 +963,7 @@ publishing {
 
         medical(MavenPublication) {
             artifactId 'medical'
-            artifact "medical/build/libs/$baseName" + '-medical-' + version + '.jar'
+            artifact "medical/build/libs/$archiveName" + '-medical-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -985,7 +985,7 @@ publishing {
 
         service(MavenPublication) {
             artifactId 'service'
-            artifact "service/build/libs/$baseName" + '-service-' + version + '.jar'
+            artifact "service/build/libs/$archiveName" + '-service-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -1007,7 +1007,7 @@ publishing {
 
         search(MavenPublication) {
             artifactId 'search'
-            artifact "search/build/libs/$baseName" + '-search-' + version + '.jar'
+            artifact "search/build/libs/$archiveName" + '-search-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
@@ -1029,7 +1029,7 @@ publishing {
 
         social(MavenPublication) {
             artifactId 'social'
-            artifact "social/build/libs/$baseName" + '-social-' + version + '.jar'
+            artifact "social/build/libs/$archiveName" + '-social-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()
