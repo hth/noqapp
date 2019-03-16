@@ -1,3 +1,7 @@
+### Change March 11 2019
+
+    db.BIZ_STORE.update({}, {$unset:{"CQ":1}}, false, true);   
+
 ### Change March 1, 2019
 
      db.PURCHASE_ORDER.update({}, {$rename:{"PT":"PM"}}, false, true);
