@@ -845,43 +845,27 @@ task prepWar(dependsOn: [
 
 //import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
-    archiveName = "ROOT-$env"
-    doFirst {
+    doFirst { 
         exclude('**/noqapp-loader-*.jar')
-        if (env == 'sandbox' || env == 'prod') {
-            archiveName = archiveName + "." + project.version.toString()
-            println "WAR file $archiveName"
-        } else if (env == 'dev') {
-            println "WAR file $archiveName"
-        } else {
-            throw new Exception("Undefined env: $env")
-        }
-
 //        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
-
+    
+    archiveName = "ROOT-$env" + "." + project.version.toString()
+    println "WAR file $archiveName"
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env")
 }
 
 task loaderWar(type: War, dependsOn: prepWar) {
-    archiveName = "ROOT-loader-$env"
     doFirst {
-        if (env == 'sandbox' || env == 'prod') {
-            archiveName =  archiveName + "." + project.version.toString()
-            println "WAR file $archiveName"
-        } else if (env == 'dev') {
-            println "WAR file $archiveName"
-        } else {
-            throw new Exception("Undefined env: $env")
-        }
-
 //        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
 
+    archiveName =  "ROOT-loader-$env" + "." + project.version.toString()
+    println "WAR file $archiveName"
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env-loader")
