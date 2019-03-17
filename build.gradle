@@ -1,6 +1,6 @@
 import com.eriwen.gradle.css.tasks.MinifyCssTask
 import com.eriwen.gradle.js.tasks.MinifyJsTask
-import com.github.spotbugs.SpotBugsTask
+import com.github.spotbugs.SpotBugsTask 
 
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
@@ -19,7 +19,6 @@ ext {
     xslfo = file("$javaClasses/xslfo")
     elastic_mapping = file("$javaClasses/elastic_mapping")
     geo_db = file("$javaClasses/geo_db")
-    images = file("$javaClasses/images")
 
     warDir = file("$buildDir/explodedWar/$env")
     warWebInfDir = file("$warDir$webInf")
@@ -31,7 +30,6 @@ ext {
     warXslfoDir = file("$warDir$xslfo")
     warMappingDir = file("$warDir$elastic_mapping")
     warGeoDBDir = file("$warDir$geo_db")
-    warWebInfClassesImagesDir = file("$warDir$images")
 
     activeProfilewarDir = file("$buildDir/activeProfile/$env")
     activeProfilewarWebInfDir = file("$activeProfilewarDir$webInf")
@@ -569,7 +567,7 @@ task setUpProfileForJunit() {
 css.source {
     custom {
         css {
-            srcDir "view/web/static/css"
+            srcDir "view/web/static2/**/**"
             include "*.css"
             exclude "*.min.css"
         }
@@ -579,8 +577,8 @@ css.source {
 javascript.source {
     custom {
         js {
-            srcDir "view/web/static/js"
-            include "colpick.js", "mainpop.js"
+            srcDir "view/web/static2/**/**"
+            include "*.js"
             exclude "*.min.js"
         }
     }
@@ -626,6 +624,7 @@ javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
 
 task individualCssMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyCss") })
 task individualJsMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyJs") })
+
 task createBuildInfoFile {
     doLast {
         buildDir.mkdirs()
@@ -658,23 +657,21 @@ task prepWar(dependsOn: [
         copy {
             from 'view/web'
             into warDir
-            exclude '**/*.classes'
-            exclude '**/static/css/*.css'
-            exclude 'view/web/static/js/mainpop.js', 'view/web/static/js/colpick.js'
+            //if minify is working can exclude css and js
         }
 
         copy {
             from("${buildDir}/tmp/css") {
                 include "**/*.css"
             }
-            into "${warDir}/static/css"
+            into "${warDir}/static2"
         }
 
         copy {
             from("${buildDir}/tmp/js") {
                 include "**/*.js"
             }
-            into "${warDir}/static/js"
+            into "${warDir}/static2"
         }
 
         copy {
@@ -822,16 +819,6 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from 'view/web/static/images'
-            into warWebInfClassesImagesDir
-        }
-
-        copy {
-            from 'view/web/static2/**'
-            into "${warDir}/static2"
-        }
-
-        copy {
             from unzipLibDir
             into warLibDir
         }
@@ -852,7 +839,6 @@ task war(type: War, dependsOn: prepWar) {
     }
     
     archiveName = "ROOT-$env" + "." + project.version.toString() + ".war"
-    println "WAR file $archiveName"
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env")
@@ -865,7 +851,6 @@ task loaderWar(type: War, dependsOn: prepWar) {
     }
 
     archiveName =  "ROOT-loader-$env" + "." + project.version.toString() + ".war"
-    println "WAR file $archiveName"
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env-loader")
