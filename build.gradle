@@ -851,7 +851,7 @@ task war(type: War, dependsOn: prepWar) {
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
     
-    archiveName = "ROOT-$env" + "." + project.version.toString()
+    archiveName = "ROOT-$env" + "." + project.version.toString() + ".war"
     println "WAR file $archiveName"
     from warDir
     version ""
@@ -864,7 +864,7 @@ task loaderWar(type: War, dependsOn: prepWar) {
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
 
-    archiveName =  "ROOT-loader-$env" + "." + project.version.toString()
+    archiveName =  "ROOT-loader-$env" + "." + project.version.toString() + ".war"
     println "WAR file $archiveName"
     from warDir
     version ""
