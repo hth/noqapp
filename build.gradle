@@ -845,12 +845,14 @@ task prepWar(dependsOn: [
 
 //import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
+    archiveName = "ROOT-$env"
     doFirst {
         exclude('**/noqapp-loader-*.jar')
         if (env == 'sandbox' || env == 'prod') {
-            baseName = "ROOT-$env." + project.version.toString()
+            archiveName = archiveName + "." + project.version.toString()
+            println "WAR file $archiveName"
         } else if (env == 'dev') {
-            baseName = "ROOT-$env"
+            println "WAR file $archiveName"
         } else {
             throw new Exception("Undefined env: $env")
         }
@@ -865,11 +867,13 @@ task war(type: War, dependsOn: prepWar) {
 }
 
 task loaderWar(type: War, dependsOn: prepWar) {
+    archiveName = "ROOT-loader-$env"
     doFirst {
         if (env == 'sandbox' || env == 'prod') {
-            baseName = "ROOT-loader-$env." + project.version.toString()
+            archiveName =  archiveName + "." + project.version.toString()
+            println "WAR file $archiveName"
         } else if (env == 'dev') {
-            baseName = "ROOT-loader-$env"
+            println "WAR file $archiveName"
         } else {
             throw new Exception("Undefined env: $env")
         }
