@@ -634,7 +634,7 @@ task createBuildInfoFile {
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
-        props.setProperty('whoami', "non-loader")
+        props.setProperty('thisis', "non-loader")
 
         props.store(buildInfoFile.newWriter(), null)
     }
@@ -649,7 +649,7 @@ task createLoaderBuildInfoFile {
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
-        props.setProperty('whoami', "loader")
+        props.setProperty('thisis', "loader")
 
         props.store(buildInfoFile.newWriter(), null)
 

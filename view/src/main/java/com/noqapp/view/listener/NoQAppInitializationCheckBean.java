@@ -33,6 +33,7 @@ import edu.stanford.nlp.util.CoreMap;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -153,6 +154,12 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkElasticIndex() {
+        LOG.info("Running on {}", environment.getProperty("thisis"));
+        if (Objects.requireNonNull(environment.getProperty("thisis")).equalsIgnoreCase("loader")) {
+            /* Delete older indices. */
+            elasticAdministrationService.deleteAllPreviousIndices();
+        }
+
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
             boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
@@ -166,12 +173,6 @@ public class NoQAppInitializationCheckBean {
 
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
-        }
-
-        LOG.info("Running on {}", environment.getProperty("whoami"));
-        if (null != environment.getProperty("whoami") && environment.getProperty("whoami").equalsIgnoreCase("loader")) {
-            /* Delete older indices. */
-            elasticAdministrationService.deleteAllPreviousIndices();
         }
     }
 
