@@ -168,8 +168,8 @@ public class NoQAppInitializationCheckBean {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
 
-        LOG.info("whoami={}", environment.getProperty("whoami"));
-        if (environment.getProperty("whoami").equalsIgnoreCase("loader")) {
+        LOG.info("Running on {}", environment.getProperty("whoami"));
+        if (null != environment.getProperty("whoami") && environment.getProperty("whoami").equalsIgnoreCase("loader")) {
             /* Delete older indices. */
             elasticAdministrationService.deleteAllPreviousIndices();
         }
