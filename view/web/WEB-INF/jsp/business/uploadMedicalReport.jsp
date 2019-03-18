@@ -61,7 +61,7 @@
                         <input type="hidden" name="labCategory" value="${medicalReportForm.labCategory}"/>
                         <input type="hidden" name="codeQR" value="${medicalReportForm.codeQR}"/>
                         <div class="admin-title">
-                            <h2>Add Report Image</h2>
+                            <h2>Add Report</h2>
                         </div>
 
                         <spring:hasBindErrors name="medicalReportForm">
@@ -81,7 +81,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3" style="padding-top: 30px;">
-                                            <form:label path="file" cssErrorClass="lb_error">Select Report Image</form:label>
+                                            <form:label path="file" cssErrorClass="lb_error">Select Report</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input class="next-btn" type="file" path="file" id="file"/>
@@ -93,7 +93,7 @@
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
                                     <div class="left-btn">
-                                        <input name="upload" class="next-btn" value="UPLOAD REPORT IMAGE" type="submit">
+                                        <input name="upload" class="next-btn" value="UPLOAD REPORT" type="submit">
                                     </div>
                                     <div class="right-btn">
                                         <input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">
@@ -106,7 +106,7 @@
                     </form:form>
 
                     <div class="admin-title">
-                        <h2>Report Image</h2>
+                        <h2>Report</h2>
                     </div>
                     <div class="admin-content">
                         <div class="add-new">
@@ -116,9 +116,19 @@
                                         <c:forEach items="${medicalReportForm.images}" var="image" varStatus="status">
                                         <li>
                                             <div class="col-fields">
-                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
-                                                        onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
-                                                        class="img-profile-circle" />
+                                                <c:choose>
+                                                    <c:when test="${fn:endsWith(image, 'pdf')}">
+                                                        <a href="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
+                                                            style="margin: 1em auto 40px; padding-left: 300px; color: #FF0000; font-size: 18px;">
+                                                            PDF Report
+                                                        </a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
+                                                                onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                                                                class="img-profile-circle" />
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                             <div class="col-lable3">
                                                 <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete.htm" method="post">
@@ -139,7 +149,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <div class="no-approve">Please upload report image.</div>
+                                        <div class="no-approve">Please upload report.</div>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
