@@ -42,6 +42,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -480,14 +481,26 @@ public class FileService {
         return ImageIO.read(is);
     }
 
+    /* For Images only. */
     public File writeToFile(String filename, BufferedImage bufferedImage) throws IOException {
         File toFile = createTempFile(FilenameUtils.getBaseName(filename), getFileExtension(filename));
         writeToFile(toFile, bufferedImage);
         return toFile;
     }
 
+    /* For Images only. */
     public void writeToFile(File file, BufferedImage bufferedImage) throws IOException {
         ImageIO.write(bufferedImage, PNG_FORMAT, file);
+    }
+
+    public File writeToFile(String filename, InputStream inputStream) throws IOException {
+        File toFile = createTempFile(FilenameUtils.getBaseName(filename), getFileExtension(filename));
+        FileUtils.copyInputStreamToFile(inputStream, toFile);
+        return toFile;
+    }
+
+    public void writeToFile(File file, InputStream inputStream) throws IOException {
+        FileUtils.copyInputStreamToFile(inputStream, file);
     }
 
     /**

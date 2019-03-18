@@ -41,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -209,7 +210,7 @@ public class MedicalFileService {
 
     @Mobile
     @Async
-    public void addLabImage(String transactionId, String filename, BufferedImage bufferedImage, LabCategoryEnum labCategory) {
+    public void addLabImage(String transactionId, String filename, InputStream inputStream, LabCategoryEnum labCategory, String mimeType) {
         LOG.debug("Adding lab image {} {}", transactionId, filename);
         MedicalRadiologyEntity medicalRadiology = null;
         MedicalPathologyEntity medicalPathology = null;
@@ -235,12 +236,21 @@ public class MedicalFileService {
         File toFile = null;
         File tempFile = null;
         try {
-            toFile = fileService.writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            if (mimeType.endsWith("pdf")) {
+                toFile = fileService.writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), inputStream);
+            } else {
+                BufferedImage bufferedImage = fileService.bufferedImage(inputStream);
+                toFile = fileService.writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            }
 
             // /java/temp/directory/filename.extension
             String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
             tempFile = new File(toFileAbsolutePath);
-            fileService.writeToFile(tempFile, ImageIO.read(toFile));
+            if (mimeType.endsWith("pdf")) {
+                fileService.writeToFile(tempFile, new FileInputStream(toFile));
+            } else {
+                fileService.writeToFile(tempFile, ImageIO.read(toFile));
+            }
             ftpService.upload(filename, id, FtpService.MEDICAL);
 
             switch (labCategory) {
@@ -353,11 +363,11 @@ public class MedicalFileService {
 
     /** A lab report can be Image, PDF. */
     public String processLabReport(String transactionId, MultipartFile multipartFile, LabCategoryEnum labCategory) throws IOException {
-        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            InputStream inputStream = multipartFile.getInputStream();
             String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
-            executorService.submit(() -> addLabImage(transactionId, filename, bufferedImage, labCategory));
+            executorService.submit(() -> addLabImage(transactionId, filename, inputStream, labCategory, mimeType));
             return filename;
         } else {
             LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());
