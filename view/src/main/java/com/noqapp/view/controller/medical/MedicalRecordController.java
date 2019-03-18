@@ -76,16 +76,16 @@ public class MedicalRecordController {
 
     @Autowired
     public MedicalRecordController(
-            @Value("${nextPage:/medical/caseHistory}")
-            String nextPage,
+        @Value("${nextPage:/medical/caseHistory}")
+        String nextPage,
 
-            RegisteredDeviceManager registeredDeviceManager,
-            QueueService queueService,
-            TokenQueueService tokenQueueService,
-            AccountService accountService,
-            MedicalRecordService medicalRecordService,
-            UserMedicalProfileService userMedicalProfileService,
-            ApiHealthService apiHealthService
+        RegisteredDeviceManager registeredDeviceManager,
+        QueueService queueService,
+        TokenQueueService tokenQueueService,
+        AccountService accountService,
+        MedicalRecordService medicalRecordService,
+        UserMedicalProfileService userMedicalProfileService,
+        ApiHealthService apiHealthService
     ) {
         this.nextPage = nextPage;
 

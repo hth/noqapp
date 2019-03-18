@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 /**
  * hitender
- * 7/16/18 11:30 AM
+ * 2019-03-18 12:46
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -21,7 +21,7 @@ import java.util.Arrays;
     "PMD.LongVariable"
 })
 @Component
-public class ImageValidator implements Validator {
+public class ImageAndPDFValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ImageValidator.class);
 
     private String[] supportedFormat = new String[]{"image/jpg", "image/jpeg", "image/png"};
@@ -46,14 +46,14 @@ public class ImageValidator implements Validator {
 
             if (!errors.hasErrors()) {
                 String s = file.getContentType().toLowerCase();
-                boolean contains = Arrays.asList(supportedFormat).contains(s);
+                boolean contains = Arrays.asList(supportedPDFFormat).contains(s);
                 if (!contains) {
-                    LOG.error("Supported file formats are JPEG or PNG");
+                    LOG.error("Supported file formats are JPEG or PNG or PDF");
                     errors.rejectValue(
                         "file",
                         "field.fileNotSupported",
-                        new Object[]{"JPEG or PNG"},
-                        "Supported file formats are JPEG or PNG");
+                        new Object[]{"JPEG or PNG or PDF"},
+                        "Supported file formats are JPEG or PNG or PDF");
                 }
 
                 if (file.getSize() > 0) {

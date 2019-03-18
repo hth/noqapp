@@ -21,6 +21,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.business.MedicalReportForm;
+import com.noqapp.view.validator.ImageAndPDFValidator;
 import com.noqapp.view.validator.ImageValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -74,6 +75,7 @@ public class MedicalReportController {
     private MedicalFileService medicalFileService;
     private PurchaseOrderService purchaseOrderService;
     private BusinessUserStoreService businessUserStoreService;
+    private ImageAndPDFValidator imageAndPDFValidator;
     private ImageValidator imageValidator;
     private ApiHealthService apiHealthService;
 
@@ -94,6 +96,7 @@ public class MedicalReportController {
         MedicalFileService medicalFileService,
         PurchaseOrderService purchaseOrderService,
         BusinessUserStoreService businessUserStoreService,
+        ImageAndPDFValidator imageAndPDFValidator,
         ImageValidator imageValidator,
         ApiHealthService apiHealthService
     ) {
@@ -106,6 +109,7 @@ public class MedicalReportController {
         this.medicalFileService = medicalFileService;
         this.purchaseOrderService = purchaseOrderService;
         this.businessUserStoreService = businessUserStoreService;
+        this.imageAndPDFValidator = imageAndPDFValidator;
         this.imageValidator = imageValidator;
         this.apiHealthService = apiHealthService;
     }
@@ -183,7 +187,7 @@ public class MedicalReportController {
         return uploadMedicalReport;
     }
 
-    /** For uploading service image. */
+    /** For uploading service image or pdf. */
     @PostMapping(value = "/upload", params = {"upload"})
     public String upload(
         @ModelAttribute("medicalReportForm")
@@ -212,7 +216,7 @@ public class MedicalReportController {
             if (!files.isEmpty()) {
                 MultipartFile multipartFile = files.iterator().next();
 
-                imageValidator.validate(multipartFile, result);
+                imageAndPDFValidator.validate(multipartFile, result);
                 if (result.hasErrors()) {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
