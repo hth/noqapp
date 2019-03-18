@@ -22,7 +22,6 @@ import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.business.MedicalReportForm;
 import com.noqapp.view.validator.ImageAndPDFValidator;
-import com.noqapp.view.validator.ImageValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -76,7 +75,6 @@ public class MedicalReportController {
     private PurchaseOrderService purchaseOrderService;
     private BusinessUserStoreService businessUserStoreService;
     private ImageAndPDFValidator imageAndPDFValidator;
-    private ImageValidator imageValidator;
     private ApiHealthService apiHealthService;
 
     private MedicalPathologyManager medicalPathologyManager;
@@ -97,7 +95,6 @@ public class MedicalReportController {
         PurchaseOrderService purchaseOrderService,
         BusinessUserStoreService businessUserStoreService,
         ImageAndPDFValidator imageAndPDFValidator,
-        ImageValidator imageValidator,
         ApiHealthService apiHealthService
     ) {
         this.bucketName = bucketName;
@@ -110,7 +107,6 @@ public class MedicalReportController {
         this.purchaseOrderService = purchaseOrderService;
         this.businessUserStoreService = businessUserStoreService;
         this.imageAndPDFValidator = imageAndPDFValidator;
-        this.imageValidator = imageValidator;
         this.apiHealthService = apiHealthService;
     }
 
@@ -225,7 +221,7 @@ public class MedicalReportController {
                 }
 
                 try {
-                    medicalFileService.processLabImage(medicalReportForm.getTransactionId().getText(), multipartFile, medicalReportForm.getLabCategory());
+                    medicalFileService.processLabReport(medicalReportForm.getTransactionId().getText(), multipartFile, medicalReportForm.getLabCategory());
                     return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
                 } catch (Exception e) {
                     LOG.error("Failed medical report upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
