@@ -154,8 +154,8 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkElasticIndex() {
-        LOG.info("Running on {}", environment.getProperty("whoami"));
-        if (Objects.requireNonNull(environment.getProperty("whoami")).equalsIgnoreCase("loader")) {
+        LOG.info("Running on {}", environment.getProperty("thisis"));
+        if (Objects.requireNonNull(environment.getProperty("thisis")).equalsIgnoreCase("loader")) {
             /* Delete older indices. */
             elasticAdministrationService.deleteAllPreviousIndices();
         }
