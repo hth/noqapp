@@ -164,10 +164,14 @@ public class NoQAppInitializationCheckBean {
                 bizStoreElasticService.addAllBizStoreToElastic();
             }
 
-            /* Delete older indices. */
-            elasticAdministrationService.deleteAllPreviousIndices();
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
+        }
+
+        LOG.info("whoami={}", environment.getProperty("whoami"));
+        if (environment.getProperty("whoami").equalsIgnoreCase("loader")) {
+            /* Delete older indices. */
+            elasticAdministrationService.deleteAllPreviousIndices();
         }
     }
 

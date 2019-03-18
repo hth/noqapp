@@ -634,8 +634,29 @@ task createBuildInfoFile {
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
+        props.setProperty('whoami', "non-loader")
 
         props.store(buildInfoFile.newWriter(), null)
+    }
+}
+
+task createLoaderBuildInfoFile {
+    doLast {
+        buildDir.mkdirs()
+        def buildInfoFile = new File("$buildDir/build-info.properties")
+        Properties props = new Properties()
+        props.setProperty('owner', 'NoQueue Inc')
+        props.setProperty('copyright', 'All rights reserved')
+        props.setProperty('build.version', project.version.toString())
+        props.setProperty('build.env', "$env")
+        props.setProperty('whoami', "loader")
+
+        props.store(buildInfoFile.newWriter(), null)
+
+        copy {
+            from "${buildDir}/build-info.properties"
+            into warClassesDir
+        }
     }
 }
 
@@ -844,7 +865,7 @@ task war(type: War, dependsOn: prepWar) {
     destinationDir = file("$buildDir/war/$env")
 }
 
-task loaderWar(type: War, dependsOn: prepWar) {
+task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
     doFirst {
 //        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
