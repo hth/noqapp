@@ -322,7 +322,7 @@ public class PurchaseOrderService {
 
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrderProducts.stream()
-                .filter(a -> a.getProductName().equals(purchaseOrderProduct.getProductName()))
+                .filter(a -> a.getProductName().contentEquals(purchaseOrderProduct.getProductName()))
                 .findFirst()
                 .orElse(null);
 
