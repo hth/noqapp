@@ -7,6 +7,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +58,27 @@ public class PurchaseOrderProductManagerImpl implements PurchaseOrderProductMana
     }
 
     @Override
+    public PurchaseOrderProductEntity findOne(String id) {
+        return mongoTemplate.findOne(
+            query(where("_id").is(new ObjectId(id))),
+            PurchaseOrderProductEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<PurchaseOrderProductEntity> getAllByPurchaseOrderId(String purchaseOrderId) {
         return mongoTemplate.find(
             query(where("PO").is(purchaseOrderId)),
+            PurchaseOrderProductEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<PurchaseOrderProductEntity> getAllByPurchaseOrderIdWhenPriceZero(String purchaseOrderId) {
+        return mongoTemplate.find(
+            query(where("PO").is(purchaseOrderId).and("PP").is(0)),
             PurchaseOrderProductEntity.class,
             TABLE
         );

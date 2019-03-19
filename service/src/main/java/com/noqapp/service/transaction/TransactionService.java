@@ -78,7 +78,7 @@ public class TransactionService {
 
     public void completePurchase(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 purchaseOrderManager.save(purchaseOrder);
                 for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
@@ -121,7 +121,7 @@ public class TransactionService {
 
     public void bulkProductUpdate(List<StoreProductEntity> storeProducts, String bizStoreId, String qid) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 long deletedCount = storeProductManager.removedStoreProduct(bizStoreId);
                 for (StoreProductEntity storeProduct : storeProducts) {
@@ -171,7 +171,7 @@ public class TransactionService {
         }
 
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
@@ -234,10 +234,10 @@ public class TransactionService {
 
     public PurchaseOrderEntity cancelPurchaseInitiatedByMerchant(String qid, String transactionId) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
-                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
+                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA && purchaseOrderBeforeCancel.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                         .setRefundNote("Refund initiated by merchant")
@@ -250,6 +250,8 @@ public class TransactionService {
                     } else {
                         return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
                     }
+                } else {
+                    return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
                 }
             } catch (DuplicateKeyException e) {
                 LOG.error("Reason failed {}", e.getLocalizedMessage(), e);

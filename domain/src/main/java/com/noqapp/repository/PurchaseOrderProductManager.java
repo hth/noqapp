@@ -10,7 +10,11 @@ import java.util.List;
  */
 public interface PurchaseOrderProductManager extends RepositoryManager<PurchaseOrderProductEntity> {
 
+    PurchaseOrderProductEntity findOne(String id);
+
     List<PurchaseOrderProductEntity> getAllByPurchaseOrderId(String purchaseOrderId);
+
+    List<PurchaseOrderProductEntity> getAllByPurchaseOrderIdWhenPriceZero(String purchaseOrderId);
 
     long deleteByCodeQR(String codeQR);
 
