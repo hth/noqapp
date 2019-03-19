@@ -74,6 +74,7 @@ import org.springframework.util.Assert;
 
 import org.junit.jupiter.api.Assertions;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -320,6 +321,7 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(jsonPurchaseOrder.getTransactionId());
         List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderIdWhenPriceZero(purchaseOrder.getId());
 
+        BigDecimal orderPrice = new BigDecimal(purchaseOrder.getOrderPrice());
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrderProducts.stream()
                 .filter(a -> a.getProductName().contentEquals(purchaseOrderProduct.getProductName()))
@@ -332,8 +334,10 @@ public class PurchaseOrderService {
             }
             purchaseOrderProduct.setProductPrice(jsonPurchaseOrderProduct.getProductPrice());
             purchaseOrderProductManager.save(purchaseOrderProduct);
+            orderPrice = orderPrice.add(new BigDecimal(purchaseOrderProduct.getProductPrice()));
         }
-
+        purchaseOrder.setOrderPrice(orderPrice.toString());
+        purchaseOrderManager.save(purchaseOrder);
         return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
     }
 
@@ -491,10 +495,13 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder cashPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
-        LOG.info("Cash payment for transactionId={} partialPayment={} by qid={}",
-            jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getBizStoreId());
+    public JsonPurchaseOrder cashPayment(JsonPurchaseOrder jpo, String qid) {
+        LOG.info("Cash payment for transactionId={} partialPayment={} by qid={}", jpo.getTransactionId(), jpo.getPartialPayment(), qid);
+
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(
+            jpo.getTransactionId(),
+            jpo.getBizStoreId(),
+            "On counter via " + jpo.getPaymentMode().getDescription());
 
         return new JsonPurchaseOrder(purchaseOrder);
     }
