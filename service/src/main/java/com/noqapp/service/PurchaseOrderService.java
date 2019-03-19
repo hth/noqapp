@@ -54,6 +54,7 @@ import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
 import com.noqapp.service.exceptions.PurchaseOrderPartialException;
+import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -308,6 +309,32 @@ public class PurchaseOrderService {
     @Mobile
     public boolean isOrderCancelled(String codeQR, int tokenNumber) {
         return purchaseOrderManager.isOrderCancelled(codeQR, tokenNumber);
+    }
+
+    @Mobile
+    public JsonPurchaseOrder modifyOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
+        Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
+        LOG.info("JsonPurchaseOrder={} did={} tokenService={}", jsonPurchaseOrder, did, tokenService);
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = jsonPurchaseOrder.getJsonPurchaseOrderProducts();
+
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(jsonPurchaseOrder.getTransactionId());
+        List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderIdWhenPriceZero(purchaseOrder.getId());
+
+        for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrderProducts.stream()
+                .filter(a -> a.getProductId().equals(purchaseOrderProduct.getProductId()))
+                .findFirst()
+                .orElse(null);
+
+            if (jsonPurchaseOrderProduct == null) {
+                LOG.error("Not found product {}", purchaseOrderProduct.getId());
+                throw new PurchaseOrderProductNFException("Product Not Found");
+            }
+            purchaseOrderProduct.setProductPrice(jsonPurchaseOrderProduct.getProductPrice());
+            purchaseOrderProductManager.save(purchaseOrderProduct);
+        }
+
+        return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
     }
 
     @Mobile
