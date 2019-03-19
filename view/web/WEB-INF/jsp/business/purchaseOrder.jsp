@@ -68,9 +68,8 @@
                                         <th>&nbsp;</th>
                                         <th nowrap>Name</th>
                                         <th nowrap>Token</th>
-                                        <th nowrap>Cost</th>
-                                        <th>Payment Type</th>
-                                        <th>Order State</th>
+                                        <th>Payment Status</th>
+                                        <th>Order Date</th>
                                         <th>Reports</th>
                                     </tr>
                                     <c:forEach items="${inQueueForm.purchaseOrders}" var="purchaseOrder" varStatus="status">
@@ -78,18 +77,12 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>${purchaseOrder.customerName}</td>
                                         <td nowrap>${purchaseOrder.tokenNumber}</td>
-                                        <td nowrap align="right">${purchaseOrder.orderPrice}</td>
-                                        <td nowrap align="center">
-                                            ${purchaseOrder.paymentMode.description}
-                                        </td>
-                                        <td nowrap align="left">
-                                            ${purchaseOrder.presentOrderState.description}
-                                            <span style="display:block; font-size:13px;">Order Date: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></span>
-                                        </td>
+                                        <td nowrap align="center">${purchaseOrder.paymentStatus.description}</td>
+                                        <td nowrap align="left"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
-                                                <span style="display:block; font-size:13px;"><a
+                                                <span style="display:block;"><a
                                                         href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
                                                         target="_blank">Add Medical Report</a></span>
                                                 </c:when>
