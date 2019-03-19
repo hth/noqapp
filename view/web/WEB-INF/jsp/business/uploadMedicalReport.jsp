@@ -109,49 +109,48 @@
                         <h2>Report</h2>
                     </div>
                     <div class="admin-content">
-                        <div class="add-new">
+                        <div class="store-table">
                             <c:choose>
-                                <c:when test="${!empty medicalReportForm.images}">
-                                    <ul class="list-form">
-                                        <c:forEach items="${medicalReportForm.images}" var="image" varStatus="status">
-                                        <li>
-                                            <div class="col-fields">
-                                                <c:choose>
-                                                    <c:when test="${fn:endsWith(image, 'pdf')}">
-                                                        <a href="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
-                                                            style="margin: 1em auto 40px; padding-left: 300px; color: #FF0000; font-size: 18px;">
-                                                            PDF Report
-                                                        </a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}"
-                                                                onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
-                                                                class="img-profile-circle" />
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                            <div class="col-lable3">
-                                                <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete.htm" method="post">
-                                                    <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
-                                                    <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
-                                                    <input type="hidden" name="filename" value="${image}"/>
-                                                    <input type="hidden" name="labCategory" value="${medicalReportForm.labCategory}"/>
-                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                                    <div class="left-btn">
-                                                        <input name="upload" class="next-btn" value="DELETE" type="submit">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="clearFix"></div>
-                                        </li>
-                                        </c:forEach>
-                                    </ul>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="alert-info">
-                                        <div class="no-approve">Please upload report.</div>
-                                    </div>
-                                </c:otherwise>
+                            <c:when test="${!empty medicalReportForm.images}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <c:forEach items="${medicalReportForm.images}" var="image" varStatus="status">
+                                    <tr>
+                                        <td nowrap>
+                                            <c:choose>
+                                                <c:when test="${fn:endsWith(image, 'pdf')}">
+                                                    <a href="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}">
+                                                        PDF Report
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="https://s3.ap-south-1.amazonaws.com/${bucketName}/medical/${medicalReportForm.recordReferenceId}/${image}">
+                                                        Image of Report
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete.htm" method="post">
+                                                <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
+                                                <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
+                                                <input type="hidden" name="filename" value="${image}"/>
+                                                <input type="hidden" name="labCategory" value="${medicalReportForm.labCategory}"/>
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                                <div class="left-btn">
+                                                    <input name="upload" class="next-btn" value="DELETE" type="submit">
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="alert-info">
+                                    <div class="no-approve">Please upload report. Preferably PDF or JPEG or PNG reports. Max file size less than 5 MB.</div>
+                                </div>
+                                <div class="clearFix"></div>
+                            </c:otherwise>
                             </c:choose>
                         </div>
                     </div>

@@ -210,7 +210,7 @@ public class MedicalFileService {
 
     @Mobile
     @Async
-    public void addLabImage(String transactionId, String filename, InputStream inputStream, LabCategoryEnum labCategory, String mimeType) {
+    public void addReport(String transactionId, String filename, InputStream inputStream, LabCategoryEnum labCategory, String mimeType) {
         LOG.debug("Adding lab image {} {}", transactionId, filename);
         MedicalRadiologyEntity medicalRadiology = null;
         MedicalPathologyEntity medicalPathology = null;
@@ -285,7 +285,7 @@ public class MedicalFileService {
 
     @Mobile
     @Async
-    public void removeLabImage(String qid, String transactionId, String filename, LabCategoryEnum labCategory) {
+    public void removeReport(String qid, String transactionId, String filename, LabCategoryEnum labCategory) {
         LOG.debug("Remove lab image {} {} {}", qid, transactionId, filename);
         MedicalRadiologyEntity medicalRadiology = null;
         MedicalPathologyEntity medicalPathology = null;
@@ -347,6 +347,7 @@ public class MedicalFileService {
         }
     }
 
+    /** This is image take in doctors office. */
     @Mobile
     public String processMedicalImage(String recordReferenceId, MultipartFile multipartFile) throws IOException {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
@@ -367,7 +368,7 @@ public class MedicalFileService {
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
             InputStream inputStream = multipartFile.getInputStream();
             String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
-            executorService.submit(() -> addLabImage(transactionId, filename, inputStream, labCategory, mimeType));
+            executorService.submit(() -> addReport(transactionId, filename, inputStream, labCategory, mimeType));
             return filename;
         } else {
             LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());

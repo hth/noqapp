@@ -248,7 +248,7 @@ public class MedicalReportController {
     }
 
     @PostMapping(value = "/delete")
-    public String deleteImage(
+    public String delete(
         @ModelAttribute("medicalReportForm")
         MedicalReportForm medicalReportForm,
 
@@ -264,7 +264,7 @@ public class MedicalReportController {
         LOG.info("Delete medical lab report for qid={} storeId={} transactionId={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        medicalFileService.removeLabImage(
+        medicalFileService.removeReport(
             queueUser.getQueueUserId(),
             medicalReportForm.getTransactionId().getText(),
             medicalReportForm.getFilename().getText(),
