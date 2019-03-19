@@ -718,6 +718,7 @@ public class PurchaseOrderService {
         }
 
         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+            .setQueueUserId(purchaseOrder.getQueueUserId())
             .setCodeQR(purchaseOrder.getCodeQR())
             .setBizStoreId(purchaseOrder.getBizStoreId())
             .setCustomerPhone(purchaseOrder.getCustomerPhone())
