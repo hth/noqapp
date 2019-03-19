@@ -221,7 +221,7 @@ public class MedicalReportController {
                 }
 
                 try {
-                    medicalFileService.processLabReport(medicalReportForm.getTransactionId().getText(), multipartFile, medicalReportForm.getLabCategory());
+                    medicalFileService.processReport(medicalReportForm.getTransactionId().getText(), multipartFile, medicalReportForm.getLabCategory());
                     return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
                 } catch (Exception e) {
                     LOG.error("Failed medical report upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);

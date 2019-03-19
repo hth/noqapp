@@ -362,8 +362,8 @@ public class MedicalFileService {
         }
     }
 
-    /** A lab report can be Image, PDF. */
-    public String processLabReport(String transactionId, MultipartFile multipartFile, LabCategoryEnum labCategory) throws IOException {
+    /** A report can be Image (JPEG, PNG) or PDF. */
+    public String processReport(String transactionId, MultipartFile multipartFile, LabCategoryEnum labCategory) throws IOException {
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
             InputStream inputStream = multipartFile.getInputStream();
