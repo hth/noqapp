@@ -486,12 +486,13 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId) {
+    public PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId, String transactionMessage) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
             update("PY", PaymentStatusEnum.PA)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
-                .set("PM", PaymentModeEnum.CA),
+                .set("PM", PaymentModeEnum.CA)
+                .set("TM", transactionMessage),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE
