@@ -1,7 +1,7 @@
 ### Change March 20 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
-    ADD COLUMN `TV` VARCHAR(1) NOT NULL AFTER `TM`;   
+    ADD COLUMN `TV` VARCHAR(1) NOT NULL DEFAULT 'U' AFTER `TM`;
 
 ### Change March 11 2019
 
