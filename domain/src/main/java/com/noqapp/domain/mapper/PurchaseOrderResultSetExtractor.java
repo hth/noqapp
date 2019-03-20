@@ -6,6 +6,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,14 +46,15 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int TI = 21;
     private static final int TR = 22;
     private static final int TM = 23;
-    private static final int DN = 24;
-    private static final int AN = 25;
+    private static final int TV = 24;
+    private static final int DN = 25;
+    private static final int AN = 26;
 
-    private static final int V = 26;
-    private static final int U = 27;
-    private static final int C = 28;
-    private static final int A = 29;
-    private static final int D = 30;
+    private static final int V = 27;
+    private static final int U = 28;
+    private static final int C = 29;
+    private static final int A = 30;
+    private static final int D = 31;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -81,6 +83,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setTransactionId(rs.getString(TI));
         purchaseOrder.setTransactionReferenceId(rs.getString(TR));
         purchaseOrder.setTransactionMessage(rs.getString(TM));
+        purchaseOrder.setTransactionVia(TransactionViaEnum.valueOf(rs.getString(TV)));
         purchaseOrder.setDisplayName(rs.getString(DN));
         purchaseOrder.setAdditionalNote(rs.getString(AN));
 
