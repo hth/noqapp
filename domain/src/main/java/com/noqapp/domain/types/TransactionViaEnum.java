@@ -6,7 +6,8 @@ package com.noqapp.domain.types;
  */
 public enum TransactionViaEnum {
     I("I", "Internal"),
-    E("E", "External");
+    E("E", "External"),
+    U("U", "Unknown");
 
     private final String name;
     private final String description;
