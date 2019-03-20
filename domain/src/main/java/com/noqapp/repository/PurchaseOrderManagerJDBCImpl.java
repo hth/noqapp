@@ -35,9 +35,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, DN, AN, V, U, C, A, D)" +
+        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qid,:bs,:bn,:qr,:dm,:pm,:py,:ps,:da,:ra,:rv,:tn,:sd,:pp,:op,:bt,:sn,:sb,:se,:ti,:tr,:tm,:dn,:an,:v,:u,:c,:a,:d)";
+            "(:id,:qid,:bs,:bn,:qr,:dm,:pm,:py,:ps,:da,:ra,:rv,:tn,:sd,:pp,:op,:bt,:sn,:sb,:se,:ti,:tr,:tm,:tv,:dn,:an,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
     private static final String delete_by_id = "DELETE FROM PURCHASE_ORDER WHERE ID = ?";
@@ -110,6 +110,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("ti", purchaseOrder.getTransactionId());
                 namedParameters.addValue("tr", purchaseOrder.getTransactionReferenceId());
                 namedParameters.addValue("tm", purchaseOrder.getTransactionMessage());
+                namedParameters.addValue("tv", purchaseOrder.getTransactionVia().getName());
                 namedParameters.addValue("dn", purchaseOrder.getDisplayName());
                 namedParameters.addValue("an", purchaseOrder.getAdditionalNote());
 

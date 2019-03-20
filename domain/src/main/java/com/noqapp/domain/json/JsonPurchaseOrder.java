@@ -9,6 +9,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -112,10 +113,13 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("tm")
     private String transactionMessage;
 
+    @JsonProperty("tv")
+    private TransactionViaEnum transactionVia;
+
     @JsonProperty("cft")
     private JsonResponseWithCFToken jsonResponseWithCFToken;
 
-    @JsonProperty("cp")
+    @JsonProperty("cz")
     private boolean customized;
 
     public JsonPurchaseOrder() {
@@ -324,6 +328,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public TransactionViaEnum getTransactionVia() {
+        return transactionVia;
+    }
+
+    public JsonPurchaseOrder setTransactionVia(TransactionViaEnum transactionVia) {
+        this.transactionVia = transactionVia;
+        return this;
+    }
+
     public JsonResponseWithCFToken getJsonResponseWithCFToken() {
         return jsonResponseWithCFToken;
     }
@@ -365,7 +378,8 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setCreated(DateFormatUtils.format(po.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
             .setTransactionId(po.getTransactionId())
             .setAdditionalNote(po.getAdditionalNote())
-            .setTransactionMessage(po.getTransactionMessage());
+            .setTransactionMessage(po.getTransactionMessage())
+            .setTransactionVia(po.getTransactionVia());
     }
 
     public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
@@ -396,6 +410,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.transactionId = purchaseOrder.getTransactionId();
         this.additionalNote = purchaseOrder.getAdditionalNote();
         this.transactionMessage = purchaseOrder.getTransactionMessage();
+        this.transactionVia = purchaseOrder.getTransactionVia();
     }
 
     @Override

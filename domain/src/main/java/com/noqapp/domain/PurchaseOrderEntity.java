@@ -6,6 +6,7 @@ import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -142,6 +143,9 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Field("TR")
     private String transactionReferenceId;
+
+    @Field("TV")
+    private TransactionViaEnum transactionVia;
 
     @SuppressWarnings("unused")
     public PurchaseOrderEntity() {
@@ -439,6 +443,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setTransactionReferenceId(String transactionReferenceId) {
         this.transactionReferenceId = transactionReferenceId;
+        return this;
+    }
+
+    public TransactionViaEnum getTransactionVia() {
+        return transactionVia;
+    }
+
+    public PurchaseOrderEntity setTransactionVia(TransactionViaEnum transactionVia) {
+        this.transactionVia = transactionVia;
         return this;
     }
 

@@ -16,6 +16,7 @@ import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
@@ -431,7 +432,8 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 .set("TR", transactionReferenceId)
                 .set("PY", paymentStatus)
                 .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
-                .set("PM", paymentMode),
+                .set("PM", paymentMode)
+                .set("TV", TransactionViaEnum.I),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
@@ -451,7 +453,8 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 .unset("TR")
                 .set("PY", paymentStatus)
                 .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
-                .set("PM", paymentMode),
+                .set("PM", paymentMode)
+                .set("TV", TransactionViaEnum.E),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
@@ -472,13 +475,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId, String bizStoreId) {
+    public PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId).and("PP").exists(false)),
             update("PP", partialPayment)
                 .set("PY", PaymentStatusEnum.MP)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
-                .set("PM", PaymentModeEnum.CA),
+                .set("PM", PaymentModeEnum.CA)
+                .set("TV", TransactionViaEnum.E),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE
@@ -486,13 +490,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId, String transactionMessage) {
+    public PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
             update("PY", PaymentStatusEnum.PA)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
-                .set("PM", PaymentModeEnum.CA)
-                .set("TM", transactionMessage),
+                .set("PM", paymentMode)
+                .set("TM", transactionMessage)
+                .set("TV", TransactionViaEnum.E),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE

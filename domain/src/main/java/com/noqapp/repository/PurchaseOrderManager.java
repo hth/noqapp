@@ -96,6 +96,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PaymentModeEnum paymentMode
     );
 
+    /** When Client says will pay on delivery. */
     PurchaseOrderEntity updateOnCashPayment(
         String transactionId,
         String transactionMessage,
@@ -106,6 +107,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
 
-    PurchaseOrderEntity updateWithPartialCashPayment(String partialPayment, String transactionId, String bizStoreId);
-    PurchaseOrderEntity updateWithCashPayment(String transactionId, String bizStoreId, String transactionMessage);
+    PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId);
+    PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode);
 }

@@ -475,17 +475,20 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder partialPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
+    public JsonPurchaseOrder partialCounterPayment(JsonPurchaseOrder jsonPurchaseOrder, String qid) {
         LOG.info("Partial payment for transactionId={} partialPayment={} by qid={}",
-            jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getPartialPayment(), qid);
+            jsonPurchaseOrder.getTransactionId(),
+            jsonPurchaseOrder.getPartialPayment(),
+            qid);
+
         PurchaseOrderEntity purchaseOrderOriginal = findByTransactionIdAndBizStore(jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getBizStoreId());
 
-        /* When partial amount is equal to full amount, mark it as cash payment. */
+        /* When partial amount is equal to full amount, mark it as counter payment. */
         if (purchaseOrderOriginal.getOrderPrice().equalsIgnoreCase(jsonPurchaseOrder.getPartialPayment())) {
-            return cashPayment(jsonPurchaseOrder, qid);
+            return counterPayment(jsonPurchaseOrder, qid);
         }
 
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCashPayment(
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCounterPayment(
             jsonPurchaseOrder.getPartialPayment(),
             jsonPurchaseOrder.getTransactionId(),
             jsonPurchaseOrder.getBizStoreId()
@@ -495,13 +498,14 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder cashPayment(JsonPurchaseOrder jpo, String qid) {
-        LOG.info("Cash payment for transactionId={} partialPayment={} by qid={}", jpo.getTransactionId(), jpo.getPartialPayment(), qid);
+    public JsonPurchaseOrder counterPayment(JsonPurchaseOrder jpo, String qid) {
+        LOG.info("Counter payment for transactionId={} partialPayment={} by qid={}", jpo.getTransactionId(), jpo.getPartialPayment(), qid);
 
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCashPayment(
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCounterPayment(
             jpo.getTransactionId(),
             jpo.getBizStoreId(),
-            "On counter via " + jpo.getPaymentMode().getDescription());
+            "On counter via " + jpo.getPaymentMode().getDescription(),
+            jpo.getPaymentMode());
 
         return new JsonPurchaseOrder(purchaseOrder);
     }
