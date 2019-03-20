@@ -162,12 +162,13 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         return jdbcTemplate.query(query_by_qid, new Object[]{qid}, new PurchaseOrderRowMapper());
     }
 
+    //TODO add sentiments "ST"
     @Override
     @CustomTransactional
     public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
         try {
             return this.jdbcTemplate.update(
-                "UPDATE PURCHASE_ORDER SET RA = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0",
+                "UPDATE PURCHASE_ORDER SET RA = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA = 0",
                 ratingCount, review, codeQR, did, qid, token) > 0;
         } catch (Exception e) {
             LOG.error("Failed order review update codeQR={} token={} did={} qid={} ratingCount={} review={} reason={}",
