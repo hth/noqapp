@@ -751,7 +751,8 @@ public class PurchaseOrderService {
             .setAdditionalNote(purchaseOrder.getAdditionalNote())
             .setPaymentMode(purchaseOrder.getPaymentMode())
             .setPaymentStatus(purchaseOrder.getPaymentStatus())
-            .setTransactionMessage(purchaseOrder.getTransactionMessage());
+            .setTransactionMessage(purchaseOrder.getTransactionMessage())
+            .setTransactionVia(purchaseOrder.getTransactionVia());
 
         jsonPurchaseOrders.add(jsonPurchaseOrder);
     }
