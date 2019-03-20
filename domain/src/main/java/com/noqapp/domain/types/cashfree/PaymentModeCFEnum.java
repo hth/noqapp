@@ -15,7 +15,7 @@ public enum PaymentModeCFEnum {
     Paytm("Paytm", "Paytm"),
     AmazonPay("AmazonPay", "AmazonPay"),
     AIRTEL_MONEY("AIRTEL_MONEY", "Airtel Money Wallet"),
-    FreeCharge("FreeCharge", "Freecharge Wallet\n"),
+    FreeCharge("FreeCharge", "Freecharge Wallet"),
     MobiKwik("MobiKwik", "MobiKwik Wallet"),
     OLA("OLA", "Ola Wallet"),
     JioMoney("JioMoney", "JioMoney Wallet"),
