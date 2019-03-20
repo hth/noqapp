@@ -17,7 +17,7 @@ public enum PaymentModeEnum {
     PTM("PTM", "Paytm"),
     AMZ("AMZ", "AmazonPay"),
     AIR("AIR", "Airtel Money Wallet"),
-    FCH("FCH", "Freecharge Wallet\n"),
+    FCH("FCH", "Freecharge Wallet"),
     MKK("MKK", "MobiKwik Wallet"),
     OLA("OLA", "Ola Wallet"),
     JIO("JIO", "JioMoney Wallet"),
