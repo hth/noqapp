@@ -4,6 +4,7 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,10 +93,10 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("bs", purchaseOrder.getBizStoreId());
                 namedParameters.addValue("bn", purchaseOrder.getBizNameId());
                 namedParameters.addValue("qr", purchaseOrder.getCodeQR());
-                namedParameters.addValue("dm", purchaseOrder.getDeliveryMode().getName());
-                namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().getName());
-                namedParameters.addValue("py", purchaseOrder.getPaymentStatus().getName());
-                namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().getName());
+                namedParameters.addValue("dm", purchaseOrder.getDeliveryMode().name());
+                namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().name());
+                namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? null : purchaseOrder.getPaymentStatus().name());
+                namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().name());
                 namedParameters.addValue("da", purchaseOrder.getDeliveryAddress());
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());
                 namedParameters.addValue("rv", purchaseOrder.getReview());
@@ -103,14 +104,14 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("sd", purchaseOrder.getStoreDiscount());
                 namedParameters.addValue("pp", purchaseOrder.getPartialPayment());
                 namedParameters.addValue("op", purchaseOrder.getOrderPrice());
-                namedParameters.addValue("bt", purchaseOrder.getBusinessType().getName());
+                namedParameters.addValue("bt", purchaseOrder.getBusinessType().name());
                 namedParameters.addValue("sn", purchaseOrder.getServerName());
                 namedParameters.addValue("sb", purchaseOrder.getServiceBeginTime());
                 namedParameters.addValue("se", purchaseOrder.getServiceEndTime());
                 namedParameters.addValue("ti", purchaseOrder.getTransactionId());
                 namedParameters.addValue("tr", purchaseOrder.getTransactionReferenceId());
                 namedParameters.addValue("tm", purchaseOrder.getTransactionMessage());
-                namedParameters.addValue("tv", purchaseOrder.getTransactionVia().getName());
+                namedParameters.addValue("tv", null == purchaseOrder.getTransactionVia() ? TransactionViaEnum.U.name() : purchaseOrder.getTransactionVia().name());
                 namedParameters.addValue("dn", purchaseOrder.getDisplayName());
                 namedParameters.addValue("an", purchaseOrder.getAdditionalNote());
 
