@@ -6,6 +6,7 @@ package com.noqapp.domain.types;
  */
 public enum PaymentModeEnum {
     CA("CA", "Cash"),
+    CQ("CQ", "Cheque"),
     DC("DC", "Debit Card"),
     CC("CC", "Credit Card"),
     CCE("CCE", "Credit Card EMI"),

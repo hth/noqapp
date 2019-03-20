@@ -264,12 +264,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         try {
             if (StringUtils.isNotBlank(qid)) {
                 return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA <> 0 AND ST = ?",
-                    ratingCount, hoursSaved, review, codeQR, did, qid, token, sentimentType) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ?, ST = ? WHERE QR = ? AND DID = ? AND QID = ? AND TN = ? AND RA = 0",
+                    ratingCount, hoursSaved, review, sentimentType, codeQR, did, qid, token) > 0;
             } else {
                 return this.jdbcTemplate.update(
-                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA <> 0 AND ST = ?",
-                    ratingCount, hoursSaved, review, codeQR, did, token, sentimentType) > 0;
+                    "UPDATE QUEUE SET RA = ?, HR = ?, RV = ?, ST = ? WHERE QR = ? AND DID = ? AND TN = ? AND RA = 0",
+                    ratingCount, hoursSaved, review, sentimentType, codeQR, did, token) > 0;
             }
         } catch (Exception e) {
             LOG.error("Failed review update codeQR={} token={} did={} qid={} ratingCount={} hoursSaved={} review={} reason={}",
