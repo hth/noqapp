@@ -511,7 +511,9 @@ public class MedicalRecordService {
             medicalRadiologyManager.save(medicalRadiology);
             medicalRecordManager.addMedicalRadiologiesId(jsonMedicalRecord.getRecordReferenceId(), medicalRadiology.getId());
 
-            executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList, medicalRadiology.getId()));
+            if (StringUtils.isNotBlank(jsonMedicalRadiologyList.getBizStoreId())) {
+                executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList, medicalRadiology.getId()));
+            }
         }
     }
 
@@ -565,7 +567,9 @@ public class MedicalRecordService {
         medicalPathologyManager.save(medicalPathology);
         medicalRecordManager.addMedicalLaboratoryId(jsonMedicalRecord.getRecordReferenceId(), medicalPathology.getId());
 
-        executorService.submit(() -> createPathologyOrder(jsonMedicalRecord, medicalPathology.getId()));
+        if (StringUtils.isNotBlank(jsonMedicalRecord.getStoreIdPathology())) {
+            executorService.submit(() -> createPathologyOrder(jsonMedicalRecord, medicalPathology.getId()));
+        }
     }
 
     /** Creates order from pathology lab test prescribed. */
@@ -627,7 +631,9 @@ public class MedicalRecordService {
         medicalMedicationManager.save(medicalMedication);
         medicalRecordManager.addMedicalMedicationId(jsonMedicalRecord.getRecordReferenceId(), medicalMedication.getId());
 
-        executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
+        if (StringUtils.isNotBlank(jsonMedicalRecord.getStoreIdPharmacy())) {
+            executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
+        }
     }
 
     /** Creates order from medicine prescribed. */
