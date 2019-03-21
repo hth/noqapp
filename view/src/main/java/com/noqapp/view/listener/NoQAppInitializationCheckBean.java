@@ -170,7 +170,6 @@ public class NoQAppInitializationCheckBean {
                 LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
                 bizStoreElasticService.addAllBizStoreToElastic();
             }
-
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
