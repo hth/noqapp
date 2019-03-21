@@ -382,7 +382,7 @@ public class MedicalRecordService {
             MedicalPathologyEntity medicalPathology = findPathologyById(medicalLaboratoryId);
             if (medicalPathology.getImages() != null && !medicalPathology.getImages().isEmpty()) {
                 LOG.warn("Failed updating as medical pathology contains attachments and images");
-                throw new ExistingLabResultException("Cannot modify lab result exists");
+                throw new ExistingLabResultException("Cannot modify as lab result exists");
             }
         }
 
@@ -392,7 +392,7 @@ public class MedicalRecordService {
                 MedicalRadiologyEntity medicalRadiology = findRadiologyById(medicalRadiologyId);
                 if (medicalRadiology.getImages() != null && !medicalRadiology.getImages().isEmpty()) {
                     LOG.warn("Failed updating as medical radiology contains attachments and images");
-                    throw new ExistingLabResultException("Cannot modify lab result exists");
+                    throw new ExistingLabResultException("Cannot modify as lab result exists");
                 }
             }
         }
