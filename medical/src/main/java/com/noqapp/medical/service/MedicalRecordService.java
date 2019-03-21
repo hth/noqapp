@@ -382,7 +382,7 @@ public class MedicalRecordService {
             MedicalPathologyEntity medicalPathology = findPathologyById(medicalLaboratoryId);
             if (medicalPathology.getImages() != null && !medicalPathology.getImages().isEmpty()) {
                 LOG.warn("Failed updating as medical pathology contains attachments and images");
-                throw new ExistingLabResultException("Cannot modify lab result exists");
+                throw new ExistingLabResultException("Cannot modify as lab result exists");
             }
         }
 
@@ -392,7 +392,7 @@ public class MedicalRecordService {
                 MedicalRadiologyEntity medicalRadiology = findRadiologyById(medicalRadiologyId);
                 if (medicalRadiology.getImages() != null && !medicalRadiology.getImages().isEmpty()) {
                     LOG.warn("Failed updating as medical radiology contains attachments and images");
-                    throw new ExistingLabResultException("Cannot modify lab result exists");
+                    throw new ExistingLabResultException("Cannot modify as lab result exists");
                 }
             }
         }
@@ -512,7 +512,9 @@ public class MedicalRecordService {
             medicalRecordManager.addMedicalRadiologiesId(jsonMedicalRecord.getRecordReferenceId(), medicalRadiology.getId());
 
             if (StringUtils.isNotBlank(jsonMedicalRadiologyList.getBizStoreId())) {
-                executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList, medicalRadiology.getId()));
+                if (bizStoreManager.exists(jsonMedicalRadiologyList.getBizStoreId())) {
+                    executorService.submit(() -> createRadiologyOrder(jsonMedicalRecord, jsonMedicalRadiologyList, medicalRadiology.getId()));
+                }
             }
         }
     }
@@ -568,7 +570,9 @@ public class MedicalRecordService {
         medicalRecordManager.addMedicalLaboratoryId(jsonMedicalRecord.getRecordReferenceId(), medicalPathology.getId());
 
         if (StringUtils.isNotBlank(jsonMedicalRecord.getStoreIdPathology())) {
-            executorService.submit(() -> createPathologyOrder(jsonMedicalRecord, medicalPathology.getId()));
+            if (bizStoreManager.exists(jsonMedicalRecord.getStoreIdPathology())) {
+                executorService.submit(() -> createPathologyOrder(jsonMedicalRecord, medicalPathology.getId()));
+            }
         }
     }
 
@@ -632,7 +636,9 @@ public class MedicalRecordService {
         medicalRecordManager.addMedicalMedicationId(jsonMedicalRecord.getRecordReferenceId(), medicalMedication.getId());
 
         if (StringUtils.isNotBlank(jsonMedicalRecord.getStoreIdPharmacy())) {
-            executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
+            if (bizStoreManager.exists(jsonMedicalRecord.getStoreIdPharmacy())) {
+                executorService.submit(() -> createMedicineOrder(jsonMedicalRecord));
+            }
         }
     }
 

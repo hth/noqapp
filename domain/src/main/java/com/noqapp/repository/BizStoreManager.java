@@ -18,6 +18,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     BizStoreEntity getById(String id);
 
+    boolean exists(String id);
+
     BizStoreEntity noStore();
 
     /** Search for specific Biz, Address or Phone. Limited to 10. */

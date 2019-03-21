@@ -127,8 +127,10 @@ public class NoQAppInitializationCheckBean {
         if (null == firebaseConfig.getFirebaseAuth()) {
             LOG.error("Firebase could not be connected");
             throw new RuntimeException("Firebase could not be connected");
+        } else {
+            throw new RuntimeException("Firebase could not be connected");
         }
-        LOG.info("Firebase connected");
+        //LOG.info("Firebase connected");
     }
 
     @PostConstruct
@@ -170,7 +172,6 @@ public class NoQAppInitializationCheckBean {
                 LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
                 bizStoreElasticService.addAllBizStoreToElastic();
             }
-
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
         }
