@@ -88,6 +88,17 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
+    public boolean exists(String id) {
+        try {
+            Assert.hasText(id, "Id empty for BizStore");
+            return mongoTemplate.exists(query(where("id").is(id)), BizStoreEntity.class);
+        } catch (Exception e) {
+            LOG.error("Failed to find BizStoreId={} reason={}", id, e.getLocalizedMessage(), e);
+            return false;
+        }
+    }
+
+    @Override
     public void deleteHard(BizStoreEntity object) {
         mongoTemplate.remove(object, TABLE);
     }
