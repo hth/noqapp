@@ -127,8 +127,10 @@ public class NoQAppInitializationCheckBean {
         if (null == firebaseConfig.getFirebaseAuth()) {
             LOG.error("Firebase could not be connected");
             throw new RuntimeException("Firebase could not be connected");
+        } else {
+            throw new RuntimeException("Firebase could not be connected");
         }
-        LOG.info("Firebase connected");
+        //LOG.info("Firebase connected");
     }
 
     @PostConstruct
