@@ -62,7 +62,8 @@
             Additional Note or Famous For: ${famousFor}<br/><br/>
         </p>
         <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            Store/Queue: ${onlineOrOffline?then('Online', 'Offline')}<br/>
+            Store/Queue: <b>${onlineOrOffline?then('Online', 'Offline')}</b><br/>
+            When Online, store is visible to everyone. Offline store is not visible.<br/>
             <#if closedForToday??>
                 <strong>Temporary closed for today: ${closedForToday}</strong><br/>
             </#if>
