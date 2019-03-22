@@ -149,7 +149,7 @@ public class JsonQueue extends AbstractDomain {
     //*  Queue Price Setting Starts.  */
     //*********************************/
     @JsonProperty("ep")
-    private boolean enabledPayment = false;
+    private boolean enabledPayment;
 
     @JsonProperty("pp")
     private int productPrice;

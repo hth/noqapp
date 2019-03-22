@@ -101,6 +101,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     /** Need to store references for deleted store. */
     void deleteSoft(String id);
 
+    BizStoreEntity disableServiceCost(String codeQR);
     BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment);
 }
 
