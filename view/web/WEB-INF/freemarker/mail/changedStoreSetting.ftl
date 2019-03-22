@@ -76,15 +76,16 @@
             <#if paymentForService??>
                 <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
                     <b>Payment Settings turned off</b><br/>
-                    Payment settings helps clients/patients see your service charge. Helps you get paid before service is offered.<br/>
+                    Payment settings helps clients/patients see your service charge.<br/>
+                    Helps you get paid before service is offered.<br/>
                     It can be turned on under Queue Settings.</br>
                 </p>
             <#else>
                 <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
                     <strong>${displayName} service charge below:</strong><br/>
-                    Service Payment: ${servicePayment}<br/>
-                    Service Charge: ${productPrice}<br/>
-                    Cancellation Charge: ${cancellationPrice}<br/>
+                    Service Payment: <b>${servicePayment}</b><br/>
+                    Service Charge: <b>${productPrice}</b><br/>
+                    Cancellation Charge: </b>${cancellationPrice}</b><br/>
                 </p>
             </#if>
         </#if>
