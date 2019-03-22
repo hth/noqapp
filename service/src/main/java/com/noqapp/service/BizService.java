@@ -183,9 +183,13 @@ public class BizService {
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
             rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
             if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
-                rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : new BigDecimal(bizStore.getProductPrice()).scaleByPowerOfTen(-2).toString());
-                rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
-                rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
+                if (bizStore.isEnabledPayment()) {
+                    rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : new BigDecimal(bizStore.getProductPrice()).scaleByPowerOfTen(-2).toString());
+                    rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
+                    rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
+                } else {
+                    rootMap.put("paymentForService", "Please enable payment settings to show price for your service.");
+                }
             }
 
             if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
