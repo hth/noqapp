@@ -491,7 +491,9 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithPartialCounterPayment(
             jsonPurchaseOrder.getPartialPayment(),
             jsonPurchaseOrder.getTransactionId(),
-            jsonPurchaseOrder.getBizStoreId()
+            jsonPurchaseOrder.getBizStoreId(),
+            "Counter Partial via " + jsonPurchaseOrder.getPaymentMode().getDescription(),
+            jsonPurchaseOrder.getPaymentMode()
         );
 
         return new JsonPurchaseOrder(purchaseOrder);
@@ -504,7 +506,7 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateWithCounterPayment(
             jpo.getTransactionId(),
             jpo.getBizStoreId(),
-            "On counter via " + jpo.getPaymentMode().getDescription(),
+            "Counter via " + jpo.getPaymentMode().getDescription(),
             jpo.getPaymentMode());
 
         return new JsonPurchaseOrder(purchaseOrder);
