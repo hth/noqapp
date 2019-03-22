@@ -157,6 +157,9 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+    @JsonProperty("EP")
+    private boolean enabledPayment = false;
+
     @JsonProperty("PP")
     private int productPrice;
 
@@ -466,6 +469,15 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public BizStoreElastic setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
+        return this;
+    }
+
     public int getProductPrice() {
         return productPrice;
     }
@@ -563,6 +575,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setRatingCount(bizStore.getReviewCount())
             .setBizNameId(bizStore.getBizName().getId())
             .setDisplayName(bizStore.getDisplayName())
+            .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
             .setCodeQR(bizStore.getCodeQR())
             .setTimeZone(bizStore.getTimeZone())

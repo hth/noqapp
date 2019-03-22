@@ -215,6 +215,9 @@ public class BizStoreEntity extends BaseEntity {
     //*********************************/
     //*  Queue Price Setting Starts.  */
     //*********************************/
+    @Field("EP")
+    private boolean enabledPayment = false;
+
     @Field("PP")
     private int productPrice;
 
@@ -695,6 +698,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public BizStoreEntity setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
         return this;
     }
 
