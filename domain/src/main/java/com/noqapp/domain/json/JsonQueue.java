@@ -148,6 +148,9 @@ public class JsonQueue extends AbstractDomain {
     //*********************************/
     //*  Queue Price Setting Starts.  */
     //*********************************/
+    @JsonProperty("ep")
+    private boolean enabledPayment;
+
     @JsonProperty("pp")
     private int productPrice;
 
@@ -467,6 +470,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public JsonQueue setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
         return this;
     }
 

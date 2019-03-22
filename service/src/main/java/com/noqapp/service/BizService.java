@@ -559,6 +559,11 @@ public class BizService {
     }
 
     @Mobile
+    public BizStoreEntity disableServiceCost(String codeQR) {
+        return bizStoreManager.disableServiceCost(codeQR);
+    }
+
+    @Mobile
     public BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment) {
         return bizStoreManager.updateServiceCost(codeQR, productPrice, cancellationPrice, servicePayment);
     }

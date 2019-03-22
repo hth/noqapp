@@ -98,6 +98,7 @@ public class DomainConversion {
             .setRatingCount(bizStore.getReviewCount())
             .setBizNameId(bizStore.getBizName().getId())
             .setDisplayName(bizStore.getDisplayName())
+            .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
             .setCodeQR(bizStore.getCodeQR())
             .setTimeZone(bizStore.getTimeZone())
