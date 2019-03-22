@@ -475,13 +475,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId) {
+    public PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId).and("PP").exists(false)),
             update("PP", partialPayment)
                 .set("PY", PaymentStatusEnum.MP)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
-                .set("PM", PaymentModeEnum.CA)
+                .set("PM", paymentMode)
+                .set("TM", transactionMessage)
                 .set("TV", TransactionViaEnum.E),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
