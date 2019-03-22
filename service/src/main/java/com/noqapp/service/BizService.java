@@ -188,7 +188,7 @@ public class BizService {
                     rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
                     rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
                 } else {
-                    rootMap.put("paymentForService", "Please enable payment settings to show price for your service.");
+                    rootMap.put("paymentForService", "OFF");
                 }
             }
 
