@@ -2,6 +2,15 @@
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
     ADD COLUMN `TV` CHAR(1) NOT NULL DEFAULT 'U' AFTER `TM`;
+    
+    ALTER TABLE `noqapp_test`.`QUEUE`
+    MODIFY BT CHAR(2) NOT NULL;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY BT CHAR(2) NOT NULL;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT`
+    MODIFY BT CHAR(2) NOT NULL;
 
 ### Change March 11 2019
 
