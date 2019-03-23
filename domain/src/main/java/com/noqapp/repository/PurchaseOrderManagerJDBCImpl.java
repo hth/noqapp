@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
@@ -44,18 +45,18 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String delete_by_id = "DELETE FROM PURCHASE_ORDER WHERE ID = ?";
 
     private static final String query_by_qid =
-        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? " +
             "ORDER BY C DESC";
 
     private static final String query_by_qid_and_transactionId =
-        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND TI = ? ";
 
     private static final String query_by_qid_where_ps =
-        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND PS = ?" +
             "ORDER BY C DESC";
@@ -95,7 +96,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("qr", purchaseOrder.getCodeQR());
                 namedParameters.addValue("dm", purchaseOrder.getDeliveryMode().name());
                 namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().name());
-                namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? null : purchaseOrder.getPaymentStatus().name());
+                namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? PaymentStatusEnum.PP : purchaseOrder.getPaymentStatus().name());
                 namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().name());
                 namedParameters.addValue("da", purchaseOrder.getDeliveryAddress());
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());
@@ -111,7 +112,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("ti", purchaseOrder.getTransactionId());
                 namedParameters.addValue("tr", purchaseOrder.getTransactionReferenceId());
                 namedParameters.addValue("tm", purchaseOrder.getTransactionMessage());
-                namedParameters.addValue("tv", null == purchaseOrder.getTransactionVia() ? TransactionViaEnum.U.name() : purchaseOrder.getTransactionVia().name());
+                namedParameters.addValue("tv", null == purchaseOrder.getTransactionVia() ? TransactionViaEnum.U : purchaseOrder.getTransactionVia().name());
                 namedParameters.addValue("dn", purchaseOrder.getDisplayName());
                 namedParameters.addValue("an", purchaseOrder.getAdditionalNote());
 

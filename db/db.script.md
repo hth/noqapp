@@ -70,7 +70,7 @@ as a value, then it gets endless connections.
         TI VARCHAR(100)     NOT NULL,
         TR VARCHAR(100),
         TM VARCHAR(100),
-        TV VARCHAR(1)       NOT NULL DEFAULTS(U),
+        TV CHAR(1)          NOT NULL DEFAULT 'U',
         DN VARCHAR(100)     NOT NULL,
         AN VARCHAR(64),
         V INT(11),
