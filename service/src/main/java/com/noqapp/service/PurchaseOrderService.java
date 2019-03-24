@@ -50,6 +50,7 @@ import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
@@ -458,10 +459,13 @@ public class PurchaseOrderService {
 
             populateWithCFToken(jsonPurchaseOrder, purchaseOrder);
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
+        } catch (FailedTransactionException e) {
+            LOG.error("Failed transaction on creating order reason={}", e.getLocalizedMessage(), e);
+            purchaseOrder.addOrderState(PurchaseOrderStateEnum.FO);
+            purchaseOrderManager.save(purchaseOrder);
+            throw new PurchaseOrderFailException("Failed creating order");
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
-            purchaseOrder.addOrderState(PurchaseOrderStateEnum.CO);
-            purchaseOrderManager.save(purchaseOrder);
             throw new PurchaseOrderFailException("Failed creating order");
         }
     }
