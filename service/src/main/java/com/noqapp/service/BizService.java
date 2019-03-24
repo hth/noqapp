@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
@@ -40,7 +41,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,8 +184,8 @@ public class BizService {
             rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
             if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
                 if (bizStore.isEnabledPayment()) {
-                    rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : new BigDecimal(bizStore.getProductPrice()).scaleByPowerOfTen(-2).toString());
-                    rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : new BigDecimal(bizStore.getCancellationPrice()).scaleByPowerOfTen(-2).toString());
+                    rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getProductPrice()));
+                    rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getCancellationPrice()));
                     rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
                 } else {
                     rootMap.put("paymentForService", "OFF");
