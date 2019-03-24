@@ -461,7 +461,7 @@ public class PurchaseOrderService {
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (FailedTransactionException e) {
             LOG.error("Failed transaction on creating order reason={}", e.getLocalizedMessage(), e);
-            purchaseOrder.addOrderState(PurchaseOrderStateEnum.CO);
+            purchaseOrder.addOrderState(PurchaseOrderStateEnum.FO);
             purchaseOrderManager.save(purchaseOrder);
             throw new PurchaseOrderFailException("Failed creating order");
         } catch (Exception e) {
