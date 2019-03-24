@@ -422,8 +422,10 @@ public class PurchaseOrderService {
         }
         JsonToken jsonToken;
         try {
-            transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
             jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+            /* Transaction Id is required key and is indexed set to unique. Without this, session and transaction fails. */
+            purchaseOrder.setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
+            transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
             Date expectedServiceBegin = null;
             try {
                 if (null != jsonToken.getExpectedServiceBegin()) {
@@ -442,8 +444,7 @@ public class PurchaseOrderService {
             purchaseOrder
                 .addOrderState(PurchaseOrderStateEnum.VB)
                 .setTokenNumber(jsonToken.getToken())
-                .setExpectedServiceBegin(expectedServiceBegin)
-                .setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
+                .setExpectedServiceBegin(expectedServiceBegin);
             purchaseOrderManager.save(purchaseOrder);
             executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
             userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
