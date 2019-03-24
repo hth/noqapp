@@ -1,4 +1,8 @@
 ##Mongo Helpful Queries
+Reset Queue
+
+    db.TOKEN_QUEUE.update({},  { $set : {"LN" : NumberInt(0)}}, false, true);
+    db.TOKEN_QUEUE.update({},  { $set : {"CS" : NumberInt(0)}}, false, true);
 
 Beginning with 91 or 1
 
