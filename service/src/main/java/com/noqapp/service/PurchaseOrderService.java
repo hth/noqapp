@@ -423,7 +423,7 @@ public class PurchaseOrderService {
         JsonToken jsonToken;
         try {
             jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
-            /* Transaction Id is required key and is indexed. Without this session and transaction fails. */
+            /* Transaction Id is required key and is indexed set to unique. Without this, session and transaction fails. */
             purchaseOrder.setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
             transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
             Date expectedServiceBegin = null;
