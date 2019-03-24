@@ -421,8 +421,8 @@ public class PurchaseOrderService {
         }
         JsonToken jsonToken;
         try {
-            jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
             transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
+            jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
             Date expectedServiceBegin = null;
             try {
                 if (null != jsonToken.getExpectedServiceBegin()) {
@@ -459,7 +459,9 @@ public class PurchaseOrderService {
             populateWithCFToken(jsonPurchaseOrder, purchaseOrder);
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (Exception e) {
-            LOG.error("Failed creating order reason={}", e.getLocalizedMessage());
+            LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
+            purchaseOrder.addOrderState(PurchaseOrderStateEnum.CO);
+            purchaseOrderManager.save(purchaseOrder);
             throw new PurchaseOrderFailException("Failed creating order");
         }
     }

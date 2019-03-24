@@ -163,4 +163,21 @@ public class PurchaseOrderProductEntity extends BaseEntity {
     public int computeCost() {
         return productQuantity * (productPrice - productDiscount);
     }
+
+    @Override
+    public String toString() {
+        return "PurchaseOrderProductEntity{" +
+            "productId='" + productId + '\'' +
+            ", productName='" + productName + '\'' +
+            ", productPrice=" + productPrice +
+            ", productDiscount=" + productDiscount +
+            ", productQuantity=" + productQuantity +
+            ", purchaseOrderId='" + purchaseOrderId + '\'' +
+            ", queueUserId='" + queueUserId + '\'' +
+            ", bizStoreId='" + bizStoreId + '\'' +
+            ", bizNameId='" + bizNameId + '\'' +
+            ", codeQR='" + codeQR + '\'' +
+            ", businessType=" + businessType +
+            '}';
+    }
 }

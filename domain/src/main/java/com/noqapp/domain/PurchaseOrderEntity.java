@@ -477,9 +477,11 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", deliveryAddress='" + deliveryAddress + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
             ", storeDiscount=" + storeDiscount +
+            ", partialPayment='" + partialPayment + '\'' +
             ", orderPrice='" + orderPrice + '\'' +
             ", deliveryMode=" + deliveryMode +
             ", paymentMode=" + paymentMode +
+            ", paymentStatus=" + paymentStatus +
             ", presentOrderState=" + presentOrderState +
             ", notifiedOnService=" + notifiedOnService +
             ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
@@ -497,6 +499,10 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", clientVisitedThisStore=" + clientVisitedThisStore +
             ", transactionId='" + transactionId + '\'' +
             ", displayName='" + displayName + '\'' +
+            ", additionalNote='" + additionalNote + '\'' +
+            ", transactionMessage='" + transactionMessage + '\'' +
+            ", transactionReferenceId='" + transactionReferenceId + '\'' +
+            ", transactionVia=" + transactionVia +
             '}';
     }
 }
