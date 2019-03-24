@@ -108,10 +108,10 @@ public class TransactionService {
             }
             session.commitTransaction();
         } catch (DuplicateKeyException e) {
-            LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+            LOG.error("Failed complete purchase reason={}", e.getLocalizedMessage(), e);
             throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
         } catch (Exception e) {
-            LOG.error("Failed transaction bizStoreId={} qid={}", purchaseOrder.getBizStoreId(), purchaseOrder.getQueueUserId());
+            LOG.error("Failed to complete purchase bizStoreId={} qid={}", purchaseOrder.getBizStoreId(), purchaseOrder.getQueueUserId(), e);
             session.abortTransaction();
             throw new FailedTransactionException("Failed to complete transaction");
         } finally {
@@ -152,10 +152,10 @@ public class TransactionService {
             session.commitTransaction();
             LOG.info("Store product removed={} added={} bizStoreId={} qid={}", deleteResult.getDeletedCount(), storeProducts.size(), bizStoreId, qid);
         } catch (DuplicateKeyException e) {
-            LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
+            LOG.error("Failed bulkProduct reason={}", e.getLocalizedMessage(), e);
             throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
         } catch (Exception e) {
-            LOG.error("Failed transaction bizStoreId={} qid={}", bizStoreId, qid);
+            LOG.error("Failed bulkProduct bizStoreId={} qid={}", bizStoreId, qid, e);
             session.abortTransaction();
             throw new FailedTransactionException("Failed to complete transaction");
         } finally {
@@ -224,7 +224,7 @@ public class TransactionService {
             LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
             return purchaseOrder;
         } catch (Exception e) {
-            LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid);
+            LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid, e);
             session.abortTransaction();
             throw new FailedTransactionException("Failed to complete transaction");
         } finally {
@@ -289,7 +289,7 @@ public class TransactionService {
             LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
             return purchaseOrder;
         } catch (Exception e) {
-            LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid);
+            LOG.error("Failed transaction to cancel placed order transactionId={} qid={}", transactionId, qid, e);
             session.abortTransaction();
             throw new FailedTransactionException("Failed to complete transaction");
         } finally {

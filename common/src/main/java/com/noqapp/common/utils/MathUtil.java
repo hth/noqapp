@@ -21,4 +21,12 @@ public class MathUtil {
     public static float roundFloat(float f) {
         return roundFloat(f, 2);
     }
+
+    public static String displayPrice(String number) {
+        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+    }
+
+    public static String displayPrice(int number) {
+        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+    }
 }
