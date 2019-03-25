@@ -96,7 +96,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("qr", purchaseOrder.getCodeQR());
                 namedParameters.addValue("dm", purchaseOrder.getDeliveryMode().name());
                 namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().name());
-                namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? PaymentStatusEnum.PP : purchaseOrder.getPaymentStatus().name());
+                namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? PaymentStatusEnum.PP.name() : purchaseOrder.getPaymentStatus().name());
                 namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().name());
                 namedParameters.addValue("da", purchaseOrder.getDeliveryAddress());
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());
@@ -112,7 +112,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("ti", purchaseOrder.getTransactionId());
                 namedParameters.addValue("tr", purchaseOrder.getTransactionReferenceId());
                 namedParameters.addValue("tm", purchaseOrder.getTransactionMessage());
-                namedParameters.addValue("tv", null == purchaseOrder.getTransactionVia() ? TransactionViaEnum.U : purchaseOrder.getTransactionVia().name());
+                namedParameters.addValue("tv", null == purchaseOrder.getTransactionVia() ? TransactionViaEnum.U.name() : purchaseOrder.getTransactionVia().name());
                 namedParameters.addValue("dn", purchaseOrder.getDisplayName());
                 namedParameters.addValue("an", purchaseOrder.getAdditionalNote());
 
