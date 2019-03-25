@@ -247,6 +247,86 @@ public class TokenQueueService {
         }
     }
 
+    @Mobile
+    public JsonToken getPaidNextToken(
+        String codeQR,
+        String did,
+        String qid,
+        String guardianQid,
+        long averageServiceTime,
+        TokenServiceEnum tokenService
+    ) {
+        try {
+            QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
+
+            /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
+            if (null == queue) {
+                /*
+                 * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
+                 * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+                 */
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+                ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+                DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
+                StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+
+                if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
+                    LOG.warn("When queue closed or prevent joining, attempting to create new token");
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.C)
+                        .setExpectedServiceBegin(new Date());
+                }
+
+                Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
+                TokenQueueEntity tokenQueue = getNextToken(codeQR);
+                LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
+
+                doActionBasedOnQueueStatus(codeQR, tokenQueue);
+
+                try {
+                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
+                    if (StringUtils.isNotBlank(guardianQid)) {
+                        /* Set this field when client is really a guardian and has at least one dependent in profile. */
+                        queue.setGuardianQid(guardianQid);
+                    }
+                    Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                    queue.setExpectedServiceBegin(expectedServiceBegin);
+                    queueManager.insert(queue);
+                    updateQueueWithUserDetail(codeQR, qid, queue);
+                } catch (DuplicateKeyException e) {
+                    LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+                    return new JsonToken(codeQR, tokenQueue.getBusinessType());
+                }
+
+                return new JsonToken(codeQR, tokenQueue.getBusinessType())
+                    .setToken(queue.getTokenNumber())
+                    .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayName(tokenQueue.getDisplayName())
+                    .setQueueStatus(tokenQueue.getQueueStatus())
+                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            }
+
+            TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
+            LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
+                queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
+
+            doActionBasedOnQueueStatus(codeQR, tokenQueue);
+
+            return new JsonToken(codeQR, tokenQueue.getBusinessType())
+                .setToken(queue.getTokenNumber())
+                .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayName(tokenQueue.getDisplayName())
+                .setQueueStatus(tokenQueue.getQueueStatus())
+                .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+        } catch (Exception e) {
+            LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed getting token");
+        }
+    }
+
     Date computeExpectedServiceBeginTime(
         long averageServiceTime,
         ZoneId zoneId,
