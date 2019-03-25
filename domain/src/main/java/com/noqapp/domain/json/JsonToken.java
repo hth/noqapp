@@ -70,6 +70,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
+    @JsonProperty("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
+
     /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
 
@@ -169,6 +172,15 @@ public class JsonToken extends AbstractDomain {
         if (null != expectedServiceBegin) {
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
         }
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 
