@@ -201,14 +201,13 @@ public class MasterLabController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Downloading master med lab data as CSV tar qid={} healthCareService={}", queueUser.getQueueUserId());
 
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
-        try {
+        try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             FileObject fileObject = masterLabService.getMasterTarGZ(manager);
             if (fileObject != null && fileObject.getContent() != null) {
                 response.setHeader("Content-disposition", "attachment; filename=\"" + com.noqapp.common.utils.FileUtil.getFileName(fileObject) + "\"");
                 response.setContentType("application/gzip");
-                response.setContentLength((int)fileObject.getContent().getSize());
+                response.setContentLength((int) fileObject.getContent().getSize());
                 try (OutputStream out = response.getOutputStream()) {
                     out.write(FileUtil.getContent(fileObject));
                 } catch (IOException e) {
@@ -229,7 +228,6 @@ public class MasterLabController {
             LOG.error("Failed getting lab qid={} message={}", queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
             methodStatusSuccess = false;
         } finally {
-            manager.close();
             apiHealthService.insert(
                 "/api/m/h/lab/file",
                 "file",
