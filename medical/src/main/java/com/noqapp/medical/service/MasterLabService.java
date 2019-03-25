@@ -17,7 +17,9 @@ import com.noqapp.service.exceptions.CSVProcessingException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
+import org.apache.commons.vfs2.impl.StandardFileSystemManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,33 +80,71 @@ public class MasterLabService {
 
     /** Create tar file of products for preferred business with store id. */
     public void createMasterFiles() throws IOException {
-        List<MasterLabEntity> storeProducts = findAll();
+        File csv = null;
+        File tar = null;
 
-        if (!ftpService.existFolder(MASTER_MEDICAL)) {
-            boolean status = ftpService.createFolder(MASTER_MEDICAL);
-            LOG.debug("Folder master created successfully={}", status);
+        try {
+            List<MasterLabEntity> storeProducts = findAll();
+
+            if (!ftpService.existFolder(MASTER_MEDICAL)) {
+                boolean status = ftpService.createFolder(MASTER_MEDICAL);
+                LOG.debug("Folder master created successfully={}", status);
+            }
+
+            csv = FileUtil.createTempFile("lab", "csv");
+            csv.deleteOnExit();
+            Path pathOfCSV = Paths.get(csv.toURI());
+            List<String> strings = new ArrayList<>();
+            for (MasterLabEntity storeProduct : storeProducts) {
+                strings.add(storeProduct.toCommaSeparatedString());
+            }
+            Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
+
+            String fileName = "lab" + "_" + DateUtil.dateToString(new Date());
+            tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
+            tar.deleteOnExit();
+            fileService.createTarGZ(pathOfCSV.toFile(), tar, fileName);
+
+            BigDecimal existingFileSize = new BigDecimal(getExistingFileSize());
+            BigDecimal changePercentage = new BigDecimal(tar.length(), MathContext.DECIMAL64)
+                .subtract(existingFileSize, MathContext.DECIMAL64)
+                .divide(existingFileSize, MathContext.DECIMAL64)
+                .multiply(new BigDecimal(100, MathContext.DECIMAL64));
+
+            /* Delta allowed for deletion of data. */
+            float deltaAllowed = -3.0f;
+            LOG.info("Existing fileSize={} new fileSize={} changePercentage={}% deltaAllowed={}%", existingFileSize, tar.length(), changePercentage, deltaAllowed);
+            if (changePercentage.floatValue() < deltaAllowed || existingFileSize.floatValue() < 0.f) {
+                LOG.warn("File size. Skipping rest of the process. Not deleting existing file.");
+            } else {
+                /* Clean up existing file before uploading. */
+                ftpService.deleteAllFilesInDirectory(MASTER_MEDICAL);
+                ftpService.upload(tar.getName(), null, MASTER_MEDICAL);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to create master health care file, reason={}", e.getLocalizedMessage(), e);
+            throw e;
+        } finally {
+            /* Delete temp file no matter what. */
+            if (tar != null) {
+                tar.delete();
+            }
+
+            if (csv != null) {
+                csv.delete();
+            }
         }
+    }
 
-        File csv = FileUtil.createTempFile("lab", "csv");
-        csv.deleteOnExit();
-        Path pathOfCSV = Paths.get(csv.toURI());
-        List<String> strings = new ArrayList<>();
-        for (MasterLabEntity storeProduct : storeProducts) {
-            strings.add(storeProduct.toCommaSeparatedString());
+    private long getExistingFileSize() {
+        try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
+            manager.init();
+            FileObject fileObject = getMasterTarGZ(manager);
+            return fileObject.getContent().getSize();
+        } catch (FileSystemException e) {
+            LOG.error("Failed to get directory={} reason={}", FtpService.MASTER_MEDICAL, e.getLocalizedMessage(), e);
+            return -1;
         }
-        Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
-
-        String fileName = "lab" + "_" + DateUtil.dateToString(new Date());
-        File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
-        tar.deleteOnExit();
-        fileService.createTarGZ(pathOfCSV.toFile(), tar,  fileName);
-
-        /* Clean up existing file before uploading. */
-        ftpService.deleteAllFilesInDirectory(MASTER_MEDICAL);
-        ftpService.upload(tar.getName(), null, MASTER_MEDICAL);
-
-        tar.delete();
-        csv.delete();
     }
 
     /** Create zip file of preferred business product list. */
@@ -142,7 +184,7 @@ public class MasterLabService {
         } catch (CSVProcessingException e) {
             LOG.warn("Failed processing CSV file healthCareService={} reason={}", healthCareService, e.getLocalizedMessage());
             throw e;
-        } catch(FailedTransactionException e) {
+        } catch (FailedTransactionException e) {
             LOG.warn("Failed transaction healthCareService={} reason={}", healthCareService, e.getLocalizedMessage());
             throw e;
         } catch (IOException e) {
