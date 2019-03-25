@@ -77,7 +77,7 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
                 namedParameters.addValue("bs", purchaseOrderProduct.getBizStoreId());
                 namedParameters.addValue("bn", purchaseOrderProduct.getBizNameId());
                 namedParameters.addValue("qr", purchaseOrderProduct.getCodeQR());
-                namedParameters.addValue("bt", purchaseOrderProduct.getBusinessType().getName());
+                namedParameters.addValue("bt", purchaseOrderProduct.getBusinessType().name());
 
                 namedParameters.addValue("v", purchaseOrderProduct.getVersion());
                 namedParameters.addValue("u", purchaseOrderProduct.getUpdated());
