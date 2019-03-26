@@ -24,6 +24,7 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
@@ -281,10 +282,9 @@ public class TokenQueueService {
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
-                TokenQueueEntity tokenQueue = getNextToken(codeQR);
+                TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
+                tokenQueue.setLastNumber(Integer.parseInt(qid));
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
-
-                doActionBasedOnQueueStatus(codeQR, tokenQueue);
 
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
@@ -292,8 +292,7 @@ public class TokenQueueService {
                         /* Set this field when client is really a guardian and has at least one dependent in profile. */
                         queue.setGuardianQid(guardianQid);
                     }
-                    Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    queue.setExpectedServiceBegin(expectedServiceBegin);
+                    queue.setQueueUserState(QueueUserStateEnum.I);
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -327,6 +326,35 @@ public class TokenQueueService {
         }
     }
 
+    /** Update QueueEntity when payment is performed. */
+    @Mobile
+    public JsonToken updateJsonToken(String codeQR, String transactionId) {
+        TokenQueueEntity tokenQueue = getNextToken(codeQR);
+        doActionBasedOnQueueStatus(codeQR, tokenQueue);
+        QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);
+
+        /*
+         * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
+         * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+         */
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+        DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+        Date expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
+        queue
+            .setExpectedServiceBegin(expectedServiceBegin)
+            .setQueueUserState(QueueUserStateEnum.Q);
+        queueManager.save(queue);
+
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            .setToken(queue.getTokenNumber())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setQueueStatus(tokenQueue.getQueueStatus())
+            .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+    }
+
     Date computeExpectedServiceBeginTime(
         long averageServiceTime,
         ZoneId zoneId,
@@ -347,25 +375,25 @@ public class TokenQueueService {
 
             if (duration.isNegative()) {
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(storeHour.getDelayedInMinutes()));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(storeHour.getDelayedInMinutes()));
             } else {
                 LOG.info("Now {}", LocalDateTime.now());
                 LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
                 LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
                 LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
                 LOG.info("convertToDateTime {}", DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(duration.toMinutes())
-                                .plusMinutes(storeHour.getDelayedInMinutes())));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(duration.toMinutes())
+                        .plusMinutes(storeHour.getDelayedInMinutes())));
 
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(duration.toMinutes())
-                                .plusMinutes(storeHour.getDelayedInMinutes()));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(duration.toMinutes())
+                        .plusMinutes(storeHour.getDelayedInMinutes()));
             }
         }
         return expectedServiceBegin;

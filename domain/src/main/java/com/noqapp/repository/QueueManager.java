@@ -26,6 +26,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findAllQueuedOne(String codeQR, String did, String qid);
 
     QueueEntity findOne(String codeQR, int tokenNumber);
+    QueueEntity findByTransactionId(String codeQR, String transactionId);
+    void deleteReferenceToTransactionId(String codeQR, String transactionId);
 
     boolean doesExistsByQid(String codeQR, int tokenNumber, String qid);
 
@@ -145,4 +147,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findLevelUpReviews(String bizNameId);
 
     QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId);
+
+    void updateWithTransactionId(String codeQR, String qid, String transactionId);
 }

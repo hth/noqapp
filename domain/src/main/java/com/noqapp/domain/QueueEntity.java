@@ -128,6 +128,9 @@ public class QueueEntity extends BaseEntity {
     @Field("ST")
     private SentimentTypeEnum sentimentType;
 
+    @Field ("TI")
+    private String transactionId;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -383,6 +386,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setSentimentType(SentimentTypeEnum sentimentType) {
         this.sentimentType = sentimentType;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public QueueEntity setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 

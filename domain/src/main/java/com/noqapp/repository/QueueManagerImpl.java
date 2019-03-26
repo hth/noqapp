@@ -140,6 +140,24 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public QueueEntity findByTransactionId(String codeQR, String transactionId) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR).and("TI").is(transactionId)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void deleteReferenceToTransactionId(String codeQR, String transactionId) {
+        mongoTemplate.remove(
+            query(where("QR").is(codeQR).and("TI").is(transactionId)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public boolean doesExistsByQid(String codeQR, int tokenNumber, String qid) {
         return mongoTemplate.exists(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QID").is(qid)),
@@ -587,6 +605,16 @@ public class QueueManagerImpl implements QueueManager {
     public QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId) {
         return mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("RR").is(recordReferenceId)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updateWithTransactionId(String codeQR, String qid, String transactionId) {
+        mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR).and("QID").is(qid).and("TI").exists(false)),
+            entityUpdate(update("TI", transactionId)),
             QueueEntity.class,
             TABLE
         );
