@@ -343,17 +343,18 @@ public class TokenQueueService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
         Date expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
-        queue
-            .setExpectedServiceBegin(expectedServiceBegin)
-            .setQueueUserState(QueueUserStateEnum.Q);
-        queueManager.save(queue);
+        boolean updatedState = queueManager.onPaymentChangeToQueue(
+            queue.getId(),
+            tokenQueue.getLastNumber(),
+            expectedServiceBegin);
 
+        LOG.info("Queue state updated successfully={}", updatedState);
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
-            .setToken(queue.getTokenNumber())
+            .setToken(tokenQueue.getLastNumber())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            .setExpectedServiceBegin(expectedServiceBegin);
     }
 
     Date computeExpectedServiceBeginTime(
