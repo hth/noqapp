@@ -375,25 +375,25 @@ public class TokenQueueService {
 
             if (duration.isNegative()) {
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(storeHour.getDelayedInMinutes()));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(storeHour.getDelayedInMinutes()));
             } else {
                 LOG.info("Now {}", LocalDateTime.now());
                 LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
                 LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
                 LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
                 LOG.info("convertToDateTime {}", DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(duration.toMinutes())
-                                .plusMinutes(storeHour.getDelayedInMinutes())));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(duration.toMinutes())
+                        .plusMinutes(storeHour.getDelayedInMinutes())));
 
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                        LocalDateTime.now()
-                                .plusMinutes(serviceInMinutes)
-                                .plusMinutes(duration.toMinutes())
-                                .plusMinutes(storeHour.getDelayedInMinutes()));
+                    LocalDateTime.now()
+                        .plusMinutes(serviceInMinutes)
+                        .plusMinutes(duration.toMinutes())
+                        .plusMinutes(storeHour.getDelayedInMinutes()));
             }
         }
         return expectedServiceBegin;
