@@ -269,6 +269,7 @@ public class QueueEntity extends BaseEntity {
 
     public Date getServiceEndTime() {
         switch (queueUserState) {
+            case I:
             case Q:
                 LOG.info("QueueUserStateEnum={} create date={}", queueUserState, getCreated());
                 return getCreated();
