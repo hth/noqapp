@@ -6,6 +6,7 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +65,9 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
      */
     @Mobile
     QueueEntity getNext(String codeQR, String goTo, String sid);
+
+    @Mobile
+    boolean onPaymentChangeToQueue(String id, int tokenNumber, Date expectedServiceBegin);
 
     /**
      * Gets a specific token as next. Used when serving NOT in sequence.
