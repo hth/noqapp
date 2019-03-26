@@ -19,6 +19,7 @@ public class Constants {
     public static final Charset CHAR_SET_UTF8 = Charset.forName("UTF-8");
     public static final Pattern WORD_PATTERN = Pattern.compile("^[A-Za-z .-]+");
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";
+    public static final int PRIME_73 = 73;
 
     private Constants() {
     }

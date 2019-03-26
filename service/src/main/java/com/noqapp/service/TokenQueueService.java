@@ -4,6 +4,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -283,7 +284,7 @@ public class TokenQueueService {
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
-                tokenQueue.setLastNumber(tokenQueue.getLastNumber() * 13);
+                tokenQueue.setLastNumber(tokenQueue.getLastNumber() * Constants.PRIME_73);
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 try {
