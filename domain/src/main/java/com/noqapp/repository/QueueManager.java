@@ -152,5 +152,5 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId);
 
-    void updateWithTransactionId(String codeQR, String qid, String transactionId);
+    void updateWithTransactionId(String codeQR, String qid, int tokenNumber, String transactionId);
 }

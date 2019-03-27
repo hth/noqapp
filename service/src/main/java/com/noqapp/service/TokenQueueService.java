@@ -16,7 +16,6 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.json.JsonResponse;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
@@ -331,6 +330,7 @@ public class TokenQueueService {
     /** Update QueueEntity when payment is performed. */
     @Mobile
     public JsonToken updateJsonToken(String codeQR, String transactionId) {
+        LOG.info("codeQR={} transactionId={}");
         TokenQueueEntity tokenQueue = getNextToken(codeQR);
         doActionBasedOnQueueStatus(codeQR, tokenQueue);
         QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);

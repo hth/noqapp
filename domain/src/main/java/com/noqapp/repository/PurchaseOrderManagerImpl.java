@@ -340,6 +340,23 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public PurchaseOrderEntity cancelOrderByClientWhenNotPaid(String qid, String transactionId) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId).and("QID").is(qid)
+                .and("PM").exists(false)
+                .and("PS").in(
+                    PurchaseOrderStateEnum.IN,
+                    PurchaseOrderStateEnum.PC,
+                    PurchaseOrderStateEnum.VB,
+                    PurchaseOrderStateEnum.IB,
+                    PurchaseOrderStateEnum.FO)),
+            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public boolean isOrderCancelled(String qid, String transactionId) {
         return mongoTemplate.exists(
             query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.CO)),

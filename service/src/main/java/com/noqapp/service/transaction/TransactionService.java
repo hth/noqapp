@@ -171,10 +171,14 @@ public class TransactionService {
             throw new PurchaseOrderPartialException("Refund failed for partial order");
         }
 
+        if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
+            return purchaseOrderManager.cancelOrderByClientWhenNotPaid(qid, transactionId);
+        }
+
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
-                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA) {
+                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode()) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                         .setRefundNote("Refund initiated by client")
@@ -238,7 +242,7 @@ public class TransactionService {
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
-                if (purchaseOrderBeforeCancel.getPaymentMode() != PaymentModeEnum.CA && purchaseOrderBeforeCancel.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() && PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState()) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                         .setRefundNote("Refund initiated by merchant")
