@@ -476,23 +476,6 @@ public class TokenQueueService {
     }
 
     @Mobile
-    public JsonResponse abortQueue(String codeQR, String qid) {
-        try {
-            QueueEntity queue = queueManager.findToAbort(codeQR, qid);
-            if (queue == null) {
-                LOG.error("Not joined to queue qid={}, ignore abort", qid);
-                return new JsonResponse(false);
-            }
-            LOG.info("Aborting queue qid={} id={} queue={}", qid, queue.getId(), queue);
-            queueManager.abort(queue.getId());
-            return new JsonResponse(true);
-        } catch (Exception e) {
-            LOG.error("Abort failed {}", e.getLocalizedMessage(), e);
-            return new JsonResponse(false);
-        }
-    }
-
-    @Mobile
     public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
         sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
