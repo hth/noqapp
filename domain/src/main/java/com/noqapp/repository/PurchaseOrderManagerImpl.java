@@ -12,6 +12,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -102,7 +103,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findAllOpenOrder(String qid) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)
+            query(where("QID").is(qid).and("DM").ne(DeliveryModeEnum.QS)
                 .andOperator(
                     where("PS").ne(PurchaseOrderStateEnum.OD),
                     where("PS").ne(PurchaseOrderStateEnum.CO)
@@ -500,6 +501,25 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 .set("TM", transactionMessage)
                 .set("TV", TransactionViaEnum.E),
             FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId) {
+        mongoTemplate.updateFirst(
+            query(where("TI").is(transactionId).and("DM").is(DeliveryModeEnum.QS)),
+            entityUpdate(update("TN", token).set("EB", expectedServiceBegin)),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void removePurchaseOrderForService(String transactionId) {
+        mongoTemplate.remove(
+            query(where("TI").is(transactionId).and("DM").is(DeliveryModeEnum.QS)),
             PurchaseOrderEntity.class,
             TABLE
         );

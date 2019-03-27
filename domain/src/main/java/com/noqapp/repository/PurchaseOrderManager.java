@@ -109,4 +109,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode);
     PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode);
+
+    void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId);
+    void removePurchaseOrderForService(String transactionId);
 }

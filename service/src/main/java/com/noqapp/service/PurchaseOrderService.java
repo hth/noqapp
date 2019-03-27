@@ -31,6 +31,7 @@ import com.noqapp.domain.json.fcm.data.JsonTopicOrderData;
 import com.noqapp.domain.json.payment.cashfree.JsonRequestPurchaseOrderCF;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -422,7 +423,13 @@ public class PurchaseOrderService {
         }
         JsonToken jsonToken;
         try {
-            jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+            if (jsonPurchaseOrder.getDeliveryMode() != DeliveryModeEnum.QS) {
+                jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+            } else {
+                jsonToken = new JsonToken(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getBusinessType());
+                jsonToken.setToken(jsonPurchaseOrder.getToken());
+                jsonToken.setExpectedServiceBegin(new Date());
+            }
             /* Transaction Id is required key and is indexed set to unique. Without this, session and transaction fails. */
             purchaseOrder.setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
             transactionService.completePurchase(purchaseOrder, purchaseOrderProducts);
@@ -469,6 +476,27 @@ public class PurchaseOrderService {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
             throw new PurchaseOrderFailException("Failed creating order");
         }
+    }
+
+    @Mobile
+    public void updatePurchaseOrderWithToken(int token, String expectedServiceBeginStr, String transactionId) {
+        Date expectedServiceBegin = new Date();
+        if (StringUtils.isNotBlank(expectedServiceBeginStr)) {
+            try {
+                expectedServiceBegin = simpleDateFormat.parse(expectedServiceBeginStr);
+            } catch (ParseException e) {
+                LOG.error("Parse date={} error reason={}", expectedServiceBeginStr, e.getLocalizedMessage(), e);
+            }
+        }
+        purchaseOrderManager.updatePurchaseOrderWithToken(token, expectedServiceBegin, transactionId);
+    }
+
+    @Mobile
+    public void deleteReferenceToTransactionId(String transactionId) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
+        //Only for DeliveryMode QS
+        purchaseOrderProductManager.removePurchaseOrderProduct(purchaseOrder.getId());
+        purchaseOrderManager.removePurchaseOrderForService(transactionId);
     }
 
     @Mobile

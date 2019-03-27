@@ -19,4 +19,6 @@ public interface PurchaseOrderProductManager extends RepositoryManager<PurchaseO
     long deleteByCodeQR(String codeQR);
 
     void changePatient(String purchaseOrderId, String queueUserId);
+
+    void removePurchaseOrderProduct(String purchaseOrderId);
 }
