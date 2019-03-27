@@ -123,12 +123,15 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("u")
     private String createDate;
 
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
+
     public JsonTokenAndQueue() {
         //Required default constructor
     }
 
     /* For Active Queue. */
-    public JsonTokenAndQueue(int token, String qid, QueueStatusEnum queueStatus, JsonQueue jsonQueue) {
+    public JsonTokenAndQueue(int token, String qid, QueueStatusEnum queueStatus, JsonQueue jsonQueue, JsonPurchaseOrder jsonPurchaseOrder) {
         this.codeQR = jsonQueue.getCodeQR();
         this.geoHash = jsonQueue.getGeoHash();
         this.businessName = jsonQueue.getBusinessName();
@@ -156,11 +159,12 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = queueStatus;
         this.token = token;
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
-        this.purchaseOrderState = PurchaseOrderStateEnum.IN;
+        this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
     }
 
     /* For Historical Queues. */
-    public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore) {
+    public JsonTokenAndQueue(QueueEntity queue, BizStoreEntity bizStore, JsonPurchaseOrder jsonPurchaseOrder) {
         String bannerImage = CommonHelper.getBannerImage(bizStore);
         LOG.info("Banner for queue image={} bizStore name={}", bannerImage, bizStore.getDisplayName());
 
@@ -192,7 +196,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Skipped queueStatus
         this.token = queue.getTokenNumber();
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
-        this.purchaseOrderState = PurchaseOrderStateEnum.IN;
+        this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
     }
 
     /* For Active Order. */
@@ -225,6 +230,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
+        this.jsonPurchaseOrder = null;
     }
 
     /* For Historical Orders. */
@@ -260,6 +266,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
+        this.jsonPurchaseOrder = null;
     }
 
     public String getCodeQR() {
@@ -356,6 +363,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public String getCreateDate() {
         return createDate;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
     }
 
     @Override
