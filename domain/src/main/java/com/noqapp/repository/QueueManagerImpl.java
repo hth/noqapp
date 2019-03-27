@@ -623,12 +623,14 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public void updateWithTransactionId(String codeQR, String qid, String transactionId) {
-        mongoTemplate.updateFirst(
-            query(where("QR").is(codeQR).and("QID").is(qid).and("TI").exists(false)),
+    public void updateWithTransactionId(String codeQR, String qid, int tokenNumber, String transactionId) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR).and("QID").is(qid).and("TN").is(tokenNumber).and("TI").exists(false)),
             entityUpdate(update("TI", transactionId)),
             QueueEntity.class,
             TABLE
         );
+
+        LOG.debug("update result={}", updateResult.getModifiedCount());
     }
 }
