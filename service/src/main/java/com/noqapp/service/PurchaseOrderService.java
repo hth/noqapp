@@ -259,6 +259,11 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public PurchaseOrderEntity findHistoricalPurchaseOrder(String qid, String transactionId) {
+        return purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
+    }
+
+    @Mobile
     public boolean isOrderCancelled(String qid, String transactionId) {
         return purchaseOrderManager.isOrderCancelled(qid, transactionId);
     }
@@ -795,6 +800,41 @@ public class PurchaseOrderService {
             .setPaymentStatus(purchaseOrder.getPaymentStatus())
             .setTransactionMessage(purchaseOrder.getTransactionMessage())
             .setTransactionVia(purchaseOrder.getTransactionVia());
+    }
+
+    @Mobile
+    public JsonPurchaseOrder populateHistoricalJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
+        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
+        List<PurchaseOrderProductEntity> products = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
+        for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
+            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
+        }
+
+        return new JsonPurchaseOrder()
+                .setQueueUserId(purchaseOrder.getQueueUserId())
+                .setCodeQR(purchaseOrder.getCodeQR())
+                .setBizStoreId(purchaseOrder.getBizStoreId())
+                .setCustomerPhone(purchaseOrder.getCustomerPhone())
+                .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
+                .setStoreDiscount(purchaseOrder.getStoreDiscount())
+                .setPartialPayment(purchaseOrder.getPartialPayment())
+                .setOrderPrice(purchaseOrder.getOrderPrice())
+                .setDeliveryMode(purchaseOrder.getDeliveryMode())
+                .setPaymentMode(purchaseOrder.getPaymentMode())
+                .setBusinessType(purchaseOrder.getBusinessType())
+                .setJsonPurchaseOrderProducts(jsonPurchaseOrderProducts)
+                //Serving Number not set for Merchant
+                .setToken(purchaseOrder.getTokenNumber())
+                .setCustomerName(purchaseOrder.getCustomerName())
+                //ExpectedServiceBegin not set for Merchant
+                .setTransactionId(purchaseOrder.getTransactionId())
+                .setPresentOrderState(purchaseOrder.getPresentOrderState())
+                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+                .setAdditionalNote(purchaseOrder.getAdditionalNote())
+                .setPaymentMode(purchaseOrder.getPaymentMode())
+                .setPaymentStatus(purchaseOrder.getPaymentStatus())
+                .setTransactionMessage(purchaseOrder.getTransactionMessage())
+                .setTransactionVia(purchaseOrder.getTransactionVia());
     }
 
     /** Formulates and send messages to FCM. */
