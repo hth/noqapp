@@ -101,4 +101,13 @@ public class PurchaseOrderProductManagerImpl implements PurchaseOrderProductMana
             TABLE
         );
     }
+
+    @Override
+    public void removePurchaseOrderProduct(String purchaseOrderId) {
+        mongoTemplate.remove(
+            query(where("PO").is(purchaseOrderId)),
+            PurchaseOrderProductEntity.class,
+            TABLE
+        );
+    }
 }

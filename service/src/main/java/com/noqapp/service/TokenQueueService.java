@@ -7,6 +7,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.IntRandomNumberGenerator;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
@@ -284,7 +285,7 @@ public class TokenQueueService {
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
-                tokenQueue.setLastNumber(tokenQueue.getLastNumber() * Constants.PRIME_73);
+                tokenQueue.setLastNumber(new IntRandomNumberGenerator(tokenQueue.getLastNumber() + 1, 100).nextInt() * Constants.PRIME_73);
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 try {
