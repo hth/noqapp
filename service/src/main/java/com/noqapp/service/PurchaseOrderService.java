@@ -759,13 +759,18 @@ public class PurchaseOrderService {
     }
 
     private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
+        jsonPurchaseOrders.add(populateJsonPurchaseOrder(purchaseOrder));
+    }
+
+    @Mobile
+    public JsonPurchaseOrder populateJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
         List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
         List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
         for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
             jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
         }
 
-        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+        return new JsonPurchaseOrder()
             .setQueueUserId(purchaseOrder.getQueueUserId())
             .setCodeQR(purchaseOrder.getCodeQR())
             .setBizStoreId(purchaseOrder.getBizStoreId())
@@ -790,8 +795,6 @@ public class PurchaseOrderService {
             .setPaymentStatus(purchaseOrder.getPaymentStatus())
             .setTransactionMessage(purchaseOrder.getTransactionMessage())
             .setTransactionVia(purchaseOrder.getTransactionVia());
-
-        jsonPurchaseOrders.add(jsonPurchaseOrder);
     }
 
     /** Formulates and send messages to FCM. */
