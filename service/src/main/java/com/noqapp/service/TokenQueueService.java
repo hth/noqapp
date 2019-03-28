@@ -215,7 +215,8 @@ public class TokenQueueService {
                         queue.setGuardianQid(guardianQid);
                     }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    queue.setExpectedServiceBegin(expectedServiceBegin);
+                    queue.setExpectedServiceBegin(expectedServiceBegin)
+                        .setBizNameId(bizStore.getBizName().getId());
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -293,7 +294,8 @@ public class TokenQueueService {
                         /* Set this field when client is really a guardian and has at least one dependent in profile. */
                         queue.setGuardianQid(guardianQid);
                     }
-                    queue.setQueueUserState(QueueUserStateEnum.I);
+                    queue.setQueueUserState(QueueUserStateEnum.I)
+                        .setBizNameId(bizStore.getBizName().getId());
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -455,9 +457,8 @@ public class TokenQueueService {
                 }
             }
 
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             /* Add business customer id if any associated with qid and codeQR. */
-            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, queue.getBizNameId());
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
                     .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
@@ -467,8 +468,7 @@ public class TokenQueueService {
             }
 
             /* Added for business offer to display for new user for that business. */
-            queue.setBizNameId(bizStore.getBizName().getId());
-            queue.setClientVisitedThisBusiness(queueManagerJDBC.hasClientVisitedThisBusiness(bizStore.getBizName().getId(), qid));
+            queue.setClientVisitedThisBusiness(queueManagerJDBC.hasClientVisitedThisBusiness(queue.getBizNameId(), qid));
 
             LOG.debug("Updated Queue={}", queue);
             queueManager.save(queue);
