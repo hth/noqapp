@@ -11,6 +11,9 @@
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT`
     MODIFY BT CHAR(2) NOT NULL;
+    
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `TI` VARCHAR(100) AFTER `QS`;
 
 ### Change March 11 2019
 
