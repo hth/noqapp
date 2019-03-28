@@ -182,8 +182,9 @@ public class QueueEntity extends BaseEntity {
         return queueUserState;
     }
 
-    public void setQueueUserState(QueueUserStateEnum queueUserState) {
+    public QueueEntity setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
+        return this;
     }
 
     public boolean isNotifiedOnService() {
