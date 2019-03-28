@@ -100,4 +100,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
             .setProductDiscount(purchaseOrderProduct.getProductDiscount())
             .setProductQuantity(purchaseOrderProduct.getProductQuantity());
     }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrderProduct{" +
+            "productId='" + productId + '\'' +
+            ", productName='" + productName + '\'' +
+            ", productPrice=" + productPrice +
+            ", productDiscount=" + productDiscount +
+            ", productQuantity=" + productQuantity +
+            '}';
+    }
 }
