@@ -397,6 +397,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
             ", ratingCount=" + ratingCount +
             ", hoursSaved=" + hoursSaved +
             ", createDate='" + createDate + '\'' +
+            ", jsonPurchaseOrder=" + jsonPurchaseOrder +
             '}';
     }
 }
