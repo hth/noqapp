@@ -179,6 +179,19 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public QueueEntity findQueueThatHasTransaction(String codeQR, String qid, int token) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR).and("TN").is(token).and("TI").exists(true)
+                .orOperator(
+                    where("QID").is(qid),
+                    where("GQ").is(qid)
+                )),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public QueueEntity findToAbort(String codeQR, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {

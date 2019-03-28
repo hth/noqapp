@@ -31,6 +31,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     void deleteReferenceToTransactionId(String codeQR, String transactionId);
 
     boolean doesExistsByQid(String codeQR, int tokenNumber, String qid);
+    QueueEntity findQueueThatHasTransaction(String codeQR, String qid, int token);
 
     /**
      * Note: No DID used here as user should be able to abort from any where.
