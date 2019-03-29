@@ -40,8 +40,10 @@ import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderManagerImpl;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
+import com.noqapp.repository.PurchaseOrderProductManagerImpl;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerImpl;
@@ -152,8 +154,6 @@ public class ITest extends RealMongoForITest {
     protected StatsCronManager statsCronManager;
     protected PurchaseOrderManager purchaseOrderManager;
     protected PurchaseOrderProductManager purchaseOrderProductManager;
-    protected PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
-    protected PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -162,6 +162,8 @@ public class ITest extends RealMongoForITest {
     @Mock protected MailService mailService;
     @Mock protected OkHttpClient okHttpClient;
     @Mock protected QueueManagerJDBC queueManagerJDBC;
+    @Mock protected PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    @Mock protected PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
     @BeforeAll
     public void globalISetup() {
@@ -178,6 +180,8 @@ public class ITest extends RealMongoForITest {
         registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
         userMedicalProfileManager = new UserMedicalProfileManagerImpl(getMongoTemplate());
         userMedicalProfileHistoryManager = new UserMedicalProfileHistoryManagerImpl(getMongoTemplate());
+        purchaseOrderManager = new PurchaseOrderManagerImpl(getMongoTemplate());
+        purchaseOrderProductManager = new PurchaseOrderProductManagerImpl(getMongoTemplate());
         s3FileManager = new S3FileManagerImpl(getMongoTemplate());
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
@@ -244,7 +248,9 @@ public class ITest extends RealMongoForITest {
             queueManagerJDBC,
             tokenQueueService,
             businessUserStoreManager,
-            statsBizStoreDailyManager
+            statsBizStoreDailyManager,
+            purchaseOrderManager,
+            purchaseOrderProductManager
         );
 
         bizService = new BizService(
