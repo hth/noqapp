@@ -5,10 +5,15 @@ import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
+import com.noqapp.medical.repository.MedicalMedicationManager;
+import com.noqapp.medical.repository.MedicalMedicineManager;
 import com.noqapp.medical.repository.MedicalPathologyManager;
 import com.noqapp.medical.repository.MedicalPathologyManagerImpl;
+import com.noqapp.medical.repository.MedicalPathologyTestManager;
+import com.noqapp.medical.repository.MedicalPhysicalManager;
 import com.noqapp.medical.repository.MedicalRadiologyManager;
 import com.noqapp.medical.repository.MedicalRadiologyManagerImpl;
+import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.medical.repository.MedicalRecordManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
@@ -16,6 +21,7 @@ import com.noqapp.medical.repository.UserMedicalProfileHistoryManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
 import com.noqapp.medical.repository.UserMedicalProfileManagerImpl;
 import com.noqapp.medical.service.MedicalFileService;
+import com.noqapp.medical.service.MedicalRecordService;
 import com.noqapp.medical.service.UserMedicalProfileService;
 import com.noqapp.medical.transaction.MedicalTransactionService;
 import com.noqapp.repository.BizNameManager;
@@ -37,6 +43,12 @@ import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.ProfessionalProfileManager;
+import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderManagerImpl;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
+import com.noqapp.repository.PurchaseOrderProductManager;
+import com.noqapp.repository.PurchaseOrderProductManagerImpl;
+import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.QueueManager;
@@ -59,6 +71,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.TokenQueueManagerImpl;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAccountManagerImpl;
+import com.noqapp.repository.UserAddressManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserAuthenticationManagerImpl;
 import com.noqapp.repository.UserPreferenceManager;
@@ -69,25 +82,41 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.EmailValidateService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.NLPService;
 import com.noqapp.service.PreferredBusinessService;
+import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.ReviewService;
 import com.noqapp.service.StoreCategoryService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.UserAddressService;
+import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.service.payment.CashfreeService;
+import com.noqapp.service.transaction.TransactionService;
+
+import org.springframework.mock.env.MockEnvironment;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * hitender
@@ -96,30 +125,48 @@ import java.io.IOException;
 public class ITest extends RealMongoForITest {
 
     protected AccountService accountService;
+    protected UserProfilePreferenceService userProfilePreferenceService;
     protected InviteService inviteService;
-    protected FileService fileService;
-    protected BizService bizService;
-    protected StoreCategoryService storeCategoryService;
-    protected UserMedicalProfileService userMedicalProfileService;
     protected TokenQueueService tokenQueueService;
-    protected BusinessCustomerService businessCustomerService;
-    protected ApiHealthService apiHealthService;
-    protected FirebaseMessageService firebaseMessageService;
-    protected BusinessUserService businessUserService;
-    protected PreferredBusinessService preferredBusinessService;
-    protected GenerateUserIdService generateUserIdService;
-    protected EmailValidateService emailValidateService;
+    protected BizService bizService;
     protected QueueService queueService;
+    protected BusinessUserStoreService businessUserStoreService;
+    protected ProfessionalProfileService professionalProfileService;
+
+    protected UserAddressManager userAddressManager;
+    protected UserAddressService userAddressService;
+    protected StoreProductManager storeProductManager;
+    protected StoreProductService storeProductService;
+    protected PurchaseOrderManager purchaseOrderManager;
+    protected PurchaseOrderProductManager purchaseOrderProductManager;
+    protected PurchaseOrderService purchaseOrderService;
+    protected FileService fileService;
+    protected S3FileManager s3FileManager;
+    protected ReviewService reviewService;
+
+    protected MedicalRecordManager medicalRecordManager;
+    protected MedicalPhysicalManager medicalPhysicalManager;
+    protected MedicalMedicationManager medicalMedicationManager;
+    protected MedicalMedicineManager medicalMedicineManager;
+    protected MedicalPathologyManager medicalPathologyManager;
+    protected MedicalPathologyTestManager medicalPathologyTestManager;
+    protected MedicalRadiologyManager medicalRadiologyManager;
+    protected MedicalRadiologyTestManager medicalRadiologyTestManager;
+    protected MedicalRecordService medicalRecordService;
     protected MedicalFileService medicalFileService;
     protected MedicalTransactionService medicalTransactionService;
 
     protected TokenQueueManager tokenQueueManager;
+    protected FirebaseMessageService firebaseMessageService;
     protected QueueManager queueManager;
+
     protected UserAccountManager userAccountManager;
     protected UserAuthenticationManager userAuthenticationManager;
     protected UserPreferenceManager userPreferenceManager;
     protected UserProfileManager userProfileManager;
+    protected GenerateUserIdService generateUserIdService;
     protected EmailValidateManager emailValidateManager;
+    protected EmailValidateService emailValidateService;
     protected ForgotRecoverManager forgotRecoverManager;
     protected InviteManager inviteManager;
     protected RegisteredDeviceManager registeredDeviceManager;
@@ -127,30 +174,43 @@ public class ITest extends RealMongoForITest {
     protected BizStoreManager bizStoreManager;
     protected StoreHourManager storeHourManager;
     protected BusinessUserStoreManager businessUserStoreManager;
+    protected BusinessUserService businessUserService;
     protected BusinessUserManager businessUserManager;
     protected ProfessionalProfileManager professionalProfileManager;
     protected UserMedicalProfileManager userMedicalProfileManager;
     protected UserMedicalProfileHistoryManager userMedicalProfileHistoryManager;
     protected StoreCategoryManager storeCategoryManager;
     protected PreferredBusinessManager preferredBusinessManager;
+    protected PreferredBusinessService preferredBusinessService;
     protected ScheduledTaskManager scheduledTaskManager;
-    protected GenerateUserIdManager generateUserIdManager;
-    protected BusinessCustomerManager businessCustomerManager;
-    protected ApiHealthNowManager apiHealthNowManager;
-    protected MasterLabManager masterLabManager;
     protected PublishArticleManager publishArticleManager;
-    protected MedicalRecordManager medicalRecordManager;
-    protected MedicalRadiologyManager medicalRadiologyManager;
-    protected MedicalPathologyManager medicalPathologyManager;
+    protected MasterLabManager masterLabManager;
+
+    protected BusinessCustomerManager businessCustomerManager;
+    protected BusinessCustomerService businessCustomerService;
+    protected UserMedicalProfileService userMedicalProfileService;
+    protected StoreCategoryService storeCategoryService;
+    protected TransactionService transactionService;
+    protected NLPService nlpService;
+
+    protected ApiHealthService apiHealthService;
+    protected ApiHealthNowManager apiHealthNowManager;
     protected StatsBizStoreDailyManager statsBizStoreDailyManager;
 
-    protected S3FileManager s3FileManager;
-    protected StoreProductManager storeProductManager;
+    protected GenerateUserIdManager generateUserIdManager;
 
+    private MockEnvironment mockEnvironment;
+
+    private StanfordCoreNLP stanfordCoreNLP;
+    @Mock protected ExternalService externalService;
+    @Mock protected QueueManagerJDBC queueManagerJDBC;
+    @Mock protected PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    @Mock protected PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    @Mock protected HttpServletResponse httpServletResponse;
     @Mock protected FtpService ftpService;
     @Mock protected MailService mailService;
     @Mock protected OkHttpClient okHttpClient;
-    @Mock protected QueueManagerJDBC queueManagerJDBC;
+    @Mock protected CashfreeService cashfreeService;
 
     @BeforeAll
     public void globalISetup() throws IOException {
@@ -167,6 +227,8 @@ public class ITest extends RealMongoForITest {
         registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
         userMedicalProfileManager = new UserMedicalProfileManagerImpl(getMongoTemplate());
         userMedicalProfileHistoryManager = new UserMedicalProfileHistoryManagerImpl(getMongoTemplate());
+        purchaseOrderManager = new PurchaseOrderManagerImpl(getMongoTemplate());
+        purchaseOrderProductManager = new PurchaseOrderProductManagerImpl(getMongoTemplate());
         s3FileManager = new S3FileManagerImpl(getMongoTemplate());
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
@@ -232,7 +294,9 @@ public class ITest extends RealMongoForITest {
             queueManagerJDBC,
             tokenQueueService,
             businessUserStoreManager,
-            statsBizStoreDailyManager
+            statsBizStoreDailyManager,
+            purchaseOrderManager,
+            purchaseOrderProductManager
         );
 
         bizService = new BizService(
@@ -269,6 +333,38 @@ public class ITest extends RealMongoForITest {
             transactionManager(),
             getMongoTemplate(),
             masterLabManager
+        );
+
+        transactionService = new TransactionService(
+            getMongoTemplate(),
+            transactionManager(),
+            getMongoTemplate(),
+            purchaseOrderManager,
+            purchaseOrderProductManager,
+            storeProductManager,
+            cashfreeService
+        );
+
+        storeProductService = new StoreProductService(storeProductManager, bizStoreManager, fileService, transactionService);
+        purchaseOrderService = new PurchaseOrderService(
+            bizStoreManager,
+            businessUserManager,
+            storeHourManager,
+            purchaseOrderManager,
+            purchaseOrderManagerJDBC,
+            purchaseOrderProductManager,
+            purchaseOrderProductManagerJDBC,
+            registeredDeviceManager,
+            tokenQueueManager,
+            storeProductService,
+            tokenQueueService,
+            userAddressService,
+            firebaseMessageService,
+            accountService,
+            transactionService,
+            nlpService,
+            mailService,
+            cashfreeService
         );
     }
 }
