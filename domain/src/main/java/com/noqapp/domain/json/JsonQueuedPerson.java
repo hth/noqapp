@@ -27,43 +27,43 @@ import java.util.TimeZone;
  * User: hitender
  * Date: 9/7/17 6:24 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
-@JsonAutoDetect (
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueuedPerson extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonQueuedPerson.class);
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName = "";
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String customerPhone = "";
 
-    @JsonProperty ("qu")
+    @JsonProperty("qu")
     private QueueUserStateEnum queueUserState;
 
-    @JsonProperty ("sid")
+    @JsonProperty("sid")
     private String serverDeviceId = "";
 
     /* Dependents can be anyone minor or other elderly family members. */
-    @JsonProperty ("dp")
+    @JsonProperty("dp")
     private List<JsonQueuedDependent> dependents = new ArrayList<>();
 
     @JsonProperty("bc")
@@ -73,18 +73,24 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty("cc")
     private int businessCustomerIdChangeCount;
 
-    @JsonProperty ("vs")
+    @JsonProperty("vs")
     private boolean clientVisitedThisStore;
 
     @JsonProperty("vsd")
     private String clientVisitedThisStoreDate;
 
-    @JsonProperty ("vb")
+    @JsonProperty("vb")
     private boolean clientVisitedThisBusiness;
 
     /** This record reference has to be used when submitting a form. */
-    @JsonProperty ("rr")
+    @JsonProperty("rr")
     private String recordReferenceId;
+
+    @JsonProperty("ti")
+    private String transactionId;
+
+    @JsonProperty("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @JsonProperty("c")
     private String created;
@@ -201,6 +207,24 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonQueuedPerson setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonQueuedPerson setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 

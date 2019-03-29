@@ -4,6 +4,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -64,6 +65,7 @@ public class QueueService {
     private TokenQueueService tokenQueueService;
     private BusinessUserStoreManager businessUserStoreManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
+    private PurchaseOrderService purchaseOrderService;
 
     @Autowired
     public QueueService(
@@ -77,7 +79,8 @@ public class QueueService {
         QueueManagerJDBC queueManagerJDBC,
         TokenQueueService tokenQueueService,
         BusinessUserStoreManager businessUserStoreManager,
-        StatsBizStoreDailyManager statsBizStoreDailyManager
+        StatsBizStoreDailyManager statsBizStoreDailyManager,
+        PurchaseOrderService purchaseOrderService
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -89,6 +92,7 @@ public class QueueService {
         this.tokenQueueService = tokenQueueService;
         this.businessUserStoreManager = businessUserStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
+        this.purchaseOrderService = purchaseOrderService;
     }
 
     @Mobile
@@ -283,7 +287,13 @@ public class QueueService {
                 .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
                 .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
                 .setRecordReferenceId(queue.getRecordReferenceId())
-                .setCreated(queue.getCreated());
+                .setCreated(queue.getCreated())
+                .setTransactionId(queue.getTransactionId());
+
+            if (StringUtils.isNotBlank(queue.getTransactionId())) {
+                PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(queue.getTransactionId());
+                jsonQueuedPerson.setJsonPurchaseOrder(purchaseOrderService.populateJsonPurchaseOrder(purchaseOrder));
+            }
 
             /* Get dependents when queue status is queued. */
             if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
