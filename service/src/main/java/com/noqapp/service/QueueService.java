@@ -5,12 +5,14 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
+import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonQueueHistorical;
 import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
@@ -30,6 +32,8 @@ import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
+import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.StatsBizStoreDailyManager;
@@ -45,6 +49,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -65,7 +70,8 @@ public class QueueService {
     private TokenQueueService tokenQueueService;
     private BusinessUserStoreManager businessUserStoreManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
-    private PurchaseOrderService purchaseOrderService;
+    private PurchaseOrderManager purchaseOrderManager;
+    private PurchaseOrderProductManager purchaseOrderProductManager;
 
     @Autowired
     public QueueService(
@@ -80,7 +86,8 @@ public class QueueService {
         TokenQueueService tokenQueueService,
         BusinessUserStoreManager businessUserStoreManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
-        PurchaseOrderService purchaseOrderService
+        PurchaseOrderManager purchaseOrderManager,
+        PurchaseOrderProductManager purchaseOrderProductManager
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -92,7 +99,8 @@ public class QueueService {
         this.tokenQueueService = tokenQueueService;
         this.businessUserStoreManager = businessUserStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
-        this.purchaseOrderService = purchaseOrderService;
+        this.purchaseOrderManager = purchaseOrderManager;
+        this.purchaseOrderProductManager = purchaseOrderProductManager;
     }
 
     @Mobile
@@ -291,8 +299,15 @@ public class QueueService {
                 .setTransactionId(queue.getTransactionId());
 
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
-                PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(queue.getTransactionId());
-                jsonQueuedPerson.setJsonPurchaseOrder(purchaseOrderService.populateJsonPurchaseOrder(purchaseOrder));
+                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+
+                List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
+                List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+                for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
+                    jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
+                }
+
+                jsonQueuedPerson.setJsonPurchaseOrder(PurchaseOrderService.populatePurchaseOrder(purchaseOrder, jsonPurchaseOrderProducts));
             }
 
             /* Get dependents when queue status is queued. */
