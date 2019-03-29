@@ -506,12 +506,20 @@ public class PurchaseOrderService {
 
     @Mobile
     public void populateWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, PurchaseOrderEntity purchaseOrder) {
-        JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
-            .setOrderAmount(purchaseOrder.orderPriceForTransaction())
-            .setOrderId(purchaseOrder.getTransactionId());
-        JsonResponseWithCFToken jsonResponseWithCFToken = cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
-        jsonPurchaseOrder.setJsonResponseWithCFToken(jsonResponseWithCFToken);
+        jsonPurchaseOrder.setJsonResponseWithCFToken(
+            createTokenForPurchaseOrder(
+                purchaseOrder.orderPriceForTransaction(),
+                purchaseOrder.getTransactionId()));
+
         jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
+    }
+
+    @Mobile
+    public JsonResponseWithCFToken createTokenForPurchaseOrder(String orderAmount, String transactionId) {
+        JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF = new JsonRequestPurchaseOrderCF()
+            .setOrderAmount(orderAmount)
+            .setOrderId(transactionId);
+        return cashfreeService.createTokenForPurchaseOrder(jsonRequestPurchaseOrderCF);
     }
 
     @Mobile
