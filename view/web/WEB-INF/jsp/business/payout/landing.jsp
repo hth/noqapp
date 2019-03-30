@@ -102,10 +102,10 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
-                                                                <span style="display:block; font-size:13px; color: darkgreen;">${item.paymentStatus.description}</span>
+                                                                <span style="display:block; font-size:13px; color: darkgreen; font-weight: bold;">${item.paymentStatus.description}</span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <span style="display:block; font-size:13px; color: darkred;">${item.paymentStatus.description}</span>
+                                                                <span style="display:block; font-size:13px; color: darkred; font-weight: bold;">${item.paymentStatus.description}</span>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
