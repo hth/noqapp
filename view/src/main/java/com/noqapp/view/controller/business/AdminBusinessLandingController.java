@@ -95,46 +95,46 @@ public class AdminBusinessLandingController {
 
     @Autowired
     public AdminBusinessLandingController(
-            @Value ("${BusinessUserStoreService.queue.limit}")
-            int queueLimit,
+        @Value ("${BusinessUserStoreService.queue.limit}")
+        int queueLimit,
 
-            @Value ("${nextPage:/business/landing}")
-            String nextPage,
+        @Value ("${nextPage:/business/landing}")
+        String nextPage,
 
-            @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
-            String listQueueSupervisorPage,
+        @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
+        String listQueueSupervisorPage,
 
-            @Value ("${preferredBusinessPage:/business/preferredBusiness}")
-            String preferredBusinessPage,
+        @Value ("${preferredBusinessPage:/business/preferredBusiness}")
+        String preferredBusinessPage,
 
-            @Value("${authorizedUsersPage:/business/authorizedUsers}")
-            String authorizedUsersPage,
+        @Value("${authorizedUsersPage:/business/authorizedUsers}")
+        String authorizedUsersPage,
 
-            @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
-            String migrateBusinessRegistrationFlow,
+        @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
+        String migrateBusinessRegistrationFlow,
 
-            @Value ("${storeActionFlow:redirect:/store/storeAction.htm}")
-            String storeActionFlow,
+        @Value ("${storeActionFlow:redirect:/store/storeAction.htm}")
+        String storeActionFlow,
 
-            @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
-            String addQueueSupervisorFlow,
+        @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
+        String addQueueSupervisorFlow,
 
-            @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
-            String addNewAgentFlow,
+        @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
+        String addNewAgentFlow,
 
-            @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
-            String queueUserDetailFlow,
+        @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
+        String queueUserDetailFlow,
 
-            @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
-            String editBusinessFlow,
+        @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
+        String editBusinessFlow,
 
-            BusinessUserService businessUserService,
-            BizDimensionService bizDimensionService,
-            BizService bizService,
-            BusinessUserStoreService businessUserStoreService,
-            AccountService accountService,
-            ProfessionalProfileService professionalProfileService,
-            PreferredBusinessService preferredBusinessService
+        BusinessUserService businessUserService,
+        BizDimensionService bizDimensionService,
+        BizService bizService,
+        BusinessUserStoreService businessUserStoreService,
+        AccountService accountService,
+        ProfessionalProfileService professionalProfileService,
+        PreferredBusinessService preferredBusinessService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -164,10 +164,10 @@ public class AdminBusinessLandingController {
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
-            @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm,
+        @ModelAttribute ("businessLandingForm")
+        BusinessLandingForm businessLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -184,8 +184,8 @@ public class AdminBusinessLandingController {
 
     @SuppressWarnings("Duplicates")
     private String nextPage(
-            BusinessUserEntity businessUser,
-            BusinessLandingForm businessLandingForm
+        BusinessUserEntity businessUser,
+        BusinessLandingForm businessLandingForm
     ) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
             case V:
@@ -241,17 +241,17 @@ public class AdminBusinessLandingController {
      */
     @GetMapping (value = "/{storeId}/listQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String listQueueSupervisor(
-            @ModelAttribute ("queueSupervisorForm")
-            QueueSupervisorForm queueSupervisorForm,
+        @ModelAttribute ("queueSupervisorForm")
+        QueueSupervisorForm queueSupervisorForm,
 
-            @ModelAttribute ("queueSupervisorActionForm")
-            QueueSupervisorActionForm queueSupervisorActionForm,
+        @ModelAttribute ("queueSupervisorActionForm")
+        QueueSupervisorActionForm queueSupervisorActionForm,
 
-            @PathVariable ("storeId")
-            ScrubbedInput storeId,
+        @PathVariable ("storeId")
+        ScrubbedInput storeId,
 
-            Model model,
-            HttpServletResponse response
+        Model model,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -309,11 +309,11 @@ public class AdminBusinessLandingController {
 
     @GetMapping (value = "/{bizStoreId}/editStore", produces = "text/html;charset=UTF-8")
     public String editStore(
-            @PathVariable ("bizStoreId")
-            ScrubbedInput bizStoreId,
+        @PathVariable ("bizStoreId")
+        ScrubbedInput bizStoreId,
 
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -331,11 +331,11 @@ public class AdminBusinessLandingController {
 
     @GetMapping (value = "/{bizStoreId}/addQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String addQueueSupervisorFlow(
-            @PathVariable ("bizStoreId")
-            ScrubbedInput bizStoreId,
+        @PathVariable ("bizStoreId")
+        ScrubbedInput bizStoreId,
 
-            RedirectAttributes redirectAttributes,
-            HttpServletResponse response
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -354,11 +354,11 @@ public class AdminBusinessLandingController {
     /** Authorized Users to New Store or Queue. */
     @GetMapping (value = "/queueUserDetail/{businessUserId}", produces = "text/html;charset=UTF-8")
     public String queueUserDetail(
-            @PathVariable ("businessUserId")
-            ScrubbedInput businessUserId,
+        @PathVariable ("businessUserId")
+        ScrubbedInput businessUserId,
 
-            RedirectAttributes redirectAttributes,
-            HttpServletResponse response
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -403,12 +403,12 @@ public class AdminBusinessLandingController {
      */
     @PostMapping(value = "/actionQueueSupervisor")
     public String actionQueueSupervisor(
-            @ModelAttribute ("queueSupervisorActionForm")
-            QueueSupervisorActionForm queueSupervisorActionForm,
+        @ModelAttribute ("queueSupervisorActionForm")
+        QueueSupervisorActionForm queueSupervisorActionForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -597,13 +597,13 @@ public class AdminBusinessLandingController {
     /** List all users with role of Queue Supervisor and Manager managing queues for business. */
     @GetMapping (value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
     public String authorizedUsers(
-            @ModelAttribute ("queueSupervisorForm")
-            QueueSupervisorForm queueSupervisorForm,
+        @ModelAttribute ("queueSupervisorForm")
+        QueueSupervisorForm queueSupervisorForm,
 
-            @ModelAttribute ("queueSupervisorActionForm")
-            QueueSupervisorActionForm queueSupervisorActionForm,
+        @ModelAttribute ("queueSupervisorActionForm")
+        QueueSupervisorActionForm queueSupervisorActionForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
