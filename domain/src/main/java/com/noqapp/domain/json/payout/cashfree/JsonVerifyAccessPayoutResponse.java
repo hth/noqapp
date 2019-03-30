@@ -81,4 +81,14 @@ public class JsonVerifyAccessPayoutResponse extends AbstractDomain {
     public boolean isOk() {
         return status.equalsIgnoreCase("SUCCESS");
     }
+
+    @Override
+    public String toString() {
+        return "JsonVerifyAccessPayoutResponse{" +
+            "status='" + status + '\'' +
+            ", reason='" + reason + '\'' +
+            ", subCode='" + subCode + '\'' +
+            ", data=" + data +
+            '}';
+    }
 }
