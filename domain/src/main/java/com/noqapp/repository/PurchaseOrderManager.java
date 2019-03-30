@@ -113,4 +113,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId);
     void removePurchaseOrderForService(String transactionId);
+
+    List<PurchaseOrderEntity> findByBizNameId(String bizNameId);
 }

@@ -465,6 +465,20 @@ public class PurchaseOrderEntity extends BaseEntity {
         return transactionPrice.scaleByPowerOfTen(-2).toString();
     }
 
+    @Transient
+    public String getOrderPriceForDisplay() {
+        return new BigDecimal(orderPrice).scaleByPowerOfTen(-2).toString();
+    }
+
+    @Transient
+    public String getPartialPaymentForDisplay() {
+        if (StringUtils.isNotBlank(partialPayment)) {
+            return new BigDecimal(partialPayment).scaleByPowerOfTen(-2).toString();
+        }
+
+        return "";
+    }
+
     @Override
     public String toString() {
         return "PurchaseOrderEntity{" +
