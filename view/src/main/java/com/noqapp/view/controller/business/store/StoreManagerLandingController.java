@@ -63,14 +63,14 @@ public class StoreManagerLandingController {
 
     @Autowired
     public StoreManagerLandingController(
-            @Value("${nextPage:/business/storeManagerLanding}")
-            String nextPage,
+        @Value("${nextPage:/business/storeManagerLanding}")
+        String nextPage,
 
-            BizService bizService,
-            BusinessUserStoreService businessUserStoreService,
-            TokenQueueService tokenQueueService,
-            BusinessUserService businessUserService,
-            BizStoreElasticService bizStoreElasticService
+        BizService bizService,
+        BusinessUserStoreService businessUserStoreService,
+        TokenQueueService tokenQueueService,
+        BusinessUserService businessUserService,
+        BizStoreElasticService bizStoreElasticService
     ) {
         this.nextPage = nextPage;
         this.bizService = bizService;

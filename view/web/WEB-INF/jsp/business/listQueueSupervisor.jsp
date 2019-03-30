@@ -90,7 +90,7 @@
                                             <th>Since</th>
                                             <th>&nbsp;</th>
                                         </tr>
-                                        <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                        <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.allowedBusinessUserLevel()%>"/>
                                         <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                         <tr>
                                             <td style="font-size:13px;">${status.count}&nbsp;</td>
@@ -218,7 +218,7 @@
                                         <th>Since</th>
                                         <th>&nbsp;</th>
                                     </tr>
-                                    <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.queueManagers()%>"/>
+                                    <c:set var="userLevelEnumValues" value="<%=UserLevelEnum.allowedBusinessUserLevel()%>"/>
                                     <c:forEach items="${queueSupervisorForm.availableQueueSupervisor}" var="queueSupervisor" varStatus="status">
                                     <tr>
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>

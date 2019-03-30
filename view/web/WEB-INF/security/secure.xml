@@ -75,6 +75,7 @@
                        'ROLE_CLIENT',
                        'ROLE_Q_SUPERVISOR',
                        'ROLE_S_MANAGER',
+                       'ROLE_M_BURSAR',
                        'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
@@ -87,6 +88,7 @@
                        'ROLE_CLIENT',
                        'ROLE_Q_SUPERVISOR',
                        'ROLE_S_MANAGER',
+                       'ROLE_M_BURSAR',
                        'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
@@ -126,6 +128,9 @@
 
         <intercept-url pattern="/business/store/**"
                        access="hasRole('ROLE_S_MANAGER')" />
+
+        <intercept-url pattern="/business/payout/**"
+                       access="hasRole('ROLE_M_BURSAR')" />
 
         <intercept-url pattern="/medical/**"
                        access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR')" />
