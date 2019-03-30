@@ -241,6 +241,7 @@ public class ArchiveAndReset {
         }
 
         doReset(bizStore, statsBizStoreDaily);
+        orderArchiveAndReset(bizStore);
     }
 
     private void orderArchiveAndReset(BizStoreEntity bizStore) {
@@ -295,7 +296,17 @@ public class ArchiveAndReset {
             LOG.error("Mis-match in deleted and insert order bizStore={} size={} delete={}", bizStore.getId(), purchaseOrders.size(), deleted);
         }
 
-        doReset(bizStore, statsBizStoreDaily);
+        switch (bizStore.getBusinessType().getMessageOrigin()) {
+            case Q:
+                /* Skip for queue as its already reset in queueArchiveAndReset. */
+                break;
+            case O:
+                doReset(bizStore, statsBizStoreDaily);
+                break;
+            default:
+                LOG.error("Failed as messageOrigin={} not defined", bizStore.getBusinessType().getMessageOrigin());
+                throw new UnsupportedOperationException("Un-supported condition reached");
+        }
     }
 
     private void doReset(BizStoreEntity bizStore, StatsBizStoreDailyEntity statsBizStoreDaily) {
