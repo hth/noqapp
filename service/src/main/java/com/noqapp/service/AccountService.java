@@ -571,10 +571,20 @@ public class AccountService {
                 }
                 userAccount.setRoles(roles);
                 break;
+            case M_BURSAR:
+                if (!userAccount.isPhoneValidated()) {
+                    roles.add(RoleEnum.ROLE_M_BURSAR);
+                } else {
+                    roles.add(RoleEnum.ROLE_CLIENT);
+                    roles.add(RoleEnum.ROLE_M_BURSAR);
+                }
+                userAccount.setRoles(roles);
+                break;
             case M_ADMIN:
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_Q_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_S_MANAGER);
+                roles.add(RoleEnum.ROLE_M_BURSAR);
                 roles.add(RoleEnum.ROLE_M_ADMIN);
                 userAccount.setRoles(roles);
                 break;
