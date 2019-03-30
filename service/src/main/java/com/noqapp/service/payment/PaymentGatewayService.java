@@ -99,12 +99,14 @@ public class PaymentGatewayService {
     }
 
     public boolean verifyCashfreePayout() {
+        RequestBody formBody = new FormBody.Builder()
+            .build();
+
         Request request = new Request.Builder()
             .url(cashfreePayoutEndpoint + "/payout/v1/authorize")
-            .addHeader("cache-control", "no-cache")
-            .addHeader("content-type", "application/x-www-form-urlencoded")
             .addHeader("X-Client-Id", cashfreePayoutMap.get("clientId"))
             .addHeader("X-Client-Secret", cashfreePayoutMap.get("clientSecret"))
+            .post(formBody)
             .build();
         Response response = null;
         JsonVerifyAccessPayoutResponse jsonVerifyAccessPayoutResponse;
