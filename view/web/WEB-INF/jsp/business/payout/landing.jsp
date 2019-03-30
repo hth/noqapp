@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.PaymentStatusEnum" %>
+<%@ page import="com.noqapp.domain.types.PaymentStatusEnum, com.noqapp.domain.types.TransactionViaEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -70,51 +70,62 @@
                                                 <th>&nbsp;</th>
                                                 <th nowrap>Name</th>
                                                 <th nowrap>Store</th>
-                                                <th nowrap>Token</th>
                                                 <th>Price</th>
-                                                <th nowrap>Payment Mode</th>
                                                 <th>Payment Status</th>
-                                                <th>Order State</th>
+                                                <th>Transaction Detail</th>
                                                 <th>Transaction Message</th>
                                             </tr>
                                             <c:forEach items="${payoutLandingForm.purchaseOrders}" var="item" varStatus="status">
                                                 <tr>
-                                                    <td>${status.count}</td>
                                                     <td>
+                                                        <span style="display:block; font-size:13px;">${status.count}</span>
+                                                    </td>
+                                                    <td nowrap>
                                                         <span style="display:block; font-size:13px;">${item.customerName}</span>
                                                         <span style="display:block; font-size:13px;">${item.customerPhone}</span>
+                                                        <span style="display:block; font-size:13px;">Token/Order: <b style="color: #1b1b1b;">${item.tokenNumber}</b></span>
                                                     </td>
-                                                    <td>
+                                                    <td nowrap>
                                                         <span style="display:block; font-size:13px;">${item.displayName}</span>
                                                     </td>
                                                     <td>
-                                                        <span style="display:block; font-size:13px;">${item.tokenNumber}</span>
-                                                    </td>
-                                                    <td>
-                                                        <span style="display:block; font-size:13px;">${item.orderPriceForDisplay}</span>
+                                                        <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.orderPriceForDisplay}</b></span>
                                                         <c:if test="${fn:length(item.partialPayment) gt 0}">
                                                             <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
                                                         </c:if>
                                                     </td>
                                                     <td>
-                                                        <span style="display:block; font-size:13px;">${item.paymentMode.description}</span>
-                                                    </td>
-                                                    <td>
                                                         <c:choose>
                                                             <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
-                                                                <span style="display:block; font-size:13px; color: darkgreen; font-weight: bold;">${item.paymentStatus.description}</span>
+                                                                <span style="display:block; font-size:13px;"><b style="color: darkgreen;">${item.paymentStatus.description}</b></span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <span style="display:block; font-size:13px; color: darkred; font-weight: bold;">${item.paymentStatus.description}</span>
+                                                                <span style="display:block; font-size:13px;"><b style="color: darkred;">${item.paymentStatus.description}</b></span>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <span style="display:block; font-size:13px;">${item.presentOrderState.description}</span>
+                                                        <span style="display:block; font-size:13px;">Payment Mode: <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
+                                                        <span style="display:block; font-size:13px;">Order State: <b style="color: #1b1b1b;">${item.presentOrderState.description}</b></span>
                                                     </td>
                                                     <td>
-                                                        <span style="display:block; font-size:13px;">${item.transactionMessage}</span>
-                                                        <span style="display:block; font-size:13px;">${item.transactionVia}</span>
+                                                        <span style="display:block; font-size:13px;">&nbsp;${item.transactionMessage}</span>
+                                                        <span style="display:block; font-size:13px;">
+                                                            <c:choose>
+                                                                <c:when test="${item.transactionVia eq TransactionViaEnum.I}">
+                                                                    <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;Payment Through NoQueue</b></span>
+                                                                </c:when>
+                                                                <c:when test="${item.transactionVia eq TransactionViaEnum.E}">
+                                                                    <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;At Counter</b></span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span style="display:block; font-size:13px;"><b style="color: darkred;">&nbsp;N/A</b></span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </span>
+                                                        <span style="display:block; font-size:13px;">
+                                                            &nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
