@@ -57,7 +57,6 @@ public class NoQAppInitializationCheckBean {
     @Value("${ftp.location}")
     private String ftpLocation;
 
-    private Environment environment;
     private DataSource dataSource;
     private FirebaseConfig firebaseConfig;
     private RestHighLevelClient restHighLevelClient;
@@ -67,6 +66,9 @@ public class NoQAppInitializationCheckBean {
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
+
+    private String buildEnvironment;
+    private String thisIs;
 
     @Autowired
     public NoQAppInitializationCheckBean(
@@ -81,7 +83,9 @@ public class NoQAppInitializationCheckBean {
         PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP
     ) {
-        this.environment = environment;
+        this.buildEnvironment = environment.getProperty("build.env");
+        this.thisIs = environment.getProperty("thisis");
+
         this.dataSource = dataSource;
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
@@ -95,12 +99,12 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkEnvironmentIfPresent() {
-        if (StringUtils.isBlank(environment.getProperty("build.env"))) {
+        if (StringUtils.isBlank(buildEnvironment)) {
             LOG.error("Failed to find environment for build.env");
             throw new RuntimeException("Missing server environment info");
         }
         LOG.info("*************************************");
-        LOG.info("Starting server for environment={}", environment.getProperty("build.env"));
+        LOG.info("Starting server for environment={}", buildEnvironment);
     }
 
     @PostConstruct
@@ -154,8 +158,8 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkElasticIndex() {
-        LOG.info("Running on {}", environment.getProperty("thisis"));
-        if (Objects.requireNonNull(environment.getProperty("thisis")).equalsIgnoreCase("loader")) {
+        LOG.info("Running on {}", thisIs);
+        if (Objects.requireNonNull(thisIs).equalsIgnoreCase("loader")) {
             /* Delete older indices. */
             elasticAdministrationService.deleteAllPreviousIndices();
         }
@@ -187,10 +191,21 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkPaymentGateway() {
-//        boolean cashfreeSuccess = paymentGatewayService.verifyCashfree();
-        if (!true) {
+        boolean cashfreeSuccess = paymentGatewayService.verifyCashfree();
+        if (!cashfreeSuccess && buildEnvironment.equalsIgnoreCase("prod")) {
             LOG.error("Cashfree Payment Gateway could not be verified");
             throw new RuntimeException("Cashfree Payment Gateway could not be verified");
+        }
+    }
+
+    @PostConstruct
+    public void checkPayoutPaymentGateway() {
+        if (buildEnvironment.equalsIgnoreCase("prod") || buildEnvironment.equalsIgnoreCase("sandbox")) {
+            boolean cashfreeSuccess = paymentGatewayService.verifyCashfreePayout();
+            if (!cashfreeSuccess) {
+                LOG.error("Cashfree Payout could not be verified");
+                throw new RuntimeException("Cashfree Payout could not be verified");
+            }
         }
     }
 
@@ -207,7 +222,7 @@ public class NoQAppInitializationCheckBean {
 
     @PreDestroy
     public void applicationDestroy() {
-        LOG.info("Stopping Server for environment={}", environment.getProperty("build.env"));
+        LOG.info("Stopping Server for environment={}", buildEnvironment);
         LOG.info("****************** STOPPED ******************");
     }
 }
