@@ -3,6 +3,7 @@ package com.noqapp.common.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +21,31 @@ public class PaymentGatewayConfiguration {
     @Value("${cashfree.secretKey}")
     private String cashfreeSecretKey;
 
+    @Value("${cashfree.payout.sandbox.clientId}")
+    private String sandboxClientId;
+
+    @Value("${cashfree.payout.prod.clientId}")
+    private String prodClientId;
+
+    @Value("${cashfree.payout.sandbox.clientSecret}")
+    private String sandboxClientSecret;
+
+    @Value("${cashfree.payout.prod.clientSecret}")
+    private String prodClientSecret;
+
     @Bean
     public Map<String, String> cashfreeGateway() {
         return new HashMap<String, String>() {{
             put("api", cashfreeApiId);
             put("secretKey", cashfreeSecretKey);
+        }};
+    }
+
+    @Bean
+    public Map<String, String> cashfreePayoutGateway(Environment environment) {
+        return new HashMap<String, String>() {{
+            put("clientId", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientId : sandboxClientId);
+            put("clientSecret", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientSecret : sandboxClientSecret);
         }};
     }
 }
