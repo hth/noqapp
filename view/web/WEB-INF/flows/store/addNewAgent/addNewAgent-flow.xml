@@ -21,7 +21,7 @@
     <action-state id="validateUserDetails">
         <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistration, true, messageContext)" />
         <transition on="success" to="addNewAgentVerify" />
-        <transition on="failure" to="detail"/>
+        <transition on="failure" to="addNewAgent"/>
     </action-state>
 
     <view-state id="addNewAgentVerify" model="merchantRegistration">
