@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
@@ -467,13 +468,13 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Transient
     public String getOrderPriceForDisplay() {
-        return new BigDecimal(orderPrice).scaleByPowerOfTen(-2).toString();
+        return MathUtil.displayPrice(orderPrice);
     }
 
     @Transient
     public String getPartialPaymentForDisplay() {
         if (StringUtils.isNotBlank(partialPayment)) {
-            return new BigDecimal(partialPayment).scaleByPowerOfTen(-2).toString();
+            return MathUtil.displayPrice(partialPayment);
         }
 
         return "";

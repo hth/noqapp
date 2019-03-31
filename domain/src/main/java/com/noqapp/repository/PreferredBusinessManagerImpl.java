@@ -5,7 +5,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PreferredBusinessEntity;
-import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.bson.types.ObjectId;
 
@@ -53,7 +52,7 @@ public class PreferredBusinessManagerImpl implements PreferredBusinessManager {
             }
             mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for PreferredBusinessEntity={}", e);
+            LOG.error("Duplicate record entry for PreferredBusinessEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e.getMessage());
         }
     }

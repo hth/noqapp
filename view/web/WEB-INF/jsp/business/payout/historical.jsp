@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.PaymentStatusEnum, com.noqapp.domain.types.TransactionViaEnum" %>
+<%@ page import="com.noqapp.domain.types.ValidateStatusEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -55,7 +55,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Transactions</h3>
+                        <h3>Transactions: <span>${historicalTransactionForm.historicalTransaction.size()}</span></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
@@ -64,68 +64,31 @@
                             </div>
                             <div class="store-table">
                             <c:choose>
-                                <c:when test="${fn:length(payoutLandingForm.purchaseOrders) gt 0}">
+                                <c:when test="${fn:length(historicalTransactionForm.historicalTransaction) gt 0}">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <th>&nbsp;</th>
-                                            <th nowrap>Name</th>
-                                            <th nowrap>Store</th>
-                                            <th>Price</th>
-                                            <th>Payment Status</th>
-                                            <th>Transaction Detail</th>
-                                            <th>Transaction Message</th>
+                                            <th nowrap>Date</th>
+                                            <th nowrap>Through NoQueue</th>
+                                            <th>At Counter</th>
+                                            <th>Unknown</th>
                                         </tr>
-                                        <c:forEach items="${payoutLandingForm.purchaseOrders}" var="item" varStatus="status">
+                                        <c:forEach items="${historicalTransactionForm.historicalTransaction}" var="item" varStatus="status">
                                         <tr>
                                             <td>
                                                 <span style="display:block; font-size:13px;">${status.count}</span>
                                             </td>
-                                            <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.customerName}</span>
-                                                <span style="display:block; font-size:13px;">${item.customerPhone}</span>
-                                                <span style="display:block; font-size:13px;">Token/Order: <b style="color: #1b1b1b;">${item.tokenNumber}</b></span>
+                                            <td>
+                                                <span style="display:block; font-size:13px;">${item.key}</span>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.displayName}</span>
+                                                <span style="display:block; font-size:13px;">${item.value.internalTransaction}</span>
                                             </td>
-                                            <td>
-                                                <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.orderPriceForDisplay}</b></span>
-                                                <c:if test="${fn:length(item.partialPayment) gt 0}">
-                                                    <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
-                                                </c:if>
+                                            <td nowrap>
+                                                <span style="display:block; font-size:13px;">${item.value.externalTransaction}</span>
                                             </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
-                                                        <span style="display:block; font-size:13px;"><b style="color: darkgreen;">${item.paymentStatus.description}</b></span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span style="display:block; font-size:13px;"><b style="color: darkred;">${item.paymentStatus.description}</b></span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>
-                                                <span style="display:block; font-size:13px;">Payment Mode: <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
-                                                <span style="display:block; font-size:13px;">Order State: <b style="color: #1b1b1b;">${item.presentOrderState.description}</b></span>
-                                            </td>
-                                            <td>
-                                                <span style="display:block; font-size:13px;">&nbsp;${item.transactionMessage}</span>
-                                                <span style="display:block; font-size:13px;">
-                                                    <c:choose>
-                                                        <c:when test="${item.transactionVia eq TransactionViaEnum.I}">
-                                                            <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;Payment Through NoQueue</b></span>
-                                                        </c:when>
-                                                        <c:when test="${item.transactionVia eq TransactionViaEnum.E}">
-                                                            <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;At Counter</b></span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span style="display:block; font-size:13px;"><b style="color: darkred;">&nbsp;N/A</b></span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </span>
-                                                <span style="display:block; font-size:13px;">
-                                                    &nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/>
-                                                </span>
+                                            <td nowrap>
+                                                <span style="display:block; font-size:13px;">${item.value.unknownTransaction}</span>
                                             </td>
                                         </tr>
                                         </c:forEach>
@@ -133,7 +96,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <p>No transaction for the day</p>
+                                        <p>No transactions in last ${historicalTransactionForm.durationInDays} day</p>
                                     </div>
                                 </c:otherwise>
                             </c:choose>

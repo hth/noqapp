@@ -58,7 +58,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String query_by_qid_where_ps =
         "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
-            "PURCHASE_ORDER WHERE QID = ? AND PS = ?" +
+            "PURCHASE_ORDER WHERE QID = ? AND PS = ? " +
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
@@ -69,6 +69,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "AND " +
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
+
+    private static final String computeEarning =
+        "SELECT SUM(OP), DATE(C) DateOnly" +
+        " FROM " +
+        "PURCHASE_ORDER WHERE BN = ? AND PS = ? AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+        "GROUP BY DateOnly ORDER BY DateOnly DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -204,5 +210,20 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public void deleteById(String id) {
         jdbcTemplate.update(delete_by_id, id);
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays) {
+        return jdbcTemplate.query(
+            computeEarning,
+            new Object[]{bizNameId, PurchaseOrderStateEnum.PO.name(), transactionVia.name(), durationInDays},
+            (rs, rowNum) -> {
+                PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(null, null, bizNameId, null);
+                purchaseOrder.setTransactionVia(transactionVia);
+                purchaseOrder.setOrderPrice(rs.getString(1));
+                purchaseOrder.setCreated(rs.getDate(2));
+                return purchaseOrder;
+            }
+        );
     }
 }
