@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface PurchaseOrderManagerJDBC {
 
     @Mobile
     void deleteById(String id);
+
+    List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays);
 }

@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.types.TransactionViaEnum;
+import com.noqapp.repository.PayoutManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 
@@ -16,16 +18,26 @@ import java.util.List;
 @Service
 public class PayoutService {
 
+    private PayoutManager payoutManager;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
 
     @Autowired
-    public PayoutService(PurchaseOrderManager purchaseOrderManager, PurchaseOrderManagerJDBC purchaseOrderManagerJDBC) {
+    public PayoutService(
+        PayoutManager payoutManager,
+        PurchaseOrderManager purchaseOrderManager,
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC
+    ) {
+        this.payoutManager = payoutManager;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
     }
 
     public List<PurchaseOrderEntity> currentTransactions(String bizNameId) {
         return purchaseOrderManager.findByBizNameId(bizNameId);
+    }
+
+    public List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays) {
+        return purchaseOrderManagerJDBC.computeEarning(bizNameId, transactionVia, durationInDays);
     }
 }
