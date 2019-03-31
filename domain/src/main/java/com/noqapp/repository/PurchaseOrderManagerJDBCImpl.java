@@ -218,9 +218,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             computeEarning,
             new Object[]{bizNameId, PurchaseOrderStateEnum.OD.name(), transactionVia.name(), durationInDays},
             (rs, rowNum) -> {
-                PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(null, null, bizNameId, null);
-                purchaseOrder.setTransactionVia(transactionVia);
-                purchaseOrder.setOrderPrice(rs.getString(1));
+                PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(null, null, bizNameId, null)
+                    .setTransactionVia(transactionVia)
+                    .setOrderPrice(rs.getString(1));
                 purchaseOrder.setCreated(rs.getDate(2));
                 return purchaseOrder;
             }
