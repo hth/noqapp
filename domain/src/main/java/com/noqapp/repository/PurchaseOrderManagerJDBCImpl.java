@@ -216,7 +216,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     public List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays) {
         return jdbcTemplate.query(
             computeEarning,
-            new Object[]{bizNameId, PurchaseOrderStateEnum.PO.name(), transactionVia.name(), durationInDays},
+            new Object[]{bizNameId, PurchaseOrderStateEnum.OD.name(), transactionVia.name(), durationInDays},
             (rs, rowNum) -> {
                 PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(null, null, bizNameId, null);
                 purchaseOrder.setTransactionVia(transactionVia);
