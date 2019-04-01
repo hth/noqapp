@@ -33,7 +33,6 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
-import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.StatsBizStoreDailyManager;
@@ -70,7 +69,6 @@ public class QueueService {
     private BusinessUserStoreManager businessUserStoreManager;
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
     private PurchaseOrderManager purchaseOrderManager;
-    private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductService purchaseOrderProductService;
 
@@ -88,7 +86,6 @@ public class QueueService {
         BusinessUserStoreManager businessUserStoreManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         PurchaseOrderManager purchaseOrderManager,
-        PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
         PurchaseOrderProductService purchaseOrderProductService
     ) {
@@ -103,7 +100,6 @@ public class QueueService {
         this.businessUserStoreManager = businessUserStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.purchaseOrderManager = purchaseOrderManager;
-        this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductService = purchaseOrderProductService;
     }
