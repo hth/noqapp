@@ -391,24 +391,26 @@ public class JsonPurchaseOrder extends AbstractDomain {
     }
 
     public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
-        this.bizStoreId = purchaseOrder.getBizStoreId();
+        this.queueUserId = purchaseOrder.getQueueUserId();
         this.codeQR = purchaseOrder.getCodeQR();
+        this.bizStoreId = purchaseOrder.getBizStoreId();
         this.customerPhone = purchaseOrder.getCustomerPhone();
         this.deliveryAddress = purchaseOrder.getDeliveryAddress();
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.partialPayment = purchaseOrder.getPartialPayment();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
-        this.paymentMode = purchaseOrder.getPaymentMode();
-        this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.businessType = purchaseOrder.getBusinessType();
+
         this.token = purchaseOrder.getTokenNumber();
         this.customerName = purchaseOrder.getCustomerName();
 
+        this.transactionId = purchaseOrder.getTransactionId();
         this.presentOrderState = purchaseOrder.getPresentOrderState();
         this.created = DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-        this.transactionId = purchaseOrder.getTransactionId();
         this.additionalNote = purchaseOrder.getAdditionalNote();
+        this.paymentMode = purchaseOrder.getPaymentMode();
+        this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.transactionMessage = purchaseOrder.getTransactionMessage();
         this.transactionVia = purchaseOrder.getTransactionVia();
     }
