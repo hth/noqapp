@@ -297,63 +297,67 @@ public class QueueService {
 
     private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
-            JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
-                .setQueueUserId(queue.getQueueUserId())
-                .setCustomerName(queue.getCustomerName())
-                .setCustomerPhone(queue.getCustomerPhone())
-                .setQueueUserState(queue.getQueueUserState())
-                .setToken(queue.getTokenNumber())
-                .setServerDeviceId(queue.getServerDeviceId())
-                .setBusinessCustomerId(queue.getBusinessCustomerId())
-                .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
-                .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
-                .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
-                .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
-                .setRecordReferenceId(queue.getRecordReferenceId())
-                .setCreated(queue.getCreated())
-                .setTransactionId(queue.getTransactionId());
+            queuedPeople.add(getJsonQueuedPerson(queue));
+        }
+    }
 
-            if (StringUtils.isNotBlank(queue.getTransactionId())) {
-                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
-                JsonPurchaseOrder jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
-                jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
-            }
+    @Mobile
+    public JsonQueuedPerson getJsonQueuedPerson(QueueEntity queue) {
+        JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
+            .setQueueUserId(queue.getQueueUserId())
+            .setCustomerName(queue.getCustomerName())
+            .setCustomerPhone(queue.getCustomerPhone())
+            .setQueueUserState(queue.getQueueUserState())
+            .setToken(queue.getTokenNumber())
+            .setServerDeviceId(queue.getServerDeviceId())
+            .setBusinessCustomerId(queue.getBusinessCustomerId())
+            .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
+            .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+            .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
+            .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
+            .setRecordReferenceId(queue.getRecordReferenceId())
+            .setCreated(queue.getCreated())
+            .setTransactionId(queue.getTransactionId());
 
-            /* Get dependents when queue status is queued. */
-            if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
-                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
-                    UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
+        if (StringUtils.isNotBlank(queue.getTransactionId())) {
+            PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+            JsonPurchaseOrder jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+            jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
+        }
 
-                    for (String qid : guardianProfile.getQidOfDependents()) {
-                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-                        jsonQueuedPerson.addDependent(
-                            new JsonQueuedDependent()
-                                .setToken(queue.getTokenNumber())
-                                .setQueueUserId(qid)
-                                .setCustomerName(userProfile.getName())
-                                .setGuardianPhone(queue.getCustomerPhone())
-                                .setGuardianQueueUserId(queue.getQueueUserId())
-                                .setQueueUserState(queue.getQueueUserState())
-                                .setAge(userProfile.getAgeAsString())
-                                .setGender(userProfile.getGender()));
-                    }
+        /* Get dependents when queue status is queued. */
+        if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
+            if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
 
-                    /* Add Guardian at the end. */
+                for (String qid : guardianProfile.getQidOfDependents()) {
+                    UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
                     jsonQueuedPerson.addDependent(
                         new JsonQueuedDependent()
                             .setToken(queue.getTokenNumber())
-                            .setQueueUserId(guardianProfile.getQueueUserId())
-                            .setCustomerName(guardianProfile.getName())
+                            .setQueueUserId(qid)
+                            .setCustomerName(userProfile.getName())
                             .setGuardianPhone(queue.getCustomerPhone())
                             .setGuardianQueueUserId(queue.getQueueUserId())
                             .setQueueUserState(queue.getQueueUserState())
-                            .setAge(guardianProfile.getAgeAsString())
-                            .setGender(guardianProfile.getGender()));
+                            .setAge(userProfile.getAgeAsString())
+                            .setGender(userProfile.getGender()));
                 }
-            }
 
-            queuedPeople.add(jsonQueuedPerson);
+                /* Add Guardian at the end. */
+                jsonQueuedPerson.addDependent(
+                    new JsonQueuedDependent()
+                        .setToken(queue.getTokenNumber())
+                        .setQueueUserId(guardianProfile.getQueueUserId())
+                        .setCustomerName(guardianProfile.getName())
+                        .setGuardianPhone(queue.getCustomerPhone())
+                        .setGuardianQueueUserId(queue.getQueueUserId())
+                        .setQueueUserState(queue.getQueueUserState())
+                        .setAge(guardianProfile.getAgeAsString())
+                        .setGender(guardianProfile.getGender()));
+            }
         }
+        return jsonQueuedPerson;
     }
 
     private void populateInJsonQueuePersonTVList(List<JsonQueuedPersonTV> jsonQueuedPersonTVList, List<QueueEntity> queues) {
