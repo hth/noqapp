@@ -149,6 +149,15 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public QueueEntity findByTransactionId(String codeQR, String transactionId, String qid) {
+        return mongoTemplate.findOne(
+            query(where("QR").is(codeQR).and("TI").is(transactionId).and("QID").is(qid)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void deleteReferenceToTransactionId(String codeQR, String transactionId) {
         mongoTemplate.remove(
             query(where("QR").is(codeQR).and("TI").is(transactionId)),
