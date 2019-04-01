@@ -200,7 +200,7 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkPayoutPaymentGateway() {
-        if (buildEnvironment.equalsIgnoreCase("prod")) {
+        if (buildEnvironment.equalsIgnoreCase("prod") || buildEnvironment.equalsIgnoreCase("sandbox")) {
             boolean cashfreeSuccess = paymentGatewayService.verifyCashfreePayout();
             if (!cashfreeSuccess) {
                 LOG.error("Cashfree Payout could not be verified");
