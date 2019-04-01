@@ -5,14 +5,13 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
-import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
-import com.noqapp.domain.json.JsonPurchaseOrderProduct;
+import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonQueueHistorical;
 import com.noqapp.domain.json.JsonQueueHistoricalList;
 import com.noqapp.domain.json.JsonQueuePersonList;
@@ -33,6 +32,7 @@ import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -49,7 +49,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -72,6 +71,8 @@ public class QueueService {
     private StatsBizStoreDailyManager statsBizStoreDailyManager;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseOrderProductManager purchaseOrderProductManager;
+    private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    private PurchaseOrderProductService purchaseOrderProductService;
 
     @Autowired
     public QueueService(
@@ -87,7 +88,9 @@ public class QueueService {
         BusinessUserStoreManager businessUserStoreManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         PurchaseOrderManager purchaseOrderManager,
-        PurchaseOrderProductManager purchaseOrderProductManager
+        PurchaseOrderProductManager purchaseOrderProductManager,
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+        PurchaseOrderProductService purchaseOrderProductService
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -101,6 +104,8 @@ public class QueueService {
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
+        this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
+        this.purchaseOrderProductService = purchaseOrderProductService;
     }
 
     @Mobile
@@ -180,7 +185,21 @@ public class QueueService {
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
-            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore);
+
+            /* Find any orders if available. */
+            JsonPurchaseOrder jsonPurchaseOrder = null;
+            if (StringUtils.isNotBlank(queue.getTransactionId())) {
+                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+                if (null == purchaseOrder) {
+                    String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? qid : queue.getGuardianQid();
+                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
+                    jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                } else {
+                    jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+                }
+            }
+
+            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore, jsonPurchaseOrder);
 
             /* Set display image based on business type. */
             jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
@@ -300,14 +319,8 @@ public class QueueService {
 
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
                 PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
-
-                List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
-                List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
-                for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
-                    jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
-                }
-
-                jsonQueuedPerson.setJsonPurchaseOrder(PurchaseOrderService.populatePurchaseOrder(purchaseOrder, jsonPurchaseOrderProducts));
+                JsonPurchaseOrder jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+                jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
             }
 
             /* Get dependents when queue status is queued. */

@@ -103,11 +103,14 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty("bc")
     private String bizCategoryName;
 
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
+
     public JsonQueueHistorical() {
         //Required default constructor
     }
 
-    public JsonQueueHistorical(QueueEntity queue, BizStoreEntity bizStore) {
+    public JsonQueueHistorical(QueueEntity queue, BizStoreEntity bizStore, JsonPurchaseOrder jsonPurchaseOrder) {
         this.codeQR = queue.getCodeQR();
         this.queueUserId = queue.getQueueUserId();
         this.tokenNumber = queue.getTokenNumber();
@@ -129,6 +132,8 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.town = bizStore.getTown();
         this.countryShortName = bizStore.getCountryShortName();
         this.bizCategoryId = bizStore.getBizCategoryId();
+
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
     }
 
     public String getBizCategoryName() {

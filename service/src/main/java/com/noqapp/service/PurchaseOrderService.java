@@ -121,6 +121,7 @@ public class PurchaseOrderService {
     private NLPService nlpService;
     private MailService mailService;
     private CashfreeService cashfreeService;
+    private PurchaseOrderProductService purchaseOrderProductService;
 
     private ExecutorService executorService;
 
@@ -143,7 +144,8 @@ public class PurchaseOrderService {
         TransactionService transactionService,
         NLPService nlpService,
         MailService mailService,
-        CashfreeService cashfreeService
+        CashfreeService cashfreeService,
+        PurchaseOrderProductService purchaseOrderProductService
     ) {
         this.bizStoreManager = bizStoreManager;
         this.businessUserManager = businessUserManager;
@@ -163,6 +165,7 @@ public class PurchaseOrderService {
         this.nlpService = nlpService;
         this.mailService = mailService;
         this.cashfreeService = cashfreeService;
+        this.purchaseOrderProductService = purchaseOrderProductService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -772,57 +775,7 @@ public class PurchaseOrderService {
     }
 
     private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
-        jsonPurchaseOrders.add(populateJsonPurchaseOrder(purchaseOrder));
-    }
-
-    @Mobile
-    public JsonPurchaseOrder populateJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
-        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
-        List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
-        for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
-            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
-        }
-
-        return populatePurchaseOrder(purchaseOrder, jsonPurchaseOrderProducts);
-    }
-
-    static JsonPurchaseOrder populatePurchaseOrder(PurchaseOrderEntity purchaseOrder, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts) {
-        return new JsonPurchaseOrder()
-            .setQueueUserId(purchaseOrder.getQueueUserId())
-            .setCodeQR(purchaseOrder.getCodeQR())
-            .setBizStoreId(purchaseOrder.getBizStoreId())
-            .setCustomerPhone(purchaseOrder.getCustomerPhone())
-            .setDeliveryAddress(purchaseOrder.getDeliveryAddress())
-            .setStoreDiscount(purchaseOrder.getStoreDiscount())
-            .setPartialPayment(purchaseOrder.getPartialPayment())
-            .setOrderPrice(purchaseOrder.getOrderPrice())
-            .setDeliveryMode(purchaseOrder.getDeliveryMode())
-            .setPaymentMode(purchaseOrder.getPaymentMode())
-            .setBusinessType(purchaseOrder.getBusinessType())
-            .setJsonPurchaseOrderProducts(jsonPurchaseOrderProducts)
-            //Serving Number not set for Merchant
-            .setToken(purchaseOrder.getTokenNumber())
-            .setCustomerName(purchaseOrder.getCustomerName())
-            //ExpectedServiceBegin not set for Merchant
-            .setTransactionId(purchaseOrder.getTransactionId())
-            .setPresentOrderState(purchaseOrder.getPresentOrderState())
-            .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setAdditionalNote(purchaseOrder.getAdditionalNote())
-            .setPaymentMode(purchaseOrder.getPaymentMode())
-            .setPaymentStatus(purchaseOrder.getPaymentStatus())
-            .setTransactionMessage(purchaseOrder.getTransactionMessage())
-            .setTransactionVia(purchaseOrder.getTransactionVia());
-    }
-
-    @Mobile
-    public JsonPurchaseOrder populateHistoricalJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
-        List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
-        List<PurchaseOrderProductEntity> products = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
-        for (PurchaseOrderProductEntity purchaseOrderProduct : products) {
-            jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
-        }
-
-        return populatePurchaseOrder(purchaseOrder, jsonPurchaseOrderProducts);
+        jsonPurchaseOrders.add(purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder));
     }
 
     /** Formulates and send messages to FCM. */
@@ -1336,7 +1289,7 @@ public class PurchaseOrderService {
         }
         sendMailWhenSentimentIsNegative(codeQR, token, ratingCount, review, sentimentType);
 
-        LOG.info("Review update status={} codeQR={} token={} ratingCount={} hoursSaved={} did={} qid={} review={}",
+        LOG.info("Review update status={} codeQR={} token={} ratingCount={} did={} qid={} review={}",
             reviewSubmitStatus,
             codeQR,
             token,
