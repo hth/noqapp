@@ -85,6 +85,7 @@ import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.PreferredBusinessService;
+import com.noqapp.service.PurchaseOrderProductService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
@@ -120,6 +121,7 @@ public class ITest extends RealMongoForITest {
     protected MedicalFileService medicalFileService;
     protected MedicalTransactionService medicalTransactionService;
     protected StatsCronService statsCronService;
+    protected PurchaseOrderProductService purchaseOrderProductService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -213,6 +215,7 @@ public class ITest extends RealMongoForITest {
             queueManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
 
         accountService = new AccountService(
             5,
@@ -250,7 +253,8 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             statsBizStoreDailyManager,
             purchaseOrderManager,
-            purchaseOrderProductManager
+            purchaseOrderManagerJDBC,
+            purchaseOrderProductService
         );
 
         bizService = new BizService(

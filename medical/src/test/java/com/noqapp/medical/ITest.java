@@ -43,14 +43,14 @@ import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.ProfessionalProfileManager;
+import com.noqapp.repository.PublishArticleManager;
+import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerImpl;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerImpl;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
-import com.noqapp.repository.PublishArticleManager;
-import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerImpl;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -94,6 +94,7 @@ import com.noqapp.service.MailService;
 import com.noqapp.service.NLPService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.PurchaseOrderProductService;
 import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ReviewService;
@@ -192,6 +193,7 @@ public class ITest extends RealMongoForITest {
     protected StoreCategoryService storeCategoryService;
     protected TransactionService transactionService;
     protected NLPService nlpService;
+    protected PurchaseOrderProductService purchaseOrderProductService;
 
     protected ApiHealthService apiHealthService;
     protected ApiHealthNowManager apiHealthNowManager;
@@ -259,6 +261,7 @@ public class ITest extends RealMongoForITest {
             queueManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
 
         accountService = new AccountService(
             5,
@@ -296,7 +299,8 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             statsBizStoreDailyManager,
             purchaseOrderManager,
-            purchaseOrderProductManager
+            purchaseOrderManagerJDBC,
+            purchaseOrderProductService
         );
 
         bizService = new BizService(
@@ -364,7 +368,8 @@ public class ITest extends RealMongoForITest {
             transactionService,
             nlpService,
             mailService,
-            cashfreeService
+            cashfreeService,
+            purchaseOrderProductService
         );
     }
 }
