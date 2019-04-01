@@ -590,4 +590,9 @@ public class QueueService {
         populateInJsonQueuePersonTVList(jsonQueuedPersonTVList, queues);
         return jsonQueuedPersonTVList;
     }
+
+    @Mobile
+    public QueueEntity findByTransactionId(String codeQR, String transactionId, String qid) {
+        return queueManager.findByTransactionId(codeQR, transactionId, qid);
+    }
 }

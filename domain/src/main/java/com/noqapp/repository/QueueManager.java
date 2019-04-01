@@ -28,6 +28,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     QueueEntity findOne(String codeQR, int tokenNumber);
     QueueEntity findByTransactionId(String codeQR, String transactionId);
+    QueueEntity findByTransactionId(String codeQR, String transactionId, String qid);
     void deleteReferenceToTransactionId(String codeQR, String transactionId);
 
     boolean doesExistsByQid(String codeQR, int tokenNumber, String qid);
