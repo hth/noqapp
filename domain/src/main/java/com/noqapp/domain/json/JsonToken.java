@@ -70,6 +70,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
+    @JsonProperty("ti")
+    private String transactionId;
+
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
@@ -172,6 +175,15 @@ public class JsonToken extends AbstractDomain {
         if (null != expectedServiceBegin) {
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
         }
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonToken setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 

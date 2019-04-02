@@ -38,6 +38,9 @@ public class JsonVerifyAccessPayoutResponse extends AbstractDomain {
     @JsonProperty("subCode")
     private String subCode;
 
+    @JsonProperty("message")
+    private String message;
+
     @JsonProperty("data")
     private JsonVerifyAccessPayoutData data;
 
@@ -65,6 +68,15 @@ public class JsonVerifyAccessPayoutResponse extends AbstractDomain {
 
     public JsonVerifyAccessPayoutResponse setSubCode(String subCode) {
         this.subCode = subCode;
+        return this;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public JsonVerifyAccessPayoutResponse setMessage(String message) {
+        this.message = message;
         return this;
     }
 

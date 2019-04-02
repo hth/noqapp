@@ -86,6 +86,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     /** Used Internally to modify purchase order. */
     PurchaseOrderEntity findByTransactionId(String transactionId);
+    boolean existsTransactionId(String transactionId);
     PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
 
     PurchaseOrderEntity updateOnPaymentGatewayNotification(

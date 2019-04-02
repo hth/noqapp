@@ -1311,7 +1311,17 @@ public class PurchaseOrderService {
     }
 
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
+        if (StringUtils.isBlank(transactionId)) {
+            return null;
+        }
         return purchaseOrderManager.findByTransactionId(transactionId);
+    }
+
+    public boolean existsTransactionId(String transactionId) {
+        if (StringUtils.isBlank(transactionId)) {
+            return false;
+        }
+        return purchaseOrderManager.existsTransactionId(transactionId);
     }
 
     public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
