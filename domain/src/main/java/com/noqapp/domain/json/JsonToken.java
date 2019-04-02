@@ -6,6 +6,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -71,6 +72,7 @@ public class JsonToken extends AbstractDomain {
     private String expectedServiceBegin;
 
     @JsonProperty("ti")
+    @JsonIgnore
     private String transactionId;
 
     @JsonProperty("po")
