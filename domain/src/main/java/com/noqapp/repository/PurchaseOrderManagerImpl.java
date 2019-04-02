@@ -424,6 +424,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public boolean existsTransactionId(String transactionId) {
+        return mongoTemplate.exists(
+            query(where("TI").is(transactionId)),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
         return mongoTemplate.findOne(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId)

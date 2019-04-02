@@ -308,7 +308,8 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                    .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                    .setTransactionId(queue.getTransactionId());
             }
 
             TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
@@ -322,7 +323,8 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
-                .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                .setTransactionId(queue.getTransactionId());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
@@ -357,7 +359,8 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(expectedServiceBegin);
+            .setExpectedServiceBegin(expectedServiceBegin)
+            .setTransactionId(queue.getTransactionId());
     }
 
     Date computeExpectedServiceBeginTime(
