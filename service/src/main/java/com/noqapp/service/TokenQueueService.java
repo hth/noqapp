@@ -493,14 +493,16 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
-                .setCustomerName(queue.getCustomerName());
+                .setCustomerName(queue.getCustomerName())
+                .setTransactionId(queue.getTransactionId());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
-            .setToken(tokenQueue.getLastNumber());
+            .setToken(tokenQueue.getLastNumber())
+            .setTransactionId(queue.getTransactionId());
     }
 
     /**
@@ -528,14 +530,16 @@ public class TokenQueueService {
                 .setServingNumber(serving)
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
-                .setCustomerName(queue.getCustomerName());
+                .setCustomerName(queue.getCustomerName())
+                .setTransactionId(queue.getTransactionId());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(serving)
             .setDisplayName(tokenQueue.getDisplayName())
-            .setToken(tokenQueue.getLastNumber());
+            .setToken(tokenQueue.getLastNumber())
+            .setTransactionId(queue.getTransactionId());
     }
 
     /**

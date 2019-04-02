@@ -1143,14 +1143,16 @@ public class PurchaseOrderService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
-                .setCustomerName(purchaseOrder.getCustomerName());
+                .setCustomerName(purchaseOrder.getCustomerName())
+                .setTransactionId(purchaseOrder.getTransactionId());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
-            .setToken(tokenQueue.getLastNumber());
+            .setToken(tokenQueue.getLastNumber())
+            .setTransactionId(purchaseOrder.getTransactionId());
     }
 
     /**
@@ -1178,14 +1180,16 @@ public class PurchaseOrderService {
                 .setServingNumber(purchaseOrder.getTokenNumber())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
-                .setCustomerName(purchaseOrder.getCustomerName());
+                .setCustomerName(purchaseOrder.getCustomerName())
+                .setTransactionId(purchaseOrder.getTransactionId());
         }
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(purchaseOrder.getTokenNumber())
             .setDisplayName(tokenQueue.getDisplayName())
-            .setToken(tokenQueue.getLastNumber());
+            .setToken(tokenQueue.getLastNumber())
+            .setTransactionId(purchaseOrder.getTransactionId());
     }
 
     @Mobile
