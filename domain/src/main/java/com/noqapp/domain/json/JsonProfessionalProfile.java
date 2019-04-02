@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.data.annotation.Transient;
-
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,8 +41,7 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonProfessionalProfile extends AbstractDomain {
 
-    /* Name is not part of professional profile. */
-    @Transient
+    /* Name is not part of professional profile. Its set from user profile. */
     @JsonProperty("nm")
     private String name;
 
