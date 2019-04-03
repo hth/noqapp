@@ -54,7 +54,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "AND " +
@@ -313,7 +313,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     .setRatingCount(rs.getInt(1))
                     .setHoursSaved(rs.getInt(2))
                     .setReview(rs.getString(3));
-                queue.setCreated(rs.getDate(4));
+                queue.setCreated(rs.getDate(5));
                 return queue;
             }
         );
@@ -330,7 +330,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                     .setRatingCount(rs.getInt(1))
                     .setHoursSaved(rs.getInt(2))
                     .setReview(rs.getString(3));
-                queue.setCreated(rs.getDate(4));
+                queue.setCreated(rs.getDate(5));
                 return queue;
             }
         );
