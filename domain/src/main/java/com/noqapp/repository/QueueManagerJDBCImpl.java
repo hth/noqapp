@@ -86,7 +86,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
-        "SELECT RA, HR, RV, QID, DATE(C)" +
+        "SELECT RA, HR, RV, QID, C" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND RA <> 0 " +
@@ -95,7 +95,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByBizNameId =
-        "SELECT RA, HR, RV, QID, DATE(C)" +
+        "SELECT RA, HR, RV, QID, C" +
             " FROM " +
             "QUEUE WHERE BN = ? " +
             "AND RA <> 0 " +
