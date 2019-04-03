@@ -46,14 +46,19 @@ public class JsonReview extends AbstractDomain {
     @JsonProperty("rs")
     private boolean reviewShow;
 
+    @JsonProperty("c")
+    private String created;
+
     public JsonReview() {
         //Required default constructor
     }
 
-    public JsonReview(int ratingCount, String review, String profileImage, String name) {
+    public JsonReview(int ratingCount, String review, String profileImage, String name, boolean reviewShow, String created) {
         this.ratingCount = ratingCount;
         this.review = review;
         this.profileImage = profileImage;
         this.name = CommonUtil.abbreviateName(name);
+        this.reviewShow = reviewShow;
+        this.created = created;
     }
 }
