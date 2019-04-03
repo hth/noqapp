@@ -86,7 +86,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
-        "SELECT RA, HR, RV, QID" +
+        "SELECT RA, HR, RV, QID, C" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND RA <> 0 " +
@@ -95,7 +95,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByBizNameId =
-        "SELECT RA, HR, RV, QID" +
+        "SELECT RA, HR, RV, QID, C" +
             " FROM " +
             "QUEUE WHERE BN = ? " +
             "AND RA <> 0 " +
@@ -308,10 +308,15 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.query(
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
-            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
-                .setRatingCount(rs.getInt(1))
-                .setHoursSaved(rs.getInt(2))
-                .setReview(rs.getString(3)));
+            (rs, rowNum) -> {
+                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                    .setRatingCount(rs.getInt(1))
+                    .setHoursSaved(rs.getInt(2))
+                    .setReview(rs.getString(3));
+                queue.setCreated(rs.getDate(4));
+                return queue;
+            }
+        );
     }
 
     @Override
@@ -320,10 +325,15 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.query(
             findReviewsByBizNameId,
             new Object[]{bizNameId, reviewLimitedToDays},
-            (rs, rowNum) -> new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
-                .setRatingCount(rs.getInt(1))
-                .setHoursSaved(rs.getInt(2))
-                .setReview(rs.getString(3)));
+            (rs, rowNum) -> {
+                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                    .setRatingCount(rs.getInt(1))
+                    .setHoursSaved(rs.getInt(2))
+                    .setReview(rs.getString(3));
+                queue.setCreated(rs.getDate(4));
+                return queue;
+            }
+        );
     }
 
     @Override
