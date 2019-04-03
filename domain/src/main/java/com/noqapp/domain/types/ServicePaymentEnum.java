@@ -5,7 +5,6 @@ package com.noqapp.domain.types;
  * 2019-03-13 11:45
  */
 public enum ServicePaymentEnum {
-    N("N", "Not Required"),
     R("R", "Required"),
     O("O", "Optional");
 
