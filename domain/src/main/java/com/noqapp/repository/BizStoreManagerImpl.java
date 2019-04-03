@@ -447,7 +447,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query(where("QR").is(codeQR)),
             entityUpdate(update("PP", 0)
                 .set("CF", 0)
-                .set("SP", ServicePaymentEnum.N)
+                .set("SP", ServicePaymentEnum.O)
                 .set("EP", false)),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,

@@ -225,7 +225,7 @@ public class BizStoreEntity extends BaseEntity {
     private int cancellationPrice;
 
     @Field("SP")
-    private ServicePaymentEnum servicePayment = ServicePaymentEnum.N;
+    private ServicePaymentEnum servicePayment = ServicePaymentEnum.O;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/

@@ -1,3 +1,7 @@
+### Change April 03 2019
+
+    db.BIZ_STORE.update({"SP" : "N"},  { $set : {"SP" : "O"}}, false, true);  
+
 ### Change March 11 2019
 
     db.BIZ_STORE.update({}, {$unset:{"CQ":1}}, false, true);   
