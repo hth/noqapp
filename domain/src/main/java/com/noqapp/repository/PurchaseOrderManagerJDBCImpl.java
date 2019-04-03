@@ -62,7 +62,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findReviewsByCodeQR =
-        "SELECT RA, RV, QID, C" +
+        "SELECT RA, RV, QID, DATE(C)" +
             " FROM " +
             "PURCHASE_ORDER WHERE QR = ? " +
             "AND RA <> 0 " +
