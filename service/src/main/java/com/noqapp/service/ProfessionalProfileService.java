@@ -152,7 +152,7 @@ public class ProfessionalProfileService {
 
                 Map<String, JsonReviewList> reviews = new HashMap<>();
                 for (String codeQR : codeQRs) {
-                    reviews.put(codeQR, reviewService.findQueueReviews(codeQR));
+                    reviews.put(codeQR, reviewService.findQueueReviews(codeQR, null));
                 }
                 return new JsonProfessionalProfile()
                     .setName(userProfile.getName())
