@@ -36,6 +36,9 @@ public class JsonReviewList extends AbstractDomain {
     @JsonProperty("ar")
     private int aggregateRatingCount;
 
+    @JsonProperty ("qr")
+    private String codeQR;
+
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
     }
@@ -61,6 +64,15 @@ public class JsonReviewList extends AbstractDomain {
 
     public JsonReviewList addRatingCount(int aggregateRatingCount) {
         this.aggregateRatingCount += aggregateRatingCount;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonReviewList setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 }
