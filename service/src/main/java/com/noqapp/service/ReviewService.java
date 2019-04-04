@@ -64,7 +64,7 @@ public class ReviewService {
     }
 
     @Mobile
-    public JsonReviewList findQueueReviews(String codeQR, String displayName) {
+    public JsonReviewList findQueueReviews(String codeQR) {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
         try {
             List<QueueEntity> jdbcQueues = queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
@@ -75,9 +75,9 @@ public class ReviewService {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
         }
 
-        JsonReviewList jsonReviewList = new JsonReviewList().setDisplayName(displayName);
+        JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
-            populatedReviews(jsonReviewList, queue.getId(), queue.getRatingCount(), queue.getReview(), queue.getQueueUserId(), queue.getCreated());
+            populatedReviews(jsonReviewList, queue.getRatingCount(), queue.getReview(), queue.getQueueUserId(), queue.getCreated());
         }
 
         return jsonReviewList;
@@ -99,7 +99,6 @@ public class ReviewService {
         for (QueueEntity queue : queues) {
             populatedReviews(
                 jsonReviewList,
-                queue.getId(),
                 queue.getRatingCount(),
                 queue.getReview(),
                 queue.getQueueUserId(),
@@ -111,7 +110,7 @@ public class ReviewService {
 
 
     @Mobile
-    public JsonReviewList findOrderReviews(String codeQR, String displayName) {
+    public JsonReviewList findOrderReviews(String codeQR) {
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
         try {
             List<PurchaseOrderEntity> jdbcPurchaseOrders = purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
@@ -126,7 +125,6 @@ public class ReviewService {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             populatedReviews(
                 jsonReviewList,
-                purchaseOrder.getId(),
                 purchaseOrder.getRatingCount(),
                 purchaseOrder.getReview(),
                 purchaseOrder.getQueueUserId(),
@@ -136,7 +134,7 @@ public class ReviewService {
         return jsonReviewList;
     }
 
-    private void populatedReviews(JsonReviewList jsonReviewList, String id, int ratingCount, String review, String qid, Date created) {
+    private void populatedReviews(JsonReviewList jsonReviewList, int ratingCount, String review, String qid, Date created) {
         UserProfileEntity userProfile = null;
         if (null != qid) {
             userProfile = userProfileManager.findByQueueUserId(qid);
@@ -144,7 +142,6 @@ public class ReviewService {
 
         jsonReviewList.addJsonReview(
             new JsonReview(
-                id,
                 ratingCount,
                 review,
                 userProfile == null ? "" : userProfile.getProfileImage(),

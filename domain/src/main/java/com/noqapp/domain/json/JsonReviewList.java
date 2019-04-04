@@ -30,23 +30,11 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonReviewList extends AbstractDomain {
 
-    @JsonProperty("d")
-    private String displayName;
-
     @JsonProperty("rs")
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
     @JsonProperty("ar")
     private int aggregateRatingCount;
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public JsonReviewList setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;

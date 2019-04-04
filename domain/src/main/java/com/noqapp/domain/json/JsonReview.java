@@ -28,9 +28,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonReview extends AbstractDomain {
 
-    @JsonProperty("id")
-    private String id;
-
     @JsonProperty("ra")
     private int ratingCount;
 
@@ -56,8 +53,7 @@ public class JsonReview extends AbstractDomain {
         //Required default constructor
     }
 
-    public JsonReview(String id, int ratingCount, String review, String profileImage, String name, boolean reviewShow, String created) {
-        this.id = id;
+    public JsonReview(int ratingCount, String review, String profileImage, String name, boolean reviewShow, String created) {
         this.ratingCount = ratingCount;
         this.review = review;
         this.profileImage = profileImage;
