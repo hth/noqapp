@@ -75,7 +75,7 @@ public class ReviewService {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
         }
 
-        JsonReviewList jsonReviewList = new JsonReviewList();
+        JsonReviewList jsonReviewList = new JsonReviewList().setCodeQR(codeQR);
         for (QueueEntity queue : queues) {
             populatedReviews(jsonReviewList, queue.getId(), queue.getRatingCount(), queue.getReview(), queue.getQueueUserId(), queue.getCreated());
         }
@@ -122,7 +122,7 @@ public class ReviewService {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
         }
 
-        JsonReviewList jsonReviewList = new JsonReviewList();
+        JsonReviewList jsonReviewList = new JsonReviewList().setCodeQR(codeQR);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             populatedReviews(
                 jsonReviewList,
