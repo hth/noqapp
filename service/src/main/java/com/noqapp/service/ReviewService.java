@@ -64,7 +64,7 @@ public class ReviewService {
     }
 
     @Mobile
-    public JsonReviewList findQueueReviews(String codeQR, String displayName) {
+    public JsonReviewList findQueueReviews(String codeQR) {
         List<QueueEntity> queues = queueManager.findReviews(codeQR);
         try {
             List<QueueEntity> jdbcQueues = queueManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
@@ -75,7 +75,7 @@ public class ReviewService {
             LOG.error("Failed getting historical reason={}", e.getLocalizedMessage(), e);
         }
 
-        JsonReviewList jsonReviewList = new JsonReviewList().setDisplayName(displayName);
+        JsonReviewList jsonReviewList = new JsonReviewList();
         for (QueueEntity queue : queues) {
             populatedReviews(jsonReviewList, queue.getId(), queue.getRatingCount(), queue.getReview(), queue.getQueueUserId(), queue.getCreated());
         }
@@ -111,7 +111,7 @@ public class ReviewService {
 
 
     @Mobile
-    public JsonReviewList findOrderReviews(String codeQR, String displayName) {
+    public JsonReviewList findOrderReviews(String codeQR) {
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findReviews(codeQR);
         try {
             List<PurchaseOrderEntity> jdbcPurchaseOrders = purchaseOrderManagerJDBC.findReviews(codeQR, reviewLimitedToDays);
