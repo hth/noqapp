@@ -65,4 +65,76 @@ public class JsonReview extends AbstractDomain {
         this.reviewShow = reviewShow;
         this.created = created;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public JsonReview setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public JsonReview setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public JsonReview setReview(String review) {
+        this.review = review;
+        return this;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonReview setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public JsonReview setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonReview setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public boolean isReviewShow() {
+        return reviewShow;
+    }
+
+    public JsonReview setReviewShow(boolean reviewShow) {
+        this.reviewShow = reviewShow;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonReview setCreated(String created) {
+        this.created = created;
+        return this;
+    }
 }
