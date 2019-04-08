@@ -424,6 +424,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", customerPhone='" + customerPhone + '\'' +
             ", deliveryAddress='" + deliveryAddress + '\'' +
             ", storeDiscount=" + storeDiscount +
+            ", partialPayment='" + partialPayment + '\'' +
             ", orderPrice='" + orderPrice + '\'' +
             ", deliveryMode=" + deliveryMode +
             ", paymentMode=" + paymentMode +
@@ -439,7 +440,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", created='" + created + '\'' +
             ", additionalNote='" + additionalNote + '\'' +
             ", transactionMessage='" + transactionMessage + '\'' +
+            ", transactionVia=" + transactionVia +
             ", jsonResponseWithCFToken=" + jsonResponseWithCFToken +
+            ", customized=" + customized +
             '}';
     }
 }

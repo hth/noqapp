@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @Document(collection = "M_RECORD")
 @CompoundIndexes(value = {
         @CompoundIndex(name = "m_record_idx", def = "{'QID' : 1}", unique = false),
-        @CompoundIndex(name = "m_record_qr_idx", def = "{'QR' : 1}", unique = false),
+        @CompoundIndex(name = "m_record_qr_idx", def = "{'QR' : 1}", unique = false, sparse = true),
 })
 public class MedicalRecordEntity extends BaseEntity {
 
