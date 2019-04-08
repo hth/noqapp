@@ -225,7 +225,7 @@ public class QueueService {
         return jsonQueueHistoricalList;
     }
 
-    public long deleteByCodeQR(String codeQR) {
+    long deleteByCodeQR(String codeQR) {
         return queueManager.deleteByCodeQR(codeQR);
     }
 
