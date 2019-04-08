@@ -63,6 +63,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -223,6 +224,39 @@ public class MedicalRecordService {
         }
 
         medicalRecordManager.save(medicalRecord);
+    }
+
+    @Mobile
+    public void addMedicalRecordWhenExternal(JsonMedicalRecord jsonRecord) {
+        try {
+            Assert.isNull(jsonRecord.getDiagnosedById(), "Cannot contain Diagnosed By Id");
+            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
+            if (null == medicalRecord) {
+                medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
+                /* Setting its own ObjectId when not set. */
+                medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
+                    ? CommonUtil.generateHexFromObjectId()
+                    : jsonRecord.getRecordReferenceId());
+            }
+
+            medicalRecordManager.save(medicalRecord);
+
+            if (null != jsonRecord.getMedicalPathologiesLists()) {
+                populateWithPathologies(jsonRecord, medicalRecord);
+            }
+
+            if (null != jsonRecord.getMedicalRadiologyLists()) {
+                populateWithMedicalRadiologies(jsonRecord, medicalRecord);
+            }
+
+            LOG.info("Saved medical record={}", medicalRecord);
+        } catch (ExistingLabResultException e) {
+            LOG.error("Failed to modify medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
+            throw e;
+        } catch (Exception e) {
+            LOG.error("Failed to add medical record reason={} {}", e.getLocalizedMessage(), jsonRecord, e);
+            throw e;
+        }
     }
 
     @Mobile
