@@ -655,6 +655,9 @@ public class PurchaseOrderService {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo));
                 break;
+            case Q:
+                //Do Nothing
+                break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
@@ -666,6 +669,9 @@ public class PurchaseOrderService {
         switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, tokenNumber));
+                break;
+            case Q:
+                //Do Nothing
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());

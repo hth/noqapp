@@ -551,6 +551,7 @@ public class TokenQueueService {
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
                 break;
             case O:
+                //Do Nothing
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
@@ -567,6 +568,7 @@ public class TokenQueueService {
                 executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
                 break;
             case O:
+                //Do Nothing
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
