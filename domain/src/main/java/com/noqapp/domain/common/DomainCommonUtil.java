@@ -1,5 +1,6 @@
 package com.noqapp.domain.common;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.cashfree.PaymentModeCFEnum;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 public class DomainCommonUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DomainCommonUtil.class);
 
+    @Mobile
     public static PaymentModeEnum derivePaymentMode(String paymentModeOfCashfree) {
         PaymentModeEnum paymentMode;
         switch (PaymentModeCFEnum.valueOf(paymentModeOfCashfree)) {

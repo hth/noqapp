@@ -333,7 +333,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     public PurchaseOrderEntity cancelOrderByClient(String qid, String transactionId) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.PO)),
-            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO).set("PY", PaymentStatusEnum.PR)),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
@@ -376,7 +376,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     public PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("QR").is(codeQR)),
-            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)),
+            entityUpdate(update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO).set("PY", PaymentStatusEnum.PR)),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
