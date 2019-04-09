@@ -17,7 +17,8 @@ import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
-import com.noqapp.service.exceptions.PurchaseOrderPartialException;
+import com.noqapp.service.exceptions.PurchaseOrderRefundCashException;
+import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.payment.CashfreeService;
 
 import com.mongodb.ClientSessionOptions;
@@ -169,7 +170,12 @@ public class TransactionService {
         PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
         if (StringUtils.isNotBlank(purchaseOrderBeforeCancel.getPartialPayment())) {
             LOG.warn("Refund on partial order is prevented {}", transactionId);
-            throw new PurchaseOrderPartialException("Refund failed for partial order");
+            throw new PurchaseOrderRefundPartialException("Refund failed for partial order");
+        }
+
+        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode()) {
+            LOG.warn("Cash amount cannot be refund. Cancel is prevented {} by client. Visit merchant", transactionId);
+            throw new PurchaseOrderRefundCashException("Refund failed for partial order");
         }
 
         if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
