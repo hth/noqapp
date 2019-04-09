@@ -48,6 +48,7 @@ import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -112,6 +113,7 @@ public class PurchaseOrderService {
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    private QueueManagerJDBC queueManagerJDBC;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
     private RegisteredDeviceManager registeredDeviceManager;
@@ -134,6 +136,7 @@ public class PurchaseOrderService {
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
+        QueueManagerJDBC queueManagerJDBC,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
         StoreProductService storeProductService,
@@ -156,6 +159,7 @@ public class PurchaseOrderService {
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
+        this.queueManagerJDBC = queueManagerJDBC;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -372,6 +376,17 @@ public class PurchaseOrderService {
             throw new RuntimeException("Store not found");
         }
 
+        boolean freeService = false;
+        if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS && 0 < bizStore.getFreeWithinDays()) {
+            freeService = isThisFreeService(qid, bizStore);
+            if (freeService) {
+                /* When its a free service set the order price as 0. */
+                jsonPurchaseOrder
+                    .setOrderPrice("0")
+                    .setCustomized(true);
+            }
+        }
+
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
@@ -405,7 +420,8 @@ public class PurchaseOrderService {
             } else {
                 purchaseOrderProduct
                     .setProductName(jsonPurchaseOrderProduct.getProductName())
-                    .setProductPrice(jsonPurchaseOrderProduct.getProductPrice());
+                    .setProductPrice(jsonPurchaseOrderProduct.getProductPrice())
+                    .setProductDiscount(freeService ? jsonPurchaseOrderProduct.getProductPrice() : 0);
             }
 
             purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
@@ -484,6 +500,12 @@ public class PurchaseOrderService {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
             throw new PurchaseOrderFailException("Failed creating order");
         }
+    }
+
+    /** Check is service has to be free when follow up lies withing specified days. */
+    private boolean isThisFreeService(String qid, BizStoreEntity bizStore) {
+        Date lastVisited = queueManagerJDBC.clientVisitedStoreDate(bizStore.getCodeQR(), qid);
+        return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate()) <= bizStore.getFreeWithinDays();
     }
 
     @Mobile
@@ -633,6 +655,9 @@ public class PurchaseOrderService {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo));
                 break;
+            case Q:
+                //Do Nothing
+                break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
@@ -644,6 +669,9 @@ public class PurchaseOrderService {
         switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case O:
                 executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, tokenNumber));
+                break;
+            case Q:
+                //Do Nothing
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());

@@ -37,6 +37,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -175,10 +176,13 @@ public class TransactionService {
             return purchaseOrderManager.cancelOrderByClientWhenNotPaid(qid, transactionId);
         }
 
+        /* Invoke payment gateway when number is positive and greater than zero. */
+        boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
+
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
-                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode()) {
+                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() && priceIsPositive) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                         .setRefundNote("Refund initiated by client")
@@ -188,10 +192,10 @@ public class TransactionService {
                     if (!jsonResponseRefund.isOk()) {
                         LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
                         throw new FailedTransactionException("Failed response from Cashfree");
-                    } else {
-                        return purchaseOrderManager.cancelOrderByClient(qid, transactionId);
                     }
                 }
+
+                return purchaseOrderManager.cancelOrderByClient(qid, transactionId);
             } catch (DuplicateKeyException e) {
                 LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
@@ -217,7 +221,7 @@ public class TransactionService {
             );
 
             /* Initiate refund on cashfree. */
-            if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode()) {
+            if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode() && priceIsPositive) {
                 JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                     .setRefundAmount(purchaseOrder.orderPriceForTransaction())
                     .setRefundNote("Refund initiated by client")
@@ -238,11 +242,18 @@ public class TransactionService {
     }
 
     public PurchaseOrderEntity cancelPurchaseInitiatedByMerchant(String qid, String transactionId) {
+        PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
+
+        /* Invoke payment gateway when number is positive and greater than zero. */
+        boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
+
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
-                PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
-                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() && PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState()) {
+                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() &&
+                    PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState() &&
+                    priceIsPositive)
+                {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                         .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                         .setRefundNote("Refund initiated by merchant")
@@ -252,12 +263,10 @@ public class TransactionService {
                     if (!jsonResponseRefund.isOk()) {
                         LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
                         throw new FailedTransactionException("Failed response from Cashfree");
-                    } else {
-                        return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
                     }
-                } else {
-                    return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
                 }
+
+                return purchaseOrderManager.cancelOrderByMerchant(qid, transactionId);
             } catch (DuplicateKeyException e) {
                 LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
@@ -282,7 +291,10 @@ public class TransactionService {
             );
 
             /* Initiate refund on cashfree. */
-            if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode()) {
+            if (null != purchaseOrder &&
+                PaymentModeEnum.CA != purchaseOrder.getPaymentMode() &&
+                priceIsPositive)
+            {
                 JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
                     .setRefundAmount(purchaseOrder.orderPriceForTransaction())
                     .setRefundNote("Refund initiated by merchant")
