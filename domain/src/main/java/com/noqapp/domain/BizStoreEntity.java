@@ -226,6 +226,9 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field("SP")
     private ServicePaymentEnum servicePayment = ServicePaymentEnum.O;
+
+    @Field("FD")
+    private int freeWithinDays = 3;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -734,6 +737,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setServicePayment(ServicePaymentEnum servicePayment) {
         this.servicePayment = servicePayment;
+        return this;
+    }
+
+    public int getFreeWithinDays() {
+        return freeWithinDays;
+    }
+
+    public BizStoreEntity setFreeWithinDays(int freeWithinDays) {
+        this.freeWithinDays = freeWithinDays;
         return this;
     }
 
