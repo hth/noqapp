@@ -12,6 +12,7 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.json.payment.cashfree.JsonRequestRefund;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
@@ -232,7 +233,15 @@ public class TransactionService {
                     .setRefundNote("Refund initiated by client")
                     .setReferenceId(purchaseOrder.getTransactionReferenceId());
 
-                cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                if (jsonResponseRefund.isOk()) {
+                    purchaseOrder = mongoOperations.withSession(session).findAndModify(
+                        query(where("TI").is(transactionId)),
+                        entityUpdate(update("PY", PaymentStatusEnum.PR)),
+                        FindAndModifyOptions.options().returnNew(true),
+                        PurchaseOrderEntity.class
+                    );
+                }
             }
             session.commitTransaction();
             LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
@@ -305,7 +314,15 @@ public class TransactionService {
                     .setRefundNote("Refund initiated by merchant")
                     .setReferenceId(purchaseOrder.getTransactionReferenceId());
 
-                cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                if (jsonResponseRefund.isOk()) {
+                    purchaseOrder = mongoOperations.withSession(session).findAndModify(
+                        query(where("TI").is(transactionId)),
+                        entityUpdate(update("PY", PaymentStatusEnum.PR)),
+                        FindAndModifyOptions.options().returnNew(true),
+                        PurchaseOrderEntity.class
+                    );
+                }
             }
             session.commitTransaction();
             LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);
