@@ -285,7 +285,7 @@ public class PurchaseOrderService {
         PaymentModeEnum paymentMode
     ) {
         Assert.hasText(transactionId, "No transaction id found");
-        return purchaseOrderManager.updateOnPaymentGatewayNotification(
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateOnPaymentGatewayNotification(
             transactionId,
             transactionMessage,
             transactionReferenceId,
@@ -293,6 +293,10 @@ public class PurchaseOrderService {
             purchaseOrderState,
             paymentMode
         );
+
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+        return purchaseOrder;
     }
 
     @Mobile
@@ -304,13 +308,17 @@ public class PurchaseOrderService {
         PaymentModeEnum paymentMode
     ) {
         Assert.hasText(transactionId, "No transaction id found");
-        return purchaseOrderManager.updateOnCashPayment(
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateOnCashPayment(
             transactionId,
             transactionMessage,
             paymentStatus,
             purchaseOrderState,
             paymentMode
         );
+
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+        return purchaseOrder;
     }
 
     @Mobile
@@ -569,6 +577,8 @@ public class PurchaseOrderService {
             jsonPurchaseOrder.getPaymentMode()
         );
 
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return new JsonPurchaseOrder(purchaseOrder);
     }
 
