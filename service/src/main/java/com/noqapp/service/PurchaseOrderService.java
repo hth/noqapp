@@ -56,7 +56,8 @@ import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
-import com.noqapp.service.exceptions.PurchaseOrderPartialException;
+import com.noqapp.service.exceptions.PurchaseOrderRefundCashException;
+import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
@@ -226,7 +227,7 @@ public class PurchaseOrderService {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
             doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
             return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
-        } catch (PurchaseOrderPartialException e) {
+        } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundCashException e) {
             LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
             throw e;
         } catch (Exception e) {
@@ -316,8 +317,9 @@ public class PurchaseOrderService {
             paymentMode
         );
 
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
-        doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+        /* Notification not required as Merchant has the update payment and Client always fetches fresh. */
+        //TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        //doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return purchaseOrder;
     }
 
