@@ -88,4 +88,15 @@ public class JsonResponseWithCFToken extends AbstractDomain {
         this.skipPaymentGateway = skipPaymentGateway;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonResponseWithCFToken{" +
+            "status='" + status + '\'' +
+            ", message='" + message + '\'' +
+            ", cftoken='" + cftoken + '\'' +
+            ", orderAmount='" + orderAmount + '\'' +
+            ", skipPaymentGateway=" + skipPaymentGateway +
+            '}';
+    }
 }

@@ -63,4 +63,13 @@ public class JsonRequestPurchaseOrderCF extends AbstractDomain {
         this.orderCurrency = orderCurrency;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonRequestPurchaseOrderCF{" +
+            "orderId='" + orderId + '\'' +
+            ", orderAmount='" + orderAmount + '\'' +
+            ", orderCurrency='" + orderCurrency + '\'' +
+            '}';
+    }
 }
