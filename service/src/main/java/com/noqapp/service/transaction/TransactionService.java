@@ -169,21 +169,20 @@ public class TransactionService {
     public PurchaseOrderEntity cancelPurchaseInitiatedByClient(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrderBeforeCancel = purchaseOrderManager.findByTransactionId(transactionId);
         if (StringUtils.isNotBlank(purchaseOrderBeforeCancel.getPartialPayment())) {
-            LOG.warn("Refund on partial order is prevented {}", transactionId);
-            throw new PurchaseOrderRefundPartialException("Refund failed for partial order");
+            LOG.warn("Refund failed for when order includes partial payment {}", transactionId);
+            throw new PurchaseOrderRefundPartialException("Refund failed for when order includes partial payment");
         }
 
-        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode()) {
+        /* Invoke payment gateway when number is positive and greater than zero. */
+        boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
+        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode() && !priceIsPositive) {
             LOG.warn("Cash amount cannot be refund. Cancel is prevented {} by client. Visit merchant", transactionId);
-            throw new PurchaseOrderRefundCashException("Refund failed for partial order");
+            throw new PurchaseOrderRefundCashException("Refund failed when paid cash for order");
         }
 
         if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
             return purchaseOrderManager.cancelOrderByClientWhenNotPaid(qid, transactionId);
         }
-
-        /* Invoke payment gateway when number is positive and greater than zero. */
-        boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
 
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
