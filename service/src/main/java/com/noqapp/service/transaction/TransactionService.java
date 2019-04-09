@@ -176,7 +176,7 @@ public class TransactionService {
 
         /* Invoke payment gateway when number is positive and greater than zero. */
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
-        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode() && !priceIsPositive) {
+        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode() && priceIsPositive) {
             LOG.warn("Cash amount cannot be refund. Cancel is prevented {} by client. Visit merchant", transactionId);
             throw new PurchaseOrderRefundCashException("Refund failed when paid cash for order");
         }

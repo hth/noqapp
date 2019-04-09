@@ -668,7 +668,20 @@ public class PurchaseOrderService {
                 executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo));
                 break;
             case Q:
-                //Do Nothing
+                QueueStatusEnum queueStatus;
+                switch (tokenQueue.getQueueStatus()) {
+                    case D:
+                    case R:
+                        queueStatus = QueueStatusEnum.R;
+                        break;
+                    case S:
+                        queueStatus = QueueStatusEnum.S;
+                        break;
+                    default:
+                        queueStatus = QueueStatusEnum.N;
+                        break;
+                }
+                executorService.submit(() -> tokenQueueService.invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());

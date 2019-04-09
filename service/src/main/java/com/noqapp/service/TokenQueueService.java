@@ -659,11 +659,11 @@ public class TokenQueueService {
     /**
      * Formulates and send messages to FCM.
      */
-    private void invokeThreadSendMessageToTopic(
-            String codeQR,
-            QueueStatusEnum queueStatus,
-            TokenQueueEntity tokenQueue,
-            String goTo
+    void invokeThreadSendMessageToTopic(
+        String codeQR,
+        QueueStatusEnum queueStatus,
+        TokenQueueEntity tokenQueue,
+        String goTo
     ) {
         LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, FirebaseMessageTypeEnum.P);
         int timeout = 2;
