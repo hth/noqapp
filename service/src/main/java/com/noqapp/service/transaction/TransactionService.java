@@ -14,11 +14,12 @@ import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
-import com.noqapp.service.exceptions.PurchaseOrderRefundCashException;
+import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.payment.CashfreeService;
 
@@ -176,9 +177,9 @@ public class TransactionService {
 
         /* Invoke payment gateway when number is positive and greater than zero. */
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
-        if (PaymentModeEnum.CA == purchaseOrderBeforeCancel.getPaymentMode() && priceIsPositive) {
-            LOG.warn("Cash amount cannot be refund. Cancel is prevented {} by client. Visit merchant", transactionId);
-            throw new PurchaseOrderRefundCashException("Refund failed when paid cash for order");
+        if (TransactionViaEnum.E == purchaseOrderBeforeCancel.getTransactionVia() && priceIsPositive) {
+            LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+            throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
         }
 
         if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
