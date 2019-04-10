@@ -1,6 +1,7 @@
 ### Change April 03 2019
 
-    db.BIZ_STORE.update({"SP" : "N"},  { $set : {"SP" : "O"}}, false, true);  
+    db.BIZ_STORE.update({"SP" : "N"},  { $set : {"SP" : "O"}}, false, true);
+    drop index m_record_qr_idx and it re-creates with sparse
 
 ### Change March 11 2019
 
