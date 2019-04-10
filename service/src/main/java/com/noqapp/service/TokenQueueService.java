@@ -665,7 +665,7 @@ public class TokenQueueService {
         TokenQueueEntity tokenQueue,
         String goTo
     ) {
-        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, FirebaseMessageTypeEnum.P);
+        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, tokenQueue, FirebaseMessageTypeEnum.P);
         int timeout = 2;
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
