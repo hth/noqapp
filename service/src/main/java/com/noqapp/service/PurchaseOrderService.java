@@ -11,6 +11,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.StoreProductEntity;
@@ -48,6 +49,7 @@ import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
+import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
@@ -56,9 +58,9 @@ import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
+import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
-import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -114,6 +116,7 @@ public class PurchaseOrderService {
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
@@ -137,6 +140,7 @@ public class PurchaseOrderService {
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
+        QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
@@ -160,6 +164,7 @@ public class PurchaseOrderService {
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
+        this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
@@ -388,7 +393,9 @@ public class PurchaseOrderService {
 
         boolean freeService = false;
         if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS && 0 < bizStore.getFreeWithinDays()) {
-            freeService = isThisFreeService(qid, bizStore);
+            /* Find person being served to check if its the person that would get a free service. */
+            QueueEntity queue = queueManager.findOne(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getToken());
+            freeService = isThisFreeService(queue.getQueueUserId(), bizStore);
             if (freeService) {
                 /* When its a free service set the order price as 0. */
                 jsonPurchaseOrder
