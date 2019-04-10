@@ -14,11 +14,11 @@ import com.noqapp.domain.json.payment.cashfree.JsonResponseRefund;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
-import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
+import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.payment.CashfreeService;
@@ -177,9 +177,18 @@ public class TransactionService {
 
         /* Invoke payment gateway when number is positive and greater than zero. */
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
-        if (TransactionViaEnum.E == purchaseOrderBeforeCancel.getTransactionVia() && priceIsPositive) {
-            LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
-            throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+        if (priceIsPositive) {
+            switch (purchaseOrderBeforeCancel.getTransactionVia()) {
+                case E:
+                    LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                    throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+                case U:
+                    LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
+                    throw new PurchaseOrderCancelException("Cannot cancel this transaction");
+                case I:
+                default:
+                    LOG.info("Cancel and process refund for {} {}", purchaseOrderBeforeCancel.orderPriceForTransaction(), transactionId);
+            }
         }
 
         if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
