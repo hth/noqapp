@@ -334,13 +334,13 @@ public class TokenQueueService {
     /** Update QueueEntity when payment is performed. */
     @Mobile
     public JsonToken updateJsonToken(String codeQR, String transactionId) {
-        LOG.info("codeQR={} transactionId={}");
+        LOG.info("Updated Queue on Payment for codeQR={} transactionId={}", codeQR, transactionId);
         TokenQueueEntity existingStateOfTokenQueue = findByCodeQR(codeQR);
         QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);
 
         TokenQueueEntity tokenQueue;
         if (queue.getTokenNumber() <= existingStateOfTokenQueue.getLastNumber()) {
-            //This means payment is being made on existing token. Thats after token has been acquired.
+            //This means payment is being made on existing token. That is after token has been acquired.
             doActionBasedOnQueueStatus(codeQR, existingStateOfTokenQueue);
             tokenQueue = existingStateOfTokenQueue;
         } else {
