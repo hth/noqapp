@@ -515,6 +515,9 @@ public class PurchaseOrderService {
     /** Check is service has to be free when follow up lies withing specified days. */
     private boolean isThisFreeService(String qid, BizStoreEntity bizStore) {
         Date lastVisited = queueManagerJDBC.clientVisitedStoreDate(bizStore.getCodeQR(), qid);
+        if (lastVisited == null) {
+            return false;
+        }
         return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate()) <= bizStore.getFreeWithinDays();
     }
 

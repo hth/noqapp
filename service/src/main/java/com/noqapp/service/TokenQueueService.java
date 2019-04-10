@@ -335,9 +335,20 @@ public class TokenQueueService {
     @Mobile
     public JsonToken updateJsonToken(String codeQR, String transactionId) {
         LOG.info("codeQR={} transactionId={}");
-        TokenQueueEntity tokenQueue = getNextToken(codeQR);
-        doActionBasedOnQueueStatus(codeQR, tokenQueue);
+        TokenQueueEntity existingStateOfTokenQueue = findByCodeQR(codeQR);
         QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);
+
+        TokenQueueEntity tokenQueue;
+        if (queue.getTokenNumber() <= existingStateOfTokenQueue.getLastNumber()) {
+            //This means payment is being made on existing token. Thats after token has been acquired.
+            doActionBasedOnQueueStatus(codeQR, existingStateOfTokenQueue);
+            tokenQueue = existingStateOfTokenQueue;
+        } else {
+            //This means payment is being made when getting a new token.
+            TokenQueueEntity newTokenQueue = getNextToken(codeQR);
+            doActionBasedOnQueueStatus(codeQR, newTokenQueue);
+            tokenQueue = newTokenQueue;
+        }
 
         /*
          * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.

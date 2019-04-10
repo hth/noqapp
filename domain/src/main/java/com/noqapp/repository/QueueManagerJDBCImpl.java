@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -293,7 +294,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     @Override
     public Date clientVisitedStoreDate(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
-        return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid}, Date.class);
+        try {
+            return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid}, Date.class);
+        } catch (EmptyResultDataAccessException e) {
+            //TODO fix this error or query
+            return null;
+        }
     }
 
     @Override
