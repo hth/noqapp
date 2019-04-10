@@ -245,12 +245,7 @@ public class TransactionService {
 
                 JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
                 if (jsonResponseRefund.isOk()) {
-                    purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                        query(where("TI").is(transactionId)),
-                        entityUpdate(update("PY", PaymentStatusEnum.PR)),
-                        FindAndModifyOptions.options().returnNew(true),
-                        PurchaseOrderEntity.class
-                    );
+                    purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                 }
             }
             session.commitTransaction();
@@ -274,19 +269,30 @@ public class TransactionService {
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
-                if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() &&
-                    PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState() &&
-                    priceIsPositive)
-                {
-                    JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
-                        .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
-                        .setRefundNote("Refund initiated by merchant")
-                        .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
-                    JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
-                    LOG.info("Refund {}", jsonResponseRefund.toString());
-                    if (!jsonResponseRefund.isOk()) {
-                        LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
-                        throw new FailedTransactionException("Failed response from Cashfree");
+                if (priceIsPositive && PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState()) {
+                    switch (purchaseOrderBeforeCancel.getTransactionVia()) {
+                        case E:
+                            /* Complete refund when external as its initiated by merchant */
+                            break;
+                        case U:
+                            LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
+                            throw new PurchaseOrderCancelException("Cannot cancel this transaction");
+                        case I:
+                            JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                                .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
+                                .setRefundNote("Refund initiated by merchant")
+                                .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
+
+                            JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                            LOG.info("Refund {}", jsonResponseRefund.toString());
+                            if (!jsonResponseRefund.isOk()) {
+                                LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+                                throw new FailedTransactionException("Failed response from Cashfree");
+                            }
+                            break;
+                        default:
+                            LOG.error("Reached unsupported condition reason={}", purchaseOrderBeforeCancel.getTransactionVia());
+                            throw new UnsupportedOperationException("Does not support " + purchaseOrderBeforeCancel.getTransactionVia());
                     }
                 }
 
@@ -314,24 +320,34 @@ public class TransactionService {
                 PurchaseOrderEntity.class
             );
 
-            /* Initiate refund on cashfree. */
-            if (null != purchaseOrder &&
-                PaymentModeEnum.CA != purchaseOrder.getPaymentMode() &&
-                priceIsPositive)
-            {
-                JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
-                    .setRefundAmount(purchaseOrder.orderPriceForTransaction())
-                    .setRefundNote("Refund initiated by merchant")
-                    .setReferenceId(purchaseOrder.getTransactionReferenceId());
+            /* Check if refund on cashfree has to be initiated. */
+            if (priceIsPositive && PurchaseOrderStateEnum.CO == purchaseOrder.getPresentOrderState()) {
+                switch (purchaseOrderBeforeCancel.getTransactionVia()) {
+                    case E:
+                        purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
+                        break;
+                    case U:
+                        LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
+                        throw new PurchaseOrderCancelException("Cannot cancel this transaction");
+                    case I:
+                        JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+                            .setRefundAmount(purchaseOrder.orderPriceForTransaction())
+                            .setRefundNote("Refund initiated by merchant")
+                            .setReferenceId(purchaseOrder.getTransactionReferenceId());
 
-                JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
-                if (jsonResponseRefund.isOk()) {
-                    purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                        query(where("TI").is(transactionId)),
-                        entityUpdate(update("PY", PaymentStatusEnum.PR)),
-                        FindAndModifyOptions.options().returnNew(true),
-                        PurchaseOrderEntity.class
-                    );
+                        JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+                        LOG.info("Refund {}", jsonResponseRefund.toString());
+                        if (!jsonResponseRefund.isOk()) {
+                            LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+                            throw new FailedTransactionException("Failed response from Cashfree");
+                        } else {
+                            purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
+                        }
+                        break;
+                    default:
+                        LOG.error("Reached unsupported condition reason={}", purchaseOrderBeforeCancel.getTransactionVia());
+                        throw new UnsupportedOperationException("Does not support " + purchaseOrderBeforeCancel.getTransactionVia());
+
                 }
             }
             session.commitTransaction();
@@ -344,5 +360,14 @@ public class TransactionService {
         } finally {
             session.close();
         }
+    }
+
+    private PurchaseOrderEntity markPaymentStatusAsRefund(String transactionId, ClientSession session) {
+        return mongoOperations.withSession(session).findAndModify(
+            query(where("TI").is(transactionId)),
+            entityUpdate(update("PY", PaymentStatusEnum.PR)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class
+        );
     }
 }
