@@ -245,12 +245,7 @@ public class TransactionService {
 
                 JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
                 if (jsonResponseRefund.isOk()) {
-                    purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                        query(where("TI").is(transactionId)),
-                        entityUpdate(update("PY", PaymentStatusEnum.PR)),
-                        FindAndModifyOptions.options().returnNew(true),
-                        PurchaseOrderEntity.class
-                    );
+                    purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                 }
             }
             session.commitTransaction();
@@ -324,15 +319,10 @@ public class TransactionService {
             );
 
             /* Check if refund on cashfree has to be initiated. */
-            if (priceIsPositive && purchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
+            if (priceIsPositive && PurchaseOrderStateEnum.CO == purchaseOrder.getPresentOrderState()) {
                 switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                     case E:
-                        purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                            query(where("TI").is(transactionId)),
-                            entityUpdate(update("PY", PaymentStatusEnum.PR)),
-                            FindAndModifyOptions.options().returnNew(true),
-                            PurchaseOrderEntity.class
-                        );
+                        purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                         break;
                     case U:
                         LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
@@ -345,12 +335,7 @@ public class TransactionService {
 
                         JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
                         if (jsonResponseRefund.isOk()) {
-                            purchaseOrder = mongoOperations.withSession(session).findAndModify(
-                                query(where("TI").is(transactionId)),
-                                entityUpdate(update("PY", PaymentStatusEnum.PR)),
-                                FindAndModifyOptions.options().returnNew(true),
-                                PurchaseOrderEntity.class
-                            );
+                            purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                         }
                         break;
                     default:
@@ -369,5 +354,14 @@ public class TransactionService {
         } finally {
             session.close();
         }
+    }
+
+    private PurchaseOrderEntity markPaymentStatusAsRefund(String transactionId, ClientSession session) {
+        return mongoOperations.withSession(session).findAndModify(
+            query(where("TI").is(transactionId)),
+            entityUpdate(update("PY", PaymentStatusEnum.PR)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class
+        );
     }
 }
