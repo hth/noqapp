@@ -272,6 +272,7 @@ public class TransactionService {
                 if (priceIsPositive && PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState()) {
                     switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                         case E:
+                            /* Complete refund when external as its initiated by merchant */
                             break;
                         case U:
                             LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
@@ -281,6 +282,7 @@ public class TransactionService {
                                 .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
                                 .setRefundNote("Refund initiated by merchant")
                                 .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
+
                             JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
                             LOG.info("Refund {}", jsonResponseRefund.toString());
                             if (!jsonResponseRefund.isOk()) {
@@ -334,7 +336,11 @@ public class TransactionService {
                             .setReferenceId(purchaseOrder.getTransactionReferenceId());
 
                         JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
-                        if (jsonResponseRefund.isOk()) {
+                        LOG.info("Refund {}", jsonResponseRefund.toString());
+                        if (!jsonResponseRefund.isOk()) {
+                            LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+                            throw new FailedTransactionException("Failed response from Cashfree");
+                        } else {
                             purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                         }
                         break;
