@@ -1,6 +1,7 @@
 package com.noqapp.service.exceptions;
 
 /**
+ * Product Not Found exception.
  * hitender
  * 2019-03-19 16:02
  */
