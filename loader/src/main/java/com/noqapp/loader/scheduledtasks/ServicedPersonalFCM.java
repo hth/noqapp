@@ -1,8 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static com.noqapp.common.utils.DateUtil.SDF_DD_MMM_YYYY;
-
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
@@ -10,14 +7,8 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.common.ComposeMessagesForFCM;
 import com.noqapp.domain.json.fcm.JsonMessage;
-import com.noqapp.domain.json.fcm.data.JsonClientData;
-import com.noqapp.domain.json.fcm.data.JsonClientOrderData;
-import com.noqapp.domain.json.fcm.data.JsonData;
-import com.noqapp.domain.json.fcm.data.JsonTopicData;
-import com.noqapp.domain.types.DeviceTypeEnum;
-import com.noqapp.domain.types.FirebaseMessageTypeEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.BizStoreManager;
@@ -31,8 +22,6 @@ import com.noqapp.service.StatsCronService;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +30,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,11 +38,11 @@ import java.util.List;
  * User: hitender
  * Date: 3/6/17 6:39 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class ServicedPersonalFCM {
@@ -79,27 +67,27 @@ public class ServicedPersonalFCM {
 
     @Autowired
     public ServicedPersonalFCM(
-            @Value ("${ServicedPersonalFCM.sendPersonalNotification.switch}")
-            String sendPersonalNotificationSwitch,
+        @Value("${ServicedPersonalFCM.sendPersonalNotification.switch}")
+        String sendPersonalNotificationSwitch,
 
-            @Value ("${ServicedPersonalFCM.numberOfAttemptsToSendFCM}")
-            int numberOfAttemptsToSendFCM,
+        @Value("${ServicedPersonalFCM.numberOfAttemptsToSendFCM}")
+        int numberOfAttemptsToSendFCM,
 
-            @Value ("${ServicedPersonalFCM.afterHour}")
-            int afterHour,
+        @Value("${ServicedPersonalFCM.afterHour}")
+        int afterHour,
 
-            @Value ("${ServicedPersonalFCM.beforeHour}")
-            int beforeHour,
+        @Value("${ServicedPersonalFCM.beforeHour}")
+        int beforeHour,
 
-            QueueManager queueManager,
-            PurchaseOrderManager purchaseOrderManager,
-            TokenQueueManager tokenQueueManager,
-            RegisteredDeviceManager registeredDeviceManager,
-            MedicalRecordManager medicalRecordManager,
-            UserProfileManager userProfileManager,
-            BizStoreManager bizStoreManager,
-            FirebaseMessageService firebaseMessageService,
-            StatsCronService statsCronService
+        QueueManager queueManager,
+        PurchaseOrderManager purchaseOrderManager,
+        TokenQueueManager tokenQueueManager,
+        RegisteredDeviceManager registeredDeviceManager,
+        MedicalRecordManager medicalRecordManager,
+        UserProfileManager userProfileManager,
+        BizStoreManager bizStoreManager,
+        FirebaseMessageService firebaseMessageService,
+        StatsCronService statsCronService
     ) {
         this.sendPersonalNotificationSwitch = sendPersonalNotificationSwitch;
         this.numberOfAttemptsToSendFCM = numberOfAttemptsToSendFCM;
@@ -117,12 +105,12 @@ public class ServicedPersonalFCM {
         this.statsCronService = statsCronService;
     }
 
-    @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
+    @Scheduled(fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
     public void sendPersonalNotificationOnService() {
         statsCron = new StatsCronEntity(
-                ServicedPersonalFCM.class.getName(),
-                "Serviced_Client_FCM",
-                sendPersonalNotificationSwitch);
+            ServicedPersonalFCM.class.getName(),
+            "Serviced_Client_FCM",
+            sendPersonalNotificationSwitch);
 
         int found = 0, failure = 0, sent = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(sendPersonalNotificationSwitch)) {
@@ -148,7 +136,7 @@ public class ServicedPersonalFCM {
                     queueManager.increaseAttemptToSendNotificationCount(queue.getId());
                 } else {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
-                    JsonMessage jsonMessage = composeMessage(registeredDevice, tokenQueue.getTopic(), queue);
+                    JsonMessage jsonMessage = ComposeMessagesForFCM.composeMessage(registeredDevice, tokenQueue.getTopic(), queue);
                     if (firebaseMessageService.messageToTopic(jsonMessage)) {
                         queue.setNotifiedOnService(true);
                         queueManager.save(queue);
@@ -176,7 +164,7 @@ public class ServicedPersonalFCM {
         }
     }
 
-    @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
+    @Scheduled(fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnService}")
     public void sendPersonalNotificationOnDelivery() {
         statsCron = new StatsCronEntity(
             ServicedPersonalFCM.class.getName(),
@@ -204,7 +192,7 @@ public class ServicedPersonalFCM {
                     purchaseOrderManager.increaseAttemptToSendNotificationCount(purchaseOrder.getId());
                 } else {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
-                    JsonMessage jsonMessage = composeMessage(registeredDevice, tokenQueue, purchaseOrder);
+                    JsonMessage jsonMessage = ComposeMessagesForFCM.composeMessage(registeredDevice, tokenQueue, purchaseOrder);
                     if (firebaseMessageService.messageToTopic(jsonMessage)) {
                         purchaseOrder.setNotifiedOnService(true);
                         purchaseOrderManager.save(purchaseOrder);
@@ -232,7 +220,7 @@ public class ServicedPersonalFCM {
         }
     }
 
-    @Scheduled (fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnFollowUp}")
+    @Scheduled(fixedDelayString = "${loader.ServicedPersonalFCM.sendPersonalNotificationOnFollowUp}")
     public void sendPersonalNotificationOnMedicalFollowUp() {
         statsCron = new StatsCronEntity(
             ServicedPersonalFCM.class.getName(),
@@ -261,7 +249,7 @@ public class ServicedPersonalFCM {
                         skipped++;
                     } else {
                         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(medicalRecord.getCodeQR());
-                        JsonMessage jsonMessage = composeMessageForMedicalFollowUp(
+                        JsonMessage jsonMessage = ComposeMessagesForFCM.composeMessageForMedicalFollowUp(
                             registeredDevice,
                             userProfile.getQueueUserId(),
                             bizStore.getCodeQR(),
@@ -294,115 +282,5 @@ public class ServicedPersonalFCM {
                 LOG.info("Complete found={} failure={} sendPersonalNotificationOnMedicalFollowUp={}", found, failure, sent);
             }
         }
-    }
-
-    /**
-     * Send personal message upon service. Include topic to help un-subscribe. Un-subscription is not a sure shot
-     * thing. This works when app is running in background(TODO confirm) or when app is in foreground(Active). If app is closed then
-     * this will not work until app is opened and this message is read.
-     *
-     * @param registeredDevice
-     * @param topic            send topic to initiate un-subscription by app. Not a sure shot thing. Will work
-     * @param queue
-     * @return
-     */
-    private JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, String topic, QueueEntity queue) {
-        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-        JsonData jsonData = new JsonClientData(FirebaseMessageTypeEnum.P, MessageOriginEnum.QR)
-                .setCodeQR(queue.getCodeQR())
-                .setQueueUserId(queue.getQueueUserId())
-                .setToken(queue.getTokenNumber())
-                .setQueueUserState(queue.getQueueUserState())
-                .setTopic(topic);
-
-        switch (queue.getQueueUserState()) {
-            case S:
-                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
-                    jsonMessage.getNotification()
-                            .setBody("How was your service?")
-                            .setTitle(queue.getDisplayName());
-                } else {
-                    jsonMessage.setNotification(null);
-                    jsonData.setBody("How was your service?")
-                            .setTitle(queue.getDisplayName());
-                }
-                break;
-            case N:
-                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
-                    jsonMessage.getNotification()
-                            .setBody("You were not served?")
-                            .setTitle(queue.getDisplayName());
-                } else {
-                    jsonMessage.setNotification(null);
-                    jsonData.setBody("You were not served?")
-                            .setTitle(queue.getDisplayName());
-                }
-                break;
-            default:
-                LOG.warn("Un-supported status reached. Skipping qid={} did={}", queue.getQueueUserId(), queue.getDid());
-                break;
-        }
-
-        jsonMessage.setData(jsonData);
-        return jsonMessage;
-    }
-
-    private JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, TokenQueueEntity tokenQueue, PurchaseOrderEntity purchaseOrder) {
-        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-        JsonData jsonData = new JsonClientOrderData(FirebaseMessageTypeEnum.P, MessageOriginEnum.OR)
-            .setCodeQR(purchaseOrder.getCodeQR())
-            .setQueueUserId(purchaseOrder.getQueueUserId())
-            .setOrderNumber(purchaseOrder.getTokenNumber())
-            .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
-            .setTopic(tokenQueue.getTopic());
-
-        switch (purchaseOrder.getPresentOrderState()) {
-            case OD:
-                if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
-                    jsonMessage.getNotification()
-                        .setBody("How was your order?")
-                        .setTitle(tokenQueue.getDisplayName());
-                } else {
-                    jsonMessage.setNotification(null);
-                    jsonData.setBody("How was your order?")
-                        .setTitle(tokenQueue.getDisplayName());
-                }
-                break;
-            default:
-                LOG.warn("Un-supported status reached. Skipping qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
-                break;
-        }
-
-        jsonMessage.setData(jsonData);
-        return jsonMessage;
-    }
-
-    private JsonMessage composeMessageForMedicalFollowUp(
-        RegisteredDeviceEntity registeredDevice,
-        String queueUserId,
-        String codeQR,
-        String displayName,
-        Date followUpDay
-    ) {
-        DateTime followUpScheduledFor = DateUtil.toDateTime(followUpDay);
-        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-        JsonData jsonData = new JsonTopicData(MessageOriginEnum.MF, FirebaseMessageTypeEnum.P).getJsonMedicalFollowUp()
-            .setQueueUserId(queueUserId)
-            .setCodeQR(codeQR)
-            .setPopFollowUpAlert(followUpScheduledFor.minusDays(2).toDate())
-            .setFollowUpDay(followUpScheduledFor.toDate());
-
-        if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
-            jsonMessage.getNotification()
-                .setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
-                .setTitle(displayName + " follow-up");
-        } else {
-            jsonMessage.setNotification(null);
-            jsonData.setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
-                .setTitle(displayName + " follow-up");
-        }
-
-        jsonMessage.setData(jsonData);
-        return jsonMessage;
     }
 }
