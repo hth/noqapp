@@ -43,6 +43,7 @@ import java.util.TimeZone;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonInclude(JsonInclude.Include.NON_NULL) /* Intentionally commented. */
 public class JsonPurchaseOrder extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonPurchaseOrder.class);
 

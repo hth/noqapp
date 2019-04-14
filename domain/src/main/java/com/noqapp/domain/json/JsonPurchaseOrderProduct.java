@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonInclude(JsonInclude.Include.NON_NULL) /* Intentionally commented. */
 public class JsonPurchaseOrderProduct extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(JsonPurchaseOrderProduct.class);
 

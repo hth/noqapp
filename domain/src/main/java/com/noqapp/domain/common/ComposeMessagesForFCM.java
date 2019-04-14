@@ -7,9 +7,12 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonTokenAndQueue;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonClientData;
 import com.noqapp.domain.json.fcm.data.JsonClientOrderData;
+import com.noqapp.domain.json.fcm.data.JsonClientTokenAndQueueData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.DeviceTypeEnum;
@@ -22,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -75,6 +79,34 @@ public class ComposeMessagesForFCM {
             default:
                 LOG.warn("Un-supported status reached. Skipping qid={} did={}", queue.getQueueUserId(), queue.getDid());
                 break;
+        }
+
+        jsonMessage.setData(jsonData);
+        return jsonMessage;
+    }
+
+    /**
+     * When merchant adds client to queue. This message is sent to client.
+     */
+    @Mobile
+    public static JsonMessage composeMessage(
+        RegisteredDeviceEntity registeredDevice,
+        List<JsonTokenAndQueue> jsonTokenAndQueues,
+        String body,
+        String title
+    ) {
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+        JsonData jsonData = new JsonClientTokenAndQueueData(FirebaseMessageTypeEnum.P, MessageOriginEnum.CQO)
+            .setTokenAndQueues(jsonTokenAndQueues);
+
+        if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
+            jsonMessage.getNotification()
+                .setBody(body)
+                .setTitle(title);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setBody(body)
+                .setTitle(title);
         }
 
         jsonMessage.setData(jsonData);
