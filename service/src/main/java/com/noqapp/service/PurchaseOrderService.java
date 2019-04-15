@@ -617,6 +617,13 @@ public class PurchaseOrderService {
         }
     }
 
+    /* Invokes a refresh when some event or activity happens that needs to be notified. */
+    public void forceRefreshOnSomeActivity(String codeQR, String transactionId) {
+        PurchaseOrderEntity purchaseOrder = findByTransactionId(transactionId);
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());;
+        doActionBasedOnQueueStatus(codeQR, purchaseOrder, tokenQueue, null);
+    }
+
     private void doActionBasedOnQueueStatus(String codeQR, PurchaseOrderEntity purchaseOrder, TokenQueueEntity tokenQueue, String goTo) {
         switch (purchaseOrder.getPresentOrderState()) {
             case IN:
