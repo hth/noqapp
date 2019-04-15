@@ -625,11 +625,12 @@ public class PurchaseOrderService {
                 sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             case VB:
+                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
+                break;
             case IB:
                 break;
             case FO:
                 sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
-                //Notify Merchant
                 sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             case PO:
@@ -666,8 +667,8 @@ public class PurchaseOrderService {
                 sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
                 break;
             default:
-                sendMessageToTopic(codeQR, purchaseOrder, tokenQueue, goTo);
-                break;
+                LOG.error("Reached un-supported condition {}", purchaseOrder.getPresentOrderState());
+                throw new UnsupportedOperationException("Reached un-supported condition");
         }
     }
 

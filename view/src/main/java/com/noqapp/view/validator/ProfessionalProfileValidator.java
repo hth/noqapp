@@ -63,7 +63,7 @@ public class ProfessionalProfileValidator implements Validator {
             case "education":
                 break;
             default:
-                LOG.error("Reached un-supported condition");
+                LOG.error("Reached un-supported condition {}", form.getAction());
                 throw new UnsupportedOperationException("Reached un-supported condition");
         }
 
