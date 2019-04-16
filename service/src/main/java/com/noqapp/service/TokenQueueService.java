@@ -418,7 +418,8 @@ public class TokenQueueService {
         return expectedServiceBegin;
     }
 
-    /* Invokes a refresh when some event or activity happens that needs to be notified. */
+    /** Invokes a refresh when some event or activity happens that needs to be notified. */
+    @Mobile
     public void forceRefreshOnSomeActivity(String codeQR) {
         doActionBasedOnQueueStatus(codeQR, findByCodeQR(codeQR));
     }
