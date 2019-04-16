@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
@@ -12,6 +13,7 @@ import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -356,11 +358,17 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    @JsonIgnore
+    public String getOrderPriceForDisplay() {
+        return MathUtil.displayPrice(orderPrice);
+    }
+
     /** Mostly used when cancelling the order. */
     public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
         return new JsonPurchaseOrder()
             .setBizStoreId(po.getBizStoreId())
             .setCodeQR(po.getCodeQR())
+            .setQueueUserId(po.getQueueUserId())
             .setCustomerPhone(po.getCustomerPhone())
             .setDeliveryAddress(po.getDeliveryAddress())
             .setStoreDiscount(po.getStoreDiscount())
