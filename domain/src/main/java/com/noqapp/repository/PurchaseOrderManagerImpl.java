@@ -365,6 +365,16 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public PurchaseOrderEntity markPaymentStatusAsRefund(String transactionId) {
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId).and("PS").is(PurchaseOrderStateEnum.CO)),
+            entityUpdate(update("PY", PaymentStatusEnum.PR)),
+            FindAndModifyOptions.options().returnNew(true),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public boolean isOrderCancelled(String codeQR, int tokenNumber) {
         return mongoTemplate.exists(
             query(where("TN").is(tokenNumber).and("QR").is(codeQR).and("PS").is(PurchaseOrderStateEnum.CO)),
