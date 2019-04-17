@@ -177,7 +177,7 @@ public class TransactionService {
 
         /* Invoke payment gateway when number is positive and greater than zero. */
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
-        if (priceIsPositive) {
+        if (priceIsPositive && null != purchaseOrderBeforeCancel.getTransactionVia()) {
             switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                 case E:
                     LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
@@ -275,7 +275,10 @@ public class TransactionService {
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
-                if (priceIsPositive && PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState()) {
+                if (priceIsPositive &&
+                    PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState() &&
+                    null != purchaseOrderBeforeCancel.getTransactionVia()
+                ) {
                     switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                         case E:
                             /* Complete refund when external as its initiated by merchant */
@@ -327,7 +330,9 @@ public class TransactionService {
             );
 
             /* Check if refund on cashfree has to be initiated. */
-            if (priceIsPositive && PurchaseOrderStateEnum.CO == purchaseOrder.getPresentOrderState()) {
+            if (null == purchaseOrderBeforeCancel.getTransactionVia()) {
+                purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
+            } else if (priceIsPositive && PurchaseOrderStateEnum.CO == purchaseOrder.getPresentOrderState()) {
                 switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                     case E:
                         purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
