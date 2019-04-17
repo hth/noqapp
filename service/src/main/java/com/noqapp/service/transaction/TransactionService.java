@@ -212,7 +212,7 @@ public class TransactionService {
                 }
 
                 PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
-                if (new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() == 0) {
+                if (!priceIsPositive) {
                     purchaseOrder = purchaseOrderManager.markPaymentStatusAsRefund(transactionId);
                 }
                 return purchaseOrder;
@@ -251,7 +251,7 @@ public class TransactionService {
                 if (jsonResponseRefund.isOk()) {
                     purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                 }
-            } else if(new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() == 0) {
+            } else if(!priceIsPositive) {
                 purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
             }
             session.commitTransaction();
