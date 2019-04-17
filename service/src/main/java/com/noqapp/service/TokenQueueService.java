@@ -339,15 +339,15 @@ public class TokenQueueService {
         QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);
 
         TokenQueueEntity tokenQueue;
-        if (queue.getTokenNumber() <= existingStateOfTokenQueue.getLastNumber()) {
-            //This means payment is being made on existing token. That is after token has been acquired.
-            doActionBasedOnQueueStatus(codeQR, existingStateOfTokenQueue);
-            tokenQueue = existingStateOfTokenQueue;
-        } else {
+        if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             //This means payment is being made when getting a new token.
             TokenQueueEntity newTokenQueue = getNextToken(codeQR);
             doActionBasedOnQueueStatus(codeQR, newTokenQueue);
             tokenQueue = newTokenQueue;
+        } else {
+            //This means payment is being made on existing token. That is after token has been acquired.
+            doActionBasedOnQueueStatus(codeQR, existingStateOfTokenQueue);
+            tokenQueue = existingStateOfTokenQueue;
         }
 
         /*
@@ -359,12 +359,19 @@ public class TokenQueueService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
         Date expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
-        boolean updatedState = queueManager.onPaymentChangeToQueue(
-            queue.getId(),
-            tokenQueue.getLastNumber(),
-            expectedServiceBegin);
+        if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
+            /*
+             * Update expectedServiceBegin and Token Number when payment is being made while getting a new token.
+             * Do not update otherwise as this will throw duplicate exception as it would update existing token with expectedServiceBegin.
+             */
+            boolean updatedState = queueManager.onPaymentChangeToQueue(
+                queue.getId(),
+                tokenQueue.getLastNumber(),
+                expectedServiceBegin);
 
-        LOG.info("Queue state updated successfully={}", updatedState);
+            LOG.info("Queue state updated successfully={}", updatedState);
+        }
+
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setToken(tokenQueue.getLastNumber())
             .setServingNumber(tokenQueue.getCurrentlyServing())
