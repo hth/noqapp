@@ -211,7 +211,11 @@ public class TransactionService {
                     }
                 }
 
-                return purchaseOrderManager.cancelOrderByClient(qid, transactionId);
+                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
+                if (new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() == 0) {
+                    purchaseOrder = purchaseOrderManager.markPaymentStatusAsRefund(transactionId);
+                }
+                return purchaseOrder;
             } catch (DuplicateKeyException e) {
                 LOG.error("Reason failed {}", e.getLocalizedMessage(), e);
                 throw new FailedTransactionException("Failed, found duplicate data " + CommonUtil.parseForDuplicateException(e.getLocalizedMessage()));
@@ -247,6 +251,8 @@ public class TransactionService {
                 if (jsonResponseRefund.isOk()) {
                     purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
                 }
+            } else if(new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() == 0) {
+                purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
             }
             session.commitTransaction();
             LOG.info("Refund completed for qid={} transactionId={}", qid, transactionId);

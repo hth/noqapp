@@ -73,6 +73,10 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     PurchaseOrderEntity cancelOrderByClientWhenNotPaid(String qid, String transactionId);
     boolean isOrderCancelled(String qid, String transactionId);
 
+    /* Supported for standalone query only. */
+    @Deprecated
+    PurchaseOrderEntity markPaymentStatusAsRefund(String transactionId);
+
     /** As cancellation is handled in transaction. */
     @Deprecated
     PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId);
