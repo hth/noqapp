@@ -236,6 +236,7 @@ public class PurchaseOrderService {
             LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
             throw e;
         } catch (Exception e) {
+            LOG.error("Failed cancellation of order reason={}", e.getLocalizedMessage(), e);
             return null;
         }
     }
