@@ -230,7 +230,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field("FD")
     private int freeFollowupDays;
 
-    @Field("DD")
+    @Field("DF")
     private int discountedFollowupDays;
 
     @Field("DP")
