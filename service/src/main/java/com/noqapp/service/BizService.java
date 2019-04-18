@@ -568,7 +568,15 @@ public class BizService {
     }
 
     @Mobile
-    public BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment) {
-        return bizStoreManager.updateServiceCost(codeQR, productPrice, cancellationPrice, servicePayment);
+    public BizStoreEntity updateServiceCost(
+        String codeQR,
+        int productPrice,
+        int cancellationPrice,
+        ServicePaymentEnum servicePayment,
+        int freeFollowupDays,
+        int discountedFollowupDays,
+        int discountedFollowupProductPrice
+    ) {
+        return bizStoreManager.updateServiceCost(codeQR, productPrice, cancellationPrice, servicePayment, freeFollowupDays, discountedFollowupDays, discountedFollowupProductPrice);
     }
 }

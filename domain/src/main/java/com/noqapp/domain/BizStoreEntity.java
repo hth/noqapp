@@ -228,7 +228,13 @@ public class BizStoreEntity extends BaseEntity {
     private ServicePaymentEnum servicePayment = ServicePaymentEnum.O;
 
     @Field("FD")
-    private int freeWithinDays = 3;
+    private int freeFollowupDays;
+
+    @Field("DD")
+    private int discountedFollowupDays;
+
+    @Field("DP")
+    private int discountedFollowupProductPrice;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -740,12 +746,30 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public int getFreeWithinDays() {
-        return freeWithinDays;
+    public int getFreeFollowupDays() {
+        return freeFollowupDays;
     }
 
-    public BizStoreEntity setFreeWithinDays(int freeWithinDays) {
-        this.freeWithinDays = freeWithinDays;
+    public BizStoreEntity setFreeFollowupDays(int freeFollowupDays) {
+        this.freeFollowupDays = freeFollowupDays;
+        return this;
+    }
+
+    public int getDiscountedFollowupDays() {
+        return discountedFollowupDays;
+    }
+
+    public BizStoreEntity setDiscountedFollowupDays(int discountedFollowupDays) {
+        this.discountedFollowupDays = discountedFollowupDays;
+        return this;
+    }
+
+    public int getDiscountedFollowupProductPrice() {
+        return discountedFollowupProductPrice;
+    }
+
+    public BizStoreEntity setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
+        this.discountedFollowupProductPrice = discountedFollowupProductPrice;
         return this;
     }
 

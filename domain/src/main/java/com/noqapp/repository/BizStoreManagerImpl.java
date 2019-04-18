@@ -453,13 +453,24 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment) {
+    public BizStoreEntity updateServiceCost(
+        String codeQR,
+        int productPrice,
+        int cancellationPrice,
+        ServicePaymentEnum servicePayment,
+        int freeFollowupDays,
+        int discountedFollowupDays,
+        int discountedFollowupProductPrice
+    ) {
         return mongoTemplate.findAndModify(
             query(where("QR").is(codeQR)),
             entityUpdate(update("EP", true)
                 .set("PP", productPrice)
                 .set("CF", cancellationPrice)
-                .set("SP", servicePayment)),
+                .set("SP", servicePayment)
+                .set("FD", freeFollowupDays)
+                .set("DD", discountedFollowupDays)
+                .set("DP", discountedFollowupProductPrice)),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE

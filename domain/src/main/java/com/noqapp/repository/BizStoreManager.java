@@ -102,6 +102,13 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void deleteSoft(String id);
 
     BizStoreEntity disableServiceCost(String codeQR);
-    BizStoreEntity updateServiceCost(String codeQR, int productPrice, int cancellationPrice, ServicePaymentEnum servicePayment);
+    BizStoreEntity updateServiceCost(
+        String codeQR,
+        int productPrice,
+        int cancellationPrice,
+        ServicePaymentEnum servicePayment,
+        int freeFollowupDays,
+        int discountedFollowupDays,
+        int discountedFollowupProductPrice);
 }
 
