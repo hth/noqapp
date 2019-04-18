@@ -393,7 +393,7 @@ public class PurchaseOrderService {
         }
 
         boolean freeService = false;
-        if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS && 0 < bizStore.getFreeWithinDays()) {
+        if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS && 0 < bizStore.getFreeFollowupDays()) {
             /* Find person being served to check if its the person that would get a free service. */
             QueueEntity queue = queueManager.findOne(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getToken());
             freeService = isThisFreeService(queue.getQueueUserId(), bizStore);
@@ -526,7 +526,7 @@ public class PurchaseOrderService {
         if (lastVisited == null) {
             return false;
         }
-        return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate()) <= bizStore.getFreeWithinDays();
+        return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate()) <= bizStore.getFreeFollowupDays();
     }
 
     @Mobile
