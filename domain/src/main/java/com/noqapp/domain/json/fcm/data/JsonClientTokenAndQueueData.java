@@ -37,6 +37,10 @@ public class JsonClientTokenAndQueueData extends JsonData {
     @JsonProperty("mo")
     private MessageOriginEnum messageOrigin;
 
+    /** Code QR of store that is originating message. */
+    @JsonProperty("qr")
+    private String codeQR;
+
     @JsonProperty ("tqs")
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
@@ -51,6 +55,15 @@ public class JsonClientTokenAndQueueData extends JsonData {
 
     public JsonClientTokenAndQueueData setMessageOrigin(MessageOriginEnum messageOrigin) {
         this.messageOrigin = messageOrigin;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonClientTokenAndQueueData setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 
