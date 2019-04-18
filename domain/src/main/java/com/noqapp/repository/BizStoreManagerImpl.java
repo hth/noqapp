@@ -469,7 +469,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 .set("CF", cancellationPrice)
                 .set("SP", servicePayment)
                 .set("FD", freeFollowupDays)
-                .set("DD", discountedFollowupDays)
+                .set("DF", discountedFollowupDays)
                 .set("DP", discountedFollowupProductPrice)),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
