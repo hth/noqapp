@@ -6,6 +6,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.shared.GeoPointOfQ;
+import com.noqapp.domain.types.AccreditationEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
@@ -174,6 +175,12 @@ public class BizStoreElastic extends AbstractDomain {
     @Transient
     @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
+
+    @Transient
+    @JsonProperty("AC")
+    private List<AccreditationEnum> accreditation = new LinkedList<AccreditationEnum>() {{
+        add(AccreditationEnum.NABHP);
+    }};
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
     @Transient
@@ -511,6 +518,15 @@ public class BizStoreElastic extends AbstractDomain {
 
     public BizStoreElastic setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public List<AccreditationEnum> getAccreditation() {
+        return accreditation;
+    }
+
+    public BizStoreElastic setAccreditation(List<AccreditationEnum> accreditation) {
+        this.accreditation = accreditation;
         return this;
     }
 

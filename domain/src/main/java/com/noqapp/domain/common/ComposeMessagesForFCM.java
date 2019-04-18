@@ -93,11 +93,13 @@ public class ComposeMessagesForFCM {
         RegisteredDeviceEntity registeredDevice,
         List<JsonTokenAndQueue> jsonTokenAndQueues,
         String body,
-        String title
+        String title,
+        String codeQR
     ) {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonClientTokenAndQueueData(FirebaseMessageTypeEnum.P, MessageOriginEnum.CQO)
-            .setTokenAndQueues(jsonTokenAndQueues);
+            .setTokenAndQueues(jsonTokenAndQueues)
+            .setCodeQR(codeQR);
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
