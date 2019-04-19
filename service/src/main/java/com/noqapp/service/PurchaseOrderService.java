@@ -392,16 +392,27 @@ public class PurchaseOrderService {
             throw new RuntimeException("Store not found");
         }
 
-        boolean freeService = false;
-        if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS && 0 < bizStore.getFreeFollowupDays()) {
-            /* Find person being served to check if its the person that would get a free service. */
+        boolean discountIfAny = false;
+        int discountedPrice = 0;
+        if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS) {
+            /* Find person being served, check if its the person that would get discounted service. */
             QueueEntity queue = queueManager.findOne(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getToken());
-            freeService = isThisFreeService(queue.getQueueUserId(), bizStore);
-            if (freeService) {
-                /* When its a free service set the order price as 0. */
-                jsonPurchaseOrder
-                    .setOrderPrice("0")
-                    .setCustomized(true);
+            Integer lastVisited = daysBetweenService(queue.getQueueUserId(), bizStore);
+            if (null != lastVisited) {
+                if (lastVisited <= bizStore.getFreeFollowupDays()) {
+                    discountIfAny = true;
+                    /* When its a free service set the order price as 0. */
+                    jsonPurchaseOrder
+                        .setOrderPrice(String.valueOf(discountedPrice))
+                        .setCustomized(true);
+                } else if (lastVisited <= bizStore.getDiscountedFollowupDays()) {
+                    discountIfAny = true;
+                    /* When it is between the specified days then set the order price. */
+                    discountedPrice = bizStore.getProductPrice() - bizStore.getDiscountedFollowupProductPrice();
+                    jsonPurchaseOrder
+                        .setOrderPrice(String.valueOf(discountedPrice))
+                        .setCustomized(true);
+                }
             }
         }
 
@@ -439,7 +450,7 @@ public class PurchaseOrderService {
                 purchaseOrderProduct
                     .setProductName(jsonPurchaseOrderProduct.getProductName())
                     .setProductPrice(jsonPurchaseOrderProduct.getProductPrice())
-                    .setProductDiscount(freeService ? jsonPurchaseOrderProduct.getProductPrice() : 0);
+                    .setProductDiscount(discountIfAny ? jsonPurchaseOrderProduct.getProductPrice() : discountedPrice);
             }
 
             purchaseOrderProduct.setProductQuantity(jsonPurchaseOrderProduct.getProductQuantity())
@@ -520,13 +531,13 @@ public class PurchaseOrderService {
         }
     }
 
-    /** Check is service has to be free when follow up lies withing specified days. */
-    private boolean isThisFreeService(String qid, BizStoreEntity bizStore) {
+    /** Days between now and previous visit. */
+    private Integer daysBetweenService(String qid, BizStoreEntity bizStore) {
         Date lastVisited = queueManagerJDBC.clientVisitedStoreDate(bizStore.getCodeQR(), qid);
         if (lastVisited == null) {
-            return false;
+            return null;
         }
-        return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate()) <= bizStore.getFreeFollowupDays();
+        return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate());
     }
 
     @Mobile
