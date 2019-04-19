@@ -225,7 +225,7 @@ public final class CommonUtil {
 
             return age;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Failed parse dob={} reason={}", dob, e.getLocalizedMessage(), e);
         }
 
         return "N/A";
