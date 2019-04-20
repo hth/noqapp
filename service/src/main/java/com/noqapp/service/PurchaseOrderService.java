@@ -811,8 +811,8 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
     }
 
-    private List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid) {
-        return purchaseOrderManager.findAllPastDeliveredOrCancelledOrders(qid);
+    private List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType) {
+        return purchaseOrderManager.findAllPastDeliveredOrCancelledOrders(qid, ignoreBusinessType);
     }
 
     @Mobile
@@ -842,13 +842,13 @@ public class PurchaseOrderService {
     public JsonPurchaseOrderHistoricalList findAllPastDeliveredOrCancelledOrdersAsJson(String qid) {
         JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList = new JsonPurchaseOrderHistoricalList();
 
-        List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid);
+        List<PurchaseOrderEntity> purchaseOrders = findAllPastDeliveredOrCancelledOrders(qid, BusinessTypeEnum.DO);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
             jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, bizStore));
         }
-        purchaseOrders = purchaseOrderManagerJDBC.getByQid(qid);
+        purchaseOrders = purchaseOrderManagerJDBC.getByQid(qid, BusinessTypeEnum.DO);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());

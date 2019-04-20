@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -30,7 +31,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid);
 
     /** Orders that have been delivered or cancelled. */
-    List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid);
+    List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType);
 
     List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR);
 

@@ -12,6 +12,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
@@ -129,9 +130,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid) {
+    public List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)
+            query(where("QID").is(qid).and("BT").ne(ignoreBusinessType)
                 .orOperator(
                     where("PS").is(PurchaseOrderStateEnum.OD),
                     where("PS").is(PurchaseOrderStateEnum.CO)

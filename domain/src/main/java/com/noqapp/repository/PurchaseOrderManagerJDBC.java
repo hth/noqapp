@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
@@ -17,7 +18,7 @@ public interface PurchaseOrderManagerJDBC {
 
     void rollbackPurchaseOrder(List<PurchaseOrderEntity> purchaseOrders);
 
-    List<PurchaseOrderEntity> getByQid(String qid);
+    List<PurchaseOrderEntity> getByQid(String qid, BusinessTypeEnum ignoreBusinessType);
 
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
