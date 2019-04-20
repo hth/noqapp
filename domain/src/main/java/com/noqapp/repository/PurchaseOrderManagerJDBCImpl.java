@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
@@ -48,7 +49,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String query_by_qid =
         "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
-            "PURCHASE_ORDER WHERE QID = ? " +
+            "PURCHASE_ORDER WHERE QID = ? AND BT <> ?" +
             "ORDER BY C DESC";
 
     private static final String query_by_qid_and_transactionId =
@@ -166,9 +167,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     }
 
     @Override
-    public List<PurchaseOrderEntity> getByQid(String qid) {
+    public List<PurchaseOrderEntity> getByQid(String qid, BusinessTypeEnum ignoreBusinessType) {
         LOG.info("Fetch historical order by qid={}", qid);
-        return jdbcTemplate.query(query_by_qid, new Object[]{qid}, new PurchaseOrderRowMapper());
+        return jdbcTemplate.query(query_by_qid, new Object[]{qid, ignoreBusinessType.getName()}, new PurchaseOrderRowMapper());
     }
 
     //TODO add sentiments "ST"
