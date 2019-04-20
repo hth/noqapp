@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -208,7 +209,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
 
     @Override
     public PurchaseOrderEntity findOrderByTransactionId(String qid, String transactionId) {
-        return jdbcTemplate.queryForObject(query_by_qid_and_transactionId, new Object[]{qid, transactionId}, new PurchaseOrderRowMapper());
+        try {
+            return jdbcTemplate.queryForObject(query_by_qid_and_transactionId, new Object[]{qid, transactionId}, new PurchaseOrderRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            //TODO fix this error or query
+            return null;
+        }
     }
 
     @Override

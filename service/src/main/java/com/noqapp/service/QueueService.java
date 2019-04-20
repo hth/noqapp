@@ -180,47 +180,52 @@ public class QueueService {
         /* Populated with data. */
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+            try {
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
 
-            /* Find any orders if available. */
-            JsonPurchaseOrder jsonPurchaseOrder = null;
-            if (StringUtils.isNotBlank(queue.getTransactionId())) {
-                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
-                if (null == purchaseOrder) {
-                    String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? qid : queue.getGuardianQid();
-                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
-                    jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
-                } else {
-                    jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
-                }
-            }
-
-            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore, jsonPurchaseOrder);
-
-            /* Set display image based on business type. */
-            jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
-
-            /* Set Category if any. */
-            switch (queue.getBusinessType()) {
-                case DO:
-                    List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
-                        bizStore.getId(),
-                        UserLevelEnum.S_MANAGER);
-                    if (!businessUsers.isEmpty()) {
-                        BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
-                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
-                        jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
+                /* Find any orders if available. */
+                JsonPurchaseOrder jsonPurchaseOrder = null;
+                if (StringUtils.isNotBlank(queue.getTransactionId())) {
+                    PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+                    if (null == purchaseOrder) {
+                        String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? qid : queue.getGuardianQid();
+                        purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
+                        jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                    } else {
+                        jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
                     }
+                }
 
-                    jsonQueueHistorical.setBizCategoryName(MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
-                    break;
-                case BK:
-                    jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
-                    break;
-                default:
-                    //Do something for category
+                JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore, jsonPurchaseOrder);
+
+                /* Set display image based on business type. */
+                jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
+
+                /* Set Category if any. */
+                switch (queue.getBusinessType()) {
+                    case DO:
+                        List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
+                            bizStore.getId(),
+                            UserLevelEnum.S_MANAGER);
+                        if (!businessUsers.isEmpty()) {
+                            BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
+                            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
+                            jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
+                        }
+
+                        jsonQueueHistorical.setBizCategoryName(MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                        break;
+                    case BK:
+                        jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                        break;
+                    default:
+                        //Do something for category
+                }
+                jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
+            } catch (Exception e) {
+                //TODO This error should not be happening. Cause needs to be investigated. For now its on Sandbox but followup on Live.
+                LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage(), e);
             }
-            jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
         }
         return jsonQueueHistoricalList;
     }
@@ -297,74 +302,84 @@ public class QueueService {
 
     private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
         for (QueueEntity queue : queues) {
-            queuedPeople.add(getJsonQueuedPerson(queue));
+            try {
+                queuedPeople.add(getJsonQueuedPerson(queue));
+            } catch (Exception e) {
+                LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage());
+            }
         }
     }
 
     @Mobile
     public JsonQueuedPerson getJsonQueuedPerson(QueueEntity queue) {
-        JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
-            .setQueueUserId(queue.getQueueUserId())
-            .setCustomerName(queue.getCustomerName())
-            .setCustomerPhone(queue.getCustomerPhone())
-            .setQueueUserState(queue.getQueueUserState())
-            .setToken(queue.getTokenNumber())
-            .setServerDeviceId(queue.getServerDeviceId())
-            .setBusinessCustomerId(queue.getBusinessCustomerId())
-            .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
-            .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
-            .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
-            .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
-            .setRecordReferenceId(queue.getRecordReferenceId())
-            .setCreated(queue.getCreated())
-            .setTransactionId(queue.getTransactionId());
+        try {
+            JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson()
+                .setQueueUserId(queue.getQueueUserId())
+                .setCustomerName(queue.getCustomerName())
+                .setCustomerPhone(queue.getCustomerPhone())
+                .setQueueUserState(queue.getQueueUserState())
+                .setToken(queue.getTokenNumber())
+                .setServerDeviceId(queue.getServerDeviceId())
+                .setBusinessCustomerId(queue.getBusinessCustomerId())
+                .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
+                .setClientVisitedThisStore(queue.hasClientVisitedThisStore())
+                .setClientVisitedThisStoreDate(queue.getClientVisitedThisStoreDate())
+                .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
+                .setRecordReferenceId(queue.getRecordReferenceId())
+                .setCreated(queue.getCreated())
+                .setTransactionId(queue.getTransactionId());
 
-        if (StringUtils.isNotBlank(queue.getTransactionId())) {
-            JsonPurchaseOrder jsonPurchaseOrder;
-            PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
-            if (purchaseOrder == null) {
-                String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid();
-                purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
-                jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
-            } else {
-                jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+            if (StringUtils.isNotBlank(queue.getTransactionId())) {
+                JsonPurchaseOrder jsonPurchaseOrder;
+                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+                if (purchaseOrder == null) {
+                    String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid();
+                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
+                    jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                } else {
+                    jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+                }
+                jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
             }
-            jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
-        }
 
-        /* Get dependents when queue status is queued. */
-        if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
-            if (StringUtils.isNotBlank(queue.getGuardianQid())) {
-                UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
+            /* Get dependents when queue status is queued. */
+            if (QueueUserStateEnum.Q == queue.getQueueUserState()) {
+                if (StringUtils.isNotBlank(queue.getGuardianQid())) {
+                    UserProfileEntity guardianProfile = userProfileManager.findByQueueUserId(queue.getGuardianQid());
 
-                for (String qid : guardianProfile.getQidOfDependents()) {
-                    UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+                    for (String qid : guardianProfile.getQidOfDependents()) {
+                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+                        jsonQueuedPerson.addDependent(
+                            new JsonQueuedDependent()
+                                .setToken(queue.getTokenNumber())
+                                .setQueueUserId(qid)
+                                .setCustomerName(userProfile.getName())
+                                .setGuardianPhone(queue.getCustomerPhone())
+                                .setGuardianQueueUserId(queue.getQueueUserId())
+                                .setQueueUserState(queue.getQueueUserState())
+                                .setAge(userProfile.getAgeAsString())
+                                .setGender(userProfile.getGender()));
+                    }
+
+                    /* Add Guardian at the end. */
                     jsonQueuedPerson.addDependent(
                         new JsonQueuedDependent()
                             .setToken(queue.getTokenNumber())
-                            .setQueueUserId(qid)
-                            .setCustomerName(userProfile.getName())
+                            .setQueueUserId(guardianProfile.getQueueUserId())
+                            .setCustomerName(guardianProfile.getName())
                             .setGuardianPhone(queue.getCustomerPhone())
                             .setGuardianQueueUserId(queue.getQueueUserId())
                             .setQueueUserState(queue.getQueueUserState())
-                            .setAge(userProfile.getAgeAsString())
-                            .setGender(userProfile.getGender()));
+                            .setAge(guardianProfile.getAgeAsString())
+                            .setGender(guardianProfile.getGender()));
                 }
-
-                /* Add Guardian at the end. */
-                jsonQueuedPerson.addDependent(
-                    new JsonQueuedDependent()
-                        .setToken(queue.getTokenNumber())
-                        .setQueueUserId(guardianProfile.getQueueUserId())
-                        .setCustomerName(guardianProfile.getName())
-                        .setGuardianPhone(queue.getCustomerPhone())
-                        .setGuardianQueueUserId(queue.getQueueUserId())
-                        .setQueueUserState(queue.getQueueUserState())
-                        .setAge(guardianProfile.getAgeAsString())
-                        .setGender(guardianProfile.getGender()));
             }
+            return jsonQueuedPerson;
+        } catch (Exception e) {
+            //TODO This error should not be happening. Cause needs to be investigated. For now its on Sandbox but followup on Live.
+            LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage(), e);
+            throw e;
         }
-        return jsonQueuedPerson;
     }
 
     private void populateInJsonQueuePersonTVList(List<JsonQueuedPersonTV> jsonQueuedPersonTVList, List<QueueEntity> queues) {
