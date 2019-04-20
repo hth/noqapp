@@ -180,47 +180,52 @@ public class QueueService {
         /* Populated with data. */
         JsonQueueHistoricalList jsonQueueHistoricalList = new JsonQueueHistoricalList();
         for (QueueEntity queue : queues) {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+            try {
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
 
-            /* Find any orders if available. */
-            JsonPurchaseOrder jsonPurchaseOrder = null;
-            if (StringUtils.isNotBlank(queue.getTransactionId())) {
-                PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
-                if (null == purchaseOrder) {
-                    String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? qid : queue.getGuardianQid();
-                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
-                    jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
-                } else {
-                    jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
-                }
-            }
-
-            JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore, jsonPurchaseOrder);
-
-            /* Set display image based on business type. */
-            jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
-
-            /* Set Category if any. */
-            switch (queue.getBusinessType()) {
-                case DO:
-                    List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
-                        bizStore.getId(),
-                        UserLevelEnum.S_MANAGER);
-                    if (!businessUsers.isEmpty()) {
-                        BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
-                        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
-                        jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
+                /* Find any orders if available. */
+                JsonPurchaseOrder jsonPurchaseOrder = null;
+                if (StringUtils.isNotBlank(queue.getTransactionId())) {
+                    PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+                    if (null == purchaseOrder) {
+                        String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? qid : queue.getGuardianQid();
+                        purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
+                        jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                    } else {
+                        jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
                     }
+                }
 
-                    jsonQueueHistorical.setBizCategoryName(MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
-                    break;
-                case BK:
-                    jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
-                    break;
-                default:
-                    //Do something for category
+                JsonQueueHistorical jsonQueueHistorical = new JsonQueueHistorical(queue, bizStore, jsonPurchaseOrder);
+
+                /* Set display image based on business type. */
+                jsonQueueHistorical.setDisplayImage(CommonHelper.getBannerImage(bizStore));
+
+                /* Set Category if any. */
+                switch (queue.getBusinessType()) {
+                    case DO:
+                        List<BusinessUserStoreEntity> businessUsers = businessUserStoreManager.findAllManagingStoreWithUserLevel(
+                            bizStore.getId(),
+                            UserLevelEnum.S_MANAGER);
+                        if (!businessUsers.isEmpty()) {
+                            BusinessUserStoreEntity businessUserStore = businessUsers.get(0);
+                            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
+                            jsonQueueHistorical.setDisplayImage(userProfile.getProfileImage());
+                        }
+
+                        jsonQueueHistorical.setBizCategoryName(MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                        break;
+                    case BK:
+                        jsonQueueHistorical.setBizCategoryName(BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription());
+                        break;
+                    default:
+                        //Do something for category
+                }
+                jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
+            } catch (Exception e) {
+                //TODO This error should not be happening. Cause needs to be investigated. For now its on Sandbox but followup on Live.
+                LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage(), e);
             }
-            jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
         }
         return jsonQueueHistoricalList;
     }

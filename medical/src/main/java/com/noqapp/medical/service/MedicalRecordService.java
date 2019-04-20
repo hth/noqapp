@@ -7,6 +7,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
@@ -51,6 +52,7 @@ import com.noqapp.medical.repository.MedicalRadiologyTestManager;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PurchaseOrderService;
@@ -93,6 +95,7 @@ public class MedicalRecordService {
     private UserProfileManager userProfileManager;
     private BizStoreManager bizStoreManager;
     private QueueManager queueManager;
+    private RegisteredDeviceManager registeredDeviceManager;
     private BusinessUserStoreService businessUserStoreService;
     private PurchaseOrderService purchaseOrderService;
     private UserMedicalProfileService userMedicalProfileService;
@@ -115,6 +118,7 @@ public class MedicalRecordService {
         UserProfileManager userProfileManager,
         BizStoreManager bizStoreManager,
         QueueManager queueManager,
+        RegisteredDeviceManager registeredDeviceManager,
         BusinessUserStoreService businessUserStoreService,
         PurchaseOrderService purchaseOrderService,
         UserMedicalProfileService userMedicalProfileService
@@ -132,6 +136,7 @@ public class MedicalRecordService {
         this.userProfileManager = userProfileManager;
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
+        this.registeredDeviceManager = registeredDeviceManager;
         this.businessUserStoreService = businessUserStoreService;
         this.purchaseOrderService = purchaseOrderService;
         this.userMedicalProfileService = userMedicalProfileService;
@@ -227,9 +232,14 @@ public class MedicalRecordService {
     }
 
     @Mobile
-    public void addMedicalRecordWhenExternal(JsonMedicalRecord jsonRecord) {
+    public void addMedicalRecordWhenExternal(JsonMedicalRecord jsonRecord, String transactionId) {
         try {
             Assert.isNull(jsonRecord.getDiagnosedById(), "Cannot contain Diagnosed By Id");
+            Assert.hasText(transactionId, "Transaction Id cannot be empty");
+
+            /* Check if business type is of Hospital or Doctor to allow adding record. */
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonRecord.getCodeQR());
+
             MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
             if (null == medicalRecord) {
                 medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
@@ -237,16 +247,44 @@ public class MedicalRecordService {
                 medicalRecord.setId(StringUtils.isBlank(jsonRecord.getRecordReferenceId())
                     ? CommonUtil.generateHexFromObjectId()
                     : jsonRecord.getRecordReferenceId());
+
+                medicalRecord.setBusinessName(bizStore.getBizName().getBusinessName());
+                medicalRecord.setBusinessType(bizStore.getBusinessType());
+                medicalRecord.setBizNameId(bizStore.getBizName().getId());
+                medicalRecord.setCodeQR(bizStore.getCodeQR());
+                medicalRecord.setFormVersion(jsonRecord.getFormVersion());
+                medicalRecord.setBizCategoryId(bizStore.getBizCategoryId());
             }
 
             medicalRecordManager.save(medicalRecord);
 
-            if (null != jsonRecord.getMedicalPathologiesLists()) {
+            String recordId = null;
+            if (null != jsonRecord.getMedicalPathologiesLists() && !jsonRecord.getMedicalPathologiesLists().isEmpty()) {
                 populateWithPathologies(jsonRecord, medicalRecord);
+                recordId = medicalRecord.getMedicalLaboratoryId();
             }
 
-            if (null != jsonRecord.getMedicalRadiologyLists()) {
+            if (null != jsonRecord.getMedicalRadiologyLists() && !jsonRecord.getMedicalRadiologyLists().isEmpty()) {
+                for (JsonMedicalRadiologyList jsonMedicalRadiologyList : jsonRecord.getMedicalRadiologyLists()) {
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.valueOf(bizStore.getBizCategoryId()));
+                }
                 populateWithMedicalRadiologies(jsonRecord, medicalRecord);
+                recordId = medicalRecord.getMedicalRadiologies().get(0);
+            }
+
+            switch (LabCategoryEnum.valueOf(bizStore.getBizCategoryId())) {
+                case PATH:
+                    medicalPathologyManager.updateWithTransactionId(recordId, transactionId);
+                    break;
+                case SCAN:
+                case XRAY:
+                case SPEC:
+                case MRI:
+                case SONO:
+                    medicalRadiologyManager.updateWithTransactionId(recordId, transactionId);
+                    break;
+                default:
+                    break;
             }
 
             LOG.info("Saved medical record={}", medicalRecord);
@@ -510,7 +548,7 @@ public class MedicalRecordService {
 
     private void populateWithMedicalRadiologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
         /* Delete Existing. */
-        if (null != medicalRecord.getMedicalRadiologies()) {
+        if (null != medicalRecord.getMedicalRadiologies() && !medicalRecord.getMedicalRadiologies().isEmpty()) {
             List<MedicalRadiologyEntity> medicalRadiologies = medicalRadiologyManager.findByIds(medicalRecord.getMedicalRadiologies());
             for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
                 medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
@@ -544,6 +582,7 @@ public class MedicalRecordService {
 
             medicalRadiologyManager.save(medicalRadiology);
             medicalRecordManager.addMedicalRadiologiesId(jsonMedicalRecord.getRecordReferenceId(), medicalRadiology.getId());
+            medicalRecord.addMedicalRadiology(medicalRadiology.getId());
 
             if (StringUtils.isNotBlank(jsonMedicalRadiologyList.getBizStoreId())) {
                 if (bizStoreManager.exists(jsonMedicalRadiologyList.getBizStoreId())) {
@@ -572,7 +611,7 @@ public class MedicalRecordService {
 
     private void populateWithPathologies(JsonMedicalRecord jsonMedicalRecord, MedicalRecordEntity medicalRecord) {
         /* Delete Existing. */
-        if (null != medicalRecord.getMedicalLaboratoryId()) {
+        if (StringUtils.isNotBlank(medicalRecord.getMedicalLaboratoryId())) {
             medicalPathologyTestManager.deleteByPathologyReferenceId(medicalRecord.getMedicalLaboratoryId());
             medicalPathologyManager.deleteHard(medicalRecord.getMedicalLaboratoryId());
             medicalRecord.setMedicalLaboratoryId(null);
@@ -602,6 +641,7 @@ public class MedicalRecordService {
 
         medicalPathologyManager.save(medicalPathology);
         medicalRecordManager.addMedicalLaboratoryId(jsonMedicalRecord.getRecordReferenceId(), medicalPathology.getId());
+        medicalRecord.setMedicalLaboratoryId(medicalPathology.getId());
 
         if (StringUtils.isNotBlank(jsonMedicalRecord.getStoreIdPathology())) {
             if (bizStoreManager.exists(jsonMedicalRecord.getStoreIdPathology())) {
@@ -1038,7 +1078,19 @@ public class MedicalRecordService {
             //.setPaymentMode(PaymentModeEnum.CA)
             .setBizStoreId(bizStoreId);
 
-        purchaseOrderService.createOrder(jsonPurchaseOrder, jsonMedicalRecord.getQueueUserId(), null, TokenServiceEnum.M);
+        RegisteredDeviceEntity registeredDevice;
+        if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+            UserProfileEntity guardianProfile = userProfileManager.findOneByPhone(userProfile.getGuardianPhone());
+            registeredDevice = registeredDeviceManager.findRecentDevice(guardianProfile.getQueueUserId());
+        } else {
+            registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+        }
+
+        purchaseOrderService.createOrder(
+            jsonPurchaseOrder,
+            jsonMedicalRecord.getQueueUserId(),
+            null == registeredDevice ? null : registeredDevice.getDeviceId(),
+            TokenServiceEnum.M);
         medicalRecordManager.addTransactionId(jsonMedicalRecord.getRecordReferenceId(), jsonPurchaseOrder.getTransactionId());
     }
 }
