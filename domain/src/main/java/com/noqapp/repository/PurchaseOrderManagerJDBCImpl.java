@@ -168,7 +168,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
 
     @Override
     public List<PurchaseOrderEntity> getByQid(String qid, BusinessTypeEnum ignoreBusinessType) {
-        LOG.info("Fetch historical order by qid={}", qid);
+        LOG.info("Fetch historical order by qid={} ignoring {}", qid, ignoreBusinessType);
         return jdbcTemplate.query(query_by_qid, new Object[]{qid, ignoreBusinessType.getName()}, new PurchaseOrderRowMapper());
     }
 
