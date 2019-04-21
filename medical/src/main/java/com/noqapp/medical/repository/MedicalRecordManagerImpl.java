@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 
 import org.bson.types.ObjectId;
@@ -62,9 +63,14 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public List<MedicalRecordEntity> historicalRecords(String qid, int limit) {
         return mongoTemplate.find(
-                query(where("QID").is(qid).and("DBI").exists(true)).limit(limit).with(new Sort(ASC, "C")),
-                MedicalRecordEntity.class,
-                TABLE
+            query(where("QID").is(qid)
+                .orOperator(
+                    where("BT").is(BusinessTypeEnum.DO).and("DBI").exists(true),
+                    where("BT").is(BusinessTypeEnum.HS)
+                )
+            ).limit(limit).with(new Sort(ASC, "C")),
+            MedicalRecordEntity.class,
+            TABLE
         );
     }
 
