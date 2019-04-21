@@ -955,10 +955,18 @@ public class MedicalRecordService {
             .setDiagnosedByDisplayName(userProfile == null ? "" : userProfile.getName())
             .setCreateDate(DateUtil.dateToString(medicalRecord.getCreated()))
             .setBusinessName(medicalRecord.getBusinessName())
-            .setBizCategoryName(medicalRecord.getBizCategoryId() == null
-                ? "NA"
-                : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription())
             .setImages(medicalRecord.getImages());
+
+        switch (medicalRecord.getBusinessType()) {
+            case HS:
+                jsonMedicalRecord.setBizCategoryName(medicalRecord.getBizCategoryId() == null ? "NA" : LabCategoryEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+                break;
+            case DO:
+                jsonMedicalRecord.setBizCategoryName(medicalRecord.getBizCategoryId() == null ? "NA" : MedicalDepartmentEnum.valueOf(medicalRecord.getBizCategoryId()).getDescription());
+                break;
+            default:
+                LOG.error("Error supporting in-correct businessType={}", medicalRecord.getBusinessType());
+        }
 
         if (null != medicalRecord.getMedicalPhysicalId()) {
             MedicalPhysicalEntity medicalPhysical = medicalPhysicalManager.findOne(medicalRecord.getMedicalPhysicalId());
