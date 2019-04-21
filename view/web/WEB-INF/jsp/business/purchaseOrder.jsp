@@ -82,9 +82,10 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
-                                                <span style="display:block;"><a
-                                                        href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
-                                                        target="_blank">Add Medical Report</a></span>
+                                                <span style="display:block;">
+                                                    <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                            target="_blank" class="add-btn" style="margin: 0;">Add Report</a>
+                                                </span>
                                                 </c:when>
                                                 <c:otherwise>
                                                     N/A
