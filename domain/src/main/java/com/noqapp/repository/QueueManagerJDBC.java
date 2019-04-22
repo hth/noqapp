@@ -41,6 +41,8 @@ public interface QueueManagerJDBC {
     @Mobile
     List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays);
 
+    List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays);
+
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType);
 

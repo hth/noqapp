@@ -86,6 +86,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
 
+    private static final String findByCodeQR =
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QR = ? " +
+            "AND " +
+            "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
+
     private static final String findReviewsByCodeQR =
         "SELECT RA, HR, RV, QID, C" +
             " FROM " +
@@ -261,8 +269,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays) {
-        LOG.info("Fetch history by codeQR={} limitedToDays={}", codeQR, limitedToDays);
+        LOG.info("Fetch history by codeQR={} and not null QID limitedToDays={}", codeQR, limitedToDays);
         return jdbcTemplate.query(findByCodeQR_AndNotNullQID, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
+    }
+
+    @Override
+    public List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays) {
+        LOG.info("Fetch history by codeQR={} limitedToDays={}", codeQR, limitedToDays);
+        return jdbcTemplate.query(findByCodeQR, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
     }
 
     @Override

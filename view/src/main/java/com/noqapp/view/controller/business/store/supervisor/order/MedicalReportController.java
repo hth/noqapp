@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -111,8 +112,13 @@ public class MedicalReportController {
     }
 
     /** Gymnastic for PRG. */
-    @GetMapping(value = "/{storeId}/{transactionId}", produces = "text/html;charset=UTF-8")
+    @GetMapping(
+        value = {"/current/{storeId}/{transactionId}", "/historical/{storeId}/{transactionId}"},
+        produces = "text/html;charset=UTF-8")
     public String landing(
+        @RequestHeader(value = "referer")
+        String referer,
+
         @PathVariable("storeId")
         ScrubbedInput storeId,
 
@@ -141,11 +147,20 @@ public class MedicalReportController {
                 model.asMap().get("resultImage"));
         }
 
-        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionIdAndBizStore(transactionId.getText(), storeId.getText());
-        if (purchaseOrder == null || purchaseOrder.getBusinessType() != BusinessTypeEnum.HS) {
-            LOG.warn("Could not find transactionId={} qid={} having access as business user", transactionId.getText(), queueUser.getQueueUserId());
-            response.sendError(SC_NOT_FOUND, "Could not find");
-            return null;
+        if (referer.contains("historical")) {
+            PurchaseOrderEntity purchaseOrder = purchaseOrderService.findHistoricalByTransactionIdAndBizStore(transactionId.getText(), storeId.getText());
+            if (purchaseOrder == null || purchaseOrder.getBusinessType() != BusinessTypeEnum.HS) {
+                LOG.warn("Could not find transactionId={} qid={} having access as business user", transactionId.getText(), queueUser.getQueueUserId());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
+        } else {
+            PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionIdAndBizStore(transactionId.getText(), storeId.getText());
+            if (purchaseOrder == null || purchaseOrder.getBusinessType() != BusinessTypeEnum.HS) {
+                LOG.warn("Could not find transactionId={} qid={} having access as business user", transactionId.getText(), queueUser.getQueueUserId());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
@@ -186,6 +201,9 @@ public class MedicalReportController {
     /** For uploading service image or pdf. */
     @PostMapping(value = "/upload", params = {"upload"})
     public String upload(
+        @RequestHeader(value = "referer")
+        String referer,
+
         @ModelAttribute("medicalReportForm")
         MedicalReportForm medicalReportForm,
 
@@ -217,12 +235,12 @@ public class MedicalReportController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
+                    return redirectTo(referer, medicalReportForm.getStoreId().getText(), medicalReportForm.getTransactionId().getText());
                 }
 
                 try {
                     medicalFileService.processReport(medicalReportForm.getTransactionId().getText(), multipartFile, medicalReportForm.getLabCategory());
-                    return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
+                    return redirectTo(referer, medicalReportForm.getStoreId().getText(),  medicalReportForm.getTransactionId().getText());
                 } catch (Exception e) {
                     LOG.error("Failed medical report upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -233,26 +251,36 @@ public class MedicalReportController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
+                return redirectTo(referer, medicalReportForm.getStoreId().getText(),  medicalReportForm.getTransactionId().getText());
             }
         }
-        return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
+
+        return redirectTo(referer, medicalReportForm.getStoreId().getText(),  medicalReportForm.getTransactionId().getText());
     }
 
     @PostMapping(value = "/upload", params = "cancel_Upload")
     public String cancel(
+        @RequestHeader(value = "referer")
+        String referer,
+
         @ModelAttribute("medicalReportForm")
         MedicalReportForm medicalReportForm
     ) {
-        return "redirect:/business/store/sup/" + medicalReportForm.getCodeQR() + ".htm";
+        if (referer.contains("historical")) {
+            return "redirect:/business/store/sup/historical/" + medicalReportForm.getCodeQR() + ".htm";
+        } else {
+            return "redirect:/business/store/sup/current/" + medicalReportForm.getCodeQR() + ".htm";
+        }
     }
 
     @PostMapping(value = "/delete")
     public String delete(
+        @RequestHeader(value = "referer")
+        String referer,
+
         @ModelAttribute("medicalReportForm")
         MedicalReportForm medicalReportForm,
 
-        HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -269,6 +297,14 @@ public class MedicalReportController {
             medicalReportForm.getTransactionId().getText(),
             medicalReportForm.getFilename().getText(),
             medicalReportForm.getLabCategory());
-        return "redirect:/business/store/sup/order/medicalReport/" + medicalReportForm.getStoreId() + "/" + medicalReportForm.getTransactionId() + ".htm";
+        return redirectTo(referer, medicalReportForm.getStoreId().getText(),  medicalReportForm.getTransactionId().getText());
+    }
+
+    private String redirectTo(String referer, String storeId, String transactionId) {
+        if (referer.contains("historical")) {
+            return "redirect:/business/store/sup/order/medicalReport/historical/" + storeId + "/" + transactionId + ".htm";
+        } else {
+            return "redirect:/business/store/sup/order/medicalReport/current/" + storeId + "/" + transactionId + ".htm";
+        }
     }
 }

@@ -78,6 +78,17 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "PURCHASE_ORDER WHERE BN = ? AND PS = ? AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
         "GROUP BY DateOnly ORDER BY DateOnly DESC";
 
+    private static final String query_by_codeQR =
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QR = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+            "ORDER BY C DESC";
+
+    private static final String query_by_transactionId_and_storeId =
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE TI = ? AND BS = ? ";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -214,6 +225,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             return jdbcTemplate.queryForObject(query_by_qid_and_transactionId, new Object[]{qid, transactionId}, new PurchaseOrderRowMapper());
         } catch (EmptyResultDataAccessException e) {
             //TODO fix this error or query
+            LOG.error("Failed to find transactionId={} qid={} reason={}", transactionId, qid, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -236,5 +248,21 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 return purchaseOrder;
             }
         );
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR, int durationInDays) {
+        return jdbcTemplate.query(query_by_codeQR, new Object[]{codeQR, durationInDays}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
+        try {
+            return jdbcTemplate.queryForObject(query_by_transactionId_and_storeId, new Object[]{transactionId, bizStoreId}, new PurchaseOrderRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            //TODO fix this error or query
+            LOG.error("Failed to find transactionId={} bizStoreId={} reason={}", transactionId, bizStoreId, e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 }

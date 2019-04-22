@@ -77,10 +77,13 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>
-                                            <a href="/business/store/sup/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
+                                            <a href="/business/store/sup/current/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
                                             <span style="display:block; font-size:13px;">${jsonTopic.businessType.description}</span>
                                         </td>
-                                        <td nowrap>${jsonTopic.queueStatus.description}</td>
+                                        <td nowrap>
+                                            <span style="display:block; font-size:13px;">Queue Status: ${jsonTopic.queueStatus.description}</span>
+                                            <span style="display:block; font-size:13px;">Total: ${jsonTopic.servingNumber}</span>
+                                        </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">New: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).previouslyVisitedClientCount}</span>
                                             <span style="display:block; font-size:13px;">Re-Visit: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).newVisitClientCount}</span>

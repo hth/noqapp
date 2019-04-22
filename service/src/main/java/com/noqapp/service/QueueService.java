@@ -268,6 +268,16 @@ public class QueueService {
         return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
+    /** Finds historical clients. */
+    public JsonQueuePersonList getByCodeQR(String codeQR, int limitedToDays) {
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+        List<QueueEntity> queues = queueManagerJDBC.getByCodeQR(codeQR, limitedToDays);
+        populateInJsonQueuePersonList(queuedPeople, queues);
+
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
     /** Finds all clients in a queue. */
     @Mobile
     public JsonQueuePersonList findAllClient(String codeQR) {
