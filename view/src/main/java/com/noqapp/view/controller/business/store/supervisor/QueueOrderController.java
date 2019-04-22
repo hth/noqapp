@@ -3,9 +3,12 @@ package com.noqapp.view.controller.business.store.supervisor;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.TokenQueueService;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,35 +46,56 @@ import javax.servlet.http.HttpServletResponse;
 public class QueueOrderController {
     private static final Logger LOG = LoggerFactory.getLogger(QueueOrderController.class);
 
+    private int durationInDays;
     private String queue;
+    private String queueHistorical;
     private String order;
+    private String orderHistorical;
 
+    private UserProfileManager userProfileManager;
     private TokenQueueService tokenQueueService;
     private QueueService queueService;
     private PurchaseOrderService purchaseOrderService;
 
     @Autowired
     public QueueOrderController(
-        @Value("${nextPage:/business/inQueue}")
+        @Value("${durationInDays:10}")
+        int durationInDays,
+
+        @Value("${queue:/business/inQueue}")
         String queue,
 
-        @Value("${nextPage:/business/purchaseOrder}")
+        @Value("${queue:/business/inQueueHistorical}")
+        String queueHistorical,
+
+        @Value("${order:/business/purchaseOrder}")
         String order,
 
+        @Value("${orderHistorical:/business/purchaseOrderHistorical}")
+        String orderHistorical,
+
+        UserProfileManager userProfileManager,
         TokenQueueService tokenQueueService,
         QueueService queueService,
         PurchaseOrderService purchaseOrderService
     ) {
+        this.durationInDays = durationInDays;
         this.queue = queue;
+        this.queueHistorical = queueHistorical;
         this.order = order;
+        this.orderHistorical = orderHistorical;
 
+        this.userProfileManager = userProfileManager;
         this.tokenQueueService = tokenQueueService;
         this.queueService = queueService;
         this.purchaseOrderService = purchaseOrderService;
     }
 
-    @GetMapping(value = "/{codeQR}", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = {"/{state}/{codeQR}"}, produces = "text/html;charset=UTF-8")
     public String landing(
+        @PathVariable("state")
+        ScrubbedInput state,
+
         @PathVariable("codeQR")
         ScrubbedInput codeQR,
 
@@ -92,12 +117,27 @@ public class QueueOrderController {
             .setCodeQR(tokenQueue.getId());
 
         String nextPage;
-        if (MessageOriginEnum.O == tokenQueue.getBusinessType().getMessageOrigin()) {
-            inQueueForm.setPurchaseOrders(purchaseOrderService.findAllOrderByCodeQR(codeQR.getText()));
-            nextPage = order;
+        if ("historical".equals(state.getText())) {
+            if (MessageOriginEnum.O == tokenQueue.getBusinessType().getMessageOrigin()) {
+                List<PurchaseOrderEntity> purchaseOrders = purchaseOrderService.findAllOrderByCodeQR(codeQR.getText(), durationInDays);
+                for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+                    UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
+                    purchaseOrder.setCustomerName(userProfile.getName());
+                }
+                inQueueForm.setPurchaseOrders(purchaseOrders);
+                nextPage = orderHistorical;
+            } else {
+                inQueueForm.setJsonQueuePersonList(queueService.getByCodeQR(codeQR.getText(), durationInDays));
+                nextPage = queueHistorical;
+            }
         } else {
-            inQueueForm.setJsonQueuePersonList(queueService.findAllClientQueuedOrAborted(codeQR.getText()));
-            nextPage = queue;
+            if (MessageOriginEnum.O == tokenQueue.getBusinessType().getMessageOrigin()) {
+                inQueueForm.setPurchaseOrders(purchaseOrderService.findAllOrderByCodeQR(codeQR.getText()));
+                nextPage = order;
+            } else {
+                inQueueForm.setJsonQueuePersonList(queueService.findAllClientQueuedOrAborted(codeQR.getText()));
+                nextPage = queue;
+            }
         }
 
         return nextPage;

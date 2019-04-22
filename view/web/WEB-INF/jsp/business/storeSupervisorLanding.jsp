@@ -77,7 +77,7 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>
-                                            <a href="/business/store/sup/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
+                                            <a href="/business/store/sup/current/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
                                             <span style="display:block; font-size:13px;">${jsonTopic.businessType.description}</span>
                                         </td>
                                         <td nowrap>

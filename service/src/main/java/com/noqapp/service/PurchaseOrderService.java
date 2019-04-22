@@ -811,6 +811,11 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findAllOrderByCodeQR(codeQR);
     }
 
+    /** Finds historical orders. */
+    public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR, int durationInDays) {
+        return purchaseOrderManagerJDBC.findAllOrderByCodeQR(codeQR, durationInDays);
+    }
+
     private List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType) {
         return purchaseOrderManager.findAllPastDeliveredOrCancelledOrders(qid, ignoreBusinessType);
     }
@@ -1413,6 +1418,10 @@ public class PurchaseOrderService {
 
     public PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
         return purchaseOrderManager.findByTransactionIdAndBizStore(transactionId, bizStoreId);
+    }
+
+    public PurchaseOrderEntity findHistoricalByTransactionIdAndBizStore(String transactionId, String bizStoreId) {
+        return purchaseOrderManagerJDBC.findByTransactionIdAndBizStore(transactionId, bizStoreId);
     }
 
     public void changePatient(String transactionId, UserProfileEntity userProfile) {

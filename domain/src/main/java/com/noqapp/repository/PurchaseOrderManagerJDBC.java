@@ -36,4 +36,7 @@ public interface PurchaseOrderManagerJDBC {
     void deleteById(String id);
 
     List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays);
+
+    List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR, int durationInDays);
+    PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
 }
