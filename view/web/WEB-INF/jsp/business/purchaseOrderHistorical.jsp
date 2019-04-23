@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.QueueUserStateEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.PurchaseOrderStateEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -81,11 +81,18 @@
                                         <td nowrap align="left"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${purchaseOrder.businessType eq BusinessTypeEnum.HS}">
-                                                <span style="display:block;">
-                                                    <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/historical/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
-                                                            target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
-                                                </span>
+                                                <c:when test="${BusinessTypeEnum.HS eq purchaseOrder.businessType}">
+                                                    <c:choose>
+                                                        <c:when test="${PurchaseOrderStateEnum.OD eq purchaseOrder.presentOrderState}">
+                                                            <span style="display:block;">
+                                                                <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/historical/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                                        target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block;">N/A</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:when>
                                                 <c:otherwise>
                                                     N/A
