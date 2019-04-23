@@ -1,6 +1,9 @@
 package com.noqapp.common.utils;
 
+import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -200,8 +203,8 @@ public final class DateUtil {
     }
 
 
-    public static String dateToStringWithTime(Date date) {
-        return dateToString_UTC(date, DTF_YYYY_MM_DD_KK_MM);
+    public static String dateToISO_8601(Date date) {
+        return DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 
     public static String dateToString_UTC(Date date, DateTimeFormatter dateTimeFormatter) {

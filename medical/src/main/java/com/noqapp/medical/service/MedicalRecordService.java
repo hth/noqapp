@@ -953,7 +953,7 @@ public class MedicalRecordService {
             .setNoteToDiagnoser(medicalRecord.getNoteToDiagnoser())
             .setDiagnosedById(medicalRecord.getDiagnosedById())
             .setDiagnosedByDisplayName(userProfile == null ? "" : userProfile.getName())
-            .setCreateDate(DateUtil.dateToStringWithTime(medicalRecord.getCreated()))
+            .setCreateDate(DateUtil.dateToISO_8601(medicalRecord.getCreated()))
             .setBusinessName(medicalRecord.getBusinessName())
             .setImages(medicalRecord.getImages());
 
@@ -1023,7 +1023,7 @@ public class MedicalRecordService {
         for (Long date : medicalRecord.getRecordAccessed().keySet()) {
             String accessedBy = medicalRecord.getRecordAccessed().get(date);
             JsonRecordAccess jsonRecordAccess = new JsonRecordAccess()
-                .setRecordAccessedDate(DateUtil.dateToStringWithTime(new Date(date)))
+                .setRecordAccessedDate(DateUtil.dateToISO_8601(new Date(date)))
                 .setRecordAccessedQid("#######");
 
             jsonRecordAccesses.add(jsonRecordAccess);
