@@ -272,6 +272,10 @@ public class TransactionService {
         /* Invoke payment gateway when number is positive and greater than zero. */
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
 
+        if (null == purchaseOrderBeforeCancel.getPaymentMode()) {
+            return purchaseOrderManager.cancelOrderByClientWhenNotPaid(qid, transactionId);
+        }
+
         //TODO(hth) this is a hack for supporting integration test
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
