@@ -1101,4 +1101,40 @@ public class MedicalRecordService {
             TokenServiceEnum.M);
         medicalRecordManager.addTransactionId(jsonMedicalRecord.getRecordReferenceId(), jsonPurchaseOrder.getTransactionId());
     }
+
+    @Mobile
+    public void deleteReminisceOfTransactionId(String transactionId) {
+        Assert.hasLength(transactionId, "Transaction Id cannot be null");
+        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId);
+        try {
+            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(purchaseOrder.getId());
+            /* Delete Existing. */
+            if (StringUtils.isNotBlank(medicalRecord.getMedicalLaboratoryId())) {
+                medicalPathologyTestManager.deleteByPathologyReferenceId(medicalRecord.getMedicalLaboratoryId());
+                medicalPathologyManager.deleteHard(medicalRecord.getMedicalLaboratoryId());
+                medicalRecord.setMedicalLaboratoryId(null);
+            }
+
+            /* Delete Existing. */
+            if (null != medicalRecord.getMedicalRadiologies() && !medicalRecord.getMedicalRadiologies().isEmpty()) {
+                List<MedicalRadiologyEntity> medicalRadiologies = medicalRadiologyManager.findByIds(medicalRecord.getMedicalRadiologies());
+                for (MedicalRadiologyEntity medicalRadiology : medicalRadiologies) {
+                    medicalRadiologyTestManager.deleteByRadiologyReferenceId(medicalRadiology.getId());
+                    medicalRadiologyManager.deleteHard(medicalRadiology);
+                }
+                medicalRecord.setMedicalRadiologies(new ArrayList<>());
+            }
+
+            medicalRecordManager.deleteHard(medicalRecord);
+            LOG.info("Removed reference to medicalRecord when purchaseOrder orderState={} transactionId={}",
+                purchaseOrder.getPresentOrderState(), purchaseOrder.getTransactionId());
+        } catch (Exception e) {
+            if (null != purchaseOrder) {
+                LOG.error("Failed reference to medicalRecord when purchaseOrder orderState={} transactionId={} reason={}",
+                    purchaseOrder.getPresentOrderState(), purchaseOrder.getTransactionId(), e.getLocalizedMessage(), e);
+            } else {
+                LOG.error("Failed removing medical reference reason={}", e.getLocalizedMessage(), e);
+            }
+        }
+    }
 }
