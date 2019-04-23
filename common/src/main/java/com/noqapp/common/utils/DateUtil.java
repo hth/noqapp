@@ -199,6 +199,11 @@ public final class DateUtil {
         return dateToString_UTC(date, DTF_YYYY_MM_DD);
     }
 
+
+    public static String dateToStringWithTime(Date date) {
+        return dateToString_UTC(date, DTF_YYYY_MM_DD_KK_MM);
+    }
+
     public static String dateToString_UTC(Date date, DateTimeFormatter dateTimeFormatter) {
         return dateTimeFormatter.format(date.toInstant().atZone(ZoneOffset.UTC));
     }
