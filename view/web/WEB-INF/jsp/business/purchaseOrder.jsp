@@ -82,22 +82,22 @@
                                         <td nowrap align="left"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${BusinessTypeEnum.HS eq purchaseOrder.businessType}">
-                                                    <c:choose>
-                                                        <c:when test="${PurchaseOrderStateEnum.OD eq purchaseOrder.presentOrderState}">
-                                                            <span style="display:block;">
-                                                                <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/current/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
-                                                                        target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
-                                                            </span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span style="display:block;">N/A</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                            <c:when test="${BusinessTypeEnum.HS eq purchaseOrder.businessType}">
+                                                <c:choose>
+                                                <c:when test="${PurchaseOrderStateEnum.OD eq purchaseOrder.presentOrderState}">
+                                                    <span style="display:block;">
+                                                        <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/current/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                                target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
+                                                    </span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    N/A
+                                                    <span style="display:block;">N/A</span>
                                                 </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                N/A
+                                            </c:otherwise>
                                             </c:choose>
                                         </td>
                                     </tr>
