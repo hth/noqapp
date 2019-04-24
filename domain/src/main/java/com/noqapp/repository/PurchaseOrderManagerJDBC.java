@@ -32,6 +32,9 @@ public interface PurchaseOrderManagerJDBC {
     @Mobile
     PurchaseOrderEntity findOrderByTransactionId(String qid, String transactionId);
 
+    /** Used Internally to modify purchase order. And to lookup purchase order. */
+    PurchaseOrderEntity findOrderByTransactionId(String transactionId);
+
     @Mobile
     void deleteById(String id);
 

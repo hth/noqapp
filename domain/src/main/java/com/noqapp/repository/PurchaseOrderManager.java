@@ -89,7 +89,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     @Mobile
     List<PurchaseOrderEntity> findReviews(String codeQR);
 
-    /** Used Internally to modify purchase order. */
+    /** Used Internally to modify purchase order. And to lookup purchase order. */
     PurchaseOrderEntity findByTransactionId(String transactionId);
     boolean existsTransactionId(String transactionId);
     PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);

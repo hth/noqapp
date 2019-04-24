@@ -343,8 +343,7 @@ public class QueueService {
                 JsonPurchaseOrder jsonPurchaseOrder;
                 PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
                 if (purchaseOrder == null) {
-                    String purchaserQid = StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid();
-                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(purchaserQid, queue.getTransactionId());
+                    purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(queue.getTransactionId());
                     jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
                 } else {
                     jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
