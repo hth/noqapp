@@ -228,6 +228,7 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId) {
         try {
+            Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
             PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByClient(qid, transactionId);
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
             doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
@@ -331,6 +332,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String qid, String transactionId) {
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
         PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByMerchant(qid, transactionId);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
