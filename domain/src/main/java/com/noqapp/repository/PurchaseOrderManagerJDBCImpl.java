@@ -57,6 +57,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND TI = ? ";
 
+    private static final String query_by_transactionId =
+        "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE TI = ? ";
+
     private static final String query_by_qid_where_ps =
         "SELECT ID, QID, BS, BN, QR, DM, PM, PY, PS, DA, RA, RV, TN, SD, PP, OP, BT, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
@@ -226,6 +231,17 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         } catch (EmptyResultDataAccessException e) {
             //TODO fix this error or query
             LOG.error("Failed to find transactionId={} qid={} reason={}", transactionId, qid, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    @Override
+    public PurchaseOrderEntity findOrderByTransactionId(String transactionId) {
+        try {
+            return jdbcTemplate.queryForObject(query_by_transactionId, new Object[]{transactionId}, new PurchaseOrderRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            //TODO fix this error or query
+            LOG.error("Failed to find transactionId={} reason={}", transactionId, e.getLocalizedMessage(), e);
             return null;
         }
     }
