@@ -192,7 +192,7 @@ public class NoQAppInitializationCheckBean {
     @PostConstruct
     public void checkPaymentGateway() {
         boolean cashfreeSuccess = paymentGatewayService.verifyCashfree();
-        if (!cashfreeSuccess && buildEnvironment.equalsIgnoreCase("prod")) {
+        if (!cashfreeSuccess) {
             LOG.error("Cashfree Payment Gateway could not be verified");
             throw new RuntimeException("Cashfree Payment Gateway could not be verified");
         }
@@ -200,13 +200,13 @@ public class NoQAppInitializationCheckBean {
 
     @PostConstruct
     public void checkPayoutPaymentGateway() {
-        if (buildEnvironment.equalsIgnoreCase("prod")) {
-            boolean cashfreeSuccess = paymentGatewayService.verifyCashfreePayout();
-            if (!cashfreeSuccess) {
-                LOG.error("Cashfree Payout could not be verified");
-                throw new RuntimeException("Cashfree Payout could not be verified");
-            }
-        }
+//        if (buildEnvironment.equalsIgnoreCase("prod")) {
+//            boolean cashfreeSuccess = paymentGatewayService.verifyCashfreePayout();
+//            if (!cashfreeSuccess) {
+//                LOG.error("Cashfree Payout could not be verified");
+//                throw new RuntimeException("Cashfree Payout could not be verified");
+//            }
+//        }
     }
 
     @PostConstruct
