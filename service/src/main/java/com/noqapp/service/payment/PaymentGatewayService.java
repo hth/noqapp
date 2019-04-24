@@ -55,7 +55,7 @@ public class PaymentGatewayService {
         this.cashfreePayoutEndpoint = cashfreePayoutEndpoint;
 
         this.okHttpClient = okHttpClient;
-        this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway();
+        this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway(environment);
         this.cashfreePayoutMap = paymentGatewayConfiguration.cashfreePayoutGateway(environment);
     }
 
