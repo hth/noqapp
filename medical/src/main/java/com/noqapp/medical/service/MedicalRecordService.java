@@ -333,7 +333,7 @@ public class MedicalRecordService {
                 if (null != transactionIds) {
                     for (String transactionId : transactionIds) {
                         PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId);
-                        purchaseOrderService.cancelOrderByMerchant(purchaseOrder.getCodeQR(), purchaseOrder.getTransactionId());
+                        purchaseOrderService.cancelOrderByMerchant(purchaseOrder.getQueueUserId(), purchaseOrder.getTransactionId());
                     }
 
                     medicalRecord.setTransactionIds(new ArrayList<>());
