@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import okhttp3.FormBody;
@@ -45,11 +46,12 @@ public class CashfreeService {
         String cashfreeEndpoint,
 
         OkHttpClient okHttpClient,
+        Environment environment,
         PaymentGatewayConfiguration paymentGatewayConfiguration
     ) {
         this.cashfreeEndpoint = cashfreeEndpoint;
         this.okHttpClient = okHttpClient;
-        this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway();
+        this.cashfreeMap = paymentGatewayConfiguration.cashfreeGateway(environment);
     }
 
     public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF) {

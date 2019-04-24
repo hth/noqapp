@@ -15,11 +15,17 @@ import java.util.Map;
 @Configuration
 public class PaymentGatewayConfiguration {
 
-    @Value("${cashfree.api.id}")
-    private String cashfreeApiId;
+    @Value("${cashfree.api.id.sandbox}")
+    private String sandboxCashfreeApiId;
 
-    @Value("${cashfree.secretKey}")
-    private String cashfreeSecretKey;
+    @Value("${cashfree.api.id.prod}")
+    private String prodCashfreeApiId;
+
+    @Value("${cashfree.secretKey.sandbox}")
+    private String sandboxCashfreeSecretKey;
+
+    @Value("${cashfree.secretKey.prod}")
+    private String prodCashfreeSecretKey;
 
     @Value("${cashfree.payout.sandbox.clientId}")
     private String sandboxClientId;
@@ -34,10 +40,10 @@ public class PaymentGatewayConfiguration {
     private String prodClientSecret;
 
     @Bean
-    public Map<String, String> cashfreeGateway() {
+    public Map<String, String> cashfreeGateway(Environment environment) {
         return new HashMap<String, String>() {{
-            put("api", cashfreeApiId);
-            put("secretKey", cashfreeSecretKey);
+            put("api",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeApiId : sandboxCashfreeApiId);
+            put("secretKey",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeSecretKey : sandboxCashfreeSecretKey);
         }};
     }
 
