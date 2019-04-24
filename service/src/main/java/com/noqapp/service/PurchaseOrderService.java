@@ -229,6 +229,7 @@ public class PurchaseOrderService {
     public JsonPurchaseOrder cancelOrderByClient(String qid, String transactionId) {
         try {
             Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
+
             PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByClient(qid, transactionId);
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
             doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
@@ -333,6 +334,7 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String qid, String transactionId) {
         Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
+
         PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByMerchant(qid, transactionId);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
@@ -742,7 +744,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public List<JsonTokenAndQueue> findAllOpenOrderAsJson(String qid) {
-        Validate.isValidQid(qid);
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
 
         List<PurchaseOrderEntity> purchaseOrders = findAllOpenOrder(qid);
         List<UserProfileEntity> dependentUserProfiles = accountService.findDependentProfiles(qid);
@@ -769,7 +771,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public List<JsonTokenAndQueue> findPendingPurchaseOrderAsJson(String qid) {
-        Validate.isValidQid(qid);
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
 
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findAllOrderWithState(qid, PurchaseOrderStateEnum.PO);
         List<UserProfileEntity> dependentUserProfiles = accountService.findDependentProfiles(qid);
@@ -789,7 +791,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public List<JsonTokenAndQueue> findAllDeliveredHistoricalOrderAsJson(String qid) {
-        Validate.isValidQid(qid);
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
 
         List<PurchaseOrderEntity> purchaseOrders = findAllDeliveredHistoricalOrder(qid);
         LOG.info("Total purchase orders completed count={}", purchaseOrders.size());
@@ -1352,7 +1354,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public JsonPurchaseOrder findBy(String qid, String codeQR, int tokenNumber) {
-        Validate.isValidQid(qid);
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
 
         Set<String> qidSet = accountService.findDependentQIDByPhone(qid);
         qidSet.add(qid);
