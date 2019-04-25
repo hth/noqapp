@@ -45,6 +45,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -135,7 +137,7 @@ public class ArchiveAndReset {
              *
              * Order stores are delayed by 5 minutes.
              */
-            Date date = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().minus(1, ChronoUnit.MINUTES));
             List<BizStoreEntity> bizOrderStores = bizStoreManager.findAllOrderEndedForTheDay(date);
             found = bizOrderStores.size();
             LOG.info("Order Stores found={} date={}", found, date);
@@ -211,7 +213,7 @@ public class ArchiveAndReset {
             bizStore.getBizName().getBusinessName(),
             bizStore.getId());
 
-        List<QueueEntity> queues = queueManager.findByCodeQRSortedByToken(bizStore.getCodeQR());
+        List<QueueEntity> queues = queueManager.findByCodeQRSortedByTokenIgnoreInitialState(bizStore.getCodeQR());
         StatsBizStoreDailyEntity statsBizStoreDaily;
         try {
             statsBizStoreDaily = saveDailyQueueStat(bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR(), queues);
@@ -233,11 +235,29 @@ public class ArchiveAndReset {
         }
 
         bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
-        long deleted = queueManager.deleteByCodeQR(bizStore.getCodeQR());
-        if (queues.size() == deleted) {
+        long numberOfRecordsToBeDeleted = queueManager.countByCodeQR(bizStore.getCodeQR());
+        if (queues.size() == numberOfRecordsToBeDeleted) {
+            queueManager.deleteByCodeQR(bizStore.getCodeQR());
             LOG.info("Deleted and insert queue exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
         } else {
-            LOG.error("Mis-match in deleted and insert queue bizStore={} size={} delete={}", bizStore.getId(), queues.size(), deleted);
+            AtomicInteger count = new AtomicInteger();
+            List<QueueEntity> toBeDeletedQueues = queueManager.findAllByCodeQR(bizStore.getCodeQR());
+            try (Stream<QueueEntity> stream = toBeDeletedQueues.stream()) {
+                stream.iterator().forEachRemaining(queue -> {
+                    if (queue.getQueueUserState() == QueueUserStateEnum.I) {
+                        count.getAndIncrement();
+                    }
+                });
+            }
+
+            queueManager.deleteByCodeQR(bizStore.getCodeQR());
+            if (numberOfRecordsToBeDeleted - count.intValue() - queues.size() == 0) {
+                LOG.info("Deleted and insert queue exact bizStore={} mismatch={} delete={} codeQR={}",
+                    bizStore.getId(), count.intValue(), numberOfRecordsToBeDeleted, bizStore.getCodeQR());
+            } else {
+                LOG.error("Mis-match in deleted and insert queue bizStore={} size={} mismatch={} delete={}",
+                    bizStore.getId(), queues.size(), count.intValue(), numberOfRecordsToBeDeleted);
+            }
         }
 
         doReset(bizStore, statsBizStoreDaily);

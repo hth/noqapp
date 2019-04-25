@@ -343,6 +343,7 @@ public class QueueManagerImpl implements QueueManager {
         return false;
     }
 
+    @Override
     public List<QueueEntity> findAllQueuedByDid(String did) {
         Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
@@ -351,6 +352,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findAllQueuedByQid(String qid) {
         return mongoTemplate.find(
                 query(where("QS").is(QueueUserStateEnum.Q)
@@ -363,6 +365,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findInAQueueByQid(String qid, String codeQR) {
         return mongoTemplate.find(
                 query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)
@@ -375,6 +378,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findInAQueueByQidWithAnyQueueState(String qid, String codeQR) {
         return mongoTemplate.find(
             query(where("QR").is(codeQR)
@@ -387,6 +391,7 @@ public class QueueManagerImpl implements QueueManager {
             TABLE);
     }
 
+    @Override
     public QueueEntity findOneQueueByQid(String qid, String codeQR) {
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QID").is(qid)),
@@ -394,6 +399,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findAllNotQueuedByDid(String did) {
         Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
@@ -402,6 +408,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findAllNotQueuedByQid(String qid) {
         //todo (hth) Add distinct
 //        DBObject query = QueryBuilder.start("QID").is(qid).and("QS").notEquals(QueueUserStateEnum.Q).and("C").get();
@@ -418,6 +425,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public boolean isQueued(int tokenNumber, String codeQR) {
         return mongoTemplate.exists(
                 query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QS").is(QueueUserStateEnum.Q)),
@@ -425,6 +433,7 @@ public class QueueManagerImpl implements QueueManager {
                 TABLE);
     }
 
+    @Override
     public List<QueueEntity> findAllClientServiced(int numberOfAttemptsToSendFCM) {
         return mongoTemplate.find(
                 query(where("NS").is(false).and("NC").lt(numberOfAttemptsToSendFCM)
@@ -438,6 +447,7 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
+    @Override
     public List<QueueEntity> findByCodeQR(String codeQR) {
         return mongoTemplate.find(
                 query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)),
@@ -446,7 +456,8 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
-    public List<QueueEntity> findByCodeQRSortedByToken(String codeQR) {
+    @Override
+    public List<QueueEntity> findByCodeQRSortedByTokenIgnoreInitialState(String codeQR) {
         return mongoTemplate.find(
                 query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)).with(new Sort(ASC, "TN")),
                 QueueEntity.class,
@@ -454,12 +465,31 @@ public class QueueManagerImpl implements QueueManager {
         );
     }
 
+    @Override
     public long deleteByCodeQR(String codeQR) {
         return mongoTemplate.remove(
                 query(where("QR").is(codeQR)),
                 QueueEntity.class,
                 TABLE
         ).getDeletedCount();
+    }
+
+    @Override
+    public long countByCodeQR(String codeQR) {
+        return mongoTemplate.count(
+            query(where("QR").is(codeQR)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<QueueEntity> findAllByCodeQR(String codeQR) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR)),
+            QueueEntity.class,
+            TABLE
+        );
     }
 
     @Override
