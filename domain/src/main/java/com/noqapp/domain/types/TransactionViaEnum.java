@@ -5,16 +5,18 @@ package com.noqapp.domain.types;
  * 2019-03-20 14:35
  */
 public enum TransactionViaEnum {
-    I("I", "Internal"),
-    E("E", "External"),
-    U("U", "Unknown");
+    I("I", "Internal", "Within NoQueue"),
+    E("E", "External", "Outside of NoQueue"),
+    U("U", "Unknown", "N/A");
 
     private final String name;
     private final String description;
+    private final String friendlyDescription;
 
-    TransactionViaEnum(String name, String description) {
+    TransactionViaEnum(String name, String description, String friendlyDescription) {
         this.name = name;
         this.description = description;
+        this.friendlyDescription = friendlyDescription;
     }
 
     public String getName() {
@@ -23,6 +25,10 @@ public enum TransactionViaEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getFriendlyDescription() {
+        return friendlyDescription;
     }
 
     @Override
