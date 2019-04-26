@@ -602,8 +602,8 @@ public class PurchaseOrderService {
             jsonPurchaseOrder.getTransactionId(),
             jsonPurchaseOrder.getBizStoreId(),
             "Counter Partial via " + jsonPurchaseOrder.getPaymentMode().getDescription(),
-            jsonPurchaseOrder.getPaymentMode()
-        );
+            jsonPurchaseOrder.getPaymentMode(),
+            qid);
 
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
@@ -618,7 +618,8 @@ public class PurchaseOrderService {
             jpo.getTransactionId(),
             jpo.getBizStoreId(),
             "Counter via " + jpo.getPaymentMode().getDescription(),
-            jpo.getPaymentMode());
+            jpo.getPaymentMode(),
+            qid);
 
         return new JsonPurchaseOrder(purchaseOrder);
     }

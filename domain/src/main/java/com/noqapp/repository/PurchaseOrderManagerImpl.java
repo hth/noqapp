@@ -512,7 +512,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode) {
+    public PurchaseOrderEntity updateWithPartialCounterPayment(
+        String partialPayment,
+        String transactionId,
+        String bizStoreId,
+        String transactionMessage,
+        PaymentModeEnum paymentMode,
+        String partialPaymentAcceptedByQid
+    ) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId).and("PP").exists(false)),
             update("PP", partialPayment)
@@ -520,7 +527,8 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
                 .set("PM", paymentMode)
                 .set("TM", transactionMessage)
-                .set("TV", TransactionViaEnum.E),
+                .set("TV", TransactionViaEnum.E)
+                .set("PQ", partialPaymentAcceptedByQid),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE
@@ -528,14 +536,21 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode) {
+    public PurchaseOrderEntity updateWithCounterPayment(
+        String transactionId,
+        String bizStoreId,
+        String transactionMessage,
+        PaymentModeEnum paymentMode,
+        String fullPaymentAcceptedByQid
+    ) {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
             update("PY", PaymentStatusEnum.PA)
                 .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
                 .set("PM", paymentMode)
                 .set("TM", transactionMessage)
-                .set("TV", TransactionViaEnum.E),
+                .set("TV", TransactionViaEnum.E)
+                .set("FQ", fullPaymentAcceptedByQid),
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE
