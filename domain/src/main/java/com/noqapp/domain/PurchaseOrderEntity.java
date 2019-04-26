@@ -98,6 +98,12 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("BT")
     private BusinessTypeEnum businessType;
 
+    @Field ("PQ")
+    private String partialPaymentAcceptedByQid;
+
+    @Field ("FQ")
+    private String fullPaymentAcceptedByQid;
+
     @Field ("RA")
     private int ratingCount;
 
@@ -309,6 +315,24 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getPartialPaymentAcceptedByQid() {
+        return partialPaymentAcceptedByQid;
+    }
+
+    public PurchaseOrderEntity setPartialPaymentAcceptedByQid(String partialPaymentAcceptedByQid) {
+        this.partialPaymentAcceptedByQid = partialPaymentAcceptedByQid;
+        return this;
+    }
+
+    public String getFullPaymentAcceptedByQid() {
+        return fullPaymentAcceptedByQid;
+    }
+
+    public PurchaseOrderEntity setFullPaymentAcceptedByQid(String fullPaymentAcceptedByQid) {
+        this.fullPaymentAcceptedByQid = fullPaymentAcceptedByQid;
         return this;
     }
 

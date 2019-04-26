@@ -40,21 +40,23 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int PP = 15;
     private static final int OP = 16;
     private static final int BT = 17;
-    private static final int SN = 18;
-    private static final int SB = 19;
-    private static final int SE = 20;
-    private static final int TI = 21;
-    private static final int TR = 22;
-    private static final int TM = 23;
-    private static final int TV = 24;
-    private static final int DN = 25;
-    private static final int AN = 26;
+    private static final int PQ = 18;
+    private static final int FQ = 19;
+    private static final int SN = 20;
+    private static final int SB = 21;
+    private static final int SE = 22;
+    private static final int TI = 23;
+    private static final int TR = 24;
+    private static final int TM = 25;
+    private static final int TV = 26;
+    private static final int DN = 27;
+    private static final int AN = 28;
 
-    private static final int V = 27;
-    private static final int U = 28;
-    private static final int C = 29;
-    private static final int A = 30;
-    private static final int D = 31;
+    private static final int V = 29;
+    private static final int U = 30;
+    private static final int C = 31;
+    private static final int A = 32;
+    private static final int D = 33;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -77,6 +79,8 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setPartialPayment(rs.getString(PP));
         purchaseOrder.setOrderPrice(rs.getString(OP));
         purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
+        purchaseOrder.setPartialPaymentAcceptedByQid(rs.getString(PQ));
+        purchaseOrder.setFullPaymentAcceptedByQid(rs.getString(FQ));
         purchaseOrder.setServerName(rs.getString(SN));
         purchaseOrder.setServiceBeginTime(rs.getTimestamp(SB));
         purchaseOrder.setServiceEndTime(rs.getTimestamp(SE));

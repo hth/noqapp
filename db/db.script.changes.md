@@ -1,3 +1,10 @@
+### Change April 26 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `PQ` VARCHAR(13) AFTER `BT`;
+        
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `FQ` VARCHAR(13) AFTER `PQ`;
 ### Change March 20 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
