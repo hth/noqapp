@@ -199,16 +199,16 @@ public class TransactionService {
         if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
             try {
                 if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() && priceIsPositive) {
-                    JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
-                        .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
-                        .setRefundNote("Refund initiated by client")
-                        .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
-                    JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
-                    LOG.info("Refund {}", jsonResponseRefund.toString());
-                    if (!jsonResponseRefund.isOk()) {
-                        LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
-                        throw new FailedTransactionException("Failed response from Cashfree");
-                    }
+//                    JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+//                        .setRefundAmount(purchaseOrderBeforeCancel.orderPriceForTransaction())
+//                        .setRefundNote("Refund initiated by client")
+//                        .setReferenceId(purchaseOrderBeforeCancel.getTransactionReferenceId());
+//                    JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+//                    LOG.info("Refund {}", jsonResponseRefund.toString());
+//                    if (!jsonResponseRefund.isOk()) {
+//                        LOG.error("Failed requesting refund for qid={} transactionId={}", qid, transactionId);
+//                        throw new FailedTransactionException("Failed response from Cashfree");
+//                    }
                 }
 
                 PurchaseOrderEntity purchaseOrder = purchaseOrderManager.cancelOrderByClient(qid, transactionId);
@@ -242,15 +242,15 @@ public class TransactionService {
 
             /* Initiate refund on cashfree. */
             if (null != purchaseOrder && PaymentModeEnum.CA != purchaseOrder.getPaymentMode() && priceIsPositive) {
-                JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
-                    .setRefundAmount(purchaseOrder.orderPriceForTransaction())
-                    .setRefundNote("Refund initiated by client")
-                    .setReferenceId(purchaseOrder.getTransactionReferenceId());
-
-                JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
-                if (jsonResponseRefund.isOk()) {
-                    purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
-                }
+//                JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
+//                    .setRefundAmount(purchaseOrder.orderPriceForTransaction())
+//                    .setRefundNote("Refund initiated by client")
+//                    .setReferenceId(purchaseOrder.getTransactionReferenceId());
+//
+//                JsonResponseRefund jsonResponseRefund = cashfreeService.refundInitiatedByClient(jsonRequestRefund);
+//                if (jsonResponseRefund.isOk()) {
+//                    purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
+//                }
             } else if(!priceIsPositive) {
                 purchaseOrder = markPaymentStatusAsRefund(transactionId, session);
             }
