@@ -1,4 +1,4 @@
-<%@ include file="../include.jsp"%>
+<%@ include file="../../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -51,7 +51,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-new">
-                        <form:form method="POST" action="./landing.htm" modelAttribute="dataVisibilityForm">
+                        <form:form method="POST" action="./landing.htm" modelAttribute="paymentPermissionForm">
                             <ul class="list-form">
                                 <li>
                                     <div class="alert-info">
@@ -62,26 +62,26 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="dataVisibilityForSupervisor" cssErrorClass="lb_error">Supervisor</form:label>
+                                        <form:label path="paymentPermissionForSupervisor" cssErrorClass="lb_error">Supervisor</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="dataVisibilityForSupervisor" cssClass="form-field-select single-dropdown"
+                                        <form:select path="paymentPermissionForSupervisor" cssClass="form-field-select single-dropdown"
                                                 cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:option value="" label="--- Select ---"/>
-                                            <form:options items="${dataVisibilityForm.dataVisibilities}" />
+                                            <form:options items="${paymentPermissionForm.paymentPermissions}" />
                                         </form:select>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="dataVisibilityForManager" cssErrorClass="lb_error">Manager/Doctor</form:label>
+                                        <form:label path="paymentPermissionForManager" cssErrorClass="lb_error">Manager/Doctor</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:select path="dataVisibilityForManager" cssClass="form-field-select single-dropdown"
+                                        <form:select path="paymentPermissionForManager" cssClass="form-field-select single-dropdown"
                                                 cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:option value="" label="--- Select ---"/>
-                                            <form:options items="${dataVisibilityForm.dataVisibilities}" />
+                                            <form:options items="${paymentPermissionForm.paymentPermissions}" />
                                         </form:select>
                                     </div>
                                     <div class="clearFix"></div>
@@ -90,10 +90,10 @@
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
                                         <div class="left-btn">
-                                            <input type="submit" value="UPDATE" class="next-btn" name="update-dataVisibility">
+                                            <input type="submit" value="UPDATE" class="next-btn" name="update-paymentPermission">
                                         </div>
                                         <div class="right-btn">
-                                            <input type="submit" value="CANCEL" class="cancel-btn" name="cancel-dataVisibility">
+                                            <input type="submit" value="CANCEL" class="cancel-btn" name="cancel-paymentPermission">
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>

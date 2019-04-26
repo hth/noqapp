@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
+import com.noqapp.domain.types.PaymentPermissionEnum;
 
 import java.util.List;
 import java.util.Map;
@@ -73,5 +74,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     Stream<BizNameEntity> findAll(String timeZone);
 
     void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id);
+
+    void updatePaymentPermission(Map<String, PaymentPermissionEnum> paymentPermissions, String id);
 }
 

@@ -9,6 +9,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
+import com.noqapp.domain.types.PaymentPermissionEnum;
 
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
@@ -193,6 +194,16 @@ public final class BizNameManagerImpl implements BizNameManager {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id))),
             update("DV", dataVisibilities),
+            BizNameEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updatePaymentPermission(Map<String, PaymentPermissionEnum> paymentPermissions, String id) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            update("PP", paymentPermissions),
             BizNameEntity.class,
             TABLE
         );
