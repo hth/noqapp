@@ -9,6 +9,7 @@ import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.PaymentPermissionEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -152,6 +153,12 @@ public class BizNameEntity extends BaseEntity {
     private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<String, DataVisibilityEnum>() {{
         put(UserLevelEnum.S_MANAGER.name(), DataVisibilityEnum.H);
         put(UserLevelEnum.Q_SUPERVISOR.name(), DataVisibilityEnum.H);
+    }};
+
+    @Field("PP")
+    private Map<String, PaymentPermissionEnum> paymentPermissions = new HashMap<String, PaymentPermissionEnum>() {{
+        put(UserLevelEnum.S_MANAGER.name(), PaymentPermissionEnum.D);
+        put(UserLevelEnum.Q_SUPERVISOR.name(), PaymentPermissionEnum.A);
     }};
 
     /* When business is closed for national holiday. This automatically respond with all store as closed. */
@@ -499,6 +506,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setDataVisibilities(Map<String, DataVisibilityEnum> dataVisibilities) {
         this.dataVisibilities = dataVisibilities;
+        return this;
+    }
+
+    public Map<String, PaymentPermissionEnum> getPaymentPermissions() {
+        return paymentPermissions;
+    }
+
+    public BizNameEntity setPaymentPermissions(Map<String, PaymentPermissionEnum> paymentPermissions) {
+        this.paymentPermissions = paymentPermissions;
         return this;
     }
 

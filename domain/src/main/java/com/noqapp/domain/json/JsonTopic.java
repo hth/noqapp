@@ -38,6 +38,9 @@ public class JsonTopic extends JsonToken {
     @JsonProperty("dv")
     private JsonDataVisibility jsonDataVisibility;
 
+    @JsonProperty("pp")
+    private JsonPaymentPermission jsonPaymentPermission;
+
     private JsonTopic() {
         super();
     }
@@ -66,6 +69,15 @@ public class JsonTopic extends JsonToken {
 
     public JsonTopic setJsonDataVisibility(JsonDataVisibility jsonDataVisibility) {
         this.jsonDataVisibility = jsonDataVisibility;
+        return this;
+    }
+
+    public JsonPaymentPermission getJsonPaymentPermission() {
+        return jsonPaymentPermission;
+    }
+
+    public JsonTopic setJsonPaymentPermission(JsonPaymentPermission jsonPaymentPermission) {
+        this.jsonPaymentPermission = jsonPaymentPermission;
         return this;
     }
 }

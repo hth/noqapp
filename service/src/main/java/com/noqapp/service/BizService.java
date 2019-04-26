@@ -19,6 +19,7 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.PaymentPermissionEnum;
 import com.noqapp.domain.types.ServicePaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
@@ -560,6 +561,10 @@ public class BizService {
 
     public void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id) {
         bizNameManager.updateDataVisibility(dataVisibilities, id);
+    }
+
+    public void updatePaymentPermission(Map<String, PaymentPermissionEnum> paymentPermissions, String id) {
+        bizNameManager.updatePaymentPermission(paymentPermissions, id);
     }
 
     @Mobile

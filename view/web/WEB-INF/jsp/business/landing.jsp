@@ -36,6 +36,7 @@
                         <a href="${pageContext.request.contextPath}/business/preferredBusiness.htm">Preferred Business</a>
                         <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
                         <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
+                        <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>

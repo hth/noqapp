@@ -18,6 +18,7 @@ import com.noqapp.domain.annotation.Television;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonDataVisibility;
 import com.noqapp.domain.json.JsonHour;
+import com.noqapp.domain.json.JsonPaymentPermission;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
@@ -128,11 +129,13 @@ public class BusinessUserStoreService {
 
         String[] codes = new String[queueLimit <= size ? queueLimit : size];
         Map<String, JsonDataVisibility> dataVisibilityHashMap = new HashMap<>();
+        Map<String, JsonPaymentPermission> paymentPermissionHashMap = new HashMap<>();
         int i = 0;
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             codes[i] = businessUserStore.getCodeQR();
             BizNameEntity bizName = bizService.getByBizNameId(businessUserStore.getBizNameId());
             dataVisibilityHashMap.put(businessUserStore.getCodeQR(), new JsonDataVisibility().setDataVisibilities(bizName.getDataVisibilities()));
+            paymentPermissionHashMap.put(businessUserStore.getCodeQR(), new JsonPaymentPermission().setPaymentPermissions(bizName.getPaymentPermissions()));
             i++;
         }
 
@@ -144,7 +147,8 @@ public class BusinessUserStoreService {
             jsonTopics.add(
                 new JsonTopic(tokenQueue)
                     .setHour(jsonHour)
-                    .setJsonDataVisibility(dataVisibilityHashMap.get(tokenQueue.getId())));
+                    .setJsonDataVisibility(dataVisibilityHashMap.get(tokenQueue.getId()))
+                    .setJsonPaymentPermission(paymentPermissionHashMap.get(tokenQueue.getId())));
         }
 
         LOG.info("Sending jsonTopic count={} for qid={}", jsonTopics.size(), qid);
