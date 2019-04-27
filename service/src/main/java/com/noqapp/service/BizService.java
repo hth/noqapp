@@ -222,7 +222,7 @@ public class BizService {
             createMailOnStoreChange(bizStoreId, bizStore, rootMap);
         } catch (NullPointerException e) {
             /* This can happen when new store is created. */
-            LOG.error("Failed sending mail bizStoreId={} changeInitiateReason={}",
+            LOG.error("Failed sending mail bizStoreId={} changeInitiateReason={} reason={}",
                 bizStoreId, changeInitiateReason, e.getLocalizedMessage(), e);
         }
     }
