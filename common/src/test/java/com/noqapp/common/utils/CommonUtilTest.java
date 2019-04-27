@@ -21,6 +21,6 @@ class CommonUtilTest {
 
     @Test
     void calculateAge() {
-        assertEquals("33+ years", CommonUtil.calculateAge("1986-03-07"));
+        assertEquals("33+ years", CommonUtil.calculateAge("1986-03-07", "100000001"));
     }
 }
