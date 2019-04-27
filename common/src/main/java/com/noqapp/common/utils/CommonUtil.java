@@ -201,7 +201,7 @@ public final class CommonUtil {
      * @param dob
      * @return
      */
-    public static String calculateAge(String dob) {
+    public static String calculateAge(String dob, String qid) {
         try {
             DateTime dateTime = new DateTime(DateUtil.SDF_YYYY_MM_DD.parse(dob));
             DateTime now = DateTime.now();
@@ -225,7 +225,7 @@ public final class CommonUtil {
 
             return age;
         } catch (Exception e) {
-            LOG.error("Failed parse dob={} reason={}", dob, e.getLocalizedMessage(), e);
+            LOG.error("Failed parse dob={} qid={} reason={}", dob, qid, e.getLocalizedMessage(), e);
         }
 
         return "N/A";

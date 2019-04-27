@@ -340,6 +340,6 @@ public class UserProfileEntity extends BaseEntity {
 
     @Transient
     public String getAgeAsString() {
-        return CommonUtil.calculateAge(birthday);
+        return CommonUtil.calculateAge(birthday, queueUserId);
     }
 }
