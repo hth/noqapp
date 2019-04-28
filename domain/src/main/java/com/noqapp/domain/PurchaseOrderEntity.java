@@ -54,6 +54,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("QR")
     private String codeQR;
 
+    /* Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM. */
     @Field ("DID")
     private String did;
 

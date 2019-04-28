@@ -375,6 +375,11 @@ public class PurchaseOrderService {
         return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
     }
 
+    /**
+     * @param jsonPurchaseOrder
+     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param tokenService
+     */
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
         Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
@@ -382,6 +387,12 @@ public class PurchaseOrderService {
         createOrder(jsonPurchaseOrder, jsonPurchaseOrder.getQueueUserId(), did, tokenService);
     }
 
+    /**
+     * @param jsonPurchaseOrder
+     * @param qid               purchaserQid
+     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param tokenService
+     */
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore;
