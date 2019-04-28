@@ -17,6 +17,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
@@ -394,11 +395,10 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
+    public boolean reviewService(String codeQR, int token, String qid, int ratingCount, String review, SentimentTypeEnum sentimentType) {
         Query query = query(
             where("QR").is(codeQR)
                 .and("TN").is(token)
-                .and("DID").is(did)
                 .and("PS").ne(PurchaseOrderStateEnum.PO)
                 .and("RA").is(0)
                 .and("QID").is(qid));
@@ -408,7 +408,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         if (StringUtils.isBlank(review)) {
             update = entityUpdate(update("RA", ratingCount));
         } else {
-            update = entityUpdate(update("RA", ratingCount).set("RV", review));
+            update = entityUpdate(update("RA", ratingCount).set("RV", review).set("ST", sentimentType));
         }
 
         return mongoTemplate.updateFirst(query, update, PurchaseOrderEntity.class, TABLE).getModifiedCount() > 0;

@@ -6,6 +6,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
@@ -53,6 +54,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("QR")
     private String codeQR;
 
+    /* Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM. */
     @Field ("DID")
     private String did;
 
@@ -109,6 +111,9 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Field ("RV")
     private String review;
+
+    @Field ("ST")
+    private SentimentTypeEnum sentimentType;
 
     /* Order Number. */
     @Field ("TN")
@@ -351,6 +356,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setReview(String review) {
         this.review = review;
+        return this;
+    }
+
+    public SentimentTypeEnum getSentimentType() {
+        return sentimentType;
+    }
+
+    public PurchaseOrderEntity setSentimentType(SentimentTypeEnum sentimentType) {
+        this.sentimentType = sentimentType;
         return this;
     }
 

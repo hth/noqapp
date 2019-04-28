@@ -6,6 +6,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,36 +28,38 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int BS = 3;
     private static final int BN = 4;
     private static final int QR = 5;
-    private static final int DM = 6;
-    private static final int PM = 7;
-    private static final int PY = 8;
-    private static final int PS = 9;
-    private static final int DA = 10;
-    private static final int RA = 11;
-    private static final int RV = 12;
-    private static final int TN = 13;
+    private static final int DID = 6;
+    private static final int DM = 7;
+    private static final int PM = 8;
+    private static final int PY = 9;
+    private static final int PS = 10;
+    private static final int DA = 11;
+    private static final int RA = 12;
+    private static final int RV = 13;
+    private static final int ST = 14;
+    private static final int TN = 15;
 
-    private static final int SD = 14;
-    private static final int PP = 15;
-    private static final int OP = 16;
-    private static final int BT = 17;
-    private static final int PQ = 18;
-    private static final int FQ = 19;
-    private static final int SN = 20;
-    private static final int SB = 21;
-    private static final int SE = 22;
-    private static final int TI = 23;
-    private static final int TR = 24;
-    private static final int TM = 25;
-    private static final int TV = 26;
-    private static final int DN = 27;
-    private static final int AN = 28;
+    private static final int SD = 16;
+    private static final int PP = 17;
+    private static final int OP = 18;
+    private static final int BT = 19;
+    private static final int PQ = 20;
+    private static final int FQ = 21;
+    private static final int SN = 22;
+    private static final int SB = 23;
+    private static final int SE = 24;
+    private static final int TI = 25;
+    private static final int TR = 26;
+    private static final int TM = 27;
+    private static final int TV = 28;
+    private static final int DN = 29;
+    private static final int AN = 30;
 
-    private static final int V = 29;
-    private static final int U = 30;
-    private static final int C = 31;
-    private static final int A = 32;
-    private static final int D = 33;
+    private static final int V = 31;
+    private static final int U = 32;
+    private static final int C = 33;
+    private static final int A = 34;
+    private static final int D = 35;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -67,6 +70,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
                 rs.getString(QR)
         );
         purchaseOrder.setId(rs.getString(ID));
+        purchaseOrder.setDid(rs.getString(DID));
         purchaseOrder.setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(DM)));
         purchaseOrder.setPaymentMode(StringUtils.isBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
         purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
@@ -74,6 +78,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setDeliveryAddress(rs.getString(DA));
         purchaseOrder.setRatingCount(rs.getInt(RA));
         purchaseOrder.setReview(rs.getString(RV));
+        purchaseOrder.setSentimentType(StringUtils.isBlank(rs.getString(ST)) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
         purchaseOrder.setTokenNumber(rs.getInt(TN));
         purchaseOrder.setStoreDiscount(rs.getInt(SD));
         purchaseOrder.setPartialPayment(rs.getString(PP));

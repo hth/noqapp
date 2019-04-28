@@ -4,6 +4,7 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface PurchaseOrderManagerJDBC {
     List<PurchaseOrderEntity> getByQid(String qid, BusinessTypeEnum ignoreBusinessType);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
+    boolean reviewService(String codeQR, int token, String qid, int ratingCount, String review, SentimentTypeEnum sentimentType);
 
     @Mobile
     List<PurchaseOrderEntity> findReviews(String codeQR, int reviewLimitedToDays);

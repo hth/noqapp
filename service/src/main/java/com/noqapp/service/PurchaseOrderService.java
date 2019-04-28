@@ -375,6 +375,11 @@ public class PurchaseOrderService {
         return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
     }
 
+    /**
+     * @param jsonPurchaseOrder
+     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param tokenService
+     */
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
         Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
@@ -382,6 +387,12 @@ public class PurchaseOrderService {
         createOrder(jsonPurchaseOrder, jsonPurchaseOrder.getQueueUserId(), did, tokenService);
     }
 
+    /**
+     * @param jsonPurchaseOrder
+     * @param qid               purchaserQid
+     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param tokenService
+     */
     @Mobile
     public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         BizStoreEntity bizStore;
@@ -1379,10 +1390,10 @@ public class PurchaseOrderService {
     /** Submitting review. */
     private void reviewingService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
         SentimentTypeEnum sentimentType = nlpService.computeSentiment(review);
-        boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, did, qid, ratingCount, review);
+        boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, qid, ratingCount, review, sentimentType);
         if (!reviewSubmitStatus) {
             //TODO(hth) make sure for Guardian this is taken care. Right now its ignore "GQ" add to MySQL Table
-            reviewSubmitStatus = reviewHistoricalService(codeQR, token, did, qid, ratingCount, review);
+            reviewSubmitStatus = reviewHistoricalService(codeQR, token, qid, ratingCount, review, sentimentType);
         }
         sendMailWhenSentimentIsNegative(codeQR, token, ratingCount, review, sentimentType);
 
@@ -1399,12 +1410,12 @@ public class PurchaseOrderService {
     private boolean reviewHistoricalService(
         String codeQR,
         int token,
-        String did,
         String qid,
         int ratingCount,
-        String review
+        String review,
+        SentimentTypeEnum sentimentType
     ) {
-        return purchaseOrderManagerJDBC.reviewService(codeQR, token, did, qid, ratingCount, review);
+        return purchaseOrderManagerJDBC.reviewService(codeQR, token, qid, ratingCount, review, sentimentType);
     }
 
     public PurchaseOrderEntity findByTransactionId(String transactionId) {

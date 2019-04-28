@@ -7,6 +7,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.Date;
@@ -84,7 +85,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     boolean isOrderCancelled(String codeQR, int tokenNumber);
 
     @Mobile
-    boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, String review);
+    boolean reviewService(String codeQR, int token, String qid, int ratingCount, String review, SentimentTypeEnum sentimentType);
 
     @Mobile
     List<PurchaseOrderEntity> findReviews(String codeQR);
