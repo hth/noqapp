@@ -1,10 +1,12 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 
@@ -13,10 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -75,6 +81,14 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public void deleteHard(UserAuthenticationEntity object) {
         mongoTemplate.remove(object, TABLE);
+    }
+
+    @Override
+    public List<UserAuthenticationEntity> listAll(Date sinceThen) {
+        return mongoTemplate.find(
+            query(where("C").gte(sinceThen)).with(new Sort(ASC, "C")),
+            UserAuthenticationEntity.class,
+            TABLE);
     }
 }
 

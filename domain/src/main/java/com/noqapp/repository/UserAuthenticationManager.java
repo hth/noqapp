@@ -2,6 +2,9 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.UserAuthenticationEntity;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 11/19/16 1:48 AM
@@ -17,4 +20,5 @@ public interface UserAuthenticationManager extends RepositoryManager<UserAuthent
      */
     void updateAuthenticationKey(String id, String authenticationKey);
 
+    List<UserAuthenticationEntity> listAll(Date sinceThen);
 }

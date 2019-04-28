@@ -9,6 +9,8 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,6 +105,15 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public boolean isPhoneValidated(String qid) {
         return mongoTemplate.exists(
             query(where("QID").is(qid).and("PV").is(true)),
+            UserAccountEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public boolean existWithAuth(String id) {
+        return mongoTemplate.exists(
+            query(where("USER_AUTHENTICATION.$id").is(new ObjectId(id))),
             UserAccountEntity.class,
             TABLE
         );
