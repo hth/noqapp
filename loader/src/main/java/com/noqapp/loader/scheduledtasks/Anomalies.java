@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.service.anomaly.MissingGeneratedUserId;
 import com.noqapp.service.anomaly.UserAuthenticationAnomaly;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class Anomalies {
 
     private Environment environment;
     private UserAuthenticationAnomaly userAuthenticationAnomaly;
+    private MissingGeneratedUserId missingGeneratedUserId;
 
     @Autowired
     public Anomalies(
@@ -36,7 +38,8 @@ public class Anomalies {
         String oneTimeStatusSwitch,
 
         Environment environment,
-        UserAuthenticationAnomaly userAuthenticationAnomaly
+        UserAuthenticationAnomaly userAuthenticationAnomaly,
+        MissingGeneratedUserId missingGeneratedUserId
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
@@ -44,6 +47,7 @@ public class Anomalies {
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
 
         this.userAuthenticationAnomaly = userAuthenticationAnomaly;
+        this.missingGeneratedUserId = missingGeneratedUserId;
     }
 
     /**
@@ -63,5 +67,6 @@ public class Anomalies {
         /* Write your method after here. Un-comment @Scheduled. */
 
         userAuthenticationAnomaly.listOrphanData();
+        missingGeneratedUserId.populateWithMissingQID();
     }
 }
