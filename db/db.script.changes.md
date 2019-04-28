@@ -1,3 +1,11 @@
+### Change April 27 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `DID` VARCHAR(50) AFTER `QR`;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `ST` VARCHAR(1) AFTER `RV`;
+
 ### Change April 26 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 

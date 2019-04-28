@@ -57,7 +57,7 @@ public enum UserLevelEnum {
      * M_ADMIN. Once upgraded to M_ADMIN, it should be deleted from collection and given appropriate authority. M_ADMIN,
      * S_MANAGER, Q_SUPERVISOR cannot be added as a supervisor for other queues in different business.
      * Only user with ROLE as CLIENT can be added to list of Queue Managers.
-     * M_BURSAR is only for payments.
+     * M_ACCOUNTANT is only for payments.
      *
      * @return
      * @since 12/22/2017

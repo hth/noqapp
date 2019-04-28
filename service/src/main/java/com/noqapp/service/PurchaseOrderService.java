@@ -1379,10 +1379,10 @@ public class PurchaseOrderService {
     /** Submitting review. */
     private void reviewingService(String codeQR, int token, String did, String qid, int ratingCount, String review) {
         SentimentTypeEnum sentimentType = nlpService.computeSentiment(review);
-        boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, did, qid, ratingCount, review);
+        boolean reviewSubmitStatus = purchaseOrderManager.reviewService(codeQR, token, qid, ratingCount, review, sentimentType);
         if (!reviewSubmitStatus) {
             //TODO(hth) make sure for Guardian this is taken care. Right now its ignore "GQ" add to MySQL Table
-            reviewSubmitStatus = reviewHistoricalService(codeQR, token, did, qid, ratingCount, review);
+            reviewSubmitStatus = reviewHistoricalService(codeQR, token, qid, ratingCount, review, sentimentType);
         }
         sendMailWhenSentimentIsNegative(codeQR, token, ratingCount, review, sentimentType);
 
@@ -1399,12 +1399,12 @@ public class PurchaseOrderService {
     private boolean reviewHistoricalService(
         String codeQR,
         int token,
-        String did,
         String qid,
         int ratingCount,
-        String review
+        String review,
+        SentimentTypeEnum sentimentType
     ) {
-        return purchaseOrderManagerJDBC.reviewService(codeQR, token, did, qid, ratingCount, review);
+        return purchaseOrderManagerJDBC.reviewService(codeQR, token, qid, ratingCount, review, sentimentType);
     }
 
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
