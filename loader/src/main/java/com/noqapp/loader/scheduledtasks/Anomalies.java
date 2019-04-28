@@ -62,9 +62,7 @@ public class Anomalies {
         }
 
         oneTimeStatusSwitch = "OFF";
-        LOG.info("Run someTask in AnyTask");
-
-        /* Write your method after here. Un-comment @Scheduled. */
+        LOG.info("Running anomaly task to find anomalies");
 
         userAuthenticationAnomaly.listOrphanData();
         missingGeneratedUserId.populateWithMissingQID();
