@@ -21,4 +21,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     long countRegisteredBetweenDates(Date from, Date to);
 
     boolean isPhoneValidated(String qid);
+
+    boolean existWithAuth(String id);
 }
