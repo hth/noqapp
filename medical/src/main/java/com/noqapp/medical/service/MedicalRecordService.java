@@ -344,7 +344,6 @@ public class MedicalRecordService {
             switch (userProfile.getLevel()) {
                 case S_MANAGER:
                     medicalRecord
-                        .setBusinessType(bizStore.getBusinessType())
                         .setChiefComplain(
                             StringUtils.isBlank(jsonRecord.getChiefComplain())
                                 ? null
@@ -393,6 +392,7 @@ public class MedicalRecordService {
                     break;
             }
             medicalRecord
+                .setBusinessType(bizStore.getBusinessType())
                 .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays())
                     ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
                     : null)
