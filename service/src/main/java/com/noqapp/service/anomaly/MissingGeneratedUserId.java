@@ -37,6 +37,8 @@ public class MissingGeneratedUserId {
     public MissingGeneratedUserId(UserAccountManager userAccountManager, GenerateUserIdManager generateUserIdManager) {
         this.userAccountManager = userAccountManager;
         this.generateUserIdManager = generateUserIdManager;
+
+        populateWithMissingQID();
     }
 
     public void populateWithMissingQID() {
