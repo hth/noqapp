@@ -160,8 +160,6 @@ public class NoQAppInitializationCheckBean {
     public void checkElasticIndex() {
         LOG.info("Running on {}", thisIs);
         if (Objects.requireNonNull(thisIs).equalsIgnoreCase("loader")) {
-            //TODO revert next line
-            elasticAdministrationService.deleteAllIndices();
             /* Delete older indices. */
             elasticAdministrationService.deleteAllPreviousIndices();
         }
