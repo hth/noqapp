@@ -420,6 +420,14 @@ public class PurchaseOrderService {
                     jsonPurchaseOrder
                         .setOrderPrice(String.valueOf(discountedPrice))
                         .setCustomized(true);
+
+                    /* Add discount as line item. */
+                    jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
+                        new JsonPurchaseOrderProduct()
+                            .setProductName("Follow-up discount")
+                            .setProductPrice(-bizStore.getProductPrice())
+                            .setProductQuantity(1)
+                    );
                 } else if (lastVisited <= bizStore.getDiscountedFollowupDays()) {
                     discountIfAny = true;
                     /* When it is between the specified days then set the order price. */
@@ -427,6 +435,14 @@ public class PurchaseOrderService {
                     jsonPurchaseOrder
                         .setOrderPrice(String.valueOf(discountedPrice))
                         .setCustomized(true);
+
+                    /* Add discount as line item. */
+                    jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
+                        new JsonPurchaseOrderProduct()
+                            .setProductName("Follow-up discount")
+                            .setProductPrice(-bizStore.getDiscountedFollowupProductPrice())
+                            .setProductQuantity(1)
+                    );
                 }
             }
         }
