@@ -83,6 +83,9 @@ public class ReviewService {
         return jsonReviewList;
     }
 
+    /**
+     * Note: Level up reviews do not have codeQR set as its difficult to track who's review it is. And that's not the purpose either.
+     */
     @Mobile
     public JsonReviewList findQueueLevelUpReviews(String bizNameId) {
         List<QueueEntity> queues = queueManager.findLevelUpReviews(bizNameId);
