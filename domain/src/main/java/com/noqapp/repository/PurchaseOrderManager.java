@@ -81,7 +81,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     /** As cancellation is handled in transaction. */
     @Deprecated
-    PurchaseOrderEntity cancelOrderByMerchant(String codeQR, String transactionId);
+    PurchaseOrderEntity cancelOrderByMerchant(String qid, String transactionId);
     boolean isOrderCancelled(String codeQR, int tokenNumber);
 
     @Mobile

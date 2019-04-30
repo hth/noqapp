@@ -424,7 +424,7 @@ public class PurchaseOrderService {
                     /* Add discount as line item. */
                     jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
                         new JsonPurchaseOrderProduct()
-                            .setProductName("Follow-up discount")
+                            .setProductName("Follow-up discount for visiting within " + lastVisited + " days")
                             .setProductPrice(-bizStore.getProductPrice())
                             .setProductQuantity(1)
                     );
@@ -439,7 +439,7 @@ public class PurchaseOrderService {
                     /* Add discount as line item. */
                     jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
                         new JsonPurchaseOrderProduct()
-                            .setProductName("Follow-up discount")
+                            .setProductName("Follow-up discount for visiting within " + lastVisited + " days")
                             .setProductPrice(-bizStore.getDiscountedFollowupProductPrice())
                             .setProductQuantity(1)
                     );

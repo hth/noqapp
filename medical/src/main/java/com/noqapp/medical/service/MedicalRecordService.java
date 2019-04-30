@@ -1126,8 +1126,7 @@ public class MedicalRecordService {
             }
 
             medicalRecordManager.deleteHard(medicalRecord);
-            LOG.info("Removed reference to medicalRecord when purchaseOrder orderState={} transactionId={}",
-                purchaseOrder.getPresentOrderState(), purchaseOrder.getTransactionId());
+            LOG.info("Removed reference to medicalRecord when purchaseOrder orderState={} transactionId={}", purchaseOrder.getPresentOrderState(), purchaseOrder.getTransactionId());
         } catch (Exception e) {
             if (null != purchaseOrder) {
                 LOG.error("Failed reference to medicalRecord when purchaseOrder orderState={} transactionId={} reason={}",
