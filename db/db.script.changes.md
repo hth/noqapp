@@ -1,3 +1,9 @@
+### Change April 30 2019
+
+###### Modified from column size of 64 to 100
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT`
+    MODIFY PN CHAR(100) NOT NULL;
+
 ### Change April 27 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
