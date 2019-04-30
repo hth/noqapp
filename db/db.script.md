@@ -88,7 +88,7 @@ as a value, then it gets endless connections.
     CREATE TABLE noqapp_test.PURCHASE_ORDER_PRODUCT
     (
         ID VARCHAR(24)      NOT NULL,
-        PN VARCHAR(64)      NOT NULL,
+        PN VARCHAR(100)     NOT NULL,
         PP INT(10),
         PD INT(5),
         PQ INT(3),
