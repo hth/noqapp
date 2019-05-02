@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 public class QueueOrderController {
     private static final Logger LOG = LoggerFactory.getLogger(QueueOrderController.class);
 
-    private int durationInDays;
+    private int limitedToDays;
     private String queue;
     private String queueHistorical;
     private String order;
@@ -59,8 +59,8 @@ public class QueueOrderController {
 
     @Autowired
     public QueueOrderController(
-        @Value("${durationInDays:10}")
-        int durationInDays,
+        @Value("${limitedToDays:10}")
+        int limitedToDays,
 
         @Value("${queue:/business/inQueue}")
         String queue,
@@ -79,7 +79,7 @@ public class QueueOrderController {
         QueueService queueService,
         PurchaseOrderService purchaseOrderService
     ) {
-        this.durationInDays = durationInDays;
+        this.limitedToDays = limitedToDays;
         this.queue = queue;
         this.queueHistorical = queueHistorical;
         this.order = order;
@@ -119,7 +119,7 @@ public class QueueOrderController {
         String nextPage;
         if ("historical".equals(state.getText())) {
             if (MessageOriginEnum.O == tokenQueue.getBusinessType().getMessageOrigin()) {
-                List<PurchaseOrderEntity> purchaseOrders = purchaseOrderService.findAllOrderByCodeQR(codeQR.getText(), durationInDays);
+                List<PurchaseOrderEntity> purchaseOrders = purchaseOrderService.findAllOrderByCodeQR(codeQR.getText(), limitedToDays);
                 for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
                     UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
                     purchaseOrder.setCustomerName(userProfile.getName());
@@ -127,7 +127,7 @@ public class QueueOrderController {
                 inQueueForm.setPurchaseOrders(purchaseOrders);
                 nextPage = orderHistorical;
             } else {
-                inQueueForm.setJsonQueuePersonList(queueService.getByCodeQR(codeQR.getText(), durationInDays));
+                inQueueForm.setJsonQueuePersonList(queueService.getByCodeQR(codeQR.getText(), limitedToDays));
                 nextPage = queueHistorical;
             }
         } else {
