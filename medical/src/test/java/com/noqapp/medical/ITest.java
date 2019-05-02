@@ -351,6 +351,7 @@ public class ITest extends RealMongoForITest {
 
         storeProductService = new StoreProductService(storeProductManager, bizStoreManager, fileService, transactionService);
         purchaseOrderService = new PurchaseOrderService(
+            5,
             bizStoreManager,
             businessUserManager,
             storeHourManager,
