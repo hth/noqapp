@@ -463,14 +463,24 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         PurchaseOrderStateEnum purchaseOrderState,
         PaymentModeEnum paymentMode
     ) {
-        return mongoTemplate.findAndModify(
-            query(where("TI").is(transactionId)),
-            update("TM", transactionMessage)
+        Update update;
+        if (StringUtils.isBlank(transactionReferenceId)) {
+            update = update("TM", transactionMessage)
+                .set("PY", paymentStatus)
+                .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
+                .set("PM", paymentMode)
+                .set("TV", TransactionViaEnum.I);
+        } else {
+            update = update("TM", transactionMessage)
                 .set("TR", transactionReferenceId)
                 .set("PY", paymentStatus)
                 .set("PS", purchaseOrderState).push("OS", purchaseOrderState)
                 .set("PM", paymentMode)
-                .set("TV", TransactionViaEnum.I),
+                .set("TV", TransactionViaEnum.I);
+        }
+        return mongoTemplate.findAndModify(
+            query(where("TI").is(transactionId)),
+            update,
             FindAndModifyOptions.options().returnNew(true),
             PurchaseOrderEntity.class,
             TABLE);
