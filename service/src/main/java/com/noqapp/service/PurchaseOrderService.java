@@ -75,6 +75,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -107,6 +108,8 @@ public class PurchaseOrderService {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
+    private int limitedToDays;
+
     private BizStoreManager bizStoreManager;
     private BusinessUserManager businessUserManager;
     private TokenQueueService tokenQueueService;
@@ -133,6 +136,9 @@ public class PurchaseOrderService {
 
     @Autowired
     public PurchaseOrderService(
+        @Value("${limitedToDays:5}")
+        int limitedToDays,
+
         BizStoreManager bizStoreManager,
         BusinessUserManager businessUserManager,
         StoreHourManager storeHourManager,
@@ -155,6 +161,8 @@ public class PurchaseOrderService {
         CashfreeService cashfreeService,
         PurchaseOrderProductService purchaseOrderProductService
     ) {
+        this.limitedToDays = limitedToDays;
+
         this.bizStoreManager = bizStoreManager;
         this.businessUserManager = businessUserManager;
         this.tokenQueueService = tokenQueueService;
@@ -377,7 +385,7 @@ public class PurchaseOrderService {
 
     /**
      * @param jsonPurchaseOrder
-     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param did               Device Id of guardian or purchaser. Helps in notifying user of changes through FCM.
      * @param tokenService
      */
     @Mobile
@@ -390,7 +398,7 @@ public class PurchaseOrderService {
     /**
      * @param jsonPurchaseOrder
      * @param qid               purchaserQid
-     * @param did               Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
+     * @param did               Device Id of guardian or purchaser. Helps in notifying user of changes through FCM.
      * @param tokenService
      */
     @Mobile
@@ -867,6 +875,17 @@ public class PurchaseOrderService {
     public String findAllOrderByCodeAsJson(String codeQR) {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOrderByCodeQR(codeQR);
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+        }
+
+        return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
+    }
+
+    @Mobile
+    public String findAllOrderByCodeHistoricalAsJson(String codeQR) {
+        List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
+        List<PurchaseOrderEntity> purchaseOrders = findAllOrderByCodeQR(codeQR, limitedToDays);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
