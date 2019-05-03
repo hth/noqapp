@@ -158,15 +158,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public String getNotifyToQid() {
-        return notifyToQid;
-    }
-
-    public JsonPurchaseOrder setNotifyToQid(String notifyToQid) {
-        this.notifyToQid = notifyToQid;
-        return this;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -254,6 +245,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonPurchaseOrder setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 
