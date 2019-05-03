@@ -158,15 +158,6 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public String getNotifyToQid() {
-        return notifyToQid;
-    }
-
-    public JsonPurchaseOrder setNotifyToQid(String notifyToQid) {
-        this.notifyToQid = notifyToQid;
-        return this;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
