@@ -281,17 +281,12 @@ public class QueueService {
     /** Finds all clients in a queue. */
     @Mobile
     public JsonQueuePersonList findAllClient(String codeQR) {
-        try {
-            List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
-            List<QueueEntity> queues = queueManager.findByCodeQR(codeQR);
-            populateInJsonQueuePersonList(queuedPeople, queues);
+        List<QueueEntity> queues = queueManager.findByCodeQR(codeQR);
+        populateInJsonQueuePersonList(queuedPeople, queues);
 
-            return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
-        } catch (Exception e) {
-            LOG.error("Client in queue for codeQR={} reason={}", codeQR, e.getLocalizedMessage(), e);
-            return new JsonQueuePersonList();
-        }
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
     @Mobile
