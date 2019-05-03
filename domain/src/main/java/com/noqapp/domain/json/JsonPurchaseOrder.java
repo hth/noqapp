@@ -257,6 +257,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonPurchaseOrder setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
     public List<JsonPurchaseOrderProduct> getJsonPurchaseOrderProducts() {
         return jsonPurchaseOrderProducts;
     }
