@@ -893,7 +893,12 @@ public class PurchaseOrderService {
         List<JsonPurchaseOrder> jsonPurchaseOrders = new ArrayList<>();
         List<PurchaseOrderEntity> purchaseOrders = findAllOrderByCodeQR(codeQR, limitedToDays);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            populateRelatedToPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
+            purchaseOrder
+                .setCustomerName(userProfile.getName())
+                .setCustomerPhone(StringUtils.isBlank(userProfile.getPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
+
+            populateHistoricalJsonPurchaseOrder(jsonPurchaseOrders, purchaseOrder);
         }
 
         return new JsonPurchaseOrderList().setPurchaseOrders(jsonPurchaseOrders).asJson();
@@ -921,6 +926,10 @@ public class PurchaseOrderService {
 
     private void populateRelatedToPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
         jsonPurchaseOrders.add(purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder));
+    }
+
+    private void populateHistoricalJsonPurchaseOrder(List<JsonPurchaseOrder> jsonPurchaseOrders, PurchaseOrderEntity purchaseOrder) {
+        jsonPurchaseOrders.add(purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder));
     }
 
     /** Formulates and send messages to FCM. */
