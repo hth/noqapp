@@ -289,7 +289,8 @@ public class PurchaseOrderService {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
         purchaseOrder
             .setCustomerName(userProfile.getName())
-            .setCustomerPhone(StringUtils.isBlank(userProfile.getPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
+            .setCustomerPhone(StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhone() : userProfile.getGuardianPhone());
+
         return purchaseOrder;
     }
 
