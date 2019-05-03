@@ -85,6 +85,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty("dn")
+    private String displayName;
+
     @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
 
@@ -152,6 +155,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getNotifyToQid() {
+        return notifyToQid;
+    }
+
+    public JsonPurchaseOrder setNotifyToQid(String notifyToQid) {
+        this.notifyToQid = notifyToQid;
         return this;
     }
 
@@ -378,6 +390,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setPaymentMode(po.getPaymentMode())
             .setPaymentStatus(po.getPaymentStatus())
             .setBusinessType(po.getBusinessType())
+            .setDisplayName(po.getDisplayName())
             //Empty purchaseOrderProducts List
             //No Setting Serving Number
             .setToken(po.getTokenNumber())
@@ -410,6 +423,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.businessType = purchaseOrder.getBusinessType();
+        this.displayName = purchaseOrder.getDisplayName();
 
         this.token = purchaseOrder.getTokenNumber();
         this.customerName = purchaseOrder.getCustomerName();
