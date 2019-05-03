@@ -286,7 +286,7 @@ public class PurchaseOrderService {
     public PurchaseOrderEntity findHistoricalPurchaseOrder(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(qid, transactionId);
 
-        UserProfileEntity userProfile =accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(purchaseOrder.getQueueUserId());
         purchaseOrder
             .setCustomerName(userProfile.getName())
             .setCustomerPhone(StringUtils.isBlank(userProfile.getPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
