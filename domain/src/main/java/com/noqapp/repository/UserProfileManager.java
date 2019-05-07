@@ -63,5 +63,9 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     @Deprecated
     List<UserProfileEntity> findAll();
 
+    /**
+     * //TODO this needs a location to limit transmission.
+     * @return
+     */
     Stream<UserProfileEntity> findAllPhoneOwners();
 }

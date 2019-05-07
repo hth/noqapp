@@ -92,6 +92,15 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="imageURL" cssErrorClass="lb_error">URL of Image</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="imageURL" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="ignoreSentiments" cssErrorClass="lb_error">Ignore Negative Sentiments</form:label>
                                     </div>
                                     <div id="addressStoreCheckBox" class="col-fields">

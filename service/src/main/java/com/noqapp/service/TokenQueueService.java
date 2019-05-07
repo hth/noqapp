@@ -605,24 +605,36 @@ public class TokenQueueService {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, registeredDevice, messageOrigin);
+            createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin);
         } else {
             LOG.warn("Skipped as no registered device found for qid={}", qid);
         }
     }
 
     /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
-        LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin) {
+        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, registeredDevice, messageOrigin);
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin);
+        } else {
+            LOG.warn("Skipped as no registered device found for qid={}", qid);
         }
     }
 
-    private void createMessageToSendToSpecificUserOrDevice(String title, String body, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
+    /** Sends any message to a specific user. */
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
+        LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
+        if (null != registeredDevice) {
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin);
+        }
+    }
+
+    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
         String token = registeredDevice.getToken();
         JsonMessage jsonMessage = new JsonMessage(token);
         JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        jsonData.setImageURL(imageURL);
 
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
             jsonMessage.getNotification()

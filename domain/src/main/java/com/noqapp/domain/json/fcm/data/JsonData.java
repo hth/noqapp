@@ -38,6 +38,9 @@ public abstract class JsonData {
     @JsonProperty("body")
     private String body;
 
+    @JsonProperty("imageURL")
+    private String imageURL;
+
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
     }
@@ -57,6 +60,15 @@ public abstract class JsonData {
 
     public JsonData setBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public JsonData setImageURL(String imageURL) {
+        this.imageURL = imageURL;
         return this;
     }
 }
