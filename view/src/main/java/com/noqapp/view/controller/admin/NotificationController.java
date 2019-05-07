@@ -109,6 +109,7 @@ public class NotificationController {
                         tokenQueueService.sendMessageToSpecificUser(
                             sendNotificationForm.getTitle().getText(),
                             sendNotificationForm.getBody().getText(),
+                            sendNotificationForm.getImageURL().getText(),
                             userProfile.getQueueUserId(),
                             MessageOriginEnum.D);
 
@@ -118,6 +119,7 @@ public class NotificationController {
                             tokenQueueService.sendMessageToSpecificUser(
                                 sendNotificationForm.getTitle().getText(),
                                 sendNotificationForm.getBody().getText(),
+                                sendNotificationForm.getImageURL().getText(),
                                 userProfile.getQueueUserId(),
                                 MessageOriginEnum.D);
 
@@ -133,6 +135,7 @@ public class NotificationController {
                         tokenQueueService.sendMessageToSpecificUser(
                             sendNotificationForm.getTitle().getText(),
                             sendNotificationForm.getBody().getText(),
+                            sendNotificationForm.getImageURL().getText(),
                             registeredDevice,
                             MessageOriginEnum.D);
 

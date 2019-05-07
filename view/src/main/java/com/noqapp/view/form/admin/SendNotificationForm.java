@@ -10,6 +10,7 @@ public class SendNotificationForm {
 
     private ScrubbedInput title;
     private ScrubbedInput body;
+    private ScrubbedInput imageURL;
     private boolean ignoreSentiments;
     private int sentCount;
     private boolean success;
@@ -29,6 +30,15 @@ public class SendNotificationForm {
 
     public SendNotificationForm setBody(ScrubbedInput body) {
         this.body = body;
+        return this;
+    }
+
+    public ScrubbedInput getImageURL() {
+        return imageURL;
+    }
+
+    public SendNotificationForm setImageURL(ScrubbedInput imageURL) {
+        this.imageURL = imageURL;
         return this;
     }
 
