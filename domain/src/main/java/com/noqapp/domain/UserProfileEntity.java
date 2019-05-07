@@ -1,6 +1,6 @@
 package com.noqapp.domain;
 
-import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -9,6 +9,14 @@ import com.noqapp.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -41,6 +49,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "user_profile_guardian_idx", def = "{'GP' : 1}", unique = false, sparse = true),
 })
 public class UserProfileEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(UserProfileEntity.class);
 
     @NotNull
     @Field ("QID")
@@ -338,8 +347,35 @@ public class UserProfileEntity extends BaseEntity {
         }
     }
 
+    /** Common as in Mobile to show age. */
     @Transient
     public String getAgeAsString() {
-        return CommonUtil.calculateAge(birthday, queueUserId);
+        try {
+            DateTime dateTime = new DateTime(DateUtil.SDF_YYYY_MM_DD.parse(birthday));
+            DateTime now = DateTime.now();
+            int years = Years.yearsBetween(dateTime, now).getYears();
+            String age;
+            if (years <= 1) {
+                int months = Months.monthsBetween(dateTime, now).getMonths();
+                if (months <= 1) {
+                    int days = Days.daysBetween(dateTime, now).getDays();
+                    if (days == 0) {
+                        age = "Today";
+                    } else {
+                        age = days + "+ days";
+                    }
+                } else {
+                    age = months + "+ months";
+                }
+            } else {
+                age = years + "+ years";
+            }
+
+            return age;
+        } catch (Exception e) {
+            LOG.error("Failed parse dob={} qid={} reason={}", birthday, queueUserId, e.getLocalizedMessage(), e);
+        }
+
+        return "N/A";
     }
 }
