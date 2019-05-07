@@ -181,8 +181,13 @@ public class ServicedPersonalFCM {
             found = purchaseOrders.size();
 
             for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
+                if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                    userProfile = userProfileManager.findOneByPhone(userProfile.getGuardianPhone());
+                }
+
                 RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findFCMToken(
-                    purchaseOrder.getQueueUserId(),
+                    userProfile.getQueueUserId(),
                     purchaseOrder.getDid());
 
                 //TODO add cache Redis.
