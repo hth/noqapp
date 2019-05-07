@@ -586,9 +586,11 @@ public class QueueService {
         List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.getQueues(qid, 0);
 
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(businessUserStore.getCodeQR());
             healthCareStatList.addHealthCareStat(
                 new HealthCareStat()
                     .setCodeQR(businessUserStore.getCodeQR())
+                    .setProductPrice(bizStore.getProductPrice())
                     .setRepeatCustomers(repeatAndNewCustomers(businessUserStore.getCodeQR()))
                     .setTwelveMonths(lastTwelveMonthVisits(businessUserStore.getCodeQR())));
         }

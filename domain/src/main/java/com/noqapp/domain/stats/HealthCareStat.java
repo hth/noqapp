@@ -34,6 +34,9 @@ public class HealthCareStat extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty("pp")
+    private int productPrice;
+
     @JsonProperty("yearly")
     private List<YearlyData> twelveMonths;
 
@@ -46,6 +49,15 @@ public class HealthCareStat extends AbstractDomain {
 
     public HealthCareStat setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public HealthCareStat setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
         return this;
     }
 
