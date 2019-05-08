@@ -34,7 +34,7 @@ import com.noqapp.medical.domain.json.JsonMedicalMedicine;
 import com.noqapp.medical.domain.json.JsonMedicalPathology;
 import com.noqapp.medical.domain.json.JsonMedicalPathologyList;
 import com.noqapp.medical.domain.json.JsonMedicalPhysical;
-import com.noqapp.medical.domain.json.JsonMedicalPhysicalList;
+import com.noqapp.medical.domain.json.JsonMedicalProfile;
 import com.noqapp.medical.domain.json.JsonMedicalRadiology;
 import com.noqapp.medical.domain.json.JsonMedicalRadiologyList;
 import com.noqapp.medical.domain.json.JsonMedicalRecord;
@@ -898,21 +898,21 @@ public class MedicalRecordService {
         return jsonMedicalRecordList;
     }
 
-    /** Populate data for client case histories. */
+    /** Populate data for client physical histories and medical profile. */
     @Mobile
-    public JsonMedicalPhysicalList populateMedicalPhysicalHistory(String qid) {
-        JsonMedicalPhysicalList jsonMedicalPhysicalList = new JsonMedicalPhysicalList();
+    public JsonMedicalProfile populateMedicalProfileAndPhysicalHistory(String qid) {
+        JsonMedicalProfile jsonMedicalProfile = new JsonMedicalProfile();
 
         List<String> queueUserIds = getAllQIDsForGuardian(qid);
         for (String queueUserId : queueUserIds) {
             List<MedicalPhysicalEntity> medicalPhysicals = findByQid(queueUserId);
             for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
-                jsonMedicalPhysicalList.addJsonMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
+                jsonMedicalProfile.addJsonMedicalPhysical(JsonMedicalPhysical.populateJsonMedicalPhysical(medicalPhysical));
             }
         }
 
-        jsonMedicalPhysicalList.setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(qid));
-        return jsonMedicalPhysicalList;
+        jsonMedicalProfile.setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(qid));
+        return jsonMedicalProfile;
     }
 
     private List<String> getAllQIDsForGuardian(String qid) {
