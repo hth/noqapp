@@ -911,7 +911,6 @@ public class MedicalRecordService {
             }
         }
 
-        jsonMedicalPhysicalList.setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(qid));
         return jsonMedicalPhysicalList;
     }
 

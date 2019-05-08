@@ -1,7 +1,6 @@
 package com.noqapp.medical.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,9 +32,6 @@ public class JsonMedicalPhysicalList extends AbstractDomain {
     @JsonProperty("mps")
     private List<JsonMedicalPhysical> jsonMedicalPhysicals = new LinkedList<>();
 
-    @JsonProperty("um")
-    private JsonUserMedicalProfile jsonUserMedicalProfile;
-
     public List<JsonMedicalPhysical> getJsonMedicalPhysicals() {
         return jsonMedicalPhysicals;
     }
@@ -47,15 +43,6 @@ public class JsonMedicalPhysicalList extends AbstractDomain {
 
     public JsonMedicalPhysicalList addJsonMedicalPhysical(JsonMedicalPhysical jsonMedicalPhysical) {
         this.jsonMedicalPhysicals.add(jsonMedicalPhysical);
-        return this;
-    }
-
-    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
-        return jsonUserMedicalProfile;
-    }
-
-    public JsonMedicalPhysicalList setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
-        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
     }
 }
