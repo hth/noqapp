@@ -462,11 +462,22 @@ public class PurchaseOrderService {
             }
         }
 
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        String address, phone;
+        if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+            UserProfileEntity guardianUserProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+            address = guardianUserProfile.getAddress();
+            phone = guardianUserProfile.getPhone();
+        } else {
+            address = userProfile.getAddress();
+            phone = userProfile.getPhone();
+        }
+
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
-            .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
-            .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
+            .setDeliveryAddress(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? address : jsonPurchaseOrder.getDeliveryAddress())
+            .setCustomerPhone(phone)
             .setStoreDiscount(bizStore.getDiscount())
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
