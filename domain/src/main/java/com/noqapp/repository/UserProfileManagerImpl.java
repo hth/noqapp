@@ -289,7 +289,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public boolean dependentExists(String qid, String guardianPhone) {
         return mongoTemplate.exists(
-            query(where("QID").is(qid).and("GP").and(guardianPhone)),
+            query(where("QID").is(qid).and("GP").is(guardianPhone)),
             UserProfileEntity.class,
             TABLE
         );
