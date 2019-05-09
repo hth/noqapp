@@ -475,7 +475,7 @@ public class PurchaseOrderService {
             .setBusinessType(bizStore.getBusinessType())
             .setTokenService(tokenService)
             .setDisplayName(bizStore.getDisplayName())
-            .setAdditionalNote(jsonPurchaseOrder.getAdditionalNote());
+            .setAdditionalNote(StringUtils.isBlank(jsonPurchaseOrder.getAdditionalNote()) ? null : jsonPurchaseOrder.getAdditionalNote());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
