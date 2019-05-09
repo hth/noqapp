@@ -462,22 +462,12 @@ public class PurchaseOrderService {
             }
         }
 
-        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-        String address, phone;
-        if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
-            UserProfileEntity guardianUserProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-            address = guardianUserProfile.getAddress();
-            phone = guardianUserProfile.getPhone();
-        } else {
-            address = userProfile.getAddress();
-            phone = userProfile.getPhone();
-        }
-
+        setCustomerPhoneAndAddress(qid, jsonPurchaseOrder);
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
-            .setDeliveryAddress(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? address : jsonPurchaseOrder.getDeliveryAddress())
-            .setCustomerPhone(phone)
+            .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
+            .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
             .setStoreDiscount(bizStore.getDiscount())
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
@@ -585,6 +575,24 @@ public class PurchaseOrderService {
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
             throw new PurchaseOrderFailException("Failed creating order");
+        }
+    }
+
+    private void setCustomerPhoneAndAddress(String qid, JsonPurchaseOrder jsonPurchaseOrder) {
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+            UserProfileEntity guardianUserProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+            jsonPurchaseOrder.setDeliveryAddress(
+                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
+                    ? guardianUserProfile.getAddress()
+                    : jsonPurchaseOrder.getDeliveryAddress());
+            jsonPurchaseOrder.setCustomerPhone(guardianUserProfile.getPhone());
+        } else {
+            jsonPurchaseOrder.setDeliveryAddress(
+                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) 
+                    ? userProfile.getAddress()
+                    : jsonPurchaseOrder.getDeliveryAddress());
+            jsonPurchaseOrder.setCustomerPhone(userProfile.getPhone());
         }
     }
 
