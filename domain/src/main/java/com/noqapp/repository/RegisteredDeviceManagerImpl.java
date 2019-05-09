@@ -328,4 +328,13 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             TABLE
         ).stream();
     }
+
+    @Override
+    public RegisteredDeviceEntity findByDid(String deviceId) {
+        return mongoTemplate.findOne(
+            query(where("DID").is(deviceId)),
+            RegisteredDeviceEntity.class,
+            TABLE
+        );
+    }
 }

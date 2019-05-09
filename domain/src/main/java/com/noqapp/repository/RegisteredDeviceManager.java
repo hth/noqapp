@@ -69,4 +69,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     RegisteredDeviceEntity findRecentDevice(String qid);
 
     Stream<RegisteredDeviceEntity> findAllTokenWithoutQID(AppFlavorEnum appFlavor);
+
+    RegisteredDeviceEntity findByDid(String deviceId);
 }

@@ -128,6 +128,10 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("cz")
     private boolean customized;
 
+    @JsonProperty("did")
+    @JsonIgnore
+    private String did;
+
     public JsonPurchaseOrder() {
     }
 
@@ -375,6 +379,11 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return MathUtil.displayPrice(orderPrice);
     }
 
+    @JsonIgnore
+    public String getDid() {
+        return did;
+    }
+
     /** Mostly used when cancelling the order. */
     public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
         return new JsonPurchaseOrder()
@@ -436,6 +445,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.transactionMessage = purchaseOrder.getTransactionMessage();
         this.transactionVia = purchaseOrder.getTransactionVia();
+
+        /* Ignore from here onwards. */
+        this.did = purchaseOrder.getDid();
     }
 
     @Override
