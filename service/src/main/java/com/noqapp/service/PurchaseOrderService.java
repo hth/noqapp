@@ -589,7 +589,7 @@ public class PurchaseOrderService {
             jsonPurchaseOrder.setCustomerPhone(guardianUserProfile.getPhone());
         } else {
             jsonPurchaseOrder.setDeliveryAddress(
-                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) 
+                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
                     ? userProfile.getAddress()
                     : jsonPurchaseOrder.getDeliveryAddress());
             jsonPurchaseOrder.setCustomerPhone(userProfile.getPhone());
