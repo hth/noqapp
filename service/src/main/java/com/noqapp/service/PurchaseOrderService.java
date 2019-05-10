@@ -358,11 +358,6 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public boolean isOrderCancelled(String codeQR, int tokenNumber) {
-        return purchaseOrderManager.isOrderCancelled(codeQR, tokenNumber);
-    }
-
-    @Mobile
     public JsonPurchaseOrder modifyOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
         Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
         LOG.info("JsonPurchaseOrder={} did={} tokenService={}", jsonPurchaseOrder, did, tokenService);
