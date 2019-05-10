@@ -349,6 +349,7 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String qid, String transactionId) {
         Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
+        LOG.info("Merchant is cancelling order for {} {}", qid, transactionId);
 
         PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByMerchant(qid, transactionId);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
