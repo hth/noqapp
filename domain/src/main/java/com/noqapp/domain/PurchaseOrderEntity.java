@@ -119,7 +119,12 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("ST")
     private SentimentTypeEnum sentimentType;
 
-    /* Order Number. */
+    /**
+     * Order Number.
+     *
+     * TODO(hth) There is a possibility of having same token number in purchase order, please validate as this happened for Queue.
+     * Do no rely on tokenNumber when dealing with transactions. Instead use transaction id for all transaction and qid.
+     */
     @Field ("TN")
     private int tokenNumber;
 

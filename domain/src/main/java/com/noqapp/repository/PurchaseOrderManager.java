@@ -82,7 +82,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     /** As cancellation is handled in transaction. */
     @Deprecated
     PurchaseOrderEntity cancelOrderByMerchant(String qid, String transactionId);
-    boolean isOrderCancelled(String codeQR, int tokenNumber);
 
     @Mobile
     boolean reviewService(String codeQR, int token, String qid, int ratingCount, String review, SentimentTypeEnum sentimentType);
