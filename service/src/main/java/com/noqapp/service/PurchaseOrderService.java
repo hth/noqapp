@@ -296,6 +296,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public boolean isOrderCancelled(String qid, String transactionId) {
+        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid");
         return purchaseOrderManager.isOrderCancelled(qid, transactionId);
     }
 
