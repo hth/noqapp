@@ -335,12 +335,12 @@ subprojects {
 }
 
 project(':common') {
-    jar.baseName = archiveName + '-common'
+    jar.archiveBaseName = archiveName + '-common'
 }
 
 project(':loader') {
     apply plugin: 'war'
-    jar.baseName = archiveName + '-loader'
+    jar.archiveBaseName = archiveName + '-loader'
 
     dependencies {
         compile project(':medical')
@@ -350,7 +350,7 @@ project(':loader') {
 }
 
 project(':domain') {
-    jar.baseName = archiveName + '-domain'
+    jar.archiveBaseName = archiveName + '-domain'
 
     dependencies {
         compile project(':common')
@@ -358,7 +358,7 @@ project(':domain') {
 }
 
 project(':health') {
-    jar.baseName = archiveName + '-health'
+    jar.archiveBaseName = archiveName + '-health'
 
     dependencies {
         compile project(':common'),
@@ -368,7 +368,7 @@ project(':health') {
 
 project(':security') {
     apply plugin: 'war'
-    jar.baseName = archiveName + '-security'
+    jar.archiveBaseName = archiveName + '-security'
 
     repositories {
         mavenCentral()
@@ -384,7 +384,7 @@ project(':security') {
 }
 
 project(':service') {
-    jar.baseName = archiveName + '-service'
+    jar.archiveBaseName = archiveName + '-service'
 
     dependencies {
         compile project(':common'),
@@ -394,7 +394,7 @@ project(':service') {
 }
 
 project(':search') {
-    jar.baseName = archiveName + '-search'
+    jar.archiveBaseName = archiveName + '-search'
 
     dependencies {
         compile project(':common'),
@@ -404,7 +404,7 @@ project(':search') {
 }
 
 project(':social') {
-    jar.baseName = archiveName + '-social'
+    jar.archiveBaseName = archiveName + '-social'
 
     dependencies {
         compile project(':common'),
@@ -414,7 +414,7 @@ project(':social') {
 }
 
 project(':medical') {
-    jar.baseName = archiveName + '-medical'
+    jar.archiveBaseName = archiveName + '-medical'
 
     dependencies {
         compile project(':common'),
@@ -426,7 +426,7 @@ project(':medical') {
 
 project(':view') {
     apply plugin: 'war'
-    jar.baseName = archiveName + '-view'
+    jar.archiveBaseName = archiveName + '-view'
     war.baseName = archiveName + '-view'
 
     repositories {
@@ -858,8 +858,8 @@ task war(type: War, dependsOn: prepWar) {
 //        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
-    
-    archiveName = "ROOT-$env" + "." + project.version.toString() + ".war"
+
+    archiveBaseName = "ROOT-$env" + "." + project.version.toString()
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env")
@@ -871,7 +871,7 @@ task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
 
-    archiveName =  "ROOT-loader-$env" + "." + project.version.toString() + ".war"
+    archiveBaseName =  "ROOT-loader-$env" + "." + project.version.toString()
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env-loader")
