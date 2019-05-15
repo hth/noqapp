@@ -322,9 +322,9 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public long deleteByCodeQR(String codeQR) {
+    public long deleteByCodeQR(String codeQR, Date until) {
         return mongoTemplate.remove(
-            query(where("QR").is(codeQR)),
+            query(where("QR").is(codeQR).and("C").lte(until)),
             PurchaseOrderEntity.class,
             TABLE
         ).getDeletedCount();

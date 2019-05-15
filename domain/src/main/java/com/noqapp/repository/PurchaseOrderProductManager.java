@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderProductEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface PurchaseOrderProductManager extends RepositoryManager<PurchaseO
 
     List<PurchaseOrderProductEntity> getAllByPurchaseOrderIdWhenPriceZero(String purchaseOrderId);
 
-    long deleteByCodeQR(String codeQR);
+    long deleteByCodeQR(String codeQR, Date until);
 
     void changePatient(String purchaseOrderId, String queueUserId);
 
