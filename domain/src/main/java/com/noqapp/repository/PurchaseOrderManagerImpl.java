@@ -581,10 +581,10 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public void cancelOrderWhenBackedAwayFromGateway(String transactionId) {
         mongoTemplate.updateFirst(
-            query(where("TI").is(transactionId)
+            query(where("TI").is(transactionId).and("PS").is(PurchaseOrderStateEnum.VB)
                 .orOperator(
-                    where("DM").is(DeliveryModeEnum.QS), //TEMP Line
-                    where("PS").is(PurchaseOrderStateEnum.VB)
+                    where("DM").is(DeliveryModeEnum.HD),
+                    where("DM").is(DeliveryModeEnum.TO)
                 )),
             update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)
                 .set("PY", PaymentStatusEnum.PC),

@@ -120,7 +120,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId);
     void removePurchaseOrderForService(String transactionId);
 
-    /** Cancel order when user returned back from Payment Gateway without paying. */
+    /** Cancel order when user returned back from Payment Gateway without paying. Currently support for only orders. */
     void cancelOrderWhenBackedAwayFromGateway(String transactionId);
 
     List<PurchaseOrderEntity> findByBizNameId(String bizNameId);
