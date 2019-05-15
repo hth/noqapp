@@ -307,9 +307,8 @@ public class ArchiveAndReset {
         }
 
         bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
-        long deleted = purchaseOrderManager.deleteByCodeQR(bizStore.getCodeQR());
-        //TODO(hth) has to come under transaction
-        purchaseOrderProductManager.deleteByCodeQR(bizStore.getCodeQR());
+        long deleted = purchaseOrderManager.deleteByCodeQR(bizStore.getCodeQR(), until);
+        purchaseOrderProductManager.deleteByCodeQR(bizStore.getCodeQR(), until);
         if (purchaseOrders.size() == deleted) {
             LOG.info("Deleted and insert order exact bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
         } else {

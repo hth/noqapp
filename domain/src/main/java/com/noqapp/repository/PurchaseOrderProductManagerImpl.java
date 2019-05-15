@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,9 +85,9 @@ public class PurchaseOrderProductManagerImpl implements PurchaseOrderProductMana
         );
     }
 
-    public long deleteByCodeQR(String codeQR) {
+    public long deleteByCodeQR(String codeQR, Date until) {
         return mongoTemplate.remove(
-            query(where("QR").is(codeQR)),
+            query(where("QR").is(codeQR).and("C").lte(until)),
             PurchaseOrderProductEntity.class,
             TABLE
         ).getDeletedCount();

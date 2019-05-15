@@ -67,7 +67,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
 
     void increaseAttemptToSendNotificationCount(String id);
 
-    long deleteByCodeQR(String codeQR);
+    long deleteByCodeQR(String codeQR, Date until);
 
     /** As cancellation is handled in transaction. */
     @Deprecated
