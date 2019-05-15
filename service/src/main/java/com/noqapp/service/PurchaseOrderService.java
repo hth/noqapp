@@ -624,6 +624,11 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public void cancelOrderWhenBackedAwayFromGatewayForOrder(String transactionId) {
+        purchaseOrderManager.cancelOrderWhenBackedAwayFromGateway(transactionId);
+    }
+
+    @Mobile
     public void populateWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, PurchaseOrderEntity purchaseOrder) {
         jsonPurchaseOrder.setJsonResponseWithCFToken(
             createTokenForPurchaseOrder(
