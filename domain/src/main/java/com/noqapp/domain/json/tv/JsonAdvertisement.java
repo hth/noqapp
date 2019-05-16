@@ -2,7 +2,7 @@ package com.noqapp.domain.json.tv;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonProfessionalProfile;
-import com.noqapp.domain.types.VigyaapanTypeEnum;
+import com.noqapp.domain.types.AdvertisementTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,10 +32,10 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonVigyaapanTV extends AbstractDomain {
+public class JsonAdvertisement extends AbstractDomain {
 
-    @JsonProperty("vi")
-    private String vigyaapanId;
+    @JsonProperty("ai")
+    private String advertisementId;
 
     @JsonProperty("pp")
     private JsonProfessionalProfile jsonProfessionalProfile;
@@ -43,8 +43,8 @@ public class JsonVigyaapanTV extends AbstractDomain {
     @JsonProperty("iu")
     private List<String> imageUrls = new ArrayList<>();
 
-    @JsonProperty("vt")
-    private VigyaapanTypeEnum vigyaapanType;
+    @JsonProperty("at")
+    private AdvertisementTypeEnum advertisementType;
 
     @JsonProperty("ed")
     private String endDate;
@@ -52,12 +52,12 @@ public class JsonVigyaapanTV extends AbstractDomain {
     @JsonProperty("ei")
     private boolean endDateInitialized;
 
-    public String getVigyaapanId() {
-        return vigyaapanId;
+    public String getAdvertisementId() {
+        return advertisementId;
     }
 
-    public JsonVigyaapanTV setVigyaapanId(String vigyaapanId) {
-        this.vigyaapanId = vigyaapanId;
+    public JsonAdvertisement setAdvertisementId(String advertisementId) {
+        this.advertisementId = advertisementId;
         return this;
     }
 
@@ -65,7 +65,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return jsonProfessionalProfile;
     }
 
-    public JsonVigyaapanTV setJsonProfessionalProfile(JsonProfessionalProfile jsonProfessionalProfile) {
+    public JsonAdvertisement setJsonProfessionalProfile(JsonProfessionalProfile jsonProfessionalProfile) {
         this.jsonProfessionalProfile = jsonProfessionalProfile;
         return this;
     }
@@ -74,17 +74,17 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return imageUrls;
     }
 
-    public JsonVigyaapanTV setImageUrls(List<String> imageUrls) {
+    public JsonAdvertisement setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
         return this;
     }
 
-    public VigyaapanTypeEnum getVigyaapanType() {
-        return vigyaapanType;
+    public AdvertisementTypeEnum getAdvertisementType() {
+        return advertisementType;
     }
 
-    public JsonVigyaapanTV setVigyaapanType(VigyaapanTypeEnum vigyaapanType) {
-        this.vigyaapanType = vigyaapanType;
+    public JsonAdvertisement setAdvertisementType(AdvertisementTypeEnum advertisementType) {
+        this.advertisementType = advertisementType;
         return this;
     }
 
@@ -92,7 +92,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return endDate;
     }
 
-    public JsonVigyaapanTV setEndDate(String endDate) {
+    public JsonAdvertisement setEndDate(String endDate) {
         this.endDate = endDate;
         if (StringUtils.isNotBlank(endDate)) {
             this.endDateInitialized = true;
@@ -104,7 +104,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return endDateInitialized;
     }
 
-    public JsonVigyaapanTV setEndDateInitialized(boolean endDateInitialized) {
+    public JsonAdvertisement setEndDateInitialized(boolean endDateInitialized) {
         this.endDateInitialized = endDateInitialized;
         return this;
     }
