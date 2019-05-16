@@ -33,8 +33,7 @@ public class UserAddressService {
     }
 
     @Mobile
-    @Async
-    public void saveAddress(String id, String qid, String address) {
+    public UserAddressEntity saveAddress(String id, String qid, String address) {
         Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
 
         DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(address), 0);
@@ -44,6 +43,7 @@ public class UserAddressService {
             .setGeoHash(decodedAddress.getGeoPoint() == null ? null : decodedAddress.getGeoPoint().getGeohash());
         userAddress.setId(id);
         userAddressManager.save(userAddress);
+        return userAddress;
     }
 
     @Mobile
