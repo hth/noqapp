@@ -33,7 +33,6 @@ public class UserAddressService {
     }
 
     @Mobile
-    @Async
     public void saveAddress(String id, String qid, String address) {
         Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
 
