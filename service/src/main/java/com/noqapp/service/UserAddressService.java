@@ -53,7 +53,7 @@ public class UserAddressService {
         userAddressManager.deleteAddress(id, qid);
     }
 
-    public List<UserAddressEntity> getAll(String qid) {
+    private List<UserAddressEntity> getAll(String qid) {
         return userAddressManager.getAll(qid);
     }
 
