@@ -61,7 +61,7 @@ public class AddNewAgentFlowActions {
     }
 
     /**
-     * detail page is similar to registration page.
+     * Detail page is similar to registration page.
      * @return
      */
     @SuppressWarnings("unused")

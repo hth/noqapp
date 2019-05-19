@@ -63,19 +63,19 @@ public class EmpLandingController {
 
     @Autowired
     public EmpLandingController(
-            @Value("${aws.s3.bucketName}")
-            String bucketName,
+        @Value("${aws.s3.bucketName}")
+        String bucketName,
 
-            @Value ("${empLanding:/emp/landing}")
-            String empLanding,
+        @Value ("${empLanding:/emp/landing}")
+        String empLanding,
 
-            @Value ("${businessAwaitingApproval:/emp/businessAwaitingApproval}")
-            String businessAwaitingApproval,
+        @Value ("${businessAwaitingApproval:/emp/businessAwaitingApproval}")
+        String businessAwaitingApproval,
 
-            BusinessUserService businessUserService,
-            AccountService accountService,
-            EmpLandingService empLandingService,
-            PublishArticleService publishArticleService
+        BusinessUserService businessUserService,
+        AccountService accountService,
+        EmpLandingService empLandingService,
+        PublishArticleService publishArticleService
     ) {
         this.bucketName = bucketName;
         this.empLanding = empLanding;

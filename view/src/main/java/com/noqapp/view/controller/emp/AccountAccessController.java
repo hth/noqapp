@@ -64,13 +64,13 @@ public class AccountAccessController {
 
     @Autowired
     public AccountAccessController(
-            @Value("${nextPage:/emp/accountAccess}")
-            String nextPage,
+        @Value("${nextPage:/emp/accountAccess}")
+        String nextPage,
 
-            ExternalAccessService externalAccessService,
-            BizService bizService,
-            BusinessUserService businessUSerService,
-            SearchValidator searchValidator
+        ExternalAccessService externalAccessService,
+        BizService bizService,
+        BusinessUserService businessUSerService,
+        SearchValidator searchValidator
     ) {
         this.nextPage = nextPage;
 

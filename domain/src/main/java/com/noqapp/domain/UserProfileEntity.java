@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -351,7 +352,8 @@ public class UserProfileEntity extends BaseEntity {
     @Transient
     public String getAgeAsString() {
         try {
-            DateTime dateTime = new DateTime(DateUtil.SDF_YYYY_MM_DD.parse(birthday));
+            Date dob = DateUtil.SDF_YYYY_MM_DD.parse(birthday);
+            DateTime dateTime = new DateTime(dob);
             DateTime now = DateTime.now();
             int years = Years.yearsBetween(dateTime, now).getYears();
             String age;
