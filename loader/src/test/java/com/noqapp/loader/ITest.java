@@ -18,6 +18,8 @@ import com.noqapp.medical.repository.UserMedicalProfileManagerImpl;
 import com.noqapp.medical.service.MedicalFileService;
 import com.noqapp.medical.service.UserMedicalProfileService;
 import com.noqapp.medical.transaction.MedicalTransactionService;
+import com.noqapp.repository.AdvertisementManager;
+import com.noqapp.repository.AdvertisementManagerImpl;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizNameManagerImpl;
 import com.noqapp.repository.BizStoreManager;
@@ -156,6 +158,7 @@ public class ITest extends RealMongoForITest {
     protected StatsCronManager statsCronManager;
     protected PurchaseOrderManager purchaseOrderManager;
     protected PurchaseOrderProductManager purchaseOrderProductManager;
+    protected AdvertisementManager advertisementManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -197,6 +200,7 @@ public class ITest extends RealMongoForITest {
         apiHealthNowManager = new ApiHealthNowManagerImpl(getMongoTemplate());
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
+        advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
         medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
         medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
         medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
@@ -281,6 +285,7 @@ public class ITest extends RealMongoForITest {
             bizStoreManager,
             storeProductManager,
             publishArticleManager,
+            advertisementManager,
             bizService,
             storeCategoryService
         );
