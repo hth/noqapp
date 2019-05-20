@@ -50,7 +50,7 @@ public class JsonAdvertisement extends AbstractDomain {
     private List<String> imageUrls = new ArrayList<>();
 
     @JsonProperty("tc")
-    private List<String> termAndConditions = new ArrayList<>();
+    private List<String> termsAndConditions = new ArrayList<>();
 
     @JsonProperty("at")
     private AdvertisementTypeEnum advertisementType;
@@ -106,12 +106,12 @@ public class JsonAdvertisement extends AbstractDomain {
         return this;
     }
 
-    public List<String> getTermAndConditions() {
-        return termAndConditions;
+    public List<String> getTermsAndConditions() {
+        return termsAndConditions;
     }
 
-    public JsonAdvertisement setTermAndConditions(List<String> termAndConditions) {
-        this.termAndConditions = termAndConditions;
+    public JsonAdvertisement setTermsAndConditions(List<String> termsAndConditions) {
+        this.termsAndConditions = termsAndConditions;
         return this;
     }
 

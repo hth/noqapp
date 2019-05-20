@@ -51,7 +51,7 @@ public class AdvertisementEntity extends BaseEntity {
     private List<String> imageUrls;
 
     @Field("TC")
-    private List<String> termAndConditions;
+    private List<String> termsAndConditions;
 
     @Field("AT")
     private AdvertisementTypeEnum advertisementType;
@@ -146,12 +146,12 @@ public class AdvertisementEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getTermAndConditions() {
-        return termAndConditions;
+    public List<String> getTermsAndConditions() {
+        return termsAndConditions;
     }
 
-    public AdvertisementEntity setTermAndConditions(List<String> termAndConditions) {
-        this.termAndConditions = termAndConditions;
+    public AdvertisementEntity setTermsAndConditions(List<String> termsAndConditions) {
+        this.termsAndConditions = termsAndConditions;
         return this;
     }
 

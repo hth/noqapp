@@ -89,7 +89,7 @@ public class AddNewBusinessAdvertisementFlowActions {
             .setValidateStatus(ValidateStatusEnum.P)
             .setPublishDate(DateUtil.convertToDate(advertisementForm.getPublishDate(), ZoneOffset.UTC))
             .setEndDate(DateUtil.convertToDate(advertisementForm.getEndDate(), ZoneOffset.UTC))
-            .setTermAndConditions(advertisementForm.getTermsAndConditions());
+            .setTermsAndConditions(advertisementForm.getTermsAndConditions());
         advertisementService.save(advertisement);
     }
 
