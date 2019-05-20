@@ -5,6 +5,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.AdvertisementDisplayEnum;
+import com.noqapp.domain.types.AdvertisementTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 
 import org.slf4j.Logger;
@@ -63,7 +65,10 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
     @Override
     public List<AdvertisementEntity> findApprovalPendingAdvertisements() {
         return mongoTemplate.find(
-            query(where("VS").is(ValidateStatusEnum.P).and("D").is(false).and("A").is(true)).with(new Sort(Sort.Direction.ASC, "C")),
+            query(where("VS").is(ValidateStatusEnum.P)
+                .and("D").is(false)
+                .and("A").is(true)
+            ).with(new Sort(Sort.Direction.ASC, "C")),
             AdvertisementEntity.class,
             TABLE
         );
@@ -82,6 +87,47 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
     public long findApprovalPendingAdvertisementCount() {
         return mongoTemplate.count(
             query(where("VS").is(ValidateStatusEnum.P)),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit) {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.A)
+                .and("AD").is(AdvertisementDisplayEnum.MC)
+                .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("D").is(false)
+                .and("A").is(true)
+            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements(int limit) {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.A)
+                .and("AD").is(AdvertisementDisplayEnum.MM)
+                .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("D").is(false)
+                .and("A").is(true)
+            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(int limit) {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.A)
+                .and("AD").is(AdvertisementDisplayEnum.TV)
+                .and("D").is(false)
+                .and("A").is(true)
+            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
             AdvertisementEntity.class,
             TABLE
         );
