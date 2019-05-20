@@ -55,4 +55,8 @@ public class PublishArticleService {
     public List<PublishArticleEntity> getLatestArticles() {
         return publishArticleManager.getLatestArticles();
     }
+
+    public long findPendingApprovalCount() {
+        return publishArticleManager.findPendingApprovalCount();
+    }
 }

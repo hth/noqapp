@@ -7,12 +7,10 @@ import com.noqapp.domain.json.JsonUserAddressList;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.repository.UserAddressManager;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.util.Asserts;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class UserAddressService {
 
     @Mobile
     public UserAddressEntity saveAddress(String id, String qid, String address) {
-        Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
+        Assert.hasText(id, "Id cannot be blank");
 
         DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(address), 0);
         UserAddressEntity userAddress = new UserAddressEntity(qid, address)
@@ -49,7 +47,7 @@ public class UserAddressService {
     @Mobile
     @Async
     public void deleteAddress(String id, String qid) {
-        Asserts.check(StringUtils.isNotBlank(id), "Id cannot be blank");
+        Assert.hasText(id, "Id cannot be blank");
         userAddressManager.deleteAddress(id, qid);
     }
 

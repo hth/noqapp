@@ -5,18 +5,19 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * hitender
- * 2018-12-20 13:07
+ * User: hitender
+ * Date: 2019-05-18 14:14
  */
-public enum AdvertisementTypeEnum {
-    PP("PP", "Professional Profile"),
-    MA("MA", "Advertisement"),
-    GI("GI", "General Information");
+public enum AdvertisementDisplayEnum {
+    TV("TV", "TV"),
+    MC("MC", "Mobile Client"),
+    MM("MM", "Mobile Merchant"),
+    WW("WW", "World Wide Web");
 
     private final String description;
     private final String name;
 
-    AdvertisementTypeEnum(String name, String description) {
+    AdvertisementDisplayEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -29,12 +30,12 @@ public enum AdvertisementTypeEnum {
         return description;
     }
 
-    public static List<AdvertisementTypeEnum> asList() {
-        AdvertisementTypeEnum[] all = AdvertisementTypeEnum.values();
+    public static List<AdvertisementDisplayEnum> asList() {
+        AdvertisementDisplayEnum[] all = AdvertisementDisplayEnum.values();
         return Arrays.asList(all);
     }
 
-    public static EnumSet<AdvertisementTypeEnum> FOR_BUSINESS = EnumSet.of(MA, GI);
+    public static EnumSet<AdvertisementDisplayEnum> FOR_BUSINESS = EnumSet.of(TV, MC);
 
     @Override
     public String toString() {

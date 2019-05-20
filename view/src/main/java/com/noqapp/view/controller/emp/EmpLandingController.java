@@ -9,6 +9,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.AdvertisementService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.PublishArticleService;
 import com.noqapp.service.emp.EmpLandingService;
@@ -60,6 +61,7 @@ public class EmpLandingController {
     private AccountService accountService;
     private EmpLandingService empLandingService;
     private PublishArticleService publishArticleService;
+    private AdvertisementService advertisementService;
 
     @Autowired
     public EmpLandingController(
@@ -75,7 +77,8 @@ public class EmpLandingController {
         BusinessUserService businessUserService,
         AccountService accountService,
         EmpLandingService empLandingService,
-        PublishArticleService publishArticleService
+        PublishArticleService publishArticleService,
+        AdvertisementService advertisementService
     ) {
         this.bucketName = bucketName;
         this.empLanding = empLanding;
@@ -85,29 +88,31 @@ public class EmpLandingController {
         this.accountService = accountService;
         this.empLandingService = empLandingService;
         this.publishArticleService = publishArticleService;
+        this.advertisementService = advertisementService;
     }
 
     @GetMapping
     public String empLanding(
-            @ModelAttribute ("empLandingForm")
-            EmpLandingForm empLandingForm
+        @ModelAttribute ("empLandingForm")
+        EmpLandingForm empLandingForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Employee landed qid={}", queueUser.getQueueUserId());
         empLandingForm
-                .setAwaitingApprovalCount(businessUserService.awaitingBusinessApprovalCount())
-                .setBusinessUsers(businessUserService.awaitingBusinessApprovals())
-                .setPublishArticles(publishArticleService.findPendingApprovals());
+            .setAwaitingApprovalCount(businessUserService.awaitingBusinessApprovalCount())
+            .setBusinessUsers(businessUserService.awaitingBusinessApprovals())
+            .setPublishArticles(publishArticleService.findPendingApprovals())
+            .setAwaitingAdvertisementApprovals(advertisementService.findApprovalPendingAdvertisements());
         return empLanding;
     }
 
     @GetMapping(value = "{businessUserId}")
     public String getAwaitingBusinessApprovals(
-            @PathVariable ("businessUserId")
-            ScrubbedInput businessUserId,
+        @PathVariable ("businessUserId")
+        ScrubbedInput businessUserId,
 
-            @ModelAttribute ("businessAwaitingApprovalForm")
-            BusinessAwaitingApprovalForm businessAwaitingApprovalForm
+        @ModelAttribute ("businessAwaitingApprovalForm")
+        BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Business user={} loaded by qid={}", businessUserId.getText(), queueUser.getQueueUserId());
@@ -121,42 +126,42 @@ public class EmpLandingController {
         }
 
         businessAwaitingApprovalForm
-                .setBusinessUser(businessUser)
-                .setUserProfile(accountService.findProfileByQueueUserId(businessUser.getQueueUserId()));
+            .setBusinessUser(businessUser)
+            .setUserProfile(accountService.findProfileByQueueUserId(businessUser.getQueueUserId()));
 
         return businessAwaitingApproval;
     }
 
     @PostMapping (value = "/approval", params = "business-user-approve")
     public String approval(
-            @ModelAttribute ("businessAwaitingApprovalForm")
-            BusinessAwaitingApprovalForm businessAwaitingApprovalForm
+        @ModelAttribute ("businessAwaitingApprovalForm")
+        BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Approved Business user={} loaded by qid={}",
-                businessAwaitingApprovalForm.getBusinessUser().getId(),
-                queueUser.getQueueUserId());
+            businessAwaitingApprovalForm.getBusinessUser().getId(),
+            queueUser.getQueueUserId());
 
         empLandingService.approveBusiness(
-                businessAwaitingApprovalForm.getBusinessUser().getId(),
-                queueUser.getQueueUserId());
+            businessAwaitingApprovalForm.getBusinessUser().getId(),
+            queueUser.getQueueUserId());
 
         return "redirect:" + "/emp/landing.htm";
     }
 
     @PostMapping(value = "/approval", params = "business-user-decline")
     public String decline(
-            @ModelAttribute ("businessAwaitingApprovalForm")
-            BusinessAwaitingApprovalForm businessAwaitingApprovalForm
+        @ModelAttribute ("businessAwaitingApprovalForm")
+        BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Decline Business user={} loaded by qid={}",
-                businessAwaitingApprovalForm.getBusinessUser().getId(),
-                queueUser.getQueueUserId());
+            businessAwaitingApprovalForm.getBusinessUser().getId(),
+            queueUser.getQueueUserId());
 
         empLandingService.declineBusiness(
-                businessAwaitingApprovalForm.getBusinessUser().getId(),
-                queueUser.getQueueUserId());
+            businessAwaitingApprovalForm.getBusinessUser().getId(),
+            queueUser.getQueueUserId());
 
         return "redirect:" + "/emp/landing.htm";
     }

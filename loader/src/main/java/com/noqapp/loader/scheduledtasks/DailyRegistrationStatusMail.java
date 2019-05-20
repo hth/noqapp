@@ -7,8 +7,10 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.AdvertisementService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.PublishArticleService;
 import com.noqapp.service.StatsCronService;
 
 import org.slf4j.Logger;
@@ -41,6 +43,8 @@ public class DailyRegistrationStatusMail {
 
     private AccountService accountService;
     private BusinessUserService businessUserService;
+    private PublishArticleService publishArticleService;
+    private AdvertisementService advertisementService;
     private RegisteredDeviceManager registeredDeviceManager;
     private MailService mailService;
     private StatsCronService statsCronService;
@@ -52,6 +56,8 @@ public class DailyRegistrationStatusMail {
 
             AccountService accountService,
             BusinessUserService businessUserService,
+            PublishArticleService publishArticleService,
+            AdvertisementService advertisementService,
             RegisteredDeviceManager registeredDeviceManager,
             MailService mailService,
             StatsCronService statsCronService
@@ -60,6 +66,8 @@ public class DailyRegistrationStatusMail {
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;
+        this.publishArticleService = publishArticleService;
+        this.advertisementService = advertisementService;
         this.registeredDeviceManager = registeredDeviceManager;
         this.mailService = mailService;
         this.statsCronService = statsCronService;
@@ -81,6 +89,8 @@ public class DailyRegistrationStatusMail {
 
         long registeredUser = 0;
         long awaitingBusinessApproval = 0;
+        long awaitingPublishArticleApproval = 0;
+        long awaitingAdvertisementApproval = 0;
         long deviceRegistered = 0;
         long androidDeviceRegistered = 0;
         long iPhoneDeviceRegistered = 0;
@@ -91,6 +101,8 @@ public class DailyRegistrationStatusMail {
         try {
             registeredUser = accountService.countRegisteredBetweenDates(from, to);
             awaitingBusinessApproval = businessUserService.awaitingBusinessApprovalCount();
+            awaitingPublishArticleApproval = publishArticleService.findPendingApprovalCount();
+            awaitingAdvertisementApproval = advertisementService.findApprovalPendingAdvertisementCount();
             deviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, null);
             androidDeviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A);
             Map<String, Long> androidFlavoredDevices = new LinkedHashMap<>();
@@ -132,13 +144,14 @@ public class DailyRegistrationStatusMail {
             statsCronService.save(statsCron);
 
             /* Without if condition its too noisy. */
-            LOG.info("Registration Status from={} to={} registeredUser={} awaitingBusinessApproval={} deviceRegistered={}",
-                    from,
-                    to,
-                    registeredUser,
-                    awaitingBusinessApproval,
-                    deviceRegistered);
-
+            LOG.info("Registration Status from={} to={} registeredUser={} awaitingBusinessApproval={} awaitingPublishArticleApproval={} awaitingAdvertisementApproval={} deviceRegistered={}",
+                from,
+                to,
+                registeredUser,
+                awaitingBusinessApproval,
+                awaitingPublishArticleApproval,
+                awaitingAdvertisementApproval,
+                deviceRegistered);
         }
     }
 }

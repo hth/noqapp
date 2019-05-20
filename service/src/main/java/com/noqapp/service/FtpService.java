@@ -42,15 +42,17 @@ public class FtpService {
     static String SERVICE_AWS = "service";
     public static String MEDICAL_AWS = "medical";
     static String ARTICLE_AWS = "article";
+    static String VIGYAPAN_AWS = "vigyapan";
 
     /** FTP needs with file separator. */
     public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
     public static String SERVICE = FileUtil.getFileSeparator() + SERVICE_AWS;
     public static String ARTICLE = FileUtil.getFileSeparator() + ARTICLE_AWS;
+    public static String VIGYAPAN = FileUtil.getFileSeparator() + VIGYAPAN_AWS;
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + MEDICAL_AWS;
-    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL, FtpService.ARTICLE};
+    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL, FtpService.ARTICLE, FtpService.VIGYAPAN};
 
     public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String MASTER_MEDICAL = FileUtil.getFileSeparator() + "masterMedical";

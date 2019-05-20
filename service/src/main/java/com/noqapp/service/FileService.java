@@ -13,6 +13,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PublishArticleEntity;
@@ -28,6 +29,7 @@ import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
+import com.noqapp.repository.AdvertisementManager;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PublishArticleManager;
@@ -145,6 +147,7 @@ public class FileService {
     private BizStoreManager bizStoreManager;
     private StoreProductManager storeProductManager;
     private PublishArticleManager publishArticleManager;
+    private AdvertisementManager advertisementManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
 
@@ -169,6 +172,7 @@ public class FileService {
         BizStoreManager bizStoreManager,
         StoreProductManager storeProductManager,
         PublishArticleManager publishArticleManager,
+        AdvertisementManager advertisementManager,
         BizService bizService,
         StoreCategoryService storeCategoryService
     ) {
@@ -184,6 +188,7 @@ public class FileService {
         this.bizStoreManager = bizStoreManager;
         this.storeProductManager = storeProductManager;
         this.publishArticleManager = publishArticleManager;
+        this.advertisementManager = advertisementManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
     }
@@ -318,6 +323,54 @@ public class FileService {
 
             /* Delete from S3. */
             s3FileManager.save(new S3FileEntity(publishArticle.getQueueUserId(), publishArticle.getId() + "/" + publishArticle.getBannerImage(), FtpService.ARTICLE_AWS));
+        }
+    }
+
+    @Async
+    public void addAdvertisementImage(String advertisementId, String filename, BufferedImage bufferedImage) {
+        AdvertisementEntity advertisement = advertisementManager.findById(advertisementId);
+
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+        try {
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, advertisementId, FtpService.VIGYAPAN);
+
+            advertisement
+                .addImageUrl(filename)
+                .setValidateStatus(ValidateStatusEnum.P);
+            advertisementManager.save(advertisement);
+        } catch (IOException e) {
+            LOG.error("Failed adding bizName image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
+    public void deleteAdvertisementImage(AdvertisementEntity advertisement, String imageUrl) {
+        if (StringUtils.isNotBlank(imageUrl)) {
+            /* Delete existing file business service image before the upload process began. */
+            ftpService.delete(imageUrl, null, FtpService.VIGYAPAN);
+
+            /* Delete from S3. */
+            s3FileManager.save(new S3FileEntity(advertisement.getQueueUserId(), advertisement.getId() + "/" + imageUrl, FtpService.VIGYAPAN_AWS));
         }
     }
 

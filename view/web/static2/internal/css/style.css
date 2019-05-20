@@ -397,6 +397,9 @@ input,select{ border-radius:4px;  font-family: 'Roboto', sans-serif; font-weight
 .form-field-right{ width:44%; float:right; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
 .or{ font-size:25px; margin:25px 0}
 
+input:disabled {background: #ccc;}
+input:read-only {background: #ccc;}
+
 /* select counrty field */
 .hide {
   display: none; } 

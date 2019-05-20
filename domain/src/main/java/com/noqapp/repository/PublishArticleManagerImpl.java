@@ -139,4 +139,13 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
             TABLE
         );
     }
+
+    @Override
+    public long findPendingApprovalCount() {
+        return mongoTemplate.count(
+            query(where("VS").is(ValidateStatusEnum.P)),
+            PublishArticleEntity.class,
+            TABLE
+        );
+    }
 }

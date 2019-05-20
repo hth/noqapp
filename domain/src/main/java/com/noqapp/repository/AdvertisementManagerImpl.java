@@ -1,0 +1,94 @@
+package com.noqapp.repository;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import com.noqapp.domain.AdvertisementEntity;
+import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.ValidateStatusEnum;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * User: hitender
+ * Date: 2019-05-16 13:32
+ */
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
+})
+@Repository
+public class AdvertisementManagerImpl implements AdvertisementManager {
+    private static final Logger LOG = LoggerFactory.getLogger(AdvertisementManagerImpl.class);
+    private static final String TABLE = BaseEntity.getClassAnnotationValue(
+        AdvertisementEntity.class,
+        Document.class,
+        "collection");
+
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public AdvertisementManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    public void save(AdvertisementEntity object) {
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public List<AdvertisementEntity> findAllAdvertisements(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId).and("D").is(false)).with(new Sort(Sort.Direction.DESC, "C")),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<AdvertisementEntity> findApprovalPendingAdvertisements() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.P).and("D").is(false).and("A").is(true)).with(new Sort(Sort.Direction.ASC, "C")),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public AdvertisementEntity findById(String advertisementId) {
+        return mongoTemplate.findById(
+            advertisementId,
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long findApprovalPendingAdvertisementCount() {
+        return mongoTemplate.count(
+            query(where("VS").is(ValidateStatusEnum.P)),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void deleteHard(AdvertisementEntity object) {
+        throw new UnsupportedOperationException("This method is not supported");
+    }
+}
