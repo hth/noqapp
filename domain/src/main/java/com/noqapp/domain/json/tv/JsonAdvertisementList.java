@@ -30,7 +30,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonAdvertisementList extends AbstractDomain {
 
-    @JsonProperty("vts")
+    @JsonProperty("ads")
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
 
     public List<JsonAdvertisement> getJsonAdvertisements() {
