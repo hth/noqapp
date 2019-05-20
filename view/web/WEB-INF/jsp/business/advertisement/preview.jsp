@@ -101,6 +101,17 @@
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="advertisementViewerType" cssErrorClass="lb_error">Advertisement Viewer Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="advertisementViewerType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:options items="${advertisementForm.advertisementViewerTypes}" itemValue="name" itemLabel="description" disabled="true" />
+                                        </form:select>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
                             <li>
                                 <div class="col-lable3">
                                     <form:label path="radius" cssErrorClass="lb_error">Display in Radius of KM</form:label>
@@ -128,6 +139,42 @@
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
+
+                            <c:choose>
+                            <c:when test="${!empty advertisementForm.termsAndConditions}">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="termsAndConditions" cssErrorClass="lb_error">Terms And Conditions</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    &nbsp;
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <c:forEach items="${advertisementForm.termsAndConditions}" var="termAndCondition" varStatus="status">
+                            <li>
+                                <div class="col-lable3">
+                                    &nbsp;
+                                </div>
+                                <div class="col-fields">
+                                    &bull; ${termAndCondition}
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="termsAndConditions" cssErrorClass="lb_error">Terms And Conditions</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <span class="form-field-admin" style="border:none; line-height: 42px;">Without Terms And Condition advertisement could be rejected</span>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            </c:otherwise>
+                            </c:choose>
                             </form:form>
 
                             <li class="mB0">

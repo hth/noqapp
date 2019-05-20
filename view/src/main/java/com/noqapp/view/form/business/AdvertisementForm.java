@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.domain.types.AdvertisementDisplayEnum;
 import com.noqapp.domain.types.AdvertisementTypeEnum;
+import com.noqapp.domain.types.AdvertisementViewerTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.view.form.FileUploadForm;
 
@@ -37,6 +38,8 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
 
     private AdvertisementTypeEnum advertisementType;
     private AdvertisementDisplayEnum advertisementDisplay;
+    private AdvertisementViewerTypeEnum advertisementViewerType;
+
     private String advertisementId;
     private boolean active = false;
     private String imageUrl;
@@ -48,6 +51,9 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
 
     @Transient
     private List<AdvertisementDisplayEnum> advertisementDisplays = new ArrayList<>(AdvertisementDisplayEnum.FOR_BUSINESS);
+
+    @Transient
+    private List<AdvertisementViewerTypeEnum> advertisementViewerTypes = new ArrayList<>(AdvertisementViewerTypeEnum.SUPPORTED);
 
     public AdvertisementForm(String bizNameId) {
         this.bizNameId = bizNameId;
@@ -174,6 +180,15 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
         return this;
     }
 
+    public AdvertisementViewerTypeEnum getAdvertisementViewerType() {
+        return advertisementViewerType;
+    }
+
+    public AdvertisementForm setAdvertisementViewerType(AdvertisementViewerTypeEnum advertisementViewerType) {
+        this.advertisementViewerType = advertisementViewerType;
+        return this;
+    }
+
     public String getAdvertisementId() {
         return advertisementId;
     }
@@ -228,6 +243,15 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
         return this;
     }
 
+    public List<AdvertisementViewerTypeEnum> getAdvertisementViewerTypes() {
+        return advertisementViewerTypes;
+    }
+
+    public AdvertisementForm setAdvertisementViewerTypes(List<AdvertisementViewerTypeEnum> advertisementViewerTypes) {
+        this.advertisementViewerTypes = advertisementViewerTypes;
+        return this;
+    }
+
     public static AdvertisementForm populate(AdvertisementEntity advertisement) {
         return new AdvertisementForm(advertisement.getBizNameId())
             .setTitle(advertisement.getTitle())
@@ -241,6 +265,7 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
             .setCoordinate(advertisement.getCoordinate())
             .setAdvertisementType(advertisement.getAdvertisementType())
             .setAdvertisementDisplay(advertisement.getAdvertisementDisplay())
+            .setAdvertisementViewerType(advertisement.getAdvertisementViewerType())
             .setAdvertisementId(advertisement.getId())
             .setActive(advertisement.isActive());
     }

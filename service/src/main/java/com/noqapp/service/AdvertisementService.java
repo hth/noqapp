@@ -64,7 +64,7 @@ public class AdvertisementService {
         return advertisementManager.findAllMobileMerchantApprovedAdvertisements(limit);
     }
 
-    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements() {
-        return advertisementManager.findAllMobileTVApprovedAdvertisements(limit);
+    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(String bizNameId) {
+        return advertisementManager.findAllMobileTVApprovedAdvertisements(bizNameId, limit);
     }
 }

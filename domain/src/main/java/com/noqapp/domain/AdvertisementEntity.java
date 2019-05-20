@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.AdvertisementDisplayEnum;
 import com.noqapp.domain.types.AdvertisementTypeEnum;
+import com.noqapp.domain.types.AdvertisementViewerTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -73,6 +74,9 @@ public class AdvertisementEntity extends BaseEntity {
 
     @Field("ED")
     private Date endDate;
+
+    @Field("AV")
+    private AdvertisementViewerTypeEnum advertisementViewerType;
 
     /* When article is flagged by community. */
     @Field("FC")
@@ -215,6 +219,15 @@ public class AdvertisementEntity extends BaseEntity {
 
     public AdvertisementEntity setEndDate(Date endDate) {
         this.endDate = endDate;
+        return this;
+    }
+
+    public AdvertisementViewerTypeEnum getAdvertisementViewerType() {
+        return advertisementViewerType;
+    }
+
+    public AdvertisementEntity setAdvertisementViewerType(AdvertisementViewerTypeEnum advertisementViewerType) {
+        this.advertisementViewerType = advertisementViewerType;
         return this;
     }
 

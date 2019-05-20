@@ -77,7 +77,7 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public BizNameEntity getById(String id) {
         Assert.hasText(id, "Id empty for BizNameEntity");
-        return mongoTemplate.findOne(query(where("id").is(id)), BizNameEntity.class, TABLE);
+        return mongoTemplate.findById(id, BizNameEntity.class, TABLE);
     }
 
     @Override
