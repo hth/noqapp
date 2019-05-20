@@ -23,10 +23,10 @@ import java.util.List;
     "PMD.MethodArgumentCouldBeFinal",
     "PMD.LongVariable"
 })
-@Document(collection = "ADVERTISE")
+@Document(collection = "ADVERTISEMENT")
 @CompoundIndexes(value = {
-    @CompoundIndex(name = "advertise_biz_idx", def = "{'BN': 1}", unique = false),
-    @CompoundIndex(name = "advertise_biz_cor_cs_idx", def = "{'COR': '2d', 'BN': 1}"),
+    @CompoundIndex(name = "advertisement_biz_idx", def = "{'BN': 1}", unique = false),
+    @CompoundIndex(name = "advertisement_biz_cor_cs_idx", def = "{'COR': '2d', 'BN': 1}"),
 })
 public class AdvertisementEntity extends BaseEntity {
 
