@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +49,9 @@ public class JsonAdvertisement extends AbstractDomain {
 
     @JsonProperty("tc")
     private List<String> termsAndConditions = new ArrayList<>();
+
+    @JsonProperty("at")
+    private AdvertisementTypeEnum advertisementType;
 
     public String getAdvertisementId() {
         return advertisementId;
@@ -103,6 +104,15 @@ public class JsonAdvertisement extends AbstractDomain {
 
     public JsonAdvertisement setTermsAndConditions(List<String> termsAndConditions) {
         this.termsAndConditions = termsAndConditions;
+        return this;
+    }
+
+    public AdvertisementTypeEnum getAdvertisementType() {
+        return advertisementType;
+    }
+
+    public JsonAdvertisement setAdvertisementType(AdvertisementTypeEnum advertisementType) {
+        this.advertisementType = advertisementType;
         return this;
     }
 }
