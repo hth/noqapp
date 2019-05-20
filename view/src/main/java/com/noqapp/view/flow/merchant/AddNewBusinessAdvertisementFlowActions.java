@@ -92,7 +92,7 @@ public class AddNewBusinessAdvertisementFlowActions {
             .setEndDate(DateUtil.convertToDate(advertisementForm.getEndDate(), ZoneOffset.UTC))
             .setTermsAndConditions(advertisementForm.getTermsAndConditions())
             .setAdvertisementViewerType(
-                advertisementForm.getTermAndCondition().isEmpty()
+                advertisementForm.getTermsAndConditions().isEmpty()
                     ? AdvertisementViewerTypeEnum.JBA
                     : AdvertisementViewerTypeEnum.WTC);
         advertisementService.save(advertisement);
