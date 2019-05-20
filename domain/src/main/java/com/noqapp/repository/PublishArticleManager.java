@@ -26,4 +26,6 @@ public interface PublishArticleManager extends RepositoryManager<PublishArticleE
     PublishArticleEntity findOnePendingReview(String id);
 
     List<PublishArticleEntity> getLatestArticles();
+
+    long findPendingApprovalCount();
 }

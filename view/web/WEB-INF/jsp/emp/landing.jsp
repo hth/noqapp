@@ -104,7 +104,7 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>${publishArticle.title}</td>
                                         <td>${publishArticle.businessType.description}</td>
-                                        <td><a href="${pageContext.request.contextPath}/emp/landing/publishArticle/${publishArticle.id}/preview.htm" class="add-btn">Preview</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/emp/landing/publishArticle/${publishArticle.id}/preview.htm" class="add-btn" style="margin: 0px;">Preview</a></td>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -114,6 +114,68 @@
                         <c:otherwise>
                         <div class="alert-info">
                             <div class="no-approve">There are no new article to approve.</div>
+                        </div>
+                        </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <br/>
+                <div class="admin-content">
+                    <div class="store">
+                        <h3>Total advertisement awaiting approvals: <span>${empLandingForm.awaitingAdvertisementApprovals.size()}</span></h3>
+                        <c:choose>
+                        <c:when test="${!empty empLandingForm.awaitingAdvertisementApprovals}">
+                        <div class="add-store">
+                            <div class="store-table">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Title</th>
+                                        <th>Advt Type</th>
+                                        <th>Display At</th>
+                                        <th>Visible From</th>
+                                        <th>Visible Until</th>
+                                        <th nowrap>
+                                            Created
+                                            &nbsp;
+                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                    alt="Sort" height="16px;"/>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    <c:forEach items="${empLandingForm.awaitingAdvertisementApprovals}" var="advertisement" varStatus="status">
+                                    <tr>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${status.count}&nbsp;</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.title}</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.advertisementType.description}</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.advertisementDisplay.description}</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.publishDate}" pattern="yyyy-MM-dd"/></span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.endDate}" pattern="yyyy-MM-dd"/></span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
+                                        </td>
+                                        <td><a href="${pageContext.request.contextPath}/emp/advertisement/approval/${advertisement.id}/preview.htm" class="add-btn" style="margin: 0px;">Preview</a></td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </div>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="alert-info">
+                            <div class="no-approve">There are no new advertisement to approve.</div>
                         </div>
                         </c:otherwise>
                         </c:choose>

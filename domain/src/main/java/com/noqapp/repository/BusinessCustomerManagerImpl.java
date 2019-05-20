@@ -49,9 +49,7 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
             }
             mongoTemplate.save(object, TABLE);
         } catch (DuplicateKeyException e) {
-            LOG.error("Already exists {} {} reason={}",
-                    object.getQueueUserId(), object.getBusinessCustomerId(), e.getLocalizedMessage(), e);
-
+            LOG.error("Already exists {} {} reason={}", object.getQueueUserId(), object.getBusinessCustomerId(), e.getLocalizedMessage(), e);
         }
     }
 

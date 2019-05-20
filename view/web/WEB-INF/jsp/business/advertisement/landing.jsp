@@ -1,5 +1,5 @@
 <%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.ActionTypeEnum" %>
-<%@ include file="../include.jsp" %>
+<%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -61,122 +61,100 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><a href="/business/detail/business/${businessLandingForm.bizCodeQR}.htm" target="_blank"><span>${businessLandingForm.bizName}</span></a></h3>
+                        <h3><span>Advertisement</span></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
-                                <c:choose>
-                                    <c:when test="${BusinessTypeEnum.PH eq businessLandingForm.businessType}">
-
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="/business/category.htm" class="add-btn">Show Business Category</a>
-                                    </c:otherwise>
-                                </c:choose>
-                                <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
+                                <a href="${pageContext.request.contextPath}/business/advertisement/create.htm" class="add-btn">Add New Advertisement</a>
                             </div>
                             <div class="store-table">
-                            <c:choose>
-                            <c:when test="${!empty businessLandingForm.bizStores}">
+                                <c:choose>
+                                <c:when test="${!empty advertisementForm.advertisements}">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>Store Location</th>
+                                        <th>Title</th>
+                                        <th>Image</th>
+                                        <th>Advt Type & Schedule</th>
+                                        <th>Status</th>
                                         <th nowrap>
-                                            Queue Name
+                                            Created
                                             &nbsp;
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                 alt="Sort" height="16px;"/>
+                                                    alt="Sort" height="16px;"/>
                                         </th>
-                                        <th>Pending</th>
-                                        <th>Assigned</th>
                                         <th>&nbsp;</th>
                                     </tr>
-                                    <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
+                                    <c:forEach items="${advertisementForm.advertisements}" var="advertisement" varStatus="status">
                                     <tr>
-                                        <td>${status.count}&nbsp;</td>
                                         <td>
-                                            <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px;">${store.addressWrappedFunky}</a>
+                                            <span style="display:block; font-size:13px;">${status.count}&nbsp;</span>
                                         </td>
-                                        <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                            <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
-                                            <span style="display:block; font-size:13px;">Category:
-                                                <c:choose>
-                                                    <c:when test="${!empty businessLandingForm.categories.get(store.bizCategoryId)}">
-                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        N/A
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </span>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.title}</span>
+                                            <br/>
                                             <c:choose>
-                                                <c:when test="${store.averageServiceTime > 0}">
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
+                                                <c:when test="${advertisement.active}">
+                                                    <span style="display:block; font-size:13px; background: lightgrey; color: black; padding: 2px;">Advertisement Is Online (Visible)</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
-                                                </c:otherwise>
-                                            </c:choose>
-
-                                            <c:choose>
-                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
-                                                || BusinessTypeEnum.BA eq store.businessType
-                                                || BusinessTypeEnum.ST eq store.businessType
-                                                || BusinessTypeEnum.GS eq store.businessType
-                                                || BusinessTypeEnum.CF eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><del>Web Appointment</del></span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                <span style="display:block; font-size:13px;"><a
-                                                        href="https://noqapp.com/b/s${store.webLocation}.html"
-                                                        target="_blank">Web Appointment Link</a></span>
+                                                    <span style="display:block; font-size:13px; background: lightgrey; color: black; padding: 2px;">Advertisement Is Offline (Not Visible)</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
                                             <c:choose>
-                                                <c:when test="${store.active}">
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
+                                                <c:when test="${!empty advertisement.imageUrls}">
+                                                    <span style="display:block; font-size:13px;">Image Exists</span>
+                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload.htm" class="add-btn">Edit Image</a>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
+                                                    <span style="display:block; font-size:13px;">Image Missing</span>
+                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload.htm" class="add-btn">Add Image</a>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline store is not visible</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.advertisementType.description} for ${advertisement.advertisementDisplay.description}</span>
+                                            <br/>
+                                            <span style="display:block; font-size:13px;">From: <fmt:formatDate value="${advertisement.publishDate}" pattern="yyyy-MM-dd"/> Until:<fmt:formatDate value="${advertisement.endDate}" pattern="yyyy-MM-dd"/></span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;">${advertisement.validateStatus.description}</span>
+                                        </td>
+                                        <td>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
+                                        </td>
+                                        <td>
+                                            <a href="${pageContext.request.contextPath}/business/advertisement/edit/${advertisement.id}.htm" class="add-btn" style="margin: 0px;">Edit</a>
+                                            <c:if test="${!advertisement.active}">
+                                                <form:form action="${pageContext.request.contextPath}/business/advertisement/delete.htm" modelAttribute="advertisementForm" method="post">
+                                                    <input type="hidden" name="advertisementId" value="${advertisement.id}"/>
+                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                                    <input name="delete" class="ladda-button next-btn" value="DELETE" type="submit" style="font-weight: 400; padding: 7%; background: #666;">
+                                                </form:form>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
-                            </c:when>
-                            <c:otherwise>
-                                There are no stores associated with business.
-                            </c:otherwise>
-                            </c:choose>
+                                </c:when>
+                                <c:otherwise>
+                                    There are no advertisement.
+                                </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
 
                         <div class="alert-info">
                             <p>
-                                To add supervisor to a queue, click on "Pending" value for that queue. Please,
-                                notify the pending supervisor to complete their profile after login in at web site.
+                                Add advertisement to be shown on TV or Mobile App.
                             </p>
-                            <p>Once supervisor completes their profile, you need to Approve their profile to be accepted as a supervisor.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Add New Supervisor -->
+                <!-- Add New Supervisor -->
 
         </div>
     </div>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_M_ADMIN, ROLE_TECHNICIAN, ROLE_SUPERVISOR" match="any"/>
+
+    <on-start>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'advertisementId')"
+                  result="conversationScope.advertisementId" />
+
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizNameId')"
+                  result="conversationScope.bizNameId" />
+
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.createBlankAdvertisementForm(advertisementId, bizNameId)"
+                  result="flowScope.advertisementForm"/>
+    </on-start>
+
+    <view-state id="advertisementStart" model="advertisementForm">
+        <transition on="submit" to="validateAdvertisement"/>
+        <transition on="offline" to="offlineAdvertisement"/>
+        <transition on="online" to="onlineAdvertisement"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="offlineAdvertisement">
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.takeOffOrOnline(advertisementId, false)"/>
+        <transition on="success" to="home"/>
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <action-state id="onlineAdvertisement">
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.takeOffOrOnline(advertisementId, true)"/>
+        <transition on="success" to="home"/>
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <action-state id="validateAdvertisement">
+        <evaluate expression="advertisementFlowValidator.validateAdvertisement(advertisementForm, messageContext)" />
+        <transition on="success" to="advertisementTermsAndConditions" />
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <view-state id="advertisementTermsAndConditions" model="advertisementForm">
+        <transition on="add_terms_and_conditions" to="termsAndConditions"/>
+        <transition on="remove_all_terms_and_conditions" to="removeAllTermsAndConditions"/>
+        <transition on="submit" to="advertisementReview"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="termsAndConditions">
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.addTermAndCondition(advertisementForm)" />
+        <transition on="success" to="advertisementTermsAndConditions" />
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <action-state id="removeAllTermsAndConditions">
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.removeAllTermsAndConditions(advertisementForm)" />
+        <transition on="success" to="advertisementTermsAndConditions" />
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <view-state id="advertisementReview" model="advertisementForm">
+        <transition on="confirm" to="confirm"/>
+        <transition on="revise" to="advertisementStart"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="confirm">
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.confirm(advertisementForm)" />
+        <transition on="success" to="advertisementComplete"/>
+        <transition on="failure" to="advertisementStart"/>
+    </action-state>
+
+    <view-state id="advertisementEditComplete"
+                view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+
+    <view-state id="advertisementComplete"
+                view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+
+    <end-state id="home"
+               view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>
