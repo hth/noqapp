@@ -52,15 +52,6 @@ public class JsonAdvertisement extends AbstractDomain {
     @JsonProperty("tc")
     private List<String> termsAndConditions = new ArrayList<>();
 
-    @JsonProperty("at")
-    private AdvertisementTypeEnum advertisementType;
-
-    @JsonProperty("ed")
-    private String endDate;
-
-    @JsonProperty("ei")
-    private boolean endDateInitialized;
-
     public String getAdvertisementId() {
         return advertisementId;
     }
@@ -112,36 +103,6 @@ public class JsonAdvertisement extends AbstractDomain {
 
     public JsonAdvertisement setTermsAndConditions(List<String> termsAndConditions) {
         this.termsAndConditions = termsAndConditions;
-        return this;
-    }
-
-    public AdvertisementTypeEnum getAdvertisementType() {
-        return advertisementType;
-    }
-
-    public JsonAdvertisement setAdvertisementType(AdvertisementTypeEnum advertisementType) {
-        this.advertisementType = advertisementType;
-        return this;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public JsonAdvertisement setEndDate(String endDate) {
-        this.endDate = endDate;
-        if (StringUtils.isNotBlank(endDate)) {
-            this.endDateInitialized = true;
-        }
-        return this;
-    }
-
-    public boolean isEndDateInitialized() {
-        return endDateInitialized;
-    }
-
-    public JsonAdvertisement setEndDateInitialized(boolean endDateInitialized) {
-        this.endDateInitialized = endDateInitialized;
         return this;
     }
 }
