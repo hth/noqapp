@@ -100,8 +100,8 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.MC)
                 .and("AT").is(AdvertisementTypeEnum.MA)
-                .and("PD").gte(now)
-                .and("ED").lte(now)
+                .and("PD").lte(now)
+                .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
@@ -117,8 +117,8 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.MM)
                 .and("AT").is(AdvertisementTypeEnum.MA)
-                .and("PD").gte(now)
-                .and("ED").lte(now)
+                .and("PD").lte(now)
+                .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
@@ -133,8 +133,8 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.TV)
-                .and("PD").gte(now)
-                .and("ED").lte(now)
+                .and("PD").lte(now)
+                .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
