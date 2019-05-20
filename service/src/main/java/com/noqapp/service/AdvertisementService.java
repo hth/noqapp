@@ -4,6 +4,7 @@ import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.repository.AdvertisementManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +22,17 @@ import java.util.List;
 @Service
 public class AdvertisementService {
 
+    private int limit;
     private AdvertisementManager advertisementManager;
 
     @Autowired
-    public AdvertisementService(AdvertisementManager advertisementManager) {
+    public AdvertisementService(
+        @Value("${limit:5}")
+        int limit,
+
+        AdvertisementManager advertisementManager
+    ) {
+        this.limit = limit;
         this.advertisementManager = advertisementManager;
     }
 
@@ -46,5 +54,17 @@ public class AdvertisementService {
 
     public long findApprovalPendingAdvertisementCount() {
         return advertisementManager.findApprovalPendingAdvertisementCount();
+    }
+
+    public List<AdvertisementEntity> findAllMobileApprovedAdvertisements() {
+        return advertisementManager.findAllMobileClientApprovedAdvertisements(limit);
+    }
+
+    public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements() {
+        return advertisementManager.findAllMobileMerchantApprovedAdvertisements(limit);
+    }
+
+    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements() {
+        return advertisementManager.findAllMobileTVApprovedAdvertisements(limit);
     }
 }

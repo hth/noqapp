@@ -16,4 +16,8 @@ public interface AdvertisementManager extends RepositoryManager<AdvertisementEnt
     AdvertisementEntity findById(String advertisementId);
 
     long findApprovalPendingAdvertisementCount();
+
+    List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit);
+    List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements(int limit);
+    List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(int limit);
 }
