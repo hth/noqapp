@@ -19,5 +19,9 @@ public interface AdvertisementManager extends RepositoryManager<AdvertisementEnt
 
     List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit);
     List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements(int limit);
-    List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(int limit);
+
+    /**
+     * Note: Limit TV advertisment to just the business owner of the TV.
+     */
+    List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(String bizNameId, int limit);
 }

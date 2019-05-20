@@ -128,10 +128,11 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
     }
 
     @Override
-    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(int limit) {
+    public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(String bizNameId, int limit) {
         Date now = new Date();
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
+                .and("BN").is(bizNameId)
                 .and("AD").is(AdvertisementDisplayEnum.TV)
                 .and("PD").lte(now)
                 .and("ED").gte(now)

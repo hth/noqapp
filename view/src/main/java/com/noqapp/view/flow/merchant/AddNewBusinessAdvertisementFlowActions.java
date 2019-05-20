@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.AdvertisementViewerTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.AdvertisementService;
@@ -89,7 +90,11 @@ public class AddNewBusinessAdvertisementFlowActions {
             .setValidateStatus(ValidateStatusEnum.P)
             .setPublishDate(DateUtil.convertToDate(advertisementForm.getPublishDate(), ZoneOffset.UTC))
             .setEndDate(DateUtil.convertToDate(advertisementForm.getEndDate(), ZoneOffset.UTC))
-            .setTermsAndConditions(advertisementForm.getTermsAndConditions());
+            .setTermsAndConditions(advertisementForm.getTermsAndConditions())
+            .setAdvertisementViewerType(
+                advertisementForm.getTermAndCondition().isEmpty()
+                    ? AdvertisementViewerTypeEnum.JBA
+                    : AdvertisementViewerTypeEnum.WTC);
         advertisementService.save(advertisement);
     }
 
