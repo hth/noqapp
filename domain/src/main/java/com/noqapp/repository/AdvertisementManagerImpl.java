@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,10 +95,13 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
 
     @Override
     public List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit) {
+        Date now = new Date();
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.MC)
                 .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("PD").gte(now)
+                .and("ED").lte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
@@ -108,10 +112,13 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
 
     @Override
     public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements(int limit) {
+        Date now = new Date();
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.MM)
                 .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("PD").gte(now)
+                .and("ED").lte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
@@ -122,9 +129,12 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
 
     @Override
     public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(int limit) {
+        Date now = new Date();
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.TV)
+                .and("PD").gte(now)
+                .and("ED").lte(now)
                 .and("D").is(false)
                 .and("A").is(true)
             ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),

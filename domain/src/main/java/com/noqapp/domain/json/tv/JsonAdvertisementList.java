@@ -42,7 +42,7 @@ public class JsonAdvertisementList extends AbstractDomain {
         return this;
     }
 
-    public JsonAdvertisementList addJsonVigyaapanTV(JsonAdvertisement jsonAdvertisement) {
+    public JsonAdvertisementList addJsonAdvertisement(JsonAdvertisement jsonAdvertisement) {
         this.jsonAdvertisements.add(jsonAdvertisement);
         return this;
     }

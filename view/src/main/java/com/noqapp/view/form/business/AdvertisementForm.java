@@ -232,7 +232,7 @@ public class AdvertisementForm extends FileUploadForm implements Serializable {
         return new AdvertisementForm(advertisement.getBizNameId())
             .setTitle(advertisement.getTitle())
             .setShortDescription(advertisement.getShortDescription())
-            .setTermsAndConditions(advertisement.getTermAndConditions() == null ? new LinkedList<>() : advertisement.getTermAndConditions())
+            .setTermsAndConditions(advertisement.getTermsAndConditions() == null ? new LinkedList<>() : advertisement.getTermsAndConditions())
             .setImageUrls(advertisement.getImageUrls() == null ? new LinkedList<>() : advertisement.getImageUrls())
             .setValidateStatus(advertisement.getValidateStatus())
             .setPublishDate(DateUtil.dateToString(advertisement.getPublishDate()))
