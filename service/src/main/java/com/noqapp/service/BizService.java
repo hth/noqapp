@@ -165,13 +165,12 @@ public class BizService {
         }
 
         String finalChangeInitiateReason = changeInitiateReason;
-        sendMailWhenStoreSettingHasChanged(bizStore.getId(), finalChangeInitiateReason);
+        sendMailWhenStoreSettingHasChanged(bizStore, finalChangeInitiateReason);
     }
 
     @Async
-    public void sendMailWhenStoreSettingHasChanged(String bizStoreId, String changeInitiateReason) {
+    public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
-            BizStoreEntity bizStore = getByStoreId(bizStoreId);
             bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
 
             Map<String, Object> rootMap = new HashMap<>();
@@ -219,16 +218,15 @@ public class BizService {
                 }
                 rootMap.put(DayOfWeek.of(storeHour.getDayOfWeek()).name(), storeHoursAsMap);
             }
-            createMailOnStoreChange(bizStoreId, bizStore, rootMap);
+            createMailOnStoreChange(bizStore, rootMap);
         } catch (NullPointerException e) {
             /* This can happen when new store is created. */
-            LOG.error("Failed sending mail bizStoreId={} changeInitiateReason={} reason={}",
-                bizStoreId, changeInitiateReason, e.getLocalizedMessage(), e);
+            LOG.error("Failed sending mail bizStoreId={} {} reason={}", bizStore.getId(), changeInitiateReason, e.getLocalizedMessage(), e);
         }
     }
 
-    private void createMailOnStoreChange(String bizStoreId, BizStoreEntity bizStore, Map<String, Object> rootMap) {
-        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStoreId, UserLevelEnum.S_MANAGER);
+    private void createMailOnStoreChange(BizStoreEntity bizStore, Map<String, Object> rootMap) {
+        List<BusinessUserStoreEntity> businessUserStores = businessUserStoreManager.findAllManagingStoreWithUserLevel(bizStore.getId(), UserLevelEnum.S_MANAGER);
         for (BusinessUserStoreEntity businessUserStore : businessUserStores) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
 
