@@ -71,9 +71,9 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
                 namedParameters.addValue("pn", purchaseOrderProduct.getProductName());
                 namedParameters.addValue("pp", purchaseOrderProduct.getProductPrice());
                 namedParameters.addValue("pd", purchaseOrderProduct.getProductDiscount());
-                namedParameters.addValue("pt", purchaseOrderProduct.getProductType());
+                namedParameters.addValue("pt", null == purchaseOrderProduct.getProductType() ? null : purchaseOrderProduct.getProductType().getName());
                 namedParameters.addValue("uv", purchaseOrderProduct.getUnitValue());
-                namedParameters.addValue("um", purchaseOrderProduct.getUnitOfMeasurement());
+                namedParameters.addValue("um", null == purchaseOrderProduct.getUnitOfMeasurement() ? null : purchaseOrderProduct.getUnitOfMeasurement().name());
                 namedParameters.addValue("ps", purchaseOrderProduct.getPackageSize());
                 namedParameters.addValue("pq", purchaseOrderProduct.getProductQuantity());
                 namedParameters.addValue("po", purchaseOrderProduct.getPurchaseOrderId());
