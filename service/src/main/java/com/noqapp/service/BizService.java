@@ -553,8 +553,8 @@ public class BizService {
             archiveNextRun);
     }
 
-    public void unsetScheduledTask(String bizStoreId) {
-        bizStoreManager.unsetScheduledTask(bizStoreId);
+    public BizStoreEntity unsetScheduledTask(String bizStoreId) {
+        return bizStoreManager.unsetScheduledTask(bizStoreId);
     }
 
     public void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id) {
