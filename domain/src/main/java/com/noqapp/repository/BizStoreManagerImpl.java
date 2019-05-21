@@ -402,10 +402,11 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public void unsetScheduledTask(String id) {
-        mongoTemplate.updateFirst(
+    public BizStoreEntity unsetScheduledTask(String id) {
+        return mongoTemplate.findAndModify(
             query(where("id").is(id)),
             entityUpdate(new Update().unset("TA")),
+            FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE
         );

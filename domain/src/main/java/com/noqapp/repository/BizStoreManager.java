@@ -92,7 +92,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     boolean doesWebLocationExists(String webLocation, String id);
 
-    void unsetScheduledTask(String id);
+    BizStoreEntity unsetScheduledTask(String id);
 
     void setScheduleTaskId(String codeQR, String scheduleTaskId);
 
