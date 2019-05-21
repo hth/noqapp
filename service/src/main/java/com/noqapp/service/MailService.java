@@ -286,6 +286,8 @@ public class MailService {
 
     public MailTypeEnum registrationStatusMail(
             long awaitingBusinessApproval,
+            long awaitingPublishArticleApproval,
+            long awaitingAdvertisementApproval,
             long registeredUser,
             long deviceRegistered,
             long androidDeviceRegistered,
@@ -296,6 +298,8 @@ public class MailService {
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("registeredUser", Long.toString(registeredUser));
         rootMap.put("awaitingBusinessApproval", Long.toString(awaitingBusinessApproval));
+        rootMap.put("awaitingPublishArticleApproval", Long.toString(awaitingPublishArticleApproval));
+        rootMap.put("awaitingAdvertisementApproval", Long.toString(awaitingAdvertisementApproval));
         rootMap.put("deviceRegistered", Long.toString(deviceRegistered));
         rootMap.put("androidDeviceRegistered", Long.toString(androidDeviceRegistered));
         rootMap.put("androidFlavoredDevices", androidFlavoredDevices);
