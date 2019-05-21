@@ -43,18 +43,18 @@ import java.util.stream.Stream;
  * Date: 11/23/16 4:45 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class BizStoreManagerImpl implements BizStoreManager {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BizStoreEntity.class,
-            Document.class,
-            "collection");
+        BizStoreEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -109,9 +109,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> findAllWithAnyAddressAnyPhone(
-            String bizAddress,
-            String bizPhone,
-            BizNameEntity bizName
+        String bizAddress,
+        String bizPhone,
+        BizNameEntity bizName
     ) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotBlank(bizAddress)) {
@@ -124,29 +124,29 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         if (bizName != null && StringUtils.isNotBlank(bizName.getId())) {
             Criteria criteriaB = where("BIZ_NAME.$id").is(new ObjectId(bizName.getId()));
             return mongoTemplate.find(
-                    query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
-                    BizStoreEntity.class
+                query(criteriaB).addCriteria(criteriaA).limit(PaginationEnum.TEN.getLimit()),
+                BizStoreEntity.class
             );
         } else {
             return mongoTemplate.find(
-                    query(criteriaA).limit(PaginationEnum.TEN.getLimit()),
-                    BizStoreEntity.class
+                query(criteriaA).limit(PaginationEnum.TEN.getLimit()),
+                BizStoreEntity.class
             );
         }
     }
 
     @Override
     public List<BizStoreEntity> findAllWithStartingAddressStartingPhone(
-            String bizAddress,
-            String bizPhone,
-            BizNameEntity bizName
+        String bizAddress,
+        String bizPhone,
+        BizNameEntity bizName
     ) {
         Query query = null;
         if (StringUtils.isNotBlank(bizAddress) && StringUtils.isNotBlank(bizPhone)) {
             query = query(
-                    new Criteria().orOperator(
-                            where("AD").regex("^" + bizAddress, "i"),
-                            where("PH").regex("^" + bizPhone, "i"))
+                new Criteria().orOperator(
+                    where("AD").regex("^" + bizAddress, "i"),
+                    where("PH").regex("^" + bizPhone, "i"))
             );
         } else if (StringUtils.isNotBlank(bizAddress)) {
             query = query(where("AD").regex("^" + bizAddress, "i"));
@@ -168,10 +168,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(
-            String bizPhone,
-            String bizAddress,
-            String bizId,
-            String fieldName
+        String bizPhone,
+        String bizAddress,
+        String bizId,
+        String fieldName
     ) {
         Query query;
         if (StringUtils.isBlank(bizAddress) && StringUtils.isBlank(bizPhone)) {
@@ -201,20 +201,20 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
-                        .with(new Sort(Sort.Direction.DESC, "C"))
-                        .limit(limit),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
+                .with(new Sort(Sort.Direction.DESC, "C"))
+                .limit(limit),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public BizStoreEntity findOne(String bizNameId) {
         return mongoTemplate.findOne(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(new Sort(Sort.Direction.DESC, "C")),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(new Sort(Sort.Direction.DESC, "C")),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
@@ -226,51 +226,51 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit) {
         return mongoTemplate.find(
-                query(
-                        where("EA").is(false)
-                                .orOperator(
-                                        where("VC").exists(false),
-                                        where("VC").lt(validationCountTry)
-                                )
-                ).skip(skip).limit(limit),
-                BizStoreEntity.class,
-                TABLE
+            query(
+                where("EA").is(false)
+                    .orOperator(
+                        where("VC").exists(false),
+                        where("VC").lt(validationCountTry)
+                    )
+            ).skip(skip).limit(limit),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public long getCountOfStore(String bizNameId) {
         return mongoTemplate.count(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(new Sort(ASC, "DN")),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(new Sort(ASC, "DN")),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId, Point point, double maxDistance) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("COR").near(point).maxDistance(maxDistance).andOperator(isNotDeleted())),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("COR").near(point).maxDistance(maxDistance).andOperator(isNotDeleted())),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress).and("D").is(false)),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress).and("D").is(false)),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
@@ -291,29 +291,29 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean updateNextRunAndRatingWithAverageServiceTime(
-            String id,
-            String zoneId,
-            Date archiveNextRun,
-            float rating,
-            int ratingCount,
-            long averageServiceTime
+        String id,
+        String zoneId,
+        Date archiveNextRun,
+        float rating,
+        int ratingCount,
+        long averageServiceTime
     ) {
         LOG.info("Set next run for id={} zoneId={} archiveNextRun={} rating={} averageServiceTime={}",
-                id,
-                zoneId,
-                archiveNextRun,
-                rating,
-                averageServiceTime);
+            id,
+            zoneId,
+            archiveNextRun,
+            rating,
+            averageServiceTime);
 
         Update update;
         if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId)
-                    .set("QH", archiveNextRun));
+                .set("QH", archiveNextRun));
         } else {
             update = entityUpdate(update("TZ", zoneId)
-                    .set("QH", archiveNextRun)
-                    .set("RC", ratingCount)
-                    .set("RA", rating));
+                .set("QH", archiveNextRun)
+                .set("RC", ratingCount)
+                .set("RA", rating));
         }
 
         /* Do not update the average service time when its zero. */
@@ -322,10 +322,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         }
 
         return mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                update,
-                BizStoreEntity.class,
-                TABLE
+            query(where("id").is(id)),
+            update,
+            BizStoreEntity.class,
+            TABLE
         ).getModifiedCount() > 0;
     }
 
@@ -333,9 +333,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
-                query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q)).and("A").is(true).and("D").is(false)),
-                BizStoreEntity.class,
-                TABLE
+            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q)).and("A").is(true).and("D").is(false)),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
@@ -361,28 +361,28 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         mongoTemplate.updateFirst(
-                query(where("QR").is(codeQR)),
-                entityUpdate(update("AT", availableTokenCount)),
-                BizStoreEntity.class,
-                TABLE
+            query(where("QR").is(codeQR)),
+            entityUpdate(update("AT", availableTokenCount)),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public long countCategoryUse(String bizCategoryId, String bizNameId) {
         return mongoTemplate.count(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
         return mongoTemplate.find(
-                query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)).with(new Sort(ASC, "DN")),
-                BizStoreEntity.class,
-                TABLE
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)).with(new Sort(ASC, "DN")),
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
@@ -395,9 +395,9 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query = query(where("WL").is(webLocation).and("_id").ne(id));
         }
         return mongoTemplate.exists(
-                query,
-                BizStoreEntity.class,
-                TABLE
+            query,
+            BizStoreEntity.class,
+            TABLE
         );
     }
 
