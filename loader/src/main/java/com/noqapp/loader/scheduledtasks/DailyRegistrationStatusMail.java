@@ -51,16 +51,16 @@ public class DailyRegistrationStatusMail {
 
     @Autowired
     public DailyRegistrationStatusMail(
-            @Value("${DailyRegistrationStatusMail.registrationStatusSwitch}")
-            String registrationStatusSwitch,
+        @Value("${DailyRegistrationStatusMail.registrationStatusSwitch}")
+        String registrationStatusSwitch,
 
-            AccountService accountService,
-            BusinessUserService businessUserService,
-            PublishArticleService publishArticleService,
-            AdvertisementService advertisementService,
-            RegisteredDeviceManager registeredDeviceManager,
-            MailService mailService,
-            StatsCronService statsCronService
+        AccountService accountService,
+        BusinessUserService businessUserService,
+        PublishArticleService publishArticleService,
+        AdvertisementService advertisementService,
+        RegisteredDeviceManager registeredDeviceManager,
+        MailService mailService,
+        StatsCronService statsCronService
     ) {
         this.registrationStatusSwitch = registrationStatusSwitch;
 
@@ -79,9 +79,9 @@ public class DailyRegistrationStatusMail {
     @Scheduled(cron = "${loader.DailyRegistrationStatusMail.registrationStatusMail}")
     public void registrationStatusMail() {
         StatsCronEntity statsCron = new StatsCronEntity(
-                DailyRegistrationStatusMail.class.getName(),
-                "registrationStatusMail",
-                registrationStatusSwitch);
+            DailyRegistrationStatusMail.class.getName(),
+            "registrationStatusMail",
+            registrationStatusSwitch);
 
         if ("OFF".equalsIgnoreCase(registrationStatusSwitch)) {
             return;
@@ -108,26 +108,28 @@ public class DailyRegistrationStatusMail {
             Map<String, Long> androidFlavoredDevices = new LinkedHashMap<>();
             for (AppFlavorEnum appFlavor : AppFlavorEnum.values()) {
                 androidFlavoredDevices.put(
-                        appFlavor.getDescription(),
-                        registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A, appFlavor));
+                    appFlavor.getDescription(),
+                    registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A, appFlavor));
             }
 
             iPhoneDeviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.I);
             Map<String, Long> iPhoneFlavoredDevices = new LinkedHashMap<>();
             for (AppFlavorEnum appFlavor : AppFlavorEnum.values()) {
                 iPhoneFlavoredDevices.put(
-                        appFlavor.getDescription(),
-                        registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.I, appFlavor));
+                    appFlavor.getDescription(),
+                    registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.I, appFlavor));
             }
 
             mailType = mailService.registrationStatusMail(
-                    awaitingBusinessApproval,
-                    registeredUser,
-                    deviceRegistered,
-                    androidDeviceRegistered,
-                    androidFlavoredDevices,
-                    iPhoneDeviceRegistered,
-                    iPhoneFlavoredDevices
+                awaitingBusinessApproval,
+                awaitingPublishArticleApproval,
+                awaitingAdvertisementApproval,
+                registeredUser,
+                deviceRegistered,
+                androidDeviceRegistered,
+                androidFlavoredDevices,
+                iPhoneDeviceRegistered,
+                iPhoneFlavoredDevices
             );
 
             if (mailType == MailTypeEnum.FAILURE) {
@@ -138,13 +140,23 @@ public class DailyRegistrationStatusMail {
         } finally {
             statsCron.addStats("registeredUser", registeredUser);
             statsCron.addStats("awaitingBusinessApproval", awaitingBusinessApproval);
+            statsCron.addStats("awaitingPublishArticleApproval", awaitingPublishArticleApproval);
+            statsCron.addStats("awaitingAdvertisementApproval", awaitingAdvertisementApproval);
             statsCron.addStats("deviceRegistered", deviceRegistered);
             statsCron.addStats("androidDeviceRegistered", androidDeviceRegistered);
             statsCron.addStats("iPhoneDeviceRegistered", iPhoneDeviceRegistered);
             statsCronService.save(statsCron);
 
             /* Without if condition its too noisy. */
-            LOG.info("Registration Status from={} to={} registeredUser={} awaitingBusinessApproval={} awaitingPublishArticleApproval={} awaitingAdvertisementApproval={} deviceRegistered={}",
+            LOG.info(
+                "Registration Status " +
+                "from={} " +
+                "to={} " +
+                "registeredUser={} " +
+                "awaitingBusinessApproval={} " +
+                "awaitingPublishArticleApproval={} " +
+                "awaitingAdvertisementApproval={} " +
+                "deviceRegistered={}",
                 from,
                 to,
                 registeredUser,
