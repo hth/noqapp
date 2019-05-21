@@ -64,38 +64,38 @@ public class MailService {
 
     @Autowired
     public MailService(
-            @Value("${parentHost}")
-            String parentHost,
+        @Value("${parentHost}")
+        String parentHost,
 
-            @Value ("${dev.sent.to}")
-            String devSentTo,
+        @Value ("${dev.sent.to}")
+        String devSentTo,
 
-            @Value ("${domain}")
-            String domain,
+        @Value ("${domain}")
+        String domain,
 
-            @Value ("${https}")
-            String https,
+        @Value ("${https}")
+        String https,
 
-            @Value ("${mail.invite.queue.supervisor.subject}")
-            String mailInviteQueueSupervisorSubject,
+        @Value ("${mail.invite.queue.supervisor.subject}")
+        String mailInviteQueueSupervisorSubject,
 
-            @Value ("${mail.recover.subject}")
-            String mailRecoverSubject,
+        @Value ("${mail.recover.subject}")
+        String mailRecoverSubject,
 
-            @Value ("${mail.validate.subject}")
-            String mailValidateSubject,
+        @Value ("${mail.validate.subject}")
+        String mailValidateSubject,
 
-            @Value ("${mail.account.not.found.subject}")
-            String accountNotFoundSubject,
+        @Value ("${mail.account.not.found.subject}")
+        String accountNotFoundSubject,
 
-            @Value ("${do.not.reply.email}")
-            String doNotReplyEmail,
+        @Value ("${do.not.reply.email}")
+        String doNotReplyEmail,
 
-            AccountService accountService,
+        AccountService accountService,
 
-            FreemarkerService freemarkerService,
-            EmailValidateService emailValidateService,
-            MailManager mailManager
+        FreemarkerService freemarkerService,
+        EmailValidateService emailValidateService,
+        MailManager mailManager
     ) {
         this.parentHost = parentHost;
         this.devSentTo = devSentTo;
@@ -135,11 +135,11 @@ public class MailService {
         try {
             LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
-                    .setToMail(userId)
-                    .setToName(name)
-                    .setSubject(mailValidateSubject)
-                    .setMessage(freemarkerService.freemarkerToString("mail/self-signup.ftl", rootMap))
-                    .setMailStatus(MailStatusEnum.N);
+                .setToMail(userId)
+                .setToName(name)
+                .setSubject(mailValidateSubject)
+                .setMessage(freemarkerService.freemarkerToString("mail/self-signup.ftl", rootMap))
+                .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
             LOG.error("Failed validation email for={}", userId, exception);
@@ -167,10 +167,10 @@ public class MailService {
 
             try {
                 MailEntity mail = new MailEntity()
-                        .setToMail(userId)
-                        .setSubject(accountNotFoundSubject)
-                        .setMessage(freemarkerService.freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap))
-                        .setMailStatus(MailStatusEnum.N);
+                    .setToMail(userId)
+                    .setSubject(accountNotFoundSubject)
+                    .setMessage(freemarkerService.freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
                 mailManager.save(mail);
 
                 return MailTypeEnum.SUCCESS;
@@ -192,11 +192,11 @@ public class MailService {
 
             try {
                 MailEntity mail = new MailEntity()
-                        .setToMail(userId)
-                        .setToName(userAccount.getName())
-                        .setSubject(mailRecoverSubject)
-                        .setMessage(freemarkerService.freemarkerToString("mail/account-recover.ftl", rootMap))
-                        .setMailStatus(MailStatusEnum.N);
+                    .setToMail(userId)
+                    .setToName(userAccount.getName())
+                    .setSubject(mailRecoverSubject)
+                    .setMessage(freemarkerService.freemarkerToString("mail/account-recover.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
                 mailManager.save(mail);
 
                 return MailTypeEnum.SUCCESS;
@@ -207,13 +207,13 @@ public class MailService {
         } else {
             /* Since account is not validated, send account validation email. */
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                    userAccount.getQueueUserId(),
-                    userAccount.getUserId());
+                userAccount.getQueueUserId(),
+                userAccount.getUserId());
 
             boolean status = accountValidationMail(
-                    userAccount.getUserId(),
-                    userAccount.getName(),
-                    accountValidate.getAuthenticationKey());
+                userAccount.getUserId(),
+                userAccount.getName(),
+                accountValidate.getAuthenticationKey());
 
             if (status) {
                 return MailTypeEnum.ACCOUNT_NOT_VALIDATED;
@@ -223,10 +223,10 @@ public class MailService {
     }
 
     public MailTypeEnum sendQueueSupervisorInvite(
-            String userId,
-            String profileName,
-            String businessName,
-            String displayName
+        String userId,
+        String profileName,
+        String businessName,
+        String displayName
     ) {
         LOG.info("Invitation mail businessName={} to userId={} by displayName={}", businessName, userId, displayName);
         Map<String, Object> rootMap = new HashMap<>();
@@ -238,11 +238,11 @@ public class MailService {
         try {
             LOG.info("Send Queue Supervisor Mail sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
-                    .setToMail(userId)
-                    .setToName(profileName)
-                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for supervising queue " + displayName)
-                    .setMessage(freemarkerService.freemarkerToString("mail/invited-queue-supervisor.ftl", rootMap))
-                    .setMailStatus(MailStatusEnum.N);
+                .setToMail(userId)
+                .setToName(profileName)
+                .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " invites you for supervising queue " + displayName)
+                .setMessage(freemarkerService.freemarkerToString("mail/invited-queue-supervisor.ftl", rootMap))
+                .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
             LOG.error("Failed validation email for={}", userId, exception);
@@ -252,15 +252,15 @@ public class MailService {
     }
 
     public MailTypeEnum addedAsQueueSupervisorNotifyMail(
-            String userId,
-            String profileName,
-            String businessName,
-            String displayName
+        String userId,
+        String profileName,
+        String businessName,
+        String displayName
     ) {
         LOG.info("Added to supervise notify mail businessName={} to userId={} by displayName={}",
-                businessName,
-                userId,
-                displayName);
+            businessName,
+            userId,
+            displayName);
 
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("businessName", businessName);
@@ -271,11 +271,11 @@ public class MailService {
         try {
             LOG.info("Added Queue Supervisor Mail sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
-                    .setToMail(userId)
-                    .setToName(profileName)
-                    .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising queue " + displayName)
-                    .setMessage(freemarkerService.freemarkerToString("mail/added-queue-supervisor.ftl", rootMap))
-                    .setMailStatus(MailStatusEnum.N);
+                .setToMail(userId)
+                .setToName(profileName)
+                .setSubject(mailInviteQueueSupervisorSubject + " " + businessName + " added you for supervising queue " + displayName)
+                .setMessage(freemarkerService.freemarkerToString("mail/added-queue-supervisor.ftl", rootMap))
+                .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
             LOG.error("Failed validation email for={}", userId, exception);
@@ -285,15 +285,15 @@ public class MailService {
     }
 
     public MailTypeEnum registrationStatusMail(
-            long awaitingBusinessApproval,
-            long awaitingPublishArticleApproval,
-            long awaitingAdvertisementApproval,
-            long registeredUser,
-            long deviceRegistered,
-            long androidDeviceRegistered,
-            Map<String, Long> androidFlavoredDevices,
-            long iPhoneDeviceRegistered,
-            Map<String, Long> iPhoneFlavoredDevices
+        long awaitingBusinessApproval,
+        long awaitingPublishArticleApproval,
+        long awaitingAdvertisementApproval,
+        long registeredUser,
+        long deviceRegistered,
+        long androidDeviceRegistered,
+        Map<String, Long> androidFlavoredDevices,
+        long iPhoneDeviceRegistered,
+        Map<String, Long> iPhoneFlavoredDevices
     ) {
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("registeredUser", Long.toString(registeredUser));
@@ -310,11 +310,11 @@ public class MailService {
         try {
             LOG.info("Daily Registration Status Mail sent to={}", doNotReplyEmail);
             MailEntity mail = new MailEntity()
-                    .setToMail(doNotReplyEmail)
-                    .setToName("NoQueue Inc")
-                    .setSubject("Daily Registration Status")
-                    .setMessage(freemarkerService.freemarkerToString("mail/registration-status.ftl", rootMap))
-                    .setMailStatus(MailStatusEnum.N);
+                .setToMail(doNotReplyEmail)
+                .setToName("NoQueue Inc")
+                .setSubject("Daily Registration Status")
+                .setMessage(freemarkerService.freemarkerToString("mail/registration-status.ftl", rootMap))
+                .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
             LOG.error("Failed validation email for={}", devSentTo, exception);
