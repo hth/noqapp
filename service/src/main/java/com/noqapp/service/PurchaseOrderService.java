@@ -573,6 +573,9 @@ public class PurchaseOrderService {
             purchaseOrder.addOrderState(PurchaseOrderStateEnum.FO);
             purchaseOrderManager.save(purchaseOrder);
             throw new PurchaseOrderFailException("Failed creating order");
+        } catch (StoreInActiveException e) {
+            LOG.warn("Store is offline bizStoreId={} reason={}", jsonPurchaseOrder.getBizStoreId(), e.getLocalizedMessage());
+            throw e;
         } catch (Exception e) {
             LOG.error("Failed creating order reason={}", e.getLocalizedMessage(), e);
             throw new PurchaseOrderFailException("Failed creating order");
