@@ -489,7 +489,11 @@ public class PurchaseOrderService {
                 purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
                     .setProductName(storeProduct.getProductName())
                     .setProductPrice(storeProduct.getProductPrice())
-                    .setProductDiscount(storeProduct.getProductDiscount());
+                    .setProductDiscount(storeProduct.getProductDiscount())
+                    .setProductType(storeProduct.getProductType())
+                    .setUnitValue(storeProduct.getUnitValue())
+                    .setUnitOfMeasurement(storeProduct.getUnitOfMeasurement())
+                    .setPackageSize(storeProduct.getPackageSize());
             } else {
                 purchaseOrderProduct
                     .setProductName(jsonPurchaseOrderProduct.getProductName())
