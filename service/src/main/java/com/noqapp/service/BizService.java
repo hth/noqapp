@@ -580,6 +580,13 @@ public class BizService {
         int discountedFollowupDays,
         int discountedFollowupProductPrice
     ) {
-        return bizStoreManager.updateServiceCost(codeQR, productPrice, cancellationPrice, servicePayment, freeFollowupDays, discountedFollowupDays, discountedFollowupProductPrice);
+        return bizStoreManager.updateServiceCost(
+            codeQR,
+            productPrice,
+            cancellationPrice,
+            servicePayment,
+            freeFollowupDays,
+            discountedFollowupDays,
+            discountedFollowupProductPrice);
     }
 }
