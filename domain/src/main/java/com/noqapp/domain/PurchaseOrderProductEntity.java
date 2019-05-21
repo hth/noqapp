@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -38,6 +40,20 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     @Field("PD")
     private int productDiscount;
+
+    @Field("PT")
+    private ProductTypeEnum productType;
+
+    /* Like 1 kg, 200 ml, 2 kg and so on. */
+    @Field("UV")
+    private int unitValue;
+
+    @Field ("UM")
+    private UnitOfMeasurementEnum unitOfMeasurement;
+
+    /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
+    @Field("PS")
+    private int packageSize;
 
     @Field("PQ")
     private int productQuantity;
@@ -93,6 +109,42 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     public PurchaseOrderProductEntity setProductDiscount(int productDiscount) {
         this.productDiscount = productDiscount;
+        return this;
+    }
+
+    public ProductTypeEnum getProductType() {
+        return productType;
+    }
+
+    public PurchaseOrderProductEntity setProductType(ProductTypeEnum productType) {
+        this.productType = productType;
+        return this;
+    }
+
+    public int getUnitValue() {
+        return unitValue;
+    }
+
+    public PurchaseOrderProductEntity setUnitValue(int unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public UnitOfMeasurementEnum getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public PurchaseOrderProductEntity setUnitOfMeasurement(UnitOfMeasurementEnum unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
+        return this;
+    }
+
+    public int getPackageSize() {
+        return packageSize;
+    }
+
+    public PurchaseOrderProductEntity setPackageSize(int packageSize) {
+        this.packageSize = packageSize;
         return this;
     }
 

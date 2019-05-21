@@ -2,6 +2,8 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,6 +47,20 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
     @JsonProperty("pd")
     private int productDiscount;
 
+    @JsonProperty("pt")
+    private ProductTypeEnum productType;
+
+    /* Like 1 kg, 200 ml, 2 kg and so on. */
+    @JsonProperty("uv")
+    private int unitValue;
+
+    @JsonProperty ("um")
+    private UnitOfMeasurementEnum unitOfMeasurement;
+
+    /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
+    @JsonProperty("ps")
+    private int packageSize;
+
     @JsonProperty("pq")
     private int productQuantity;
 
@@ -84,6 +100,42 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
         return this;
     }
 
+    public ProductTypeEnum getProductType() {
+        return productType;
+    }
+
+    public JsonPurchaseOrderProduct setProductType(ProductTypeEnum productType) {
+        this.productType = productType;
+        return this;
+    }
+
+    public int getUnitValue() {
+        return unitValue;
+    }
+
+    public JsonPurchaseOrderProduct setUnitValue(int unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public UnitOfMeasurementEnum getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public JsonPurchaseOrderProduct setUnitOfMeasurement(UnitOfMeasurementEnum unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
+        return this;
+    }
+
+    public int getPackageSize() {
+        return packageSize;
+    }
+
+    public JsonPurchaseOrderProduct setPackageSize(int packageSize) {
+        this.packageSize = packageSize;
+        return this;
+    }
+
     public int getProductQuantity() {
         return productQuantity;
     }
@@ -99,6 +151,10 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
             .setProductName(purchaseOrderProduct.getProductName())
             .setProductPrice(purchaseOrderProduct.getProductPrice())
             .setProductDiscount(purchaseOrderProduct.getProductDiscount())
+            .setProductType(purchaseOrderProduct.getProductType())
+            .setUnitValue(purchaseOrderProduct.getUnitValue())
+            .setUnitOfMeasurement(purchaseOrderProduct.getUnitOfMeasurement())
+            .setPackageSize(purchaseOrderProduct.getPackageSize())
             .setProductQuantity(purchaseOrderProduct.getProductQuantity());
     }
 
