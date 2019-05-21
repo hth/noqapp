@@ -3,6 +3,8 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +45,20 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain {
     @JsonProperty("pd")
     private int productDiscount;
 
+    @JsonProperty("pt")
+    private ProductTypeEnum productType;
+
+    /* Like 1 kg, 200 ml, 2 kg and so on. */
+    @JsonProperty("uv")
+    private int unitValue;
+
+    @JsonProperty ("um")
+    private UnitOfMeasurementEnum unitOfMeasurement;
+
+    /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
+    @JsonProperty("ps")
+    private int packageSize;
+
     @JsonProperty("pq")
     private int productQuantity;
 
@@ -73,6 +89,10 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain {
         this.productName = purchaseOrderProduct.getProductName();
         this.productPrice = purchaseOrderProduct.getProductPrice();
         this.productDiscount = purchaseOrderProduct.getProductDiscount();
+        this.productType = purchaseOrderProduct.getProductType();
+        this.unitValue = purchaseOrderProduct.getUnitValue();
+        this.unitOfMeasurement = purchaseOrderProduct.getUnitOfMeasurement();
+        this.packageSize = purchaseOrderProduct.getPackageSize();
         this.productQuantity = purchaseOrderProduct.getProductQuantity();
         this.purchaseOrderId = purchaseOrderProduct.getPurchaseOrderId();
         this.queueUserId = purchaseOrderProduct.getQueueUserId();

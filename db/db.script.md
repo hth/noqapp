@@ -91,6 +91,10 @@ as a value, then it gets endless connections.
         PN VARCHAR(100)     NOT NULL,
         PP INT(10),
         PD INT(5),
+        PT CHAR(2),
+        UV INT(5)
+        UM CHAR(2),
+        PS INT(3)
         PQ INT(3),
         PO VARCHAR(24)      NOT NULL,
         QID VARCHAR(13)     NOT NULL,

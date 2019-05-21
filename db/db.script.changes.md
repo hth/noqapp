@@ -1,3 +1,17 @@
+### Change May 21 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
+    ADD COLUMN `PT` CHAR(2) AFTER `PD`;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
+    ADD COLUMN `UV` INT(5) AFTER `PT`;
+        
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
+    ADD COLUMN `UM` CHAR(2) AFTER `UV`;
+            
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
+    ADD COLUMN `PS` INT(3) AFTER `UM`;
+
 ### Change April 30 2019
 
 ###### Modified from column size of 64 to 100
