@@ -31,13 +31,13 @@ public class JsonSchedule extends AbstractDomain {
     private String day;
 
     @JsonProperty("ta")
-    private String totalAppointments;
+    private int totalAppointments;
 
-    @JsonProperty("fm")
-    private String from;
+    @JsonProperty("st")
+    private String startTime;
 
-    @JsonProperty("ut")
-    private String until;
+    @JsonProperty("et")
+    private String endTime;
 
     @JsonProperty("nm")
     private String name;
@@ -54,30 +54,30 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
-    public String getTotalAppointments() {
+    public int getTotalAppointments() {
         return totalAppointments;
     }
 
-    public JsonSchedule setTotalAppointments(String totalAppointments) {
+    public JsonSchedule setTotalAppointments(int totalAppointments) {
         this.totalAppointments = totalAppointments;
         return this;
     }
 
-    public String getFrom() {
-        return from;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public JsonSchedule setFrom(String from) {
-        this.from = from;
+    public JsonSchedule setStartTime(String startTime) {
+        this.startTime = startTime;
         return this;
     }
 
-    public String getUntil() {
-        return until;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public JsonSchedule setUntil(String until) {
-        this.until = until;
+    public JsonSchedule setEndTime(String endTime) {
+        this.endTime = endTime;
         return this;
     }
 
