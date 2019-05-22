@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.StringJoiner;
+
 /**
  * User: hitender
  * Date: 2019-05-22 10:44
@@ -97,5 +99,17 @@ public class JsonSchedule extends AbstractDomain {
     public JsonSchedule setQid(String qid) {
         this.qid = qid;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JsonSchedule.class.getSimpleName() + "[", "]")
+            .add("day='" + day + "'")
+            .add("totalAppointments=" + totalAppointments)
+            .add("startTime='" + startTime + "'")
+            .add("endTime='" + endTime + "'")
+            .add("name='" + name + "'")
+            .add("qid='" + qid + "'")
+            .toString();
     }
 }

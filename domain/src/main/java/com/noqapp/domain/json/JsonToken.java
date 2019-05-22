@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.StringJoiner;
 import java.util.TimeZone;
 
 /**
@@ -200,15 +201,18 @@ public class JsonToken extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonToken{" +
-            "codeQR='" + codeQR + '\'' +
-            ", displayName='" + displayName + '\'' +
-            ", businessType=" + businessType +
-            ", queueStatus=" + queueStatus +
-            ", servingNumber=" + servingNumber +
-            ", token=" + token +
-            ", customerName='" + customerName + '\'' +
-            ", expectedServiceBegin='" + expectedServiceBegin + '\'' +
-            '}';
+        return new StringJoiner(", ", JsonToken.class.getSimpleName() + "[", "]")
+            .add("codeQR='" + codeQR + "'")
+            .add("displayName='" + displayName + "'")
+            .add("businessType=" + businessType)
+            .add("bizCategoryId='" + bizCategoryId + "'")
+            .add("queueStatus=" + queueStatus)
+            .add("servingNumber=" + servingNumber)
+            .add("token=" + token)
+            .add("customerName='" + customerName + "'")
+            .add("expectedServiceBegin='" + expectedServiceBegin + "'")
+            .add("transactionId='" + transactionId + "'")
+            .add("jsonPurchaseOrder=" + jsonPurchaseOrder)
+            .toString();
     }
 }
