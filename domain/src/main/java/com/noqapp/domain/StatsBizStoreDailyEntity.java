@@ -82,10 +82,10 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     private long totalHoursSaved;
 
     @Field ("FS")
-    String firstServicedOrSkipped;
+    private String firstServicedOrSkipped;
 
     @Field ("LS")
-    String lastServicedOrSkipped;
+    private String lastServicedOrSkipped;
 
     /* Temp field used only for mongo aggregation framework. */
     @Field("MN")
