@@ -3,7 +3,7 @@ package com.noqapp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.repository.BizStoreManager;
 
 import com.google.maps.model.GeocodingResult;
@@ -14,9 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.ZonedDateTime;
-import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -57,5 +54,13 @@ class ExternalServiceTest {
     void getGeocodingResults_InvalidAddress_Break_Loop() {
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults("1234TestCircuitSunnyvaleCA94089");
         assertNull(geocodingResults);
+    }
+
+    @Test
+    @DisplayName("Test with valid address")
+    void getGeocodingResults_ValidAddress() {
+        GeocodingResult[] geocodingResults = externalService.getGeocodingResults("665 W Olive Ave, Sunnyvale, CA 94086, USA");
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, 0);
+        assertEquals("665 W Olive Ave, Sunnyvale, CA 94086, USA", decodedAddress.getFormattedAddress(), "Address should match");
     }
 }

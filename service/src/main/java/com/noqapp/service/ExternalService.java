@@ -39,11 +39,11 @@ import java.util.TimeZone;
  * User: hitender
  * Date: 11/23/16 4:24 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class ExternalService {
@@ -54,19 +54,19 @@ public class ExternalService {
 
     @Autowired
     public ExternalService(
-            @Value ("${google-server-api-key}")
-            String googleServerApiKey,
-            
-            @Value("${google-api-max-retries}")
-            int maxRetries,        
+        @Value("${google-server-api-key}")
+        String googleServerApiKey,
 
-            BizStoreManager bizStoreManager
+        @Value("${google-api-max-retries}")
+        int maxRetries,
+
+        BizStoreManager bizStoreManager
     ) {
         this.context = new GeoApiContext.Builder()
-                .apiKey(googleServerApiKey)
-                .maxRetries(maxRetries)
-                .disableRetries()
-                .build();
+            .apiKey(googleServerApiKey)
+            .maxRetries(maxRetries)
+            .disableRetries()
+            .build();
 
         this.bizStoreManager = bizStoreManager;
     }
@@ -120,11 +120,11 @@ public class ExternalService {
                 bizStore.setValidatedUsingExternalAPI(true);
             } else {
                 LOG.warn("Geocode result from address is empty for bizStoreId={} bizStoreAddress={}",
-                        bizStore.getId(), bizStore.getAddress());
+                    bizStore.getId(), bizStore.getAddress());
             }
         } catch (Exception e) {
             LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
-                    bizStore.getId(), bizStore.getAddress(), e.getLocalizedMessage(), e);
+                bizStore.getId(), bizStore.getAddress(), e.getLocalizedMessage(), e);
         }
     }
 
@@ -165,7 +165,7 @@ public class ExternalService {
                         /* Append country code to phone number. */
                         String phone = Formatter.phoneNumberWithCountryCode(placeDetails.formattedPhoneNumber, bizName.getCountryShortName());
                         LOG.info("Phone changed cs={} from {} to {}",
-                                bizName.getCountryShortName(), placeDetails.formattedPhoneNumber, phone);
+                            bizName.getCountryShortName(), placeDetails.formattedPhoneNumber, phone);
 
                         bizName.setPhone(phone);
                     }
@@ -174,11 +174,11 @@ public class ExternalService {
                 bizName.setValidatedUsingExternalAPI(true);
             } else {
                 LOG.warn("Geocode result from address is empty for bizStoreId={} bizStoreAddress={}",
-                        bizName.getId(), bizName.getAddress());
+                    bizName.getId(), bizName.getAddress());
             }
         } catch (Exception e) {
             LOG.error("Failed to get address from google java API service bizStoreId={} bizStoreAddress={} reason={}",
-                    bizName.getId(), bizName.getAddress(), e.getLocalizedMessage(), e);
+                bizName.getId(), bizName.getAddress(), e.getLocalizedMessage(), e);
         }
     }
 
@@ -199,7 +199,7 @@ public class ExternalService {
             if (StringUtils.isBlank(address)) {
                 throw new RuntimeException("Blank address found");
             }
-            
+
             GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
             if (0 != geocodingResults.length) {
                 return geocodingResults;
