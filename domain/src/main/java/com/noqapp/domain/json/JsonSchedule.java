@@ -30,6 +30,12 @@ import java.util.StringJoiner;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonSchedule extends AbstractDomain {
 
+    @JsonProperty("id")
+    private String scheduleAppointmentId;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
     @JsonProperty("dy")
     private String day;
 
@@ -53,6 +59,24 @@ public class JsonSchedule extends AbstractDomain {
 
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
+
+    public String getScheduleAppointmentId() {
+        return scheduleAppointmentId;
+    }
+
+    public JsonSchedule setScheduleAppointmentId(String scheduleAppointmentId) {
+        this.scheduleAppointmentId = scheduleAppointmentId;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonSchedule setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
 
     public String getDay() {
         return day;
