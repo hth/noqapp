@@ -92,4 +92,13 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             return null;
         }
     }
+
+    @Override
+    public void cancelAppointment(String id, String qid, String codeQR) {
+        mongoTemplate.remove(
+            query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
 }

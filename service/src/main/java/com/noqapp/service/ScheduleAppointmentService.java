@@ -56,7 +56,7 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public ScheduleAppointmentEntity bookAppointment(String qid, String codeQR, String day, int startTime, int endTime) {
+    public JsonSchedule bookAppointment(String qid, String codeQR, String day, int startTime, int endTime) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(day, bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date));
@@ -74,7 +74,19 @@ public class ScheduleAppointmentService {
             .setAppointmentStatus(AppointmentStatusEnum.U);
 
         scheduleAppointmentManager.save(scheduleAppointment);
-        return scheduleAppointment;
+        return new JsonSchedule()
+            .setScheduleAppointmentId(scheduleAppointment.getId())
+            .setCodeQR(scheduleAppointment.getCodeQR())
+            .setDay(scheduleAppointment.getDay())
+            .setStartTime(scheduleAppointment.getStartTime())
+            .setEndTime(scheduleAppointment.getEndTime())
+            .setQid(scheduleAppointment.getQid())
+            .setAppointmentStatus(scheduleAppointment.getAppointmentStatus());
+    }
+
+    @Mobile
+    public void cancelAppointment(String id, String qid, String codeQR) {
+        scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
     }
 
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String day) {
@@ -91,6 +103,7 @@ public class ScheduleAppointmentService {
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
+                    .setScheduleAppointmentId(scheduleAppointment.getId())
                     .setDay(scheduleAppointment.getDay())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
@@ -116,6 +129,7 @@ public class ScheduleAppointmentService {
 
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
+                    .setScheduleAppointmentId(scheduleAppointment.getId())
                     .setDay(scheduleAppointment.getDay())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
