@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,16 +37,22 @@ public class JsonSchedule extends AbstractDomain {
     private int totalAppointments;
 
     @JsonProperty("st")
-    private String startTime;
+    private int startTime;
 
     @JsonProperty("et")
-    private String endTime;
+    private int endTime;
 
     @JsonProperty("nm")
     private String name;
 
     @JsonProperty("qid")
     private String qid;
+
+    @JsonProperty("as")
+    private AppointmentStatusEnum appointmentStatus;
+
+    @JsonProperty("jp")
+    private JsonProfile jsonProfile;
 
     public String getDay() {
         return day;
@@ -65,20 +72,20 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
-    public String getStartTime() {
+    public int getStartTime() {
         return startTime;
     }
 
-    public JsonSchedule setStartTime(String startTime) {
+    public JsonSchedule setStartTime(int startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public String getEndTime() {
+    public int getEndTime() {
         return endTime;
     }
 
-    public JsonSchedule setEndTime(String endTime) {
+    public JsonSchedule setEndTime(int endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -98,6 +105,24 @@ public class JsonSchedule extends AbstractDomain {
 
     public JsonSchedule setQid(String qid) {
         this.qid = qid;
+        return this;
+    }
+
+    public AppointmentStatusEnum getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public JsonSchedule setAppointmentStatus(AppointmentStatusEnum appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+        return this;
+    }
+
+    public JsonProfile getJsonProfile() {
+        return jsonProfile;
+    }
+
+    public JsonSchedule setJsonProfile(JsonProfile jsonProfile) {
+        this.jsonProfile = jsonProfile;
         return this;
     }
 

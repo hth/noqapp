@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -340,5 +341,19 @@ public final class DateUtil {
 
     public static LocalDateTime asLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    public static Date startOfMonth(Date date, String timeZone) {
+        ZonedDateTime zdt = date.toInstant().atZone(ZoneId.of(timeZone));
+        YearMonth ym = YearMonth.from(zdt);
+        LocalDate first = ym.atDay(1);
+        return Date.from(first.atStartOfDay(ZoneId.of(timeZone)).toInstant());
+    }
+
+    public static Date endOfMonth(Date date, String timeZone) {
+        ZonedDateTime zdt = date.toInstant().atZone(ZoneId.of(timeZone));
+        YearMonth ym = YearMonth.from(zdt);
+        LocalDate last = ym.atEndOfMonth();
+        return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).toInstant());
     }
 }
