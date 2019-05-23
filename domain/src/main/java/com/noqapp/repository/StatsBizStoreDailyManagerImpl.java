@@ -88,7 +88,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
 
             return null;
         } catch (InvalidPersistentPropertyPath e) {
-            LOG.error("Failed compute daily stats for BizStore id={}", bizStoreId, e.getLocalizedMessage(), e);
+            LOG.error("Failed compute daily stats for BizStore id={} reason={}", bizStoreId, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -137,7 +137,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             }
             return statsBizStoreDaily;
         } catch (InvalidPersistentPropertyPath e) {
-            LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
+            LOG.error("Failed compute stats on new customer codeQR={} reason={}", codeQR, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -179,7 +179,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             );
             return mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
         } catch (InvalidPersistentPropertyPath e) {
-            LOG.error("Failed compute stats on new customer codeQR={}", codeQR, e.getLocalizedMessage(), e);
+            LOG.error("Failed compute stats on new customer codeQR={} reason={}", codeQR, e.getLocalizedMessage(), e);
             return null;
         }
     }
