@@ -138,6 +138,11 @@ public final class DateUtil {
         return localDate.getDayOfWeek();
     }
 
+    public static DayOfWeek getDayOfWeekFromDate(Date date, String timeZone) {
+        LocalDate localDate = date.toInstant().atZone(ZoneId.of(timeZone)).toLocalDate();
+        return localDate.getDayOfWeek();
+    }
+
     public static LocalTime getTimeAtTimeZone(String forTimeZone) {
         TimeZone timeZone = StringUtils.isBlank(forTimeZone) ? TimeZone.getTimeZone(ZoneId.systemDefault()) : TimeZone.getTimeZone(forTimeZone);
         return LocalTime.now(timeZone.toZoneId());

@@ -59,9 +59,14 @@ public class ScheduleAppointmentService {
     public JsonSchedule bookAppointment(String qid, String codeQR, String scheduleDate, int startTime, int endTime) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
-        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date));
-        if (storeHour.getStartHour() > startTime || storeHour.getEndHour() < endTime) {
-            LOG.warn("Supplied time is beyond range {} {} {} {} {} {}", startTime, storeHour.getStartHour(), endTime, storeHour.getEndHour(), qid, codeQR);
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
+        if (storeHour.getStartHour() > startTime) {
+            LOG.warn("Supplied start time is beyond range {} {} {} {}", startTime, storeHour.getStartHour(), qid, codeQR);
+            return null;
+        }
+
+        if (storeHour.getEndHour() < endTime) {
+            LOG.warn("Supplied end time is beyond range {} {} {} {}", endTime, storeHour.getEndHour(), qid, codeQR);
             return null;
         }
 
