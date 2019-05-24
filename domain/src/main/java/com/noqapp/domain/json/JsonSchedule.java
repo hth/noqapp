@@ -36,8 +36,8 @@ public class JsonSchedule extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("dy")
-    private String day;
+    @JsonProperty("sd")
+    private String scheduleDate;
 
     @JsonProperty("ta")
     private int totalAppointments;
@@ -78,12 +78,12 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
-    public String getDay() {
-        return day;
+    public String getScheduleDate() {
+        return scheduleDate;
     }
 
-    public JsonSchedule setDay(String day) {
-        this.day = day;
+    public JsonSchedule setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
         return this;
     }
 
@@ -153,7 +153,7 @@ public class JsonSchedule extends AbstractDomain {
     @Override
     public String toString() {
         return new StringJoiner(", ", JsonSchedule.class.getSimpleName() + "[", "]")
-            .add("day='" + day + "'")
+            .add("scheduleDate='" + scheduleDate + "'")
             .add("totalAppointments=" + totalAppointments)
             .add("startTime='" + startTime + "'")
             .add("endTime='" + endTime + "'")

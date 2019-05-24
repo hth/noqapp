@@ -30,8 +30,8 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     @Field("QR")
     private String codeQR;
 
-    @Field("DY")
-    private String day;
+    @Field("SD")
+    private String scheduleDate;
 
     @Field("ST")
     private int startTime;
@@ -58,12 +58,12 @@ public class ScheduleAppointmentEntity extends BaseEntity {
         return this;
     }
 
-    public String getDay() {
-        return day;
+    public String getScheduleDate() {
+        return scheduleDate;
     }
 
-    public ScheduleAppointmentEntity setDay(String day) {
-        this.day = day;
+    public ScheduleAppointmentEntity setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
         return this;
     }
 
@@ -116,7 +116,7 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     public String toString() {
         return new StringJoiner(", ", ScheduleAppointmentEntity.class.getSimpleName() + "[", "]")
             .add("codeQR='" + codeQR + "'")
-            .add("day='" + day + "'")
+            .add("scheduleDate='" + scheduleDate + "'")
             .add("startTime=" + startTime)
             .add("endTime=" + endTime)
             .add("qid='" + qid + "'")
