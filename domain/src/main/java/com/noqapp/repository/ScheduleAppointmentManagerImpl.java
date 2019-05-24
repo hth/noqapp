@@ -62,9 +62,9 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String day) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("DY").is(day)),
+            query(where("QR").is(codeQR).and("SD").is(scheduleDate)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
@@ -75,14 +75,14 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         try {
             TypedAggregation<ScheduleAppointmentEntity> agg = newAggregation(ScheduleAppointmentEntity.class,
                 match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R)),
-                group("day")
-                    .first("day").as("DY")
+                group("scheduleDate")
+                    .first("scheduleDate").as("SD")
                     .sum("totalAppointments").as("TA")
             );
             /* Above totalAppointments in group is used as a place holder to count the number of records that has TA > 0. */
             List<ScheduleAppointmentEntity> scheduleAppointments = mongoTemplate.aggregate(agg, TABLE, ScheduleAppointmentEntity.class).getMappedResults();
             if (scheduleAppointments.size() > 0) {
-                LOG.info("Computing appointments for each day {}", scheduleAppointments.get(0));
+                LOG.info("Computing appointments for each scheduleDate {}", scheduleAppointments.get(0));
                 return scheduleAppointments;
             }
 
