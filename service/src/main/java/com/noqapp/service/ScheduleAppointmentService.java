@@ -60,7 +60,7 @@ public class ScheduleAppointmentService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date));
-        if (storeHour.getStartHour() < startTime && storeHour.getEndHour() > endTime) {
+        if (storeHour.getStartHour() > startTime || storeHour.getEndHour() < endTime) {
             LOG.warn("Supplied time is beyond range {} {} {} {} {} {}", startTime, storeHour.getStartHour(), endTime, storeHour.getEndHour(), qid, codeQR);
             return null;
         }
