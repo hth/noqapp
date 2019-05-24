@@ -48,9 +48,6 @@ public class JsonSchedule extends AbstractDomain {
     @JsonProperty("et")
     private int endTime;
 
-    @JsonProperty("nm")
-    private String name;
-
     @JsonProperty("qid")
     private String qid;
 
@@ -114,15 +111,6 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public JsonSchedule setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getQid() {
         return qid;
     }
@@ -157,7 +145,6 @@ public class JsonSchedule extends AbstractDomain {
             .add("totalAppointments=" + totalAppointments)
             .add("startTime='" + startTime + "'")
             .add("endTime='" + endTime + "'")
-            .add("name='" + name + "'")
             .add("qid='" + qid + "'")
             .toString();
     }
