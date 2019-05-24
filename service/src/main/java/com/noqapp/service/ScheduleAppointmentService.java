@@ -56,9 +56,9 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonSchedule bookAppointment(String qid, String codeQR, String day, int startTime, int endTime) {
+    public JsonSchedule bookAppointment(String qid, String codeQR, String scheduleDate, int startTime, int endTime) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Date date = DateUtil.convertToDate(day, bizStore.getTimeZone());
+        Date date = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date));
         if (storeHour.getStartHour() < startTime && storeHour.getEndHour() > endTime) {
             LOG.warn("Supplied time is beyond range {} {}", startTime, endTime);
@@ -67,7 +67,7 @@ public class ScheduleAppointmentService {
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
             .setCodeQR(codeQR)
-            .setDay(day)
+            .setScheduleDate(scheduleDate)
             .setStartTime(startTime)
             .setEndTime(endTime)
             .setQid(qid)
@@ -77,7 +77,7 @@ public class ScheduleAppointmentService {
         return new JsonSchedule()
             .setScheduleAppointmentId(scheduleAppointment.getId())
             .setCodeQR(scheduleAppointment.getCodeQR())
-            .setDay(scheduleAppointment.getDay())
+            .setScheduleDate(scheduleAppointment.getScheduleDate())
             .setStartTime(scheduleAppointment.getStartTime())
             .setEndTime(scheduleAppointment.getEndTime())
             .setQid(scheduleAppointment.getQid())
@@ -104,7 +104,7 @@ public class ScheduleAppointmentService {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
                     .setScheduleAppointmentId(scheduleAppointment.getId())
-                    .setDay(scheduleAppointment.getDay())
+                    .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
                     .setQid(scheduleAppointment.getQid())
@@ -130,7 +130,7 @@ public class ScheduleAppointmentService {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
                     .setScheduleAppointmentId(scheduleAppointment.getId())
-                    .setDay(scheduleAppointment.getDay())
+                    .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
                     .setQid(scheduleAppointment.getQid())
@@ -154,7 +154,7 @@ public class ScheduleAppointmentService {
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
-                    .setDay(scheduleAppointment.getDay())
+                    .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setTotalAppointments(scheduleAppointment.getTotalAppointments())
             );
         }
