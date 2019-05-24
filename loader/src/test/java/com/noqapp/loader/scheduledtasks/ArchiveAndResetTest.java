@@ -117,7 +117,7 @@ class ArchiveAndResetTest {
         statsBizStoreDaily.setCodeQR(codeQR);
 
         DateTime last60Minutes = DateUtil.now().minusMinutes(60);
-        List<StoreHourEntity> storeHours = new ArrayList<>() {{
+        List<StoreHourEntity> storeHours = new ArrayList<StoreHourEntity>() {{
             for (int i = 1; i < 8; i++) {
                 add(new StoreHourEntity(bizStoreId, i)
                     .setStartHour(last60Minutes.getHourOfDay())
