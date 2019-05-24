@@ -117,8 +117,8 @@ class ArchiveAndResetTest {
         statsBizStoreDaily.setCodeQR(codeQR);
 
         DateTime last60Minutes = DateUtil.now().minusMinutes(60);
-        List<StoreHourEntity> storeHours = new ArrayList<StoreHourEntity>() {{
-            for(int i = 1; i < 8; i ++) {
+        List<StoreHourEntity> storeHours = new ArrayList<>() {{
+            for (int i = 1; i < 8; i++) {
                 add(new StoreHourEntity(bizStoreId, i)
                     .setStartHour(last60Minutes.getHourOfDay())
                     .setEndHour(last60Minutes.getHourOfDay() + 60)
@@ -143,7 +143,7 @@ class ArchiveAndResetTest {
             String.format(Locale.US, "%04d", Integer.parseInt(statsBizStoreDaily.getLastServicedOrSkipped())),
             DateTimeFormatter.ofPattern("HHmm"));
         LocalTime firstTime = LocalTime.parse(
-            String.format(Locale.US, "%04d",  Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped())),
+            String.format(Locale.US, "%04d", Integer.parseInt(statsBizStoreDaily.getFirstServicedOrSkipped())),
             DateTimeFormatter.ofPattern("HHmm"));
         assertEquals(30, ChronoUnit.MINUTES.between(firstTime, lastTime));
     }

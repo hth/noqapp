@@ -102,9 +102,9 @@ public class ScheduleAppointmentService {
      * Safe to use for client only.
      */
     @Mobile
-    public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String day) {
+    public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, day);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
@@ -124,9 +124,9 @@ public class ScheduleAppointmentService {
      * Contains profile information. To be used by merchant only.
      */
     @Mobile
-    public JsonScheduleList findScheduleForDayAsJson(String codeQR, String day) {
+    public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, day);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQid());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQid());
