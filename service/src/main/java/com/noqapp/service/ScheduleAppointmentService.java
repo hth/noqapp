@@ -79,6 +79,11 @@ public class ScheduleAppointmentService {
             .setAppointmentStatus(AppointmentStatusEnum.U);
 
         scheduleAppointmentManager.save(scheduleAppointment);
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQid());
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQid());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+
         return new JsonSchedule()
             .setScheduleAppointmentId(scheduleAppointment.getId())
             .setCodeQR(scheduleAppointment.getCodeQR())
@@ -86,7 +91,8 @@ public class ScheduleAppointmentService {
             .setStartTime(scheduleAppointment.getStartTime())
             .setEndTime(scheduleAppointment.getEndTime())
             .setQid(scheduleAppointment.getQid())
-            .setAppointmentStatus(scheduleAppointment.getAppointmentStatus());
+            .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
+            .setJsonProfile(jsonProfile);
     }
 
     @Mobile
