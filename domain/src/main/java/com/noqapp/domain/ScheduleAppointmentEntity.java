@@ -40,7 +40,10 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     private int endTime;
 
     @Field("QID")
-    private String qid;
+    private String queueUserId;
+
+    @Field("GQ")
+    private String guardianQid;
 
     @Field("AS")
     private AppointmentStatusEnum appointmentStatus;
@@ -85,12 +88,21 @@ public class ScheduleAppointmentEntity extends BaseEntity {
         return this;
     }
 
-    public String getQid() {
-        return qid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public ScheduleAppointmentEntity setQid(String qid) {
-        this.qid = qid;
+    public ScheduleAppointmentEntity setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getGuardianQid() {
+        return guardianQid;
+    }
+
+    public ScheduleAppointmentEntity setGuardianQid(String guardianQid) {
+        this.guardianQid = guardianQid;
         return this;
     }
 
@@ -119,7 +131,7 @@ public class ScheduleAppointmentEntity extends BaseEntity {
             .add("scheduleDate='" + scheduleDate + "'")
             .add("startTime=" + startTime)
             .add("endTime=" + endTime)
-            .add("qid='" + qid + "'")
+            .add("queueUserId='" + queueUserId + "'")
             .add("appointmentStatus=" + appointmentStatus)
             .add("totalAppointments=" + totalAppointments)
             .toString();

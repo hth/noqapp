@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -16,6 +17,7 @@ import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.exceptions.AppointmentBookingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,32 +58,33 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonSchedule bookAppointment(String qid, String codeQR, String scheduleDate, int startTime, int endTime) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Date date = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
+    public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonSchedule.getCodeQR());
+        Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
-        if (storeHour.getStartHour() > startTime) {
-            LOG.warn("Supplied start time is beyond range {} {} {} {}", startTime, storeHour.getStartHour(), qid, codeQR);
-            return null;
+        if (storeHour.getStartHour() > jsonSchedule.getStartTime()) {
+            LOG.warn("Supplied start time is beyond range {} {} {} {}", jsonSchedule.getStartTime(), storeHour.getStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
         }
 
-        if (storeHour.getEndHour() < endTime) {
-            LOG.warn("Supplied end time is beyond range {} {} {} {}", endTime, storeHour.getEndHour(), qid, codeQR);
-            return null;
+        if (storeHour.getEndHour() < jsonSchedule.getEndTime()) {
+            LOG.warn("Supplied end time is beyond range {} {} {} {}", jsonSchedule.getEndTime(), storeHour.getEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
         }
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
-            .setCodeQR(codeQR)
-            .setScheduleDate(scheduleDate)
-            .setStartTime(startTime)
-            .setEndTime(endTime)
-            .setQid(qid)
+            .setCodeQR(jsonSchedule.getCodeQR())
+            .setScheduleDate(jsonSchedule.getScheduleDate())
+            .setStartTime(jsonSchedule.getStartTime())
+            .setEndTime(jsonSchedule.getEndTime())
+            .setQueueUserId(jsonSchedule.getQueueUserId())
+            .setGuardianQid(guardianQid)
             .setAppointmentStatus(AppointmentStatusEnum.U);
 
         scheduleAppointmentManager.save(scheduleAppointment);
 
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQid());
-        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQid());
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
         return new JsonSchedule()
@@ -90,7 +93,8 @@ public class ScheduleAppointmentService {
             .setScheduleDate(scheduleAppointment.getScheduleDate())
             .setStartTime(scheduleAppointment.getStartTime())
             .setEndTime(scheduleAppointment.getEndTime())
-            .setQid(scheduleAppointment.getQid())
+            .setQueueUserId(scheduleAppointment.getQueueUserId())
+            .setGuardianQid(scheduleAppointment.getGuardianQid())
             .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
             .setJsonProfile(jsonProfile);
     }
@@ -118,7 +122,8 @@ public class ScheduleAppointmentService {
                     .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
-                    .setQid(scheduleAppointment.getQid())
+                    .setQueueUserId(scheduleAppointment.getQueueUserId())
+                    .setGuardianQid(scheduleAppointment.getGuardianQid())
                     .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
             );
         }
@@ -134,8 +139,8 @@ public class ScheduleAppointmentService {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQid());
-            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQid());
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
             jsonScheduleList.addJsonSchedule(
@@ -144,7 +149,8 @@ public class ScheduleAppointmentService {
                     .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setStartTime(scheduleAppointment.getStartTime())
                     .setEndTime(scheduleAppointment.getEndTime())
-                    .setQid(scheduleAppointment.getQid())
+                    .setQueueUserId(scheduleAppointment.getQueueUserId())
+                    .setGuardianQid(scheduleAppointment.getGuardianQid())
                     .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
                     .setJsonProfile(jsonProfile)
             );
@@ -155,6 +161,7 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public JsonScheduleList numberOfAppointmentsForMonth(String codeQR, String month) {
+        LOG.info("Appointments for {} {}", month, codeQR);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(month, bizStore.getTimeZone());

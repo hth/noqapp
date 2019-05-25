@@ -70,6 +70,9 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         );
     }
 
+    /**
+     * Counts number of records in each schedule. Sums the count in field TA.
+     */
     @Override
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth) {
         try {
@@ -77,7 +80,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
                 match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R)),
                 group("scheduleDate")
                     .first("scheduleDate").as("SD")
-                    .sum("totalAppointments").as("TA")
+                    .count().as("TA")
             );
             /* Above totalAppointments in group is used as a place holder to count the number of records that has TA > 0. */
             List<ScheduleAppointmentEntity> scheduleAppointments = mongoTemplate.aggregate(agg, TABLE, ScheduleAppointmentEntity.class).getMappedResults();
